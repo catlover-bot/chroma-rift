@@ -9,6 +9,11 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.hirotakam.chromarift"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "43063855-e1de-4072-b1e6-1c8621e3cb10"
+      }
     }
   }
 }
