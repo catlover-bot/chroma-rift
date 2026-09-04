@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "CHROMA RIFT",
+    "slug": "chroma-rift",
+    "scheme": "chromarift",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.hirotakam.chromarift"
+    }
+  }
+}
