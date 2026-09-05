@@ -52,6 +52,18 @@ developerLab?: parameters (__DEV__ only)
 
 Raw JSON is parsed as `unknown`; nested enums, primitives, trials, responses, profile metrics, settings and developer values are guarded. Malformed JSON, an unsupported version, or storage I/O failure returns safe defaults. No PII, secret, account identifier, or network upload exists.
 
-## Future native paths
+## Development-build delivery boundary
 
-This slice intentionally has no `ios/` directory, CocoaPods, signing, EAS authentication, or cloud build. If Expo Go later lacks a concrete native feature, the next controlled path is an EAS development build. TestFlight/App Store work then requires macOS/Xcode or EAS, a confirmed bundle identifier, signing credentials held outside this repository, native privacy review, and physical regression testing.
+The ordinary Expo Go app currently available from the App Store is not a compatible validation runtime for this Expo SDK 57 project. Physical testing therefore uses a project-specific iOS development build containing `expo-dev-client`, Skia, Reanimated/Worklets, Gesture Handler, Haptics, and AsyncStorage.
+
+The delivery pieces have separate responsibilities:
+
+- Metro runs in Windows/WSL2 and serves the TypeScript/JavaScript bundle. `npm run start:dev-client` targets the installed development client; the tunnel variant is only a WSL2/restrictive-network fallback.
+- The project-specific development build is a signed native iPhone app installed before validation. It launches from its own icon and provides the development-client launcher that connects to Metro.
+- EAS Build runs remotely and creates that signed development build. The checked-in `eas.json` only describes the build profile; it does not authenticate, register devices, create credentials, or request a build.
+- Ordinary Expo Go is a generic App Store client and is not used for SDK 57 validation here.
+- A final App Store production build is a later distribution artifact, distinct from both Metro and the internal development build.
+
+After the native development build is installed, normal TypeScript/JavaScript changes can usually load from Metro without rebuilding. Native dependencies, config plugins, permissions, entitlements, or other native-configuration changes require a new development build.
+
+This slice still has no tracked `ios/` directory or local CocoaPods/signing material. Windows/WSL2 can run Metro and, after user authentication, request the EAS cloud iOS build. A signed build for a physical iPhone requires an Apple Developer Program account, device registration, and Developer Mode on the iPhone. TestFlight/App Store work later requires a confirmed bundle identifier, controlled signing credentials, native privacy review, and physical regression testing.
