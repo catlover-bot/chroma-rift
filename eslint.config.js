@@ -4,7 +4,7 @@ const expoConfig = require('eslint-config-expo/flat');
 module.exports = defineConfig([
   ...expoConfig,
   {
-    ignores: ['coverage/**', 'dist/**', 'node_modules/**'],
+    ignores: ['coverage/**', 'dist/**', '.expo/**', 'node_modules/**'],
   },
   {
     files: ['**/__tests__/**/*.{ts,tsx}', 'jest.setup.ts'],

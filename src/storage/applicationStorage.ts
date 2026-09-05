@@ -275,22 +275,28 @@ function serializeMutation<T>(operation: () => Promise<T>): Promise<T> {
 }
 
 export async function loadApplication(systemReducedMotion = false): Promise<ApplicationLoadResult> {
+  let readEpoch = writeEpoch;
   try {
     await mutations;
+    readEpoch = writeEpoch;
     const current = await AsyncStorage.getItem(APPLICATION_STORAGE_KEY);
     const legacy = current === null ? await AsyncStorage.getItem(LEGACY_APPLICATION_STORAGE_KEY) : null;
+    if (readEpoch !== writeEpoch) return {
+      application: createDefaultApplication(systemReducedMotion), status: 'blocked',
+      message: '読み込み中に保存データがリセットされました。',
+    };
     const result = decodePersistedApplication(current ?? legacy, systemReducedMotion);
     persistenceAllowed = result.status !== 'blocked';
     if (result.status === 'migrated') {
       const saved = await saveApplication(result.application);
       if (!saved) {
-        persistenceAllowed = false;
+        if (readEpoch === writeEpoch) persistenceAllowed = false;
         return { ...result, status: 'blocked', message: '設定の移行を保存できませんでした。以前のデータは保持しています。' };
       }
     }
     return result;
   } catch {
-    persistenceAllowed = false;
+    if (readEpoch === writeEpoch) persistenceAllowed = false;
     return { application: createDefaultApplication(systemReducedMotion), status: 'blocked', message: '保存領域を読み込めませんでした。この起動中の変更は保存されません。' };
   }
 }

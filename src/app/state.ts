@@ -13,6 +13,7 @@ import type {
   DeveloperLabParameters,
   PersistedApplication,
   JourneyStageSummary,
+  FirstPersonChapterSummary,
   ScreenName,
 } from '../types/application';
 
@@ -25,6 +26,7 @@ export type AppState = PersistedApplication & {
   stageIndex: 0 | 1;
   journeySummaries: JourneyStageSummary[];
   journeyRun: number;
+  firstPersonSummary?: FirstPersonChapterSummary | undefined;
 };
 
 export type AppAction =
@@ -35,6 +37,8 @@ export type AppAction =
   | { type: 'SKIP_QUICK_SETUP'; completedAt?: string }
   | { type: 'ADD_QUICK_RESPONSE'; sessionId: string; index: number; answer: QuickSetupAnswer; respondedAt: string }
   | { type: 'BEGIN_JOURNEY' }
+  | { type: 'BEGIN_LEGACY_JOURNEY' }
+  | { type: 'COMPLETE_CHAPTER'; summary: FirstPersonChapterSummary; journeyRun: number }
   | { type: 'COMPLETE_STAGE'; summary: JourneyStageSummary; journeyRun: number }
   | { type: 'START_CALIBRATION'; seed: number; startedAt: string }
   | { type: 'ADD_CALIBRATION_RESPONSE'; response: CalibrationResponse }
@@ -63,7 +67,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, ...action.persisted, settings, screen: 'welcome', hydrated: true };
     }
     case 'NAVIGATE':
-      if (action.screen === 'developerLab' && !__DEV__) return state;
+      if ((action.screen === 'developerLab' || action.screen === 'firstPersonLab') && !__DEV__) return state;
       return { ...state, screen: action.screen };
     case 'PLAY':
       if (state.quickSetupResult || state.calibrationProfile) return { ...state, screen: 'playInstructions' };
@@ -99,7 +103,13 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
     }
     case 'BEGIN_JOURNEY':
+      return { ...state, screen: 'firstPerson', firstPersonSummary: undefined, journeyRun: state.journeyRun + 1 };
+    case 'BEGIN_LEGACY_JOURNEY':
       return { ...state, screen: 'illusionMaze', stageIndex: 0, journeySummaries: [], journeyRun: state.journeyRun + 1 };
+    case 'COMPLETE_CHAPTER':
+      if (state.screen !== 'firstPerson' || action.journeyRun !== state.journeyRun ||
+        action.summary.chapterId !== 'returnless-entrance' || action.summary.seals !== 2) return state;
+      return { ...state, screen: 'firstPersonResult', firstPersonSummary: action.summary };
     case 'COMPLETE_STAGE': {
       const expectedLevel = state.stageIndex === 0 ? 'floating-corridor' : 'impossible-bridge';
       if (state.screen !== 'illusionMaze' || action.journeyRun !== state.journeyRun ||

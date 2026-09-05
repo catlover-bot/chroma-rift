@@ -3,6 +3,7 @@ import { AccessibilityInfo, ActivityIndicator, StyleSheet, Text, View } from 're
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appReducer, initialAppState, persistedFromState } from './src/app/state';
+import { createCheckpoint, createInitialRuntime, type CheckpointState } from './src/domain/firstPerson';
 import { CalibrationInstructionsScreen } from './src/screens/CalibrationInstructionsScreen';
 import { CalibrationResultScreen } from './src/screens/CalibrationResultScreen';
 import { CalibrationScreen } from './src/screens/CalibrationScreen';
@@ -10,6 +11,8 @@ import { DeveloperLabScreen } from './src/screens/DeveloperLabScreen';
 import { IllusionMazeScreen } from './src/screens/IllusionMazeScreen';
 import { JourneyResultScreen } from './src/screens/JourneyResultScreen';
 import { MicroMazeScreen } from './src/screens/MicroMazeScreen';
+import { NativeFirstPersonGate } from './src/screens/NativeFirstPersonGate';
+import { FirstPersonResultScreen } from './src/screens/FirstPersonResultScreen';
 import { PlayInstructionsScreen } from './src/screens/PlayInstructionsScreen';
 import { QuickSetupScreen } from './src/screens/QuickSetupScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
@@ -18,11 +21,15 @@ import { WelcomeScreen } from './src/screens/WelcomeScreen';
 import {
   createDefaultApplication,
   loadApplication,
-  resetApplicationStorage,
   saveApplication,
 } from './src/storage/applicationStorage';
+import {
+  beginFirstPersonSession, isFirstPersonSessionCurrent, loadFirstPersonStorage,
+  resetAllApplicationStorage, resetFirstPersonChapter,
+  saveFirstPersonCheckpoint, saveFirstPersonControls,
+} from './src/storage/firstPersonStorage';
 import { UI_COLORS } from './src/theme/ui';
-import { DEFAULT_LAB_PARAMETERS, type PersistedApplication } from './src/types/application';
+import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_LAB_PARAMETERS, type FirstPersonControls, type PersistedApplication } from './src/types/application';
 
 export default function App() {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
@@ -30,6 +37,11 @@ export default function App() {
   const [storageMessage, setStorageMessage] = useState<string | undefined>();
   const [resetting, setResetting] = useState(false);
   const resetInFlight = useRef(false);
+  const [controls, setControls] = useState<FirstPersonControls>({ ...DEFAULT_FIRST_PERSON_CONTROLS });
+  const [checkpoint, setCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createInitialRuntime()));
+  const [firstPersonMessage, setFirstPersonMessage] = useState<string | undefined>();
+  const [chapterLease, setChapterLease] = useState(0);
+  const [completedAtEntry, setCompletedAtEntry] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -40,8 +52,11 @@ export default function App() {
       } catch {
         // The in-app setting remains available if the platform preference cannot be read.
       }
-      const loaded = await loadApplication(systemReducedMotion);
+      const [loaded, chapter] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage()]);
       if (!active) return;
+      setControls(chapter.controls);
+      setCheckpoint(chapter.checkpoint);
+      setFirstPersonMessage(chapter.message);
       setStorageWritable(loaded.status !== 'blocked');
       setStorageMessage(loaded.message);
       dispatch({ type: 'HYDRATE', persisted: loaded.application, systemReducedMotion });
@@ -72,13 +87,34 @@ export default function App() {
   const navigateHome = () => dispatch({ type: 'NAVIGATE', screen: 'welcome' });
   const beginCalibration = () =>
     dispatch({ type: 'START_CALIBRATION', seed: Date.now() >>> 0, startedAt: new Date().toISOString() });
+  const beginChapter = (restart = false) => {
+    setCompletedAtEntry(!restart && checkpoint.progress.cleared);
+    setChapterLease(beginFirstPersonSession());
+    dispatch({ type: 'BEGIN_JOURNEY' });
+  };
+  const restartChapter = async () => {
+    if (resetInFlight.current) return;
+    resetInFlight.current = true;
+    setResetting(true);
+    const removed = await resetFirstPersonChapter();
+    if (removed) {
+      setCheckpoint(createCheckpoint(createInitialRuntime()));
+      setFirstPersonMessage(undefined);
+      beginChapter(true);
+    } else {
+      setFirstPersonMessage('章をリセットできませんでした。保存データを保持しています。');
+      navigateHome();
+    }
+    resetInFlight.current = false;
+    setResetting(false);
+  };
 
   const reset = async () => {
     if (resetInFlight.current) return;
     resetInFlight.current = true;
     setResetting(true);
     setStorageWritable(false);
-    const removed = await resetApplicationStorage();
+    const removed = await resetAllApplicationStorage();
     if (!removed) {
       setStorageMessage('保存データを削除できませんでした。この起動中の変更は保存されません。設定画面からもう一度お試しください。');
       resetInFlight.current = false;
@@ -93,6 +129,10 @@ export default function App() {
     }
     setStorageWritable(true);
     setStorageMessage(undefined);
+    setFirstPersonMessage(undefined);
+    setControls({ ...DEFAULT_FIRST_PERSON_CONTROLS });
+    setCheckpoint(createCheckpoint(createInitialRuntime()));
+    setChapterLease(beginFirstPersonSession());
     dispatch({ type: 'RESET', defaults: createDefaultApplication(systemReducedMotion) });
     resetInFlight.current = false;
     setResetting(false);
@@ -115,7 +155,45 @@ export default function App() {
       />
     );
   } else if (state.screen === 'playInstructions') {
-    screen = <PlayInstructionsScreen onStart={() => dispatch({ type: 'BEGIN_JOURNEY' })} onBack={navigateHome} />;
+    screen = <PlayInstructionsScreen controls={controls} reducedMotion={state.settings.reducedMotion} onStart={() => beginChapter()} onBack={navigateHome} />;
+  } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
+    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onReplay={() => void restartChapter()} onHome={navigateHome} />;
+  } else if (state.screen === 'firstPerson' || (state.screen === 'firstPersonLab' && __DEV__)) {
+    const lab = state.screen === 'firstPersonLab';
+    // Every callback captures this mounted run's lease; an old save/completion cannot adopt a new run.
+    const lease = chapterLease;
+    screen = !lab && completedAtEntry ? (
+      <FirstPersonResultScreen
+        summary={{ chapterId: checkpoint.chapterId, seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '戻ったはずの入口'] }}
+        onReplay={() => void restartChapter()} onHome={navigateHome}
+      />
+    ) : (
+      <NativeFirstPersonGate
+        key={`${lab ? 'lab' : 'chapter'}-${lease}`} scene={lab ? 'lab' : 'chapter'}
+        settings={state.settings} controls={controls} {...(!lab ? { checkpoint } : {})}
+        preferredColor={state.activeSetupSource === 'quick' ? state.quickSetupResult?.provisionalColor ?? 'neutral' : state.calibrationProfile?.preferredForegroundColor ?? state.quickSetupResult?.provisionalColor ?? 'neutral'}
+        onSettingsChange={(settings) => { if (isFirstPersonSessionCurrent(lease)) dispatch({ type: 'UPDATE_SETTINGS', settings }); }}
+        onControlsChange={(next) => {
+          if (!isFirstPersonSessionCurrent(lease)) return;
+          setControls(next);
+          void saveFirstPersonControls(next).then((saved) => {
+            if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('操作設定を保存できませんでした。この起動中は変更した設定で遊べます。');
+          });
+        }}
+        onCheckpoint={(next) => {
+          if (lab || !isFirstPersonSessionCurrent(lease)) return;
+          setCheckpoint(next);
+          void saveFirstPersonCheckpoint(next, lease).then((saved) => {
+            if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('章の進行を保存できませんでした。この起動中はそのまま遊べます。');
+          });
+        }}
+        onComplete={(summary) => {
+          if (!lab && isFirstPersonSessionCurrent(lease)) dispatch({ type: 'COMPLETE_CHAPTER', summary, journeyRun: state.journeyRun });
+        }}
+        onRestart={() => { if (!isFirstPersonSessionCurrent(lease)) return; if (lab) setChapterLease(beginFirstPersonSession()); else void restartChapter(); }}
+        onExit={() => { if (isFirstPersonSessionCurrent(lease)) navigateHome(); }}
+      />
+    );
   } else if (state.screen === 'illusionMaze') {
     screen = (
       <IllusionMazeScreen
@@ -129,7 +207,7 @@ export default function App() {
       />
     );
   } else if (state.screen === 'journeyResult') {
-    screen = <JourneyResultScreen summaries={state.journeySummaries} onReplay={() => dispatch({ type: 'BEGIN_JOURNEY' })} onHome={navigateHome} />;
+    screen = <JourneyResultScreen summaries={state.journeySummaries} onReplay={() => dispatch({ type: 'BEGIN_LEGACY_JOURNEY' })} onHome={navigateHome} />;
   } else if (state.screen === 'calibrationInstructions') {
     screen = <CalibrationInstructionsScreen onStart={beginCalibration} onBack={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
   } else if (state.screen === 'calibration' && state.calibrationSession) {
@@ -148,6 +226,8 @@ export default function App() {
         {...(__DEV__ ? {
           onDeveloperLab: () => dispatch({ type: 'NAVIGATE', screen: 'developerLab' }),
           onLegacyMaze: () => dispatch({ type: 'NAVIGATE', screen: 'microMaze' }),
+          onLegacyJourney: () => dispatch({ type: 'BEGIN_LEGACY_JOURNEY' }),
+          onFirstPersonLab: () => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'firstPersonLab' }); },
         } : {})}
       />
     );
@@ -177,6 +257,7 @@ export default function App() {
       <View style={styles.application}>
         {screen}
         {storageMessage ? <Text accessibilityRole="alert" style={styles.notice}>{storageMessage}</Text> : null}
+        {firstPersonMessage ? <Text accessibilityRole="alert" style={styles.notice}>{firstPersonMessage}</Text> : null}
       </View>
     </SafeAreaProvider>
   );

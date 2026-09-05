@@ -17,8 +17,8 @@ export function WelcomeScreen({
   return (
     <Screen>
       <Text accessibilityRole="header" style={styles.title}>CHROMA RIFT</Text>
-      <Text style={styles.subtitle}>浮かぶ回廊に、道を見つけよう。</Text>
-      <Body>床をたどり、光のかけらを集める、小さなふたつの迷宮。</Body>
+      <Text style={styles.subtitle}>戻ったはずの入口。その先には。</Text>
+      <Body>迷宮の中を歩き、ふたつの謎を解いて、帰り道の変化を見つけよう。</Body>
       <Panel>
         <Body muted>色の奥行きは人によって違います。感じにくくても遊べます。</Body>
         <Body muted>違和感があれば、いつでも一時停止できます。</Body>

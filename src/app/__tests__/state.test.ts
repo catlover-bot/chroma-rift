@@ -17,7 +17,7 @@ const quickAnswer = (state = quickStarted(), answer: QuickSetupAnswer = 'unclear
   answer, respondedAt: '2026-09-05T00:00:00Z',
 });
 
-describe('quick setup and two-stage journey', () => {
+describe('quick setup and retained legacy journey', () => {
   it('starts first play with quick setup and ends after exactly three taps without detailed scoring', () => {
     const classifier = jest.spyOn(detailedScoring, 'calculateCalibrationProfile');
     let state = quickStarted();
@@ -103,7 +103,7 @@ describe('quick setup and two-stage journey', () => {
 
   it('advances through two stages once, without scores or profile changes, then replays', () => {
     const prepared = appReducer(quickStarted(), { type: 'SKIP_QUICK_SETUP' });
-    let state = appReducer(prepared, { type: 'BEGIN_JOURNEY' });
+    let state = appReducer(prepared, { type: 'BEGIN_LEGACY_JOURNEY' });
     const first = { levelId: 'floating-corridor', collectibleCount: 2, discoveredMechanisms: ['color'] };
     const second = { levelId: 'impossible-bridge', collectibleCount: 2, discoveredMechanisms: ['projection'] };
     const run = state.journeyRun;
@@ -116,10 +116,51 @@ describe('quick setup and two-stage journey', () => {
     expect(state.journeySummaries).toEqual([first, second]);
     expect(state.quickSetupResult).toBe(prepared.quickSetupResult);
     expect(state.bestMazeScore).toBe(0);
-    const replay = appReducer(state, { type: 'BEGIN_JOURNEY' });
+    const replay = appReducer(state, { type: 'BEGIN_LEGACY_JOURNEY' });
     expect(replay.stageIndex).toBe(0);
     expect(replay.journeySummaries).toEqual([]);
     expect(appReducer(replay, { type: 'COMPLETE_STAGE', summary: first, journeyRun: run })).toBe(replay);
+  });
+});
+
+describe('normal first-person chapter navigation', () => {
+  it('enters first person after three setup answers', () => {
+    let state = quickStarted();
+    for (let index = 0; index < 3; index += 1) state = appReducer(state, quickAnswer(state));
+    expect(state.screen).toBe('playInstructions');
+    expect(appReducer(state, { type: 'BEGIN_JOURNEY' }).screen).toBe('firstPerson');
+  });
+
+  it('enters first person after skip without modifying explicit settings', () => {
+    const settings = { ...initialAppState.settings, depthAssist: false, depthAssistOverridden: true, reducedMotion: true, reducedMotionOverridden: true, haptics: false };
+    const configured = appReducer(initialAppState, { type: 'UPDATE_SETTINGS', settings });
+    const skipped = appReducer(configured, { type: 'SKIP_QUICK_SETUP' });
+    const chapter = appReducer(skipped, { type: 'BEGIN_JOURNEY' });
+    expect(chapter.screen).toBe('firstPerson');
+    expect(chapter.settings).toEqual(settings);
+    expect(persistedFromState(chapter)).not.toHaveProperty('pose');
+  });
+
+  it('accepts this chapter once and ignores incomplete, wrong-chapter and stale completion callbacks', () => {
+    const chapter = appReducer(initialAppState, { type: 'BEGIN_JOURNEY' });
+    const summary = { chapterId: 'returnless-entrance', seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '帰路の変化'] };
+    const action = { type: 'COMPLETE_CHAPTER' as const, summary, journeyRun: chapter.journeyRun };
+    expect(appReducer(chapter, { ...action, summary: { ...summary, seals: 1 } })).toBe(chapter);
+    expect(appReducer(chapter, { ...action, summary: { ...summary, chapterId: 'future' } })).toBe(chapter);
+    const result = appReducer(chapter, action);
+    expect(result.screen).toBe('firstPersonResult');
+    expect(result.firstPersonSummary).toEqual(summary);
+    expect(appReducer(result, action)).toBe(result);
+    const replay = appReducer(result, { type: 'BEGIN_JOURNEY' });
+    expect(replay.firstPersonSummary).toBeUndefined();
+    expect(appReducer(replay, action)).toBe(replay);
+    expect(replay.bestMazeScore).toBe(initialAppState.bestMazeScore);
+  });
+
+  it('keeps legacy exploration results separate from chapter results', () => {
+    const chapter = appReducer(initialAppState, { type: 'BEGIN_JOURNEY' });
+    expect(appReducer(chapter, { type: 'COMPLETE_STAGE', summary: { levelId: 'floating-corridor', collectibleCount: 2, discoveredMechanisms: [] }, journeyRun: chapter.journeyRun })).toBe(chapter);
+    expect(appReducer(chapter, { type: 'BEGIN_LEGACY_JOURNEY' }).screen).toBe('illusionMaze');
   });
 });
 

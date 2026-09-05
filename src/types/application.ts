@@ -16,6 +16,9 @@ export type ScreenName =
   | 'settings'
   | 'quickSetup'
   | 'playInstructions'
+  | 'firstPerson'
+  | 'firstPersonResult'
+  | 'firstPersonLab'
   | 'illusionMaze'
   | 'journeyResult'
   | 'developerLab';
@@ -65,6 +68,27 @@ export type PersistedApplication = {
 export type JourneyStageSummary = {
   levelId: string;
   collectibleCount: number;
+  discoveredMechanisms: string[];
+};
+
+/** First-person comfort preferences have their own persistence document. */
+export type FirstPersonControls = {
+  sensitivity: number;
+  movementMode: 'standard' | 'simple';
+  handedness: 'left' | 'right';
+  quality: 'low' | 'standard';
+};
+
+export const DEFAULT_FIRST_PERSON_CONTROLS: FirstPersonControls = {
+  sensitivity: 1,
+  movementMode: 'standard',
+  handedness: 'right',
+  quality: 'standard',
+};
+
+export type FirstPersonChapterSummary = {
+  chapterId: string;
+  seals: number;
   discoveredMechanisms: string[];
 };
 

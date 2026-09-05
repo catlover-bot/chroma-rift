@@ -157,4 +157,19 @@ describe('versioned persistence', () => {
     expect(await resetApplicationStorage()).toBe(false);
     expect(await saveApplication(createDefaultApplication())).toBe(false);
   });
+
+  it('does not revive a slow legacy load after reset or block the fresh namespace', async () => {
+    let release: ((raw: string) => void) | undefined;
+    let began: (() => void) | undefined;
+    const entered = new Promise<void>((resolve) => { began = resolve; });
+    jest.mocked(AsyncStorage.getItem).mockImplementationOnce(() => new Promise<string>((resolve) => { release = resolve; began?.(); }));
+    const loading = loadApplication();
+    await entered;
+    expect(await resetApplicationStorage()).toBe(true);
+    release?.(JSON.stringify(legacyData()));
+    expect((await loading).status).toBe('blocked');
+    expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBeNull();
+    expect(await saveApplication(createDefaultApplication())).toBe(true);
+    expect((await loadApplication()).application.bestMazeScore).toBe(0);
+  });
 });

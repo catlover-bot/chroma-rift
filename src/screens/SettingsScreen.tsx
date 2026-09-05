@@ -12,6 +12,8 @@ export function SettingsScreen({
   onQuickSetup,
   onDeveloperLab,
   onLegacyMaze,
+  onLegacyJourney,
+  onFirstPersonLab,
 }: {
   settings: AppSettings;
   onChange: (settings: AppSettings) => void;
@@ -21,6 +23,8 @@ export function SettingsScreen({
   onQuickSetup: () => void;
   onDeveloperLab?: () => void;
   onLegacyMaze?: () => void;
+  onLegacyJourney?: () => void;
+  onFirstPersonLab?: () => void;
 }) {
   const set = <Key extends keyof AppSettings>(key: Key, value: AppSettings[Key]) =>
     onChange({ ...settings, [key]: value });
@@ -31,13 +35,13 @@ export function SettingsScreen({
       <Panel>
         <SettingSwitch
           label="補助表示"
-          description="隣の床の輪郭と接続マークで、移動先を見つけやすくします。"
+          description="通れる床と観察の印を中立色で見つけやすくします。"
           value={settings.depthAssist}
           onValueChange={(value) => onChange({ ...settings, depthAssist: value, depthAssistOverridden: true })}
         />
         <SettingSwitch
           label="動きを減らす"
-          description="キャラクターの移動を短くし、歩行の揺れを止めます。"
+          description="仕掛けの動きを抑えます。一人称の歩行にカメラの揺れはありません。"
           value={settings.reducedMotion}
           onValueChange={(value) =>
             onChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })
@@ -45,7 +49,7 @@ export function SettingsScreen({
         />
         <SettingSwitch
           label="ハプティクス"
-          description="橋がつながったときなどに、軽い触覚で知らせます。"
+          description="仕掛けを解いたときなどに、軽い触覚で知らせます。"
           value={settings.haptics}
           onValueChange={(value) => set('haptics', value)}
         />
@@ -66,7 +70,7 @@ export function SettingsScreen({
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコアを端末から削除します。', [
+          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、一人称の進行を端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])
@@ -75,6 +79,8 @@ export function SettingsScreen({
       />
       <ActionButton label="ホームへ戻る" onPress={onBack} />
       {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
+      {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}
+      {onLegacyJourney ? <ActionButton label="旧2.5D迷宮（開発用）" onPress={onLegacyJourney} /> : null}
       {onLegacyMaze ? <ActionButton label="旧レール検証（開発用）" onPress={onLegacyMaze} /> : null}
     </Screen>
   );

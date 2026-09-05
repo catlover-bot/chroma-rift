@@ -1,4 +1,5 @@
 import * as Clipboard from 'expo-clipboard';
+import { Canvas, Rect } from '@shopify/react-native-skia';
 import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions } from 'react-native';
 import Animated, {
@@ -20,6 +21,7 @@ import {
   type PatternFamily,
 } from '../domain/calibration/types';
 import { CalibrationStimulus } from '../rendering/CalibrationStimulus';
+import { illusionPalette } from '../rendering/IllusionPalette';
 import { UI_COLORS } from '../theme/ui';
 import { DEFAULT_LAB_PARAMETERS, type DeveloperLabParameters } from '../types/application';
 
@@ -117,6 +119,14 @@ export function DeveloperLabScreen({
     <Screen>
       <Heading>開発者刺激ラボ</Heading>
       <Body muted>開発ビルドだけで表示されます。端末設定は自動取得せず、選択内容をローカルだけに保存します。</Body>
+      <Panel>
+        <SectionTitle>3Dと共有するパレット</SectionTitle>
+        <Body muted>標準強度・優先色なし。上段は色表示、下段は同じ規則の無彩色表示です。3Dラボの床と実機で比較してください。見え方の一致は保証しません。</Body>
+        <Canvas style={{ width: Math.min(width - 72, 320), height: 112 }} accessibilityLabel="共有パレットの赤と青、その無彩色表示">
+          <Rect x={0} y={0} width={320} height={112} color="#4F5A59" />
+          {[false, true].flatMap((neutral, row) => illusionPalette('neutral', neutral, 'medium').map((color, column) => <Rect key={`${row}-${column}`} x={24 + column * 104} y={12 + row * 52} width={80} height={36} color={color} />))}
+        </Canvas>
+      </Panel>
       <ChoiceRow>
         <ActionButton
           label={`Calibration-neutral mode${parameters.mode === 'calibration' ? '（選択中）' : ''}`}
