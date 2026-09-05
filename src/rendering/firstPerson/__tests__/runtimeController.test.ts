@@ -19,6 +19,9 @@ describe('native scene runtime integration without GL', () => {
   });
   it('keeps a stable UI snapshot key while idle and moving within the same semantic state', () => {
     const controller = createController(undefined, true);
+    expect(controllerSnapshot(controller).cue.kind).toBe('none');
+    syncCamera(controller, camera());
+    expect(controllerSnapshot(controller).cue.kind).toBe('approach');
     const initial = controllerSnapshot(controller).key;
     for (let index = 0; index < 120; index += 1) advanceController(controller, 1 / 60, camera());
     expect(controllerSnapshot(controller).key).toBe(initial);

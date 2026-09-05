@@ -1,15 +1,21 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
+import * as Clipboard from 'expo-clipboard';
 import { AccessibilityInfo, AppState, Dimensions } from 'react-native';
 import * as THREE from 'three';
 
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
+import * as diagnostics from '../../rendering/firstPerson/diagnostics';
 import { advanceController, controllerSnapshot } from '../../rendering/firstPerson/runtimeController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
 import { FirstPersonScreen, type FirstPersonScreenProps } from '../FirstPersonScreen';
 
+// This UI contract fixture represents a completed first-frame signal, not
+// native onCreated or GPU proof. Tests can withhold it to exercise startup.
+let mockSubmittedFrame = true;
+jest.mock('../../rendering/firstPerson/RawGLProof', () => ({ RawGLProof: jest.fn(() => null) }));
 jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonCanvas: jest.fn(({ onReady }: { onReady: () => void }) => {
   const React = require('react');
-  React.useEffect(() => onReady(), [onReady]);
+  React.useEffect(() => { if (mockSubmittedFrame) onReady(); }, [onReady]);
   return null;
 }) }));
 const canvas = jest.mocked(FirstPersonCanvas);
@@ -30,6 +36,7 @@ async function frame() {
 describe('first-person control surface and lifecycle', () => {
   beforeEach(async () => {
     canvas.mockClear();
+    mockSubmittedFrame = true;
     await act(() => Dimensions.set({ window: { width: 390, height: 844, scale: 3, fontScale: 1 }, screen: { width: 390, height: 844, scale: 3, fontScale: 1 } }));
     jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(false);
     jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => undefined);
@@ -174,5 +181,143 @@ describe('first-person control surface and lifecycle', () => {
     expect(freshProps.onComplete).not.toHaveBeenCalled();
     await fresh.unmount();
     expect(current.controller.runtime.paused).toBe(true);
+  });
+
+  it('blocks startup input while diagnostics remain available and background/resume can resume initialization', async () => {
+    mockSubmittedFrame = false;
+    const listener = jest.spyOn(AppState, 'addEventListener');
+    const view = await render(<FirstPersonScreen {...props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } })} />);
+    expect(view.getByRole('button', { name: '前へ一歩' })).toBeDisabled();
+    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    expect(scene().paused).toBe(false);
+    expect(view.getByTestId('render-diagnostic-record')).toBeTruthy();
+    await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+    const callbacks = listener.mock.calls.filter(([event]) => event === 'change').map(([, callback]) => callback);
+    await act(() => callbacks.forEach((callback) => callback('background')));
+    expect(scene().appActive).toBe(false);
+    expect(scene().paused).toBe(true);
+    await act(() => callbacks.forEach((callback) => callback('active')));
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
+    expect(scene().appActive).toBe(true);
+    expect(scene().paused).toBe(false);
+    expect(view.getByRole('button', { name: '前へ一歩' })).toBeDisabled();
+    await act(() => scene().onReady());
+    expect(view.getByRole('button', { name: '前へ一歩' })).toBeEnabled();
+  });
+
+  it('retries with a fresh controller, preserves progress/palette and rejects old callbacks, with a two-retry bound', async () => {
+    const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } });
+    const view = await render(<FirstPersonScreen {...original} />);
+    const old = scene();
+    old.controller.runtime = { ...old.controller.runtime, progress: { ...old.controller.runtime.progress, guideExamined: true } };
+    await act(() => old.onSnapshot(controllerSnapshot(old.controller)));
+    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
+    const checkpointCalls = jest.mocked(original.onCheckpoint).mock.calls.length;
+    await act(() => scene().onError('描画が止まりました。'));
+    await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+    const fresh = scene();
+    expect(fresh.controller).not.toBe(old.controller);
+    expect(fresh.controller.runtime.progress.guideExamined).toBe(true);
+    expect(fresh.controller.runtime.pose).toEqual(old.controller.runtime.pose);
+    expect(fresh.neutralColors).toBe(true);
+    expect(fresh.controller.input.forward).toBe(0);
+    await act(() => { old.onReady(); old.onError('以前のエラー'); old.onSnapshot(controllerSnapshot(old.controller)); });
+    expect(view.queryByText('以前のエラー')).toBeNull();
+    expect(original.onCheckpoint).toHaveBeenCalledTimes(checkpointCalls);
+    expect(original.onRestart).not.toHaveBeenCalled();
+    await act(() => scene().onError('再試行後のエラー'));
+    await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+    await act(() => scene().onError('二度目の再試行後のエラー'));
+    expect(view.getByRole('button', { name: '表示を再試行' })).toBeDisabled();
+    expect(view.getByRole('button', { name: '描画の診断' })).toBeEnabled();
+  });
+
+  it('refreshes diagnostics only while open at most twice per second and copies only on request', async () => {
+    jest.useFakeTimers();
+    const serialize = jest.spyOn(diagnostics, 'serializeDiagnostics');
+    jest.mocked(Clipboard.setStringAsync).mockClear();
+    try {
+      mockSubmittedFrame = false;
+      const view = await render(<FirstPersonScreen {...props()} />);
+      await act(() => jest.advanceTimersByTime(1500));
+      expect(serialize).not.toHaveBeenCalled();
+      await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+      expect(serialize).toHaveBeenCalledTimes(1);
+      await act(() => jest.advanceTimersByTime(999));
+      expect(serialize).toHaveBeenCalledTimes(2);
+      await act(() => jest.advanceTimersByTime(1));
+      expect(serialize).toHaveBeenCalledTimes(3);
+      expect(Clipboard.setStringAsync).not.toHaveBeenCalled();
+      await fireEvent.press(view.getByRole('button', { name: '診断をコピー' }));
+      const payload = JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls[0]![0]);
+      expect(payload.revision).toBe(diagnostics.DIAGNOSTIC_REVISION);
+      expect(payload.effectiveControls).toEqual({ mode: 'standard', reason: '保存した標準操作の希望' });
+      await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+      const closedCalls = serialize.mock.calls.length;
+      await act(() => jest.advanceTimersByTime(2000));
+      expect(serialize).toHaveBeenCalledTimes(closedCalls);
+      await view.unmount();
+    } finally { jest.useRealTimers(); }
+  });
+
+  it('explains the active large-text policy without rewriting the saved standard preference', async () => {
+    await act(() => Dimensions.set({ window: { width: 390, height: 844, scale: 3, fontScale: 1.5 }, screen: { width: 390, height: 844, scale: 3, fontScale: 1.5 } }));
+    const original = props();
+    const view = await render(<FirstPersonScreen {...original} />);
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    await fireEvent.press(view.getByRole('button', { name: '操作と快適設定' }));
+    expect(view.getByText('現在の操作：簡単操作。理由：文字の拡大。')).toBeTruthy();
+    expect(view.getByRole('switch', { name: '簡単操作の希望' }).props.value).toBe(false);
+    expect(original.onControlsChange).not.toHaveBeenCalled();
+  });
+
+  it('isolates proof sessions from chapter saves and restores the chapter when returning', async () => {
+    const original = props();
+    const view = await render(<FirstPersonScreen {...original} />);
+    const chapter = scene();
+    chapter.controller.runtime = { ...chapter.controller.runtime, progress: { ...chapter.controller.runtime.progress, guideExamined: true } };
+    await act(() => chapter.onSnapshot(controllerSnapshot(chapter.controller)));
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    const writes = jest.mocked(original.onCheckpoint).mock.calls.length;
+    await fireEvent.press(view.getByRole('button', { name: 'R3Fの箱・床・壁を確認' }));
+    expect(scene().sceneMode).toBe('proof');
+    expect(view.queryByTestId('movement-stick')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    expect(scene().paused).toBe(true);
+    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    await fireEvent.press(view.getByRole('button', { name: '箱が見えない：生のGLを確認' }));
+    expect(view.getByText('橙色の三角形が見えるか確認します。')).toBeTruthy();
+    await fireEvent.press(view.getByRole('button', { name: '探索へ戻る（進行を維持）' }));
+    expect(scene().sceneMode).toBe('chapter');
+    expect(scene().controller).not.toBe(chapter.controller);
+    expect(scene().controller.runtime.progress.guideExamined).toBe(true);
+    expect(scene().controller.runtime.pose).toEqual(chapter.controller.runtime.pose);
+    expect(original.onCheckpoint).toHaveBeenCalledTimes(writes);
+    expect(original.onComplete).not.toHaveBeenCalled();
+  });
+
+  it('walks to the guide with real simple steps, explains aiming and shows first-action progress', async () => {
+    const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } });
+    const view = await render(<FirstPersonScreen {...original} />);
+    expect(view.getByText('「前へ一歩」で、小さな光へ近づこう。')).toBeTruthy();
+    await frame();
+    expect(view.getByText('光のしるべに、もう少し近づこう。')).toBeTruthy();
+    expect(view.getByTestId('interact')).toBeDisabled();
+    for (let index = 0; index < 11; index += 1) {
+      await fireEvent.press(view.getByRole('button', { name: '前へ一歩' }));
+      await frame();
+    }
+    expect(view.getByText('「下を見る」で、光に中央の照準を合わせよう。')).toBeTruthy();
+    for (let index = 0; index < 5; index += 1) await fireEvent.press(view.getByRole('button', { name: '下を見る' }));
+    await frame();
+    expect(view.getByText('「上を見る」で、光に中央の照準を合わせよう。')).toBeTruthy();
+    expect(view.getByTestId('interact')).toBeDisabled();
+    for (let index = 0; index < 3; index += 1) await fireEvent.press(view.getByRole('button', { name: '上を見る' }));
+    await fireEvent.press(view.getByRole('button', { name: 'しるべを調べる' }));
+    expect(scene().controller.runtime.progress.guideExamined).toBe(true);
+    expect(scene().controller.runtime.progress.sealA).toBe(false);
+    expect(view.getByText('しるべを調べました。足跡をたどり、床の輪へ進もう。')).toBeTruthy();
+    expect(original.onCheckpoint).toHaveBeenCalled();
   });
 });

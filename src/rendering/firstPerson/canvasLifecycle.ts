@@ -1,69 +1,99 @@
 import type { RootState } from '@react-three/fiber/native';
 import type * as THREE from 'three';
 
+import { recordDiagnosticError } from './diagnostics';
 import { commandController, type RuntimeController } from './runtimeController';
 
-type FailurePhase = 'renderer initialization' | 'scene initialization' | 'scene mount' | 'simulation frame' | 'scene frame' | 'render' | 'initialization timeout';
-const FAILURE_MESSAGE = '3Dの描画を続けられませんでした。ホームに戻って開き直してください。';
+type FailurePhase = 'renderer initialization' | 'scene initialization' | 'scene mount' | 'simulation frame' | 'scene frame' | 'render' | 'presentation' | 'shader' | 'GL' | 'initialization timeout';
+const FAILURE_MESSAGE = '部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。';
 
-/** One canvas mount owns one failure latch and renderer. Late native callbacks
- * cannot publish into a newer visit. R3F still owns its root and GL context. */
+/** One native Canvas visit owns one renderer and one startup/failure latch.
+ * Scene commitment and a completed native frame are separate from onCreated. */
 export function createCanvasLifecycle(controller: RuntimeController, onError: (message: string) => void) {
-  let status: 'initializing' | 'ready' | 'failed' | 'closed' = 'initializing';
+  const diagnostics = controller.diagnostics;
+  let failed = false;
+  let closed = false;
+  let ready = false;
+  let initialized = false;
   let root: Pick<RootState, 'setFrameloop'> | undefined;
   let renderer: THREE.WebGLRenderer | undefined;
   let errorPending = false;
   const publishFailure = () => {
-    if (!errorPending || status === 'closed') return;
+    if (!errorPending || closed) return;
     errorPending = false;
     onError(FAILURE_MESSAGE);
   };
   const stop = () => {
     commandController(controller, { type: 'pause' });
+    diagnostics.paused = true;
     root?.setFrameloop('never');
   };
   return {
-    get active() { return status === 'initializing' || status === 'ready'; },
-    get ready() { return status === 'ready'; },
+    get active() { return !failed && !closed; },
+    get ready() { return ready && !failed && !closed; },
+    isCurrentRenderer(value: THREE.WebGLRenderer) { return renderer === value && !failed && !closed; },
     ownRenderer(value: THREE.WebGLRenderer) {
-      if (status === 'closed' || status === 'failed') { value.dispose(); return false; }
+      if (closed || failed) { value.dispose(); return false; }
       if (renderer && renderer !== value) renderer.dispose();
       renderer = value;
+      initialized = false;
+      ready = false;
+      diagnostics.rendererCreates += 1;
+      diagnostics.rendererOwnership = 'live';
+      diagnostics.stage = 'renderer-created';
       return true;
     },
     attachRoot(value: Pick<RootState, 'setFrameloop'>) {
-      if (status === 'closed' || status === 'failed') {
+      if (closed || failed) {
         value.setFrameloop('never');
-        // Constructor failure completes its teardown-only configure first.
-        // Earlier publication would unmount R3F with an undefined scene.
+        // Finish configure before publishing constructor failure, so normal
+        // R3F unmount has a defined Scene to dispose (Goal 003.1 regression).
         publishFailure();
         return false;
       }
       root = value;
+      initialized = true;
+      if (diagnostics.sceneCommitted) diagnostics.stage = 'scene-committed';
       return true;
     },
-    markReady() {
-      if (status !== 'initializing') return false;
-      status = 'ready';
+    commitScene() {
+      if (closed || failed) return;
+      diagnostics.sceneCommitted = true;
+      diagnostics.stage = 'scene-committed';
+    },
+    submitFrame() {
+      if (!ready && !failed && !closed) diagnostics.stage = 'first-submitted';
+    },
+    markReady(validFrame = false) {
+      if (ready || failed || closed || !initialized || !diagnostics.sceneCommitted ||
+          diagnostics.rendererOwnership !== 'live' || !validFrame ||
+          diagnostics.renderReturns < 1 || diagnostics.presentationReturns < 1) return false;
+      ready = true;
+      diagnostics.stage = 'ready';
       return true;
     },
     fail(error: unknown, phase: FailurePhase, componentStack?: string | null) {
-      if (status === 'closed') return;
-      if (status === 'failed') {
+      if (closed) return;
+      if (failed) {
         if (phase !== 'renderer initialization') publishFailure();
         return;
       }
-      status = 'failed';
+      failed = true;
+      ready = false;
       errorPending = true;
+      diagnostics.stage = 'failed';
+      recordDiagnosticError(diagnostics, error, phase, componentStack);
       stop();
-      // Keep the original Error (and its JS stack), not just the player-facing
-      // message. Do not filter library warnings or replace the throwing value.
-      if (__DEV__) console.error(`[CHROMA RIFT 3D: ${phase}]`, error, componentStack ?? '');
+      if (__DEV__) console.error('[CHROMA RIFT 3D: ' + phase + ']', error, componentStack ?? '');
       if (phase !== 'renderer initialization') publishFailure();
     },
     close() {
-      if (status === 'closed') return;
-      status = 'closed';
+      if (closed) return;
+      closed = true;
+      ready = false;
+      // Preserve the last failure stage and evidence for the error view.
+      if (!failed) diagnostics.stage = 'closed';
+      diagnostics.rendererOwnership = 'closed';
       stop();
       renderer?.dispose();
       renderer = undefined;

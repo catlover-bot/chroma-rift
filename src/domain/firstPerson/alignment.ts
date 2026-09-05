@@ -20,13 +20,18 @@ export function projectWithCamera(point: Vec3, camera: CameraMatrices): Vec3 | u
   return Math.abs(projected.x) <= 1 && Math.abs(projected.y) <= 1 && projected.z >= -1 && projected.z <= 1 ? projected : undefined;
 }
 
+/** Reject stale view matrices after a move/turn before offering visual cues. */
+export function cameraMatchesPose(pose: PlayerPose, camera: CameraMatrices): boolean {
+  if (camera.view.length !== 16 || camera.projection.length !== 16 || ![...camera.view, ...camera.projection].every(Number.isFinite)) return false;
+  const origin = multiply(camera.view, { ...pose.position, w: 1 });
+  const forward = multiply(camera.view, { ...forwardVector(pose), w: 0 });
+  return Math.hypot(origin.x, origin.y, origin.z) <= 0.0001 && Math.hypot(forward.x, forward.y, forward.z + 1) <= 0.0001;
+}
+
 export type AlignmentResult = { aligned: boolean; error: number; reason: 'aligned' | 'position' | 'frame' | 'occluded' | 'shape' | 'aim' | 'camera' };
 export function evaluateKeyAlignment(pose: PlayerPose, world: WorldGeometry, camera: CameraMatrices, previouslyAligned = false): AlignmentResult {
   const fail = (reason: AlignmentResult['reason'], error = Infinity): AlignmentResult => ({ aligned: false, error, reason });
-  if (camera.view.length !== 16 || camera.projection.length !== 16 || ![...camera.view, ...camera.projection].every(Number.isFinite)) return fail('camera');
-  const cameraOrigin = multiply(camera.view, { ...pose.position, w: 1 });
-  const cameraForward = multiply(camera.view, { ...forwardVector(pose), w: 0 });
-  if (Math.hypot(cameraOrigin.x, cameraOrigin.y, cameraOrigin.z) > 0.0001 || Math.hypot(cameraForward.x, cameraForward.y, cameraForward.z + 1) > 0.0001) return fail('camera');
+  if (!cameraMatchesPose(pose, camera)) return fail('camera');
   // This broad observation bay is only a precondition. Actual displayed shape
   // agreement, aim, view-frustum inclusion and occlusion decide success below.
   if (Math.hypot(pose.position.x - OBSERVATION_POSE.position.x, pose.position.z - OBSERVATION_POSE.position.z) > 1.2) return fail('position');

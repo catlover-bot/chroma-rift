@@ -37,6 +37,18 @@ function floorSupports(position: Vec3, world: WorldGeometry): boolean {
   }
   return true;
 }
+/** Bounded diagnostic inspection. Keep this out of the collision substep loop;
+ * its named results explain an unsafe pose without changing it or saved data. */
+export function inspectPoseSafety(pose: PlayerPose, world: WorldGeometry) {
+  const finite = [pose.position.x, pose.position.y, pose.position.z, pose.yaw, pose.pitch].every(Number.isFinite);
+  return {
+    finite,
+    eyeHeightValid: finite && Math.abs(pose.position.y - EYE_HEIGHT) <= 0.001,
+    pitchValid: finite && Math.abs(pose.pitch) <= MAX_PITCH,
+    supportedFloor: finite && floorSupports(pose.position, world),
+    intersectingSolidIds: finite ? world.solids.filter((volume) => circleIntersectsBox(pose.position, volume)).map((volume) => volume.id) : [],
+  };
+}
 export function isSafePose(pose: PlayerPose, world: WorldGeometry): boolean {
   const { position, yaw, pitch } = pose;
   if (![position.x, position.y, position.z, yaw, pitch].every(Number.isFinite) || Math.abs(position.y - EYE_HEIGHT) > 0.001 || Math.abs(pitch) > MAX_PITCH) return false;

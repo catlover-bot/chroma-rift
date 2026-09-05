@@ -13,6 +13,13 @@ describe('canvas ownership across late native callbacks', () => {
     old.ownRenderer(first);
     old.ownRenderer(second);
     expect(first.dispose).toHaveBeenCalledTimes(1);
+    expect(old.isCurrentRenderer(first)).toBe(false);
+    expect(old.isCurrentRenderer(second)).toBe(true);
+    old.attachRoot({ setFrameloop: jest.fn() });
+    old.commitScene();
+    oldController.diagnostics.renderReturns = 1;
+    oldController.diagnostics.presentationReturns = 1;
+    expect(old.markReady(true)).toBe(true);
     old.close(); old.close();
     expect(second.dispose).toHaveBeenCalledTimes(1);
     const currentController = createController();
@@ -20,7 +27,10 @@ describe('canvas ownership across late native callbacks', () => {
     const current = createCanvasLifecycle(currentController, onCurrentError);
     const lateRoot = { setFrameloop: jest.fn() };
     expect(old.attachRoot(lateRoot)).toBe(false);
-    expect(old.markReady()).toBe(false);
+    expect(old.markReady(true)).toBe(false);
+    expect(old.isCurrentRenderer(second)).toBe(false);
+    old.commitScene(); old.submitFrame();
+    expect(oldController.diagnostics.stage).toBe('closed');
     old.fail(new Error('late failure'), 'render');
     expect(lateRoot.setFrameloop).toHaveBeenCalledWith('never');
     expect(oldController.runtime.paused).toBe(true);

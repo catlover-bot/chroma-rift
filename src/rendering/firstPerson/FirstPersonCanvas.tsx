@@ -1,115 +1,77 @@
-import { Canvas, useFrame, type RootState } from '@react-three/fiber/native';
-import { useEffect, useMemo, useRef } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber/native';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import * as THREE from 'three';
 
 import { CAMERA_FAR, CAMERA_NEAR, VERTICAL_FOV } from '../../domain/firstPerson/chapter';
+import { hasNative3D } from '../../platform/native3D';
 import type { PreferredColor } from '../IllusionPalette';
 import { CanvasFailureBoundary } from './CanvasFailureBoundary';
 import { createCanvasLifecycle, type CanvasLifecycle } from './canvasLifecycle';
 import { ChapterScene } from './ChapterScene';
+import { recordCanvasLayout, updateDiagnosticEnvironment } from './diagnostics';
+import { createNativeSceneSession, type NativeSceneSession } from './nativeSceneSession';
+import { PROOF_CAMERA, ProofScene } from './ProofScene';
 import { createSceneResources } from './resources';
-import { advanceController, controllerSnapshot, recordFrameStats, syncCamera, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
+import { stopController, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
 
 export type FirstPersonCanvasProps = {
-  controller: RuntimeController;
-  snapshot: RuntimeSnapshot;
-  paused: boolean;
-  neutralColors: boolean;
-  preferredColor: PreferredColor;
-  effectStrength: 'low' | 'medium' | 'high';
-  assist: boolean;
-  reducedMotion: boolean;
-  quality: 'low' | 'standard';
-  onSnapshot: (snapshot: RuntimeSnapshot) => void;
-  onReady: () => void;
-  onError: (message: string) => void;
+  controller: RuntimeController; snapshot: RuntimeSnapshot; paused: boolean; appActive?: boolean;
+  sceneMode?: 'chapter' | 'proof'; startupTimeoutMs?: number;
+  neutralColors: boolean; preferredColor: PreferredColor; effectStrength: 'low' | 'medium' | 'high';
+  assist: boolean; reducedMotion: boolean; quality: 'low' | 'standard';
+  onSnapshot: (snapshot: RuntimeSnapshot) => void; onReady: () => void; onError: (message: string) => void;
 };
 
-/** R3F's custom-renderer protocol, used only after initialization has failed.
- * configure needs render/setSize/setPixelRatio; native onCreated additionally
- * wraps getContext().endFrameEXP. It owns no context and never draws a frame. */
-function createTeardownOnlyRenderer() {
-  return {
-    render() {}, setSize() {}, setPixelRatio() {}, dispose() {},
-    getContext: () => ({ endFrameEXP() {} }),
-  };
-}
-
-function FrameDriver({ controller, onSnapshot, lifecycle }: Pick<FirstPersonCanvasProps, 'controller' | 'onSnapshot'> & { lifecycle: CanvasLifecycle }) {
-  const lastKey = useRef('');
-  useFrame((state, delta) => {
-    if (!lifecycle.active) return;
-    try {
-      advanceController(controller, delta, state.camera as THREE.PerspectiveCamera);
-      recordFrameStats(controller, delta, state.gl.info);
-      const next = controllerSnapshot(controller);
-      if (next.key !== lastKey.current) {
-        lastKey.current = next.key;
-        onSnapshot(next);
-      }
-    } catch (error) {
-      lifecycle.fail(error, 'simulation frame');
-    }
-  }, -1);
+function FrameDriver({ onSnapshot, lifecycle, session }: {
+  onSnapshot: FirstPersonCanvasProps['onSnapshot']; lifecycle: CanvasLifecycle; session: NativeSceneSession;
+}) {
+  const scene = useThree((state) => state.scene);
+  useLayoutEffect(() => { lifecycle.commitScene(); }, [lifecycle, scene]);
+  useFrame((state, delta) => session.step(state, delta, onSnapshot), -1);
+  // Negative priority retains the installed R3F automatic render owner.
   return null;
 }
 
 export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
-  const { controller, snapshot, onReady, onError } = props;
+  const { controller, snapshot, onReady, onError, appActive = true } = props;
+  const proof = props.sceneMode === 'proof' && __DEV__;
   const lifecycle = useMemo(() => createCanvasLifecycle(controller, onError), [controller, onError]);
-  const resources = useMemo(() => createSceneResources(props.quality === 'low'), [props.quality]);
-  // This stable accessor lets the scene read only inside useFrame, never on a worklet.
+  const session = useMemo(() => createNativeSceneSession(controller, lifecycle, proof, onReady), [controller, lifecycle, proof, onReady]);
+  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low'), [proof, props.quality]);
   const runtime = useMemo(() => ({ get current() { return controller.runtime; } }), [controller]);
   const world = useMemo(() => worldForController({ ...controller, runtime: snapshot.runtime }), [controller, snapshot.runtime]);
-  useEffect(() => () => resources.dispose(), [resources]);
-  useEffect(() => () => lifecycle.close(), [lifecycle]);
-  useEffect(() => { resources.updatePalette(props.preferredColor, props.neutralColors, props.effectStrength); }, [props.effectStrength, props.neutralColors, props.preferredColor, resources]);
+  const remainingStartup = useRef(props.startupTimeoutMs ?? 12000);
+  const options = useMemo(() => proof ? PROOF_CAMERA : { fov: VERTICAL_FOV, near: CAMERA_NEAR, far: CAMERA_FAR }, [proof]);
+
+  useLayoutEffect(() => {
+    updateDiagnosticEnvironment(controller.diagnostics, { sceneMode: proof ? 'proof' : controller.lab ? 'lab' : 'chapter',
+      appActive, paused: props.paused, nativeGL: hasNative3D() });
+    if (props.paused || !appActive) stopController(controller);
+  }, [controller, appActive, props.paused, proof]);
+  useEffect(() => () => resources?.dispose(), [resources]);
+  useEffect(() => () => session.close(), [session]);
+  useEffect(() => { resources?.updatePalette(props.preferredColor, props.neutralColors, props.effectStrength); }, [props.effectStrength, props.neutralColors, props.preferredColor, resources]);
   useEffect(() => {
-    if (props.paused || lifecycle.ready || !lifecycle.active) return;
+    if (props.paused || !appActive || lifecycle.ready || !lifecycle.active) return;
+    const start = Date.now();
     const timer = setTimeout(() => {
-      if (!lifecycle.ready) lifecycle.fail(new Error('Native canvas did not become ready within 12 seconds'), 'initialization timeout');
-    }, 12000);
-    return () => clearTimeout(timer);
-  }, [lifecycle, props.paused]);
-  const rendererFactory = useMemo(() => (defaults: Parameters<NonNullable<Extract<React.ComponentProps<typeof Canvas>['gl'], (...args: never[]) => unknown>>>[0]) => {
-    try {
-      const renderer = new THREE.WebGLRenderer({ ...defaults, antialias: false, alpha: false, depth: true, stencil: false, powerPreference: 'low-power' });
-      lifecycle.ownRenderer(renderer);
-      return renderer;
-    } catch (error) {
-      lifecycle.fail(error, 'renderer initialization');
-      // Native Canvas 9.7 has no configure rejection handler. A pending promise
-      // also prevents scene creation and leaks its root during cleanup. Complete
-      // only the supported custom-renderer protocol so R3F can unmount normally.
-      // The failed lifecycle disables every frame and onReady; this renderer
-      // never provides a playable fallback and owns no GL/GPU resources.
-      return createTeardownOnlyRenderer();
-    }
-  }, [lifecycle]);
-  const handleCreated = (state: RootState) => {
-    if (!lifecycle.attachRoot(state)) return;
-    try {
-      // Native Canvas has already installed endFrameEXP here. Preserve that
-      // wrapper while handling errors outside React's render/commit boundary.
-      const renderFrame = state.gl.render.bind(state.gl);
-      state.gl.render = (scene, camera) => {
-        if (!lifecycle.active) return;
-        try { renderFrame(scene, camera); }
-        catch (error) { lifecycle.fail(error, 'render'); }
-      };
-      state.gl.outputColorSpace = THREE.SRGBColorSpace;
-      state.gl.toneMapping = THREE.NoToneMapping;
-      state.gl.setClearColor('#354342', 1);
-      syncCamera(controller, state.camera as THREE.PerspectiveCamera);
-      if (lifecycle.markReady()) onReady();
-    } catch (error) { lifecycle.fail(error, 'scene initialization'); }
-  };
-  return <View style={StyleSheet.absoluteFill} pointerEvents="none" testID="first-person-native-canvas">
+      if (!lifecycle.ready) lifecycle.fail(new Error('No valid completed native frame before the active startup deadline'), 'initialization timeout');
+    }, remainingStartup.current);
+    return () => {
+      clearTimeout(timer);
+      remainingStartup.current = Math.max(0, remainingStartup.current - (Date.now() - start));
+    };
+  }, [lifecycle, props.paused, appActive]);
+
+  return <View style={StyleSheet.absoluteFill} pointerEvents="none" testID="first-person-native-canvas"
+    onLayout={(event) => recordCanvasLayout(controller.diagnostics, event.nativeEvent.layout.width, event.nativeEvent.layout.height)}>
     <CanvasFailureBoundary lifecycle={lifecycle}>
-      <Canvas style={styles.canvas} pointerEvents="none" gl={rendererFactory} frameloop={props.paused ? 'never' : 'always'} flat shadows={false} camera={{ fov: VERTICAL_FOV, near: CAMERA_NEAR, far: CAMERA_FAR }} onCreated={handleCreated}>
-        <FrameDriver controller={controller} onSnapshot={props.onSnapshot} lifecycle={lifecycle} />
-        <ChapterScene world={world} runtime={runtime} progress={snapshot.runtime.progress} resources={resources} assist={props.assist} reducedMotion={props.reducedMotion} lowQuality={props.quality === 'low'} lab={controller.lab} onFrameError={(error) => lifecycle.fail(error, 'scene frame')} />
+      <Canvas style={styles.canvas} pointerEvents="none" gl={session.factory}
+        frameloop={props.paused || !appActive ? 'never' : 'always'} flat shadows={false} camera={options} onCreated={session.created}>
+        <FrameDriver onSnapshot={props.onSnapshot} lifecycle={lifecycle} session={session} />
+        {proof ? <ProofScene /> : <ChapterScene world={world} runtime={runtime} progress={snapshot.runtime.progress} resources={resources!}
+          assist={props.assist} reducedMotion={props.reducedMotion} lowQuality={props.quality === 'low'} lab={controller.lab}
+          onFrameError={session.sceneError} />}
       </Canvas>
     </CanvasFailureBoundary>
   </View>;

@@ -3,9 +3,11 @@ import * as THREE from 'three';
 import { CAMERA_FAR, CAMERA_NEAR, getWorld, VERTICAL_FOV } from '../../domain/firstPerson/chapter';
 import { adjustLook, updatePlayer } from '../../domain/firstPerson/geometry';
 import { assistAim, createInitialRuntime, evaluateRuntime, findInteraction, interact, objectiveForRuntime, pauseRuntime, resumeRuntime, setHintStage } from '../../domain/firstPerson/runtime';
+import { interactionCue } from '../../domain/firstPerson/interactionCue';
 import type { CameraMatrices, ChapterRuntime, CheckpointState, HintStage, InteractableDefinition, InteractableId } from '../../domain/firstPerson/types';
 import { getLabWorld } from './labRuntime';
 import { clearTouchInput, consumeLook, createTouchInput, type FirstPersonInput } from './touchInput';
+import { createFirstPersonDiagnostics, type FirstPersonDiagnostics } from './diagnostics';
 
 export type RuntimeController = {
   runtime: ChapterRuntime;
@@ -13,14 +15,16 @@ export type RuntimeController = {
   lab: boolean;
   sensitivity: number;
   simpleStep: number;
+  viewCommandRevision: number;
   matrices: CameraMatrices | undefined;
+  diagnostics: FirstPersonDiagnostics;
   metrics: { frames: number; elapsed: number; drawCalls: number; geometries: number; textures: number };
 };
-export type RuntimeSnapshot = { runtime: ChapterRuntime; target: InteractableDefinition | undefined; objective: string; direction: string; key: string };
+export type RuntimeSnapshot = { runtime: ChapterRuntime; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };
 export function createController(checkpoint?: CheckpointState, lab = false): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, input: createTouchInput(), lab, sensitivity: 1, simpleStep: 0, matrices: undefined, metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, input: createTouchInput(), lab, sensitivity: 1, simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -52,6 +56,7 @@ export function commandController(controller: RuntimeController, action: Control
       const aimed = assistAim(resumeRuntime(controller.runtime));
       controller.runtime = paused ? pauseRuntime(aimed) : aimed;
       controller.matrices = undefined;
+      controller.viewCommandRevision += 1;
       break;
     }
     case 'step': if (!controller.runtime.paused) controller.simpleStep = action.forward; break;
@@ -59,6 +64,7 @@ export function commandController(controller: RuntimeController, action: Control
       if (!controller.runtime.paused) {
         controller.runtime = { ...controller.runtime, pose: adjustLook(controller.runtime.pose, action.yaw, action.pitch) };
         controller.matrices = undefined;
+        controller.viewCommandRevision += 1;
       }
   }
 }
@@ -93,11 +99,15 @@ export function advanceController(controller: RuntimeController, delta: number, 
 }
 export function controllerSnapshot(controller: RuntimeController): RuntimeSnapshot {
   const target = findInteraction(worldForController(controller), controller.runtime.pose, controller.runtime.progress);
+  const cue = interactionCue(worldForController(controller), controller.runtime.pose, controller.matrices);
   const directions = ['北', '北西', '西', '南西', '南', '南東', '東', '北東'];
   const direction = directions[(Math.round(controller.runtime.pose.yaw / (Math.PI / 4)) + 8) % 8]!;
   const objective = controller.lab ? '壁を確かめ、扉へ近づいて調べよう。' : objectiveForRuntime(controller.runtime);
-  const key = `${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${direction}|${controller.runtime.paused}`;
-  return { runtime: controller.runtime, target, objective, direction, key };
+  // Screen publishes explicit view commands before fresh camera matrices exist.
+  // Their next presented cue must publish even when it matches the last frame's
+  // semantic bucket. Continuous movement and idle frames do not advance this.
+  const key = `${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}`;
+  return { runtime: controller.runtime, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
   if (controller.runtime.paused || controller.runtime.progress.cleared) return false;
