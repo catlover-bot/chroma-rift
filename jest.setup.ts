@@ -13,6 +13,7 @@ jest.mock('react-native-reanimated', () => {
 });
 
 jest.mock('react-native-worklets', () => ({
+  ...require('react-native-worklets/src/mock'),
   scheduleOnRN: (callback: (...args: unknown[]) => unknown, ...args: unknown[]) => callback(...args),
 }));
 
@@ -27,6 +28,9 @@ jest.mock('@shopify/react-native-skia', () => {
     Group: Component,
     Line: Component,
     Rect: Component,
+    Path: Component,
+    RoundedRect: Component,
+    Oval: Component,
     vec: (x: number, y: number) => ({ x, y }),
   };
 });

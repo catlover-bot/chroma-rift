@@ -4,6 +4,7 @@ import {
   type CalibrationProfile,
   type CalibrationSession,
 } from '../domain/calibration/types';
+import type { QuickSetupResult } from '../domain/calibration/quickSetup';
 
 export type ScreenName =
   | 'welcome'
@@ -13,12 +14,17 @@ export type ScreenName =
   | 'microMaze'
   | 'stageResult'
   | 'settings'
+  | 'quickSetup'
+  | 'playInstructions'
+  | 'illusionMaze'
+  | 'journeyResult'
   | 'developerLab';
 
 export type EffectStrength = 'low' | 'medium' | 'high';
 
 export type AppSettings = {
   depthAssist: boolean;
+  depthAssistOverridden: boolean;
   reducedMotion: boolean;
   reducedMotionOverridden: boolean;
   effectStrength: EffectStrength;
@@ -44,17 +50,27 @@ export type DeveloperLabParameters = {
 };
 
 export type PersistedApplication = {
-  schemaVersion: 1;
+  schemaVersion: 2;
+  quickSetupResult?: QuickSetupResult;
+  activeSetupSource?: 'quick' | 'detailed';
   calibrationProfile?: CalibrationProfile;
   calibrationSession?: CalibrationSession;
+  calibrationHistory?: CalibrationSession[];
   settings: AppSettings;
   bestMazeScore: number;
   onboardingComplete: boolean;
   developerLab?: DeveloperLabParameters;
 };
 
+export type JourneyStageSummary = {
+  levelId: string;
+  collectibleCount: number;
+  discoveredMechanisms: string[];
+};
+
 export const DEFAULT_SETTINGS: AppSettings = {
   depthAssist: true,
+  depthAssistOverridden: false,
   reducedMotion: false,
   reducedMotionOverridden: false,
   effectStrength: 'medium',

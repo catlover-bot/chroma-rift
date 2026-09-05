@@ -40,6 +40,8 @@ export function CalibrationScreen({
     submitted.current = true;
     onResponse({
       schemaVersion: 1,
+      // Record what was displayed, including when an older session is resumed.
+      stimulusVersion: 2,
       trialId: trial.id,
       patternFamily: trial.patternFamily,
       background: trial.background,
@@ -91,7 +93,7 @@ export function CalibrationScreen({
           </ChoiceRow>
         </>
       )}
-      <ActionButton label="安全に終了してホームへ戻る" onPress={onExit} />
+      <ActionButton label="調整を中断する" onPress={onExit} />
     </Screen>
   );
 }

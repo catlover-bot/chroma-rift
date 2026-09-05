@@ -26,4 +26,14 @@ describe('generateCalibrationTrials', () => {
   it('keeps a different seed balanced', () => {
     expect(new Set(generateCalibrationTrials(999).map(({ id }) => id)).size).toBe(12);
   });
+
+  it('keeps all conditions and avoids consecutive families across many seeds', () => {
+    for (let seed = 0; seed < 100; seed += 1) {
+      const trials = generateCalibrationTrials(seed);
+      expect(trials).toHaveLength(12);
+      expect(new Set(trials.map((trial) => `${trial.patternFamily}-${trial.background}-${trial.colorRoleAssignment}`)).size).toBe(12);
+      expect(trials.every((trial) => trial.stimulusVersion === 2)).toBe(true);
+      expect(trials.slice(1).every((trial, index) => trial.patternFamily !== trials[index]?.patternFamily)).toBe(true);
+    }
+  });
 });

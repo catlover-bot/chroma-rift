@@ -1,5 +1,7 @@
 # EAS iOS development build: authenticated user procedure
 
+> Historical initial-install procedure. The user has completed development-build installation and launch. Goal 002 changes only JavaScript/TypeScript: use `IPHONE_VALIDATION.md` to reload the existing build. Do not repeat authentication, signing, project linking or cloud build for this change. Existing project and bundle identifiers are retained.
+
 This procedure is intentionally not executed by the unauthenticated repository-preparation Goal. It requires an Expo account, an active Apple Developer Program membership, and the physical iPhone. Never commit passwords, authentication tokens, Apple IDs, private keys, provisioning profiles, or real account identifiers.
 
 The repository already contains `expo-dev-client` and an `eas.json` development profile. The bundle identifier `com.hirotakam.chromarift` remains provisional; confirm it before allowing EAS to register an App ID.

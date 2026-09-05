@@ -1,69 +1,60 @@
-# Architecture
+# Architecture — Goal 002
 
-## Screen state flow
-
-アプリは routing package を使わず、`src/app/state.ts` の discriminated union action と reducer で制御します。
+## フローと責務
 
 ```text
-welcome
-  -> calibrationInstructions -> calibration -> calibrationResult -> microMaze -> stageResult
-  -> microMaze (未調整で試す) -> stageResult
-  -> settings -> calibrationInstructions | welcome
-  -> developerLab -> welcome  (__DEV__ のみ)
+welcome → quickSetup（初回のみ・スキップ可）→ playInstructions
+        → illusionMaze 1 → illusionMaze 2 → journeyResult
+settings → quickSetup | calibrationInstructions → calibration → calibrationResult
+settings → developerLab | microMaze → stageResult（開発時のみ）
 ```
 
-再起動時は保存済みプロファイル、調整セッション、設定、ベストスコアを復元し、安全な `welcome` から開始します。迷路中に AppState が非 active になると停止し、明示的な再開を要求します。
+アプリの画面と設定は `src/app/state.ts`、一区間の移動は `src/domain/illusion/state.ts` が管理します。新しいゲームは旧 `targetSequenceForProfile` を参照しません。通常の隣接関係はレベルの無向グラフです。
 
-## Responsibility boundaries
+- `domain/calibration`：3回答の暫定設定と、別系統の詳細12問分類。
+- `domain/illusion`：世界座標、手作りレベル、投影、面の可視性、当たり判定、移動、取得、接続、勝利、全状態の到達可能性。
+- `rendering/IllusionMazeCanvas.tsx`：投影済み面と模様、かけら、出口、オリジナルの白いキャラクター。Skiaの既存プリミティブのみ。
+- `screens/IllusionMazeScreen.tsx`：タップ受付、離散カメラ、一時停止、補助表示、移動先一覧、VoiceOver。
+- `storage/applicationStorage.ts`：実行時検証、v1移行、直列化した保存、書き込み世代付きリセット。
 
-- `src/domain/calibration`: 型、12 試行生成、プロファイル計算。React/Skia に依存しない純粋 TypeScript。
-- `src/domain/maze`: レベル目標、スコア、線分距離と最短レール選択。純粋 TypeScript。
-- `src/storage`: version 1 document の手書き runtime guard、AsyncStorage の失敗隔離。
-- `src/screens` / `src/components`: 意味的な画面状態、回答、設定、アクセシビリティ。
-- `src/rendering`: Skia 形状と Reanimated shared value。
-- `src/platform`: 失敗しても操作を妨げない軽いハプティクス。
-- `src/theme`: 中立 UI 色と実験用 sRGB 刺激定数。
+## 2.5Dとふたつの迷宮
 
-## Skia and Reanimated
+世界Y軸が高さです。2つの固定行列で斜め見下ろし投影を計算し、画面幅と高さに収めます。回転中の不定な姿勢は作らず、停止姿勢をボタンで即時に切り替えます。移動中はカメラ操作を無効化します。
 
-調整刺激は Skia のコード生成リング、交差レール、オフセットドットだけで構成されます。明示的な不透明 sRGB 色、同じ線幅、blur/glow/shadow/gradient/texture/motion なしで、回答まで静止します。幅と高さから毎回論理 point の geometry を計算するため、単一 iPhone 幅には固定されません。
+「浮遊回廊」は16ノード。下の再合流ループ、かけらのある戻れる小部屋、階段、上の見晴らし台、上下に重なる橋、出口があります。「つながらない橋」は13ノードの離れた2島。高い島と低い島でかけらを集めます。
 
-迷路は Skia で全レール、開始、ゴール、オーブ、Depth Assist 記号を描きます。オーブ位置は Reanimated shared value と derived value で進み、React state は分岐到着、選択、完了、一時停止の意味イベントだけで更新します。unmount と pause で animation を cancel します。Reduced Motion では移動を 120ms に短縮し、装飾 motion を使いません。
+橋の特殊エッジはcamera Bのみ有効です。別の3D座標にある橋端の投影が一致することと、エッジの有効条件を同じ固定カメラで検証します。演出は出発床→出発端→同じ画面位置の到着端→到着床。世界の空白上に通常床がある扱いにはしません。
 
-## Gesture and hit testing
+色奥行き観察パネルの赤青は同じ平面に置きます。床の高さ・側面・階段の遮蔽は普通の幾何学です。色プロフィールは模様の配色にのみ使い、移動や勝利条件は変更しません。
 
-Gesture Handler の Tap gesture は canvas 上の point だけを渡します。純粋関数 `findNearestEligibleRail` は現在分岐の赤・青 polyline に対する最短線分距離を計算し、28pt 内で最も近いものを選びます。範囲外は無視し、有効選択後は次の分岐まで input を lock します。full-screen invisible button はありません。各分岐には同じ赤/青選択を行う 44pt 以上の accessible button もあります。
+## 描画順とタップ
 
-## Storage schema
+床の上面、カメラ側に向いた側面、階段の各踏面を生成します。投影面の重なる領域で同じ画面点の深度を比較し、前後の依存順で描画します。自動Zバッファはありません。対象はこの小さな固定2ステージだけで、任意の交差ポリゴンや自由視点エンジンではありません。
 
-Key: `chroma-rift.application.v1`
+タップは描画と同じ投影面を使います。直接当たる最前面の床を優先し、側面や選べない手前の床を透過して選びません。何も描かれていない付近の拡張領域は、可視面のサンプルとの距離、前後、安定したID順で決めます。画面外や非有限座標は拒否します。HUDはキャンバス外です。
 
-Version 1 document:
+床自体が小さい場所や隠れた通路では、44pt以上の「移動先」ボタンから隣接する床名で選べます。VoiceOverの候補も現在有効なエッジから生成します。
 
-```text
-schemaVersion: 1
-calibrationProfile?: calculated profile and metrics
-calibrationSession?: seed, environment, 12 trials, local responses
-settings: Depth Assist, reduced motion/override, effect strength, haptics
-bestMazeScore: number
-onboardingComplete: boolean
-developerLab?: parameters (__DEV__ only)
-```
+通常はヘッダーと下部操作以外を可変キャンバスに充てます。小画面（高さ600pt未満）または文字倍率1.5以上では、キャンバスを230pt以上に保ったスクロール配置に切り替え、操作を見切れさせないことを優先します。浮遊回廊の橋の下は上面に隠れるため、その任意の回り道は「移動先」も使って進めます。
 
-Raw JSON is parsed as `unknown`; nested enums, primitives, trials, responses, profile metrics, settings and developer values are guarded. Malformed JSON, an unsupported version, or storage I/O failure returns safe defaults. No PII, secret, account identifier, or network upload exists.
+## 移動と競合
 
-## Development-build delivery boundary
+移動は400ms、特殊接続は700ms、減動時は100msの最小遷移です。Reanimatedのshared valueで位置と歩行を更新し、フレームごとのReact更新はありません。常時アニメーションループはありません。
 
-The ordinary Expo Go app currently available from the App Store is not a compatible validation runtime for this Expo SDK 57 project. Physical testing therefore uses a project-specific iOS development build containing `expo-dev-client`, Skia, Reanimated/Worklets, Gesture Handler, Haptics, and AsyncStorage.
+入力直後に同期refと純粋reducerで移動を確定し、React描画前の連打も拒否します。完了はsession/tokenが一致する場合のみ受理。中断は最後に着地した床へ戻し、未完了の取得は行いません。復帰には再開操作が必要です。リプレイは世代を進め、画面を離れた古いコールバックを無効化します。アプリのステージ完了にもjourneyRunを使います。
 
-The delivery pieces have separate responsibilities:
+## 色をほどく
 
-- Metro runs in Windows/WSL2 and serves the TypeScript/JavaScript bundle. `npm run start:dev-client` targets the installed development client; the tunnel variant is only a WSL2/restrictive-network fallback.
-- The project-specific development build is a signed native iPhone app installed before validation. It launches from its own icon and provides the development-client launcher that connects to Metro.
-- EAS Build runs remotely and creates that signed development build. The checked-in `eas.json` only describes the build profile; it does not authenticate, register devices, create credentials, or request a build.
-- Ordinary Expo Go is a generic App Store client and is not used for SDK 57 validation here.
-- A final App Store production build is a later distribution artifact, distinct from both Metro and the internal development build.
+色模様のみを、sRGBを線形化 → Y = 0.2126R + 0.7152G + 0.0722B → sRGBへ再符号化してRGB同値に変換します。床、位置、カメラ、影、遮蔽、接続、かけらは同じです。端末上の等輝度や錯視の消失を保証する変換ではありません。明示的な往復操作のみで、クリア後も比較できます。
 
-After the native development build is installed, normal TypeScript/JavaScript changes can usually load from Metro without rebuilding. Native dependencies, config plugins, permissions, entitlements, or other native-configuration changes require a new development build.
+## 調整の版と保存
 
-This slice still has no tracked `ios/` directory or local CocoaPods/signing material. Windows/WSL2 can run Metro and, after user authentication, request the EAS cloud iOS build. A signed build for a physical iPhone requires an Apple Developer Program account, device registration, and Developer Mode on the iPhone. TestFlight/App Store work later requires a confirmed bundle identifier, controlled signing credentials, native privacy review, and physical regression testing.
+簡易結果 `QuickSetupResult` は詳細プロフィールと別型です。3回答だけを受け取り、同じ色2件以上かつ反対色0件の場合だけ暫定色を採用します。それ以外は未確定として補助表示を提案します。強度や信頼度は生成しません。補助表示の明示的な選択を自動で変更しません。
+
+詳細12条件は保ち、同じ図形が連続しないシード付き順序にします。交差線は両方向に対称な空隙を設け、上描きの遮蔽を除きます。新しい刺激・回答に `stimulusVersion: 2` を記録。版がない旧回答はそのまま保持し、新版への回答に書き換えません。詳細分類器・背景別集計は継続します。
+
+v2キーは `chroma-rift.application.v2`、旧キーは `chroma-rift.application.v1`。v2がなければv1を検証してコピーし、書き込み後もv1を削除しません。設定、プロフィール、詳細セッション、旧ベストスコアを保持します。再調整時の既存詳細セッションは `calibrationHistory` に残します。
+
+`activeSetupSource` で直近に完了した簡易／詳細調整を表示に採用します。未指定の旧データでは保存済み詳細を優先します。v1では補助表示が明示選択だったか分からないため、選択済みとして保守的に保持します。
+
+不正JSON、未知の版、整合しない試行／回答は元データを保持し、その起動中の自動保存を止めます。保存失敗は通知してメモリ内の操作を継続します。リセットは確認後に両キーを削除し、待機中の旧保存を世代で無効化。処理中の設定操作を止めます。新しいゲームにランキングはありません。途中の迷路位置は永続化せず、アプリの再起動後はホームから遊び直します。

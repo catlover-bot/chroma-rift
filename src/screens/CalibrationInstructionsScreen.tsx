@@ -19,7 +19,7 @@ export function CalibrationInstructionsScreen({ onStart, onBack }: { onStart: ()
       </Panel>
       <Body muted>刺激は回答するまで静止します。無理に見続ける必要はありません。</Body>
       <ActionButton label="12問を始める" onPress={onStart} variant="primary" />
-      <ActionButton label="ホームへ戻る" onPress={onBack} />
+      <ActionButton label="設定へ戻る" onPress={onBack} />
     </Screen>
   );
 }

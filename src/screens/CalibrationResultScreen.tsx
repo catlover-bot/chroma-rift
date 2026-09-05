@@ -36,7 +36,7 @@ export function CalibrationResultScreen({
         />
         <Stat label="一貫度" value={`${Math.round(profile.confidence * 100)}%`} />
         <Stat label="背景による反転" value={profile.backgroundReversalObserved ? '観察された' : '観察されなかった'} />
-        <Stat label="Depth Assist" value={profile.depthAssistDefault ? '推奨' : '任意'} />
+        <Stat label="補助表示" value={profile.depthAssistDefault ? '推奨' : '任意'} />
       </Panel>
       <ActionButton label="迷路を試す" onPress={onMaze} variant="primary" />
       <ActionButton label="もう一度調整する" onPress={onRecalibrate} />

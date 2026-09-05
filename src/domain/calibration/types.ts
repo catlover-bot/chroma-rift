@@ -14,6 +14,8 @@ export type DepthPreference = 'RED_FRONT' | 'BLUE_FRONT' | 'VARIABLE' | 'SOFT_DE
 export type PreferredForegroundColor = 'red' | 'blue' | 'neutral';
 
 export type CalibrationTrial = {
+  /** Absent on original stimuli; never backfilled onto old answers. */
+  stimulusVersion?: 2;
   id: string;
   patternFamily: PatternFamily;
   background: StimulusBackground;
@@ -24,6 +26,7 @@ export type CalibrationTrial = {
 
 export type CalibrationResponse = {
   schemaVersion: 1;
+  stimulusVersion?: 2;
   trialId: string;
   patternFamily: PatternFamily;
   background: StimulusBackground;
@@ -43,6 +46,7 @@ export type CalibrationEnvironment = {
 
 export type CalibrationSession = {
   schemaVersion: 1;
+  stimulusVersion?: 2;
   seed: number;
   startedAt: string;
   completedAt?: string;

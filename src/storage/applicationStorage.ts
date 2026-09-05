@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { completeQuickSetup, QUICK_SETUP_ANSWERS, type QuickSetupResult } from '../domain/calibration/quickSetup';
+
 import {
   CALIBRATION_ANSWERS,
   COLOR_ROLE_ASSIGNMENTS,
@@ -18,7 +20,8 @@ import {
   type PersistedApplication,
 } from '../types/application';
 
-export const APPLICATION_STORAGE_KEY = 'chroma-rift.application.v1';
+export const LEGACY_APPLICATION_STORAGE_KEY = 'chroma-rift.application.v1';
+export const APPLICATION_STORAGE_KEY = 'chroma-rift.application.v2';
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -32,6 +35,7 @@ function isTrial(value: unknown): value is CalibrationTrial {
   return (
     isRecord(value) &&
     isString(value.id) &&
+    (value.stimulusVersion === undefined || value.stimulusVersion === 2) &&
     oneOf(PATTERN_FAMILIES, value.patternFamily) &&
     oneOf(STIMULUS_BACKGROUNDS, value.background) &&
     oneOf(COLOR_ROLE_ASSIGNMENTS, value.colorRoleAssignment) &&
@@ -44,6 +48,7 @@ function isResponse(value: unknown): value is CalibrationResponse {
   return (
     isRecord(value) &&
     value.schemaVersion === 1 &&
+    (value.stimulusVersion === undefined || value.stimulusVersion === 2) &&
     isString(value.trialId) &&
     oneOf(PATTERN_FAMILIES, value.patternFamily) &&
     oneOf(STIMULUS_BACKGROUNDS, value.background) &&
@@ -71,6 +76,7 @@ function isSession(value: unknown): value is CalibrationSession {
   if (
     !isRecord(value) ||
     value.schemaVersion !== 1 ||
+    (value.stimulusVersion !== undefined && value.stimulusVersion !== 2) ||
     !isFiniteNumber(value.seed) ||
     !isString(value.startedAt) ||
     (value.completedAt !== undefined && !isString(value.completedAt)) ||
@@ -89,7 +95,12 @@ function isSession(value: unknown): value is CalibrationSession {
     trialIds.size === 12 &&
     value.responses.length <= 12 &&
     new Set(responseIds).size === responseIds.length &&
-    responseIds.every((trialId) => trialIds.has(trialId))
+    responseIds.every((trialId) => trialIds.has(trialId)) &&
+    value.responses.every((response) => {
+      const trial = (value.trials as CalibrationTrial[]).find((candidate) => candidate.id === response.trialId);
+      return trial && response.sessionSeed === value.seed && response.patternFamily === trial.patternFamily &&
+        response.background === trial.background && response.colorRoleAssignment === trial.colorRoleAssignment;
+    })
   );
 }
 
@@ -139,10 +150,11 @@ function isProfile(value: unknown): value is CalibrationProfile {
   );
 }
 
-function isSettings(value: unknown): value is AppSettings {
+function isSettings(value: unknown): value is Omit<AppSettings, 'depthAssistOverridden'> & { depthAssistOverridden?: boolean } {
   return (
     isRecord(value) &&
     typeof value.depthAssist === 'boolean' &&
+    (value.depthAssistOverridden === undefined || typeof value.depthAssistOverridden === 'boolean') &&
     typeof value.reducedMotion === 'boolean' &&
     typeof value.reducedMotionOverridden === 'boolean' &&
     oneOf(['low', 'medium', 'high'] as const, value.effectStrength) &&
@@ -173,7 +185,7 @@ function isLabParameters(value: unknown): value is DeveloperLabParameters {
 
 export function createDefaultApplication(systemReducedMotion = false): PersistedApplication {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     settings: { ...DEFAULT_SETTINGS, reducedMotion: systemReducedMotion },
     bestMazeScore: 0,
     onboardingComplete: false,
@@ -181,60 +193,132 @@ export function createDefaultApplication(systemReducedMotion = false): Persisted
   };
 }
 
-export function parsePersistedApplication(
-  raw: string | null,
-  systemReducedMotion = false,
-): PersistedApplication {
-  if (raw === null) return createDefaultApplication(systemReducedMotion);
+function isQuickSetup(value: unknown): value is QuickSetupResult {
+  if (!isRecord(value) || value.schemaVersion !== 1 || value.stimulusVersion !== 2 ||
+    value.kind !== 'quick' || !oneOf(['completed', 'skipped'] as const, value.status) ||
+    !Array.isArray(value.answers) || !value.answers.every((answer) => oneOf(QUICK_SETUP_ANSWERS, answer)) ||
+    !isString(value.completedAt) || typeof value.suggestDepthAssist !== 'boolean') return false;
+  if (value.status === 'skipped') {
+    return value.answers.length === 0 && value.provisionalColor === 'neutral' && value.suggestDepthAssist;
+  }
+  if (value.answers.length !== 3) return false;
+  const expected = completeQuickSetup(value.answers, value.completedAt);
+  return value.provisionalColor === expected.provisionalColor && value.suggestDepthAssist === expected.suggestDepthAssist;
+}
+
+export type ApplicationLoadResult = {
+  application: PersistedApplication;
+  status: 'empty' | 'loaded' | 'migrated' | 'blocked';
+  message?: string;
+};
+
+/** v1 is validated before copying. Old raw responses, profiles and scores remain intact. */
+export function decodePersistedApplication(raw: string | null, systemReducedMotion = false): ApplicationLoadResult {
+  const fallback = createDefaultApplication(systemReducedMotion);
+  if (raw === null) return { application: fallback, status: 'empty' };
   try {
     const value: unknown = JSON.parse(raw);
     if (
       !isRecord(value) ||
-      value.schemaVersion !== 1 ||
+      !oneOf([1, 2] as const, value.schemaVersion) ||
       !isSettings(value.settings) ||
-      !isFiniteNumber(value.bestMazeScore) ||
+      (value.schemaVersion === 2 && typeof value.settings.depthAssistOverridden !== 'boolean') ||
+      !isFiniteNumber(value.bestMazeScore) || value.bestMazeScore < 0 ||
       typeof value.onboardingComplete !== 'boolean' ||
       (value.calibrationProfile !== undefined && !isProfile(value.calibrationProfile)) ||
       (value.calibrationSession !== undefined && !isSession(value.calibrationSession)) ||
-      (value.developerLab !== undefined && !isLabParameters(value.developerLab))
-    ) {
-      return createDefaultApplication(systemReducedMotion);
-    }
-
+      (value.calibrationHistory !== undefined && (!Array.isArray(value.calibrationHistory) || !value.calibrationHistory.every(isSession))) ||
+      (value.developerLab !== undefined && !isLabParameters(value.developerLab)) ||
+      (value.quickSetupResult !== undefined && !isQuickSetup(value.quickSetupResult)) ||
+      (value.activeSetupSource !== undefined && !oneOf(['quick', 'detailed'] as const, value.activeSetupSource)) ||
+      (value.activeSetupSource === 'quick' && value.quickSetupResult === undefined) ||
+      (value.activeSetupSource === 'detailed' && value.calibrationProfile === undefined)
+    ) return { application: fallback, status: 'blocked', message: '保存データを読み込めませんでした。元のデータは保持しています。この起動中の変更は保存されません。' };
     return {
-      schemaVersion: 1,
-      settings: value.settings,
-      bestMazeScore: Math.max(0, value.bestMazeScore),
-      onboardingComplete: value.onboardingComplete,
-      ...(value.calibrationProfile ? { calibrationProfile: value.calibrationProfile } : {}),
-      ...(value.calibrationSession ? { calibrationSession: value.calibrationSession } : {}),
-      ...(__DEV__ && value.developerLab ? { developerLab: value.developerLab } : {}),
+      status: value.schemaVersion === 1 ? 'migrated' : 'loaded',
+      application: {
+        schemaVersion: 2,
+        // v1 cannot tell whether the user explicitly chose assist: preserve it conservatively.
+        settings: { ...value.settings, depthAssistOverridden: value.settings.depthAssistOverridden ?? true },
+        bestMazeScore: value.bestMazeScore,
+        onboardingComplete: value.onboardingComplete,
+        ...(value.calibrationProfile ? { calibrationProfile: value.calibrationProfile } : {}),
+        ...(value.calibrationSession ? { calibrationSession: value.calibrationSession } : {}),
+        ...(value.calibrationHistory ? { calibrationHistory: value.calibrationHistory as CalibrationSession[] } : {}),
+        ...(value.developerLab ? { developerLab: value.developerLab } : {}),
+        ...(value.quickSetupResult ? { quickSetupResult: value.quickSetupResult } : {}),
+        ...(value.activeSetupSource ? { activeSetupSource: value.activeSetupSource } :
+          value.calibrationProfile ? { activeSetupSource: 'detailed' as const } :
+            value.quickSetupResult ? { activeSetupSource: 'quick' as const } : {}),
+      },
     };
   } catch {
-    return createDefaultApplication(systemReducedMotion);
+    return { application: fallback, status: 'blocked', message: '保存データを読み込めませんでした。元のデータは保持しています。この起動中の変更は保存されません。' };
   }
 }
 
-export async function loadApplication(systemReducedMotion = false): Promise<PersistedApplication> {
+export function parsePersistedApplication(
+  raw: string | null,
+  systemReducedMotion = false,
+): PersistedApplication {
+  return decodePersistedApplication(raw, systemReducedMotion).application;
+}
+
+let persistenceAllowed = true;
+let writeEpoch = 0;
+let mutations: Promise<unknown> = Promise.resolve();
+
+function serializeMutation<T>(operation: () => Promise<T>): Promise<T> {
+  const result = mutations.then(operation, operation);
+  mutations = result.catch(() => undefined);
+  return result;
+}
+
+export async function loadApplication(systemReducedMotion = false): Promise<ApplicationLoadResult> {
   try {
-    return parsePersistedApplication(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY), systemReducedMotion);
+    await mutations;
+    const current = await AsyncStorage.getItem(APPLICATION_STORAGE_KEY);
+    const legacy = current === null ? await AsyncStorage.getItem(LEGACY_APPLICATION_STORAGE_KEY) : null;
+    const result = decodePersistedApplication(current ?? legacy, systemReducedMotion);
+    persistenceAllowed = result.status !== 'blocked';
+    if (result.status === 'migrated') {
+      const saved = await saveApplication(result.application);
+      if (!saved) {
+        persistenceAllowed = false;
+        return { ...result, status: 'blocked', message: '設定の移行を保存できませんでした。以前のデータは保持しています。' };
+      }
+    }
+    return result;
   } catch {
-    return createDefaultApplication(systemReducedMotion);
+    persistenceAllowed = false;
+    return { application: createDefaultApplication(systemReducedMotion), status: 'blocked', message: '保存領域を読み込めませんでした。この起動中の変更は保存されません。' };
   }
 }
 
-export async function saveApplication(value: PersistedApplication): Promise<void> {
-  try {
-    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, JSON.stringify(value));
-  } catch {
-    // Local persistence is best-effort; the in-memory session remains usable.
-  }
+export function saveApplication(value: PersistedApplication): Promise<boolean> {
+  const epoch = writeEpoch;
+  const raw = JSON.stringify(value);
+  return serializeMutation(async () => {
+    if (!persistenceAllowed || epoch !== writeEpoch || decodePersistedApplication(raw).status !== 'loaded') return false;
+    try {
+      await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, raw);
+      return true;
+    } catch {
+      return false;
+    }
+  });
 }
 
-export async function resetApplicationStorage(): Promise<void> {
-  try {
-    await AsyncStorage.removeItem(APPLICATION_STORAGE_KEY);
-  } catch {
-    // A reset still succeeds in memory if storage is unavailable.
-  }
+export function resetApplicationStorage(): Promise<boolean> {
+  writeEpoch += 1;
+  persistenceAllowed = false;
+  return serializeMutation(async () => {
+    try {
+      await AsyncStorage.multiRemove([APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY]);
+      persistenceAllowed = true;
+      return true;
+    } catch {
+      return false;
+    }
+  });
 }

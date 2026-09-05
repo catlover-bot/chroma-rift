@@ -1,5 +1,6 @@
 import { calculateCalibrationProfile } from '../domain/calibration/scoring';
 import { generateCalibrationTrials } from '../domain/calibration/trials';
+import { completeQuickSetup, skipQuickSetup, QUICK_SETUP_ANSWERS, type QuickSetupAnswer, type QuickSetupSession } from '../domain/calibration/quickSetup';
 import {
   DEFAULT_CALIBRATION_ENVIRONMENT,
   type CalibrationEnvironment,
@@ -11,6 +12,7 @@ import type {
   AppSettings,
   DeveloperLabParameters,
   PersistedApplication,
+  JourneyStageSummary,
   ScreenName,
 } from '../types/application';
 
@@ -18,11 +20,22 @@ export type AppState = PersistedApplication & {
   screen: ScreenName;
   hydrated: boolean;
   latestMazeScore?: MazeScore;
+  quickSetupSession?: QuickSetupSession | undefined;
+  quickSessionRevision: number;
+  stageIndex: 0 | 1;
+  journeySummaries: JourneyStageSummary[];
+  journeyRun: number;
 };
 
 export type AppAction =
   | { type: 'HYDRATE'; persisted: PersistedApplication; systemReducedMotion: boolean }
   | { type: 'NAVIGATE'; screen: ScreenName }
+  | { type: 'PLAY'; sessionId?: string }
+  | { type: 'START_QUICK_SETUP'; sessionId: string }
+  | { type: 'SKIP_QUICK_SETUP'; completedAt?: string }
+  | { type: 'ADD_QUICK_RESPONSE'; sessionId: string; index: number; answer: QuickSetupAnswer; respondedAt: string }
+  | { type: 'BEGIN_JOURNEY' }
+  | { type: 'COMPLETE_STAGE'; summary: JourneyStageSummary; journeyRun: number }
   | { type: 'START_CALIBRATION'; seed: number; startedAt: string }
   | { type: 'ADD_CALIBRATION_RESPONSE'; response: CalibrationResponse }
   | { type: 'UPDATE_SETTINGS'; settings: AppSettings }
@@ -35,6 +48,10 @@ export const initialAppState: AppState = {
   ...createDefaultApplication(false),
   screen: 'welcome',
   hydrated: false,
+  quickSessionRevision: 0,
+  stageIndex: 0,
+  journeySummaries: [],
+  journeyRun: 0,
 };
 
 export function appReducer(state: AppState, action: AppAction): AppState {
@@ -48,12 +65,61 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'NAVIGATE':
       if (action.screen === 'developerLab' && !__DEV__) return state;
       return { ...state, screen: action.screen };
+    case 'PLAY':
+      if (state.quickSetupResult || state.calibrationProfile) return { ...state, screen: 'playInstructions' };
+      return {
+        ...state, screen: 'quickSetup', quickSessionRevision: state.quickSessionRevision + 1,
+        quickSetupSession: { id: action.sessionId ?? `quick-${state.quickSessionRevision + 1}`, responses: [] },
+      };
+    case 'START_QUICK_SETUP':
+      return {
+        ...state, screen: 'quickSetup', quickSessionRevision: state.quickSessionRevision + 1,
+        quickSetupSession: { id: action.sessionId, responses: [] },
+      };
+    case 'SKIP_QUICK_SETUP':
+      return {
+        ...state, screen: 'playInstructions', onboardingComplete: true, quickSetupSession: undefined,
+        quickSetupResult: state.quickSetupResult ?? skipQuickSetup(action.completedAt ?? ''),
+        activeSetupSource: state.activeSetupSource ?? (state.calibrationProfile ? 'detailed' : 'quick'),
+        settings: state.settings.depthAssistOverridden || state.quickSetupResult || state.calibrationProfile
+          ? state.settings : { ...state.settings, depthAssist: true },
+      };
+    case 'ADD_QUICK_RESPONSE': {
+      const session = state.quickSetupSession;
+      if (state.screen !== 'quickSetup' || !session || session.id !== action.sessionId ||
+        session.responses.length !== action.index || action.index >= 3 || !QUICK_SETUP_ANSWERS.includes(action.answer)) return state;
+      const responses = [...session.responses, action.answer];
+      if (responses.length < 3) return { ...state, quickSetupSession: { ...session, responses } };
+      const result = completeQuickSetup(responses, action.respondedAt);
+      return {
+        ...state, screen: 'playInstructions', onboardingComplete: true, quickSetupSession: undefined,
+        quickSetupResult: result,
+        activeSetupSource: 'quick',
+        settings: state.settings.depthAssistOverridden ? state.settings : { ...state.settings, depthAssist: result.suggestDepthAssist },
+      };
+    }
+    case 'BEGIN_JOURNEY':
+      return { ...state, screen: 'illusionMaze', stageIndex: 0, journeySummaries: [], journeyRun: state.journeyRun + 1 };
+    case 'COMPLETE_STAGE': {
+      const expectedLevel = state.stageIndex === 0 ? 'floating-corridor' : 'impossible-bridge';
+      if (state.screen !== 'illusionMaze' || action.journeyRun !== state.journeyRun ||
+        action.summary.levelId !== expectedLevel || action.summary.collectibleCount !== 2 ||
+        state.journeySummaries.some((item) => item.levelId === action.summary.levelId)) return state;
+      const journeySummaries = [...state.journeySummaries, action.summary];
+      return state.stageIndex === 0
+        ? { ...state, journeySummaries, stageIndex: 1 }
+        : { ...state, journeySummaries, screen: 'journeyResult' };
+    }
     case 'START_CALIBRATION':
       return {
         ...state,
         screen: 'calibration',
+        ...(state.calibrationSession && state.calibrationSession.responses.length > 0 ? {
+          calibrationHistory: [...(state.calibrationHistory ?? []), state.calibrationSession],
+        } : {}),
         calibrationSession: {
           schemaVersion: 1,
+          stimulusVersion: 2,
           seed: action.seed,
           startedAt: action.startedAt,
           environment:
@@ -66,7 +132,12 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
     case 'ADD_CALIBRATION_RESPONSE': {
       const session = state.calibrationSession;
-      if (!session || session.responses.some((response) => response.trialId === action.response.trialId)) {
+      const currentTrial = session?.trials[session.responses.length];
+      if (state.screen !== 'calibration' || !session || !currentTrial ||
+        currentTrial.id !== action.response.trialId || session.seed !== action.response.sessionSeed ||
+        currentTrial.patternFamily !== action.response.patternFamily || currentTrial.background !== action.response.background ||
+        currentTrial.colorRoleAssignment !== action.response.colorRoleAssignment ||
+        session.responses.some((response) => response.trialId === action.response.trialId)) {
         return state;
       }
       const responses = [...session.responses, action.response];
@@ -77,12 +148,19 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         screen: 'calibrationResult',
         calibrationSession: { ...session, responses, completedAt: action.response.respondedAt },
         calibrationProfile,
+        activeSetupSource: 'detailed',
         onboardingComplete: true,
-        settings: { ...state.settings, depthAssist: calibrationProfile.depthAssistDefault },
+        settings: state.settings.depthAssistOverridden ? state.settings : { ...state.settings, depthAssist: calibrationProfile.depthAssistDefault },
       };
     }
     case 'UPDATE_SETTINGS':
-      return { ...state, settings: action.settings };
+      return {
+        ...state,
+        settings: {
+          ...action.settings,
+          depthAssistOverridden: action.settings.depthAssistOverridden || state.settings.depthAssistOverridden || action.settings.depthAssist !== state.settings.depthAssist,
+        },
+      };
     case 'FINISH_MAZE':
       return {
         ...state,
@@ -97,18 +175,21 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         ? { ...state, calibrationSession: { ...state.calibrationSession, environment: action.environment } }
         : state;
     case 'RESET':
-      return { ...action.defaults, screen: 'welcome', hydrated: true };
+      return { ...action.defaults, screen: 'welcome', hydrated: true, quickSessionRevision: state.quickSessionRevision + 1, stageIndex: 0, journeySummaries: [], journeyRun: state.journeyRun + 1 };
   }
 }
 
 export function persistedFromState(state: AppState): PersistedApplication {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     settings: state.settings,
     bestMazeScore: state.bestMazeScore,
     onboardingComplete: state.onboardingComplete,
+    ...(state.quickSetupResult ? { quickSetupResult: state.quickSetupResult } : {}),
+    ...(state.activeSetupSource ? { activeSetupSource: state.activeSetupSource } : {}),
     ...(state.calibrationProfile ? { calibrationProfile: state.calibrationProfile } : {}),
     ...(state.calibrationSession ? { calibrationSession: state.calibrationSession } : {}),
-    ...(__DEV__ && state.developerLab ? { developerLab: state.developerLab } : {}),
+    ...(state.calibrationHistory ? { calibrationHistory: state.calibrationHistory } : {}),
+    ...(state.developerLab ? { developerLab: state.developerLab } : {}),
   };
 }

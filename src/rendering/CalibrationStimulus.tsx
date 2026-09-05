@@ -3,6 +3,7 @@ import { memo, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import type { CalibrationTrial } from '../domain/calibration/types';
+import { segmentsWithSymmetricGaps } from '../domain/calibration/stimulusGeometry';
 import { CALIBRATION_STIMULUS, STIMULUS_COLORS, type StimulusParameters } from '../theme/stimulus';
 
 type Props = {
@@ -85,24 +86,30 @@ function CalibrationStimulusComponent({
 
           {trial.patternFamily === 'crossingRails' ? (
             <>
-              {[-1.5, -0.5, 0.5, 1.5].map((offset) => (
+              {[-1.5, -0.5, 0.5, 1.5].flatMap((offset) =>
+                segmentsWithSymmetricGaps(width * 0.12, width * 0.88,
+                  [-1.5, -0.5, 0.5, 1.5].map((crossing) => geometry.center.x + crossing * parameters.spacing),
+                  parameters.strokeWidth / 2 + 3).map(([start, end]) => (
                 <Line
-                  key={`horizontal-${offset}`}
-                  p1={vec(width * 0.12, geometry.center.y + offset * parameters.spacing)}
-                  p2={vec(width * 0.88, geometry.center.y + offset * parameters.spacing)}
+                  key={`horizontal-${offset}-${start}`}
+                  p1={vec(start, geometry.center.y + offset * parameters.spacing)}
+                  p2={vec(end, geometry.center.y + offset * parameters.spacing)}
                   color={geometry.primary}
                   strokeWidth={parameters.strokeWidth}
                 />
-              ))}
-              {[-1.5, -0.5, 0.5, 1.5].map((offset) => (
+              )))}
+              {[-1.5, -0.5, 0.5, 1.5].flatMap((offset) =>
+                segmentsWithSymmetricGaps(height * 0.12, height * 0.88,
+                  [-1.5, -0.5, 0.5, 1.5].map((crossing) => geometry.center.y + crossing * parameters.spacing),
+                  parameters.strokeWidth / 2 + 3).map(([start, end]) => (
                 <Line
-                  key={`vertical-${offset}`}
-                  p1={vec(geometry.center.x + offset * parameters.spacing, height * 0.12)}
-                  p2={vec(geometry.center.x + offset * parameters.spacing, height * 0.88)}
+                  key={`vertical-${offset}-${start}`}
+                  p1={vec(geometry.center.x + offset * parameters.spacing, start)}
+                  p2={vec(geometry.center.x + offset * parameters.spacing, end)}
                   color={geometry.secondary}
                   strokeWidth={parameters.strokeWidth}
                 />
-              ))}
+              )))}
             </>
           ) : null}
 

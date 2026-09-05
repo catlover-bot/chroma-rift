@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-import { ActionButton, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
+import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
 import type { AppSettings, EffectStrength } from '../types/application';
 
 export function SettingsScreen({
@@ -9,12 +9,18 @@ export function SettingsScreen({
   onRecalibrate,
   onReset,
   onBack,
+  onQuickSetup,
+  onDeveloperLab,
+  onLegacyMaze,
 }: {
   settings: AppSettings;
   onChange: (settings: AppSettings) => void;
   onRecalibrate: () => void;
   onReset: () => void;
   onBack: () => void;
+  onQuickSetup: () => void;
+  onDeveloperLab?: () => void;
+  onLegacyMaze?: () => void;
 }) {
   const set = <Key extends keyof AppSettings>(key: Key, value: AppSettings[Key]) =>
     onChange({ ...settings, [key]: value });
@@ -24,14 +30,14 @@ export function SettingsScreen({
       <Heading>設定</Heading>
       <Panel>
         <SettingSwitch
-          label="Depth Assist"
-          description="正解ルートに中立色の記号と太さの手がかりを加えます。得点は変わりません。"
+          label="補助表示"
+          description="隣の床の輪郭と接続マークで、移動先を見つけやすくします。"
           value={settings.depthAssist}
-          onValueChange={(value) => set('depthAssist', value)}
+          onValueChange={(value) => onChange({ ...settings, depthAssist: value, depthAssistOverridden: true })}
         />
         <SettingSwitch
           label="動きを減らす"
-          description="オーブ移動と装飾的な動きを最小限にします。"
+          description="キャラクターの移動を短くし、歩行の揺れを止めます。"
           value={settings.reducedMotion}
           onValueChange={(value) =>
             onChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })
@@ -39,12 +45,12 @@ export function SettingsScreen({
         />
         <SettingSwitch
           label="ハプティクス"
-          description="有効なルート選択時に軽い触覚フィードバックを使います。"
+          description="橋がつながったときなどに、軽い触覚で知らせます。"
           value={settings.haptics}
           onValueChange={(value) => set('haptics', value)}
         />
       </Panel>
-      <SectionTitle>エフェクトの強さ</SectionTitle>
+      <SectionTitle>色模様の強さ</SectionTitle>
       <ChoiceRow>
         {(['low', 'medium', 'high'] as const).map((strength) => (
           <ActionButton
@@ -54,11 +60,13 @@ export function SettingsScreen({
           />
         ))}
       </ChoiceRow>
-      <ActionButton label="キャリブレーションをやり直す" onPress={onRecalibrate} />
+      <ActionButton label="簡単に調整する（3問）" onPress={onQuickSetup} />
+      <ActionButton label="詳しく調整する" onPress={onRecalibrate} />
+      <Body muted>調整は表示のための目安です。見え方を診断するものではありません。</Body>
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '調整結果、設定、ベストスコアを端末から削除します。', [
+          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコアを端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])
@@ -66,6 +74,8 @@ export function SettingsScreen({
         variant="danger"
       />
       <ActionButton label="ホームへ戻る" onPress={onBack} />
+      {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
+      {onLegacyMaze ? <ActionButton label="旧レール検証（開発用）" onPress={onLegacyMaze} /> : null}
     </Screen>
   );
 }

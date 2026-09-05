@@ -1,5 +1,7 @@
 # ADR-001: Expo and React Native Skia
 
+Goal 002 amendment: retain this installed stack and development build, replacing normal rail gameplay with two small authored 2.5D stages. Pure TypeScript projects 3D coordinates and orders visible faces; Skia draws the resulting geometry without an automatic Z buffer. Two discrete camera poses suffice. No new engine, native module, permission, or build configuration is introduced. The original rail experiment remains only in development settings; current behavior is documented in `ARCHITECTURE.md`.
+
 - Status: accepted; delivery path amended by Goal 001.1
 - Scope: Goal 001 physical-iPhone chromostereopsis validation
 

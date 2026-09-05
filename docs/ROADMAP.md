@@ -1,14 +1,12 @@
-# Roadmap
+# 今後の範囲
 
-Only item 1 is implemented in Goal 001.
+Goal 002は短い導入、2つの手作り迷宮、色比較、既存設定の保持に限定します。追加実装を増やす前に、同じDevelopment Buildで両面の操作と表示を確認します。
 
-1. Install the project-specific SDK 57 development build and validate chromostereopsis on a physical iPhone.
-2. Adjust palettes and pattern geometry.
-3. Replace provisional heuristics with evidence from manual tests.
-4. Implement a polished five-junction maze.
-5. Add background-transition and depth-reversal mechanics.
-6. Add multiple handcrafted stages.
-7. Add native result sharing.
-8. Create and distribute an EAS development build (configuration prepared; authenticated build pending).
-9. Test through TestFlight.
-10. Prepare App Store assets and review notes.
+将来検討できる仕掛け：
+
+- 穴と盛り上がりの見かけ。
+- 背景による色奥行きの変化。全員が反転すると決めつけない。
+- 影と本体の位置のずれ。
+- 鏡や無限階段。
+
+これらは未実装です。自由視点3D、汎用エディタ、共有／動画書き出し、バックエンド、広告・課金・ランキング、ストア申請は今回の範囲に含めません。

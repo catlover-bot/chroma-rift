@@ -1,81 +1,63 @@
 # CHROMA RIFT
 
-CHROMA RIFT（色彩立体錯視ゲーム）は、赤と青で生じることがある奥行き感を、短い迷路操作に使えるか検証する iPhone 向け実験プロトタイプです。このリポジトリは完成版ゲームではなく、12 問の調整、型付き知覚プロファイル、3 分岐マイクロ迷路、開発者刺激ラボを含む最初の垂直スライスです。
+宙に浮く回廊を歩き、光のかけらを集める iPhone 向けの小さな錯覚迷路です。既存の Expo アプリを継続して、3問の導入と2つの手作りステージを実装しています。
 
-## 技術スタック
+## 遊び方
 
-- Expo SDK 57 / React Native 0.86 / React 19
-- TypeScript（strict）
-- React Native Skia（刺激、レール、オーブの描画）
-- React Native Reanimated 4 + Worklets（フレーム単位のオーブ移動）
-- Expo development client（SDK 57 用のプロジェクト固有実機ランタイム）
-- Gesture Handler、Safe Area Context、Expo Haptics、AsyncStorage
-- Jest / jest-expo / React Native Testing Library
+ホームの「遊ぶ」→ 初回のみ3問の簡易調整 → 操作説明 →「浮遊回廊」→「つながらない橋」→ 結果。
 
-Skia は、ブラウザーや WebView を経由せず、同じコード生成形状を iPhone のネイティブ描画面に表示できるため選びました。色刺激とゲーム表示のパラメータを明確に分離でき、毎フレーム React state を更新せずに Reanimated の shared value を直接描画へ渡せます。
+- 簡易調整は赤・青・同じ／分かりにくいの1回答を3回。強さの回答はありません。スキップでき、保存済み設定があれば次回は省略します。
+- 隣の床をタップして一区間ずつ移動します。「移動先」から床名でも選べます。分岐で止まり、来た道にも戻れます。
+- かけら2つで出口が開きます。2面目はボタンで視点を変え、橋の端を合わせます。
+- 「色をほどく」で色模様だけをグレーにできます。クリア後も同じ構図で比較できます。
+- 一時停止から設定、説明、やり直し、ホームへ戻れます。制限時間・反応速度採点・補助表示の減点はありません。
 
-## セットアップ
+初回の調整操作は従来の最大24タップから3タップへ。ホームから操作可能な1面目までは5タップ、スキップ／設定済みは2タップです。30秒以内の導入、1面目1〜2分は設計目標で、実機での実測値ではありません。
 
-Node.js 24 LTS と npm を使用します。
+## 技術と開発
+
+Expo SDK 57、React Native 0.86、React 19、TypeScript、Skia 2.6.2、Reanimated 4.5.1、Gesture Handler、AsyncStorage、Jestを継続しています。新規依存やネイティブ変更はありません。
+
+3D世界座標から固定カメラで投影した面をSkiaに描く **2.5D** です。Skiaを3Dエンジンや自動Zバッファとして使っていません。床の高さは幾何学的な投影、赤青の見え方は表示上の色効果、橋の接続は決められた視点で成立するゲームルールです。
+
+WSLのリポジトリ内でNode.js 24とnpmを使います。nvmは必須ではありません。依存が既にある環境では再インストールせず、そのまま検証できます。
 
 ```sh
-nvm use
-npm ci
+node --version
+npm --version
 npm run check
+npm run doctor
+npx expo install --check
+git diff --check
 ```
 
-Windows/WSL2 ではリポジトリを WSL の Linux ファイルシステム内に置き、WSL シェルからコマンドを実行してください。WSL2 から Metro を起動でき、認証後は EAS のクラウド iOS build も要求できます。macOS やローカル Xcode は通常の検査やクラウド build の要求には不要です。
+`npm run check` は lint → typecheck → Jest → iOS JS export を順に実行します。クリーンな新規チェックアウトで依存がない場合は `npm ci` を先に実行します。
 
-## 開発ランタイムの区別
+## 既存のiPhone Development Buildで確認
 
-| 要素 | 役割 |
-|---|---|
-| Metro | TypeScript/JavaScript bundle を開発端末へ配信するローカルサーバー。iPhone アプリそのものではありません。 |
-| 通常の Expo Go | App Store で配布される汎用クライアント。現在の通常版はこの SDK 57 プロジェクトの検証ランタイムではありません。 |
-| プロジェクト固有の development build | `expo-dev-client` と本プロジェクトのネイティブ依存を含む、署名済み iPhone アプリです。実機検証ではこれを先にインストールします。 |
-| EAS Build | Expo のクラウド上で署名済み development build を作成するサービスです。Metro とは別です。 |
-| App Store production build | 審査・配布用の最終成果物です。この Goal では作成も提出も行いません。 |
-
-development build を一度インストールした後は、通常の TypeScript/JavaScript 変更を Metro から読み込めるため、毎回 native build を作り直す必要はありません。`expo-dev-client` を含むネイティブ依存や native configuration を変更した場合は、新しい development build が必要です。
-
-実機用 Metro は次で起動します。LAN 経由で iPhone から WSL2 の Metro に接続できない場合だけ tunnel を使用します。
+Development Buildのインストールと起動はユーザー確認済みです。今回の変更のためにEAS Buildや署名設定をやり直す必要はありません。
 
 ```sh
+cd /home/mhirotaka/workspace/chroma-rift
 npm run start:dev-client
-npm run start:dev-client:tunnel
 ```
 
-## npm scripts
+iPhoneでインストール済みCHROMA RIFTを開き、Metroへ接続してReloadします。既存の接続方法でLAN接続できない場合は `npm run start:dev-client:tunnel` を使えます。詳細は[実機チェックリスト](docs/IPHONE_VALIDATION.md)を参照してください。
 
-- `npm start`: Expo 開発サーバー
-- `npm run start:dev-client`: development client を対象に Metro を起動
-- `npm run start:dev-client:tunnel`: development client 用 Metro を tunnel 経由で起動
-- `npm run android`: Android で開く
-- `npm run ios`: iOS で開く（macOS が必要になる場合があります）
-- `npm run lint`: ESLint
-- `npm run typecheck`: TypeScript 検査
-- `npm run test`: Jest を一度実行
-- `npm run test:watch`: Jest の watch モード
-- `npm run doctor`: Expo Doctor（`check` とは別）
-- `npm run export:ios`: iOS 用 production JavaScript export
-- `npm run check`: WSL2 で lint、型、テスト、iOS export を順番に検証
+## 設定とデータ
 
-## 実機 iPhone（project-specific development build）
+簡易調整は製品上の暫定設定です。診断、色奥行きの強度測定、背景反転の検出には使いません。見え方が違っても不正解にはなりません。
 
-通常の App Store 版 Expo Go をこの SDK 57 プロジェクトの検証に使用しないでください。最初に [EAS iOS development build 手順](docs/EAS_IOS_DEVELOPMENT_BUILD.md)をユーザー自身が実行し、プロジェクト固有 build を登録済み iPhone にインストールします。この操作には Expo アカウント、Apple Developer Program アカウント、端末登録、iPhone の Developer Mode が必要です。
+詳細12問は「設定 → 詳しく調整する」に残しています。条件の均衡、シードによる再現性、既存の分類器を維持しています。開発者ラボと旧3分岐レールは開発ビルドの設定画面からのみ開きます。
 
-インストール後に `npm run start:dev-client` を起動し、独自アイコンから development client を開いて Metro に接続します。表示された QR コードを使う場合も、通常の Expo Go ではなく、インストール済み development client で開きます。その後、[実機検証手順](docs/IPHONE_VALIDATION.md)を最初から最後まで実施します。
+保存形式はv2。v1を検証して移行し、旧キーを残します。既存設定、詳細の生回答、プロフィール、旧スコアを保持します。旧スコアと新しいクリア結果は比較しません。不正JSONや未知の版は削除・上書きせず、その起動中の保存を停止して表示します。
 
-このリポジトリには EAS 用の最小 development profile だけを用意しています。Expo/Apple へのログイン、端末登録、署名 credential の生成、cloud build の要求はまだ行っていません。
+## 確認の限界
 
-## 安全性、プライバシー、既知の制約
+色の見え方は人や画面条件で変わります。違和感があれば一時停止してください。高速点滅、強いブルーム、常時粒子、全面の密な模様、強制的な凝視を使っていません。
 
-見え方は利用者、表示装置、明るさ、True Tone、Night Shift などで変わります。この実験は医療検査ではありません。眼精疲労、違和感、頭痛が出た場合は直ちに中止してください。高速点滅、全画面輝度パルス、音声は使用していません。
+バックエンド、広告、課金、共有API、新しい端末権限は追加していません。データは端末内のみです。
 
-通常動作にバックエンド、アカウント、分析、広告、ネットワークアップロードはありません。カメラ、マイク、位置情報、追跡、連絡先、写真、通知の権限も要求しません。データは端末内の AsyncStorage のみに保存され、設定画面から削除できます。
+自動テスト・JS export・ブラウザーでの静止投影確認は、iPhoneの実描画、VoiceOver、触覚、錯視の強さ、安全性、60fpsを実証しません。今回の実機確認は未実施です。
 
-物理的な色奥行き効果、触覚、セーフエリアは project-specific development build をインストールした実機で確認する必要があり、現在は未検証です。自動テストや export は錯視の成立を証明しません。iOS bundle identifier `com.hirotakam.chromarift` は暫定値であり、App Store 登録前に確認が必要です。Expo SDK 57 の iOS 最低要件は 16.4 です。
-
-`npm audit --omit=dev` は Expo の build/config CLI 経路（`xcode` → `uuid` を含む）に 10 件の moderate advisory を報告します。high/critical はなく、提示される自動修正は Expo 46 への非互換 downgrade のため適用していません。アプリは該当 CLI 経路や `uuid` API を通常実行時に使用しません。また、直接依存はすべて stable ですが、必須の Worklets → Babel が npm 上で唯一かつ `latest` の `gensync@1.0.0-beta.2` を推移的に含みます。これは本プロジェクトが選択した pre-release API ではなく、SDK 57 の必須 toolchain に由来する既知の例外です。
-
-詳細は [development build 手順](docs/EAS_IOS_DEVELOPMENT_BUILD.md)、[アーキテクチャ](docs/ARCHITECTURE.md)、[技術判断](docs/ADR-001-EXPO-SKIA.md)、[実機検証](docs/IPHONE_VALIDATION.md)、[実験ログ](docs/EXPERIMENT_LOG_TEMPLATE.md)、[ロードマップ](docs/ROADMAP.md)を参照してください。
+[設計と保存](docs/ARCHITECTURE.md) · [Goal 002検証記録](docs/GOAL-002.md) · [実機チェックリスト](docs/IPHONE_VALIDATION.md) · [今後の範囲](docs/ROADMAP.md)
