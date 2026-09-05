@@ -1,24 +1,20 @@
 /* eslint-disable react/no-unknown-property -- These are R3F Three.js intrinsics, not DOM elements. */
 import { useFrame } from '@react-three/fiber/native';
 import { useMemo, useRef, type RefObject } from 'react';
-import * as THREE from 'three';
+import type * as THREE from 'three';
 
 import { CEILING_BASE_Y, CEILING_THICKNESS, FLOOR_MARK, FLOOR_THICKNESS, OBSERVATION_POSE } from '../../domain/firstPerson/chapter';
 import type { ChapterRuntime, PuzzleState, Vec3, WorldGeometry } from '../../domain/firstPerson/types';
 import type { SceneResources } from './resources';
+import { computeSegmentTransform } from './segmentTransform';
 
 function Segment({ from, to, width, resources, faint = false }: { from: Vec3; to: Vec3; width: number; resources: SceneResources; faint?: boolean }) {
-  const transform = useMemo(() => {
-    const start = new THREE.Vector3(from.x, from.y, from.z);
-    const end = new THREE.Vector3(to.x, to.y, to.z);
-    const direction = end.clone().sub(start);
-    return { center: start.add(end).multiplyScalar(0.5), quaternion: new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize()), length: direction.length() };
-  }, [from, to]);
-  return <mesh geometry={resources.cylinder} material={faint ? resources.quiet : resources.key} position={transform.center} quaternion={transform.quaternion} scale={[width, transform.length, width]} />;
+  const transform = useMemo(() => computeSegmentTransform(from, to, width), [from, to, width]);
+  return <mesh geometry={resources.cylinder} material={faint ? resources.quiet : resources.key} position={transform.position} quaternion={transform.quaternion} scale={transform.scale} />;
 }
 
-export function ChapterScene({ world, runtime, progress, resources, assist, reducedMotion, lowQuality, lab }: {
-  world: WorldGeometry; runtime: RefObject<ChapterRuntime>; progress: PuzzleState; resources: SceneResources; assist: boolean; reducedMotion: boolean; lowQuality: boolean; lab: boolean;
+export function ChapterScene({ world, runtime, progress, resources, assist, reducedMotion, lowQuality, lab, onFrameError }: {
+  world: WorldGeometry; runtime: RefObject<ChapterRuntime>; progress: PuzzleState; resources: SceneResources; assist: boolean; reducedMotion: boolean; lowQuality: boolean; lab: boolean; onFrameError?: (error: unknown) => void;
 }) {
   const doorA = useRef<THREE.Mesh>(null);
   const doorB = useRef<THREE.Mesh>(null);
@@ -26,14 +22,19 @@ export function ChapterScene({ world, runtime, progress, resources, assist, redu
   const guideMarker = useRef<THREE.Mesh>(null);
   const markerProgress = useRef(0);
   useFrame((_, delta) => {
-    if (runtime.current.paused) return;
-    if (doorA.current) doorA.current.position.y = 1.6 + runtime.current.doorAOpen * 3.3;
-    if (doorB.current) doorB.current.position.y = 1.6 + runtime.current.doorBOpen * 3.3;
-    if (doorExit.current) doorExit.current.position.y = 1.6 + runtime.current.doorExitOpen * 3.3;
-    if (guideMarker.current) {
-      if (runtime.current.progress.guideExamined) markerProgress.current = reducedMotion ? 1 : Math.min(1, markerProgress.current + Math.min(delta, 0.05) / 1.7);
-      guideMarker.current.visible = runtime.current.progress.guideExamined;
-      guideMarker.current.position.set(0, 0.065, -0.95 - markerProgress.current * 3.05);
+    try {
+      if (runtime.current.paused) return;
+      if (doorA.current) doorA.current.position.y = 1.6 + runtime.current.doorAOpen * 3.3;
+      if (doorB.current) doorB.current.position.y = 1.6 + runtime.current.doorBOpen * 3.3;
+      if (doorExit.current) doorExit.current.position.y = 1.6 + runtime.current.doorExitOpen * 3.3;
+      if (guideMarker.current) {
+        if (runtime.current.progress.guideExamined) markerProgress.current = reducedMotion ? 1 : Math.min(1, markerProgress.current + Math.min(delta, 0.05) / 1.7);
+        guideMarker.current.visible = runtime.current.progress.guideExamined;
+        guideMarker.current.position.set(0, 0.065, -0.95 - markerProgress.current * 3.05);
+      }
+    } catch (error) {
+      if (!onFrameError) throw error;
+      onFrameError(error);
     }
   });
   return (

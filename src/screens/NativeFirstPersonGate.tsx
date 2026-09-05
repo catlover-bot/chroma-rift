@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, type PropsWithChildren } from 'react';
+import { Component, lazy, Suspense, type ErrorInfo, type PropsWithChildren } from 'react';
 
 import { ActionButton, Body, Heading, Screen } from '../components/Layout';
 import { hasNative3D } from '../platform/native3D';
@@ -15,6 +15,9 @@ const FirstPerson = lazy(async () => {
 class Native3DBoundary extends Component<PropsWithChildren<{ onExit: () => void }>, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    if (__DEV__) console.error('[CHROMA RIFT 3D: native screen boundary]', error, info.componentStack);
+  }
   render() {
     if (this.state.failed) return (
       <Screen>

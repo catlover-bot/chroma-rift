@@ -40,6 +40,7 @@ export function FirstPersonScreen({ settings, controls, checkpoint, preferredCol
   const [notice, setNotice] = useState('');
   const [showDiagnostics, setShowDiagnostics] = useState(false);
   const mounted = useRef(true);
+  const failed = useRef(false);
   const completed = useRef(false);
   const lastProgress = useRef(JSON.stringify(snapshot.runtime.progress));
   const lastAnnounced = useRef('');
@@ -52,7 +53,7 @@ export function FirstPersonScreen({ settings, controls, checkpoint, preferredCol
   const blocked = paused || !ready || !!error || snapshot.runtime.progress.cleared;
 
   const publish = useCallback((next: RuntimeSnapshot) => {
-    if (!mounted.current || next.runtime !== controller.runtime) return;
+    if (!mounted.current || failed.current || next.runtime !== controller.runtime) return;
     setSnapshot(next);
     if (lastTarget.current !== next.target?.id) {
       lastTarget.current = next.target?.id;
@@ -73,33 +74,38 @@ export function FirstPersonScreen({ settings, controls, checkpoint, preferredCol
     }
   }, [controller, onCheckpoint, onComplete, scene, settings.reducedMotion]);
   const pause = useCallback(() => {
+    if (!mounted.current || failed.current) return;
     stopController(controller);
     commandController(controller, { type: 'pause' });
     publish(controllerSnapshot(controller));
     if (scene === 'chapter') onCheckpoint(createCheckpoint(controller.runtime));
   }, [controller, onCheckpoint, publish, scene]);
   const resume = () => {
+    if (!mounted.current || failed.current) return;
     setNotice('');
     stopController(controller);
     commandController(controller, { type: 'resume' });
     publish(controllerSnapshot(controller));
   };
   const fail = useCallback((message: string) => {
+    if (!mounted.current || failed.current) return;
+    failed.current = true;
     stopController(controller);
     commandController(controller, { type: 'pause' });
-    if (mounted.current) setError(message);
+    setReady(false);
+    setError(message);
   }, [controller]);
-  const canvasReady = useCallback(() => { if (mounted.current) setReady(true); }, []);
+  const canvasReady = useCallback(() => { if (mounted.current && !failed.current) setReady(true); }, []);
   useEffect(() => {
     mounted.current = true;
-    return () => { mounted.current = false; stopController(controller); };
+    return () => { mounted.current = false; commandController(controller, { type: 'pause' }); };
   }, [controller]);
   useEffect(() => {
     commandController(controller, { type: 'sensitivity', value: controls.sensitivity });
     stopController(controller);
   }, [controller, controls.sensitivity, controls.handedness, simple]);
   useEffect(() => {
-    const listener = AppState.addEventListener('change', (state) => { if (state !== 'active') { setMenu('pause'); pause(); } });
+    const listener = AppState.addEventListener('change', (state) => { if (mounted.current && !failed.current && state !== 'active') { setMenu('pause'); pause(); } });
     return () => listener.remove();
   }, [pause]);
   useEffect(() => {

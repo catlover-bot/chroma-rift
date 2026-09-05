@@ -1,8 +1,31 @@
-# Goal 003 — 新しいDevelopment Buildで確認する
+# 一人称Development Buildで確認する
+
+## Goal 003.1 — インストール済みビルドでクラッシュ修正を確認
+
+expo-glを含むGoal 003のDevelopment Buildをインストール済みなら、今回のJS/TS・Metro修正のための再ビルドは不要です。Metroを停止して、次を実行します。
+
+```sh
+cd /home/mhirotaka/workspace/chroma-rift
+npx expo start --dev-client --tunnel --clear
+```
+
+CHROMA RIFTを完全に終了して開き直し、新しいMetroのQRコードへ接続してください。モジュール解決を変えたためFast Refreshだけで確認せず、アプリ削除や保存データのリセットはしません。
+
+- [ ] ホームから一人称の章を開ける。
+- [ ] `position`／undefined-objectの致命的エラーが繰り返されない。
+- [ ] 新しいプロセスの初回起動でduplicate-Three警告が出ない。
+- [ ] 壁・床・鍵の輪郭と3片が表示され、鍵の整列と扉の移動が以前と同じ。
+- [ ] 同時歩行／見回し、指離し／取消、色比較が正常。
+- [ ] 一時停止、背景復帰、ホームへ戻って再入場が正常。
+- [ ] 残る低レベル警告は表示不良と分けて記録する。失敗した場合は最初のエラーのJS stackとcomponent stackを確認する。
+
+ローカルのR3F回帰テストとMetroバンドル検証は、実機GPU描画の代わりではありません。修正の根拠と警告の整理は[GOAL-003-1.md](GOAL-003-1.md)を参照してください。
+
+## Goal 003を初めて導入する場合の旧手順
 
 **expo-gl追加によりSkia版Development Buildは再ビルドが必要です。Reloadだけでは不足します。** 旧版では案内からホームへ戻れることも確認します。
 
-## ユーザーが行う操作
+### 初回導入時の操作
 
 既存の認証・登録端末・Bundle ID・developmentプロファイルを使用。エージェントは認証・クラウドビルドを実行していません。
 
