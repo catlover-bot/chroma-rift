@@ -8,3 +8,4 @@ export * from './runtime';
 export * from './checkpoint';
 export * from './selectors';
 export * from './actor';
+export * from './wiring';

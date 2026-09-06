@@ -1,0 +1,35 @@
+{
+  "boundary": "CPU resource disposal in scene extraction and real React unmount effects; not native GPU, audio or application lifecycle",
+  "visits": 4,
+  "allDisposedExactlyOnce": true,
+  "checks": [
+    {
+      "id": "actor-front",
+      "resources": 56,
+      "disposedOnce": 56,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-quarter",
+      "resources": 56,
+      "disposedOnce": 56,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-side",
+      "resources": 56,
+      "disposedOnce": 56,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-back",
+      "resources": 56,
+      "disposedOnce": 56,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    }
+  ]
+}

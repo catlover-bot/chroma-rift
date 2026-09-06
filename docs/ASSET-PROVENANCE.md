@@ -41,3 +41,10 @@ node scripts/preview-gallery.cjs --capture
 - 四角いトレー、共通panel fixture、灯り/電源/棚: domain寸法と既存基本geometryによる本作のコード生成。
 - 音: Goal006の自作4 WAVをそのまま再利用。敵の実移動を既存足音に接続し、外部音源を追加していない。
 - `docs/qa-goal007/` の画像: 同リポジトリの実mesh/materialと実component由来HUDを使用したローカルbrowser WebGL/合成QA。iPhone録画や他作品の転載画像ではない。実行環境と対象版は各READMEに記載。
+
+## Goal 008 の追加
+
+- 静止凹面仮面と移動展示体の顔に、Wael Tsar / cmglee の `Hollow face illusion.stl`（CC BY 4.0）を使用。凹面はproper rotation/正規化・法線再計算、展示体の顔は別の凸面geometryへ加工した。[出典・全hash・改変・再配布方針](ILLUSION-SOURCES.md)と[NOTICE](../THIRD_PARTY_NOTICES)が現在の台帳である。Goal007の「外部顔素材なし」は過去版の記録。
+- 配線、ハイブリッドの顔/CLOSED/棚線の原画・Gaussian LP/HP合成、展示体の胴体/外装/四肢、cloth/door-impact/12秒Shepard風音は本作の手続き生成。生成スクリプトと中間対照を同梱する。Bach/北岡/IllusionVQAの掲載画像・音声は使用しない。
+- 旧4 WAVは変更せず、新3 WAVを既存expo-audioの固定10player poolへ追加。長さ/RMS/peak/DCと再現性を検査し、実聴未確認を維持。
+- QAはsource geometryを実WebGLで描いた画像、offline生成2D、実component由来のHUD合成を区別し、iPhoneの実表示と扱わない。AI画像生成は利用していない。

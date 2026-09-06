@@ -28,17 +28,17 @@ const flush = async () => { await Promise.resolve(); await Promise.resolve(); };
 
 it('normalizes old/malformed preferences without changing valid explicit zero or mute', () => {
   expect(normalizeAudioPreferences(undefined)).toEqual(DEFAULT_AUDIO_PREFERENCES);
-  expect(normalizeAudioPreferences({ enabled: false, musicVolume: 0, effectsVolume: 0 })).toEqual({ enabled: false, musicVolume: 0, effectsVolume: 0 });
+  expect(normalizeAudioPreferences({ enabled: false, musicVolume: 0, effectsVolume: 0 })).toEqual({ enabled: false, illusionEnabled: true, musicVolume: 0, effectsVolume: 0 });
   expect(normalizeAudioPreferences({ enabled: 'yes', musicVolume: Infinity, effectsVolume: -2 })).toEqual({ ...DEFAULT_AUDIO_PREFERENCES, effectsVolume: 0 });
   expect(normalizeAudioPreferences({ musicVolume: 2, effectsVolume: 0.25 })).toEqual({ ...DEFAULT_AUDIO_PREFERENCES, musicVolume: 1, effectsVolume: 0.25 });
 });
 
-it('owns exactly seven reusable players with one loop, without allocation on movement/HUD/settings updates', async () => {
+it('owns exactly ten reusable players with one loop, without allocation on movement/HUD/settings updates', async () => {
   const h = harness();
   expect(h.backend.prepare).not.toHaveBeenCalled();
   h.audio.setActive(true);
   await h.audio.whenReady();
-  expect(h.players).toHaveLength(7);
+  expect(h.players).toHaveLength(10);
   for (const source of Object.keys(AUDIO_POOL_SIZE) as AudioSourceId[]) expect(h.of(source)).toHaveLength(AUDIO_POOL_SIZE[source]);
   expect(h.players.filter((p) => p.loop)).toEqual(h.of('ambience'));
   for (let frame = 0; frame < 120; frame += 1) {
@@ -46,7 +46,7 @@ it('owns exactly seven reusable players with one loop, without allocation on mov
     h.audio.movement(0.03, 'visit-1');
     h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES });
   }
-  expect(h.backend.createPlayer).toHaveBeenCalledTimes(7);
+  expect(h.backend.createPlayer).toHaveBeenCalledTimes(10);
   expect(h.count('ambience')).toBe(1);
   h.audio.dispose(); h.audio.dispose();
   expect(h.players.every((player) => player.release.mock.calls.length === 1)).toBe(true);
@@ -218,7 +218,7 @@ it('shares the bounded pool for independently accumulated actor travel at its ac
   await flush(); expect(h.count('footstep')).toBe(1);
   expect(h.of('footstep')[0]!.volume).toBeCloseTo(.6 * .5 * DEFAULT_AUDIO_PREFERENCES.effectsVolume);
   h.audio.movement(.3, 'visit-1'); await flush(); expect(h.count('footstep')).toBe(2);
-  expect(h.backend.createPlayer).toHaveBeenCalledTimes(7);
+  expect(h.backend.createPlayer).toHaveBeenCalledTimes(10);
 });
 it('never sounds actor teleport, zero travel, stale sessions, distant or malformed sources', async () => {
   const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
@@ -241,4 +241,83 @@ it('invalidates actor footstep seeks on manipulation/pause/mute/disposal and dro
   h.audio.actorMovement(.1, { x: 0, y: 0, z: 1 }, 'visit-1');
   await flush(); expect(h.count('footstep')).toBe(0);
   h.audio.dispose(); expect(h.audio.getDiagnostics().players).toBe(0);
+});
+
+
+it('uses only the existing Shepard slot for a paused notebook and never reactivates world sounds', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  const ambienceBefore = h.count('ambience');
+  h.audio.setActive(false); h.audio.setPreviewActive(true);
+  expect(h.audio.playIllusion('visit-1', 'standard')).toBe(true);
+  h.audio.movement(.8, 'visit-1'); h.event(1); await flush();
+  expect(h.count('shepard')).toBe(1); expect(h.count('footstep')).toBe(0); expect(h.count('mechanism')).toBe(0);
+  expect(h.count('ambience')).toBe(ambienceBefore);
+  expect(h.of('shepard')[0]!.loop).toBe(false);
+  expect(h.players).toHaveLength(10);
+  h.audio.setPreviewActive(false); expect(h.audio.playIllusion('visit-1', 'standard')).toBe(false);
+});
+
+it.each(['mute', 'effects-off', 'illusion-off', 'subdued', 'stale'])('does not play optional illusion sound when %s', async reason => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  if (reason === 'mute') h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES, enabled: false });
+  if (reason === 'effects-off') h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES, effectsVolume: 0 });
+  if (reason === 'illusion-off') h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES, illusionEnabled: false });
+  expect(h.audio.playIllusion(reason === 'stale' ? 'old' : 'visit-1', reason === 'subdued' ? 'subdued' : 'standard')).toBe(false);
+  await flush(); expect(h.count('shepard')).toBe(0);
+});
+
+it.each(['stop', 'close', 'background', 'mute', 'illusion-off', 'dispose'])('invalidates delayed Shepard seek on %s', async reason => {
+  const h = harness(); h.audio.setPreviewActive(true); await h.audio.whenReady();
+  const seek = deferred(); h.of('shepard')[0]!.seekTo.mockImplementation(() => seek.promise);
+  expect(h.audio.playIllusion('visit-1', 'standard')).toBe(true);
+  if (reason === 'stop') h.audio.stopIllusion();
+  if (reason === 'close') h.audio.setPreviewActive(false);
+  if (reason === 'background') h.audio.setActive(false);
+  if (reason === 'mute') h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES, enabled: false });
+  if (reason === 'illusion-off') h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES, illusionEnabled: false });
+  if (reason === 'dispose') h.audio.dispose();
+  seek.resolve(); await flush(); expect(h.count('shepard')).toBe(0);
+});
+
+it('sounds real actor clothing through a bounded slot and final impact once with no ambient restart', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  h.audio.actorMovement(.7, { x: 0, y: 0, z: 1 }, 'visit-1'); await flush();
+  expect(h.count('cloth')).toBe(1);
+  const event = { sessionId: 'visit-1', sequence: 20, type: 'door-close' as const };
+  expect(h.audio.event(event)).toBe(true); expect(h.audio.event(event)).toBe(false);
+  await flush(); expect(h.count('door-impact')).toBe(1);
+  expect(h.players).toHaveLength(10);
+});
+
+it.each(['success', 'expired', 'rejected', 'play throws', 'pause', 'mute', 'stopped', 'disposed'] as const)('reports an illusion start only after native play succeeds: %s', async reason => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  const seek = deferred(), started = jest.fn(), player = h.of('shepard')[0]!;
+  player.seekTo.mockImplementation(() => seek.promise);
+  let time = 1000;
+  const now = jest.spyOn(Date, 'now').mockImplementation(() => time);
+  try {
+    expect(h.audio.playIllusion('visit-1', 'standard', started)).toBe(true);
+    expect(started).not.toHaveBeenCalled();
+    if (reason === 'expired') time += 251;
+    if (reason === 'play throws') player.play.mockImplementation(() => { throw new Error('native play failed'); });
+    if (reason === 'pause') h.audio.setActive(false);
+    if (reason === 'mute') h.audio.updatePreferences({ ...DEFAULT_AUDIO_PREFERENCES, enabled: false });
+    if (reason === 'stopped') h.audio.stopIllusion();
+    if (reason === 'disposed') h.audio.dispose();
+    if (reason === 'rejected') seek.reject(new Error('seek failed')); else seek.resolve();
+    await flush();
+    expect(started).toHaveBeenCalledTimes(reason === 'success' ? 1 : 0);
+  } finally { now.mockRestore(); h.audio.dispose(); }
+});
+
+it('silences an accepted ending without premature impact or ambience replay after background', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  const ambientStarts = h.count('ambience');
+  h.audio.beginEnding(); await flush();
+  expect(h.of('ambience')[0]!.pause).toHaveBeenCalled(); expect(h.count('door-impact')).toBe(0);
+  h.audio.setActive(false); h.audio.setActive(true); await flush();
+  expect(h.count('ambience')).toBe(ambientStarts); expect(h.count('door-impact')).toBe(0);
+  expect(h.audio.event({ sessionId: 'visit-1', sequence: 1, type: 'door-close' })).toBe(true);
+  await flush(); expect(h.count('door-impact')).toBe(1); expect(h.count('ambience')).toBe(ambientStarts);
+  h.audio.dispose();
 });

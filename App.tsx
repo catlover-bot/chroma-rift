@@ -217,21 +217,22 @@ export default function App() {
   } else if (state.screen === 'playInstructions') {
     screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void beginChapter()} onBack={navigateHome} />;
   } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
-    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onReplay={() => void restartChapter()} onHome={navigateHome} />;
-  } else if (state.screen === 'firstPerson' || (state.screen === 'firstPersonLab' && __DEV__)) {
-    const lab = state.screen === 'firstPersonLab';
+    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onReplay={() => void restartChapter()} onHome={navigateHome} onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }} />;
+  } else if (state.screen === 'firstPerson' || state.screen === 'galleryNotes' || (state.screen === 'firstPersonLab' && __DEV__)) {
+    const lab = state.screen === 'firstPersonLab', reviewOnly = state.screen === 'galleryNotes';
     // Every callback captures this mounted run's lease; an old save/completion cannot adopt a new run.
     const lease = chapterLease;
-    screen = !lab && completedAtEntry ? (
+    screen = !lab && !reviewOnly && completedAtEntry ? (
       <FirstPersonResultScreen
         summary={chapterCompletionSummary(selectedCheckpoint.chapterId, selectedCheckpoint.progress)}
         onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })}
         onReplay={() => void restartChapter()} onHome={navigateHome}
+        onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }}
       />
     ) : (
       <NativeFirstPersonGate
         key={`${lab ? 'lab' : state.selectedChapterId}-${lease}`} scene={lab ? 'lab' : 'chapter'} chapterId={lab ? 'returnless-entrance' : state.selectedChapterId}
-        settings={state.settings} controls={controls} {...(!lab ? { checkpoint: selectedCheckpoint } : {})}
+        reviewOnly={reviewOnly} settings={state.settings} controls={controls} {...(!lab ? { checkpoint: selectedCheckpoint } : {})}
         onboarding={onboarding}
         onOnboardingChange={(next) => {
           if (lab || !isFirstPersonSessionCurrent(lease)) return;
@@ -254,7 +255,7 @@ export default function App() {
           });
         }}
         onCheckpoint={(next) => {
-          if (lab || !isFirstPersonSessionCurrent(lease) || next.chapterId !== state.selectedChapterId) return;
+          if (lab || reviewOnly || !isFirstPersonSessionCurrent(lease) || next.chapterId !== state.selectedChapterId) return;
           const gallery = state.selectedChapterId === 'perception-gallery-v1';
           if (gallery) setGalleryCheckpoint(next); else setCheckpoint(next);
           void (gallery ? saveGalleryCheckpoint(next, lease) : saveFirstPersonCheckpoint(next, lease)).then((saved) => {
@@ -264,10 +265,10 @@ export default function App() {
           });
         }}
         onComplete={(summary) => {
-          if (!lab && isFirstPersonSessionCurrent(lease)) dispatch({ type: 'COMPLETE_CHAPTER', summary, journeyRun: state.journeyRun });
+          if (!lab && !reviewOnly && isFirstPersonSessionCurrent(lease)) dispatch({ type: 'COMPLETE_CHAPTER', summary, journeyRun: state.journeyRun });
         }}
         onRestart={() => { if (!isFirstPersonSessionCurrent(lease)) return; if (lab) setChapterLease(beginFirstPersonSession()); else void restartChapter(); }}
-        onExit={() => { if (isFirstPersonSessionCurrent(lease)) navigateHome(); }}
+        onExit={() => { if (!isFirstPersonSessionCurrent(lease)) return; if (reviewOnly) dispatch({ type: 'NAVIGATE', screen: state.firstPersonSummary ? 'firstPersonResult' : 'firstPerson' }); else navigateHome(); }}
       />
     );
   } else if (state.screen === 'illusionMaze') {

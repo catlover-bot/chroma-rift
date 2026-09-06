@@ -1,4 +1,4 @@
-import { GALLERY_CHAPTER_ID, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_CONTOUR_FIXTURE, createContourSpec, normalizeAngle } from '../../../domain/gallery';
+import { canCloseGalleryExit, GALLERY_CHAPTER_ID, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_CONTOUR_FIXTURE, createContourSpec, normalizeAngle } from '../../../domain/gallery';
 import { galleryAction } from '../galleryController';
 import { _roots, advance, useFrame } from '@react-three/fiber/native';
 import { act, fireEvent, render, type RenderResult } from '@testing-library/react-native';
@@ -17,7 +17,7 @@ import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../../types/
 import { ChapterScene } from '../ChapterScene';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../FirstPersonCanvas';
 import { createSceneResources } from '../resources';
-import { commandController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
+import { commandController, prepareControllerNotebook, setControllerNotebookPreview, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
 
 // Keep installed native Canvas, Provider, reconciler, applyProps and useFrame.
 // Only the unavailable device GL context/renderer is replaced.
@@ -925,7 +925,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     controller.runtime.pose = { position: { x: 0, y: 1.6, z: 7 }, yaw: Math.PI, pitch: 0 };
     controller.runtime.gallery!.serviceDoorOpen = 1;
     Object.assign(controller.runtime.gallery!.actor, { position: { x: 4, y: 0, z: 14 }, phase: 'patrol', routeIndex: 3, startupGrace: 0, contactCooldown: 0, visible: true });
-    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
     controller.audio = audio;
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
     const view = await render(<FirstPersonCanvas {...current} />);
@@ -944,6 +944,148 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(controller.actorNotice).toBeUndefined(); expect(audio.actorMovement).not.toHaveBeenCalled();
       expect(audio.setActive).toHaveBeenCalledWith(false);
       expect(current.onSnapshot).not.toHaveBeenCalled(); expect(current.onError).toHaveBeenCalledTimes(1);
+    } finally { await view.unmount(); }
+  });
+
+  it('opens and closes the mask notebook ten times using one renderer and immutable world camera, actor and geometry', async () => {
+    const controller = createController(undefined, false, true, GALLERY_CHAPTER_ID);
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      const root = rendererRoot(renderer).store.getState();
+      const camera = root.camera, worldMatrix = camera.matrixWorld.toArray();
+      const resources = resourceFactory.mock.results.at(-1)!.value;
+      const positions = Array.from(resources.galleryResources.perceptual.maskGeometry.attributes.position.array as Float32Array);
+      const geometry = resources.galleryResources.perceptual.maskGeometry;
+      const dispose = jest.spyOn(geometry, 'dispose');
+      controller.input.stickPointer = 7; controller.input.lookPointer = 8;
+      prepareControllerNotebook(controller);
+      commandController(controller, { type: 'pause' });
+      const stopped = structuredClone(controller.runtime);
+      expect(controller.input.releaseBarrier).toEqual([7, 8]);
+      for (let index = 0; index < 10; index++) {
+        expect(setControllerNotebookPreview(controller, { kind: 'mask', yaw: index % 2 ? .85 : -.85 })).toBe(true);
+        await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(controller)} paused />);
+        await submitFrame(renderer, index + 2);
+        expect(renderer.draw.mock.calls.at(-1)![1]).not.toBe(camera);
+        expect(camera.matrixWorld.toArray()).toEqual(worldMatrix);
+        expect(controller.runtime).toEqual(stopped);
+        expect(geometry.attributes.position.array).toEqual(new Float32Array(positions));
+        expect(setControllerNotebookPreview(controller, undefined)).toBe(true);
+        await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(controller)} paused />);
+      }
+      expect(resourceFactory).toHaveBeenCalledTimes(1); expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+      expect(dispose).not.toHaveBeenCalled();
+      commandController(controller, { type: 'resume' });
+      await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(controller)} paused={false} />);
+      await submitFrame(renderer, 20);
+      expect(renderer.draw.mock.calls.at(-1)![1]).toBe(camera);
+      expect(controller.runtime.pose.position).toEqual(stopped.pose.position);
+      expect(controller.runtime.pose.pitch).toBe(stopped.pose.pitch);
+      expect(normalizeAngle(controller.runtime.pose.yaw - stopped.pose.yaw)).toBeCloseTo(0, 12);
+      expect(controller.input.releaseBarrier).toEqual([7, 8]);
+      await view.unmount();
+      expect(dispose).toHaveBeenCalledTimes(1);
+    } finally { await view.unmount(); }
+  }, 30000);
+
+  it.each(['success', 'render failure', 'presentation failure'] as const)('closes the final door atomically and plays the one impact only after %s', async outcome => {
+    const controller = createController(undefined, false, true, GALLERY_CHAPTER_ID), g = controller.runtime.progress.gallery!;
+    Object.assign(g, { emergencyLit: true, powerConnected: true, powerTaken: { shadow: true, contour: true } });
+    Object.assign(g.wiring, { solved: true, offset: 0 });
+    Object.assign(g.story, { crossingStarted: true, crossingPresented: true, serviceWarned: true });
+    controller.runtime.pose = { position: { x: 4, y: 1.6, z: 24 }, yaw: Math.PI, pitch: 0 };
+    controller.runtime.gallery!.wiringDoorOpen = controller.runtime.gallery!.serviceDoorOpen = controller.runtime.doorExitOpen = 1;
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    controller.audio = audio;
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      expect(controller.diagnostics.stage).toBe('ready');
+      expect(controller.runtime.progress.cleared).toBe(false);
+      expect(galleryAction(controller, { type: 'close-exit' })).toBe(true);
+      expect(galleryAction(controller, { type: 'close-exit' })).toBe(false);
+      expect(controller.runtime.progress.cleared).toBe(true);
+      expect(controller.runtime.progress.gallery!.finalDoorClosed).toBe(true);
+      expect(controller.runtime.gallery!.actor.phase).toBe('resolved');
+      expect(controller.runtime.doorExitOpen).toBe(0);
+      expect(audio.event).not.toHaveBeenCalled();
+      const before = structuredClone(controller.runtime);
+      jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(60);
+      if (outcome === 'render failure') renderer.draw.mockImplementation(() => { throw new Error('closing draw failure'); });
+      if (outcome === 'presentation failure') deviceContext.endFrameEXP.mockImplementation(() => { throw new Error('closing native failure'); });
+      await submitFrame(renderer, 2);
+      if (outcome === 'success') {
+        expect(controller.runtime.gallery!.exitClosureSeconds).toBeCloseTo(.55, 12);
+        expect(audio.event.mock.calls.filter(([event]) => event.type === 'door-close')).toHaveLength(1);
+        for (let i = 0; i < 20; i++) await submitFrame(renderer, 3 + i);
+        expect(controller.runtime.gallery!.exitClosureSeconds).toBe(0);
+        expect(audio.event.mock.calls.filter(([event]) => event.type === 'door-close')).toHaveLength(1);
+      } else {
+        expect(controller.runtime.gallery!.exitClosureSeconds).toBe(before.gallery!.exitClosureSeconds);
+        expect(controller.runtime.paused).toBe(true);
+        expect(audio.event).not.toHaveBeenCalled();
+        expect(controller.pendingExitImpact).toBe(false);
+        expect(current.onError).toHaveBeenCalledTimes(1);
+      }
+      expect(controller.runtime.progress).toEqual(before.progress);
+      expect(controller.runtime.pose).toEqual(before.pose);
+      expect(controller.runtime.gallery!.actor).toEqual(before.gallery!.actor);
+    } finally { await view.unmount(); }
+  });
+  it.each(['render', 'presentation'] as const)('rolls back crossing story and safe checkpoint when the first crossing %s fails', async phase => {
+    const controller = createController(undefined, false, true, GALLERY_CHAPTER_ID);
+    controller.runtime.progress.gallery!.powerTaken.shadow = true;
+    controller.runtime.pose = { position: { x: 0, y: 1.6, z: 2 }, yaw: Math.PI, pitch: 0 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      const before = structuredClone(controller.runtime);
+      let candidateStory = false;
+      const fail = () => { candidateStory = controller.runtime.progress.gallery!.story.crossingStarted; throw new Error('crossing presentation failed'); };
+      jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(.05);
+      if (phase === 'render') renderer.draw.mockImplementation(fail); else deviceContext.endFrameEXP.mockImplementation(fail);
+      await submitFrame(renderer, 2);
+      expect(candidateStory).toBe(true);
+      expect(controller.runtime.progress).toEqual(before.progress);
+      expect(controller.runtime.gallery!.lastSafePose).toEqual(before.gallery!.lastSafePose);
+      expect(controller.runtime.gallery!.actor).toEqual(before.gallery!.actor);
+      expect(controller.pendingActorEvents).toEqual([]);
+      expect(controller.actorNotice).toBeUndefined();
+    } finally { await view.unmount(); }
+  });
+
+  it('publishes the close-door HUD and safe checkpoint when continuous walking crosses the threshold with an unchanged cue and heading', async () => {
+    const controller = createController(undefined, false, true, GALLERY_CHAPTER_ID), g = controller.runtime.progress.gallery!;
+    Object.assign(g, { emergencyLit: true, powerConnected: true, powerTaken: { shadow: true, contour: true } });
+    Object.assign(g.wiring, { solved: true, offset: 0 });
+    Object.assign(g.story, { foreshadowed: true, absence: true, crossingStarted: true, crossingPresented: true, serviceWarned: true });
+    controller.runtime.pose = { position: { x: 4, y: 1.6, z: 22.9 }, yaw: Math.PI, pitch: 0 };
+    controller.runtime.gallery!.wiringDoorOpen = controller.runtime.gallery!.serviceDoorOpen = controller.runtime.doorExitOpen = 1;
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      const before = controllerSnapshot(controller), revision = controller.viewCommandRevision;
+      expect(before.cue.kind).toBe('none'); expect(canCloseGalleryExit(controller.runtime)).toBe(false);
+      jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(.05);
+      controller.input.forward = 1;
+      for (let i = 0; i < 5; i++) await submitFrame(renderer, 2 + i);
+      controller.input.forward = 0;
+      const after = controllerSnapshot(controller);
+      expect(after.cue.kind).toBe(before.cue.kind); expect(after.direction).toBe(before.direction);
+      expect(controller.viewCommandRevision).toBe(revision);
+      expect(after.key).not.toBe(before.key);
+      expect(after.objective).toContain('扉を閉める');
+      expect(jest.mocked(current.onSnapshot).mock.calls.some(([snapshot]) => canCloseGalleryExit(snapshot.runtime))).toBe(true);
+      expect(controller.runtime.progress.cleared).toBe(false);
+      const calls = jest.mocked(current.onSnapshot).mock.calls.length;
+      for (let i = 0; i < 5; i++) await submitFrame(renderer, 10 + i);
+      expect(current.onSnapshot).toHaveBeenCalledTimes(calls);
+      expect(galleryAction(controller, { type: 'close-exit' })).toBe(true);
     } finally { await view.unmount(); }
   });
 

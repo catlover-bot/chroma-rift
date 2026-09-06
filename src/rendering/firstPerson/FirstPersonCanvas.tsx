@@ -8,6 +8,7 @@ import { hasNative3D } from '../../platform/native3D';
 import type { PreferredColor } from '../IllusionPalette';
 import { CanvasFailureBoundary } from './CanvasFailureBoundary';
 import { createCanvasLifecycle, type CanvasLifecycle } from './canvasLifecycle';
+import { NotebookMaskScene } from './NotebookMaskScene';
 import { ChapterScene } from './ChapterScene';
 import { recordCanvasLayout, updateDiagnosticEnvironment } from './diagnostics';
 import { createNativeSceneSession, type NativeSceneSession } from './nativeSceneSession';
@@ -82,9 +83,9 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
     onLayout={(event) => recordCanvasLayout(controller.diagnostics, event.nativeEvent.layout.width, event.nativeEvent.layout.height)}>
     <CanvasFailureBoundary lifecycle={lifecycle}>
       <Canvas style={styles.canvas} pointerEvents="none" gl={session.factory}
-        frameloop={props.paused || !appActive ? 'never' : 'always'} flat shadows={false} camera={options} onCreated={session.created}>
+        frameloop={!appActive || props.paused && !controller.notebookPreview ? 'never' : 'always'} flat shadows={false} camera={options} onCreated={session.created}>
         <FrameDriver onSnapshot={props.onSnapshot} lifecycle={lifecycle} session={session} />
-        {proof ? <ProofScene /> : <ChapterScene world={world} runtime={runtime} progress={snapshot.runtime.progress} resources={resources!}
+        {proof ? <ProofScene /> : controller.notebookPreview && resources?.galleryResources ? <NotebookMaskScene resources={resources} /> : <ChapterScene world={world} runtime={runtime} progress={snapshot.runtime.progress} resources={resources!}
           assist={props.assist} reducedMotion={props.reducedMotion} lowQuality={props.quality === 'low'} lab={controller.lab}
           onFrameError={session.sceneError} />}
       </Canvas>

@@ -1,0 +1,1191 @@
+{
+  "reviewedAt": "2026-09-06T23:25:10.496571+00:00",
+  "sourceCaptureAt": "2026-09-06T23:23:45.170Z",
+  "boundary": "90 actual component/WebGL composite PNGs individually opened; native iPhone, touch, audio, fear and perceptual illusion not validated. Raw scene PNGs are retained and hashed but not all individually opened.",
+  "all90CompositesOpened": true,
+  "renderingSourceFiles": 77,
+  "sourceFilesMatchCurrent": true,
+  "finalVsPreviouslyViewed": {
+    "sameByteImages": 88,
+    "changedImages": [
+      "actor-west-shelf-hidden",
+      "actor-east-shelf-hidden"
+    ],
+    "changedImagesReopened": [
+      "actor-west-shelf-hidden",
+      "actor-east-shelf-hidden"
+    ]
+  },
+  "images": [
+    {
+      "id": "actor-front",
+      "composite": {
+        "file": "actor-front.png",
+        "sha256": "32e3844465a578b9966feafa83565750891e44b1129169b73893a5061000ed24",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-front-scene.png",
+        "sha256": "5d4732c0c9fd6adc1e678ca1f0c6d5df37f8c593a76c81906b92aced659c9be4",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-quarter",
+      "composite": {
+        "file": "actor-quarter.png",
+        "sha256": "1397bd59e12504e57bcd424a6ac2ae1818b73e65232905c5f568dba06537e0db",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-quarter-scene.png",
+        "sha256": "8b2575e1a99f7bbb9b0068578b06f60227ec182fc3f2ee265a3b7f25a8e2a2e1",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-side",
+      "composite": {
+        "file": "actor-side.png",
+        "sha256": "818565d6bcfd3ed8f2aa175525120513829eb548331dd9bf595369c9ee10963c",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-side-scene.png",
+        "sha256": "a4f112d2836f09cd3725946824bfcef06374312e2961c0c2dd5251fe3a878be7",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-back",
+      "composite": {
+        "file": "actor-back.png",
+        "sha256": "945886bfbb235d60c48b47f0f12090398fb53c84bfbb86642704b51b53b27e94",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-back-scene.png",
+        "sha256": "e0664ae43586d67a4da67b10a52005a1009823220c95c6dcb0af411bff0e933e",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "entry-before",
+      "composite": {
+        "file": "entry-before.png",
+        "sha256": "b9286101f7f38616ff4aea1fbc984dbd8c05602fd6377e3255698de7d7a3fcb0",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "entry-before-scene.png",
+        "sha256": "2c0cc5d0f341bcf5064d0ea158512a0d5a859fa8814ec6e14846292a035e1ac5",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "entry-after",
+      "composite": {
+        "file": "entry-after.png",
+        "sha256": "5aa5a6b620b2cae8b1d3776d23f6e6291deb7d9eda4a21d930b2ecadf26e2f4c",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "entry-after-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "b-baseline",
+      "composite": {
+        "file": "b-baseline.png",
+        "sha256": "97362e9612ea57d4d5774090c3e70d30a263aa6f9a9ca603cf82ee3f326e9dfa",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "b-baseline-scene.png",
+        "sha256": "6581b2353e913b4468dc7bb6c7442a6568db587b7d15ca2a49ccd39f29ece28f",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "b-drawer",
+      "composite": {
+        "file": "b-drawer.png",
+        "sha256": "5e1d0210d8066788701deee210bd707457433d9f033e6411ce3edbe523acb13b",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "b-drawer-scene.png",
+        "sha256": "221a4112adb793b03336738d353e43d5458ecfc1a88782f99a8c7f0d07342499",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "c-aligned",
+      "composite": {
+        "file": "c-aligned.png",
+        "sha256": "f816c2275c9e7596982d6271b628a884b6bebe04380440ec4bd1766b2a076188",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "c-aligned-scene.png",
+        "sha256": "1163b18e0f5b4db810522ea9dd1abbfb67c595627678d479992f6dec9d6b9255",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "c-drawer",
+      "composite": {
+        "file": "c-drawer.png",
+        "sha256": "f1cde13ac0bb9ff7ed69ae79c55df228625e98f1fa935a8b6dd743f6d9904ea0",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "c-drawer-scene.png",
+        "sha256": "12a3f9cef52c1da3ee8c2399ece37e63ad07b1580f291cbe5e27cb4bf80d30a0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "color-exhibit",
+      "composite": {
+        "file": "color-exhibit.png",
+        "sha256": "9234bba4219803af07c13e157df9412f1ddc4ca6a136e1ae446d1c5df8778678",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "color-exhibit-scene.png",
+        "sha256": "81821ca69d8d545048231676fe0ecd6ffe6774d4732323e250956fc7d7e228b2",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "neutral-exhibit",
+      "composite": {
+        "file": "neutral-exhibit.png",
+        "sha256": "abdb1318b2acba34c102e6117c948a6344019a385fd57446a3fdeb6dfb76092b",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "neutral-exhibit-scene.png",
+        "sha256": "dbc22576d3ff558e5e57729454f06343f1a6c512c4155b2451f0926bc0d44d5c",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "mask-front",
+      "composite": {
+        "file": "mask-front.png",
+        "sha256": "2741e9fdb6e5a6dafd09e9ad24fc0bf784bf6b98761eceb3e38db80982e45879",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "mask-front-scene.png",
+        "sha256": "4b7639b59a89af6e1ab741e46432fb91cb06d454afd49e1bea400d78a063159b",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "mask-left",
+      "composite": {
+        "file": "mask-left.png",
+        "sha256": "38a494cb54317ba63024df71cbec4552d0bf646ad1f0da11e72fb2763c5271ca",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "mask-left-scene.png",
+        "sha256": "b49896a00a2f38477133141a93f37e3fc069b062061c9d1e45163e0f5c56841b",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "mask-right",
+      "composite": {
+        "file": "mask-right.png",
+        "sha256": "cc278e40de7226ee107e92c86b19d79f1c8a14cfeb456f468a0a92a032711cc0",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "mask-right-scene.png",
+        "sha256": "63cbe7bc40226075454ef71d8479efd356938e1729560e5d26de8a279c92a76c",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "mask-window-closed",
+      "composite": {
+        "file": "mask-window-closed.png",
+        "sha256": "51703f71134bcb6a99c2ce6f8808e4d6bc0bc2d8fef3582a42434d8d72673311",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "mask-window-closed-scene.png",
+        "sha256": "667a0fef9a4917218b2f4abed62b05ac92857d680fcc4787e928baa096479768",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "mask-window-open",
+      "composite": {
+        "file": "mask-window-open.png",
+        "sha256": "78796b72561749e18d3dba57e025f078347a7e109518ae92fd1aec6204d57ee0",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "mask-window-open-scene.png",
+        "sha256": "213183917b8a5132a703758d0562436f5e5ef00872bec891fa9a3703b4cc2364",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "hybrid-near",
+      "composite": {
+        "file": "hybrid-near.png",
+        "sha256": "069a79126b8d93bf891bfa2b372d8b6973f8531cb34e95869b05d04c81f080f6",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "hybrid-near-scene.png",
+        "sha256": "c56757d61558e5712357c43e5925fb6d2985886b3b8cb3ef8d3c711034bae9e0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "hybrid-middle",
+      "composite": {
+        "file": "hybrid-middle.png",
+        "sha256": "c069261f490298545f0efaf52f294a8a4e70bed2b65a8d51bd73cd7fd992a52a",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "hybrid-middle-scene.png",
+        "sha256": "f7956291ec573dee122da17edc2f134e846970a1d626af92395d41396f26de25",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "hybrid-far",
+      "composite": {
+        "file": "hybrid-far.png",
+        "sha256": "262af897226c701959cbebd988b8ac53d087d09e53fbad51f9ee0b3e75a9ce7b",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "hybrid-far-scene.png",
+        "sha256": "555021c7740b6b8e031e72e0395aa6246337ecbda6ddde4b679e9b837f8b6cb1",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-offset-covered",
+      "composite": {
+        "file": "wiring-offset-covered.png",
+        "sha256": "8584d7120e1ccd9ee0521857991d9f0408a0f2e42b35d3f9d18d1dd981791d31",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-offset-covered-scene.png",
+        "sha256": "c10d54b3e7ef7d5e4d2804541eb11ca5bb7b9981b3aea701f816918bad3a7e77",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-offset-open",
+      "composite": {
+        "file": "wiring-offset-open.png",
+        "sha256": "66f3144553fdfd479286c518d0d04f2f0688bbc84b32d865e5a2d4e111aeb121",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-offset-open-scene.png",
+        "sha256": "905d19a60715bd99c5f36435628c749d7dde81ffd9adac93322c100e078062ea",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-correct-covered",
+      "composite": {
+        "file": "wiring-correct-covered.png",
+        "sha256": "05a6bd1ff180b773bba6e13c4f6674885b4c2dae51bda42495d73ef08c4b9611",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-correct-covered-scene.png",
+        "sha256": "55d9f68a0ac874bb2bbd117b26488a5e2667e7ff8eaeaf866ba589caf2f8aa97",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-correct-open",
+      "composite": {
+        "file": "wiring-correct-open.png",
+        "sha256": "b1a39dece08947bf61919f4620bca800c85e0582b59739034b88aae0f70d1005",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-correct-open-scene.png",
+        "sha256": "8b10f0ce39ba108dd5d38efe892621368eac0fe6b15b48a967201cee616292d0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-released",
+      "composite": {
+        "file": "wiring-released.png",
+        "sha256": "7d8a4a90a831ada818e68baa17e09d9d062db050ae0be8a0d28730626a1f7139",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-released-scene.png",
+        "sha256": "8b10f0ce39ba108dd5d38efe892621368eac0fe6b15b48a967201cee616292d0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-320-font1",
+      "composite": {
+        "file": "shadow-layout-320-font1.png",
+        "sha256": "b29d852bcd0b572185d86ebaae1f116b644f47cbf8e6dc5faddea9f9b4281815",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-320-font1-scene.png",
+        "sha256": "aa671f0a9b43948be5447247461b57498104e38d093e4f89f8e1e1f6094c8b9a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-320-font1",
+      "composite": {
+        "file": "contour-layout-320-font1.png",
+        "sha256": "e98934ebb712fc3bb862536d94339eeabfc1b40e0983a4c2c319e308edca27b9",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-320-font1-scene.png",
+        "sha256": "44989aac8478facddf97402ef268665516a3b780766c80604373c7f06b1dd09a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-320-font1",
+      "composite": {
+        "file": "wiring-layout-320-font1.png",
+        "sha256": "4c08641a71a629b6b427643978d9671e9ae56f69cee05765ecb234a64305b71f",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-320-font1-scene.png",
+        "sha256": "6a840d3c5bb9f2783b48de3a01b7d2861b60097ca97bc6b295b0f9dc8203377a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-320-font2",
+      "composite": {
+        "file": "shadow-layout-320-font2.png",
+        "sha256": "1aa8879b76815b0ec1c50d2a11667e6723c042d881220ec318ebb2bb4706abcc",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-320-font2-scene.png",
+        "sha256": "aa671f0a9b43948be5447247461b57498104e38d093e4f89f8e1e1f6094c8b9a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-320-font2-scrolled",
+      "composite": {
+        "file": "shadow-layout-320-font2-scrolled.png",
+        "sha256": "48b1dc2a00cb10234e940a91745571ea78e6d4637432ed18f3646e19a885e483",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-320-font2-scrolled-scene.png",
+        "sha256": "aa671f0a9b43948be5447247461b57498104e38d093e4f89f8e1e1f6094c8b9a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-320-font2",
+      "composite": {
+        "file": "contour-layout-320-font2.png",
+        "sha256": "8732b7d39b74606751aba1e0561a3573fe3fbb90fb3a89b3faf55b5c4abef3ea",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-320-font2-scene.png",
+        "sha256": "44989aac8478facddf97402ef268665516a3b780766c80604373c7f06b1dd09a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-320-font2-scrolled",
+      "composite": {
+        "file": "contour-layout-320-font2-scrolled.png",
+        "sha256": "23af9a4bba232451228e4b755dab75113b438f4260a8ac4acf7c667bcd4918ed",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-320-font2-scrolled-scene.png",
+        "sha256": "44989aac8478facddf97402ef268665516a3b780766c80604373c7f06b1dd09a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-320-font2",
+      "composite": {
+        "file": "wiring-layout-320-font2.png",
+        "sha256": "90f0d13ab3a949abe4c9bdfe7af2e3655550b0fc2fa73b48e9d59314189e10f4",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-320-font2-scene.png",
+        "sha256": "6a840d3c5bb9f2783b48de3a01b7d2861b60097ca97bc6b295b0f9dc8203377a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-320-font2-scrolled",
+      "composite": {
+        "file": "wiring-layout-320-font2-scrolled.png",
+        "sha256": "93f1a67c18c4f7525626b05d23a962cab699e781a08d55cd47c7ecfe53d1fb59",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-320-font2-scrolled-scene.png",
+        "sha256": "6a840d3c5bb9f2783b48de3a01b7d2861b60097ca97bc6b295b0f9dc8203377a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-390-font1",
+      "composite": {
+        "file": "shadow-layout-390-font1.png",
+        "sha256": "97362e9612ea57d4d5774090c3e70d30a263aa6f9a9ca603cf82ee3f326e9dfa",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-390-font1-scene.png",
+        "sha256": "6581b2353e913b4468dc7bb6c7442a6568db587b7d15ca2a49ccd39f29ece28f",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-390-font1",
+      "composite": {
+        "file": "contour-layout-390-font1.png",
+        "sha256": "f816c2275c9e7596982d6271b628a884b6bebe04380440ec4bd1766b2a076188",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-390-font1-scene.png",
+        "sha256": "1163b18e0f5b4db810522ea9dd1abbfb67c595627678d479992f6dec9d6b9255",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-390-font1",
+      "composite": {
+        "file": "wiring-layout-390-font1.png",
+        "sha256": "8584d7120e1ccd9ee0521857991d9f0408a0f2e42b35d3f9d18d1dd981791d31",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-390-font1-scene.png",
+        "sha256": "c10d54b3e7ef7d5e4d2804541eb11ca5bb7b9981b3aea701f816918bad3a7e77",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-390-font2",
+      "composite": {
+        "file": "shadow-layout-390-font2.png",
+        "sha256": "05a744d2b73776871ffe3de91f6c33306a3c377b7e8506468b8c60742de9bf3b",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-390-font2-scene.png",
+        "sha256": "6581b2353e913b4468dc7bb6c7442a6568db587b7d15ca2a49ccd39f29ece28f",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-390-font2-scrolled",
+      "composite": {
+        "file": "shadow-layout-390-font2-scrolled.png",
+        "sha256": "75e0f00a48799737f97ab1dcd44b67b4160f8a248d16209fdee7de7454192e03",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-390-font2-scrolled-scene.png",
+        "sha256": "6581b2353e913b4468dc7bb6c7442a6568db587b7d15ca2a49ccd39f29ece28f",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-390-font2",
+      "composite": {
+        "file": "contour-layout-390-font2.png",
+        "sha256": "7462ab8cc51e65864247b0e51503eb9574d1cef193156b55ab4c56835e45f945",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-390-font2-scene.png",
+        "sha256": "1163b18e0f5b4db810522ea9dd1abbfb67c595627678d479992f6dec9d6b9255",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-390-font2-scrolled",
+      "composite": {
+        "file": "contour-layout-390-font2-scrolled.png",
+        "sha256": "be32dd3105b174517fb02493e20b387836e140d60135f59e352941c0d922e8fd",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-390-font2-scrolled-scene.png",
+        "sha256": "1163b18e0f5b4db810522ea9dd1abbfb67c595627678d479992f6dec9d6b9255",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-390-font2",
+      "composite": {
+        "file": "wiring-layout-390-font2.png",
+        "sha256": "d4dc601ce414868c8c8319973d2395625ba2988134ad548f6ddb5c7e8adb4646",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-390-font2-scene.png",
+        "sha256": "c10d54b3e7ef7d5e4d2804541eb11ca5bb7b9981b3aea701f816918bad3a7e77",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-390-font2-scrolled",
+      "composite": {
+        "file": "wiring-layout-390-font2-scrolled.png",
+        "sha256": "bb8099209889b662c435728c68d91102cb8858a5b84f9b2a5b38fada5eb7a2a6",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-390-font2-scrolled-scene.png",
+        "sha256": "c10d54b3e7ef7d5e4d2804541eb11ca5bb7b9981b3aea701f816918bad3a7e77",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-430-font1",
+      "composite": {
+        "file": "shadow-layout-430-font1.png",
+        "sha256": "208f12a8195090845ec17ff816833331755186b8b9b35e69dd553c64f3a14a86",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-430-font1-scene.png",
+        "sha256": "211be47d692b29e135d28dbb82732f844542fb69940f43b781f1d772045c0328",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-430-font1",
+      "composite": {
+        "file": "contour-layout-430-font1.png",
+        "sha256": "fb2368d44ddd529fd664b53ceebe03b6f0dd6935fc09e8449f9a13493ab35513",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-430-font1-scene.png",
+        "sha256": "c88338bd18c20542b269121d844887255b980f0998c95c309a589f289f6a03d8",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-430-font1",
+      "composite": {
+        "file": "wiring-layout-430-font1.png",
+        "sha256": "14aea61eb66e2107bf551a5536e8c96700f4013d24eba6abb57d4f689fd74ed2",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-430-font1-scene.png",
+        "sha256": "f9f9509f6452ae61a44870bf825dd759f84719c550d955213c6fb4b9053a2f40",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-430-font2",
+      "composite": {
+        "file": "shadow-layout-430-font2.png",
+        "sha256": "1ea9ec72668fc86c1c322bbb0adbdaeac6fbe2d30aa8e292e1dcc641b2bad797",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-430-font2-scene.png",
+        "sha256": "211be47d692b29e135d28dbb82732f844542fb69940f43b781f1d772045c0328",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "shadow-layout-430-font2-scrolled",
+      "composite": {
+        "file": "shadow-layout-430-font2-scrolled.png",
+        "sha256": "12dbc206ff1f84e6bd4a0293314772e2d17861c58d69135d0d714bc88adcf946",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "shadow-layout-430-font2-scrolled-scene.png",
+        "sha256": "211be47d692b29e135d28dbb82732f844542fb69940f43b781f1d772045c0328",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-430-font2",
+      "composite": {
+        "file": "contour-layout-430-font2.png",
+        "sha256": "dad81e7bbcf345ed90e6f6746e08156ad3eabeac2c973f56da3bbdbf91f73f3b",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-430-font2-scene.png",
+        "sha256": "c88338bd18c20542b269121d844887255b980f0998c95c309a589f289f6a03d8",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "contour-layout-430-font2-scrolled",
+      "composite": {
+        "file": "contour-layout-430-font2-scrolled.png",
+        "sha256": "c259f5c41a871703f11fbe7dedfe8a0fe09955616c88d32ad00e40518161e857",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "contour-layout-430-font2-scrolled-scene.png",
+        "sha256": "c88338bd18c20542b269121d844887255b980f0998c95c309a589f289f6a03d8",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-430-font2",
+      "composite": {
+        "file": "wiring-layout-430-font2.png",
+        "sha256": "a125872e8bde6c5843a5602fa14d69c468fdd8bffb0a57d3622dbc647e7d72b4",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-430-font2-scene.png",
+        "sha256": "f9f9509f6452ae61a44870bf825dd759f84719c550d955213c6fb4b9053a2f40",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "wiring-layout-430-font2-scrolled",
+      "composite": {
+        "file": "wiring-layout-430-font2-scrolled.png",
+        "sha256": "a125872e8bde6c5843a5602fa14d69c468fdd8bffb0a57d3622dbc647e7d72b4",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "wiring-layout-430-font2-scrolled-scene.png",
+        "sha256": "f9f9509f6452ae61a44870bf825dd759f84719c550d955213c6fb4b9053a2f40",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-safe-crossing",
+      "composite": {
+        "file": "actor-safe-crossing.png",
+        "sha256": "6f4c3f86b2b8f49f4cbdabca150d0c157b564f74c25d95bd4229b73f76c06d71",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-safe-crossing-scene.png",
+        "sha256": "8b49bf04879645f44d82d84bde88d5d80a299ff8ba45f9ffd0fa13dc8af49629",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-empty-display",
+      "composite": {
+        "file": "actor-empty-display.png",
+        "sha256": "b11ae0df1fa1b6901cd8ae3cae369cee14118ab7f1d58edb846f1d4dd6834862",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-empty-display-scene.png",
+        "sha256": "8c284acb868209c9697c30833894e2349e83770c6f5f2b9f8daa186784949bf2",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-west-shelf-entry",
+      "composite": {
+        "file": "actor-west-shelf-entry.png",
+        "sha256": "91703241b494e8aa96a5c9eeccbaf82709f0bac83fda6398a19f53b7126e9653",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-west-shelf-entry-scene.png",
+        "sha256": "b595b28b5111d25fa62c86f489fed2fb262a685552ef564a7c46015230d154f6",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-west-shelf-hidden",
+      "composite": {
+        "file": "actor-west-shelf-hidden.png",
+        "sha256": "6ad382e2190d530f2aec6eaab45788e26ebf82b360d44866e10fa7592d4dd70c",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-west-shelf-hidden-scene.png",
+        "sha256": "d55c1b0328d240209152c3b8303978ec7c8f297b9e7988cae287f4ebfa01bce5",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-east-shelf-entry",
+      "composite": {
+        "file": "actor-east-shelf-entry.png",
+        "sha256": "3b3dc9f61d4ae6daba7cc22fb9ead03d3c3b8ed8675dabc87bbc9717a12a36ad",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-east-shelf-entry-scene.png",
+        "sha256": "13eda53bd1f07ce83ebade9f23b3acb85c62b978aff1371a260852544f0e1417",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-east-shelf-hidden",
+      "composite": {
+        "file": "actor-east-shelf-hidden.png",
+        "sha256": "df21d99120f8a07297e8f37c1f149f2bc4821930c918d5ea28597ee6797e794f",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-east-shelf-hidden-scene.png",
+        "sha256": "742e9d6f278734668484325f7ce3d3cdfa09f9c3084f309061458e2c8c273d7f",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-noticed",
+      "composite": {
+        "file": "actor-noticed.png",
+        "sha256": "043a6733b80b80730993e61aec2fb8447917fffb42b0026e096bbf0ef46c2192",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-noticed-scene.png",
+        "sha256": "7315cdb06ebd1a9dd63248aa891e850831171dbb93874186afd6d66800d4d884",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-chasing",
+      "composite": {
+        "file": "actor-chasing.png",
+        "sha256": "1f7b40fe165e51cf1faf5e652f25e2bb07a5dfa098cb9e2511bca0eae50cbea7",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-chasing-scene.png",
+        "sha256": "dc07fc1a1da0ebb1fcff51e3e221bd5db6662e018ecb89833a96a0ec5fc9b88a",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "actor-searching",
+      "composite": {
+        "file": "actor-searching.png",
+        "sha256": "8aad7479c5aa839ee36c9536d03fc5302d0afaf91f9e2862684c5971c39f8f40",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "actor-searching-scene.png",
+        "sha256": "b8c823358de65f9c3f134be18a6f47ab8f6c5fc5051a5e4202c928a7653c7ef2",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "exit-approach",
+      "composite": {
+        "file": "exit-approach.png",
+        "sha256": "456d477c7e8903d93d0f7b286028bfff975b51f195ab70960e048f4ceb64bdb7",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "exit-approach-scene.png",
+        "sha256": "77ac86df861d17ba2a4c240a0729703604679e0efd73dd46f1c5846b45679e94",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "exit-outside-open",
+      "composite": {
+        "file": "exit-outside-open.png",
+        "sha256": "808ff2d94ff78d0d37f4bf45a0481c323554d76669dc2b338c37595da98c45ca",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "exit-outside-open-scene.png",
+        "sha256": "55857fb8de74b30c089b5b2de95f6e855a15d3a3f2f274ae9038a9a1e8c98d19",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "exit-outside-closed",
+      "composite": {
+        "file": "exit-outside-closed.png",
+        "sha256": "805ca20b27537afbd892a5299298c70b7c6b49e53207db4768af58a7067179b9",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "exit-outside-closed-scene.png",
+        "sha256": "969bbddf1227f1afaa4528c760ae13bf1e3a02d4b3ddaa75be09cdc00962a8cd",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-list",
+      "composite": {
+        "file": "notebook-list.png",
+        "sha256": "2d4df96369fd76970134aad723326dbcac554204bd7935cd91b69cffa78bd22f",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-list-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-chromatic",
+      "composite": {
+        "file": "notebook-chromatic.png",
+        "sha256": "604595e6824cfb30de0d10e1e011fa70a8f0bfa204e75ad1e5cbe501bd338b16",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-chromatic-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-shadow",
+      "composite": {
+        "file": "notebook-shadow.png",
+        "sha256": "c7a0181061eed4529c78a0ef1c5cd1317fb45968c58560d1127e843e7fca9965",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-shadow-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-contour",
+      "composite": {
+        "file": "notebook-contour.png",
+        "sha256": "ab0f7c559f5719955fbaf99ec9dcb02da6a75caa4c445b7679e031afa20151bc",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-contour-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-mask",
+      "composite": {
+        "file": "notebook-mask.png",
+        "sha256": "b2496ba12c56e7635feca32ff8d7ebd03ddb67d36a1d43c8a8e06be55c1c5460",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-mask-scene.png",
+        "sha256": "90d7bf1e9564753ba6d91eab11d707f1742b8f3e9990df0e9e1e47ec0673d73f",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring",
+      "composite": {
+        "file": "notebook-wiring.png",
+        "sha256": "a22bd3905df4af1a35b9fce950b38390c02e90411460e83af4948ceb36c764bf",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-hybrid",
+      "composite": {
+        "file": "notebook-hybrid.png",
+        "sha256": "27edc8f87a04cd2a7faf39aa70f177273befc22bd6155b79e1af65cbdb11de36",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-hybrid-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-shepard",
+      "composite": {
+        "file": "notebook-shepard.png",
+        "sha256": "53c28b4d3f0d9669f22e7235df7df19a82f4d9b57b8d3f8fa07fa91b8fba062d",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-shepard-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-credits",
+      "composite": {
+        "file": "notebook-credits.png",
+        "sha256": "08d51d11a597b777859060e30a7ee5d5fb2e9df8a7a07a7d4f88575cd41969b6",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-credits-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-mask-side",
+      "composite": {
+        "file": "notebook-mask-side.png",
+        "sha256": "5977b0f6f3fbc265c5554da34d9845b1d6b41bf48ff4822a2034fb9fe5f3f644",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-mask-side-scene.png",
+        "sha256": "b40cf8045252ceeb0f867ac2e4ad43d1d78ecf6b6705fc98e35b3b4b9ed6491d",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-hybrid-small",
+      "composite": {
+        "file": "notebook-hybrid-small.png",
+        "sha256": "0884d46345d25b613c18ca5a0c14689e097960bd54c6a906e9d662b31433c9ad",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-hybrid-small-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-cover-open",
+      "composite": {
+        "file": "notebook-wiring-cover-open.png",
+        "sha256": "432469880aadd87094e55bc84b3cd768d11d3806510fc9e24d25d83d364c0edc",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-cover-open-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-chromatic-neutral",
+      "composite": {
+        "file": "notebook-chromatic-neutral.png",
+        "sha256": "9a02aac67b27997e25b57f8704530c61a741318a7e16aa1cbdb1b941c66fc9de",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-chromatic-neutral-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-contour-guide",
+      "composite": {
+        "file": "notebook-contour-guide.png",
+        "sha256": "95d9f1fdbf944ef77227f03022ccf824741cba10264e95ec942688fe728a45eb",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-contour-guide-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-320-font2",
+      "composite": {
+        "file": "notebook-wiring-320-font2.png",
+        "sha256": "29387f27caf4551618bbcac886b267245b0d1dd7b4605d7e42d50387b54b9c98",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-320-font2-scene.png",
+        "sha256": "371a75c617ec27444ed29400d4372413cbd29dff0b471b2849c314793e200ae0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-320-font2-scrolled",
+      "composite": {
+        "file": "notebook-wiring-320-font2-scrolled.png",
+        "sha256": "b8e459346abc81624663a97084c52e841495724d3d9bd61bf7ab7daaefc3af59",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-320-font2-scrolled-scene.png",
+        "sha256": "371a75c617ec27444ed29400d4372413cbd29dff0b471b2849c314793e200ae0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-390-font2",
+      "composite": {
+        "file": "notebook-wiring-390-font2.png",
+        "sha256": "d3b7e4789c49961dcca4632c2e8431c9382e2edc8f17f2d75a9809f8aa7aea77",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-390-font2-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-390-font2-scrolled",
+      "composite": {
+        "file": "notebook-wiring-390-font2-scrolled.png",
+        "sha256": "fe09273c40d592a808bc01821b2669b3cadf2eec860b06f3c2224c2dd90e603b",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-390-font2-scrolled-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-430-font2",
+      "composite": {
+        "file": "notebook-wiring-430-font2.png",
+        "sha256": "dddcf1d8002bfb656580a8ec08c3162807c38c6967f84df39172f9c71ba49ac3",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-430-font2-scene.png",
+        "sha256": "3558fd02b33ca94c78dc37eb634473b6dcfc917f9dd9a74df4056897a9a115e1",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-430-font2-scrolled",
+      "composite": {
+        "file": "notebook-wiring-430-font2-scrolled.png",
+        "sha256": "6bb45e8a7e00207f947a10a29888ee57c003bfbbaf51258b06f238bfc26598a8",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-430-font2-scrolled-scene.png",
+        "sha256": "3558fd02b33ca94c78dc37eb634473b6dcfc917f9dd9a74df4056897a9a115e1",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-mask-320-font2",
+      "composite": {
+        "file": "notebook-mask-320-font2.png",
+        "sha256": "5705e0372bf7d80339d8ead736b4c140b81d9cdac27ec9ca1c423704ff915636",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-mask-320-font2-scene.png",
+        "sha256": "61cb79c500760b9460cebdd4ea43856a3b0f07e3317a7377dcdea66811a6b877",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-320-font2-controls",
+      "composite": {
+        "file": "notebook-wiring-320-font2-controls.png",
+        "sha256": "44cb28cd31d538e1bb0e67cd45e97b17c70cb17924e5a48fe5f6e43a029ebf9c",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-320-font2-controls-scene.png",
+        "sha256": "371a75c617ec27444ed29400d4372413cbd29dff0b471b2849c314793e200ae0",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-mask-390-font2",
+      "composite": {
+        "file": "notebook-mask-390-font2.png",
+        "sha256": "6ae7417e8052eef11a3c26b17457b6a9fa691c863a77dbed773d72442018d509",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-mask-390-font2-scene.png",
+        "sha256": "0aa25b654526d30c2747d0dbf8104301ce4a31d8593b66cf2ee2940c904fca20",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-390-font2-controls",
+      "composite": {
+        "file": "notebook-wiring-390-font2-controls.png",
+        "sha256": "a3fa57b669fcb0d10b0d1de928229a9c20c458b7a1c0182a90de04af5e9fb39e",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-390-font2-controls-scene.png",
+        "sha256": "d85564c3264b030dbaa319a04a09bc1910d45cd0a6992767747198737251f771",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-mask-430-font2",
+      "composite": {
+        "file": "notebook-mask-430-font2.png",
+        "sha256": "5e812514b411cedf9e49a4b9689bfebe51ad7c48065d5d66b1dbc005cbe2a0bc",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-mask-430-font2-scene.png",
+        "sha256": "68a499759db94268b510fbec8b9e79c7ae74ddb2f44b6b2f77d9b7d1e022f4ce",
+        "individuallyOpened": false
+      }
+    },
+    {
+      "id": "notebook-wiring-430-font2-controls",
+      "composite": {
+        "file": "notebook-wiring-430-font2-controls.png",
+        "sha256": "e945906070a8a11d60ff955593531747b194bea9cd6d04eb49304ae0e5fc55df",
+        "opened": true
+      },
+      "rawWebgl": {
+        "file": "notebook-wiring-430-font2-controls-scene.png",
+        "sha256": "3558fd02b33ca94c78dc37eb634473b6dcfc917f9dd9a74df4056897a9a115e1",
+        "individuallyOpened": false
+      }
+    }
+  ]
+}

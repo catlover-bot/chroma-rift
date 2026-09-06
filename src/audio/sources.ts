@@ -6,4 +6,7 @@ export const AUDIO_SOURCES: Readonly<Record<AudioSourceId, number>> = Object.fre
   interaction: require('../../assets/audio/interaction.wav'),
   mechanism: require('../../assets/audio/mechanism.wav'),
   ambience: require('../../assets/audio/ambience.wav'),
+  cloth: require('../../assets/audio/cloth.wav'),
+  'door-impact': require('../../assets/audio/door-impact.wav'),
+  shepard: require('../../assets/audio/shepard.wav'),
 });

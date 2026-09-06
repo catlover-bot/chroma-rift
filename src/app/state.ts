@@ -112,7 +112,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'COMPLETE_CHAPTER':
       if (state.screen !== 'firstPerson' || action.journeyRun !== state.journeyRun ||
         action.summary.chapterId !== state.selectedChapterId ||
-        (state.selectedChapterId === 'perception-gallery-v1' ? action.summary.chapterVersion !== 2 || action.summary.powerCount !== 2 : action.summary.seals !== 2)) return state;
+        (state.selectedChapterId === 'perception-gallery-v1' ? action.summary.chapterVersion !== 3 || action.summary.powerCount !== 2 : action.summary.seals !== 2)) return state;
       return { ...state, screen: 'firstPersonResult', firstPersonSummary: action.summary };
     case 'COMPLETE_STAGE': {
       const expectedLevel = state.stageIndex === 0 ? 'floating-corridor' : 'impossible-bridge';

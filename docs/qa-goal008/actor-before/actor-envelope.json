@@ -1,0 +1,5 @@
+{
+  "allPassed": true,
+  "boundary": "Actual mesh world bounds and horizontal vertex radius at authored yaw and maximum stride. Arbitrary yaw at standby is a stress fixture, not a claim that every pose occurs in gameplay.",
+  "checks": []
+}

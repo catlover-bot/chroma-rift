@@ -2,6 +2,7 @@ import type { RootState } from '@react-three/fiber/native';
 import * as THREE from 'three';
 
 import type { ChapterRuntime } from '../../domain/firstPerson/types';
+import { configureNotebookCamera } from './notebookCamera';
 import type { CanvasLifecycle } from './canvasLifecycle';
 import { installShaderDiagnostics, recordContextDiagnostics, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
@@ -16,6 +17,9 @@ function createTeardownOnlyRenderer() {
  * live here/in the controller; React only receives discrete presented snapshots. */
 export function createNativeSceneSession(controller: RuntimeController, lifecycle: CanvasLifecycle, proof: boolean, onReady: () => void) {
   const diagnostics = controller.diagnostics;
+  // A CPU camera used only for explicit notebook inspection, in the same GL owner.
+  const notebookCamera = new THREE.PerspectiveCamera(38, 1, .05, 10);
+  const previewing = () => !!controller.notebookPreview && controller.runtime.paused && lifecycle.ready;
   let lastDelta = 0;
   let lastSample = -Infinity;
   let lastGlCheck = -Infinity;
@@ -31,6 +35,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
     if (previousRuntime) { controller.runtime = previousRuntime; previousRuntime = undefined; }
     if (previousTutorial) { controller.tutorial = previousTutorial; previousTutorial = undefined; }
     pendingPublish = undefined;
+    controller.pendingExitImpact = false;
     controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorEvents = [];
     controller.audio?.setActive(false);
     lifecycle.fail(error, phase);
@@ -93,7 +98,12 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
     close() { cleanupShader?.(); lifecycle.close(); },
     sceneError(error: unknown) { fail(error, 'scene frame'); },
     step(state: RootState, delta: number, publish: (snapshot: RuntimeSnapshot) => void) {
-      if (!lifecycle.isCurrentRenderer(state.gl) || diagnostics.appActive === false || diagnostics.paused) return;
+      if (!lifecycle.isCurrentRenderer(state.gl) || diagnostics.appActive === false) return;
+      if (previewing()) {
+        configureNotebookCamera(notebookCamera, state.size.width, state.size.height, controller.notebookPreview!);
+        return;
+      }
+      if (diagnostics.paused) return;
       diagnostics.frameCallbacks += 1;
       lastDelta = delta;
       try {
@@ -113,13 +123,18 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         const renderer = state.gl;
         const present = renderer.render.bind(renderer);
         renderer.render = (scene, camera) => {
-          if (!lifecycle.isCurrentRenderer(renderer) || diagnostics.appActive === false || diagnostics.paused) return;
+          if (!lifecycle.isCurrentRenderer(renderer) || diagnostics.appActive === false || diagnostics.paused && !previewing()) return;
           const completedBefore = diagnostics.renderReturns;
           try {
             // This is the installed native render+endFrameEXP wrapper, once.
-            present(scene, camera);
+            present(scene, previewing() ? notebookCamera : camera);
             diagnostics.presentationReturns += 1;
             if (!lifecycle.active) return;
+            if (previewing()) {
+              if (checkPresentation) { checkPresentation = false; inspectGl(renderer, 'after native wrapper return'); }
+              // No simulation, story, input, ready promotion or game snapshot from a note.
+              return;
+            }
             const now = Date.now();
             const sampledFrame = !lifecycle.ready ? checkPresentation : now - lastSample >= (diagnostics.open ? 500 : 1000);
             if (sampledFrame) {

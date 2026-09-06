@@ -19,6 +19,10 @@ function actionLabel(target: InteractableDefinition, progress?: PuzzleState): st
     case 'gallery-light': return '非常灯を点ける';
     case 'gallery-exit-panel': return progress?.gallery?.powerTaken.shadow && progress.gallery.powerTaken.contour ? '電源を接続' : '非常口を確認';
     case 'chromatic-exhibit': return '色をほどく';
+    case 'mask-exhibit': return '横から確かめる';
+    case 'mask-window': return '側面の窓を動かす';
+    case 'hybrid-exhibit': return '掲示を確かめる';
+    case 'wiring-panel': return '配線を操作';
     case 'shadow-power': case 'contour-power': return '電源を取る';
     case 'shadow-panel': case 'contour-panel': return '装置を操作';
     case 'emblem-panel': return '紋章を調べる';
@@ -28,7 +32,7 @@ function actionLabel(target: InteractableDefinition, progress?: PuzzleState): st
     case 'guide': return 'しるべを調べる';
     case 'floor-device': return '装置を動かす';
     case 'key': return '鍵を重ねる';
-    case 'exit': return '扉を開く';
+    case 'exit': return progress?.gallery ? '扉を閉める' : '扉を開く';
   }
 }
 
@@ -37,7 +41,8 @@ function lockedReason(target: InteractableDefinition, progress: PuzzleState | un
   switch (target.id) {
     case 'gallery-light': return progress.gallery?.emergencyLit ? '非常灯は点いています。' : undefined;
     case 'gallery-exit-panel': return progress.gallery?.powerConnected ? '電源を接続しました。サービス通路へ。' : undefined;
-    case 'chromatic-exhibit': return undefined;
+    case 'chromatic-exhibit': case 'mask-exhibit': case 'mask-window': case 'hybrid-exhibit': return undefined;
+    case 'wiring-panel': return progress.gallery?.powerConnected ? undefined : '出口の盤へ予備電源を二つ接続しよう。';
     case 'shadow-power': return progress.gallery?.shadow.solved && !progress.gallery.powerTaken.shadow ? undefined : '引き出しの電源は取得済みです。';
     case 'contour-power': return progress.gallery?.contour.solved && !progress.gallery.powerTaken.contour ? undefined : '引き出しの電源は取得済みです。';
     case 'shadow-panel':
@@ -56,7 +61,7 @@ function lockedReason(target: InteractableDefinition, progress: PuzzleState | un
       if (progress.gallery && (!progress.gallery.shadow.solved || !progress.gallery.contour.solved)) return '二つの翼の封印を解こう。';
       return aligned ? undefined : '観察の輪から、欠けた鍵の形を重ねよう。';
     case 'exit':
-      if (progress.gallery) return progress.exitDoorOpen ? '非常扉は開いています。外へ歩こう。' : progress.gallery.powerConnected ? undefined : '出口の盤へ予備電源を二つ接続しよう。';
+      if (progress.gallery) return progress.gallery.finalDoorClosed ? '扉は閉まりました。' : progress.gallery.wiring.solved ? undefined : '保守ベイで隠れた配線をつなごう。';
       if (progress.exitDoorOpen) return '扉は開いています。外へ歩こう。';
       return progress.variant === 'exit' && progress.sealA && progress.sealB ? undefined : '二つの封印を解くと開きます。';
   }

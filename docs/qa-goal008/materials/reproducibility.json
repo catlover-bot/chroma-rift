@@ -1,0 +1,72 @@
+{
+  "offlineRegeneration": true,
+  "allAssetHashesMatch": true,
+  "firstHashes": {
+    "source/hollow-face-original.stl": {
+      "bytes": 125984,
+      "sha256": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75"
+    },
+    "hollow-mask.json": {
+      "bytes": 111287,
+      "sha256": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453"
+    },
+    "hybrid-source-low.png": {
+      "bytes": 2002,
+      "sha256": "e14d41a15a79dde142e73bfd4e6c773c42f6e3740e4141e87d5e5c036e7bbd1b"
+    },
+    "hybrid-source-high.png": {
+      "bytes": 2108,
+      "sha256": "c6e309d19ec06d58c69ff0c3e069f1dba786038a88c6ce378fe592fde43b5e7b"
+    },
+    "hybrid-low-pass.png": {
+      "bytes": 22407,
+      "sha256": "80ad4bc90e4fd61caac8ea584c71444766bf5f7288f4ccfc6df6e115e482d2ca"
+    },
+    "hybrid-high-pass.png": {
+      "bytes": 23563,
+      "sha256": "0e248f74cd51f8b48e2a607bc4bbbc15d7890706f55a8a6dc2b7033223eb1df1"
+    },
+    "hybrid-composite.png": {
+      "bytes": 59224,
+      "sha256": "22ba6c8b7eb68c52843fa6f07c26d4063f758c390c563ebf4f85498cf9082ffa"
+    },
+    "hybrid-texture.json": {
+      "bytes": 349655,
+      "sha256": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207"
+    }
+  },
+  "secondHashes": {
+    "source/hollow-face-original.stl": {
+      "bytes": 125984,
+      "sha256": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75"
+    },
+    "hollow-mask.json": {
+      "bytes": 111287,
+      "sha256": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453"
+    },
+    "hybrid-source-low.png": {
+      "bytes": 2002,
+      "sha256": "e14d41a15a79dde142e73bfd4e6c773c42f6e3740e4141e87d5e5c036e7bbd1b"
+    },
+    "hybrid-source-high.png": {
+      "bytes": 2108,
+      "sha256": "c6e309d19ec06d58c69ff0c3e069f1dba786038a88c6ce378fe592fde43b5e7b"
+    },
+    "hybrid-low-pass.png": {
+      "bytes": 22407,
+      "sha256": "80ad4bc90e4fd61caac8ea584c71444766bf5f7288f4ccfc6df6e115e482d2ca"
+    },
+    "hybrid-high-pass.png": {
+      "bytes": 23563,
+      "sha256": "0e248f74cd51f8b48e2a607bc4bbbc15d7890706f55a8a6dc2b7033223eb1df1"
+    },
+    "hybrid-composite.png": {
+      "bytes": 59224,
+      "sha256": "22ba6c8b7eb68c52843fa6f07c26d4063f758c390c563ebf4f85498cf9082ffa"
+    },
+    "hybrid-texture.json": {
+      "bytes": 349655,
+      "sha256": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207"
+    }
+  }
+}

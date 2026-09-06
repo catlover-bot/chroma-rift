@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from 'three';
 import { createCheckpoint, createInitialRuntime, evaluateRuntime, getWorld, hintForRuntime, interact, isSafePose, MOVE_SPEED, pauseRuntime, restoreCheckpoint, setHintStage, updatePlayer, type ChapterRuntime, type PlayerPose, type Vec3 } from '../../firstPerson';
-import { angularDifference, applyGalleryCommand, cancelGalleryManipulation, CONTOUR_TOLERANCE, contourAligned, contourInkAt, createContourSpec, createGalleryRuntime, createShadowSpec, GALLERY_CHAPTER_ID, GALLERY_CONTOUR_FIXTURE, GALLERY_SHADOW_FIXTURE, GALLERY_LIGHT_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, galleryDeviceStatus, galleryPowerCount, contourAlignedCount, migrateGalleryV1Checkpoint, normalizeAngle, parseGalleryProgress, placeShadowSample, restoreGalleryCheckpoint, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowPairMatches, sourceSlot, type DiscAngles, type GalleryAction, type GalleryPuzzle } from '..';
+import { angularDifference, applyGalleryCommand, cancelGalleryManipulation, CONTOUR_TOLERANCE, contourAligned, contourInkAt, createContourSpec, createGalleryRuntime, createShadowSpec, GALLERY_CHAPTER_ID, GALLERY_CONTOUR_FIXTURE, GALLERY_SHADOW_FIXTURE, GALLERY_LIGHT_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_WIRING_FIXTURE, galleryDeviceStatus, galleryPowerCount, contourAlignedCount, migrateGalleryV1Checkpoint, normalizeAngle, parseGalleryProgress, placeShadowSample, restoreGalleryCheckpoint, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowPairMatches, sourceSlot, type DiscAngles, type GalleryAction, type GalleryPuzzle } from '..';
 
 function matrices(pose: PlayerPose) {
   const camera = new PerspectiveCamera(65, 390 / 844, 0.08, 60);
@@ -246,7 +246,7 @@ describe('revised gallery entry and power route', () => {
     expect(act(runtime, { type: 'light-on' }, 'gallery-light').reason).toBe('already-complete');
     const pose = runtime.pose, progress = runtime.progress;
     runtime = act(runtime, { type: 'chromatic-compare' }, 'chromatic-exhibit').runtime;
-    expect(runtime.gallery!.chromaticNeutral).toBe(true); expect(runtime.pose).toBe(pose); expect(runtime.progress).toBe(progress);
+    expect(runtime.gallery!.chromaticNeutral).toBe(true); expect(runtime.pose).toBe(pose); expect(runtime.progress).toEqual({ ...progress, gallery: { ...progress.gallery!, discoveries: { ...progress.gallery!.discoveries, chromatic: true } } });
     expect(getWorld(runtime)).toEqual(before);
     expect(getWorld({ ...runtime, progress: { ...runtime.progress, sealA: true, sealB: true, variant: 'exit' } })).toEqual(before);
   });
@@ -307,14 +307,14 @@ describe('revised gallery entry and power route', () => {
       legacy.pose = { position: { x: 500, y: 1.6, z: -500 }, yaw: 0, pitch: 0 };
       const before = JSON.stringify(legacy), result = migrateGalleryV1Checkpoint(legacy)!;
       expect(result).toBeDefined(); expect(JSON.stringify(legacy)).toBe(before);
-      expect(result.checkpoint.levelVersion).toBe(2);
+      expect(result.checkpoint.levelVersion).toBe(3);
       expect(result.checkpoint.progress.gallery).toMatchObject({ powerTaken: { shadow: stage >= 1, contour: stage >= 2 }, powerConnected: stage >= 3, completedFromV1: stage === 4 });
       expect(result.checkpoint.progress.cleared).toBe(stage === 4);
       expect(restoreGalleryCheckpoint(result.checkpoint)?.recovered).toBe(false);
       expect(migrateGalleryV1Checkpoint({ ...legacy, levelVersion: 3 })).toBeUndefined();
     }
   });
-  it.each([['shadow', 'contour'], ['contour', 'shadow']] as const)('walks light → %s → %s → power connection → service → actual outside', (first, second) => {
+  it.each([['shadow', 'contour'], ['contour', 'shadow']] as const)('walks light → %s → %s → power connection → wiring → safe bypass → explicit last door', (first, second) => {
     let runtime = fresh();
     runtime = aim(runtime, GALLERY_LIGHT_FIXTURE.center); runtime = interact(runtime, 'gallery-light', matrices(runtime.pose));
     expect(runtime.progress.gallery!.emergencyLit).toBe(true);
@@ -333,10 +333,20 @@ describe('revised gallery entry and power route', () => {
     }
     runtime = walk(runtime, 0, 2); runtime = aim(runtime, GALLERY_EXIT_PANEL_FIXTURE.center);
     runtime = interact(runtime, 'gallery-exit-panel', matrices(runtime.pose)); expect(runtime.progress.gallery!.powerConnected).toBe(true);
-    runtime = walk(walk(walk(runtime, 0, 9), 4, 9), 4, 17);
-    runtime = aim(runtime, getWorld(runtime).interactables.find(item => item.id === 'exit')!.center);
-    runtime = interact(runtime, 'exit', matrices(runtime.pose)); expect(runtime.progress.exitDoorOpen).toBe(true);
-    runtime = walk(runtime, 4, 19.5);
+    expect(getWorld(runtime).solids.find(solid => solid.id === 'gallery-wiring-shutter')!.min.y).toBe(0);
+    runtime = walk(walk(walk(walk(runtime, 0, 7), -1.5, 7), -1.5, 9.8), -1.2, 9.8);
+    runtime = aim(runtime, GALLERY_WIRING_FIXTURE.center); runtime = interact(runtime, 'wiring-panel', matrices(runtime.pose));
+    expect(runtime.gallery!.mode).toBe('wiring');
+    runtime = act(runtime, { type: 'wiring-adjust', control: 'line', delta: -.24 }).runtime;
+    expect(runtime.progress.gallery!.wiring.solved).toBe(false);
+    runtime = act(runtime, { type: 'wiring-commit' }).runtime; runtime = act(runtime, { type: 'leave' }).runtime;
+    expect(runtime.progress.gallery!.wiring.solved).toBe(true);
+    runtime = walk(walk(walk(runtime, -1.2, 12.5), 1.7, 12.5), 1.7, 15.2);
+    runtime = walk(walk(walk(runtime, 4, 15.2), 4, 17.5), 6.3, 17.5);
+    runtime = walk(walk(walk(runtime, 6.3, 20.5), 4, 20.5), 4, 24);
+    expect(runtime.progress.cleared).toBe(false); expect(runtime.doorExitOpen).toBe(1);
+    runtime = act(runtime, { type: 'close-exit' }, 'exit').runtime;
+    expect(runtime.progress.gallery!.finalDoorClosed).toBe(true); expect(runtime.doorExitOpen).toBe(0);
     expect(runtime.progress).toMatchObject({ sealA: false, sealB: false, variant: 'entrance', cleared: true });
     expect(isSafePose(runtime.pose, getWorld(runtime))).toBe(true);
     expect(createGalleryRuntime(restoreGalleryCheckpoint(createCheckpoint(runtime))!.checkpoint).progress.cleared).toBe(true);

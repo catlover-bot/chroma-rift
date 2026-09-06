@@ -2,13 +2,14 @@
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import * as THREE from 'three';
-import { createContourSpec, createShadowSpec, CONTOUR_DISC_IDS, GALLERY_CHROMATIC_FIXTURE, GALLERY_LIGHT_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_SHADOW_FIXTURE, GALLERY_SHADOW_OBSERVATION_POSE, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowSlotAt, angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
+import { createContourSpec, createShadowSpec, CONTOUR_DISC_IDS, GALLERY_CHROMATIC_FIXTURE, GALLERY_DISPLAY_POSITION, GALLERY_WIRING_OBSERVATION_POSE, GALLERY_MASK_WINDOW_FIXTURE, GALLERY_FINAL_DOOR_FIXTURE, GALLERY_LIGHT_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_SHADOW_FIXTURE, GALLERY_SHADOW_OBSERVATION_POSE, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowSlotAt, angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
 import type { SampleId, SocketId } from '../../domain/gallery';
 import { getWorld } from '../../domain/firstPerson/chapter';
 import { createPanelFixture } from '../../domain/firstPerson/panelFixture';
 import type { ChapterRuntime, CollisionVolume, PuzzleState, Vec3, WorldGeometry } from '../../domain/firstPerson/types';
 import type { SceneResources } from './resources';
 import { computeSegmentTransform } from './segmentTransform';
+import { PerceptualGalleryExhibits } from './PerceptualGalleryExhibits';
 import { GalleryActor } from './GalleryActor';
 import { PanelFixture } from './PanelFixture';
 
@@ -51,6 +52,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
   const sampleFrames = useRef<Partial<Record<SampleId, THREE.Group | null>>>({});
   const trays = useRef<Partial<Record<SocketId, THREE.Group | null>>>({});
   const discs = useRef<(THREE.Mesh | null)[]>([]), discNotches = useRef<(THREE.Mesh | null)[]>([]);
+  const maskWindowHandle = useRef<THREE.Mesh>(null);
   const drawerB = useRef<THREE.Group>(null), drawerC = useRef<THREE.Group>(null);
   const guide = useRef<THREE.Group>(null), lever = useRef<THREE.Group>(null), exitHandle = useRef<THREE.Mesh>(null);
   const shadow = createShadowSpec(gp.shadow.seed, gp.shadow.variant), contour = createContourSpec(gp.contour.seed);
@@ -62,7 +64,14 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       r.chromaticSurface.update(g.chromaticNeutral);
       if (guide.current) guide.current.visible = g.contourGuide;
       for (const solid of getWorld(state).solids) {
-        const mesh = doors.current[solid.id]; if (mesh) mesh.position.y = (solid.min.y + solid.max.y) / 2;
+        const mesh = doors.current[solid.id];
+        if (mesh) {
+          mesh.position.y = (solid.min.y + solid.max.y) / 2;
+          if (solid.id === 'exit-door') {
+            const left = g.exitClosureSeconds, elapsed = .6 - left;
+            mesh.position.z = (solid.min.z + solid.max.z) / 2 + (!reducedMotion && left > 0 ? Math.sin(elapsed * 28) * .006 * left / .6 : 0);
+          }
+        }
       }
       const drag = g.activeDrag;
       const candidate = drag?.kind === 'shadow' ? shadowSlotAt(drag.point) : null;
@@ -84,6 +93,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       });
       if (drawerB.current) drawerB.current.position.z = GALLERY_SHADOW_FIXTURE.center.z + .09 + .22 * g.doorShadowOpen;
       if (drawerC.current) drawerC.current.position.z = GALLERY_CONTOUR_FIXTURE.center.z + .09 + .22 * g.doorContourOpen;
+      if (maskWindowHandle.current) maskWindowHandle.current.position.y = GALLERY_MASK_WINDOW_FIXTURE.center.y + (state.progress.gallery!.maskWindowOpen ? 1.6 : 0);
       if (lever.current) lever.current.rotation.x = state.progress.gallery!.emergencyLit ? -.5 : .5;
       if (exitHandle.current) exitHandle.current.position.y = 1.2 + state.doorExitOpen * 3.3;
     } catch (e) { if (onFrameError) onFrameError(e); else throw e; }
@@ -95,9 +105,10 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
   const pathLights: Block[] = [
     ...[1, -2, -5, -8, -10].map(z => ({ position: [.9, .017, z], scale: [.3, .025, .07] } as Block)),
     ...[-5, -7, 5, 7, 9].map(x => ({ position: [x, .017, -10], scale: [.07, .025, .3] } as Block)),
-    ...[8, 10, 12, 14, 16].map(z => ({ position: [4.75, .017, z], scale: [.1, .025, .3] } as Block)),
+    ...[8, 10, 12, 14, 16, 18, 20, 22].map(z => ({ position: [4.75, .017, z], scale: [.1, .025, .3] } as Block)),
   ];
   return <group name="closed-gallery" dispose={null}>
+    <PerceptualGalleryExhibits runtime={runtime} resources={resources} />
     <GalleryActor runtime={runtime} resources={resources} reducedMotion={reducedMotion} />
     <ambientLight intensity={1.4} /><directionalLight intensity={1.35} position={[2, 6, 3]} />
     <InstancedBlocks name="gallery-floors" blocks={floorBlocks} resources={resources} material={resources.floor} />
@@ -105,10 +116,22 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
     {[r.roomA, r.roomB, r.roomC, r.roomD].map((material, i) => <InstancedBlocks key={i} name={'gallery-walls-' + i} resources={resources} material={material}
       blocks={walls.filter(s => (s.min.z > 5 ? 3 : s.max.x < -3 ? 1 : s.min.x > 5 && s.min.z < 0 ? 2 : 0) === i).map(boxBlock)} />)}
     <InstancedBlocks name="gallery-floor-edges" blocks={walls.map(s => { const b = boxBlock(s); return { position: [b.position[0], .08, b.position[2]], scale: [b.scale[0] + .015, .16, b.scale[2] + .015] } as Block; })} resources={resources} material={resources.trim} />
+    <InstancedBlocks name="gallery-wall-panels" resources={resources} material={resources.trim} blocks={walls.map(s => {
+      const b = boxBlock(s); return { position: [b.position[0], .65, b.position[2]], scale: [b.scale[0] + .009, 1.0, b.scale[2] + .009] } as Block;
+    })} />
+    <InstancedBlocks name="gallery-wall-joints" resources={resources} material={r.shelf} blocks={walls.flatMap(s => {
+      const b = boxBlock(s), alongX = b.scale[0] > b.scale[2], length = Math.max(b.scale[0], b.scale[2]);
+      return Array.from({ length: Math.max(0, Math.floor(length / 2) - 1) }, (_, i) => ({
+        position: [alongX ? s.min.x + (i + 1) * 2 : b.position[0], .65, alongX ? b.position[2] : s.min.z + (i + 1) * 2],
+        scale: [alongX ? .028 : b.scale[0] + .013, .94, alongX ? b.scale[2] + .013 : .028],
+      } as Block));
+    })} />
     <InstancedBlocks name="gallery-route-lights" resources={resources} material={gp.emergencyLit ? r.selected : r.shelf} blocks={pathLights} />
-    {world.solids.filter(s => s.kind === 'door').map(s => { const b = boxBlock(s); return <mesh key={s.id} name={s.id} ref={m => { doors.current[s.id] = m; }} geometry={resources.box} material={resources.door} position={b.position} scale={b.scale} />; })}
+    {world.solids.filter(s => s.kind === 'door' || s.id === 'mask-window-body').map(s => { const b = boxBlock(s); return <mesh key={s.id} name={s.id} ref={m => { doors.current[s.id] = m; }} geometry={resources.box} material={resources.door} position={b.position} scale={b.scale} />; })}
     <InstancedBlocks name="gallery-retreat-shelves" resources={resources} material={resources.device} blocks={world.solids.filter(s => s.id.includes('shelf')).map(boxBlock)} />
-    <mesh name="gallery-empty-plinth" geometry={resources.box} material={r.shelf} position={[0, .025, 9]} scale={[.8, .05, .75]} />
+    <InstancedBlocks name="gallery-mask-cabinet" resources={resources} material={resources.trim} blocks={world.solids.filter(s => s.id.startsWith('gallery-mask-')).map(boxBlock)} />
+    <mesh ref={maskWindowHandle} name="gallery-mask-window-handle" geometry={resources.box} material={r.outline} position={[GALLERY_MASK_WINDOW_FIXTURE.center.x, GALLERY_MASK_WINDOW_FIXTURE.center.y + (gp.maskWindowOpen ? 1.6 : 0), GALLERY_MASK_WINDOW_FIXTURE.center.z + .025]} scale={[.26, .055, .09]} />
+    <mesh name="gallery-empty-plinth" geometry={resources.box} material={r.shelf} position={[GALLERY_DISPLAY_POSITION.x, .025, GALLERY_DISPLAY_POSITION.z]} scale={[.8, .05, .75]} />
     <PanelFixture name="gallery-light" fixture={lightFixture} box={resources.box} plane={resources.plane} surface={resources.device} backing={resources.dark} frame={r.warm} />
     <group position={[-.72, 1.55, 5.73]} rotation={[0, Math.PI, 0]}>
       <group ref={lever} name="emergency-light-lever" rotation={[gp.emergencyLit ? -.5 : .5, 0, 0]}>
@@ -124,7 +147,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       </group>)}
     </group>
     <PanelFixture name="chromatic-exhibit" fixture={colorFixture} box={resources.box} plane={resources.plane} surface={r.chromaticSurface.material} backing={resources.dark} frame={r.warm} />
-    {[GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE].map((p, i) => <mesh key={i} name={'gallery-observation-' + i} geometry={resources.ring} material={r.outline} position={[p.position.x, .012, p.position.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.1, 1.1, 1]} />)}
+    {[GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_WIRING_OBSERVATION_POSE].map((p, i) => <mesh key={i} name={'gallery-observation-' + i} geometry={resources.ring} material={r.outline} position={[p.position.x, .012, p.position.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.1, 1.1, 1]} />)}
     <group name="hub-two-powers" position={[0, 2.3, -13.8]}>
       {(['shadow', 'contour'] as const).map((puzzle, i) => <mesh key={puzzle} name={'hub-' + puzzle + '-power'} geometry={resources.box} material={gp.powerTaken[puzzle] ? r.outline : r.shelf} position={[(i - .5) * .45, 0, 0]} scale={[.22, .3, .1]} />)}
     </group>
@@ -173,7 +196,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
         })}
       </group>
     </group>
-    <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[3.55, 1.2 + runtime.current.doorExitOpen * 3.3, 17.86]} scale={[.1, .28, .1]} />
-    <mesh name="gallery-exit-sign" geometry={resources.box} material={r.exitSign} position={[4, 2.9, 17.82]} scale={[.85, .25, .035]} />
+    <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[3.55, 1.2 + runtime.current.doorExitOpen * 3.3, GALLERY_FINAL_DOOR_FIXTURE.center.z]} scale={[.1, .28, .1]} />
+    <mesh name="gallery-exit-sign" geometry={resources.box} material={r.exitSign} position={[4, 2.9, 22.82]} scale={[.85, .25, .035]} />
   </group>;
 }

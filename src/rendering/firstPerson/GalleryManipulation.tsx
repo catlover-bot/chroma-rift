@@ -1,11 +1,11 @@
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEvent } from 'react-native';
-import { CONTOUR_DISC_IDS, createContourSpec, createShadowSpec, galleryDeviceStatus, SAMPLE_IDS, type SampleId } from '../../domain/gallery';
+import { CONTOUR_DISC_IDS, createContourSpec, createShadowSpec, galleryDeviceStatus, getWiringSpec, SAMPLE_IDS, type SampleId } from '../../domain/gallery';
 import { angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
 import { galleryAction, galleryPointer } from './galleryController';
 import type { RuntimeController } from './runtimeController';
 import { SceneActionButton } from './SceneActionButton';
-import { targetChangedTouches } from './touchInput';
+import { observeReleaseBarrier, targetChangedTouches } from './touchInput';
 
 type Common = { controller: RuntimeController; enabled: boolean; onChange: () => void };
 function touchLifetime(controller: RuntimeController, enabled: boolean) {
@@ -21,6 +21,7 @@ export function GalleryTouchLayer({ controller, enabled, onChange, width, height
   useLayoutEffect(() => { lifetime.activate(); return () => lifetime.dispose(); }, [lifetime]);
   const send = (phase: 'start' | 'move' | 'end' | 'cancel', event: GestureResponderEvent) => {
     if (!enabled || !lifetime.current()) return;
+    observeReleaseBarrier(controller.input, event.nativeEvent.touches.map(touch => Number(touch.identifier)));
     const changed = event.nativeEvent.changedTouches?.length ? event.nativeEvent.changedTouches : [event.nativeEvent];
     // Fabric can batch changed touches from sibling action buttons. Acquire
     // ownership only from this view; subsequent events use the acquired ID.
@@ -53,6 +54,30 @@ export function GalleryDeviceControls({ controller, enabled, onChange, simple, r
   const run = (action: Parameters<typeof galleryAction>[1]) => { if (!enabled || !lifetime.current()) return; galleryAction(controller, action); onChange(); };
   const shadow = live.mode === 'shadow', solved = shadow ? saved.shadow.solved : saved.contour.solved;
   const status = galleryDeviceStatus(controller.runtime)!;
+  if (live.mode === 'wiring') {
+    const spec = getWiringSpec({ offset: live.wiringOffset, cover: live.wiringCover });
+    return <View style={styles.controls} testID="gallery-device-controls">
+      <Text style={styles.caption} testID="device-objective">{status.objective}</Text>
+      <Text style={styles.caption} testID="device-instruction" accessibilityLiveRegion="polite">{status.instruction}</Text>
+      {simple && !status.solved ? <View style={styles.adjustments}>{(['line', 'cover'] as const).map(control => {
+        const label = control === 'line' ? '線の高さ' : 'カバーの位置', value = control === 'line' ? live.wiringOffset : live.wiringCover;
+        const limits = control === 'line' ? spec.offsetLimits : spec.coverLimits, delta = control === 'line' ? .014 : .097;
+        return <View key={control} accessible accessibilityRole="adjustable" accessibilityLabel={label}
+          accessibilityValue={{ min: limits[0], max: limits[1], now: value, text: control === 'line' ? '上下に調整できます' : '横にずらして確かめられます' }}
+          accessibilityActions={[{ name: 'increment', label: control === 'line' ? '上へ' : '右へ' }, { name: 'decrement', label: control === 'line' ? '下へ' : '左へ' }]}
+          onAccessibilityAction={event => { if (event.nativeEvent.actionName === 'increment' || event.nativeEvent.actionName === 'decrement') run({ type: 'wiring-adjust', control, delta: (event.nativeEvent.actionName === 'increment' ? 1 : -1) * delta }); }} style={styles.row}>
+          <Text style={styles.caption}>{label}</Text>
+          <Button label={control === 'line' ? '線を下へ' : 'カバーを左へ'} disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'wiring-adjust', control, delta: -delta })} />
+          <Button label={control === 'line' ? '線を上へ' : 'カバーを右へ'} disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'wiring-adjust', control, delta })} />
+        </View>;
+      })}</View> : null}
+      <View style={styles.row}>
+        {!status.solved ? <Button label={status.commitLabel} disabled={!enabled || !status.commitEnabled} sessionKey={sessionKey} onPress={() => run({ type: 'wiring-commit' })} /> : null}
+        <Button label="探索へ戻る" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'leave' })} />
+      </View>
+      {!simple && !status.solved ? <Text style={styles.caption}>右のつまみは上下、カバーの取っ手は左右に動かせます。</Text> : null}
+    </View>;
+  }
   const spec = createShadowSpec(saved.shadow.seed, saved.shadow.variant);
   const pair = spec.samples.filter(s => s.color === '#808080').map(s => SAMPLE_IDS.indexOf(s.id) + 1);
   return <View style={styles.controls} testID="gallery-device-controls">

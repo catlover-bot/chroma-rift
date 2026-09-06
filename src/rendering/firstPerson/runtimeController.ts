@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { advanceGalleryActor, resumeGalleryActor, cancelGalleryManipulation, contourAlignedCount, type GalleryActorEvent } from '../../domain/gallery';
+import { validNotebookWindow, type NotebookMaskPreview } from './notebookCamera';
+import { advanceGalleryActor, recordGalleryDiscovery, canCloseGalleryExit, resumeGalleryActor, cancelGalleryManipulation, contourAlignedCount, type GalleryActorEvent } from '../../domain/gallery';
 import { galleryAction } from './galleryController';
 import type { createGalleryAudio } from '../../audio';
 
@@ -20,6 +21,7 @@ import { createFirstPersonDiagnostics, type FirstPersonDiagnostics } from './dia
 
 export type RuntimeController = {
   runtime: ChapterRuntime;
+  notebookPreview?: NotebookMaskPreview | undefined;
   viewport?: { width: number; height: number };
   horrorIntensity: 'standard' | 'subdued';
   audio?: ReturnType<typeof createGalleryAudio>;
@@ -27,6 +29,7 @@ export type RuntimeController = {
   pendingFootstepDistance: number;
   pendingActorFootstepDistance: number;
   pendingActorEvents: GalleryActorEvent[];
+  pendingExitImpact: boolean;
   actorNotice?: { sequence: number; text: string };
   retired: boolean;
   screenReader: boolean;
@@ -49,7 +52,7 @@ export type RuntimeSnapshot = { actorNotice?: { sequence: number; text: string }
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorEvents: [], retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorEvents: [], pendingExitImpact: false, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -68,6 +71,7 @@ export function stopController(controller: RuntimeController): void {
   controller.simpleStep = 0;
   controller.pendingFootstepDistance = 0;
   controller.pendingActorFootstepDistance = 0; controller.pendingActorEvents = [];
+  controller.pendingExitImpact = false;
 }
 export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 'turn'; yaw: number; pitch: number } | { type: 'step'; forward: number } | { type: 'hint'; stage: HintStage } | { type: 'sensitivity'; value: number; vertical?: number } | { type: 'verticalSensitivity'; value: number };
 /** Explicit commands are the only UI mutation boundary of the simulation store.
@@ -124,6 +128,14 @@ export function syncCamera(controller: RuntimeController, camera: THREE.Perspect
   return matrices;
 }
 export function advanceController(controller: RuntimeController, delta: number, camera: THREE.PerspectiveCamera): void {
+  if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.cleared && controller.runtime.gallery?.exitClosureSeconds) {
+    const dt = Number.isFinite(delta) ? Math.max(0, Math.min(delta, .05)) : 0;
+    controller.runtime = { ...controller.runtime, gallery: { ...controller.runtime.gallery, exitClosureSeconds: Math.max(0, controller.runtime.gallery.exitClosureSeconds - dt) } };
+    clearTouchInput(controller.input); controller.simpleStep = 0;
+    controller.pendingFootstepDistance = controller.pendingActorFootstepDistance = 0;
+    syncCamera(controller, camera);
+    return;
+  }
   if (controller.retired || controller.runtime.paused || controller.runtime.progress.cleared) { stopController(controller); return; }
   if (controller.runtime.gallery && controller.runtime.gallery.mode !== 'explore') {
     clearTouchInput(controller.input); controller.simpleStep = 0;
@@ -170,20 +182,23 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   // Their next presented cue must publish even when it matches the last frame's
   // semantic bucket. Continuous movement and idle frames do not advance this.
   const gallery = controller.runtime.gallery;
-  const galleryKey = gallery ? [gallery.mode, gallery.shadowCompare, gallery.contourGuide, gallery.activeDrag?.pointerId ?? '', gallery.feedback?.sequence ?? 0, contourAlignedCount(controller.runtime.progress.gallery!.contour.seed, gallery.contourAngles)].join(':') : '';
-  const key = `${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
+  const galleryKey = gallery ? [canCloseGalleryExit(controller.runtime), JSON.stringify(gallery.lastSafePose), gallery.mode, gallery.exitClosureSeconds > 0, gallery.shadowCompare, gallery.contourGuide, gallery.activeDrag?.pointerId ?? '', gallery.feedback?.sequence ?? 0, contourAlignedCount(controller.runtime.progress.gallery!.contour.seed, gallery.contourAngles)].join(':') : '';
+  const key = `${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
   return { ...(controller.actorNotice ? { actorNotice: controller.actorNotice } : {}), runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
   controller.feedbackMessage = '';
   if (!controllerCanInteract(controller)) return false;
-  if (expectedId === 'shadow-panel' || expectedId === 'contour-panel') return galleryAction(controller, { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : 'contour' });
+  if (expectedId === 'shadow-panel' || expectedId === 'contour-panel' || expectedId === 'wiring-panel') return galleryAction(controller, { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : expectedId === 'contour-panel' ? 'contour' : 'wiring' });
   if (controller.runtime.gallery) {
     if (expectedId === 'gallery-light') return galleryAction(controller, { type: 'light-on' });
     if (expectedId === 'gallery-exit-panel') return galleryAction(controller, { type: controller.runtime.progress.gallery!.powerTaken.shadow && controller.runtime.progress.gallery!.powerTaken.contour ? 'connect-power' : 'inspect-exit' });
     if (expectedId === 'shadow-power' || expectedId === 'contour-power') return galleryAction(controller, { type: 'take-power', puzzle: expectedId === 'shadow-power' ? 'shadow' : 'contour' });
     if (expectedId === 'chromatic-exhibit') return galleryAction(controller, { type: 'chromatic-compare' });
-    if (expectedId === 'exit') return galleryAction(controller, { type: 'open-exit' });
+    if (expectedId === 'mask-exhibit') return galleryAction(controller, { type: 'mask-inspect' });
+    if (expectedId === 'mask-window') return galleryAction(controller, { type: 'mask-window' });
+    if (expectedId === 'hybrid-exhibit') return galleryAction(controller, { type: 'hybrid-inspect' });
+    if (expectedId === 'exit') return canCloseGalleryExit(controller.runtime) && galleryAction(controller, { type: 'close-exit' });
     return false;
   }
   if (!controller.lab && expectedId.startsWith('emblem-')) {
@@ -318,8 +333,22 @@ export function setControllerScreenReader(controller: RuntimeController, enabled
 export function flushControllerAudioFrame(controller: RuntimeController): void {
   const distance = controller.pendingFootstepDistance, actorDistance = controller.pendingActorFootstepDistance, actorEvents = controller.pendingActorEvents;
   controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorEvents = [];
+  if (controller.pendingExitImpact) {
+    controller.pendingExitImpact = false;
+    if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.gallery?.finalDoorClosed && controller.diagnostics.stage === 'ready' && controller.diagnostics.appActive !== false) {
+      controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'door-close', position: { x: 4, y: 1.45, z: 23 } });
+    }
+  }
   if (!controllerCanInteract(controller)) return;
-  const messages = { foreshadow: '格子の奥に、展示体が立っている。', absence: '奥で足音。', warning: '通路に何かいる。棚の陰でやり過ごそう。', caught: '通路の手前へ戻された。' };
+  const messages = { foreshadow: '格子の奥に、展示体が立っている。', absence: '奥で足音。', crossing: '格子の向こうを、展示体が横切る。', warning: '通路に何かいる。棚の陰でやり過ごそう。', caught: '最後の安全な場所へ戻された。' };
+  if (actorEvents.includes('warning') && controller.audio) {
+    const owner = controller.audio, session = controller.runtime.session;
+    owner.playIllusion(String(session), controller.horrorIntensity, () => {
+      if (controller.audio === owner && controller.runtime.session === session && controllerCanInteract(controller) && controller.runtime.gallery?.mode === 'explore' && controller.horrorIntensity === 'standard') {
+        controller.runtime = recordGalleryDiscovery(controller.runtime, 'shepard');
+      }
+    });
+  }
   if (actorEvents.length) controller.actorNotice = { sequence: (controller.actorNotice?.sequence ?? 0) + 1, text: actorEvents.map(event => messages[event]).join(' ') };
   controller.audio?.setListenerPosition(controller.runtime.pose.position);
   if (actorDistance > 0 && controller.runtime.gallery?.mode === 'explore') controller.audio?.actorMovement(actorDistance, controller.runtime.gallery.actor.position, String(controller.runtime.session));
@@ -329,9 +358,10 @@ export function soundForControllerTransition(controller: RuntimeController, prev
   const before = previous.progress, after = controller.runtime.progress;
   if (before.gallery && after.gallery) {
     const b = before.gallery, a = after.gallery;
-    const released = !b.shadow.solved && a.shadow.solved || !b.contour.solved && a.contour.solved;
+    if (!b.finalDoorClosed && a.finalDoorClosed) { controller.audio?.beginEnding(); controller.pendingExitImpact = true; return; }
+    const released = !b.wiring.solved && a.wiring.solved || !b.shadow.solved && a.shadow.solved || !b.contour.solved && a.contour.solved;
     const door = !b.powerConnected && a.powerConnected || !before.exitDoorOpen && after.exitDoorOpen;
-    const sourceId = !b.emergencyLit && a.emergencyLit ? 'gallery-light' : !b.powerConnected && a.powerConnected ? 'gallery-exit-panel' :
+    const sourceId = !b.wiring.solved && a.wiring.solved ? 'wiring-panel' : !b.emergencyLit && a.emergencyLit ? 'gallery-light' : !b.powerConnected && a.powerConnected ? 'gallery-exit-panel' :
       !before.exitDoorOpen && after.exitDoorOpen ? 'exit' : !b.powerTaken.shadow && a.powerTaken.shadow ? 'shadow-panel' :
       !b.powerTaken.contour && a.powerTaken.contour ? 'contour-panel' : controller.runtime.gallery?.mode === 'shadow' ? 'shadow-panel' : 'contour-panel';
     controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence,
@@ -363,4 +393,24 @@ export function setControllerViewport(controller: RuntimeController, width: numb
 export function setControllerHorrorIntensity(controller: RuntimeController, intensity: 'standard' | 'subdued'): void {
   if (controller.retired || (intensity !== 'standard' && intensity !== 'subdued')) return;
   controller.horrorIntensity = intensity;
+  if (intensity === 'subdued') controller.audio?.stopIllusion();
+}
+
+/** Explicit paused comparison. Main pose/matrices and actor are never changed. */
+export function setControllerNotebookPreview(controller: RuntimeController, preview: NotebookMaskPreview | undefined): boolean {
+  if (controller.retired) return false;
+  if (preview && (!controller.runtime.paused || !controller.runtime.gallery || controller.diagnostics.stage !== 'ready' || controller.diagnostics.appActive === false || !Number.isFinite(preview.yaw))) return false;
+  prepareControllerNotebook(controller);
+  stopController(controller);
+  controller.notebookPreview = preview ? { kind: 'mask', yaw: Math.max(-Math.PI / 2, Math.min(Math.PI / 2, preview.yaw)), ...(validNotebookWindow(preview.window) ? { window: { ...preview.window } } : {}) } : undefined;
+  controller.viewCommandRevision += 1;
+  return true;
+}
+
+/** Called before pausing so no owned pointer is lost before suppression. */
+export function prepareControllerNotebook(controller: RuntimeController): void {
+  if (controller.retired) return;
+  const pointer = controller.runtime.gallery?.activeDrag?.pointerId;
+  if (pointer !== undefined && !controller.input.releaseBarrier.includes(pointer)) controller.input.releaseBarrier.push(pointer);
+  requireAllPointersReleased(controller.input);
 }

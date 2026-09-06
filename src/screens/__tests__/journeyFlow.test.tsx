@@ -8,7 +8,7 @@ import App from '../../../App';
 import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import type { IllusionMazeCanvasProps } from '../../rendering/IllusionMazeCanvas';
 import { APPLICATION_STORAGE_KEY } from '../../storage/applicationStorage';
-import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
+import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { createGalleryRuntime } from '../../domain/gallery';
@@ -352,6 +352,16 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(await AsyncStorage.getItem(GALLERY_PRE_V2_KEY)).toBe(source);
     expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBe(oldRaw);
     expect(JSON.parse((await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY))!).progress.gallery.completedFromV1).toBe(true);
+    const beforeReview = await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY);
+    await fireEvent.press(view.getByRole('button', { name: '発見メモを比べる' }));
+    expect(await view.findByTestId('discovery-notebook')).toBeTruthy();
+    expect(view.getAllByRole('button').filter(button => String(button.props.accessibilityLabel).includes('自由比較'))).toHaveLength(7);
+    expect(mockFirstPersonCanvasProps!.controller.runtime.paused).toBe(true);
+    await fireEvent.press(view.getByRole('button', { name: '結果へ戻る' }));
+    expect(await view.findByText('展示室のクリア記録')).toBeTruthy();
+    expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(beforeReview);
+    expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(source);
+
     await fireEvent.press(view.getByRole('button', { name: '展示室を最初から遊ぶ' }));
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.cleared).toBe(false);
@@ -484,7 +494,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await waitFor(() => expect(finishDeletion).toBeDefined());
     expect(view.queryByText('補助表示')).toBeNull();
     expect(remove).toHaveBeenCalledTimes(2);
-    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY]);
+    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY]);
     await act(() => finishDeletion?.());
     expect(await view.findByText('あとで調整して遊ぶ')).toBeTruthy();
     await waitFor(async () => {

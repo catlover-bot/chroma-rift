@@ -1,15 +1,20 @@
 import * as THREE from 'three';
 import { createCheckpoint } from '../../../domain/firstPerson';
 import { projectWithCamera } from '../../../domain/firstPerson/alignment';
-import { GALLERY_CHAPTER_ID, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, SHADOW_SLOT_POSITIONS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, createShadowSpec, createContourSpec, normalizeAngle, type GalleryPuzzle } from '../../../domain/gallery';
+import { GALLERY_CHAPTER_ID, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, SHADOW_SLOT_POSITIONS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, createShadowSpec, createContourSpec, normalizeAngle, getWiringSpec, GALLERY_WIRING_OBSERVATION_POSE, type GalleryDevice } from '../../../domain/gallery';
+import { observeReleaseBarrier } from '../touchInput';
 import { createCanvasLifecycle } from '../canvasLifecycle';
 import { galleryAction, galleryCommand, dispatchGalleryController, galleryPointer } from '../galleryController';
 import { fixtureFullyVisible, fixturePointInWorld, pointOnFixture } from '../manipulationProjection';
-import { advanceController, commandController, createController, syncCamera, worldForController, controllerSnapshot, setControllerForeground, attachControllerAudio, flushControllerAudioFrame } from '../runtimeController';
+import { advanceController, commandController, prepareControllerNotebook, createController, syncCamera, worldForController, controllerSnapshot, setControllerForeground, attachControllerAudio, flushControllerAudioFrame } from '../runtimeController';
 
-function setup(puzzle: GalleryPuzzle = 'shadow', width = 390, height = 844, ready = true) {
+function setup(puzzle: GalleryDevice = 'shadow', width = 390, height = 844, ready = true) {
   const c = createController(undefined, false, true, GALLERY_CHAPTER_ID);
-  c.runtime.pose = puzzle === 'shadow' ? GALLERY_SHADOW_OBSERVATION_POSE : GALLERY_CONTOUR_OBSERVATION_POSE;
+  c.runtime.pose = puzzle === 'shadow' ? GALLERY_SHADOW_OBSERVATION_POSE : puzzle === 'wiring' ? GALLERY_WIRING_OBSERVATION_POSE : GALLERY_CONTOUR_OBSERVATION_POSE;
+  if (puzzle === 'wiring') {
+    const progress = c.runtime.progress.gallery!;
+    progress.powerConnected = true; progress.powerTaken = { shadow: true, contour: true };
+  }
   c.runtime.progress.sealA = true; c.runtime.doorAOpen = 1;
   const camera = new THREE.PerspectiveCamera(65, width / height, .08, 60);
   syncCamera(c, camera);
@@ -118,7 +123,7 @@ describe('gallery logical touch points and actual Three camera (presentation con
   it('commits a manually selected pair only once, independently of compare and sound', () => {
     const { c } = setup();
     const event = jest.fn();
-    attachControllerAudio(c, { event, dispose: jest.fn(), setActive: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
+    attachControllerAudio(c, { event, dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
     galleryAction(c, { type: 'enter', puzzle: 'shadow' });
     const saved = c.runtime.progress.gallery!.shadow;
     const spec = createShadowSpec(saved.seed, saved.variant), pair = spec.samples.filter(s => s.color === '#808080');
@@ -176,7 +181,7 @@ describe('gallery logical touch points and actual Three camera (presentation con
   it('rejects stale sessions, background input and retired callbacks, and sends actual movement only on a presented frame', () => {
     const { c, camera } = setup();
     const movement = jest.fn(), dispose = jest.fn();
-    const detach = attachControllerAudio(c, { event: jest.fn(), dispose, setActive: jest.fn(), updatePreferences: jest.fn(), movement, actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
+    const detach = attachControllerAudio(c, { event: jest.fn(), dispose, setActive: jest.fn(), setPreviewActive: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement, actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
     expect(dispatchGalleryController(c, { ...galleryCommand(c, { type: 'enter', puzzle: 'shadow' }), sessionId: 'old' })).toBe(false);
     c.input.forward = .1; advanceController(c, 1 / 60, camera);
     expect(movement).not.toHaveBeenCalled();
@@ -188,4 +193,53 @@ describe('gallery logical touch points and actual Three camera (presentation con
     expect(c.pendingFootstepDistance).toBe(0);
     detach(); expect(dispose).toHaveBeenCalledTimes(1); expect(c.audio).toBeUndefined();
   });
+  it('projects wiring handles, preserves cover-only comparison, restores external drops and commits the displayed line exactly once', () => {
+    const { c, pointer, width, height } = setup('wiring', 320, 568);
+    expect(galleryAction(c, { type: 'enter', puzzle: 'wiring' })).toBe(true);
+    const initial = structuredClone(c.runtime.progress.gallery!.wiring), fixed = getWiringSpec(initial).fixedLine;
+    const cover = getWiringSpec(initial).handles.cover.center;
+    expect(pointer('start', 31, cover)).toBe(true);
+    expect(pointer('move', 31, { ...cover, x: -.97 })).toBe(true);
+    expect(c.runtime.gallery!.wiringOffset).toBe(initial.offset);
+    expect(pointer('end', 31, { ...cover, x: -.97 })).toBe(true);
+    expect(getWiringSpec(c.runtime.progress.gallery!.wiring).fixedLine).toEqual(fixed);
+    const line = getWiringSpec(initial).handles.line.center;
+    const grab = { x: line.x + .07, y: line.y + .04 };
+    expect(pointer('start', 32, grab)).toBe(true);
+    expect(pointer('move', 32, { ...grab, y: grab.y - initial.offset })).toBe(true);
+    expect(c.runtime.gallery!.wiringOffset).toBeCloseTo(0, 10);
+    expect(c.runtime.progress.gallery!.wiring.offset).toBe(initial.offset);
+    expect(galleryPointer(c, 'end', 32, { x: -5, y: 2 }, width, height)).toBe(true);
+    expect(c.runtime.gallery!.wiringOffset).toBe(initial.offset);
+    expect(pointer('start', 33, grab)).toBe(true);
+    expect(pointer('move', 99, line)).toBe(false);
+    expect(pointer('end', 33, { ...grab, y: grab.y - initial.offset })).toBe(true);
+    expect(c.runtime.progress.gallery!.wiring.offset).toBeCloseTo(c.runtime.gallery!.wiringOffset, 12);
+    expect(c.runtime.progress.gallery!.wiring.solved).toBe(false);
+    const packet = galleryCommand(c, { type: 'wiring-commit' });
+    expect(dispatchGalleryController(c, { ...packet, sessionId: 'retired-session' })).toBe(false);
+    expect(dispatchGalleryController(c, packet)).toBe(true);
+    expect(dispatchGalleryController(c, packet)).toBe(false);
+    expect(c.runtime.progress.gallery!.wiring.solved).toBe(true);
+    expect(createCheckpoint(c.runtime).progress.gallery!.wiring.solved).toBe(true);
+  });
+  it.each(['shadow', 'contour', 'wiring'] as const)('blocks all surviving fingers after %s pause and resumes only with a fresh touch', puzzle => {
+    const { c, pointer } = setup(puzzle);
+    expect(galleryAction(c, { type: 'enter', puzzle })).toBe(true);
+    const disc = createContourSpec(c.runtime.progress.gallery!.contour.seed).discs[0]!;
+    const point = puzzle === 'shadow' ? SHADOW_SLOT_POSITIONS['source-b'] : puzzle === 'wiring' ? getWiringSpec(c.runtime.progress.gallery!.wiring).handles.line.center : { x: disc.center.x + .16, y: disc.center.y };
+    expect(pointer('start', 41, point)).toBe(true);
+    prepareControllerNotebook(c); commandController(c, { type: 'pause' }); commandController(c, { type: 'resume' });
+    expect(galleryAction(c, { type: 'enter', puzzle })).toBe(true);
+    expect(c.input.releaseBarrier).toEqual([41]);
+    expect(pointer('move', 41, point)).toBe(false);
+    expect(pointer('start', 42, point)).toBe(false);
+    expect(c.input.releaseBarrier).toEqual([41, 42]);
+    observeReleaseBarrier(c.input, [42]);
+    expect(pointer('start', 42, point)).toBe(false);
+    observeReleaseBarrier(c.input, []);
+    expect(pointer('start', 43, point)).toBe(true);
+    expect(pointer('cancel', 43, point)).toBe(true);
+  });
+
 });

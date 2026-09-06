@@ -1,0 +1,34 @@
+{
+  "boundary": "Viewed source-mesh browser WebGL PNGs and offline generated 2D PNGs. Not native R3F, iPhone, human perceptual success or fear evidence. SVG is an actual-coordinate diagram, not a viewed 3D screenshot.",
+  "reviewer": "Codex image viewing",
+  "reviewedAt": "2026-09-06T22:53:44.940792+00:00",
+  "webglImages": {
+    "mask-front.png": "c06f2020325a525f1b9af6727a97a61a20ce99de21f8d76b994fbbdf99227b71",
+    "mask-left.png": "e4b16907017ec4f6ee5b69749feb41e12961aa2df11b785132b2786da75bbd3c",
+    "mask-right.png": "d7ee3e39ac47661a5166fd840a297e2a6a79fb81c357409518cb01c7be3b260e",
+    "mask-left-far.png": "90e966a1e8c4a2de81a7f497752dffa0601bdc998c836eb699339d7014e498f5",
+    "mask-right-far.png": "c17596bd7fcc159a20c9a473b77f8217f717daaa23cc5e342945f3106155359d",
+    "mask-side.png": "ff2cc49a374848a9b5c71760c617dad05d3287b90d434e17b1f7696d1adefbfd",
+    "mask-section.png": "869b617db432d2984c9c8b432b407ca405594bfeb71716c03eab2a46c9e7f0b8",
+    "mask-subdued.png": "c06f2020325a525f1b9af6727a97a61a20ce99de21f8d76b994fbbdf99227b71",
+    "mask-convex-control.png": "7f94c9545b33476a49f6e86db7c5409607f81212ab106edc712dec6113ba1af2",
+    "mask-convex-side-control.png": "e93fa1216a894b67bda90692461701ddacb5d8116f077ad0441c35458bb396ca",
+    "hybrid-near.png": "81868c33426032a091d320dd5599c60546e7fb1d41dacfe621cfb75fe29a2e20",
+    "hybrid-middle.png": "8b021c62d7c01560447c08efd3a0cab632e0f0f96e292f4087f7095bb8cadc46",
+    "hybrid-far.png": "4770161051e394815545acdf266c235699cb7e932bea886d1e97a80003379a5a"
+  },
+  "offline2DImages": {
+    "hybrid-source-low.png": "e14d41a15a79dde142e73bfd4e6c773c42f6e3740e4141e87d5e5c036e7bbd1b",
+    "hybrid-source-high.png": "c6e309d19ec06d58c69ff0c3e069f1dba786038a88c6ce378fe592fde43b5e7b",
+    "hybrid-low-pass.png": "80ad4bc90e4fd61caac8ea584c71444766bf5f7288f4ccfc6df6e115e482d2ca",
+    "hybrid-high-pass.png": "0e248f74cd51f8b48e2a607bc4bbbc15d7890706f55a8a6dc2b7033223eb1df1",
+    "hybrid-composite.png": "22ba6c8b7eb68c52843fa6f07c26d4063f758c390c563ebf4f85498cf9082ffa"
+  },
+  "sourceHashes": {
+    "scripts/generate-perceptual-assets.cjs": "ed5f324ca5e7a3a60f4f357b299a51ef2e159103252adbf962e271176d13a301",
+    "scripts/preview-perceptual.cjs": "2bfa67e5db7182169e10b38d061fa86acf86b4b4a9b3ab878dc3a60f2bae8e1c",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "assets/perceptual/hollow-mask.json": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453",
+    "assets/perceptual/hybrid-texture.json": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207"
+  }
+}

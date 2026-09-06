@@ -1,6 +1,9 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import { requireOptionalNativeModule } from 'expo';
 import { Alert } from 'react-native';
+import { chapterCompletionSummary } from '../../app/chapterSummary';
+import { createGalleryRuntime, migrateGalleryV2Checkpoint } from '../../domain/gallery';
+import { originalV2 } from '../../storage/testFixtures/galleryV2';
 import { DEFAULT_SETTINGS } from '../../types/application';
 import { SettingsScreen } from '../SettingsScreen';
 import { FirstPersonResultScreen } from '../FirstPersonResultScreen';
@@ -28,6 +31,8 @@ it('adjusts independent audio preferences without changing visual or accessibili
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, enabled: false } });
   await fireEvent.press(view.getByText('環境音 25%'));
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, musicVolume: 0.25 } });
+  await fireEvent(view.getByRole('switch', { name: '演出音' }), 'valueChange', false);
+  expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, illusionEnabled: false } });
   await fireEvent.press(view.getByText('効果音 0%'));
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, effectsVolume: 0 } });
 });
@@ -48,7 +53,7 @@ it('makes current-chapter and full-data reset scope explicit before either actio
 
 it('shows the revised power-and-exit discoveries for gallery completion while preserving the old result and optional new chapter action', async () => {
   const mechanisms = ['影の見本', '描かれていない形', '二つの予備電源', '非常扉からの脱出'];
-  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', powerCount: 2, chapterVersion: 2, discoveredMechanisms: mechanisms }} onReplay={jest.fn()} onHome={jest.fn()} />);
+  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', powerCount: 2, chapterVersion: 3, discoveredMechanisms: mechanisms }} onReplay={jest.fn()} onHome={jest.fn()} />);
   expect(view.getByText('閉館後の展示室から脱出')).toBeTruthy();
   mechanisms.forEach(name => expect(view.getByText(name)).toBeTruthy());
   expect(view.getByText('展示室を最初から遊ぶ')).toBeTruthy();
@@ -70,10 +75,30 @@ it('keeps horror intensity independent from sound, motion, colors and input pref
 });
 
 it('preserves an old cleared gallery result without claiming the player experienced the revised route', async () => {
-  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', chapterVersion: 2, powerCount: 2, migratedCompletion: true, discoveredMechanisms: [] }} onReplay={jest.fn()} onHome={jest.fn()} />);
+  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', chapterVersion: 3, powerCount: 2, migratedCompletion: true, discoveredMechanisms: [] }} onReplay={jest.fn()} onHome={jest.fn()} />);
   expect(view.getByText('展示室のクリア記録')).toBeTruthy();
   expect(view.getByText(/以前の展示室のクリア記録を保持/)).toBeTruthy();
   expect(view.queryByText('触れない紋章')).toBeNull(); expect(view.queryByText('重なる鍵')).toBeNull();
   expect(view.queryByText(/サービス通路の先の非常扉から外へ出ました/)).toBeNull();
   expect(view.getByRole('button', { name: '展示室を最初から遊ぶ' })).toBeEnabled();
+});
+
+
+it('provides offline credits for the actual CC BY face without revealing undiscovered notebook entries', async () => {
+  const view = await render(<SettingsScreen settings={DEFAULT_SETTINGS} onChange={jest.fn()} onRecalibrate={jest.fn()} onQuickSetup={jest.fn()} onReset={jest.fn()} onBack={jest.fn()} />);
+  await fireEvent.press(view.getByRole('button', { name: '出典と素材クレジット' }));
+  expect(view.getByText(/Hollow face illusion.stl \/ Wael Tsar/)).toBeTruthy();
+  expect(view.getByText('https://creativecommons.org/licenses/by/4.0/')).toBeTruthy();
+  expect(view.queryByRole('button', { name: '隠れた配線' })).toBeNull();
+});
+
+it('does not claim a bypassed migration wiring puzzle was experienced when the revised ending is completed', async () => {
+  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('connected'))!.checkpoint);
+  runtime.progress.cleared = true; runtime.progress.gallery!.finalDoorClosed = true; runtime.progress.gallery!.story.resolved = true;
+  const summary = chapterCompletionSummary('perception-gallery-v1', runtime.progress);
+  expect(summary.migratedCompletion).toBe(false); expect(summary.discoveredMechanisms).not.toContain('隠れた配線');
+  const view = await render(<FirstPersonResultScreen summary={summary} onReplay={jest.fn()} onHome={jest.fn()} />);
+  expect(view.getByText('最後の扉を閉めて、展示室から脱出しました。')).toBeTruthy(); expect(view.queryByText('隠れた配線')).toBeNull();
+  const fresh = createGalleryRuntime(); fresh.progress.gallery!.wiring.solved = true; fresh.progress.gallery!.discoveries.wiring = true;
+  expect(chapterCompletionSummary('perception-gallery-v1', fresh.progress).discoveredMechanisms).toContain('隠れた配線');
 });

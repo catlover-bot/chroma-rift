@@ -158,7 +158,7 @@ describe('normal first-person chapter navigation', () => {
   });
   it('requires the revised gallery completion and both power units and rejects another chapter or old-run completion', () => {
     const gallery = appReducer(initialAppState, { type: 'BEGIN_JOURNEY', chapterId: 'perception-gallery-v1' });
-    const summary = { chapterId: 'perception-gallery-v1', chapterVersion: 2 as const, powerCount: 2 as const, discoveredMechanisms: ['B', 'C', '電源', '非常扉'] };
+    const summary = { chapterId: 'perception-gallery-v1', chapterVersion: 3 as const, powerCount: 2 as const, discoveredMechanisms: ['B', 'C', '電源', '非常扉'] };
     const action = { type: 'COMPLETE_CHAPTER' as const, summary, journeyRun: gallery.journeyRun };
     expect(appReducer(gallery, { ...action, summary: { ...summary, powerCount: 1 } })).toBe(gallery);
     expect(appReducer(gallery, { ...action, summary: { ...summary, chapterId: 'returnless-entrance', seals: 2 } })).toBe(gallery);

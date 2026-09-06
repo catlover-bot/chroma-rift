@@ -1,0 +1,169 @@
+{
+  "schema": 1,
+  "mask": {
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Hollow_face_illusion.stl",
+    "sourceURL": "https://upload.wikimedia.org/wikipedia/commons/d/db/Hollow_face_illusion.stl",
+    "sourcePageRevision": 881101748,
+    "title": "Hollow face illusion.stl",
+    "author": "Wael Tsar",
+    "previousChanges": "cmglee: recentred, symmetrised, converted to STL; 15 March 2022 rotated 135 degrees for hollow-side thumbnail",
+    "license": "CC BY 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by/4.0/",
+    "originalSHA256": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75",
+    "originalBytes": 125984,
+    "triangles": 2518,
+    "vertices": 1293,
+    "rawBounds": {
+      "min": [
+        -0.12174884974956512,
+        -0.12174884974956512,
+        -0.08371653407812119
+      ],
+      "max": [
+        0.012285124510526657,
+        0.012285124510526657,
+        0.10311171412467957
+      ]
+    },
+    "rotatedBounds": {
+      "min": [
+        -0.07475273316609278,
+        -0.08371653407812119,
+        -0.0029041967559997293
+      ],
+      "max": [
+        0.07475273316609278,
+        0.10311171412467957,
+        0.10078857478041703
+      ]
+    },
+    "rotationRows": [
+      [
+        0.7071067811865476,
+        -0.7071067811865476,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        -0.7071067811865476,
+        -0.7071067811865476,
+        0
+      ]
+    ],
+    "rotationDeterminant": 1,
+    "uniformScale": 5.35250964251673,
+    "translationAfterRotation": [
+      0,
+      -0.00969759002327919,
+      -0.10078857478041703
+    ],
+    "changes": "Proper-axis rotation, uniform positive scale to 1 metre height, translation to centered Y and rim z=0, exact-vertex weld/indexing, area-weighted smooth vertex normals. Source is already hollow: no depth inversion in shipped mask; no negative runtime scale/backside rendering.",
+    "normalizedBounds": {
+      "min": [
+        -0.4001147,
+        -0.5,
+        -0.5550166
+      ],
+      "max": [
+        0.4001147,
+        0.5,
+        0
+      ]
+    },
+    "nose": {
+      "vertexIndex": 241,
+      "position": [
+        0,
+        -0.0516989,
+        -0.5550166
+      ],
+      "normal": [
+        0,
+        -0.1874214,
+        0.9822796
+      ]
+    },
+    "degenerateTriangles": 0,
+    "inconsistentSourceNormals": 0,
+    "normalPolicy": "Same winding as source after determinant +1 rotation; canonical Three computeVertexNormals; FrontSide material",
+    "fallbackUsed": false
+  },
+  "hybrid": {
+    "author": "CHROMA RIFT project / original procedural artwork",
+    "thirdPartyImages": false,
+    "formula": "H = base + a * normalize(Gaussian(imageLow,sigmaLow)) + b * normalize(imageHigh-Gaussian(imageHigh,sigmaHigh))",
+    "normalization": "subtract mean, divide by maximum absolute deviation independently for LP/HP",
+    "seed": 80873,
+    "width": 512,
+    "height": 512,
+    "sourceSpace": "linear-light grayscale, authored numerical luminance",
+    "outputSpace": "IEC sRGB transfer, opaque grayscale8, explicit sRGB PNG metadata",
+    "gaussian": {
+      "sigmaLow": 12,
+      "sigmaHigh": 2.25,
+      "radius": "ceil(3*sigma)",
+      "edge": "clamp",
+      "implementation": "separable normalized Gaussian convolution"
+    },
+    "base": 0.46,
+    "a": 0.2,
+    "b": 0.28,
+    "lowNormalization": {
+      "mean": 0.4344377136233693,
+      "peak": 0.40556228637663033
+    },
+    "highNormalization": {
+      "mean": -0.00000169644473246351,
+      "peak": 0.7880679719671735
+    },
+    "minimumLinear": 0.0742516497087557,
+    "maximumLinear": 0.8870441157641354,
+    "clippedPixels": 0,
+    "clippingRate": 0,
+    "filters": {
+      "runtimeMinification": "LinearMipmapLinearFilter",
+      "runtimeMagnification": "LinearFilter",
+      "generateMipmaps": true
+    },
+    "runtimeRGBABytes": 1048576,
+    "runtimeRGBAWithMipmapsBytes": 1398100
+  },
+  "files": {
+    "source/hollow-face-original.stl": {
+      "bytes": 125984,
+      "sha256": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75"
+    },
+    "hollow-mask.json": {
+      "bytes": 111287,
+      "sha256": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453"
+    },
+    "hybrid-source-low.png": {
+      "bytes": 2002,
+      "sha256": "e14d41a15a79dde142e73bfd4e6c773c42f6e3740e4141e87d5e5c036e7bbd1b"
+    },
+    "hybrid-source-high.png": {
+      "bytes": 2108,
+      "sha256": "c6e309d19ec06d58c69ff0c3e069f1dba786038a88c6ce378fe592fde43b5e7b"
+    },
+    "hybrid-low-pass.png": {
+      "bytes": 22407,
+      "sha256": "80ad4bc90e4fd61caac8ea584c71444766bf5f7288f4ccfc6df6e115e482d2ca"
+    },
+    "hybrid-high-pass.png": {
+      "bytes": 23563,
+      "sha256": "0e248f74cd51f8b48e2a607bc4bbbc15d7890706f55a8a6dc2b7033223eb1df1"
+    },
+    "hybrid-composite.png": {
+      "bytes": 59224,
+      "sha256": "22ba6c8b7eb68c52843fa6f07c26d4063f758c390c563ebf4f85498cf9082ffa"
+    },
+    "hybrid-texture.json": {
+      "bytes": 349655,
+      "sha256": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207"
+    }
+  }
+}

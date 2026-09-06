@@ -1,0 +1,139 @@
+{
+  "boundary": "Ten load/render/dispose cycles of serialized Three scenes using one browser WebGL renderer; not ten native app reentries",
+  "rendererCount": 1,
+  "pendingCdpRequests": 0,
+  "disposedToZeroEachTime": true,
+  "noAnimationTimersInstalledByViewer": true,
+  "reentries": [
+    {
+      "visit": 1,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 2,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 3,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 4,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 5,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 6,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 7,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 8,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 9,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    },
+    {
+      "visit": 10,
+      "loaded": {
+        "geometries": 5,
+        "textures": 0,
+        "calls": 35
+      },
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "sceneAttached": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "original-kit-to-application-core-audit",
+  "referencePath": "/home/mhirotaka/workspace/chroma-rift-reference/chroma-rift-goal-005",
+  "applicationPath": "/home/mhirotaka/workspace/chroma-rift",
+  "temporaryWorkspace": "/tmp/goal005-reference-audit-zYEWJf",
+  "manifestSha256": "d4f53e091b5c484333ed04fd9da1954b840453befccb50fcc4cca4d4c2a68a24",
+  "manifestFilesVerified": 42,
+  "sourceHashes": {
+    "src/seal/color.ts": "7c11571ae9f6ddbf1a0f88141079519df16c5757239fc5fb8c3a291dd60ad794",
+    "src/seal/index.ts": "7346d1ca6a62c7cbae29b3ebcedc49850f91094a151f8cbc507d4d310adb09fc",
+    "src/seal/interaction.ts": "4620a50eb2ef89ad8220e9ecf4e86ed15e4a2da408de40cc52562ad00feb33c6",
+    "src/seal/puzzle.ts": "8ad8860a4221c5230eda895c30bbcd1f1f36ae7f81a077a5ccf74cfbeb9edabf",
+    "src/seal/stimulus.ts": "83e57e8561e7c5094c8f7b77117b4124ee876f83e226b1e7074c9770e6674549",
+    "src/seal/storage.ts": "658275d9dbca4990e76f0e6065053e21186e0b9caf44579c7f307d11dfa6aca3",
+    "src/seal/surfaceOwner.ts": "26fb27882603b7486d64fc96792e86f1f9e9c4e25a57742cd660b72cf9b89258"
+  },
+  "originalTestsOnApplication": {
+    "passed": 28,
+    "total": 28,
+    "testHashes": {
+      "stimulus.test.cjs": "af72e874be4441edd5a86531702465b96949b46a1d0ed5fb23292c236555abaa",
+      "puzzle.test.cjs": "af7ee5875311bb67bcbaff960a9c5c033030e9e38cc03cfbcb92f540bfb9a2c3"
+    },
+    "byteIdenticalCopies": true,
+    "requireTextChanged": false
+  },
+  "stimulusConditionsCompared": 900,
+  "resolution": 128,
+  "presentations": [
+    "color",
+    "neutral"
+  ],
+  "compared": [
+    "version",
+    "seed",
+    "palette",
+    "preference",
+    "answer",
+    "distractor",
+    "paths",
+    "geometryKey",
+    "coverage",
+    "rgba",
+    "bottomUpRGBA"
+  ],
+  "existingPreviewGoldenRecords": 15,
+  "existingPreviewGoldenAssertions": 90,
+  "originalPreviewSha256": "99248b7900457ebe684a0549da0919d5c9f8afb71096122e9cae13110530a9f9",
+  "limitations": "Core audit only; excludes native rendering, phone appearance and perceived depth. Standalone kit and complete application suites are separate."
+}

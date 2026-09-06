@@ -1,0 +1,141 @@
+{
+  "boundary": "Single actual browser WebGL renderer, same loaded scene/geometry/texture across camera views; not native app or perception",
+  "rendererCount": 1,
+  "browserErrors": [],
+  "allPassed": true,
+  "results": [
+    {
+      "id": "mask-front",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-left",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-right",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-left-far",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-right-far",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-side",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-section",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-subdued",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 1,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-convex-control",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 2,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "mask-convex-side-control",
+      "calls": 1,
+      "triangles": 2518,
+      "textures": 0,
+      "geometries": 2,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "withinBudget": true
+    },
+    {
+      "id": "hybrid-near",
+      "calls": 1,
+      "triangles": 2,
+      "textures": 1,
+      "geometries": 3,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "projectedPlatePixels": 360.0039747519462,
+      "withinBudget": true
+    },
+    {
+      "id": "hybrid-middle",
+      "calls": 1,
+      "triangles": 2,
+      "textures": 1,
+      "geometries": 3,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "projectedPlatePixels": 230.0025394248545,
+      "withinBudget": true
+    },
+    {
+      "id": "hybrid-far",
+      "calls": 1,
+      "triangles": 2,
+      "textures": 1,
+      "geometries": 3,
+      "invariantsUnchanged": true,
+      "sameSceneAndTexture": true,
+      "projectedPlatePixels": 159.23252729413002,
+      "withinBudget": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createGalleryRuntime, restoreGalleryCheckpoint, migrateGalleryV1Checkpoint } from '../domain/gallery';
+import { createGalleryRuntime, restoreGalleryCheckpoint, migrateGalleryV1Checkpoint, migrateGalleryV2Checkpoint } from '../domain/gallery';
 
 import {
   CHAPTER_ID, LEVEL_VERSION, createCheckpoint, createInitialRuntime, restoreCheckpoint,
@@ -14,8 +14,11 @@ import { resetApplicationStorage } from './applicationStorage';
 export const GALLERY_V1_CHECKPOINT_KEY = 'chroma-rift.perception-gallery.v1';
 export const GALLERY_V1_BACKUP_KEY = 'chroma-rift.perception-gallery.backup.v1';
 export const GALLERY_PRE_V2_KEY = 'chroma-rift.perception-gallery.pre-v2';
-export const GALLERY_CHECKPOINT_KEY = 'chroma-rift.perception-gallery.v2';
-export const GALLERY_BACKUP_KEY = 'chroma-rift.perception-gallery.backup.v2';
+export const GALLERY_V2_CHECKPOINT_KEY = 'chroma-rift.perception-gallery.v2';
+export const GALLERY_V2_BACKUP_KEY = 'chroma-rift.perception-gallery.backup.v2';
+export const GALLERY_PRE_V3_KEY = 'chroma-rift.perception-gallery.pre-v3';
+export const GALLERY_CHECKPOINT_KEY = 'chroma-rift.perception-gallery.v3';
+export const GALLERY_BACKUP_KEY = 'chroma-rift.perception-gallery.backup.v3';
 
 export const FIRST_PERSON_CHECKPOINT_KEY = 'chroma-rift.first-person.chapter.v1';
 export const FIRST_PERSON_PRE_EMBLEM_KEY = 'chroma-rift.first-person.chapter.pre-emblem.v1';
@@ -342,7 +345,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   const applicationReset = resetApplicationStorage();
   const firstPersonReset = serializeMutation(async () => {
     try {
-      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY]);
+      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY]);
       return true;
     } catch {
       return false;
@@ -372,7 +375,7 @@ export type GalleryLoadResult = {
 };
 const initialGalleryCheckpoint = (): CheckpointState => createCheckpoint(createGalleryRuntime());
 
-/** Decode v2 only: unknown/corrupt v2 must never fall back to an older version. */
+/** Decode v3 only: unknown/corrupt v3 must never fall back to an older version. */
 export function decodeGalleryStorage(raw: string | null): GalleryLoadResult {
   const fallback: GalleryLoadResult = { checkpoint: initialGalleryCheckpoint(), hasCheckpoint: raw !== null,
     checkpointWritable: true, status: raw === null ? 'empty' : 'loaded' };
@@ -394,14 +397,15 @@ async function readGalleryDocument(): Promise<{ result: GalleryLoadResult; backu
     const result = decodeGalleryStorage(raw);
     return { result, ...(result.status === 'recovered' ? { backup: { key: GALLERY_BACKUP_KEY, raw } } : {}) };
   }
-  const original = await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY);
+  const v2 = await AsyncStorage.getItem(GALLERY_V2_CHECKPOINT_KEY);
+  const original = v2 ?? await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY);
   if (original === null) return { result: decodeGalleryStorage(null) };
   try {
-    const migrated = migrateGalleryV1Checkpoint(JSON.parse(original));
+    const migrated = v2 !== null ? migrateGalleryV2Checkpoint(JSON.parse(original)) : migrateGalleryV1Checkpoint(JSON.parse(original));
     if (!migrated) throw new Error('unsupported v1 gallery checkpoint');
     return { result: { checkpoint: migrated.checkpoint, hasCheckpoint: true, checkpointWritable: true, status: 'migrated',
       message: '以前の展示室の進行を引き継ぎます。元の記録を保持し、安全な地点から再開します。' },
-      backup: { key: GALLERY_PRE_V2_KEY, raw: original } };
+      backup: { key: v2 !== null ? GALLERY_PRE_V3_KEY : GALLERY_PRE_V2_KEY, raw: original } };
   } catch {
     return { result: { checkpoint: initialGalleryCheckpoint(), hasCheckpoint: true, checkpointWritable: false, status: 'blocked',
       message: '以前の展示室の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。' } };
@@ -442,7 +446,12 @@ function galleryDoesNotRewind(previous: CheckpointState | undefined, next: Check
     (!old.emergencyLit || fresh.emergencyLit) && (!old.exitInspected || fresh.exitInspected) &&
     (!old.powerTaken.shadow || fresh.powerTaken.shadow) && (!old.powerTaken.contour || fresh.powerTaken.contour) &&
     (!old.powerConnected || fresh.powerConnected) && old.completedFromV1 === fresh.completedFromV1 &&
-    (['foreshadowed', 'absence', 'serviceWarned', 'resolved'] as const).every(key => !old.story[key] || fresh.story[key]);
+    old.completedFromV2 === fresh.completedFromV2 && (!old.finalDoorClosed || fresh.finalDoorClosed) &&
+    (!old.wiring.inspected || fresh.wiring.inspected) &&
+    (!old.wiring.solved || fresh.wiring.solved) && old.wiring.compatibleBypass === fresh.wiring.compatibleBypass &&
+    old.wiring.attempts <= fresh.wiring.attempts &&
+    (Object.keys(old.discoveries) as (keyof typeof old.discoveries)[]).every(key => !old.discoveries[key] || fresh.discoveries[key]) &&
+    (['foreshadowed', 'absence', 'serviceWarned', 'resolved', 'crossingStarted', 'crossingPresented'] as const).every(key => !old.story[key] || fresh.story[key]);
 }
 
 export function saveGalleryCheckpoint(checkpoint: CheckpointState, lease: number): Promise<boolean> {
@@ -476,8 +485,8 @@ export function saveGalleryCheckpoint(checkpoint: CheckpointState, lease: number
   });
 }
 
-/** An explicit reset atomically replaces v2. Removing v2 would resurrect the
- * retained v1 source on the next launch. Source and backup bytes stay intact. */
+/** An explicit reset atomically replaces the current gallery. Removing it would
+ * resurrect a retained older source on launch. Source and backup bytes stay intact. */
 export function resetGalleryChapter(checkpoint: CheckpointState = initialGalleryCheckpoint()): Promise<boolean> {
   const raw = JSON.stringify(checkpoint);
   const restored = restoreGalleryCheckpoint(JSON.parse(raw));

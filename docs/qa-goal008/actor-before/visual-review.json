@@ -1,0 +1,21 @@
+{
+  "boundary": "Baseline GalleryActor JSX at 8ca5ba3, rendered inside Goal008 work-in-progress world/materials. Four composite PNGs actually opened; raw hashes retained separately. Not an old full-app screenshot or native evidence.",
+  "reviewedAt": "2026-09-06T22:58:23.793174+00:00",
+  "viewed": {
+    "actor-front.png": "503e99493f3dcd3e2b0b149fac6f21c20065b5cd1672139d7c72e8fb840d9076",
+    "actor-quarter.png": "c900a89633d619dbb85f35c255c44d9e0bdd846c4d806c295c68ceee8ff58fd9",
+    "actor-side.png": "7a21eadef103aed6aeced7c76a9d041e77b0d5625d19a3c976e495eba4624b86",
+    "actor-back.png": "8ae4a117b5043787fbf2a65ef9b03f40ea4c743b00c9284fb529ea7c8d40ee22"
+  },
+  "raw": {
+    "actor-front-scene.png": "c77567eaadeed22aee2ea384a3f43f4d3b68899fa66d1444b38b0e6ce488e3f4",
+    "actor-quarter-scene.png": "003e2e30cdde0c5b4ad2b8306e7b9cb658f1b8c979a99b0a573307a4518f7198",
+    "actor-side-scene.png": "419f654e00d165faad0b358cd29f4b9ec2fee8ae144f4db3e24e113745d779a6",
+    "actor-back-scene.png": "1d8ba4d3da909ba79a01be8f7dec6603e3f9da9fc0d5054c1d6f24b76caaf910"
+  },
+  "actorSource": {
+    "baselineRevision": "8ca5ba3456c7f54284981e9cae1b0d5a8848b21d",
+    "isolatedPath": "/home/mhirotaka/workspace/chroma-rift/.expo/goal008/actor-before/GalleryActor.baseline.tsx",
+    "sha256": "184112a9b0239b98f326f2e93c6df908c473cbc1482489006381fd703e168c43"
+  }
+}

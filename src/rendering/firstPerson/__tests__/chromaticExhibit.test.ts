@@ -29,7 +29,7 @@ it('reuses the one opaque material and its two owned maps across comparison, dis
   expect(surface.material).toBe(material);
   surface.dispose(); surface.dispose(); expect(disposal).toHaveBeenCalledTimes(3);
 });
-it('authorizes optional number comparison from its actual fixture without changing progress, actor, camera or world', () => {
+it('records optional number discovery from its actual fixture while keeping every puzzle, actor, camera and world unchanged', () => {
   const c = createController(undefined, false, true, GALLERY_CHAPTER_ID);
   c.runtime.pose = { position: { x: -.5, y: GALLERY_CHROMATIC_FIXTURE.center.y, z: -2 }, yaw: Math.PI / 2, pitch: 0 };
   Object.assign(c.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true, paused: false, open: false });
@@ -39,7 +39,7 @@ it('authorizes optional number comparison from its actual fixture without changi
   const matrices = c.matrices;
   expect(galleryAction(c, { type: 'chromatic-compare' })).toBe(true);
   expect(c.runtime.gallery!.chromaticNeutral).toBe(true);
-  expect(c.runtime.progress).toEqual(progress); expect(c.runtime.gallery!.actor).toEqual(actor);
+  expect(c.runtime.progress).toEqual({ ...progress, gallery: { ...progress.gallery!, discoveries: { ...progress.gallery!.discoveries, chromatic: true } } }); expect(c.runtime.gallery!.actor).toEqual(actor);
   expect(c.runtime.pose).toEqual(pose); expect(c.matrices).toBe(matrices); expect(worldForController(c)).toEqual(world);
   expect(c.runtime.progress.sealA).toBe(false); expect(c.runtime.progress.sealB).toBe(false);
 });

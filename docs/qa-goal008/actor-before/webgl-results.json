@@ -1,0 +1,357 @@
+{
+  "environment": "Linux Chromium headless, browser Three WebGL/ANGLE SwiftShader; not iPhone, native R3F, or device performance",
+  "rendererCount": 1,
+  "screenshotKind": "Browser composite of actual scene + actual React component host tree/CSS approximation; raw WebGL canvas separately preserved",
+  "browserErrors": [],
+  "allWithinBudget": true,
+  "results": [
+    {
+      "id": "actor-front",
+      "title": "actor-front",
+      "width": 390,
+      "height": 844,
+      "calls": 35,
+      "triangles": 2468,
+      "geometries": 5,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true,
+      "hudLayout": {
+        "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+        "fontScale": 1,
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48,
+            "visibleRect": {
+              "left": 12,
+              "top": 12,
+              "right": 60,
+              "bottom": 60
+            }
+          },
+          {
+            "label": "調べる",
+            "disabled": true,
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 64,
+            "visibleRect": {
+              "left": 201,
+              "top": 768,
+              "right": 378,
+              "bottom": 832
+            }
+          }
+        ],
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 378,
+          "bottom": 49,
+          "width": 310,
+          "height": 37
+        },
+        "powerStock": {
+          "left": 68,
+          "top": 49,
+          "right": 378,
+          "bottom": 77,
+          "width": 310,
+          "height": 28
+        },
+        "pauseOverlapsObjective": false,
+        "pauseOverlapsPowerStock": false,
+        "scroll": null,
+        "controls": null,
+        "controlsOverlapPanel": false,
+        "hitRects": [],
+        "hitTargetsAtLeast44": true,
+        "buttonsAtLeast44": true,
+        "dragHitsBlockedByButtons": []
+      }
+    },
+    {
+      "id": "actor-quarter",
+      "title": "actor-quarter",
+      "width": 390,
+      "height": 844,
+      "calls": 47,
+      "triangles": 2630,
+      "geometries": 6,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true,
+      "hudLayout": {
+        "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+        "fontScale": 1,
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48,
+            "visibleRect": {
+              "left": 12,
+              "top": 12,
+              "right": 60,
+              "bottom": 60
+            }
+          },
+          {
+            "label": "配線を操作",
+            "disabled": true,
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 64,
+            "visibleRect": {
+              "left": 201,
+              "top": 768,
+              "right": 378,
+              "bottom": 832
+            }
+          }
+        ],
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 378,
+          "bottom": 49,
+          "width": 310,
+          "height": 37
+        },
+        "powerStock": {
+          "left": 68,
+          "top": 49,
+          "right": 378,
+          "bottom": 77,
+          "width": 310,
+          "height": 28
+        },
+        "pauseOverlapsObjective": false,
+        "pauseOverlapsPowerStock": false,
+        "scroll": null,
+        "controls": null,
+        "controlsOverlapPanel": false,
+        "hitRects": [],
+        "hitTargetsAtLeast44": true,
+        "buttonsAtLeast44": true,
+        "dragHitsBlockedByButtons": []
+      }
+    },
+    {
+      "id": "actor-side",
+      "title": "actor-side",
+      "width": 390,
+      "height": 844,
+      "calls": 47,
+      "triangles": 2630,
+      "geometries": 6,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true,
+      "hudLayout": {
+        "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+        "fontScale": 1,
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48,
+            "visibleRect": {
+              "left": 12,
+              "top": 12,
+              "right": 60,
+              "bottom": 60
+            }
+          },
+          {
+            "label": "配線を操作",
+            "disabled": true,
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 64,
+            "visibleRect": {
+              "left": 201,
+              "top": 768,
+              "right": 378,
+              "bottom": 832
+            }
+          }
+        ],
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 378,
+          "bottom": 49,
+          "width": 310,
+          "height": 37
+        },
+        "powerStock": {
+          "left": 68,
+          "top": 49,
+          "right": 378,
+          "bottom": 77,
+          "width": 310,
+          "height": 28
+        },
+        "pauseOverlapsObjective": false,
+        "pauseOverlapsPowerStock": false,
+        "scroll": null,
+        "controls": null,
+        "controlsOverlapPanel": false,
+        "hitRects": [],
+        "hitTargetsAtLeast44": true,
+        "buttonsAtLeast44": true,
+        "dragHitsBlockedByButtons": []
+      }
+    },
+    {
+      "id": "actor-back",
+      "title": "actor-back",
+      "width": 390,
+      "height": 844,
+      "calls": 110,
+      "triangles": 5952,
+      "geometries": 7,
+      "textures": 3,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true,
+      "hudLayout": {
+        "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+        "fontScale": 1,
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48,
+            "visibleRect": {
+              "left": 12,
+              "top": 12,
+              "right": 60,
+              "bottom": 60
+            }
+          },
+          {
+            "label": "調べる",
+            "disabled": true,
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 64,
+            "visibleRect": {
+              "left": 201,
+              "top": 768,
+              "right": 378,
+              "bottom": 832
+            }
+          }
+        ],
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 378,
+          "bottom": 49,
+          "width": 310,
+          "height": 37
+        },
+        "powerStock": {
+          "left": 68,
+          "top": 49,
+          "right": 378,
+          "bottom": 77,
+          "width": 310,
+          "height": 28
+        },
+        "pauseOverlapsObjective": false,
+        "pauseOverlapsPowerStock": false,
+        "scroll": null,
+        "controls": null,
+        "controlsOverlapPanel": false,
+        "hitRects": [],
+        "hitTargetsAtLeast44": true,
+        "buttonsAtLeast44": true,
+        "dragHitsBlockedByButtons": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,433 @@
+{
+  "boundary": "Actual Three geometry and projection; actual component host tree translated to browser CSS. Not native Yoga, finger interaction or device evidence.",
+  "layoutPassed": true,
+  "geometryPassed": true,
+  "geometry": [
+    {
+      "id": "actor-front",
+      "actorInsideDomainVolume": true,
+      "sampleFrameIntersections": [],
+      "actorWorldBounds": {
+        "min": [
+          -0.40542022330610283,
+          -5.551115123125783e-17,
+          8.835
+        ],
+        "max": [
+          0.40059457759643996,
+          2.16205074348467,
+          9.161623649597168
+        ]
+      },
+      "actorState": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9
+        },
+        "yaw": 0,
+        "phase": "patrol",
+        "phaseTime": 0,
+        "routeIndex": 1,
+        "routeDirection": -1,
+        "startupGrace": 2.75,
+        "contactCooldown": 2.75,
+        "travelledDistance": 0,
+        "visible": true,
+        "intensity": "standard"
+      }
+    },
+    {
+      "id": "actor-quarter",
+      "actorInsideDomainVolume": true,
+      "sampleFrameIntersections": [],
+      "actorWorldBounds": {
+        "min": [
+          -0.40542022330610283,
+          -5.551115123125783e-17,
+          8.835
+        ],
+        "max": [
+          0.40059457759643996,
+          2.16205074348467,
+          9.161623649597168
+        ]
+      },
+      "actorState": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9
+        },
+        "yaw": 0,
+        "phase": "patrol",
+        "phaseTime": 0,
+        "routeIndex": 1,
+        "routeDirection": -1,
+        "startupGrace": 2.75,
+        "contactCooldown": 2.75,
+        "travelledDistance": 0,
+        "visible": true,
+        "intensity": "standard"
+      }
+    },
+    {
+      "id": "actor-side",
+      "actorInsideDomainVolume": true,
+      "sampleFrameIntersections": [],
+      "actorWorldBounds": {
+        "min": [
+          -0.40542022330610283,
+          -5.551115123125783e-17,
+          8.835
+        ],
+        "max": [
+          0.40059457759643996,
+          2.16205074348467,
+          9.161623649597168
+        ]
+      },
+      "actorState": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9
+        },
+        "yaw": 0,
+        "phase": "patrol",
+        "phaseTime": 0,
+        "routeIndex": 1,
+        "routeDirection": -1,
+        "startupGrace": 2.75,
+        "contactCooldown": 2.75,
+        "travelledDistance": 0,
+        "visible": true,
+        "intensity": "standard"
+      }
+    },
+    {
+      "id": "actor-back",
+      "actorInsideDomainVolume": true,
+      "sampleFrameIntersections": [],
+      "actorWorldBounds": {
+        "min": [
+          -0.40542022330610283,
+          -5.551115123125783e-17,
+          8.835
+        ],
+        "max": [
+          0.40059457759643996,
+          2.16205074348467,
+          9.161623649597168
+        ]
+      },
+      "actorState": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9
+        },
+        "yaw": 0,
+        "phase": "patrol",
+        "phaseTime": 0,
+        "routeIndex": 1,
+        "routeDirection": -1,
+        "startupGrace": 2.75,
+        "contactCooldown": 2.75,
+        "travelledDistance": 0,
+        "visible": true,
+        "intensity": "standard"
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "id": "actor-front",
+      "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+      "fontScale": 1,
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visibleRect": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "調べる",
+          "disabled": true,
+          "left": 201,
+          "top": 768,
+          "right": 378,
+          "bottom": 832,
+          "width": 177,
+          "height": 64,
+          "visibleRect": {
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832
+          }
+        }
+      ],
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 49,
+        "width": 310,
+        "height": 37
+      },
+      "powerStock": {
+        "left": 68,
+        "top": 49,
+        "right": 378,
+        "bottom": 77,
+        "width": 310,
+        "height": 28
+      },
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsPowerStock": false,
+      "scroll": null,
+      "controls": null,
+      "controlsOverlapPanel": false,
+      "hitRects": [],
+      "hitTargetsAtLeast44": true,
+      "buttonsAtLeast44": true,
+      "dragHitsBlockedByButtons": []
+    },
+    {
+      "id": "actor-quarter",
+      "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+      "fontScale": 1,
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visibleRect": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "配線を操作",
+          "disabled": true,
+          "left": 201,
+          "top": 768,
+          "right": 378,
+          "bottom": 832,
+          "width": 177,
+          "height": 64,
+          "visibleRect": {
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832
+          }
+        }
+      ],
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 49,
+        "width": 310,
+        "height": 37
+      },
+      "powerStock": {
+        "left": 68,
+        "top": 49,
+        "right": 378,
+        "bottom": 77,
+        "width": 310,
+        "height": 28
+      },
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsPowerStock": false,
+      "scroll": null,
+      "controls": null,
+      "controlsOverlapPanel": false,
+      "hitRects": [],
+      "hitTargetsAtLeast44": true,
+      "buttonsAtLeast44": true,
+      "dragHitsBlockedByButtons": []
+    },
+    {
+      "id": "actor-side",
+      "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+      "fontScale": 1,
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visibleRect": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "配線を操作",
+          "disabled": true,
+          "left": 201,
+          "top": 768,
+          "right": 378,
+          "bottom": 832,
+          "width": 177,
+          "height": 64,
+          "visibleRect": {
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832
+          }
+        }
+      ],
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 49,
+        "width": 310,
+        "height": 37
+      },
+      "powerStock": {
+        "left": 68,
+        "top": 49,
+        "right": 378,
+        "bottom": 77,
+        "width": 310,
+        "height": 28
+      },
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsPowerStock": false,
+      "scroll": null,
+      "controls": null,
+      "controlsOverlapPanel": false,
+      "hitRects": [],
+      "hitTargetsAtLeast44": true,
+      "buttonsAtLeast44": true,
+      "dragHitsBlockedByButtons": []
+    },
+    {
+      "id": "actor-back",
+      "boundary": "Browser CSS layout of actual FirstPersonScreen host tree/styles; not native Yoga/text metrics",
+      "fontScale": 1,
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visibleRect": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "調べる",
+          "disabled": true,
+          "left": 201,
+          "top": 768,
+          "right": 378,
+          "bottom": 832,
+          "width": 177,
+          "height": 64,
+          "visibleRect": {
+            "left": 201,
+            "top": 768,
+            "right": 378,
+            "bottom": 832
+          }
+        }
+      ],
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 49,
+        "width": 310,
+        "height": 37
+      },
+      "powerStock": {
+        "left": 68,
+        "top": 49,
+        "right": 378,
+        "bottom": 77,
+        "width": 310,
+        "height": 28
+      },
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsPowerStock": false,
+      "scroll": null,
+      "controls": null,
+      "controlsOverlapPanel": false,
+      "hitRects": [],
+      "hitTargetsAtLeast44": true,
+      "buttonsAtLeast44": true,
+      "dragHitsBlockedByButtons": []
+    }
+  ]
+}

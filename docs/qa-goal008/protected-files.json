@@ -1,0 +1,12 @@
+{
+  "baseline": "8ca5ba3456c7f54284981e9cae1b0d5a8848b21d",
+  "allUnchanged": true,
+  "sha256": {
+    "package.json": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+    "package-lock.json": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+    "app.json": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+    "eas.json": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+    "metro.config.js": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  }
+}

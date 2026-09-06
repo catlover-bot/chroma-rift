@@ -1,0 +1,269 @@
+{
+  "boundary": "Source asset geometry/DataTexture with real browser WebGL; no native renderer, HUD, finger, perception or iPhone validation",
+  "sourceHashes": {
+    "scripts/generate-perceptual-assets.cjs": "ed5f324ca5e7a3a60f4f357b299a51ef2e159103252adbf962e271176d13a301",
+    "scripts/preview-perceptual.cjs": "2bfa67e5db7182169e10b38d061fa86acf86b4b4a9b3ab878dc3a60f2bae8e1c",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "assets/perceptual/hollow-mask.json": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453",
+    "assets/perceptual/hybrid-texture.json": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207"
+  },
+  "mask": {
+    "positionSHA256": "163850880e27d3f07341ceb70bb834fec77d4a9803ba564d5100bc79e57ed3cd",
+    "normalSHA256": "91110ffb3fef4bcf5eb797d6a156dc3f3e55bff0e4dc7f3497d2407642618beb",
+    "indexSHA256": "7c86e1847bed295ef9f3562e852bbe42881ea94de54ba3760e0f7231362be6e7",
+    "frontSide": true,
+    "bounds": {
+      "min": [
+        -0.40011468529701233,
+        -0.5,
+        -0.5550165772438049
+      ],
+      "max": [
+        0.40011468529701233,
+        0.5,
+        0
+      ]
+    },
+    "positiveScale": true,
+    "triangles": 2518
+  },
+  "hybrid": {
+    "textureId": "original-closed-shelves-hybrid-v1",
+    "textureByteSHA256": "fdc8288c04e5d415bb23716d7898e4e83e99612bc82cac25209e1ebe246a67d2",
+    "width": 512,
+    "height": 512,
+    "baseBytes": 1048576,
+    "mipBytes": 1398100,
+    "unchangedUV": true,
+    "minFilter": 1008,
+    "magFilter": 1006,
+    "colorSpace": "srgb"
+  },
+  "views": [
+    {
+      "id": "mask-front",
+      "kind": "hollow",
+      "position": [
+        0,
+        0,
+        2
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-left",
+      "kind": "hollow",
+      "position": [
+        -0.8,
+        0,
+        1.9
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-right",
+      "kind": "hollow",
+      "position": [
+        0.8,
+        0,
+        1.9
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-left-far",
+      "kind": "hollow",
+      "position": [
+        -1.1,
+        0,
+        1.4
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-right-far",
+      "kind": "hollow",
+      "position": [
+        1.1,
+        0,
+        1.4
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-side",
+      "kind": "hollow",
+      "position": [
+        1.4,
+        0,
+        -0.1
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-section",
+      "kind": "hollow",
+      "position": [
+        1.7,
+        0.12,
+        0.35
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-subdued",
+      "kind": "hollow",
+      "position": [
+        0,
+        0,
+        2
+      ],
+      "subdued": true,
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    {
+      "id": "mask-convex-control",
+      "kind": "convex",
+      "position": [
+        0,
+        0,
+        2
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        0.2
+      ]
+    },
+    {
+      "id": "mask-convex-side-control",
+      "kind": "convex",
+      "position": [
+        1.4,
+        0,
+        0.1
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        0.2
+      ]
+    },
+    {
+      "id": "hybrid-near",
+      "kind": "hybrid",
+      "position": [
+        0,
+        0,
+        2.3
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        0
+      ],
+      "projectedPlatePixels": 360.0039747519462
+    },
+    {
+      "id": "hybrid-middle",
+      "kind": "hybrid",
+      "position": [
+        0,
+        0,
+        3.6
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        0
+      ],
+      "projectedPlatePixels": 230.0025394248545
+    },
+    {
+      "id": "hybrid-far",
+      "kind": "hybrid",
+      "position": [
+        0,
+        0,
+        5.2
+      ],
+      "width": 390,
+      "height": 844,
+      "verticalFOV": 65,
+      "target": [
+        0,
+        0,
+        0
+      ],
+      "projectedPlatePixels": 159.23252729413002
+    }
+  ]
+}

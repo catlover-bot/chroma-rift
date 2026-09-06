@@ -15,13 +15,13 @@ it.each(['initial', 'A', 'B', 'C', 'BC', 'D', 'return', 'cleared'] as const)('mi
   await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, raw); await AsyncStorage.setItem(FIRST_PERSON_CHECKPOINT_KEY, legacy);
   const loaded = await loadGalleryStorage(), progress = loaded.checkpoint.progress, gallery = progress.gallery!;
   expect(loaded).toMatchObject({ status: 'migrated', hasCheckpoint: true, checkpointWritable: true });
-  expect(loaded.checkpoint.levelVersion).toBe(2); expect(gallery.schemaVersion).toBe(2);
+  expect(loaded.checkpoint.levelVersion).toBe(3); expect(gallery.schemaVersion).toBe(3);
   expect(gallery.shadow).toEqual(original.progress.gallery.shadow); expect(gallery.contour).toEqual(original.progress.gallery.contour);
   expect(gallery.powerTaken).toEqual({ shadow: gallery.shadow.solved, contour: gallery.contour.solved });
   expect(gallery.powerConnected).toBe(original.progress.sealB); expect(gallery.emergencyLit).toBe(stage !== 'initial');
   expect(gallery.completedFromV1).toBe(stage === 'cleared'); expect(progress.cleared).toBe(stage === 'cleared');
   expect(gallery.story).toEqual({ foreshadowed: stage !== 'initial', absence: !['initial', 'A'].includes(stage),
-    serviceWarned: ['D', 'return', 'cleared'].includes(stage), resolved: stage === 'cleared' });
+    serviceWarned: ['D', 'return', 'cleared'].includes(stage), resolved: stage === 'cleared', crossingStarted: false, crossingPresented: false });
   expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBeNull();
   expect(await saveGalleryCheckpoint(loaded.checkpoint, beginFirstPersonSession())).toBe(true);
   expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(raw); expect(await AsyncStorage.getItem(GALLERY_PRE_V2_KEY)).toBe(raw);
@@ -45,7 +45,7 @@ it.each(['{bad', '{"schemaVersion":99}', '{"schemaVersion":1,"levelVersion":44}'
   expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(raw); expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBeNull(); expect(await AsyncStorage.getItem(GALLERY_PRE_V2_KEY)).toBeNull();
 });
 
-it.each(['{bad', '{"schemaVersion":99,"future":"keep"}'])('never downgrades unreadable v2 into readable v1: %s', async raw => {
+it.each(['{bad', '{"schemaVersion":99,"future":"keep"}'])('never downgrades unreadable current version into readable v1: %s', async raw => {
   const original = JSON.stringify(originalV1('cleared')); await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, original); await AsyncStorage.setItem(GALLERY_CHECKPOINT_KEY, raw);
   expect((await loadGalleryStorage()).status).toBe('blocked'); expect(await saveGalleryCheckpoint(fresh(), beginFirstPersonSession())).toBe(false);
   expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(raw); expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(original);
@@ -57,7 +57,7 @@ it('protects migration progress when a fresh writer is called before loading', a
   expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBeNull(); expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(source);
 });
 
-it('never writes v2 after failed backup and preserves an existing original backup on retry', async () => {
+it('never writes current version after failed backup and preserves an existing original backup on retry', async () => {
   const source = JSON.stringify(originalV1('B')); await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, source);
   const loaded = await loadGalleryStorage(), lease = beginFirstPersonSession();
   jest.mocked(AsyncStorage.setItem).mockRejectedValueOnce(new Error('backup failed'));
@@ -67,14 +67,14 @@ it('never writes v2 after failed backup and preserves an existing original backu
   expect(await saveGalleryCheckpoint(loaded.checkpoint, lease)).toBe(true); expect(await AsyncStorage.getItem(GALLERY_PRE_V2_KEY)).toBe('original backup retained');
 });
 
-it('atomically resets v2 without resurrecting retained v1 on the next launch', async () => {
+it('atomically resets current version without resurrecting retained v1 on the next launch', async () => {
   const source = JSON.stringify(originalV1('cleared')); await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, source);
   const loaded = await loadGalleryStorage(); await saveGalleryCheckpoint(loaded.checkpoint, beginFirstPersonSession());
   const reset = fresh(88); expect(await resetGalleryChapter(reset)).toBe(true); expect((await loadGalleryStorage()).checkpoint).toEqual(reset);
   expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(source); expect(await AsyncStorage.getItem(GALLERY_PRE_V2_KEY)).toBe(source);
 });
 
-it('leaves both v1 and v2 intact when an explicit atomic reset fails', async () => {
+it('leaves both v1 and current version intact when an explicit atomic reset fails', async () => {
   const source = JSON.stringify(originalV1('B')); await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, source);
   const loaded = await loadGalleryStorage(); await saveGalleryCheckpoint(loaded.checkpoint, beginFirstPersonSession()); const raw = await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY);
   jest.mocked(AsyncStorage.setItem).mockRejectedValueOnce(new Error('reset failed'));

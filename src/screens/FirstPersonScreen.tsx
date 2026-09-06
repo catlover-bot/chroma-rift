@@ -1,6 +1,7 @@
+import { DiscoveryNotebook, type NotebookPreview } from './DiscoveryNotebook';
 import { chapterCompletionSummary } from '../app/chapterSummary';
-import { galleryPowerCount } from '../domain/gallery';
-import { attachControllerAudio, setControllerHorrorIntensity, setControllerViewport } from '../rendering/firstPerson/runtimeController';
+import { canCloseGalleryExit, galleryPowerCount } from '../domain/gallery';
+import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport } from '../rendering/firstPerson/runtimeController';
 import * as Clipboard from 'expo-clipboard';
 import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -28,6 +29,7 @@ import { effectiveControlMode, simpleGuideAimInstruction } from './firstPersonCo
 export type FirstPersonScreenProps = {
   settings: AppSettings;
   chapterId?: string;
+  reviewOnly?: boolean;
   controls: FirstPersonControls;
   checkpoint?: CheckpointState;
   onboarding?: FirstPersonOnboarding;
@@ -47,6 +49,10 @@ function GameButton({ label, onPress, disabled = false, testID, sessionKey }: { 
 
 type RecoveryScene = 'chapter' | 'proof' | 'raw-gl';
 const MAX_RENDER_RETRIES = 2;
+function checkpointIdentity(runtime: RuntimeSnapshot['runtime']): string {
+  return JSON.stringify(runtime.gallery ? { progress: runtime.progress, lastSafePose: runtime.gallery.lastSafePose } : runtime.progress);
+}
+
 
 export function FirstPersonScreen(props: FirstPersonScreenProps) {
   const [session, setSession] = useState(() => ({ checkpoint: props.checkpoint, attempt: 0, mode: 'chapter' as RecoveryScene }));
@@ -54,7 +60,7 @@ export function FirstPersonScreen(props: FirstPersonScreenProps) {
   return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors} onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
 }
 
-function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onComplete, onRestart, onExit, scene = 'chapter', startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
+function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onComplete, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
   startCheckpoint: CheckpointState | undefined; attempt: number; renderMode: RecoveryScene; neutralColors: boolean;
   onColorChange: (neutral: boolean) => void;
   onSessionChange: (checkpoint: CheckpointState, mode: RecoveryScene, retry: boolean) => void;
@@ -67,13 +73,15 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const [reader, setReader] = useState(false);
   const [notice, setNotice] = useState('');
   const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const openedReview = useRef(false);
   const [appActive, setAppActive] = useState(AppState.currentState !== 'background' && AppState.currentState !== 'inactive');
   const [copyStatus, setCopyStatus] = useState('');
   const [diagnosticText, setDiagnosticText] = useState('');
   const mounted = useRef(true);
   const failed = useRef(false);
   const completed = useRef(false);
-  const lastProgress = useRef(JSON.stringify(snapshot.runtime.progress));
+  const lastProgress = useRef(checkpointIdentity(snapshot.runtime));
   const lastAnnounced = useRef('');
   const lastGalleryHaptic = useRef(-1);
   const lastActorNotice = useRef(-1);
@@ -94,8 +102,12 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const paused = snapshot.runtime.paused;
   const gallery = snapshot.runtime.gallery;
   const manipulating = !!gallery && gallery.mode !== 'explore';
-  const controlSessionKey = [simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode].join(':');
+  const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode].join(':');
   const blocked = showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
+  // Input stops at semantic completion, while the presented closing tail still
+  // owns its one impact sound. Pause/background/failure stop both immediately.
+  const closingTail = snapshot.runtime.progress.gallery?.finalDoorClosed === true && !!gallery && gallery.exitClosureSeconds > 0;
+  const audioActive = !showDiagnostics && !paused && appActive && ready && !error && renderMode === 'chapter' && (!snapshot.runtime.progress.cleared || closingTail);
 
   useEffect(() => {
     if (scene !== 'chapter' || renderMode !== 'chapter') return;
@@ -103,9 +115,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     return attachControllerAudio(controller, owner);
   }, [controller, renderMode, scene]);
   useEffect(() => { setControllerViewport(controller, sceneWidth, sceneHeight); }, [controller, sceneWidth, sceneHeight]);
-  useEffect(() => { setControllerHorrorIntensity(controller, settings.horrorIntensity ?? 'standard'); }, [controller, settings.horrorIntensity]);
+  useEffect(() => { setControllerHorrorIntensity(controller, settings.horrorIntensity ?? 'standard'); if (settings.horrorIntensity === 'subdued') controller.audio?.stopIllusion(); }, [controller, settings.horrorIntensity]);
   useEffect(() => { controller.audio?.updatePreferences(settings.audio ?? DEFAULT_AUDIO_PREFERENCES); }, [controller, settings.audio]);
-  useEffect(() => { controller.audio?.setActive(!blocked); }, [blocked, controller]);
+  useEffect(() => { controller.audio?.setActive(audioActive); controller.audio?.setPreviewActive(notesOpen && appActive && ready && !error); }, [appActive, audioActive, controller, error, notesOpen, ready]);
 
   const publish = useCallback((next: RuntimeSnapshot) => {
     if (!mounted.current || failed.current || next.runtime !== controller.runtime) return;
@@ -127,23 +139,45 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       lastActorNotice.current = next.actorNotice.sequence;
       setNotice(next.actorNotice.text);
     }
-    const progress = JSON.stringify(next.runtime.progress);
+    const progress = checkpointIdentity(next.runtime);
     if (progress !== lastProgress.current) {
       lastProgress.current = progress;
       if (scene === 'chapter') onCheckpoint(createCheckpoint(next.runtime));
     }
-    if (scene === 'chapter' && next.runtime.progress.cleared && !completed.current) {
+    if (!reviewOnly && scene === 'chapter' && next.runtime.progress.cleared && (!next.runtime.gallery || next.runtime.gallery.exitClosureSeconds <= 0) && !completed.current) {
       completed.current = true;
       onComplete(chapterCompletionSummary(chapterId, controller.runtime.progress));
     }
-  }, [chapterId, controller, onCheckpoint, onComplete, onOnboardingChange, renderMode, scene, settings.reducedMotion]);
+  }, [chapterId, controller, onCheckpoint, onComplete, onOnboardingChange, renderMode, reviewOnly, scene, settings.reducedMotion]);
   const pause = useCallback(() => {
     if (!mounted.current || failed.current) return;
+    if (controller.runtime.gallery) prepareControllerNotebook(controller);
     stopController(controller);
     commandController(controller, { type: 'pause' });
     publish(controllerSnapshot(controller));
     if (scene === 'chapter' && renderMode === 'chapter') onCheckpoint(createCheckpoint(controller.runtime));
   }, [controller, onCheckpoint, publish, renderMode, scene]);
+  const notebookPreview = useCallback((preview: NotebookPreview) => {
+    if (!mounted.current || failed.current) return;
+    if (setControllerNotebookPreview(controller, preview)) setSnapshot(controllerSnapshot(controller));
+  }, [controller]);
+  const stopNotebookSound = useCallback(() => { controller.audio?.stopIllusion(); }, [controller]);
+  const openNotes = useCallback(() => {
+    if (!mounted.current || failed.current || !controller.runtime.gallery || !ready) return;
+    prepareControllerNotebook(controller);
+    pause();
+    setControllerNotebookPreview(controller, undefined);
+    setNotesOpen(true);
+  }, [controller, pause, ready]);
+  const closeNotes = () => {
+    controller.audio?.setPreviewActive(false);
+    notebookPreview(undefined);
+    setNotesOpen(false);
+    if (reviewOnly) onExit();
+  };
+  useEffect(() => {
+    if (reviewOnly && ready && !openedReview.current) { openedReview.current = true; openNotes(); }
+  }, [openNotes, ready, reviewOnly]);
   const resume = () => {
     if (!mounted.current || failed.current) return;
     setNotice('');
@@ -154,6 +188,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const fail = useCallback((message: string) => {
     if (!mounted.current || failed.current) return;
     failed.current = true;
+    controller.audio?.setPreviewActive(false);
+    setControllerNotebookPreview(controller, undefined);
+    setNotesOpen(false);
     stopController(controller);
     commandController(controller, { type: 'pause' });
     setSnapshot(controllerSnapshot(controller));
@@ -184,8 +221,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   useEffect(() => {
     const listener = AppState.addEventListener('change', (state) => {
       if (!mounted.current) return;
+      if (state !== 'active' && controller.runtime.gallery) prepareControllerNotebook(controller);
       setControllerForeground(controller, state === 'active');
       setAppActive(state === 'active');
+      if (state !== 'active') { controller.audio?.setPreviewActive(false); setControllerNotebookPreview(controller, undefined); setNotesOpen(false); }
       if (!failed.current && state !== 'active') { setMenu('pause'); pause(); }
     });
     return () => listener.remove();
@@ -205,10 +244,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     AccessibilityInfo.announceForAccessibility(message);
   }, [notice, paused, reader, snapshot.objective, snapshot.target]);
   useEffect(() => {
-    if (failed.current || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || completed.current) return;
+    if (failed.current || reviewOnly || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || (snapshot.runtime.gallery && snapshot.runtime.gallery.exitClosureSeconds > 0) || completed.current) return;
     completed.current = true;
     onComplete(chapterCompletionSummary(chapterId, snapshot.runtime.progress));
-  }, [chapterId, onComplete, renderMode, scene, snapshot.runtime.progress]);
+  }, [chapterId, onComplete, renderMode, reviewOnly, scene, snapshot.runtime.gallery, snapshot.runtime.progress]);
 
   useEffect(() => {
     if (!notice || paused) return;
@@ -376,11 +415,15 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const deviceControlsHeight = Math.max(48, Math.min(sceneHeight * .45, sceneHeight - (deviceBounds?.bottom ?? sceneHeight * .72) - 18));
   const deviceControls = manipulating ? <GalleryDeviceControls controller={controller} enabled={!blocked} simple={simple} reader={reader} sessionKey={controlSessionKey} onChange={deviceChanged} /> : null;
   const accessibleDevices = reader && gallery && !manipulating ? <View style={styles.actions}>
-    {(['shadow', 'contour'] as const).filter(puzzle => !!galleryPanelTarget(controller, puzzle)).map(puzzle => <GameButton key={puzzle} sessionKey={controlSessionKey}
-      label={puzzle === 'shadow' ? '影の見本を動かす' : '円盤を動かす'} disabled={blocked} onPress={() => { galleryAction(controller, { type: 'enter', puzzle }, true); deviceChanged(); }} />)}
+    {(['shadow', 'contour', 'wiring'] as const).filter(puzzle => !!galleryPanelTarget(controller, puzzle)).map(puzzle => <GameButton key={puzzle} sessionKey={controlSessionKey}
+      label={puzzle === 'shadow' ? '影の見本を動かす' : puzzle === 'contour' ? '円盤を動かす' : '配線を動かす'} disabled={blocked} onPress={() => { galleryAction(controller, { type: 'enter', puzzle }, true); deviceChanged(); }} />)}
   </View> : null;
+  const canCloseExit = gallery && canCloseGalleryExit(controller.runtime);
+  const closeExit = () => { galleryAction(controller, { type: 'close-exit' }); publish(controllerSnapshot(controller)); };
   const actions = <View style={styles.actions}>
     {compareAvailable ? <GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} /> : null}
+    {canCloseExit ? <GameButton sessionKey={controlSessionKey} label="扉を閉める" disabled={blocked || !controller.matrices} onPress={closeExit} /> : null}
+    {gallery && Object.values(progress.gallery!.discoveries).some(Boolean) ? <GameButton sessionKey={controlSessionKey} label="発見メモ" disabled={blocked} onPress={openNotes} /> : null}
     <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" />
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
@@ -404,7 +447,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       {notice && !manipulating ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
       {!simple && !manipulating && renderMode === 'chapter' ? <>
         {contextLabel ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}><Text style={styles.contextText}>{contextLabel}</Text></View> : null}
-        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" /></View>
+        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : !snapshot.target)} testID="interact" /></View>
         {compareAvailable ? <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} testID="compare-colors" /></View> : null}
         {intro && !snapshot.tutorial.moved ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.movement.left, width: layout.movement.width, top: layout.movement.top }]}><Text style={styles.tutorialText}>{moveSide}側をドラッグして歩く</Text></View> : null}
         {intro && snapshot.tutorial.moved && !snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.look.left, width: layout.look.width, top: layout.look.top + 30 }]}><Text style={styles.tutorialText}>{lookSide}側をドラッグして見回す</Text></View> : null}
@@ -422,7 +465,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     {!gallery && simple && compact && renderMode === 'chapter' ? <ScrollView style={styles.compactControls} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
       <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{manipulating ? deviceControls : <>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
     </ScrollView> : null}
-    <Modal visible={paused && !showDiagnostics} transparent animationType="none" onRequestClose={resume}>
+    <Modal visible={paused && !showDiagnostics && !notesOpen} transparent animationType="none" onRequestClose={resume}>
       <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
         <Heading>{menu === 'pause' ? 'ひと休み' : menu === 'hints' ? 'ヒント' : '操作と快適設定'}</Heading>
         <ScrollView contentContainerStyle={styles.menuContent}>
@@ -440,6 +483,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
               <ActionButton label="ドラッグ操作を試す" onPress={() => { changeMode('standard'); resume(); }} />
               <ActionButton label="今の操作を使う" onPress={() => onOnboardingChange?.({ ...onboardingRef.current, controlChoiceAcknowledged: true })} />
             </View> : null}
+            {gallery ? <ActionButton label="発見メモ" onPress={openNotes} disabled={!ready} /> : null}
             <ActionButton label="ヒント" onPress={() => openMenu('hints')} disabled={!ready || renderMode !== 'chapter'} />
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
             <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>
@@ -463,6 +507,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
                 <ActionButton label="控えめな怖さ" variant={settings.horrorIntensity === 'subdued' ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, horrorIntensity: 'subdued' })} />
               </ChoiceRow>
             </> : null}
+            {gallery ? <>
+              <SettingSwitch label="音" description="環境音と効果音を再生します。" value={settings.audio?.enabled ?? true} onValueChange={enabled => onSettingsChange({ ...settings, audio: { enabled, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled: settings.audio?.illusionEnabled ?? true } })} />
+              <SettingSwitch label="演出音" description="任意の短い音の錯覚。控えめな怖さでは鳴りません。" value={settings.audio?.illusionEnabled ?? true} onValueChange={illusionEnabled => onSettingsChange({ ...settings, audio: { enabled: settings.audio?.enabled ?? true, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled } })} />
+            </> : null}
             <Body>現在の操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}。理由：{effectiveControls.reason}。</Body>
             <SettingSwitch label="ボタン操作" description="一歩ずつ進む・向きを変えるボタンを使います。オフにするとドラッグ操作になります。" value={controls.movementMode === 'simple'} onValueChange={(value) => changeMode(value ? 'simple' : 'standard')} />
             {effectiveControls.forced ? <Body muted>読み上げ中はボタンを表示します。保存したタッチ操作の希望は変わりません。</Body> : null}
@@ -480,6 +528,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
           </>}
         </ScrollView>
       </View></View>
+    </Modal>
+    <Modal visible={notesOpen} transparent animationType="none" onRequestClose={closeNotes}>
+      {notesOpen && progress.gallery ? <DiscoveryNotebook progress={progress.gallery} completed={progress.cleared} settings={settings} onSettingsChange={onSettingsChange}
+        onClose={closeNotes} onPreview={notebookPreview} onStopSound={stopNotebookSound}
+        onPlaySound={() => { if (!mounted.current || failed.current || !appActive || !notesOpen) return; controller.audio?.setPreviewActive(true); controller.audio?.playIllusion(String(controller.runtime.session), settings.horrorIntensity ?? 'standard'); }} /> : null}
     </Modal>
     {diagnostics}
   </SafeAreaView>;

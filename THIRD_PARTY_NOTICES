@@ -1,0 +1,48 @@
+THIRD-PARTY MATERIAL NOTICES — CHROMA RIFT
+
+Hollow face illusion.stl
+Author: Wael Tsar
+Source: https://commons.wikimedia.org/wiki/File:Hollow_face_illusion.stl
+Source revision recorded: 881101748
+File: https://upload.wikimedia.org/wikipedia/commons/d/db/Hollow_face_illusion.stl
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Previous changes by cmglee: recentred, symmetrised, converted to STL;
+15 March 2022 rotated 135 degrees for the hollow-side thumbnail.
+
+CHROMA RIFT changes: proper-axis rotation, positive uniform scaling to one
+metre height, translation, exact-vertex welding/indexing and area-weighted
+vertex-normal recomputation. The stationary mask retains the original
+concavity. A separate convex derivative and reduced scale are used for the
+moving exhibit's face; this does not replace or animate the stationary mask.
+The body, cloth and limbs are original project geometry.
+
+Original: assets/perceptual/source/hollow-face-original.stl
+Derivative: assets/perceptual/hollow-mask.json
+Source SHA-256:
+3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75
+Normalized derivative SHA-256:
+8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453
+
+The author and prior contributors do not endorse this project.
+The CC BY 4.0 material and derivatives remain available under CC BY 4.0;
+no additional restrictions are imposed on exercising that license, including
+when the material is distributed separately from the application.
+
+REFERENCE ACKNOWLEDGMENTS (NO COPIED CODE OR MEDIA)
+Pyllusion — Copyright (c) 2018 Dominique Makowski; MIT License.
+https://github.com/RealityBending/Pyllusion
+The Poggendorff parameter separation informed independently authored line
+geometry. No Python code, translated implementation or sample image is shipped.
+
+Michael Bach, Akiyoshi Kitaoka, Oliva/Torralba/Schyns, Shepard and the studies
+listed in docs/ILLUSION-SOURCES.md are explanatory references only. Their
+photographs, artwork, recordings, movies and demo code are not incorporated.
+IllusionVQA is not downloaded or included as a dataset.
+
+Hybrid artwork and synthesized audio are original project assets. Their
+parameters and hashes are recorded in assets/perceptual/manifest.json and
+assets/audio/perceptual-analysis.json. The actor face is the CC BY exception
+to original project geometry, as described above.

@@ -35,9 +35,9 @@ export function createInitialRuntime(checkpoint?: CheckpointState, session = ++r
   if (!galleryChapter && !progress.sealA) progress.hintStage = savedEmblem.hintTier;
   const emblem = startSealSession(savedEmblem.seed, String(session), savedEmblem);
   const spawn = galleryChapter ? GALLERY_SPAWN : CHAPTER.spawn;
-  return { chapterId: selectedChapter, ...(progress.gallery ? { gallery: initialGalleryTransient(progress.gallery, String(session)) } : {}),
+  return { chapterId: selectedChapter, ...(progress.gallery ? { gallery: initialGalleryTransient(progress.gallery, String(session), checkpoint?.pose) } : {}),
     pose: checkpoint ? { ...checkpoint.pose, position: { ...checkpoint.pose.position } } : { ...spawn, position: { ...spawn.position } },
-    progress, emblem, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.exitDoorOpen ? 1 : 0 };
+    progress, emblem, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.gallery ? progress.gallery.finalDoorClosed ? 0 : 1 : progress.exitDoorOpen ? 1 : 0 };
 }
 /** A reducer result and the existing door gate commit together in one runtime
  * value. Rejected/replayed results never produce another host transition. */
@@ -104,12 +104,12 @@ export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, d
     switchFeedback: runtime.switchFeedback && remaining > 0 ? { ...runtime.switchFeedback, remainingSeconds: remaining } : undefined,
     doorAOpen: runtime.progress.sealA ? Math.min(1, runtime.doorAOpen + elapsed / 1.25) : 0,
     doorBOpen: runtime.progress.sealB ? Math.min(1, runtime.doorBOpen + elapsed / 1.25) : 0,
-    doorExitOpen: runtime.progress.exitDoorOpen ? Math.min(1, runtime.doorExitOpen + elapsed / 1.25) : 0,
+    doorExitOpen: runtime.progress.gallery ? runtime.progress.gallery.finalDoorClosed ? 0 : 1 : runtime.progress.exitDoorOpen ? Math.min(1, runtime.doorExitOpen + elapsed / 1.25) : 0,
   };
   next = advanceGallery(next, elapsed);
   if (runtime.progress.gallery) {
     next.alignment = false;
-    if (next.progress.exitDoorOpen && next.progress.gallery!.powerConnected && next.pose.position.z >= 18.75 && next.pose.position.x >= 3 && next.pose.position.x <= 5) next = { ...next, progress: { ...next.progress, cleared: true, gallery: { ...next.progress.gallery!, completedFromV1: false } } };
+    // Reaching the final threshold never auto-clears; close-exit is explicit.
     return next;
   }
   next.alignment = runtime.progress.sealB || (!!matrices && runtime.progress.sealA && evaluateKeyAlignment(pose, getWorld(next), matrices, runtime.alignment).aligned);
@@ -134,15 +134,18 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
       expectedId === 'gallery-exit-panel' ? { type: galleryPowerCount(progress.gallery) === 2 ? 'connect-power' : 'inspect-exit' } :
       expectedId === 'chromatic-exhibit' ? { type: 'chromatic-compare' } :
       expectedId === 'shadow-power' || expectedId === 'contour-power' ? { type: 'take-power', puzzle: expectedId === 'shadow-power' ? 'shadow' : 'contour' } :
-      expectedId === 'exit' ? { type: 'open-exit' } : undefined;
+      expectedId === 'mask-exhibit' ? { type: 'mask-inspect' } : expectedId === 'mask-window' ? { type: 'mask-window' } : expectedId === 'hybrid-exhibit' ? { type: 'hybrid-inspect' } :
+      expectedId === 'exit' ? { type: 'close-exit' } : undefined;
     if (action) return applyGalleryCommand(runtime, { sessionId: runtime.gallery.sessionId, seq: runtime.gallery.lastSeq + 1, nowMs: runtime.gallery.lastNowMs + 1001, action }, { rendererReady: true, foreground: true, targetId: expectedId }).runtime;
   }
   switch (expectedId) {
     case 'shadow-panel':
-    case 'contour-panel': {
+    case 'contour-panel':
+    case 'wiring-panel': {
       if (!runtime.gallery || !matrices) return runtime;
-      return applyGalleryCommand(runtime, { sessionId: runtime.gallery.sessionId, seq: runtime.gallery.lastSeq + 1, nowMs: runtime.gallery.lastNowMs + 1, action: { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : 'contour' } }, { rendererReady: true, foreground: true, targetId: expectedId }).runtime;
+      return applyGalleryCommand(runtime, { sessionId: runtime.gallery.sessionId, seq: runtime.gallery.lastSeq + 1, nowMs: runtime.gallery.lastNowMs + 1, action: { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : expectedId === 'contour-panel' ? 'contour' : 'wiring' } }, { rendererReady: true, foreground: true, targetId: expectedId }).runtime;
     }
+    case 'mask-exhibit': case 'mask-window': case 'hybrid-exhibit':
     case 'gallery-light': case 'gallery-exit-panel': case 'chromatic-exhibit': case 'shadow-power': case 'contour-power':
     case 'guide':
     case 'floor-device': return runtime;

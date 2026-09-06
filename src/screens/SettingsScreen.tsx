@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { MaterialCredits } from './DiscoveryNotebook';
 import { Alert } from 'react-native';
 import { getGalleryAudioAvailability, normalizeAudioPreferences } from '../audio';
 
@@ -32,6 +34,7 @@ export function SettingsScreen({
   currentChapterName?: string;
   onResetChapter?: () => void;
 }) {
+  const [credits, setCredits] = useState(false);
   const audio = normalizeAudioPreferences(settings.audio);
   const audioAvailability = getGalleryAudioAvailability();
   const set = <Key extends keyof AppSettings>(key: Key, value: AppSettings[Key]) =>
@@ -74,6 +77,7 @@ export function SettingsScreen({
       <SectionTitle>音</SectionTitle>
       <Panel>
         <SettingSwitch label="サウンド" description="無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。" value={audio.enabled} onValueChange={(enabled) => set('audio', { ...audio, enabled })} />
+        <SettingSwitch label="演出音" description="短い音の錯覚を使います。控えめな怖さでは再生しません。" value={audio.illusionEnabled ?? true} onValueChange={(illusionEnabled) => set('audio', { ...audio, illusionEnabled })} />
         {audioAvailability === 'missing-native' ? <Body muted>音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。</Body> : null}
         {audioAvailability === 'unavailable' ? <Body muted>音を再生できません。音なしで探索を続けられます。</Body> : null}
         {(['musicVolume', 'effectsVolume'] as const).map((field) => <Panel key={field}>
@@ -121,6 +125,8 @@ export function SettingsScreen({
         }
         variant="danger"
       />
+      <ActionButton label={credits ? "クレジットを閉じる" : "出典と素材クレジット"} onPress={() => setCredits(!credits)} />
+      {credits ? <MaterialCredits /> : null}
       <ActionButton label="ホームへ戻る" onPress={onBack} />
       {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
       {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}

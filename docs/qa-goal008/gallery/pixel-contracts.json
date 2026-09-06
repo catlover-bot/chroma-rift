@@ -1,0 +1,623 @@
+{
+  "boundary": "Raw browser WebGL canvas pixels; no perception claim. HUD reticle is deliberately outside this clean-stimulus test.",
+  "allPassed": true,
+  "checks": [
+    {
+      "id": "b-baseline/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "b-baseline/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "b-baseline/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "b-drawer/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "b-drawer/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "b-drawer/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font1/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font1/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font1/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font2/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font2/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font2/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font2-scrolled/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font2-scrolled/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-320-font2-scrolled/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font1/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font1/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font1/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font2/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font2/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font2/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font2-scrolled/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font2-scrolled/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-390-font2-scrolled/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font1/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font1/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font1/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font2/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font2/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font2/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font2-scrolled/sample-a",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font2-scrolled/sample-b",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "actual": [
+        176,
+        176,
+        176,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "shadow-layout-430-font2-scrolled/sample-c",
+      "contract": "Opaque sample center retains canonical RGBA across source, slot and neutral comparison",
+      "expected": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "actual": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "id": "optional-color-comparison",
+      "contract": "Color comparison changes only pixels within the same planar exhibit, with identical camera/world/actor",
+      "changedInsidePlate": 81796,
+      "changedOutsidePlate": 0,
+      "passed": true
+    },
+    {
+      "id": "c-aligned",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 5832,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "contour-layout-320-font1",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 2662,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "contour-layout-320-font2",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 2662,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "contour-layout-390-font1",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 5832,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "contour-layout-390-font2",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 5832,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "contour-layout-430-font1",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 7104,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "contour-layout-430-font2",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding 18mm edge margin and all HUD pixels",
+      "inspectedPixels": 7104,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    }
+  ]
+}

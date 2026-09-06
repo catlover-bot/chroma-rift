@@ -1,0 +1,24 @@
+{
+  "boundary": "Actual mesh sole world points along straight authoritative -Z-forward root travel, not a video frame-rate measurement",
+  "allPassed": true,
+  "checks": [
+    {
+      "yaw": 0,
+      "comparisons": 69,
+      "maxStanceWorldError": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "yaw": 1.5707963267948966,
+      "comparisons": 69,
+      "maxStanceWorldError": 2.220446049250313e-16,
+      "passed": true
+    },
+    {
+      "yaw": -1.5707963267948966,
+      "comparisons": 69,
+      "maxStanceWorldError": 2.220446049250313e-16,
+      "passed": true
+    }
+  ]
+}

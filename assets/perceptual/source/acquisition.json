@@ -1,0 +1,12 @@
+{
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Hollow_face_illusion.stl",
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": 200,
+      "mime": "application/sla",
+      "bytes": 125984,
+      "sha256": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75"
+    }
+  ]
+}

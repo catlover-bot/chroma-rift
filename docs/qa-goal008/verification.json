@@ -1,0 +1,138 @@
+{
+  "goal": 8,
+  "status": "software-validation-complete; physical iPhone and human perception pending",
+  "branch": "feat/goal-008-perceptual-horror",
+  "baselineCommit": "8ca5ba3456c7f54284981e9cae1b0d5a8848b21d",
+  "historyPreserved": [
+    "8ca5ba3",
+    "aa8ff20"
+  ],
+  "baseline": {
+    "checkExitCode": 0,
+    "suites": 56,
+    "tests": 674,
+    "testSeconds": 57.546,
+    "doctorPassed": 21,
+    "doctorTotal": 21
+  },
+  "final": {
+    "checkExitCode": 0,
+    "lint": "pass",
+    "typecheck": "pass",
+    "suites": 64,
+    "tests": 782,
+    "testSeconds": 89.848,
+    "iosExport": "pass; Hermes bundle, 1491 modules, 10 assets; not an IPA",
+    "doctorPassed": 21,
+    "doctorTotal": 21,
+    "expoInstallCheck": "Dependencies are up to date",
+    "diffCheck": "pass"
+  },
+  "validationCommands": [
+    "npm run check (runs npm run lint, npm run typecheck, npm run test, npm run export:ios)",
+    "npm run doctor",
+    "npx expo install --check",
+    "npx expo export --platform ios --dev --no-bytecode --source-maps --output-dir .expo/goal008/three-dev",
+    "node scripts/inspect-three-bundle.cjs .expo/goal008/three-dev --expect-single",
+    "npx expo export --platform ios --no-bytecode --source-maps --output-dir .expo/goal008/three-production",
+    "node scripts/inspect-three-bundle.cjs .expo/goal008/three-production --expect-single",
+    "node scripts/generate-audio.cjs --check",
+    "node scripts/generate-perceptual-audio.cjs --check",
+    "node scripts/verify-goal005-reference.cjs --kit /home/mhirotaka/workspace/chroma-rift-reference/chroma-rift-goal-005",
+    "node scripts/preview-perceptual-gallery.cjs --capture",
+    "git diff --check"
+  ],
+  "three": {
+    "developmentSameClassIdentity": true,
+    "productionSameClassIdentity": true,
+    "singleSource": "node_modules/three/build/three.cjs",
+    "newNativeDependencies": 0,
+    "protectedConfigFilesUnchanged": 6,
+    "newNativeBuildRequired": false
+  },
+  "referenceKit": {
+    "path": "/home/mhirotaka/workspace/chroma-rift-reference/chroma-rift-goal-005",
+    "manifestFilesVerified": 42,
+    "originalTestsOnAppCore": 28,
+    "stimulusConditions": 900,
+    "previewAssertions": 90,
+    "standaloneSuiteRerun": false,
+    "scope": "Read-only expanded kit; separate temporary core compilation. Not the full standalone kit or app test count. Original ZIP unavailable at its prior path and not rehashed during Goal 008."
+  },
+  "assets": {
+    "externalMaterial": "Hollow face illusion.stl, Wael Tsar / cmglee, CC BY 4.0",
+    "ledgerHashesMatched": 11,
+    "generatedMaterialHashesMatched": 8,
+    "newAudioHashesMatched": 3,
+    "originalAudioFilesUnchanged": 4,
+    "originalSynthesis": "cloth .42s; door-impact .5s; finite Shepard 12s",
+    "audioPoolPlayers": 10,
+    "listeningVerified": false
+  },
+  "qa": {
+    "softwareWebGL": true,
+    "materialViewsBeforeIntegration": 13,
+    "offlineMaterialImages": 5,
+    "integratedViews": 90,
+    "all90CompositesOpened": true,
+    "renderingSourceFilesMatched": 77,
+    "sourceChangesDuringCapture": 0,
+    "maxDrawCalls": 132,
+    "maxTriangles": 9794,
+    "drawCallBudget": 150,
+    "triangleBudget": 100000,
+    "maxGpuTextures": 3,
+    "cpuOwnedTextures": 4,
+    "textureBaseBytes": 3407872,
+    "textureBytesIncludingMipEstimate": 3757396,
+    "browserRenderers": 1,
+    "hybridTextureReentryCycles": 10,
+    "uploadedTextureEachCycle": true,
+    "disposedGeometriesAndTexturesToZeroEachCycle": true,
+    "nativeReentryCyclesWithGlMock": 10,
+    "nativeNotebookCyclesSameRenderer": 10,
+    "actorMeshPostures": 876,
+    "actorMaximumRadiusMeters": 0.42533986410869395,
+    "actorCollisionRadiusMeters": 0.44,
+    "actorGroundingAndStance": "pass; actual mesh + actual movement convention"
+  },
+  "comparisonBaseline": {
+    "goal007StoredGalleryViews": 61,
+    "maxDrawCalls": 53,
+    "maxTriangles": 2400,
+    "scope": "Different authored view collection, not a matched frame performance benchmark. Same-camera actor-before controls are separately recorded."
+  },
+  "devicePending": [
+    "iPhone display / Yoga / safe areas",
+    "real two-hand drag / VoiceOver speech",
+    "visual illusion occurrence and strength",
+    "first-play understanding / fear / comfort",
+    "audio listening / loudness",
+    "device FPS / thermal / GPU residual memory"
+  ],
+  "actionsNotPerformed": [
+    "reset",
+    "clean",
+    "amend",
+    "stash",
+    "push",
+    "PR",
+    "EAS build",
+    "authentication",
+    "signing",
+    "external upload"
+  ],
+  "logSha256": {
+    "baseline-check.log": "a192d5aefc2645b1bf1797ecce8fa37142db21e7d8d4d8bd662a86a7c6e30dee",
+    "baseline-doctor.log": "3457f2023fdf7ae311d82e42f80e54b38504444d805a6f72287a58be76f890e3",
+    "final-check.log": "3ab35aeee44a38863426ed49b7f17dc7072b458759956712f9b7a4a4dbf297a9",
+    "final-doctor.log": "3457f2023fdf7ae311d82e42f80e54b38504444d805a6f72287a58be76f890e3",
+    "dependencies.log": "8152e1dfe2839254529bd71a5c9d6f299c93bc1132025c5930dcc5dc042489db",
+    "three-dev-export.log": "4ec744442382a9c1c79f6e692155c97f4ea2d3144504cceb128c66ee4f6da644",
+    "three-production-export.log": "cecbc0c63cde17dd12f944fa891d0861dcdbef9d181b093713f090b5ccc15651",
+    "original-audio-check.json": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17",
+    "perceptual-audio-check.json": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c",
+    "reference-kit.log": "f87cb34238dec260b5d7b02dde9be937196de4b026ed0bcf7e5acd804d9710e5"
+  },
+  "sourceHashRecord": "source-sha256.json"
+}

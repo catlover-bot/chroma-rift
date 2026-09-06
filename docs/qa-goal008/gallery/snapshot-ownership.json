@@ -1,0 +1,637 @@
+{
+  "boundary": "CPU resource disposal in scene extraction and real React unmount effects; not native GPU, audio or application lifecycle",
+  "visits": 90,
+  "allDisposedExactlyOnce": true,
+  "checks": [
+    {
+      "id": "actor-front",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-quarter",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-side",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-back",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-before",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-after",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-baseline",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-drawer",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-aligned",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-drawer",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "color-exhibit",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "neutral-exhibit",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "mask-front",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "mask-left",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "mask-right",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "mask-window-closed",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "mask-window-open",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "hybrid-near",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "hybrid-middle",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "hybrid-far",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-offset-covered",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-offset-open",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-correct-covered",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-correct-open",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-released",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-320-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-320-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-320-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-320-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-320-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-320-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-320-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-320-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-320-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-390-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-390-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-390-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-390-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-390-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-390-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-390-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-390-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-390-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-430-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-430-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-430-font1",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-430-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-layout-430-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-430-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-layout-430-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-430-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "wiring-layout-430-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-safe-crossing",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-empty-display",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-west-shelf-entry",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-west-shelf-hidden",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-east-shelf-entry",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-east-shelf-hidden",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-noticed",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-chasing",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-searching",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-approach",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-outside-open",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-outside-closed",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-list",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-chromatic",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-shadow",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-contour",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-mask",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-hybrid",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-shepard",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-credits",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-mask-side",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-hybrid-small",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-cover-open",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-chromatic-neutral",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-contour-guide",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-320-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-320-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-390-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-390-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-430-font2",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-430-font2-scrolled",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-mask-320-font2",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-320-font2-controls",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-mask-390-font2",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-390-font2-controls",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-mask-430-font2",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "notebook-wiring-430-font2-controls",
+      "resources": 60,
+      "disposedOnce": 60,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    }
+  ]
+}
