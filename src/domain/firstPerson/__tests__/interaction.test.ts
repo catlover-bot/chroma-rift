@@ -1,7 +1,7 @@
 import { PerspectiveCamera } from 'three';
 import { createSealStimulus } from '../../emblem/stimulus';
 import { EMBLEM_FIXTURE, EMBLEM_SWITCHES } from '../emblemFixture';
-import { createInitialRuntime, evaluateInteraction, findInteraction, getWorld, interact, INTERACTION_CONE_DEGREES, interactionCue, objectiveForRuntime, OBSERVATION_POSE, raySphereDistance, forwardVector } from '..';
+import { createInitialRuntime, evaluateInteraction, findInteraction, getWorld, interact, INTERACTION_CONE_DEGREES, interactionCue, objectiveForRuntime, OBSERVATION_POSE, rayBoxDistance, raySphereDistance, segmentOccluded, forwardVector } from '..';
 import type { ChapterRuntime, InteractableDefinition, PlayerPose, Vec3, WorldGeometry } from '..';
 
 function aim(pose: PlayerPose, center: Vec3): PlayerPose {
@@ -111,6 +111,39 @@ describe('shared visible interaction acquisition (real Three projection, no GPU)
     expect(findInteraction(getWorld(runtime), runtime.pose)?.id).toBe('key');
     expect(evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices(runtime.pose))).toMatchObject({ kind: 'locked' });
     expect(interact(runtime, 'key', matrices(runtime.pose))).toBe(runtime);
+  });
+  it.each([
+    { min: { x: 1, y: 0, z: -1.1 }, max: { x: -1, y: 3.2, z: -0.9 } },
+    { min: { x: -1, y: NaN, z: -1.1 }, max: { x: 1, y: 3.2, z: -0.9 } },
+    { min: { x: -1, y: 0, z: -1.1 }, max: { x: 1, y: Infinity, z: -0.9 } },
+    // Validate every axis before a valid but off-ray slab could return a miss.
+    { min: { x: 4, y: 0, z: NaN }, max: { x: 5, y: 3.2, z: -0.9 } },
+  ])('fails closed for malformed opaque blockers %p before authorizing a glyph or plate', (bounds) => {
+    const pose: PlayerPose = { position: { x: 0, y: 1.6, z: 0 }, yaw: 0, pitch: 0 };
+    const glyph: InteractableDefinition = { id: 'emblem-circle', label: '丸', center: { x: 0, y: 1.6, z: -2 }, radius: 0.1, maxDistance: 3 };
+    const plate: InteractableDefinition = { ...glyph, id: 'emblem-panel', rectangle: {
+      width: 1.6, height: 1.6, normal: { x: 0, y: 0, z: 1 }, right: { x: 1, y: 0, z: 0 },
+    } };
+    const world: WorldGeometry = { ...getWorld(createInitialRuntime()), solids: [], interactables: [glyph] };
+    const blocker = { id: 'damaged-wall', kind: 'wall' as const, opaque: true, ...bounds };
+    expect(evaluateInteraction(world, pose).kind).toBe('ready');
+    world.solids = [blocker];
+    expect(rayBoxDistance(pose.position, forwardVector(pose), blocker)).toBe(0);
+    expect(segmentOccluded(pose.position, glyph.center, world)).toBe(true);
+    for (const target of [glyph, plate]) {
+      world.interactables = [target];
+      expect(evaluateInteraction(world, pose)).toEqual({ kind: 'none' });
+      expect(evaluateInteraction(world, pose, undefined, matrices(pose))).toEqual({ kind: 'none' });
+    }
+  });
+  it('keeps a valid opaque wall behind a target from blocking its interaction', () => {
+    const pose: PlayerPose = { position: { x: 0, y: 1.6, z: 0 }, yaw: 0, pitch: 0 };
+    const glyph: InteractableDefinition = { id: 'emblem-circle', label: '丸', center: { x: 0, y: 1.6, z: -2 }, radius: 0.1, maxDistance: 3 };
+    const world: WorldGeometry = { ...getWorld(createInitialRuntime()), interactables: [glyph], solids: [
+      { id: 'rear-wall', kind: 'wall', opaque: true, min: { x: -1, y: 0, z: -3.1 }, max: { x: 1, y: 3.2, z: -2.9 } },
+    ] };
+    expect(segmentOccluded(pose.position, glyph.center, world)).toBe(false);
+    expect(evaluateInteraction(world, pose, undefined, matrices(pose))).toMatchObject({ kind: 'ready', target: { id: glyph.id } });
   });
   it('rejects malformed poses and keeps the objective tied to actual inspection', () => {
     const initial = createInitialRuntime();

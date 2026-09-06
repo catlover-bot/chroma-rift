@@ -1,10 +1,10 @@
-/** Port of the supplied preview's seal/color core; bytes are encoded sRGB. */
+/** Adapted from the verified implementation kit seal/color core; bytes are encoded sRGB. */
 export type RGB = readonly [number, number, number];
 export type Presentation = 'color' | 'neutral';
 export const PALETTES = Object.freeze({
-  baseline: { id: 'baseline', red: '#EF3F48', blue: '#246AF0', background: '#0B0D12' },
-  muted: { id: 'muted', red: '#B74C55', blue: '#4E75AA', background: '#151821' },
-  alternate: { id: 'alternate', red: '#E6333A', blue: '#0085ED', background: '#0B0D12' },
+  baseline: Object.freeze({ id: 'baseline', red: '#EF3F48', blue: '#246AF0', background: '#0B0D12' }),
+  muted: Object.freeze({ id: 'muted', red: '#B74C55', blue: '#4E75AA', background: '#151821' }),
+  alternate: Object.freeze({ id: 'alternate', red: '#E6333A', blue: '#0085ED', background: '#0B0D12' }),
 } as const);
 export const PALETTE_IDS = ['baseline', 'muted', 'alternate'] as const;
 export type PaletteId = typeof PALETTE_IDS[number];

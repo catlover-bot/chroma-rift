@@ -18,6 +18,8 @@
 
 ## 提供物と残る照合
 
+追補（2026-09-06）: aa8ff20 を保持して原キットを入手し、ZIP・42 ファイルと原 TypeScript / 付属テストを照合した。今回の追加修正、単体と統合の検証結果、実機で残る確認は [GOAL-005-KIT-VERIFICATION.md](GOAL-005-KIT-VERIFICATION.md) に記録する。以下は aa8ff20 作成時点の入手状況と検証範囲の記録。
+
 Goal005指示のREADME.ja.md、DESIGN.ja.md、INTEGRATION.ja.md、SOURCES.md、src/sealのTypeScript原本と付属テストは、attachments・workspace・Downloads・Documents・Desktop・OneDriveの対象検索では見つからなかった。保存先をユーザーへ質問済みで、原本照合は保留。
 
 利用できたDownloads/chroma-rift-emblem-preview.htmlのSHA256は99248b7900457ebe684a0549da0919d5c9f8afb71096122e9cae13110530a9f9。同梱compiled factoriesのcolor、stimulus、puzzle、surfaceOwnerを読み、src/domain/emblemへ型付き移植した。生成器の15条件のcolor／neutral／mask hashは、元previewを隔離VMで計算した値と一致。未入手の付属テストを実行済みとは扱わず、新規の同等動作検査を作った。

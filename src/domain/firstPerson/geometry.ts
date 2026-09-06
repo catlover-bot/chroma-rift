@@ -79,6 +79,10 @@ export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number,
 }
 
 export function rayBoxDistance(origin: Vec3, direction: Vec3, volume: CollisionVolume): number | undefined {
+  // An invalid opaque volume must block interaction, not become a transparent
+  // miss. Validate every slab before an earlier off-ray axis can return early.
+  if ((['x', 'y', 'z'] as const).some((axis) => !Number.isFinite(volume.min[axis]) ||
+    !Number.isFinite(volume.max[axis]) || volume.min[axis] > volume.max[axis])) return 0;
   let near = 0;
   let far = Number.POSITIVE_INFINITY;
   for (const axis of ['x', 'y', 'z'] as const) {
