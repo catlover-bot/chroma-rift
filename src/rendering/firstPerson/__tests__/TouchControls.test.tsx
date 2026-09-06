@@ -7,7 +7,7 @@ import { TouchControls } from '../TouchControls';
 import { controlLayout } from '../controlLayout';
 import { advanceController, createController, worldForController } from '../runtimeController';
 import { createTouchAdapter, type NativeTouchBatch } from '../touchAdapter';
-import { consumeLook, createTouchInput } from '../touchInput';
+import { consumeLook, createTouchInput, requireAllPointersReleased } from '../touchInput';
 
 const layout = controlLayout(390, 763);
 const point = (identifier: number, pageX: number, pageY: number, locationX = 1, locationY = 1) => ({ identifier, pageX, pageY, locationX, locationY });
@@ -222,4 +222,24 @@ describe('actual RN touch component and native-batch adapter (GPU excluded)', ()
     }
     expect(controller.runtime.progress.sealA).toBe(false);
   });
+});
+
+it('native global touch endings release contact recovery even after ownership was cleared', () => {
+  const input = createTouchInput(), adapter = createTouchAdapter(input);
+  const a = point(1, 30, 400), b = point(2, 250, 150), c = point(3, 45, 400);
+  adapter.bind('stick', 'start')({ changedTouches: [a], targetTouches: [a] });
+  adapter.bind('look', 'start')({ changedTouches: [b], targetTouches: [b] });
+  requireAllPointersReleased(input);
+  adapter.bind('stick', 'start')({ changedTouches: [c], targetTouches: [c], touches: [a, b, c] });
+  expect(input.releaseBarrier).toEqual([1, 2, 3]);
+  adapter.bind('look', 'end')({ changedTouches: [b], targetTouches: [], touches: [a, c] });
+  adapter.bind('stick', 'end')({ changedTouches: [a], targetTouches: [c], touches: [c] });
+  expect(input.releaseBarrier).toEqual([3]);
+  adapter.bind('stick', 'move')({ changedTouches: [point(3, 45, 340)], touches: [c] });
+  expect(input.forward).toBe(0);
+  adapter.bind('stick', 'end')({ changedTouches: [c], touches: [] });
+  expect(input.releaseBarrier).toEqual([]);
+  adapter.bind('stick', 'start')({ changedTouches: [a], touches: [a] });
+  adapter.bind('stick', 'move')({ changedTouches: [point(1, 30, 350)] });
+  expect(input.forward).toBe(1);
 });

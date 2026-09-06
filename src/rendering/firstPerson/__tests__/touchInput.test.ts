@@ -1,4 +1,4 @@
-import { analogStickVector, beginLook, beginStick, clearTouchInput, consumeLook, createTouchInput, endPointer, moveLook, moveStick, STICK_TRAVEL_RADIUS } from '../touchInput';
+import { analogStickVector, requireAllPointersReleased, beginLook, beginStick, clearTouchInput, consumeLook, createTouchInput, endPointer, moveLook, moveStick, STICK_TRAVEL_RADIUS } from '../touchInput';
 
 const region = { width: 180, height: 320 };
 describe('floating analog first-person input', () => {
@@ -93,4 +93,21 @@ describe('floating analog first-person input', () => {
     expect(input.lookPointer).toBeNull();
     expect(consumeLook(input)).toEqual({ x: 0, y: 0 });
   });
+});
+
+it('contact recovery waits for all former and newly held fingers, preserving the barrier across clear', () => {
+  const input = createTouchInput();
+  beginStick(input, 1, 30, 400); beginLook(input, 2, 250, 150);
+  moveStick(input, 1, 30, 350); moveLook(input, 2, 300, 150);
+  requireAllPointersReleased(input);
+  expect(input.releaseBarrier).toEqual([1, 2]);
+  expect(input.forward).toBe(0); expect(consumeLook(input)).toEqual({ x: 0, y: 0 });
+  clearTouchInput(input);
+  beginStick(input, 3, 30, 400); expect(input.stickPointer).toBeNull();
+  endPointer(input, 1); endPointer(input, 2);
+  beginLook(input, 4, 250, 150); expect(input.lookPointer).toBeNull();
+  endPointer(input, 3); endPointer(input, 4);
+  expect(input.releaseBarrier).toEqual([]);
+  beginStick(input, 5, 30, 400); moveStick(input, 5, 30, 350);
+  expect(input.forward).toBe(1);
 });

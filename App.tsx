@@ -3,7 +3,8 @@ import { AccessibilityInfo, ActivityIndicator, StyleSheet, Text, View } from 're
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appReducer, initialAppState, persistedFromState } from './src/app/state';
-import { createGalleryRuntime } from './src/domain/gallery';
+import { createGalleryRuntime, galleryPowerCount } from './src/domain/gallery';
+import { chapterCompletionSummary } from './src/app/chapterSummary';
 import { createCheckpoint, createInitialRuntime, type CheckpointState } from './src/domain/firstPerson';
 import { CalibrationInstructionsScreen } from './src/screens/CalibrationInstructionsScreen';
 import { CalibrationResultScreen } from './src/screens/CalibrationResultScreen';
@@ -39,6 +40,7 @@ export default function App() {
   const [resetting, setResetting] = useState(false);
   const resetInFlight = useRef(false);
   const [galleryStarted, setGalleryStarted] = useState(false);
+  const [galleryNeedsCommit, setGalleryNeedsCommit] = useState(false);
   const [controls, setControls] = useState<FirstPersonControls>({ ...DEFAULT_FIRST_PERSON_CONTROLS });
   const [checkpoint, setCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createInitialRuntime()));
   const [galleryCheckpoint, setGalleryCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createGalleryRuntime()));
@@ -71,6 +73,7 @@ export default function App() {
       setGalleryCheckpoint(gallery.checkpoint);
       setHasGallerySave(gallery.hasCheckpoint);
       setGalleryStarted(gallery.status !== 'empty');
+      setGalleryNeedsCommit(gallery.status === 'migrated' || gallery.status === 'recovered');
       setGalleryBlocked(!gallery.checkpointWritable);
       setGalleryMessage(gallery.message);
       setFirstPersonMessage(chapter.message);
@@ -114,9 +117,12 @@ export default function App() {
       next = createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000)));
       setGalleryStarted(true);
       setGalleryCheckpoint(next);
+    }
+    if (state.selectedChapterId === 'perception-gallery-v1' && (newGallery || galleryNeedsCommit)) {
       const saved = await saveGalleryCheckpoint(next, lease);
       if (!isFirstPersonSessionCurrent(lease)) return;
       setHasGallerySave(saved);
+      setGalleryNeedsCommit(!saved);
       setGalleryMessage(saved ? undefined : '章の進行を保存できませんでした。この起動中は同じ展示で続けられます。');
     }
     setCompletedAtEntry(!restart && next.progress.cleared);
@@ -136,16 +142,20 @@ export default function App() {
     resetInFlight.current = true;
     setResetting(true);
     const gallery = state.selectedChapterId === 'perception-gallery-v1';
-    const removed = await (gallery ? resetGalleryChapter() : resetFirstPersonChapter());
+    const next = gallery ? createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : createCheckpoint(createInitialRuntime());
+    const removed = await (gallery ? resetGalleryChapter(next) : resetFirstPersonChapter());
     if (removed) {
       if (gallery) {
-        setGalleryCheckpoint(createCheckpoint(createGalleryRuntime()));
-        setHasGallerySave(false); setGalleryBlocked(false); setGalleryMessage(undefined);
+        setGalleryCheckpoint(next);
+        setHasGallerySave(true); setGalleryStarted(true); setGalleryNeedsCommit(false); setGalleryBlocked(false); setGalleryMessage(undefined);
       } else {
-        setCheckpoint(createCheckpoint(createInitialRuntime())); setHasLegacySave(false);
+        setCheckpoint(next); setHasLegacySave(false);
         setFirstPersonMessage(undefined);
       }
-      await launchChapter(gallery ? createCheckpoint(createGalleryRuntime()) : createCheckpoint(createInitialRuntime()), gallery, true);
+      // resetGalleryChapter already wrote this exact seed into v2 atomically.
+      setCompletedAtEntry(false);
+      setChapterLease(beginFirstPersonSession());
+      dispatch({ type: 'BEGIN_JOURNEY', chapterId: state.selectedChapterId });
     } else {
       (gallery ? setGalleryMessage : setFirstPersonMessage)('章をリセットできませんでした。保存データを保持しています。');
       navigateHome();
@@ -176,7 +186,7 @@ export default function App() {
     setStorageMessage(undefined);
     setFirstPersonMessage(undefined);
     setGalleryMessage(undefined); setGalleryBlocked(false); setHasGallerySave(false); setHasLegacySave(false);
-    setGalleryStarted(false);
+    setGalleryStarted(false); setGalleryNeedsCommit(false);
     setGalleryCheckpoint(createCheckpoint(createGalleryRuntime()));
     setControls({ ...DEFAULT_FIRST_PERSON_CONTROLS });
     setOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
@@ -205,7 +215,7 @@ export default function App() {
       />
     );
   } else if (state.screen === 'playInstructions') {
-    screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} onStart={() => void beginChapter()} onBack={navigateHome} />;
+    screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void beginChapter()} onBack={navigateHome} />;
   } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
     screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onReplay={() => void restartChapter()} onHome={navigateHome} />;
   } else if (state.screen === 'firstPerson' || (state.screen === 'firstPersonLab' && __DEV__)) {
@@ -214,7 +224,7 @@ export default function App() {
     const lease = chapterLease;
     screen = !lab && completedAtEntry ? (
       <FirstPersonResultScreen
-        summary={{ chapterId: selectedCheckpoint.chapterId, seals: state.selectedChapterId === 'perception-gallery-v1' ? 4 : 2, discoveredMechanisms: state.selectedChapterId === 'perception-gallery-v1' ? ['触れない紋章', '影の見本', '描かれていない形', '重なる鍵', '戻ったはずの入口'] : ['触れない紋章', '重なる鍵', '戻ったはずの入口'] }}
+        summary={chapterCompletionSummary(selectedCheckpoint.chapterId, selectedCheckpoint.progress)}
         onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })}
         onReplay={() => void restartChapter()} onHome={navigateHome}
       />
@@ -288,7 +298,7 @@ export default function App() {
         onQuickSetup={() => dispatch({ type: 'START_QUICK_SETUP', sessionId: String(Date.now()) })}
         onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })}
         onReset={() => void reset()}
-        currentChapterName={state.selectedChapterId === 'perception-gallery-v1' ? '不確かな展示室' : '帰り道のない入口'}
+        currentChapterName={state.selectedChapterId === 'perception-gallery-v1' ? '閉館後の展示室' : '帰り道のない入口'}
         onResetChapter={() => void restartChapter()}
         onBack={navigateHome}
         {...(__DEV__ ? {
@@ -319,7 +329,7 @@ export default function App() {
   } else {
     screen = <WelcomeScreen hasSetup={hasSetup} gallerySaved={hasGallerySave || galleryStarted} galleryBlocked={galleryBlocked}
       galleryCleared={galleryCheckpoint.progress.cleared}
-      gallerySolved={Number(galleryCheckpoint.progress.sealA) + Number(galleryCheckpoint.progress.sealB) + Number(galleryCheckpoint.progress.gallery?.shadow.solved ?? false) + Number(galleryCheckpoint.progress.gallery?.contour.solved ?? false)}
+      galleryPowerCount={galleryCheckpoint.progress.gallery ? galleryPowerCount(galleryCheckpoint.progress.gallery) : 0}
       legacySaved={hasLegacySave} onLegacyContinue={() => dispatch({ type: 'PLAY', chapterId: 'returnless-entrance', sessionId: String(Date.now()) })}
       onPlay={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1', sessionId: String(Date.now()) })}
       onSkip={() => { dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' }); dispatch({ type: 'SKIP_QUICK_SETUP', completedAt: new Date().toISOString() }); }}

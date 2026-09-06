@@ -3,20 +3,20 @@ import { Text, StyleSheet, View } from 'react-native';
 import { ActionButton, Body, Panel, Screen, SectionTitle } from '../components/Layout';
 import { UI_COLORS } from '../theme/ui';
 
-export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyContinue, gallerySaved = false, gallerySolved = 0, galleryCleared = false, galleryBlocked = false, legacySaved = false }: {
+export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyContinue, gallerySaved = false, galleryPowerCount = 0, galleryCleared = false, galleryBlocked = false, legacySaved = false }: {
   onPlay: () => void; onSkip: () => void; onSettings: () => void; hasSetup: boolean;
-  onLegacyContinue?: () => void; gallerySaved?: boolean; gallerySolved?: number; galleryCleared?: boolean; galleryBlocked?: boolean; legacySaved?: boolean;
+  onLegacyContinue?: () => void; gallerySaved?: boolean; galleryPowerCount?: number; galleryCleared?: boolean; galleryBlocked?: boolean; legacySaved?: boolean;
 }) {
   return (
     <Screen>
       <Text style={styles.brand}>CHROMA RIFT</Text>
-      <Text accessibilityRole="header" style={styles.title}>不確かな展示室</Text>
-      <Text style={styles.subtitle}>歩く。比べる。見つける。</Text>
-      <View accessibilityLabel="四つの展示：紋章、影の見本、描かれていない形、重なる鍵" style={styles.exhibits}>
-        {['○', '▤', '◔', '⋈'].map((mark, index) => <View key={index} style={styles.mark}><Text style={styles.markText}>{mark}</Text></View>)}
+      <Text accessibilityRole="header" style={styles.title}>閉館後の展示室</Text>
+      <Text style={styles.subtitle}>灯りをつける。電源を探す。ここを出る。</Text>
+      <View accessibilityLabel="非常口、影の見本、描かれていない形" style={styles.exhibits}>
+        {['↗', '▤', '◔'].map((mark, index) => <View key={index} style={styles.mark}><Text style={styles.markText}>{mark}</Text></View>)}
       </View>
-      <Body>色、明暗、ないはずの輪郭。四つの仕掛けをめぐり、覚えている入口へ帰ろう。</Body>
-      {gallerySaved ? <Body muted>{galleryCleared ? '展示室を探索済み。発見を振り返れます。' : `展示室の封印 ${gallerySolved} / 4`}</Body> : null}
+      <Body>誰もいないはずの展示室。二つの予備電源を見つけ、非常口へ向かおう。</Body>
+      {gallerySaved ? <Body muted>{galleryCleared ? 'クリア記録を保持しています。' : `予備電源 ${galleryPowerCount} / 2`}</Body> : null}
       <ActionButton label={galleryBlocked ? '保存を保持して展示室を試す' : gallerySaved ? '展示室の続きから' : '新しい展示室を始める'} onPress={onPlay} variant="primary" />
       {!hasSetup ? <ActionButton label="あとで調整して遊ぶ" onPress={onSkip} /> : null}
       {onLegacyContinue ? <Panel>
@@ -24,7 +24,7 @@ export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyCo
         <Body muted>{legacySaved ? '前の章の進行は、そのまま残っています。' : 'はじまりの章を、ふたつの仕掛けでたどります。'}</Body>
         <ActionButton label={legacySaved ? '旧章の続きから' : '旧章を遊ぶ'} onPress={onLegacyContinue} />
       </Panel> : null}
-      <Body muted>見え方は人それぞれ。音や補助表示は、いつでも設定できます。</Body>
+      <Body muted>見え方は人それぞれ。怖さ、音、補助表示は、いつでも設定できます。</Body>
       <ActionButton label="設定" onPress={onSettings} />
     </Screen>
   );

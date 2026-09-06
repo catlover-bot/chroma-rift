@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { inspectPoseSafety, isSafePose } from '../../domain/firstPerson/geometry';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
 
-export const DIAGNOSTIC_REVISION = 'goal-006-gallery-r1';
+export const DIAGNOSTIC_REVISION = 'goal-007-horror-r1';
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
 export type DiagnosticStage = 'initializing' | 'context-created' | 'renderer-created' | 'scene-committed' | 'first-submitted' | 'ready' | 'failed' | 'closed';
 export type Measurement<T> = T | 'unknown' | 'unsupported';

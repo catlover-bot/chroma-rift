@@ -1,9 +1,9 @@
-import { beginLook, beginStick, clearTouchInput, endPointer, moveLook, moveStick, targetChangedTouches, validPointer, type FirstPersonInput, type PointerId } from './touchInput';
+import { beginLook, beginStick, observeReleaseBarrier, clearTouchInput, endPointer, moveLook, moveStick, targetChangedTouches, validPointer, type FirstPersonInput, type PointerId } from './touchInput';
 
 export type TouchMode = 'stick' | 'look';
 export type TouchPhase = 'start' | 'move' | 'end' | 'cancel';
 export type TouchPoint = { identifier: PointerId; pageX: number; pageY: number };
-export type NativeTouchBatch = { changedTouches?: readonly TouchPoint[]; targetTouches?: readonly TouchPoint[] };
+export type NativeTouchBatch = { changedTouches?: readonly TouchPoint[]; targetTouches?: readonly TouchPoint[]; touches?: readonly TouchPoint[] };
 
 /** JS-only adapter for the installed RN 0.86 native touch emitter.
  * RCTSurfaceTouchHandler owns each touch's original emitter for its lifetime.
@@ -21,6 +21,13 @@ export function createTouchAdapter(input: FirstPersonInput, enabled = true, sess
       return (event: NativeTouchBatch): void => {
         if (!active || token !== generation) return;
         const changed = Array.isArray(event.changedTouches) ? event.changedTouches.filter((point) => point && validPointer(point.identifier)) : [];
+        if (input.releaseBarrier.length) {
+          if (Array.isArray(event.touches)) observeReleaseBarrier(input, event.touches.filter(point => point && validPointer(point.identifier)).map(point => point.identifier));
+          else if (phase === 'start') observeReleaseBarrier(input, [...input.releaseBarrier, ...changed.map(point => point.identifier)]);
+          if (phase === 'end' || phase === 'cancel') for (const point of changed) endPointer(input, point.identifier);
+          // Even the event which clears the barrier must not contribute input.
+          return;
+        }
         const owner = mode === 'stick' ? input.stickPointer : input.lookPointer;
         if (phase === 'end' || phase === 'cancel') {
           // End/cancel may have empty targetTouches: ended pointers are not an

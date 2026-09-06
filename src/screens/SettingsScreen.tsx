@@ -62,6 +62,15 @@ export function SettingsScreen({
           onValueChange={(value) => set('haptics', value)}
         />
       </Panel>
+      <SectionTitle>怖さ</SectionTitle>
+      <Panel>
+        <Body>標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。</Body>
+        <ChoiceRow>
+          <ActionButton label="標準の怖さ" variant={(settings.horrorIntensity ?? 'standard') === 'standard' ? 'primary' : 'secondary'} onPress={() => set('horrorIntensity', 'standard')} />
+          <ActionButton label="控えめな怖さ" variant={settings.horrorIntensity === 'subdued' ? 'primary' : 'secondary'} onPress={() => set('horrorIntensity', 'subdued')} />
+        </ChoiceRow>
+        <Body muted>謎と出口条件は同じです。音や動きの設定は変えません。</Body>
+      </Panel>
       <SectionTitle>音</SectionTitle>
       <Panel>
         <SettingSwitch label="サウンド" description="無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。" value={audio.enabled} onValueChange={(enabled) => set('audio', { ...audio, enabled })} />
@@ -74,7 +83,7 @@ export function SettingsScreen({
             onPress={() => set('audio', { ...audio, [field]: volume })} />)}</ChoiceRow>
         </Panel>)}
       </Panel>
-      <SectionTitle>紋章の表示</SectionTitle>
+      <SectionTitle>色の展示と旧章の表示</SectionTitle>
       <Body muted>見え方を比べて選べます。奥行きの強さに決まった順序はありません。</Body>
       <ChoiceRow>
         {PALETTE_IDS.map((palette) => (

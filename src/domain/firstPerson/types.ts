@@ -11,7 +11,7 @@ export type RoomVariant = 'entrance' | 'exit';
 export type CollisionVolume = {
   id: string; min: Vec3; max: Vec3; kind: 'wall' | 'door' | 'device'; opaque: boolean;
 };
-export type InteractableId = 'shadow-panel' | 'contour-panel' | 'guide' | 'floor-device' | 'key' | 'exit' | 'emblem-panel' | 'emblem-circle' | 'emblem-diamond' | 'emblem-square';
+export type InteractableId = 'gallery-light' | 'gallery-exit-panel' | 'chromatic-exhibit' | 'shadow-power' | 'contour-power' | 'shadow-panel' | 'contour-panel' | 'guide' | 'floor-device' | 'key' | 'exit' | 'emblem-panel' | 'emblem-circle' | 'emblem-diamond' | 'emblem-square';
 export type RectangleInteractionTarget = {
   width: number; height: number; normal: Vec3; right: Vec3;
 };

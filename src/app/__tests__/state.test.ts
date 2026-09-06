@@ -156,11 +156,11 @@ describe('normal first-person chapter navigation', () => {
     expect(gallery.screen).toBe('playInstructions');
     expect(gallery.quickSetupResult).toBe(ready.quickSetupResult);
   });
-  it('requires all four gallery seals and rejects another chapter or old-run completion', () => {
+  it('requires the revised gallery completion and both power units and rejects another chapter or old-run completion', () => {
     const gallery = appReducer(initialAppState, { type: 'BEGIN_JOURNEY', chapterId: 'perception-gallery-v1' });
-    const summary = { chapterId: 'perception-gallery-v1', seals: 4, discoveredMechanisms: ['A', 'B', 'C', 'D'] };
+    const summary = { chapterId: 'perception-gallery-v1', chapterVersion: 2 as const, powerCount: 2 as const, discoveredMechanisms: ['B', 'C', '電源', '非常扉'] };
     const action = { type: 'COMPLETE_CHAPTER' as const, summary, journeyRun: gallery.journeyRun };
-    expect(appReducer(gallery, { ...action, summary: { ...summary, seals: 2 } })).toBe(gallery);
+    expect(appReducer(gallery, { ...action, summary: { ...summary, powerCount: 1 } })).toBe(gallery);
     expect(appReducer(gallery, { ...action, summary: { ...summary, chapterId: 'returnless-entrance', seals: 2 } })).toBe(gallery);
     expect(appReducer(gallery, action).screen).toBe('firstPersonResult');
     expect(appReducer(appReducer(gallery, { type: 'BEGIN_JOURNEY' }), action).screen).toBe('firstPerson');

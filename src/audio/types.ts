@@ -36,6 +36,9 @@ export type GalleryAudio = {
   event(event: GallerySoundEvent): boolean;
   /** Actual collision-resolved travel, never intended input or a teleport delta. */
   movement(distanceMeters: number, sessionId: string): void;
+  /** Actual movement of the single exhibit, using the same fixed footstep pool. */
+  stopMovement(): void;
+  actorMovement(distanceMeters: number, position: AudioPosition, sessionId: string): void;
   setListenerPosition(position: AudioPosition): void;
   dispose(): void;
   whenReady(): Promise<void>;

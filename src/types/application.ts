@@ -26,6 +26,7 @@ export type ScreenName =
   | 'developerLab';
 
 export type EffectStrength = 'low' | 'medium' | 'high';
+export type HorrorIntensity = 'standard' | 'subdued';
 
 export type AppSettings = {
   depthAssist: boolean;
@@ -38,6 +39,8 @@ export type AppSettings = {
   haptics: boolean;
   /** Additive local sound preferences; older saves remain valid. */
   audio?: AudioPreferences;
+  /** Explicit threat preference, independent from motion, sound and color. */
+  horrorIntensity?: HorrorIntensity;
 };
 
 export type DeveloperLabParameters = {
@@ -110,7 +113,10 @@ export const DEFAULT_FIRST_PERSON_ONBOARDING: FirstPersonOnboarding = {
 
 export type FirstPersonChapterSummary = {
   chapterId: string;
-  seals: number;
+  seals?: number;
+  powerCount?: 0 | 1 | 2;
+  chapterVersion?: 1 | 2;
+  migratedCompletion?: boolean;
   discoveredMechanisms: string[];
 };
 
@@ -123,6 +129,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   emblemPalette: 'baseline',
   haptics: true,
   audio: { ...DEFAULT_AUDIO_PREFERENCES },
+  horrorIntensity: 'standard',
 };
 
 export const DEFAULT_LAB_PARAMETERS: DeveloperLabParameters = {

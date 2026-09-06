@@ -1,0 +1,12 @@
+{
+  "baselineRevision": "922db3d4404c68eeb61b2f0278f43b21da015744",
+  "temporaryWorkspace": "/tmp/chroma-panel-qa-2EhtMF",
+  "shippingSourceHashes": {
+    "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+    "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+    "src/rendering/firstPerson/PanelFixture.tsx": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+    "src/rendering/firstPerson/ChapterScene.tsx": "d9ae06a9bb5a1fc4b29f857cbb753ed3f0c14d87bf21aa23688e23400eb402ea"
+  },
+  "oldGalleryAfter": "Recorded Goal006 Gallery A JSX replaced only by the shipping PanelFixture, inside the isolated QA copy. This is not the redesigned Goal007 gallery.",
+  "scope": "Actual authored meshes/materials rendered by browser Three/ANGLE SwiftShader; no native renderer, HUD, touch, perception, sound or device performance claim."
+}

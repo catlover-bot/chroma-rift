@@ -18,7 +18,7 @@ function solvedWings(): CheckpointState {
   const pair = createShadowSpec(shadow.seed, shadow.variant).samples.filter(sample => sample.color === '#808080');
   shadow = placeShadowSample(shadow, pair[0]!.id, 'socket-left');
   shadow = placeShadowSample(shadow, pair[1]!.id, 'socket-right');
-  runtime.progress = { ...runtime.progress, sealA: true, gallery: { ...gallery,
+  runtime.progress = { ...runtime.progress, gallery: { ...gallery,
     shadow: { ...shadow, inspected: true, solved: true, attempts: 1 },
     contour: { ...gallery.contour, inspected: true, solved: true, attempts: 1,
       angles: createContourSpec(gallery.contour.seed).discs.map(disc => normalizeAngle(disc.targetAngle)) as DiscAngles }, order: ['C', 'B'],
@@ -136,7 +136,7 @@ describe('independent gallery checkpoint and shared preferences', () => {
     const queued = saveGalleryCheckpoint(solvedWings(), old);
     const reset = resetGalleryChapter(); release?.();
     expect(await inFlight).toBe(false); expect(await queued).toBe(false); expect(await reset).toBe(true);
-    expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBeNull();
+    expect(JSON.parse((await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY))!)).toEqual(fresh());
     expect(await saveGalleryCheckpoint(solvedWings(), old)).toBe(false);
     expect(await saveGalleryCheckpoint(fresh(), beginFirstPersonSession())).toBe(true);
   });

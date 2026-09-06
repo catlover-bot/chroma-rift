@@ -207,3 +207,38 @@ it('ten visit/dispose cycles keep the total live player count at zero', async ()
   expect(visits.flatMap((h) => h.players).filter((p) => p.release.mock.calls.length !== 1)).toEqual([]);
   expect(visits.reduce((n, h) => n + h.audio.getDiagnostics().players, 0)).toBe(0);
 });
+
+it('shares the bounded pool for independently accumulated actor travel at its actual position', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  h.audio.setListenerPosition({ x: 0, y: 0, z: 0 });
+  h.audio.movement(.4, 'visit-1');
+  h.audio.actorMovement(.4, { x: 6, y: 0, z: 0 }, 'visit-1');
+  await flush(); expect(h.count('footstep')).toBe(0);
+  h.audio.actorMovement(.3, { x: 6, y: 0, z: 0 }, 'visit-1');
+  await flush(); expect(h.count('footstep')).toBe(1);
+  expect(h.of('footstep')[0]!.volume).toBeCloseTo(.6 * .5 * DEFAULT_AUDIO_PREFERENCES.effectsVolume);
+  h.audio.movement(.3, 'visit-1'); await flush(); expect(h.count('footstep')).toBe(2);
+  expect(h.backend.createPlayer).toHaveBeenCalledTimes(7);
+});
+it('never sounds actor teleport, zero travel, stale sessions, distant or malformed sources', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  h.audio.setListenerPosition({ x: 0, y: 0, z: 0 });
+  h.audio.actorMovement(.7, { x: 0, y: 0, z: 1 }, 'stale');
+  for (const d of [0, -1, NaN, Infinity, 4]) h.audio.actorMovement(d, { x: 0, y: 0, z: 1 }, 'visit-1');
+  h.audio.actorMovement(.7, { x: NaN, y: 0, z: 1 }, 'visit-1');
+  h.audio.actorMovement(.7, { x: 30, y: 0, z: 1 }, 'visit-1');
+  await flush(); expect(h.count('footstep')).toBe(0);
+});
+it('invalidates actor footstep seeks on manipulation/pause/mute/disposal and drops accumulated distance', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  const seek = deferred(); h.of('footstep')[0]!.seekTo.mockImplementation(() => seek.promise);
+  h.audio.actorMovement(.7, { x: 0, y: 0, z: 1 }, 'visit-1');
+  h.audio.setActive(false); h.audio.setActive(true); seek.resolve(); await flush();
+  expect(h.count('footstep')).toBe(0);
+  h.audio.actorMovement(.6, { x: 0, y: 0, z: 1 }, 'visit-1');
+  h.audio.updatePreferences({ enabled: true, effectsVolume: 0, musicVolume: 0 });
+  h.audio.updatePreferences(DEFAULT_AUDIO_PREFERENCES);
+  h.audio.actorMovement(.1, { x: 0, y: 0, z: 1 }, 'visit-1');
+  await flush(); expect(h.count('footstep')).toBe(0);
+  h.audio.dispose(); expect(h.audio.getDiagnostics().players).toBe(0);
+});

@@ -1,0 +1,350 @@
+{
+  "before": {
+    "legacy": {
+      "surfaceBounds": {
+        "min": [
+          1.125,
+          1.0050000000000001,
+          -7.81
+        ],
+        "max": [
+          2.775,
+          2.6550000000000002,
+          -7.81
+        ]
+      },
+      "surfaceMaterial": {
+        "depthTest": true,
+        "depthWrite": true,
+        "transparent": false,
+        "renderOrder": 0
+      },
+      "parts": [
+        {
+          "name": "emblem-backing",
+          "min": [
+            1.04,
+            0.92,
+            -7.9
+          ],
+          "max": [
+            2.86,
+            2.74,
+            -7.83
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": 0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-horizontal--1",
+          "min": [
+            1.04,
+            0.92,
+            -7.840000000000001
+          ],
+          "max": [
+            2.86,
+            1.0050000000000001,
+            -7.79
+          ],
+          "intersectsSurface": true,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.019999999999999574
+        },
+        {
+          "name": "emblem-frame-vertical--1",
+          "min": [
+            1.04,
+            1.0050000000000001,
+            -7.840000000000001
+          ],
+          "max": [
+            1.125,
+            2.6550000000000002,
+            -7.79
+          ],
+          "intersectsSurface": true,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.019999999999999574
+        },
+        {
+          "name": "emblem-frame-horizontal-1",
+          "min": [
+            1.04,
+            2.6550000000000002,
+            -7.840000000000001
+          ],
+          "max": [
+            2.86,
+            2.74,
+            -7.79
+          ],
+          "intersectsSurface": true,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.019999999999999574
+        },
+        {
+          "name": "emblem-frame-vertical-1",
+          "min": [
+            2.775,
+            1.0050000000000001,
+            -7.840000000000001
+          ],
+          "max": [
+            2.86,
+            2.6550000000000002,
+            -7.79
+          ],
+          "intersectsSurface": true,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.019999999999999574
+        }
+      ]
+    },
+    "gallery": {
+      "surfaceBounds": {
+        "min": [
+          1.25,
+          1.32,
+          -7.81
+        ],
+        "max": [
+          2.65,
+          2.7199999999999998,
+          -7.81
+        ]
+      },
+      "surfaceMaterial": {
+        "depthTest": true,
+        "depthWrite": true,
+        "transparent": false,
+        "renderOrder": 0
+      },
+      "parts": [
+        {
+          "name": "gallery-emblem-frame",
+          "min": [
+            1.17,
+            1.24,
+            -7.91
+          ],
+          "max": [
+            2.73,
+            2.8,
+            -7.8100000000000005
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": true,
+          "behindSurfaceGap": 8.881784197001252e-16
+        }
+      ]
+    }
+  },
+  "after": {
+    "legacy": {
+      "surfaceBounds": {
+        "min": [
+          1.125,
+          1.0050000000000001,
+          -7.81
+        ],
+        "max": [
+          2.775,
+          2.6550000000000002,
+          -7.81
+        ]
+      },
+      "surfaceMaterial": {
+        "depthTest": true,
+        "depthWrite": true,
+        "transparent": false,
+        "renderOrder": 0
+      },
+      "parts": [
+        {
+          "name": "emblem-backing",
+          "min": [
+            1.04,
+            0.92,
+            -7.8999999999999995
+          ],
+          "max": [
+            2.86,
+            2.74,
+            -7.829999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": 0.019999999999999574
+        },
+        {
+          "name": "emblem-frame-horizontal--1",
+          "min": [
+            1.04,
+            0.9200000000000002,
+            -7.84
+          ],
+          "max": [
+            2.86,
+            1.0010000000000001,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-vertical--1",
+          "min": [
+            1.04,
+            1.0010000000000001,
+            -7.84
+          ],
+          "max": [
+            1.121,
+            2.659,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-horizontal-1",
+          "min": [
+            1.04,
+            2.659,
+            -7.84
+          ],
+          "max": [
+            2.86,
+            2.74,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-vertical-1",
+          "min": [
+            2.7789999999999995,
+            1.0010000000000001,
+            -7.84
+          ],
+          "max": [
+            2.86,
+            2.659,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        }
+      ]
+    },
+    "gallery": {
+      "surfaceBounds": {
+        "min": [
+          1.25,
+          1.32,
+          -7.81
+        ],
+        "max": [
+          2.65,
+          2.7199999999999998,
+          -7.81
+        ]
+      },
+      "surfaceMaterial": {
+        "depthTest": true,
+        "depthWrite": true,
+        "transparent": false,
+        "renderOrder": 0
+      },
+      "parts": [
+        {
+          "name": "emblem-backing",
+          "min": [
+            1.17,
+            1.24,
+            -7.8999999999999995
+          ],
+          "max": [
+            2.73,
+            2.8,
+            -7.829999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": 0.019999999999999574
+        },
+        {
+          "name": "emblem-frame-horizontal--1",
+          "min": [
+            1.17,
+            1.24,
+            -7.84
+          ],
+          "max": [
+            2.73,
+            1.316,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-vertical--1",
+          "min": [
+            1.17,
+            1.316,
+            -7.84
+          ],
+          "max": [
+            1.246,
+            2.724,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-horizontal-1",
+          "min": [
+            1.17,
+            2.724,
+            -7.84
+          ],
+          "max": [
+            2.73,
+            2.8,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        },
+        {
+          "name": "emblem-frame-vertical-1",
+          "min": [
+            2.654,
+            1.316,
+            -7.84
+          ],
+          "max": [
+            2.7300000000000004,
+            2.724,
+            -7.789999999999999
+          ],
+          "intersectsSurface": false,
+          "coplanarWithinMicrometre": false,
+          "behindSurfaceGap": -0.020000000000000462
+        }
+      ]
+    }
+  }
+}

@@ -12,8 +12,8 @@ jest.mock('expo', () => ({ ...jest.requireActual('expo'), requireOptionalNativeM
 it('keeps new gallery and old chapter actions distinct and presents saved gallery progress', async () => {
   const gallery = jest.fn(), old = jest.fn();
   const view = await render(<WelcomeScreen hasSetup onPlay={gallery} onSkip={jest.fn()} onSettings={jest.fn()}
-    onLegacyContinue={old} legacySaved gallerySaved gallerySolved={3} />);
-  expect(view.getByText('展示室の封印 3 / 4')).toBeTruthy();
+    onLegacyContinue={old} legacySaved gallerySaved galleryPowerCount={1} />);
+  expect(view.getByText('予備電源 1 / 2')).toBeTruthy();
   await fireEvent.press(view.getByText('展示室の続きから')); expect(gallery).toHaveBeenCalledTimes(1); expect(old).not.toHaveBeenCalled();
   await fireEvent.press(view.getByText('旧章の続きから')); expect(old).toHaveBeenCalledTimes(1);
 });
@@ -35,8 +35,8 @@ it('adjusts independent audio preferences without changing visual or accessibili
 it('makes current-chapter and full-data reset scope explicit before either action', async () => {
   const alert = jest.spyOn(Alert, 'alert'), current = jest.fn(), all = jest.fn();
   const view = await render(<SettingsScreen settings={DEFAULT_SETTINGS} onChange={jest.fn()} onRecalibrate={jest.fn()}
-    onQuickSetup={jest.fn()} onReset={all} onResetChapter={current} currentChapterName="不確かな展示室" onBack={jest.fn()} />);
-  await fireEvent.press(view.getByText('不確かな展示室だけを最初から'));
+    onQuickSetup={jest.fn()} onReset={all} onResetChapter={current} currentChapterName="閉館後の展示室" onBack={jest.fn()} />);
+  await fireEvent.press(view.getByText('閉館後の展示室だけを最初から'));
   expect(alert.mock.calls.at(-1)?.[1]).toContain('他の章、表示と音の設定、調整結果は残ります');
   expect(current).not.toHaveBeenCalled(); expect(all).not.toHaveBeenCalled();
   alert.mock.calls.at(-1)?.[2]?.find(button => button.text === 'この章だけリセット')?.onPress?.();
@@ -46,10 +46,10 @@ it('makes current-chapter and full-data reset scope explicit before either actio
   alert.mockRestore();
 });
 
-it('shows four discoveries for gallery completion while preserving the old result and optional new chapter action', async () => {
-  const mechanisms = ['触れない紋章', '影の見本', '描かれていない形', '重なる鍵'];
-  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', seals: 4, discoveredMechanisms: mechanisms }} onReplay={jest.fn()} onHome={jest.fn()} />);
-  expect(view.getByText('展示室の、その先へ')).toBeTruthy();
+it('shows the revised power-and-exit discoveries for gallery completion while preserving the old result and optional new chapter action', async () => {
+  const mechanisms = ['影の見本', '描かれていない形', '二つの予備電源', '非常扉からの脱出'];
+  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', powerCount: 2, chapterVersion: 2, discoveredMechanisms: mechanisms }} onReplay={jest.fn()} onHome={jest.fn()} />);
+  expect(view.getByText('閉館後の展示室から脱出')).toBeTruthy();
   mechanisms.forEach(name => expect(view.getByText(name)).toBeTruthy());
   expect(view.getByText('展示室を最初から遊ぶ')).toBeTruthy();
   const newGallery = jest.fn();
@@ -57,4 +57,23 @@ it('shows four discoveries for gallery completion while preserving the old resul
   expect(view.getByText('帰り道のない入口から脱出')).toBeTruthy();
   await fireEvent.press(view.getByText('新しい展示室を始める'));
   expect(newGallery).toHaveBeenCalledTimes(1);
+});
+
+
+it('keeps horror intensity independent from sound, motion, colors and input preferences', async () => {
+  const onChange = jest.fn(), settings = { ...DEFAULT_SETTINGS, reducedMotion: true, audio: { enabled: false, musicVolume: .1, effectsVolume: .2 } };
+  const view = await render(<SettingsScreen settings={settings} onChange={onChange} onRecalibrate={jest.fn()} onQuickSetup={jest.fn()} onReset={jest.fn()} onBack={jest.fn()} />);
+  await fireEvent.press(view.getByRole('button', { name: '控えめな怖さ' }));
+  expect(onChange).toHaveBeenLastCalledWith({ ...settings, horrorIntensity: 'subdued' });
+  await fireEvent.press(view.getByRole('button', { name: '標準の怖さ' }));
+  expect(onChange).toHaveBeenLastCalledWith({ ...settings, horrorIntensity: 'standard' });
+});
+
+it('preserves an old cleared gallery result without claiming the player experienced the revised route', async () => {
+  const view = await render(<FirstPersonResultScreen summary={{ chapterId: 'perception-gallery-v1', chapterVersion: 2, powerCount: 2, migratedCompletion: true, discoveredMechanisms: [] }} onReplay={jest.fn()} onHome={jest.fn()} />);
+  expect(view.getByText('展示室のクリア記録')).toBeTruthy();
+  expect(view.getByText(/以前の展示室のクリア記録を保持/)).toBeTruthy();
+  expect(view.queryByText('触れない紋章')).toBeNull(); expect(view.queryByText('重なる鍵')).toBeNull();
+  expect(view.queryByText(/サービス通路の先の非常扉から外へ出ました/)).toBeNull();
+  expect(view.getByRole('button', { name: '展示室を最初から遊ぶ' })).toBeEnabled();
 });

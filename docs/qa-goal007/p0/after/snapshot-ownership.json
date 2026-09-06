@@ -1,0 +1,147 @@
+{
+  "boundary": "CPU resource disposal in scene extraction and real React unmount effects; not native GPU, audio or application lifecycle",
+  "visits": 20,
+  "allDisposedExactlyOnce": true,
+  "checks": [
+    {
+      "id": "legacy-front",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-near",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-left",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-right",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-move-0",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-move-1",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-move-2",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-move-3",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-move-4",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "legacy-wall",
+      "resources": 35,
+      "disposedOnce": 35,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-front",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-near",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-left",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-right",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-move-0",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-move-1",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-move-2",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-move-3",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-move-4",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "gallery-wall",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    }
+  ]
+}

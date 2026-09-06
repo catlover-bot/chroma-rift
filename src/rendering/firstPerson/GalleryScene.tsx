@@ -2,15 +2,18 @@
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import * as THREE from 'three';
-import { createContourSpec, createShadowSpec, CONTOUR_DISC_IDS, GALLERY_A_OBSERVATION_POSE, GALLERY_CONTOUR_FIXTURE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_EMBLEM_FIXTURE, GALLERY_EMBLEM_LATCH, GALLERY_EMBLEM_SWITCHES, GALLERY_OBSERVATION_POSE, GALLERY_SHADOW_FIXTURE, GALLERY_SHADOW_OBSERVATION_POSE, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
-import type { SampleId } from '../../domain/gallery';
-import { evaluateKeyAlignment } from '../../domain/firstPerson/alignment';
+import { createContourSpec, createShadowSpec, CONTOUR_DISC_IDS, GALLERY_CHROMATIC_FIXTURE, GALLERY_LIGHT_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_SHADOW_FIXTURE, GALLERY_SHADOW_OBSERVATION_POSE, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowSlotAt, angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
+import type { SampleId, SocketId } from '../../domain/gallery';
 import { getWorld } from '../../domain/firstPerson/chapter';
+import { createPanelFixture } from '../../domain/firstPerson/panelFixture';
 import type { ChapterRuntime, CollisionVolume, PuzzleState, Vec3, WorldGeometry } from '../../domain/firstPerson/types';
 import type { SceneResources } from './resources';
 import { computeSegmentTransform } from './segmentTransform';
-import { GlyphMark } from './GlyphMark';
+import { GalleryActor } from './GalleryActor';
+import { PanelFixture } from './PanelFixture';
 
+const shadowFixture = createPanelFixture(GALLERY_SHADOW_FIXTURE), contourFixture = createPanelFixture(GALLERY_CONTOUR_FIXTURE);
+const lightFixture = createPanelFixture(GALLERY_LIGHT_FIXTURE), exitFixture = createPanelFixture(GALLERY_EXIT_PANEL_FIXTURE), colorFixture = createPanelFixture(GALLERY_CHROMATIC_FIXTURE);
 type Block = { position: [number, number, number]; scale: [number, number, number] };
 function InstancedBlocks({ blocks, resources, material, name }: { blocks: Block[]; resources: SceneResources; material: THREE.Material; name: string }) {
   const object = useMemo(() => {
@@ -30,117 +33,133 @@ function Segment({ from, to, width, material, resources, name }: { from: Vec3; t
   const t = computeSegmentTransform(from, to, width);
   return <mesh name={name} geometry={resources.cylinder} material={material} position={t.position} quaternion={t.quaternion} scale={t.scale} />;
 }
+function SquareFrame({ resources, material, size, name }: { resources: SceneResources; material: THREE.Material; size: number; name: string }) {
+  return <group name={name}>{[-1, 1].flatMap(sign => [
+    <mesh key={'h' + sign} geometry={resources.box} material={material} position={[0, sign * size / 2, 0]} scale={[size + .025, .025, .006]} />,
+    <mesh key={'v' + sign} geometry={resources.box} material={material} position={[sign * size / 2, 0, 0]} scale={[.025, size, .006]} />,
+  ])}</group>;
+}
+function setFrame(group: THREE.Group | null | undefined, material: THREE.Material) {
+  group?.traverse(child => { if (child instanceof THREE.Mesh) child.material = material; });
+}
 export function GalleryScene({ world, runtime, progress, resources, reducedMotion, onFrameError }: {
   world: WorldGeometry; runtime: RefObject<ChapterRuntime>; progress: PuzzleState; resources: SceneResources; reducedMotion: boolean; onFrameError?: (e: unknown) => void;
 }) {
   const r = resources.galleryResources!, gp = progress.gallery!;
   const doors = useRef<Record<string, THREE.Mesh | null>>({});
   const samples = useRef<Partial<Record<SampleId, THREE.Group | null>>>({});
-  const discs = useRef<(THREE.Mesh | null)[]>([]);
-  const discNotches = useRef<(THREE.Mesh | null)[]>([]);
-  const switches = useRef<(THREE.Group | null)[]>([]);
-  const latchA = useRef<THREE.Mesh>(null), drawerB = useRef<THREE.Mesh>(null), drawerC = useRef<THREE.Mesh>(null), keyLatch = useRef<THREE.Mesh>(null);
-  const guide = useRef<THREE.Group>(null);
-  const keyNotch = useRef<THREE.Mesh>(null), exitHandle = useRef<THREE.Mesh>(null);
+  const sampleFrames = useRef<Partial<Record<SampleId, THREE.Group | null>>>({});
+  const trays = useRef<Partial<Record<SocketId, THREE.Group | null>>>({});
+  const discs = useRef<(THREE.Mesh | null)[]>([]), discNotches = useRef<(THREE.Mesh | null)[]>([]);
+  const drawerB = useRef<THREE.Group>(null), drawerC = useRef<THREE.Group>(null);
+  const guide = useRef<THREE.Group>(null), lever = useRef<THREE.Group>(null), exitHandle = useRef<THREE.Mesh>(null);
   const shadow = createShadowSpec(gp.shadow.seed, gp.shadow.variant), contour = createContourSpec(gp.contour.seed);
-  useFrame(({ camera }) => {
+  useFrame(() => {
     try {
       const state = runtime.current, g = state.gallery;
       if (!g) return;
       r.setComparison(g.shadowCompare);
+      r.chromaticSurface.update(g.chromaticNeutral);
       if (guide.current) guide.current.visible = g.contourGuide;
       for (const solid of getWorld(state).solids) {
         const mesh = doors.current[solid.id]; if (mesh) mesh.position.y = (solid.min.y + solid.max.y) / 2;
       }
+      const drag = g.activeDrag;
+      const candidate = drag?.kind === 'shadow' ? shadowSlotAt(drag.point) : null;
+      for (const slot of ['socket-left', 'socket-right'] as const) setFrame(trays.current[slot], candidate === slot ? r.selected : r.outline);
       for (const sample of shadow.samples) {
         const mesh = samples.current[sample.id];
         if (!mesh) continue;
-        const drag = g.activeDrag;
-        const p = drag?.kind === 'shadow' && drag.sampleId === sample.id ? drag.point : SHADOW_SLOT_POSITIONS[state.progress.gallery!.shadow.assignments[sample.id]];
+        const held = drag?.kind === 'shadow' && drag.sampleId === sample.id;
+        const p = held ? drag.point : SHADOW_SLOT_POSITIONS[state.progress.gallery!.shadow.assignments[sample.id]];
         mesh.position.set(p.x, p.y, .013);
+        // Only the outer frame changes; interior RGB and depth stay constant.
+        setFrame(sampleFrames.current[sample.id], held ? candidate ? r.selected : r.ink : r.outline);
+        if (sampleFrames.current[sample.id]) sampleFrames.current[sample.id]!.scale.setScalar(held ? 1.08 : 1);
       }
       CONTOUR_DISC_IDS.forEach(id => {
         if (discs.current[id]) discs.current[id]!.rotation.z = g.contourAngles[id];
-        if (discNotches.current[id]) discNotches.current[id]!.material = angularDifference(g.contourAngles[id], contour.discs[id]!.targetAngle) <= CONTOUR_TOLERANCE ? r.warm : r.shelf;
+        if (discNotches.current[id]) discNotches.current[id]!.material = drag?.kind === 'contour' && drag.discId === id ? r.selected :
+          angularDifference(g.contourAngles[id], contour.discs[id]!.targetAngle) <= CONTOUR_TOLERANCE ? r.warm : r.shelf;
       });
-      GALLERY_EMBLEM_SWITCHES.forEach((item, i) => {
-        const mesh = switches.current[i]; if (!mesh) return;
-        const correct = state.progress.sealA && resources.emblemSurface!.stimulus.answer === item.glyph;
-        const f = state.switchFeedback;
-        const press = correct ? 1 : f?.glyph === item.glyph ? reducedMotion ? Number(f.remainingSeconds > .15) : Math.min(1, f.remainingSeconds / .35) : 0;
-        mesh.position.z = item.center.z - .055 * press;
-      });
-      if (latchA.current) latchA.current.position.x = GALLERY_EMBLEM_LATCH.center.x + state.doorAOpen * .24;
       if (drawerB.current) drawerB.current.position.z = GALLERY_SHADOW_FIXTURE.center.z + .09 + .22 * g.doorShadowOpen;
       if (drawerC.current) drawerC.current.position.z = GALLERY_CONTOUR_FIXTURE.center.z + .09 + .22 * g.doorContourOpen;
-      if (keyLatch.current) keyLatch.current.position.x = world.keyFrame.center.x + .65 + state.doorBOpen * .32;
+      if (lever.current) lever.current.rotation.x = state.progress.gallery!.emergencyLit ? -.5 : .5;
       if (exitHandle.current) exitHandle.current.position.y = 1.2 + state.doorExitOpen * 3.3;
-      if (keyNotch.current) {
-        const alignment = evaluateKeyAlignment(state.pose, world, { view: camera.matrixWorldInverse.elements, projection: camera.projectionMatrix.elements }, state.alignment);
-        const approach = Number.isFinite(alignment.error) ? Math.max(0, 1 - alignment.error / .22) : 0;
-        keyNotch.current.position.x = world.keyFrame.center.x + 1.48 - .1 * approach;
-        keyNotch.current.material = state.alignment ? r.outline : r.warm;
-      }
     } catch (e) { if (onFrameError) onFrameError(e); else throw e; }
   });
   const floorBlocks = world.floors.map(f => ({ position: [(f.minX + f.maxX) / 2, -.12, (f.minZ + f.maxZ) / 2], scale: [f.maxX - f.minX, .24, f.maxZ - f.minZ] } as Block));
   const ceilings = floorBlocks.map(b => ({ ...b, position: [b.position[0], 3.3, b.position[2]] as Block['position'] }));
   const walls = world.solids.filter(s => s.kind === 'wall');
-  const frames: Block[] = [];
-  for (const door of world.solids.filter(s => s.kind === 'door')) {
-    const b = boxBlock(door), alongX = b.scale[0] >= b.scale[2];
-    for (const sign of [-1, 1]) frames.push({ position: [b.position[0] + (alongX ? sign * (b.scale[0] / 2 + .055) : 0), 1.6, b.position[2] + (alongX ? 0 : sign * (b.scale[2] / 2 + .055))], scale: [.11, 3.2, .24] });
-    frames.push({ position: [b.position[0], 3.15, b.position[2]], scale: alongX ? [b.scale[0] + .22, .12, .24] : [.24, .12, b.scale[2] + .22] });
-  }
   const fixtures = [GALLERY_SHADOW_FIXTURE, GALLERY_CONTOUR_FIXTURE];
-  return <group name="perception-gallery" dispose={null}>
+  const pathLights: Block[] = [
+    ...[1, -2, -5, -8, -10].map(z => ({ position: [.9, .017, z], scale: [.3, .025, .07] } as Block)),
+    ...[-5, -7, 5, 7, 9].map(x => ({ position: [x, .017, -10], scale: [.07, .025, .3] } as Block)),
+    ...[8, 10, 12, 14, 16].map(z => ({ position: [4.75, .017, z], scale: [.1, .025, .3] } as Block)),
+  ];
+  return <group name="closed-gallery" dispose={null}>
+    <GalleryActor runtime={runtime} resources={resources} reducedMotion={reducedMotion} />
     <ambientLight intensity={1.4} /><directionalLight intensity={1.35} position={[2, 6, 3]} />
     <InstancedBlocks name="gallery-floors" blocks={floorBlocks} resources={resources} material={resources.floor} />
     <InstancedBlocks name="gallery-ceilings" blocks={ceilings} resources={resources} material={resources.ceiling} />
     {[r.roomA, r.roomB, r.roomC, r.roomD].map((material, i) => <InstancedBlocks key={i} name={'gallery-walls-' + i} resources={resources} material={material}
-      blocks={walls.filter(s => ((s.min.z < -17 ? 3 : s.max.x < -3 ? 1 : s.min.x > 5 ? 2 : 0) === i)).map(boxBlock)} />)}
+      blocks={walls.filter(s => (s.min.z > 5 ? 3 : s.max.x < -3 ? 1 : s.min.x > 5 && s.min.z < 0 ? 2 : 0) === i).map(boxBlock)} />)}
     <InstancedBlocks name="gallery-floor-edges" blocks={walls.map(s => { const b = boxBlock(s); return { position: [b.position[0], .08, b.position[2]], scale: [b.scale[0] + .015, .16, b.scale[2] + .015] } as Block; })} resources={resources} material={resources.trim} />
-    <InstancedBlocks name="gallery-door-frames" blocks={frames} resources={resources} material={r.warm} />
+    <InstancedBlocks name="gallery-route-lights" resources={resources} material={gp.emergencyLit ? r.selected : r.shelf} blocks={pathLights} />
     {world.solids.filter(s => s.kind === 'door').map(s => { const b = boxBlock(s); return <mesh key={s.id} name={s.id} ref={m => { doors.current[s.id] = m; }} geometry={resources.box} material={resources.door} position={b.position} scale={b.scale} />; })}
-    <InstancedBlocks name="gallery-notched-frame" resources={resources} material={r.warm}
-      blocks={world.solids.filter(s => s.id.startsWith('gallery-notched-frame')).map(boxBlock)} />
-    <mesh name="gallery-emblem-frame" geometry={resources.box} material={r.warm} position={[1.95, 2.02, -7.86]} scale={[1.56, 1.56, .1]} />
-    <mesh name="emblem-plate" geometry={resources.plane} material={resources.emblemSurface!.material} position={[1.95, 2.02, -7.81]} scale={[GALLERY_EMBLEM_FIXTURE.width, GALLERY_EMBLEM_FIXTURE.height, 1]} />
-    {GALLERY_EMBLEM_SWITCHES.map((item, i) => <group key={item.id}>
-      <mesh geometry={resources.box} material={r.warm} position={[item.center.x, item.center.y, -7.88]} scale={[.46, .46, .12]} />
-      <group name={'emblem-switch-' + item.glyph} ref={m => { switches.current[i] = m; }} position={[item.center.x, item.center.y, item.center.z]}>
-        <mesh geometry={resources.box} material={resources.dark} position={[0, 0, -.02]} scale={[.35, .35, .025]} /><GlyphMark glyph={item.glyph} resources={resources} />
+    <InstancedBlocks name="gallery-retreat-shelves" resources={resources} material={resources.device} blocks={world.solids.filter(s => s.id.includes('shelf')).map(boxBlock)} />
+    <mesh name="gallery-empty-plinth" geometry={resources.box} material={r.shelf} position={[0, .025, 9]} scale={[.8, .05, .75]} />
+    <PanelFixture name="gallery-light" fixture={lightFixture} box={resources.box} plane={resources.plane} surface={resources.device} backing={resources.dark} frame={r.warm} />
+    <group position={[-.72, 1.55, 5.73]} rotation={[0, Math.PI, 0]}>
+      <group ref={lever} name="emergency-light-lever" rotation={[gp.emergencyLit ? -.5 : .5, 0, 0]}>
+        <mesh geometry={resources.box} material={r.selected} position={[0, .12, .055]} scale={[.4, .14, .14]} />
+        <mesh geometry={resources.box} material={r.ink} position={[0, 0, .02]} scale={[.06, .22, .06]} />
       </group>
-    </group>)}
-    <mesh name="emblem-latch" ref={latchA} geometry={resources.box} material={r.outline} position={[GALLERY_EMBLEM_LATCH.center.x, GALLERY_EMBLEM_LATCH.center.y, GALLERY_EMBLEM_LATCH.center.z]} scale={[.38, .08, .09]} />
-    {[GALLERY_A_OBSERVATION_POSE, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_OBSERVATION_POSE].map((p, i) => <mesh key={i} name={'gallery-observation-' + i} geometry={resources.ring} material={r.outline} position={[p.position.x, .012, p.position.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.1, 1.1, 1]} />)}
-    <group name="hub-four-seals" position={[0, 2.3, -13.8]}>
-      {[progress.sealA, gp.shadow.solved, gp.contour.solved, progress.sealB].map((solved, i) => <mesh key={i} geometry={resources.box} material={solved ? r.outline : r.warm} position={[(i - 1.5) * .34, 0, 0]} rotation={[0, 0, i * Math.PI / 8]} scale={[.22, .22, .1]} />)}
     </group>
-    {fixtures.map((f, i) => <group key={i} name={i ? 'contour-architecture' : 'shadow-architecture'}>
-      <InstancedBlocks name={i ? 'contour-body' : 'shadow-body'} resources={resources} material={i ? resources.device : resources.trim}
-        blocks={world.solids.filter(s => s.id === (i ? 'contour-panel-body' : 'shadow-panel-body')).map(boxBlock)} />
-      <mesh name={i ? 'contour-drawer' : 'shadow-latch'} ref={i ? drawerC : drawerB} geometry={resources.box} material={r.warm} position={[f.center.x, .65, f.center.z + .09]} scale={[.9, .2, .22]} />
-    </group>)}
+    <PanelFixture name="gallery-exit-panel" fixture={exitFixture} box={resources.box} plane={resources.plane} surface={resources.device} backing={resources.dark} frame={r.warm} />
+    <group name="exit-power-sockets" position={[.72, 1.55, 5.74]} rotation={[0, Math.PI, 0]}>
+      {(['shadow', 'contour'] as const).map((puzzle, i) => <group key={puzzle} position={[(i - .5) * .28, 0, 0]}>
+        <mesh geometry={resources.box} material={resources.dark} scale={[.24, .31, .025]} />
+        {gp.powerConnected ? <mesh name={'connected-' + puzzle + '-power'} geometry={resources.box} material={r.outline} position={[0, 0, .08]} scale={[.18, .24, .12]} /> : null}
+      </group>)}
+    </group>
+    <PanelFixture name="chromatic-exhibit" fixture={colorFixture} box={resources.box} plane={resources.plane} surface={r.chromaticSurface.material} backing={resources.dark} frame={r.warm} />
+    {[GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE].map((p, i) => <mesh key={i} name={'gallery-observation-' + i} geometry={resources.ring} material={r.outline} position={[p.position.x, .012, p.position.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.1, 1.1, 1]} />)}
+    <group name="hub-two-powers" position={[0, 2.3, -13.8]}>
+      {(['shadow', 'contour'] as const).map((puzzle, i) => <mesh key={puzzle} name={'hub-' + puzzle + '-power'} geometry={resources.box} material={gp.powerTaken[puzzle] ? r.outline : r.shelf} position={[(i - .5) * .45, 0, 0]} scale={[.22, .3, .1]} />)}
+    </group>
+    <PanelFixture name="shadow" fixture={shadowFixture} box={resources.box} plane={resources.plane} surface={r.shadowPanel} backing={resources.dark} frame={resources.trim} />
+    <PanelFixture name="contour" fixture={contourFixture} box={resources.box} plane={resources.plane} surface={r.bright} backing={resources.dark} frame={resources.trim} />
+    {fixtures.map((f, i) => {
+      const puzzle = i ? 'contour' : 'shadow';
+      return <group key={puzzle} name={puzzle + '-drawer'} ref={i ? drawerC : drawerB} position={[f.center.x, .65, f.center.z + .09 + .22 * (i ? runtime.current.gallery!.doorContourOpen : runtime.current.gallery!.doorShadowOpen)]}>
+        <mesh geometry={resources.box} material={r.warm} scale={[.9, .18, .24]} />
+        <mesh name={puzzle + '-drawer-handle'} geometry={resources.box} material={r.outline} position={[0, -.02, .15]} scale={[.32, .055, .06]} />
+        {gp[puzzle].solved && !gp.powerTaken[puzzle] ? <group name={puzzle + '-power'} position={[0, .17, 0]}>
+          <mesh geometry={resources.box} material={r.outline} scale={[.18, .24, .16]} />
+          <mesh geometry={resources.box} material={resources.dark} position={[0, .13, 0]} scale={[.1, .04, .07]} />
+        </group> : null}
+      </group>;
+    })}
     <group name="shadow-panel" position={[GALLERY_SHADOW_FIXTURE.center.x, GALLERY_SHADOW_FIXTURE.center.y, GALLERY_SHADOW_FIXTURE.center.z]}>
-      <mesh name="shadow-context" geometry={resources.plane} material={r.shadowPanel} scale={[2.4, 1.8, 1]} />
-      {(['socket-left', 'socket-right'] as const).map(slot => <mesh name={slot} key={slot} geometry={resources.ring} material={r.outline} position={[SHADOW_SLOT_POSITIONS[slot].x, SHADOW_SLOT_POSITIONS[slot].y, .005]} scale={[.52, .52, 1]} />)}
+      {(['socket-left', 'socket-right'] as const).map(slot => <group ref={m => { trays.current[slot] = m; }} name={slot} key={slot} position={[SHADOW_SLOT_POSITIONS[slot].x, SHADOW_SLOT_POSITIONS[slot].y, .005]}>
+        <SquareFrame name={slot + '-square-tray'} size={.5} resources={resources} material={r.outline} />
+      </group>)}
       {shadow.samples.map(sample => {
         const point = SHADOW_SLOT_POSITIONS[gp.shadow.assignments[sample.id]];
         return <group key={sample.id} name={sample.id} ref={m => { samples.current[sample.id] = m; }} position={[point.x, point.y, .013]}>
-          <mesh name={sample.id + '-border'} geometry={resources.plane} material={r.outline} position={[0, 0, -.001]} scale={[SHADOW_SAMPLE_SIZE + .025, SHADOW_SAMPLE_SIZE + .025, 1]} />
+          <group ref={m => { sampleFrames.current[sample.id] = m; }}>
+            <SquareFrame name={sample.id + '-outer-frame'} size={SHADOW_SAMPLE_SIZE + .04} resources={resources} material={r.outline} />
+            <mesh name={sample.id + '-handle'} geometry={resources.box} material={r.outline} position={[0, .24, 0]} scale={[.14, .05, .01]} />
+          </group>
           <mesh name={sample.id + '-interior'} geometry={resources.plane} material={r.sampleMaterials[sample.color as keyof typeof r.sampleMaterials]} scale={[SHADOW_SAMPLE_SIZE, SHADOW_SAMPLE_SIZE, 1]} />
         </group>;
       })}
-      {/* The sparse shelf/window divisions surround, never tint, sample interiors. */}
-      <InstancedBlocks name="shadow-shelf" resources={resources} material={resources.trim} blocks={[-1.18, -.4, .4, 1.18].map(x => ({ position: [x, .26, -.002], scale: [.025, 1.12, .01] }))} />
     </group>
     <group name="contour-panel" position={[GALLERY_CONTOUR_FIXTURE.center.x, GALLERY_CONTOUR_FIXTURE.center.y, GALLERY_CONTOUR_FIXTURE.center.z]}>
-      <mesh name="contour-uniform-background" geometry={resources.plane} material={r.bright} scale={[2.4, 1.8, 1]} />
       {contour.discs.map(disc => <group key={disc.id} position={[disc.center.x, disc.center.y, .006]}>
-        {/* A short exterior notch remains outside the entire central triangle. */}
         <mesh name={'contour-notch-' + disc.id} ref={m => { discNotches.current[disc.id] = m; }} geometry={resources.box} material={r.shelf}
-          position={[-Math.cos(disc.targetAngle) * (disc.radius + .055), -Math.sin(disc.targetAngle) * (disc.radius + .055), 0]} rotation={[0, 0, disc.targetAngle]} scale={[.04, .018, .006]} />
+          position={[-Math.cos(disc.targetAngle) * (disc.radius + .025), -Math.sin(disc.targetAngle) * (disc.radius + .025), 0]} rotation={[0, 0, disc.targetAngle]} scale={[.03, .018, .006]} />
         <mesh name={'contour-disc-' + disc.id} ref={m => { discs.current[disc.id] = m; }} geometry={r.inducer} material={r.ink} rotation={[0, 0, runtime.current.gallery!.contourAngles[disc.id]]} position={[0, 0, .004]} />
       </group>)}
       <group ref={guide} name="contour-guide-only" visible={runtime.current.gallery!.contourGuide}>
@@ -154,12 +173,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
         })}
       </group>
     </group>
-    <mesh name="key-backing" geometry={resources.plane} material={resources.dark} position={[world.keyFrame.center.x, world.keyFrame.center.y, world.keyFrame.center.z - .04]} scale={[world.keyFrame.width, world.keyFrame.height, 1]} />
-    {world.keyFrame.outline.flatMap((line, l) => line.slice(1).map((point, i) => <Segment name="key-outline" key={l + '-' + i} from={line[i]!} to={point} width={.008} material={resources.quiet} resources={resources} />))}
-    {world.keyFragments.flatMap(fragment => fragment.points.slice(1).map((point, i) => <Segment name="key-segment" key={fragment.id + i} from={fragment.points[i]!} to={point} width={fragment.strokeWidth / 2} material={resources.key} resources={resources} />))}
-    <mesh name="key-approach-notch" ref={keyNotch} geometry={resources.box} material={r.warm} position={[world.keyFrame.center.x + 1.48, 1.6, world.keyFrame.center.z + .04]} scale={[.12, .065, .08]} />
-    <mesh name="key-mechanical-latch" ref={keyLatch} geometry={resources.box} material={r.warm} position={[world.keyFrame.center.x + .65, .65, world.keyFrame.center.z + .02]} scale={[.45, .1, .13]} />
-    <InstancedBlocks name="key-tall-frame" resources={resources} material={r.warm} blocks={[-1, 1].map(sign => ({ position: [world.keyFrame.center.x + sign * 1.57, 1.6, world.keyFrame.center.z], scale: [.12, 2.95, .13] }))} />
-    {world.variant === 'exit' ? <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[.45, 1.2 + runtime.current.doorExitOpen * 3.3, 13.77]} scale={[.1, .28, .1]} /> : null}
+    <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[3.55, 1.2 + runtime.current.doorExitOpen * 3.3, 17.86]} scale={[.1, .28, .1]} />
+    <mesh name="gallery-exit-sign" geometry={resources.box} material={r.exitSign} position={[4, 2.9, 17.82]} scale={[.85, .25, .035]} />
   </group>;
 }

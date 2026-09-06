@@ -82,3 +82,14 @@ export function pointOnFixture(pose: PlayerPose, matrices: CameraMatrices | unde
   const local = { x: offset.dot(b.right), y: offset.dot(b.up) };
   return Math.abs(local.x) <= b.width / 2 && Math.abs(local.y) <= b.height / 2 ? local : undefined;
 }
+
+export function fixtureScreenBounds(target: InteractableDefinition, matrices: CameraMatrices | undefined, width: number, height: number) {
+  if (!matrices || !target.rectangle || ![width, height].every(Number.isFinite) || width <= 0 || height <= 0) return;
+  const points = [[-.5, -.5], [.5, -.5], [.5, .5], [-.5, .5]].map(([x, y]) => {
+    const world = fixturePointInWorld(target, { x: x! * target.rectangle!.width, y: y! * target.rectangle!.height });
+    return world && projectWithCamera(world, matrices);
+  });
+  if (points.some(point => !point)) return;
+  const xs = points.map(point => (point!.x + 1) * width / 2), ys = points.map(point => (1 - point!.y) * height / 2);
+  return { left: Math.min(...xs), right: Math.max(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
+}

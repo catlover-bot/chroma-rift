@@ -87,7 +87,7 @@ function box(id: string, minX: number, maxX: number, minZ: number, maxZ: number,
 
 // Small integer-grid room union: merge exposed boundary edges into long walls.
 // This only constructs the authored chapter, not a maze generator or scene editor.
-export function boundaryWalls(floors: readonly FloorRegion[]): CollisionVolume[] {
+export function boundaryWalls(floors: readonly FloorRegion[], omitRememberedSeam = true): CollisionVolume[] {
   const cells = new Set<string>();
   for (const floor of floors) for (let x = floor.minX; x < floor.maxX; x += 1) for (let z = floor.minZ; z < floor.maxZ; z += 1) cells.add(`${x},${z}`);
   const lines = new Map<string, number[]>();
@@ -114,7 +114,7 @@ export function boundaryWalls(floors: readonly FloorRegion[]): CollisionVolume[]
       i += 1;
       while (sorted[i] === end) { end += 1; i += 1; }
       // The remembered doorway partition below owns the seam at z=6.
-      if (axis === 'z' && fixed === 6) continue;
+      if (omitRememberedSeam && axis === 'z' && fixed === 6) continue;
       const id = `boundary-${axis}-${fixed}-${start}-${end}`;
       walls.push(axis === 'x' ? box(id, fixed - 0.1, fixed + 0.1, start, end) : box(id, start, end, fixed - 0.1, fixed + 0.1));
     }

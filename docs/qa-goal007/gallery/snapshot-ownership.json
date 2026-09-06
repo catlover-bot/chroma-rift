@@ -1,0 +1,434 @@
+{
+  "boundary": "CPU resource disposal in scene extraction and real React unmount effects; not native GPU, audio or application lifecycle",
+  "visits": 61,
+  "allDisposedExactlyOnce": true,
+  "checks": [
+    {
+      "id": "entry-before",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-after",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-0",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "exit-connected",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "hub-b-first",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "hub-c-first",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-baseline",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-one",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-two",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-wrong",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-drawer",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-taken",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-compare",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-baseline",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-aligned",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-drawer",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-taken",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-guide",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "color-exhibit",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "neutral-exhibit",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "service-open",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "final-door",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-foreshadow",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-foreshadow-side",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-depart-0",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-depart-1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-depart-2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-depart-4",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-empty-plinth",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "retreat-west-opening",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "retreat-east-opening",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-retreat-west",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-retreat-east",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "final-door-approach",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-passed",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "actor-subdued",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "shadow-drawer-320",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "contour-drawer-320",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-320-font1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-layout-320-font1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-320-font1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-320-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-layout-320-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-320-font2-scrolled",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-320-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-320-font2-scrolled",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-390-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-layout-390-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-390-font2-scrolled",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-390-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-390-font2-scrolled",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-430-font1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-layout-430-font1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-430-font1",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-430-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "entry-layout-430-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-layout-430-font2-scrolled",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-430-font2",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-layout-430-font2-scrolled",
+      "resources": 50,
+      "disposedOnce": 50,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    }
+  ]
+}

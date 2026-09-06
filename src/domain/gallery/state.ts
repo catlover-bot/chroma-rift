@@ -2,15 +2,17 @@ import type { ChapterRuntime } from '../firstPerson/types';
 import { angularDifference, contourAligned, createContourSpec, initialContour, normalizeAngle } from './contour';
 import { GALLERY_SEED } from './definition';
 import { initialShadow, placeShadowSample, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowPairMatches, sourceSlot } from './shadow';
+import { initialGalleryActor } from './actor';
+import { contourAlignedCount, galleryPowerCount, shadowPlacedCount } from './selectors';
 import type { DiscAngles, GalleryCommand, GalleryContext, GalleryEffect, GalleryProgress, GalleryTransient, Point2 } from './types';
 
 export function initialGalleryProgress(seed = GALLERY_SEED): GalleryProgress {
-  return { schemaVersion: 1, seed, shadow: initialShadow(seed), contour: initialContour(seed), order: [] };
+  return { schemaVersion: 2, seed, shadow: initialShadow(seed), contour: initialContour(seed), order: [], emergencyLit: false, exitInspected: false, powerTaken: { shadow: false, contour: false }, powerConnected: false, completedFromV1: false, story: { foreshadowed: false, absence: false, serviceWarned: false, resolved: false } };
 }
 export function initialGalleryTransient(progress: GalleryProgress, sessionId: string): GalleryTransient {
-  return { sessionId, lastSeq: -1, lastNowMs: 0, mode: 'explore', activeDrag: null,
-    contourAngles: [...progress.contour.angles], shadowCompare: false, contourGuide: false, lastCompareMs: null,
-    doorDOpen: progress.shadow.solved && progress.contour.solved ? 1 : 0,
+  return { actor: initialGalleryActor(progress), sessionId, lastSeq: -1, lastNowMs: 0, mode: 'explore', activeDrag: null,
+    contourAngles: [...progress.contour.angles], shadowCompare: false, contourGuide: false, chromaticNeutral: false, lastCompareMs: null,
+    serviceDoorOpen: progress.powerConnected ? 1 : 0,
     doorShadowOpen: progress.shadow.solved ? 1 : 0, doorContourOpen: progress.contour.solved ? 1 : 0 };
 }
 export function cancelGalleryManipulation(runtime: ChapterRuntime, leave = false): ChapterRuntime {
@@ -34,8 +36,42 @@ export function applyGalleryCommand(runtime: ChapterRuntime, command: GalleryCom
   const accept = (effects: GalleryEffect[] = []): GalleryCommandResult => ({ runtime: next, accepted: true, reason: 'accepted', effects });
   const action = command.action;
   if (action.type === 'cancel' || action.type === 'leave') { next = cancelGalleryManipulation(next, action.type === 'leave'); return accept([{ type: 'stop-input' }]); }
-  if (runtime.paused || runtime.progress.cleared || !context.foreground || !context.rendererReady || !runtime.progress.sealA) return reject('blocked');
+  if (runtime.paused || runtime.progress.cleared || !context.foreground || !context.rendererReady) return reject('blocked');
   const patch = (part: Partial<GalleryProgress>) => { next = { ...next, progress: { ...next.progress, gallery: { ...next.progress.gallery!, ...part } } }; };
+  if (action.type === 'light-on') {
+    if (context.targetId !== 'gallery-light') return reject('wrong-target');
+    if (saved.emergencyLit) return reject('already-complete');
+    patch({ emergencyLit: true }); return accept([{ type: 'light-on', sequence: command.seq }, { type: 'message', text: '非常灯が点いた。左右の部屋と出口の盤が見える。' }]);
+  }
+  if (action.type === 'inspect-exit' || action.type === 'connect-power') {
+    if (context.targetId !== 'gallery-exit-panel') return reject('wrong-target');
+    if (saved.powerConnected) return reject('already-complete');
+    if (action.type === 'inspect-exit') { patch({ exitInspected: true }); return accept([{ type: 'message', text: '予備電源が二つ必要だ。' }]); }
+    if (galleryPowerCount(saved) !== 2) return reject('blocked');
+    patch({ powerConnected: true, exitInspected: true, emergencyLit: true });
+    next = { ...next, gallery: { ...next.gallery!, actor: { ...next.gallery!.actor, visible: true } } };
+    return accept([{ type: 'power-connected', sequence: command.seq }, { type: 'message', text: '二つの電源を接続した。灯りが復旧し、サービス通路が開く。' }]);
+  }
+  if (action.type === 'open-exit') {
+    if (context.targetId !== 'exit') return reject('wrong-target');
+    if (!saved.powerConnected) return reject('blocked');
+    if (runtime.progress.exitDoorOpen) return reject('already-complete');
+    next = { ...next, progress: { ...next.progress, exitDoorOpen: true } };
+    return accept([{ type: 'exit-opened', sequence: command.seq }, { type: 'message', text: '非常扉が開いた。自分で外へ歩こう。' }]);
+  }
+  if (action.type === 'take-power') {
+    const puzzle = action.puzzle;
+    if (!['shadow', 'contour'].includes(puzzle) || ![puzzle + '-panel', puzzle + '-power'].includes(context.targetId ?? '')) return reject('wrong-target');
+    if (live.activeDrag || !saved[puzzle].solved) return reject('blocked');
+    if (saved.powerTaken[puzzle]) return reject('already-complete');
+    patch({ powerTaken: { ...saved.powerTaken, [puzzle]: true } });
+    return accept([{ type: 'power-taken', puzzle, sequence: command.seq }, { type: 'message', text: '予備電源を取った。' + (galleryPowerCount(next.progress.gallery!) === 2 ? '出口の盤へ戻ろう。' : 'もう一つを探そう。') }]);
+  }
+  if (action.type === 'chromatic-compare') {
+    if (context.targetId !== 'chromatic-exhibit') return reject('wrong-target');
+    if (live.lastCompareMs !== null && command.nowMs - live.lastCompareMs < 1000) return reject('cooldown');
+    next = { ...next, gallery: { ...next.gallery!, chromaticNeutral: !live.chromaticNeutral, lastCompareMs: command.nowMs } }; return accept();
+  }
   if (action.type === 'enter') {
     if (!['shadow', 'contour'].includes(action.puzzle) || context.targetId !== action.puzzle + '-panel') return reject('wrong-target');
     next = cancelGalleryManipulation(next, true);
@@ -76,22 +112,22 @@ export function applyGalleryCommand(runtime: ChapterRuntime, command: GalleryCom
     if (action.type === 'shadow-drop') {
       if (drag?.kind !== 'shadow' || drag.pointerId !== action.pointerId) return reject('invalid');
       if (action.slotId !== null) patch({ shadow: placeShadowSample(saved.shadow, drag.sampleId, action.slotId) });
-      next = { ...next, gallery: { ...next.gallery!, activeDrag: null } }; return accept([{ type: 'manipulated', puzzle: 'shadow' }]);
+      next = { ...next, gallery: { ...next.gallery!, activeDrag: null, lastDeviceResult: undefined } }; return accept([{ type: 'manipulated', puzzle: 'shadow' }]);
     }
     if (action.type === 'shadow-place' || action.type === 'shadow-return') {
       if (drag || !SAMPLE_IDS.includes(action.sampleId)) return reject('invalid');
       const updated = placeShadowSample(saved.shadow, action.sampleId, action.type === 'shadow-return' ? sourceSlot(action.sampleId) : action.slotId);
       if (updated === saved.shadow) return reject('invalid');
-      patch({ shadow: updated }); return accept([{ type: 'manipulated', puzzle: 'shadow' }]);
+      patch({ shadow: updated }); next = { ...next, gallery: { ...next.gallery!, lastDeviceResult: undefined } }; return accept([{ type: 'manipulated', puzzle: 'shadow' }]);
     }
     if (action.type === 'shadow-commit') {
-      if (drag || !saved.shadow.inspected) return reject('blocked');
+      if (drag || !saved.shadow.inspected || shadowPlacedCount(saved.shadow) !== 2) return reject('blocked');
       const correct = shadowPairMatches(saved.shadow);
       patch({ shadow: { ...saved.shadow, solved: correct, attempts: correct ? saved.shadow.attempts : Math.min(999, saved.shadow.attempts + 1) },
         order: correct && !saved.order.includes('B') ? [...saved.order, 'B'] : saved.order });
       if (correct) next = { ...next, progress: { ...next.progress, hintStage: 0 } };
-      next = { ...next, gallery: { ...next.gallery!, feedback: { puzzle: 'shadow', correct, sequence: command.seq, remainingSeconds: 0.6 } } };
-      return accept(correct ? [{ type: 'gallery-released', puzzle: 'shadow', sequence: command.seq }, { type: 'message', text: '二枚がつながった。回廊の封印が一つ外れた。' }] : [{ type: 'message', text: 'まだつながらない。見本を並べて確かめよう。' }]);
+      next = { ...next, gallery: { ...next.gallery!, lastDeviceResult: { puzzle: 'shadow', correct }, feedback: { puzzle: 'shadow', correct, sequence: command.seq, remainingSeconds: 0.6 } } };
+      return accept(correct ? [{ type: 'gallery-released', puzzle: 'shadow', sequence: command.seq }, { type: 'message', text: '同じ灰色だった。下の引き出しが開いた。' }] : [{ type: 'message', text: '明るさが違う。どちらかを入れ替えよう。' }]);
     }
   }
   if (mode !== 'contour') return reject('wrong-target');
@@ -128,15 +164,15 @@ export function applyGalleryCommand(runtime: ChapterRuntime, command: GalleryCom
     patch({ contour: { ...saved.contour, angles } }); next = { ...next, gallery: { ...next.gallery!, contourAngles: [...angles] } }; return accept([{ type: 'manipulated', puzzle: 'contour' }]);
   }
   if (action.type === 'contour-commit') {
-    if (drag || !saved.contour.inspected) return reject('blocked');
+    if (drag || !saved.contour.inspected || contourAlignedCount(saved.contour.seed, live.contourAngles) !== 3) return reject('blocked');
     // The displayed live transforms, persisted angles and decision must agree.
     const same = live.contourAngles.every((angle, index) => angularDifference(angle, saved.contour.angles[index]!) < 1e-10);
     const correct = same && contourAligned(saved.contour.seed, live.contourAngles);
     patch({ contour: { ...saved.contour, solved: correct, attempts: correct ? saved.contour.attempts : Math.min(999, saved.contour.attempts + 1) },
       order: correct && !saved.order.includes('C') ? [...saved.order, 'C'] : saved.order });
     if (correct) next = { ...next, progress: { ...next.progress, hintStage: 0 } };
-    next = { ...next, gallery: { ...next.gallery!, feedback: { puzzle: 'contour', correct, sequence: command.seq, remainingSeconds: 0.6 } } };
-    return accept(correct ? [{ type: 'gallery-released', puzzle: 'contour', sequence: command.seq }, { type: 'message', text: '引き出しが開いた。回廊の封印が外れた。' }] : [{ type: 'message', text: '円盤の切り欠きを、中央へ向けてみよう。' }]);
+    next = { ...next, gallery: { ...next.gallery!, lastDeviceResult: { puzzle: 'contour', correct }, feedback: { puzzle: 'contour', correct, sequence: command.seq, remainingSeconds: 0.6 } } };
+    return accept(correct ? [{ type: 'gallery-released', puzzle: 'contour', sequence: command.seq }, { type: 'message', text: '引き出しが開いた。電源を取ろう。' }] : [{ type: 'message', text: '円盤の切り欠きを、中央へ向けてみよう。' }]);
   }
   return reject('invalid');
 }
@@ -145,7 +181,7 @@ export function advanceGallery(runtime: ChapterRuntime, elapsed: number): Chapte
   if (!saved || !live) return runtime;
   const remaining = live.feedback ? Math.max(0, live.feedback.remainingSeconds - elapsed) : 0;
   return { ...runtime, gallery: { ...live,
-    doorDOpen: saved.shadow.solved && saved.contour.solved ? Math.min(1, live.doorDOpen + elapsed / 1.25) : 0,
+    serviceDoorOpen: saved.powerConnected ? Math.min(1, live.serviceDoorOpen + elapsed / 1.25) : 0,
     doorShadowOpen: saved.shadow.solved ? Math.min(1, live.doorShadowOpen + elapsed / 0.7) : 0,
     doorContourOpen: saved.contour.solved ? Math.min(1, live.doorContourOpen + elapsed / 0.7) : 0,
     feedback: live.feedback && remaining > 0 ? { ...live.feedback, remainingSeconds: remaining } : undefined } };

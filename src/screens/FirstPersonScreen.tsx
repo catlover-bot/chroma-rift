@@ -1,4 +1,6 @@
-import { attachControllerAudio } from '../rendering/firstPerson/runtimeController';
+import { chapterCompletionSummary } from '../app/chapterSummary';
+import { galleryPowerCount } from '../domain/gallery';
+import { attachControllerAudio, setControllerHorrorIntensity, setControllerViewport } from '../rendering/firstPerson/runtimeController';
 import * as Clipboard from 'expo-clipboard';
 import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -16,7 +18,7 @@ import { accessibleEmblemTargets, commandController, compareController, controll
 import { controlLayout } from '../rendering/firstPerson/controlLayout';
 import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
 import { GalleryDeviceControls, GalleryTouchLayer } from '../rendering/firstPerson/GalleryManipulation';
-import { galleryAction, galleryPanelTarget } from '../rendering/firstPerson/galleryController';
+import { galleryAction, galleryPanelTarget, galleryDeviceScreenBounds } from '../rendering/firstPerson/galleryController';
 import { TouchControls } from '../rendering/firstPerson/TouchControls';
 import type { PreferredColor } from '../rendering/IllusionPalette';
 import { UI_COLORS } from '../theme/ui';
@@ -74,6 +76,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const lastProgress = useRef(JSON.stringify(snapshot.runtime.progress));
   const lastAnnounced = useRef('');
   const lastGalleryHaptic = useRef(-1);
+  const lastActorNotice = useRef(-1);
   const tutorialSaved = useRef(onboarding.tutorialCompleted);
   const onboardingRef = useRef(onboarding);
   useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
@@ -82,7 +85,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const { width, height, fontScale } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const [sceneSize, setSceneSize] = useState<{ width: number; height: number }>();
-  const layout = controlLayout(sceneSize?.width ?? width - insets.left - insets.right, sceneSize?.height ?? height - insets.top - insets.bottom, fontScale, controls.handedness);
+  const sceneWidth = sceneSize?.width ?? width - insets.left - insets.right;
+  const sceneHeight = sceneSize?.height ?? height - insets.top - insets.bottom;
+  const layout = controlLayout(sceneWidth, sceneHeight, fontScale, controls.handedness);
   const compact = height < 650 || fontScale >= 1.5;
   const effectiveControls = effectiveControlMode(controls.movementMode, settings.reducedMotion, reader, fontScale);
   const simple = effectiveControls.mode === 'simple';
@@ -97,6 +102,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     const owner = createGalleryAudio({ sessionId: String(controller.runtime.session) });
     return attachControllerAudio(controller, owner);
   }, [controller, renderMode, scene]);
+  useEffect(() => { setControllerViewport(controller, sceneWidth, sceneHeight); }, [controller, sceneWidth, sceneHeight]);
+  useEffect(() => { setControllerHorrorIntensity(controller, settings.horrorIntensity ?? 'standard'); }, [controller, settings.horrorIntensity]);
   useEffect(() => { controller.audio?.updatePreferences(settings.audio ?? DEFAULT_AUDIO_PREFERENCES); }, [controller, settings.audio]);
   useEffect(() => { controller.audio?.setActive(!blocked); }, [blocked, controller]);
 
@@ -114,7 +121,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     }
     if (lastVariant.current !== next.runtime.progress.variant) {
       lastVariant.current = next.runtime.progress.variant;
-      if (settings.reducedMotion) setNotice('入口の奥に、新しい空間が開きました。');
+      if (!next.runtime.gallery && settings.reducedMotion) setNotice('入口の奥に、新しい空間が開きました。');
+    }
+    if (next.actorNotice && next.actorNotice.sequence > lastActorNotice.current) {
+      lastActorNotice.current = next.actorNotice.sequence;
+      setNotice(next.actorNotice.text);
     }
     const progress = JSON.stringify(next.runtime.progress);
     if (progress !== lastProgress.current) {
@@ -123,7 +134,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     }
     if (scene === 'chapter' && next.runtime.progress.cleared && !completed.current) {
       completed.current = true;
-      onComplete({ chapterId, seals: chapterId === CHAPTER_ID ? 2 : 4, discoveredMechanisms: chapterId === CHAPTER_ID ? ['触れない紋章', '重なる鍵', '戻ったはずの入口'] : ['触れない紋章', '影の見本', '描かれていない形', '重なる鍵', '変わった入口'] });
+      onComplete(chapterCompletionSummary(chapterId, controller.runtime.progress));
     }
   }, [chapterId, controller, onCheckpoint, onComplete, onOnboardingChange, renderMode, scene, settings.reducedMotion]);
   const pause = useCallback(() => {
@@ -196,8 +207,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   useEffect(() => {
     if (failed.current || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || completed.current) return;
     completed.current = true;
-    onComplete({ chapterId, seals: chapterId === CHAPTER_ID ? 2 : 4, discoveredMechanisms: chapterId === CHAPTER_ID ? ['触れない紋章', '重なる鍵', '戻ったはずの入口'] : ['触れない紋章', '影の見本', '描かれていない形', '重なる鍵', '変わった入口'] });
-  }, [chapterId, onComplete, renderMode, scene, snapshot.runtime.progress.cleared]);
+    onComplete(chapterCompletionSummary(chapterId, snapshot.runtime.progress));
+  }, [chapterId, onComplete, renderMode, scene, snapshot.runtime.progress]);
 
   useEffect(() => {
     if (!notice || paused) return;
@@ -217,7 +228,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     const freshCue = controllerSnapshot(controller).cue;
     const changed = interactController(controller, snapshot.target.id);
     publish(controllerSnapshot(controller));
-    if (snapshot.target.id.startsWith('emblem-')) {
+    if (gallery) {
+      setNotice(controller.feedbackMessage || freshCue.reason || '装置が見える位置へ近づこう。');
+      if (changed) void playSelectionHaptic(settings.haptics);
+    } else if (snapshot.target.id.startsWith('emblem-')) {
       const description = reader && snapshot.target.id === 'emblem-panel' && controller.runtime.emblem.phase !== 'unexamined'
         ? ' ' + sealDescription(controller.runtime.emblem.seed) : '';
       setNotice((controller.feedbackMessage || freshCue.reason || '壁の近くで、印に照準を合わせよう。') + description);
@@ -241,7 +255,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const toggleColor = () => {
     if (!mounted.current || failed.current || blocked) return;
     if (!compareController(controller)) {
-      setNotice(controller.runtime.emblem.lastCompareMs !== null ? 'ゆっくり見比べよう。' : '紋章の近くで、壁に照準を合わせよう。');
+      setNotice(gallery ? controller.feedbackMessage || '少し待って、展示の正面で比べよう。' : controller.runtime.emblem.lastCompareMs !== null ? 'ゆっくり見比べよう。' : '紋章の近くで、壁に照準を合わせよう。');
       return;
     }
     if (scene === 'chapter') {
@@ -294,9 +308,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const progress = snapshot.runtime.progress;
   const emblem = snapshot.runtime.emblem;
   const shortObjective = gallery ? snapshot.objective : progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
-  const colorIsNeutral = scene === 'chapter' ? emblem.presentation === 'neutral' : neutralColors;
-  const compareAvailable = scene === 'lab' || ['emblem-panel', 'shadow-panel', 'contour-panel'].includes(snapshot.target?.id ?? '');
-  const colorLabel = cue.target?.id === 'shadow-panel' ? gallery?.shadowCompare ? '周囲を戻す' : '周囲を外す' : cue.target?.id === 'contour-panel' ? gallery?.contourGuide ? 'ガイドを消す' : '輪郭ガイド' : colorIsNeutral ? '色を戻す' : '色をほどく';
+  const colorIsNeutral = gallery ? gallery.chromaticNeutral : scene === 'chapter' ? emblem.presentation === 'neutral' : neutralColors;
+  const compareAvailable = scene === 'lab' || ['emblem-panel', 'chromatic-exhibit', 'shadow-panel', 'contour-panel'].includes(snapshot.target?.id ?? '');
+  const colorLabel = cue.target?.id === 'shadow-panel' ? gallery?.shadowCompare ? '元の背景' : '背景をそろえる' : cue.target?.id === 'contour-panel' ? gallery?.contourGuide ? 'ガイドを消す' : '輪郭ガイド' : colorIsNeutral ? '色を戻す' : '色をほどく';
   const actionLabel = cue.actionLabel ?? '調べる';
   const contextLabel = cue.kind === 'approach' ? `${cue.target?.label} · 近づくと調べられます` : cue.kind === 'locked' ? cue.reason : snapshot.target?.label;
   const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete;
@@ -339,7 +353,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     <GameButton sessionKey={controlSessionKey} label="後ろへ一歩" onPress={() => step(-1)} disabled={blocked} />
     <GameButton sessionKey={controlSessionKey} label="下を見る" onPress={() => turn(0, -0.15)} disabled={blocked} />
   </View>;
-  const accessibleTargets = reader ? accessibleEmblemTargets(controller) : [];
+  const accessibleTargets = reader && !gallery ? accessibleEmblemTargets(controller) : [];
   const accessibleObjects = reader && accessibleTargets.length ? <View accessible accessibilityRole="text" testID="accessible-emblem-objects"
     accessibilityLabel={emblem.phase === 'unexamined' ? '近くの紋章と印。アクションから紋章を調べられます。' : sealDescription(emblem.seed)}
     accessibilityActions={accessibleTargets.map((target) => ({ name: target.id, label: target.id === 'emblem-panel' ? '紋章を調べる' : GLYPH_LABELS[target.id.slice(7) as keyof typeof GLYPH_LABELS] + 'の印を押す' }))}
@@ -358,6 +372,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     const feedback = next.runtime.gallery?.feedback;
     if (feedback?.correct && feedback.sequence !== lastGalleryHaptic.current) { lastGalleryHaptic.current = feedback.sequence; void playSelectionHaptic(settings.haptics); }
   };
+  const deviceBounds = manipulating ? galleryDeviceScreenBounds(controller) : undefined;
+  const deviceControlsHeight = Math.max(48, Math.min(sceneHeight * .45, sceneHeight - (deviceBounds?.bottom ?? sceneHeight * .72) - 18));
   const deviceControls = manipulating ? <GalleryDeviceControls controller={controller} enabled={!blocked} simple={simple} reader={reader} sessionKey={controlSessionKey} onChange={deviceChanged} /> : null;
   const accessibleDevices = reader && gallery && !manipulating ? <View style={styles.actions}>
     {(['shadow', 'contour'] as const).filter(puzzle => !!galleryPanelTarget(controller, puzzle)).map(puzzle => <GameButton key={puzzle} sessionKey={controlSessionKey}
@@ -371,17 +387,21 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
       {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused || showDiagnostics} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} emblemPalette={settings.emblemPalette ?? 'baseline'} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
       {!simple && !manipulating && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!blocked} handedness={controls.handedness} layout={layout} /> : null}
-      {manipulating && !simple ? <GalleryTouchLayer controller={controller} enabled={!blocked} width={sceneSize?.width ?? width - insets.left - insets.right} height={sceneSize?.height ?? height - insets.top - insets.bottom} onChange={deviceChanged} onPause={pause} /> : null}
+      {manipulating && !simple ? <GalleryTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : null}
       <View pointerEvents="box-none" style={[styles.hudSlot, layout.pause]}>
         <SceneActionButton label="一時停止" sessionKey={controlSessionKey} onPress={() => openMenu('pause')} style={({ pressed }) => [styles.pauseButton, pressed && styles.pressed]} testID="pause-control">
           <View pointerEvents="none" style={styles.pauseSymbol}><View style={styles.pauseBar} /><View style={styles.pauseBar} /></View>
         </SceneActionButton>
       </View>
       <View pointerEvents="none" style={[styles.hudSlot, layout.goal]}>
-        <Text testID="current-objective" style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective}{scene === 'chapter' && emblem.assist ? ' · 輪郭ガイド使用中' : ''}</Text>
+        {!manipulating ? <Text testID="current-objective" style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective}{scene === 'chapter' && !gallery && emblem.assist ? ' · 輪郭ガイド使用中' : ''}</Text> : null}
+        {gallery && progress.gallery ? <View style={styles.powerStock} testID="gallery-power-stock" accessible accessibilityLabel={`予備電源 ${galleryPowerCount(progress.gallery)}/2${progress.gallery.powerConnected ? ' 接続済み' : ''}`}>
+          <Text style={styles.powerText}>電源</Text>{(['shadow', 'contour'] as const).map(puzzle => <View key={puzzle} style={[styles.powerCell, progress.gallery!.powerTaken[puzzle] && styles.powerCellTaken]}><Text style={styles.powerText}>{progress.gallery!.powerTaken[puzzle] ? '✓' : ''}</Text></View>)}
+          {progress.gallery.powerConnected ? <Text style={styles.powerText}>接続済み</Text> : null}
+        </View> : null}
       </View>
-      <View pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View>
-      {notice ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
+      {!manipulating ? <View testID="first-person-reticle" pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View> : null}
+      {notice && !manipulating ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
       {!simple && !manipulating && renderMode === 'chapter' ? <>
         {contextLabel ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}><Text style={styles.contextText}>{contextLabel}</Text></View> : null}
         <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" /></View>
@@ -389,14 +409,17 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
         {intro && !snapshot.tutorial.moved ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.movement.left, width: layout.movement.width, top: layout.movement.top }]}><Text style={styles.tutorialText}>{moveSide}側をドラッグして歩く</Text></View> : null}
         {intro && snapshot.tutorial.moved && !snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.look.left, width: layout.look.width, top: layout.look.top + 30 }]}><Text style={styles.tutorialText}>{lookSide}側をドラッグして見回す</Text></View> : null}
       </> : null}
-      {manipulating && !simple ? <View pointerEvents="box-none" style={styles.bottom}>{deviceControls}</View> : null}
+      {manipulating ? <ScrollView style={[styles.bottom, { height: deviceControlsHeight, maxHeight: deviceControlsHeight }]} testID="gallery-device-scroll" keyboardShouldPersistTaps="handled" contentContainerStyle={styles.deviceContent}>{deviceControls}</ScrollView> : null}
       {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>部屋の描画を準備しています…</Text>{__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}</View> : null}
-      {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !compact ? <View pointerEvents="box-none" style={styles.bottom}>
+      {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !manipulating && !compact && !gallery ? <View pointerEvents="box-none" style={styles.bottom}>
         <Text style={styles.target} accessibilityLabel={`照準：${targetLabel}`}>{targetLabel}</Text>
         {manipulating ? deviceControls : <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
       </View> : null}
+      {gallery && simple && !manipulating && renderMode === 'chapter' ? <ScrollView style={[styles.bottom, { height: '45%', maxHeight: '45%' }]} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
+        <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleDevices}
+      </ScrollView> : null}
     </View>
-    {simple && compact && renderMode === 'chapter' ? <ScrollView style={styles.compactControls} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
+    {!gallery && simple && compact && renderMode === 'chapter' ? <ScrollView style={styles.compactControls} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
       <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{manipulating ? deviceControls : <>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
     </ScrollView> : null}
     <Modal visible={paused && !showDiagnostics} transparent animationType="none" onRequestClose={resume}>
@@ -426,12 +449,20 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
           </> : menu === 'hints' ? <>
             <Body>ヒント {Math.max(1, snapshot.runtime.progress.hintStage)} / 3</Body>
             <Body>{hint.text}</Body>
-            {snapshot.runtime.progress.hintStage < 3 ? <ActionButton label="次のヒント" onPress={nextHint} /> : progress.sealA && (!gallery || (progress.gallery?.shadow.solved && progress.gallery.contour.solved && !progress.sealB && !manipulating)) ? <ActionButton label="近くで視点を合わせる" onPress={aim} disabled={!ready} accessibilityHint="位置を移動せず、鍵の目印へ視線を合わせます" /> : null}
-            {!progress.sealA ? <SettingSwitch label="輪郭ガイド" description="切れていない線に静かな中立色の目印を重ねます。補助表示だけでは扉は開きません。" value={emblem.assist} onValueChange={toggleOutline} /> : null}
-            {reader && emblem.phase !== 'unexamined' ? <Body>{sealDescription(emblem.seed)}</Body> : null}
+            {snapshot.runtime.progress.hintStage < 3 ? <ActionButton label="次のヒント" onPress={nextHint} /> : !gallery && progress.sealA ? <ActionButton label="近くで視点を合わせる" onPress={aim} disabled={!ready} accessibilityHint="位置を移動せず、鍵の目印へ視線を合わせます" /> : null}
+            {!gallery && !progress.sealA ? <SettingSwitch label="輪郭ガイド" description="切れていない線に静かな中立色の目印を重ねます。補助表示だけでは扉は開きません。" value={emblem.assist} onValueChange={toggleOutline} /> : null}
+            {reader && !gallery && emblem.phase !== 'unexamined' ? <Body>{sealDescription(emblem.seed)}</Body> : null}
             <ActionButton label="探索へ戻る" onPress={resume} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </> : <>
+            {gallery ? <>
+              <Body>怖さ</Body>
+              <Body muted>控えめは気配を残し、追尾と接触によるやり直しをなくします。謎と出口条件は同じです。</Body>
+              <ChoiceRow>
+                <ActionButton label="標準の怖さ" variant={(settings.horrorIntensity ?? 'standard') === 'standard' ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, horrorIntensity: 'standard' })} />
+                <ActionButton label="控えめな怖さ" variant={settings.horrorIntensity === 'subdued' ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, horrorIntensity: 'subdued' })} />
+              </ChoiceRow>
+            </> : null}
             <Body>現在の操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}。理由：{effectiveControls.reason}。</Body>
             <SettingSwitch label="ボタン操作" description="一歩ずつ進む・向きを変えるボタンを使います。オフにするとドラッグ操作になります。" value={controls.movementMode === 'simple'} onValueChange={(value) => changeMode(value ? 'simple' : 'standard')} />
             {effectiveControls.forced ? <Body muted>読み上げ中はボタンを表示します。保存したタッチ操作の希望は変わりません。</Body> : null}
@@ -439,9 +470,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
             <Body>上下の感度</Body><ChoiceRow>{[0.6, 1].map((value) => <ActionButton key={value} label={value === 1 ? '同じ' : '控えめ'} variant={(controls.verticalSensitivity ?? 1) === value ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, verticalSensitivity: value })} />)}</ChoiceRow>
             <SettingSwitch label="左手で見回す" description="歩く領域を右側、見回す領域を左側にします。" value={controls.handedness === 'left'} onValueChange={(value) => onControlsChange({ ...controls, handedness: value ? 'left' : 'right' })} />
             <SettingSwitch label="描画を軽くする" description="模様の解像度と装飾を減らします。謎の条件は同じです。" value={controls.quality === 'low'} onValueChange={(value) => onControlsChange({ ...controls, quality: value ? 'low' : 'standard' })} />
-            <Body>紋章の色表示</Body><ChoiceRow>{PALETTE_IDS.map((palette) => <ActionButton key={palette} label={PALETTE_LABELS[palette]} variant={(settings.emblemPalette ?? 'baseline') === palette ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, emblemPalette: palette })} />)}</ChoiceRow>
+            <Body>{gallery ? '色の展示' : '紋章の色表示'}</Body><ChoiceRow>{PALETTE_IDS.map((palette) => <ActionButton key={palette} label={PALETTE_LABELS[palette]} variant={(settings.emblemPalette ?? 'baseline') === palette ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, emblemPalette: palette })} />)}</ChoiceRow>
             <Body muted>表示名は、奥行きの感じ方の強さを表す順序ではありません。</Body>
-            <SettingSwitch label="輪郭ガイド" description="紋章の切れていない線を、中立色の目印で示します。" value={emblem.assist} onValueChange={toggleOutline} />
+            {!gallery ? <SettingSwitch label="輪郭ガイド" description="紋章の切れていない線を、中立色の目印で示します。" value={emblem.assist} onValueChange={toggleOutline} /> : null}
             <SettingSwitch label="補助表示" description="通行できる床の端を中立色で示します。" value={settings.depthAssist} onValueChange={(value) => onSettingsChange({ ...settings, depthAssist: value, depthAssistOverridden: true })} />
             <SettingSwitch label="動きを減らす" description="印の動きを静かな反応にします。自分で歩く・見回す操作は変わりません。" value={settings.reducedMotion} onValueChange={(value) => onSettingsChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })} />
             <SettingSwitch label="軽い振動" description="操作が成立したときに知らせます。" value={settings.haptics} onValueChange={(value) => onSettingsChange({ ...settings, haptics: value })} />
@@ -463,6 +494,11 @@ const styles = StyleSheet.create({
   reticleDot: { width: 8, height: 8, borderRadius: 4, borderWidth: 1, borderColor: '#F0F0DF', backgroundColor: '#273A3599' },
   reticleReady: { backgroundColor: '#ECE7CA', borderColor: '#FFFFFF' },
   bottom: { position: 'absolute', left: 12, right: 12, bottom: 10, gap: 7 },
+  deviceContent: { paddingBottom: 2 },
+  powerStock: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 5, paddingVertical: 3, paddingHorizontal: 8, backgroundColor: '#142421D9', borderRadius: 8 },
+  powerText: { color: '#EEF0E5', fontSize: 12 },
+  powerCell: { width: 22, height: 22, borderWidth: 1, borderColor: '#AEBCA5', borderRadius: 3, alignItems: 'center', justifyContent: 'center' },
+  powerCellTaken: { backgroundColor: '#49604B' },
   target: { textAlign: 'center', color: '#F1F0DC', backgroundColor: '#13221BD9', borderRadius: 8, paddingVertical: 6, paddingHorizontal: 8, fontSize: 14 },
   direction: { color: '#F0EDE0', textAlign: 'center', fontSize: 13 },
   gameButton: { flexGrow: 1, flexShrink: 1, minHeight: 48, minWidth: 44, paddingHorizontal: 9, paddingVertical: 10, backgroundColor: '#203A34E8', borderColor: '#ABBDB0', borderWidth: 1, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },

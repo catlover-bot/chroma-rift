@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react-native';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { DEFAULT_FIRST_PERSON_CONTROLS } from '../../types/application';
 import { PlayInstructionsScreen } from '../PlayInstructionsScreen';
@@ -18,4 +18,14 @@ describe('play instructions match the saved movement behavior', () => {
     await view.rerender(<PlayInstructionsScreen controls={{ ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' }} reducedMotion={false} onStart={jest.fn()} onBack={jest.fn()} />);
     expect(view.getByText('歩く・向くボタンで、少しずつ進もう。')).toBeTruthy();
   });
+});
+
+it('introduces the emergency switch instead of the old emblem and offers one independent horror choice', async () => {
+  const onHorrorChange = jest.fn();
+  const view = await render(<PlayInstructionsScreen chapterId="perception-gallery-v1" controls={DEFAULT_FIRST_PERSON_CONTROLS} reducedMotion onStart={jest.fn()} onBack={jest.fn()} horrorIntensity="standard" onHorrorChange={onHorrorChange} />);
+  expect(view.getByText('閉館後の展示室')).toBeTruthy();
+  expect(view.getByText('まず出口を探そう。大きな非常灯スイッチは、近づいて押せます。')).toBeTruthy();
+  expect(view.queryByText(/壁の紋章/)).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: '控えめな怖さ' }));
+  expect(onHorrorChange).toHaveBeenCalledWith('subdued');
 });

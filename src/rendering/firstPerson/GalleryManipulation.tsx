@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEvent } from 'react-native';
-import { CONTOUR_DISC_IDS, createContourSpec, createShadowSpec, SAMPLE_IDS, type SampleId } from '../../domain/gallery';
+import { CONTOUR_DISC_IDS, createContourSpec, createShadowSpec, galleryDeviceStatus, SAMPLE_IDS, type SampleId } from '../../domain/gallery';
 import { angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
 import { galleryAction, galleryPointer } from './galleryController';
 import type { RuntimeController } from './runtimeController';
@@ -45,22 +45,26 @@ function controlsLifetime(enabled: boolean, sessionKey: string) {
   return { sessionKey, current: () => active, activate: () => { active = enabled; }, dispose: () => { active = false; } };
 }
 export function GalleryDeviceControls({ controller, enabled, onChange, simple, reader, sessionKey }: Common & { simple: boolean; reader: boolean; sessionKey: string }) {
+  const [showMotionGuide, setShowMotionGuide] = useState(false);
   const [selected, setSelected] = useState<SampleId>('sample-a');
   const lifetime = useMemo(() => controlsLifetime(enabled, sessionKey), [enabled, sessionKey]);
   useLayoutEffect(() => { lifetime.activate(); return () => lifetime.dispose(); }, [lifetime]);
   const live = controller.runtime.gallery!, saved = controller.runtime.progress.gallery!;
   const run = (action: Parameters<typeof galleryAction>[1]) => { if (!enabled || !lifetime.current()) return; galleryAction(controller, action); onChange(); };
   const shadow = live.mode === 'shadow', solved = shadow ? saved.shadow.solved : saved.contour.solved;
+  const status = galleryDeviceStatus(controller.runtime)!;
   const spec = createShadowSpec(saved.shadow.seed, saved.shadow.variant);
   const pair = spec.samples.filter(s => s.color === '#808080').map(s => SAMPLE_IDS.indexOf(s.id) + 1);
   return <View style={styles.controls} testID="gallery-device-controls">
-    <Text style={styles.caption}>{solved ? '封印が外れました' : '装置を操作中'} · {shadow ? '影の見本' : '描かれていない形'}</Text>
+    <Text style={styles.caption} testID="device-objective">{status.objective}</Text>
+    <Text style={styles.caption} testID="device-instruction" accessibilityLiveRegion="polite">{status.instruction}</Text>
+    {!shadow && !solved ? <Text style={styles.caption} testID="contour-count">中心を向いた円盤 {status.count}/3</Text> : null}
     {simple && !solved ? shadow ? <>
       {reader ? <Text accessibilityLiveRegion="polite" style={styles.caption}>見本{pair.join('と')}は同じ灰色です。別々の見本を比較台へ置いて確かめられます。</Text> : null}
       <View style={styles.row}>{SAMPLE_IDS.map((id, i) => <Button key={id} label={'見本' + (i + 1)} disabled={!enabled} sessionKey={sessionKey} selected={selected === id} onPress={() => setSelected(id)} />)}</View>
       <View style={styles.row}>
-        <Button label="左のソケットへ" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'shadow-place', sampleId: selected, slotId: 'socket-left' })} />
-        <Button label="右のソケットへ" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'shadow-place', sampleId: selected, slotId: 'socket-right' })} />
+        <Button label="左の四角い枠へ" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'shadow-place', sampleId: selected, slotId: 'socket-left' })} />
+        <Button label="右の四角い枠へ" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'shadow-place', sampleId: selected, slotId: 'socket-right' })} />
         <Button label="元の場所へ" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'shadow-return', sampleId: selected })} />
       </View>
     </> : <View style={styles.adjustments}>{CONTOUR_DISC_IDS.map(id => {
@@ -73,20 +77,24 @@ export function GalleryDeviceControls({ controller, enabled, onChange, simple, r
         <Button label="左回り" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'contour-adjust', discId: id, delta: Math.PI / 36 })} />
         <Button label="右回り" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'contour-adjust', discId: id, delta: -Math.PI / 36 })} />
       </View>;
-    })}</View> : !solved ? <Text style={styles.caption}>{shadow ? '見本を下の二つのソケットへドラッグ' : '円盤の縁をなぞって回す'}</Text> : null}
+    })}</View> : null}
     <View style={styles.row}>
-      <Button label={shadow ? live.shadowCompare ? '周囲を戻す' : '周囲を外す' : live.contourGuide ? 'ガイドを消す' : '輪郭ガイド'} disabled={!enabled} sessionKey={sessionKey} onPress={() => run(shadow ? { type: 'compare' } : { type: 'guide', enabled: !live.contourGuide })} />
-      {!solved ? <Button label={shadow ? 'つなぐ' : '封印に触れる'} disabled={!enabled || !!live.activeDrag} sessionKey={sessionKey} onPress={() => run({ type: shadow ? 'shadow-commit' : 'contour-commit' })} /> : null}
+      <Button label={shadow ? live.shadowCompare ? '元の背景' : '背景をそろえる' : live.contourGuide ? 'ガイドを消す' : '輪郭ガイド'} disabled={!enabled} sessionKey={sessionKey} onPress={() => run(shadow ? { type: 'compare' } : { type: 'guide', enabled: !live.contourGuide })} />
+      {!solved ? <Button label={status.commitLabel} disabled={!enabled || !status.commitEnabled} sessionKey={sessionKey} onPress={() => run({ type: shadow ? 'shadow-commit' : 'contour-commit' })} /> : null}
+      {status.canTakePower ? <Button label="電源を取る" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'take-power', puzzle: shadow ? 'shadow' : 'contour' })} /> : null}
       <Button label="探索へ戻る" disabled={!enabled} sessionKey={sessionKey} onPress={() => run({ type: 'leave' })} />
     </View>
+    {!simple && !solved ? <Button label={showMotionGuide ? '動かし方を閉じる' : '動かし方'} disabled={!enabled} sessionKey={sessionKey} onPress={() => setShowMotionGuide(!showMotionGuide)} /> : null}
+    {showMotionGuide && !solved ? <View pointerEvents="none" style={styles.motionGuide}><Text style={styles.caption}>{shadow ? '□ 見本を持つ　↓　□ 下の枠へ運び、指を離す' : '円盤のふちを持つ　↻　回して、指を離す'}</Text></View> : null}
     {!shadow && live.contourGuide ? <Text style={styles.caption}>輪郭ガイド使用中</Text> : null}
   </View>;
 }
 const styles = StyleSheet.create({
   controls: { gap: 6, padding: 8, borderRadius: 12, backgroundColor: '#172522E8' },
   row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 },
-  button: { minHeight: 44, minWidth: 44, flexGrow: 1, padding: 9, borderWidth: 1, borderColor: '#A9AA93', borderRadius: 10, backgroundColor: '#243A34', alignItems: 'center', justifyContent: 'center' },
+  button: { minHeight: 48, minWidth: 48, flexGrow: 1, padding: 9, borderWidth: 1, borderColor: '#A9AA93', borderRadius: 10, backgroundColor: '#243A34', alignItems: 'center', justifyContent: 'center' },
   selected: { borderColor: '#F2D38B', borderWidth: 2 }, disabled: { opacity: .5 },
   text: { color: '#F0EFE4', fontSize: 14, textAlign: 'center' },
+  motionGuide: { padding: 8, borderWidth: 1, borderColor: '#929D99', borderRadius: 8 },
   caption: { color: '#ECEADC', fontSize: 14, textAlign: 'center' }, adjustments: { gap: 6 },
 });

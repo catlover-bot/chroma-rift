@@ -157,7 +157,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     const scene = rendererRoot(renderer).store.getState().scene;
     const plate = scene.getObjectByName('emblem-plate') as THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
     expect(plate).toBeDefined();
-    expect(plate.position.toArray()).toEqual([EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, EMBLEM_FIXTURE.center.z]);
+    expect(plate.getWorldPosition(new THREE.Vector3()).toArray()).toEqual([EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, EMBLEM_FIXTURE.center.z]);
     expect(plate.scale.toArray()).toEqual([EMBLEM_FIXTURE.width, EMBLEM_FIXTURE.height, 1]);
     expect(plate.rotation.toArray().slice(0, 3)).toEqual([0, 0, 0]);
     expect(plate.material).toBeInstanceOf(THREE.MeshBasicMaterial);
@@ -829,12 +829,12 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
 
   it('mounts gallery through the actual native R3F boundary, preserving camera and geometry while B/C are manipulated', async () => {
     const c = createController(undefined, false, true, GALLERY_CHAPTER_ID);
-    c.runtime.pose = GALLERY_SHADOW_OBSERVATION_POSE; c.runtime.progress.sealA = true; c.runtime.doorAOpen = 1;
+    c.runtime.pose = GALLERY_SHADOW_OBSERVATION_POSE;
     const current = { ...props(), controller: c, snapshot: controllerSnapshot(c) };
     const view = await render(<FirstPersonCanvas {...current} />);
     await createNativeContext(view); await submitFrame(renderer);
     const state = rendererRoot(renderer).store.getState(), initialCamera = state.camera;
-    const scene = state.scene, panel = scene.getObjectByName('shadow-context') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
+    const scene = state.scene, panel = scene.getObjectByName('shadow-plate') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
     expect(panel).toBeInstanceOf(THREE.Mesh);
     const map = panel.material.map, samples = ['a', 'b', 'c'].map(id => scene.getObjectByName('sample-' + id + '-interior') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>);
     const materials = samples.map(s => s.material), colors = materials.map(m => m.color.getHexString());
@@ -915,6 +915,36 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(c.runtime.paused).toBe(true);
     }
     expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(10);
+  }, 30000);
+
+  it.each(['render', 'presentation'] as const)('rolls back unpresented actor travel and suppresses its audio/subtitle when %s fails', async (phase) => {
+    const controller = createController(undefined, false, true, GALLERY_CHAPTER_ID);
+    const g = controller.runtime.progress.gallery!;
+    Object.assign(g, { emergencyLit: true, exitInspected: true, powerTaken: { shadow: true, contour: true }, powerConnected: true,
+      story: { foreshadowed: true, absence: true, serviceWarned: true, resolved: false } });
+    controller.runtime.pose = { position: { x: 0, y: 1.6, z: 7 }, yaw: Math.PI, pitch: 0 };
+    controller.runtime.gallery!.serviceDoorOpen = 1;
+    Object.assign(controller.runtime.gallery!.actor, { position: { x: 4, y: 0, z: 14 }, phase: 'patrol', routeIndex: 3, startupGrace: 0, contactCooldown: 0, visible: true });
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    controller.audio = audio;
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      const before = structuredClone(controller.runtime.gallery!.actor);
+      jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(.05);
+      let candidateTravel = 0;
+      const fail = () => { candidateTravel = controller.runtime.gallery!.actor.travelledDistance; throw new Error('Injected actor frame fault'); };
+      if (phase === 'render') renderer.draw.mockImplementation(fail); else deviceContext.endFrameEXP.mockImplementation(fail);
+      await submitFrame(renderer, 2);
+      expect(candidateTravel).toBeGreaterThan(before.travelledDistance);
+      expect(controller.runtime.gallery!.actor).toEqual(before);
+      expect(controller.runtime.paused).toBe(true);
+      expect(controller.pendingActorFootstepDistance).toBe(0); expect(controller.pendingActorEvents).toEqual([]);
+      expect(controller.actorNotice).toBeUndefined(); expect(audio.actorMovement).not.toHaveBeenCalled();
+      expect(audio.setActive).toHaveBeenCalledWith(false);
+      expect(current.onSnapshot).not.toHaveBeenCalled(); expect(current.onError).toHaveBeenCalledTimes(1);
+    } finally { await view.unmount(); }
   });
 
 });

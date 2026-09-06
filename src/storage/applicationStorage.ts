@@ -256,6 +256,7 @@ export function decodePersistedApplication(raw: string | null, systemReducedMoti
         settings: {
           ...value.settings,
           audio: normalizeAudioPreferences(value.settings.audio),
+          horrorIntensity: value.settings.horrorIntensity === 'subdued' ? 'subdued' : 'standard',
           depthAssistOverridden: value.settings.depthAssistOverridden ?? true,
           // Additive optional setting: damaged/new values never invalidate old calibration.
           emblemPalette: oneOf(['baseline', 'muted', 'alternate'] as const, value.settings.emblemPalette)

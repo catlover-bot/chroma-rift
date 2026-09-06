@@ -1,7 +1,6 @@
 import { PerspectiveCamera } from 'three';
-import { commitEmblemResult, createCheckpoint, createInitialRuntime, evaluateRuntime, getWorld, hintForRuntime, interact, isSafePose, MOVE_SPEED, occlusionCertificate, pauseRuntime, restoreCheckpoint, setHintStage, updatePlayer, type ChapterRuntime, type PlayerPose, type Vec3 } from '../../firstPerson';
-import { createSealStimulus, reduceSeal } from '../../emblem';
-import { angularDifference, applyGalleryCommand, cancelGalleryManipulation, CONTOUR_TOLERANCE, contourAligned, contourInkAt, createContourSpec, createGalleryRuntime, createShadowSpec, GALLERY_A_OBSERVATION_POSE, GALLERY_CHANGED_REGION, GALLERY_CHAPTER_ID, GALLERY_CONTOUR_FIXTURE, GALLERY_EMBLEM_FIXTURE, GALLERY_EMBLEM_SWITCHES, GALLERY_OBSERVATION_POSE, GALLERY_SHADOW_FIXTURE, normalizeAngle, parseGalleryProgress, placeShadowSample, restoreGalleryCheckpoint, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowPairMatches, sourceSlot, type DiscAngles, type GalleryAction, type GalleryPuzzle } from '..';
+import { createCheckpoint, createInitialRuntime, evaluateRuntime, getWorld, hintForRuntime, interact, isSafePose, MOVE_SPEED, pauseRuntime, restoreCheckpoint, setHintStage, updatePlayer, type ChapterRuntime, type PlayerPose, type Vec3 } from '../../firstPerson';
+import { angularDifference, applyGalleryCommand, cancelGalleryManipulation, CONTOUR_TOLERANCE, contourAligned, contourInkAt, createContourSpec, createGalleryRuntime, createShadowSpec, GALLERY_CHAPTER_ID, GALLERY_CONTOUR_FIXTURE, GALLERY_SHADOW_FIXTURE, GALLERY_LIGHT_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, galleryDeviceStatus, galleryPowerCount, contourAlignedCount, migrateGalleryV1Checkpoint, normalizeAngle, parseGalleryProgress, placeShadowSample, restoreGalleryCheckpoint, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowPairMatches, sourceSlot, type DiscAngles, type GalleryAction, type GalleryPuzzle } from '..';
 
 function matrices(pose: PlayerPose) {
   const camera = new PerspectiveCamera(65, 390 / 844, 0.08, 60);
@@ -30,15 +29,7 @@ function act(runtime: ChapterRuntime, action: GalleryAction, target?: string) {
   const panel = target ?? (action.type === 'enter' ? action.puzzle : live.mode) + '-panel';
   return applyGalleryCommand(runtime, { sessionId: live.sessionId, seq: live.lastSeq + 1, nowMs: live.lastNowMs + 1001, action }, { rendererReady: true, foreground: true, targetId: panel });
 }
-/** Pure semantic fixture; full route cases below obtain A through actual world interaction. */
-function afterA(): ChapterRuntime {
-  let runtime = createGalleryRuntime();
-  for (const action of [{ type: 'inspect' } as const, { type: 'choose', glyph: createSealStimulus(runtime.emblem.seed).answer } as const]) {
-    const result = reduceSeal(runtime.emblem, { sessionId: runtime.emblem.sessionId, seq: runtime.emblem.lastSeq + 1, nowMs: runtime.emblem.lastNowMs + 1, action }, { rendererReady: true, foreground: true, targetId: action.type === 'inspect' ? 'emblem-panel' : 'emblem-' + action.glyph });
-    runtime = commitEmblemResult(runtime, result);
-  }
-  return runtime;
-}
+function fresh(): ChapterRuntime { return createGalleryRuntime(); }
 function solve(runtime: ChapterRuntime, puzzle: GalleryPuzzle): ChapterRuntime {
   let next = act(runtime, { type: 'enter', puzzle }).runtime;
   if (puzzle === 'shadow') {
@@ -76,14 +67,14 @@ describe('gallery authored perception contracts', () => {
       expect(pair[0]!.rgba).toEqual(pair[1]!.rgba); expect(pair[0]!.rgba).toEqual([128, 128, 128, 255]);
       expect(different.rgba).not.toEqual(pair[0]!.rgba); expect(different.rgba[3]).toBe(255);
       ids.add(different.id); grays.add(different.color);
-      let state = { ...afterA().progress.gallery!.shadow, variant };
+      let state = { ...fresh().progress.gallery!.shadow, variant };
       state = placeShadowSample(state, pair[0]!.id, 'socket-left'); state = placeShadowSample(state, pair[1]!.id, 'socket-right');
       expect(shadowPairMatches(state)).toBe(true); expect(createShadowSpec(state.seed, state.variant).samples).toEqual(spec.samples);
     }
     expect(ids).toEqual(new Set(SAMPLE_IDS)); expect(grays).toEqual(new Set(['#B0B0B0', '#505050']));
   });
   it('keeps samples one-to-one when replacing sockets and rejects duplicated/foreign sample identities', () => {
-    const initial = afterA().progress.gallery!.shadow;
+    const initial = fresh().progress.gallery!.shadow;
     let state = placeShadowSample(initial, 'sample-a', 'socket-left');
     state = placeShadowSample(state, 'sample-b', 'socket-left');
     expect(state.assignments['sample-a']).toBe('source-a'); expect(state.assignments['sample-b']).toBe('socket-left');
@@ -94,7 +85,7 @@ describe('gallery authored perception contracts', () => {
     expect(placeShadowSample(state, 'sample-a', 'source-b')).toBe(state);
   });
   it('preserves grabbed sample offset, last confirmed slot and seed across outside drop, cancellation and pause', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
     const saved = runtime.progress.gallery!.shadow, center = SHADOW_SLOT_POSITIONS['source-a'];
     runtime = act(runtime, { type: 'shadow-start', sampleId: 'sample-a', pointerId: 1, point: { x: center.x + 0.1, y: center.y } }).runtime;
     const grabbed = runtime.gallery!.activeDrag;
@@ -113,7 +104,7 @@ describe('gallery authored perception contracts', () => {
     expect(paused.gallery).toMatchObject({ activeDrag: null, mode: 'explore' }); expect(paused.progress.gallery!.shadow).toBe(saved);
   });
   it('acquires the larger B sample margin without jumping or overlapping adjacent targets', () => {
-    const runtime = act(afterA(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    const runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
     const center = SHADOW_SLOT_POSITIONS['source-b'], halfHit = SHADOW_SAMPLE_SIZE / 2 + SHADOW_HIT_SLOP;
     for (const sign of [-1, 1]) {
       const start = act(runtime, { type: 'shadow-start', sampleId: 'sample-b', pointerId: 1, point: { x: center.x + sign * (halfHit - 1e-6), y: center.y } });
@@ -122,10 +113,13 @@ describe('gallery authored perception contracts', () => {
     }
     expect(SHADOW_SLOT_POSITIONS['source-b'].x - SHADOW_SLOT_POSITIONS['source-a'].x).toBeGreaterThan(2 * halfHit);
     expect(SHADOW_SLOT_POSITIONS['socket-right'].x - SHADOW_SLOT_POSITIONS['socket-left'].x).toBeGreaterThan(2 * halfHit);
-    expect(runtime.progress.gallery!.shadow.assignments).toEqual(afterA().progress.gallery!.shadow.assignments);
+    expect(runtime.progress.gallery!.shadow.assignments).toEqual(fresh().progress.gallery!.shadow.assignments);
   });
   it('requires explicit distinct-pair commit, gives recoverable wrong feedback and releases once without comparison', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    expect(act(runtime, { type: 'shadow-commit' }).reason).toBe('blocked');
+    runtime = act(runtime, { type: 'shadow-place', sampleId: 'sample-a', slotId: 'socket-left' }).runtime;
+    runtime = act(runtime, { type: 'shadow-place', sampleId: 'sample-b', slotId: 'socket-right' }).runtime;
     const wrong = act(runtime, { type: 'shadow-commit' });
     expect(wrong.runtime.progress.gallery!.shadow).toMatchObject({ solved: false, attempts: 1 }); expect(wrong.effects.some(effect => effect.type === 'gallery-released')).toBe(false);
     runtime = solve(wrong.runtime, 'shadow');
@@ -160,7 +154,7 @@ describe('gallery authored perception contracts', () => {
     expect(angularDifference(-Math.PI + 0.01, Math.PI - 0.01)).toBeCloseTo(0.02, 12);
   });
   it('keeps drag rotation sign, pickup continuity and committed angles when a drag is cancelled', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'contour' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'contour' }).runtime;
     const disc = createContourSpec(73).discs[0]!, initial = runtime.gallery!.contourAngles[0];
     runtime = act(runtime, { type: 'contour-start', discId: 0, pointerId: 1, point: { x: disc.center.x + 0.2, y: disc.center.y } }).runtime;
     runtime = act(runtime, { type: 'contour-move', pointerId: 1, point: { x: disc.center.x, y: disc.center.y + 0.2 } }).runtime;
@@ -176,7 +170,7 @@ describe('gallery authored perception contracts', () => {
     expect(paused.gallery!.contourAngles[0]).toBe(committed); expect(paused.gallery!.activeDrag).toBeNull();
   });
   it('rebases after crossing the disc center dead zone instead of jumping by half a turn', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'contour' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'contour' }).runtime;
     const disc = createContourSpec(73).discs[0]!, before = runtime.gallery!.contourAngles[0];
     runtime = act(runtime, { type: 'contour-start', discId: 0, pointerId: 1, point: { x: disc.center.x + 0.2, y: disc.center.y } }).runtime;
     runtime = act(runtime, { type: 'contour-move', pointerId: 1, point: disc.center }).runtime;
@@ -186,7 +180,7 @@ describe('gallery authored perception contracts', () => {
     expect(angularDifference(runtime.gallery!.contourAngles[0], before + Math.PI / 2)).toBeLessThan(1e-10);
   });
   it('blocks inactive, stale and wrong-panel commands and comparison/guide never solve either puzzle', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
     runtime = act(runtime, { type: 'compare' }).runtime;
     expect(runtime.progress.gallery!.shadow.solved).toBe(false);
     runtime = act(runtime, { type: 'enter', puzzle: 'contour' }).runtime;
@@ -199,7 +193,7 @@ describe('gallery authored perception contracts', () => {
     expect(applyGalleryCommand(pauseRuntime(runtime), command, { rendererReady: true, foreground: true, targetId: 'contour-panel' }).reason).toBe('blocked');
   });
   it('shares a 1000 ms presentation cooldown between shadow comparison and the contour guide across modes', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
     runtime = act(runtime, { type: 'compare' }).runtime;
     const switchedAt = runtime.gallery!.lastNowMs;
     const send = (action: GalleryAction, nowMs: number, targetId: string) => applyGalleryCommand(runtime, { sessionId: runtime.gallery!.sessionId, seq: runtime.gallery!.lastSeq + 1, nowMs, action }, { rendererReady: true, foreground: true, targetId });
@@ -213,16 +207,17 @@ describe('gallery authored perception contracts', () => {
     expect(runtime.progress.gallery!.shadow.solved).toBe(false); expect(runtime.progress.gallery!.contour.solved).toBe(false);
   });
   it('offers the active wing hint in either order and clears the ladder when that puzzle releases', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'contour' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'contour' }).runtime;
     expect(hintForRuntime(runtime).target).toEqual(GALLERY_CONTOUR_FIXTURE.center);
     runtime = setHintStage(runtime, 3);
-    expect(hintForRuntime(runtime).text).toContain('封印');
+    expect(hintForRuntime(runtime).text).toContain('引き出し');
     runtime = solve(runtime, 'contour');
+    runtime = act(runtime, { type: 'take-power', puzzle: 'contour' }, 'contour-panel').runtime;
     expect(runtime.progress.hintStage).toBe(0);
     expect(hintForRuntime(runtime).target).toEqual(GALLERY_SHADOW_FIXTURE.center);
   });
   it('saves only confirmed slots/angles, rejects malformed progress and preserves old chapter boundaries', () => {
-    let runtime = act(afterA(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
     runtime = act(runtime, { type: 'shadow-start', sampleId: 'sample-a', pointerId: 11, point: SHADOW_SLOT_POSITIONS[sourceSlot('sample-a')] }).runtime;
     runtime = act(runtime, { type: 'shadow-move', pointerId: 11, point: { x: 0.2, y: 0 } }).runtime;
     const checkpoint = createCheckpoint(runtime), restored = restoreGalleryCheckpoint(checkpoint)!;
@@ -238,42 +233,112 @@ describe('gallery authored perception contracts', () => {
   });
 });
 
-describe('gallery collision route and the existing projection puzzle', () => {
-  it.each([['shadow', 'contour'], ['contour', 'shadow']] as const)('walks A → %s → %s → actual D projection → occluded return → outside', (first, second) => {
-    let runtime = walk(walk(createGalleryRuntime(), 0, 2), GALLERY_A_OBSERVATION_POSE.position.x, GALLERY_A_OBSERVATION_POSE.position.z);
-    runtime = aim(runtime, GALLERY_EMBLEM_FIXTURE.center); runtime = interact(runtime, 'emblem-panel', matrices(runtime.pose));
-    expect(runtime.emblem.phase).toBe('observing');
-    const correct = GALLERY_EMBLEM_SWITCHES.find(item => item.glyph === createSealStimulus(runtime.emblem.seed).answer)!;
-    runtime = aim(runtime, correct.center); runtime = interact(runtime, correct.id, matrices(runtime.pose));
-    expect(runtime.progress.sealA).toBe(true); expect(runtime.progress.guideExamined).toBe(false);
-    runtime = walk(walk(runtime, 0, -6), 0, -10);
+describe('revised gallery entry and power route', () => {
+  it('removes old A/D gates and keeps light, optional comparison and legacy flags independent of progress', () => {
+    let runtime = fresh();
+    const before = getWorld(runtime);
+    expect(before.interactables.some(target => target.id.startsWith('emblem-') || target.id === 'key')).toBe(false);
+    expect(before.solids.some(solid => ['seal-a-door', 'seal-b-door', 'gallery-key-door', 'gallery-return-door'].includes(solid.id))).toBe(false);
+    expect(before.keyFragments).toEqual([]);
+    expect(act(runtime, { type: 'enter', puzzle: 'shadow' }).accepted).toBe(true);
+    runtime = act(runtime, { type: 'light-on' }, 'gallery-light').runtime;
+    expect(runtime.progress.gallery!.emergencyLit).toBe(true);
+    expect(act(runtime, { type: 'light-on' }, 'gallery-light').reason).toBe('already-complete');
+    const pose = runtime.pose, progress = runtime.progress;
+    runtime = act(runtime, { type: 'chromatic-compare' }, 'chromatic-exhibit').runtime;
+    expect(runtime.gallery!.chromaticNeutral).toBe(true); expect(runtime.pose).toBe(pose); expect(runtime.progress).toBe(progress);
+    expect(getWorld(runtime)).toEqual(before);
+    expect(getWorld({ ...runtime, progress: { ...runtime.progress, sealA: true, sealB: true, variant: 'exit' } })).toEqual(before);
+  });
+  it('keeps B 0/1/2 guidance and explicit commit eligibility consistent and preserves wrong feedback until replacement', () => {
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'shadow' }).runtime;
+    expect(galleryDeviceStatus(runtime)).toMatchObject({ count: 0, commitEnabled: false, instruction: '見本を1枚、下の枠へドラッグ' });
+    runtime = act(runtime, { type: 'shadow-place', sampleId: 'sample-a', slotId: 'socket-left' }).runtime;
+    expect(galleryDeviceStatus(runtime)).toMatchObject({ count: 1, commitEnabled: false, instruction: 'もう1枚を、隣の枠へ' });
+    runtime = act(runtime, { type: 'shadow-place', sampleId: 'sample-b', slotId: 'socket-right' }).runtime;
+    expect(galleryDeviceStatus(runtime)).toMatchObject({ count: 2, commitEnabled: true });
+    runtime = act(runtime, { type: 'shadow-commit' }).runtime;
+    for (let i = 0; i < 120; i++) runtime = evaluateRuntime(runtime, runtime.pose, 1 / 30);
+    expect(galleryDeviceStatus(runtime)?.instruction).toBe('明るさが違う。どちらかを入れ替えよう。');
+    runtime = act(runtime, { type: 'shadow-place', sampleId: 'sample-c', slotId: 'socket-right' }).runtime;
+    expect(galleryDeviceStatus(runtime)?.instruction).toContain('比べる');
+  });
+  it('shares C display angles with every 0/3..3/3 count and refuses incomplete activation without increasing attempts', () => {
+    let runtime = act(fresh(), { type: 'enter', puzzle: 'contour' }).runtime;
+    expect(galleryDeviceStatus(runtime)).toMatchObject({ count: 0, commitEnabled: false });
+    for (const disc of createContourSpec(runtime.progress.gallery!.seed).discs) {
+      expect(act(runtime, { type: 'contour-commit' }).reason).toBe('blocked');
+      runtime = act(runtime, { type: 'contour-adjust', discId: disc.id, delta: normalizeAngle(disc.targetAngle - runtime.gallery!.contourAngles[disc.id]) }).runtime;
+      expect(contourAlignedCount(runtime.progress.gallery!.seed, runtime.gallery!.contourAngles)).toBe(disc.id + 1);
+      expect(galleryDeviceStatus(runtime)?.commitEnabled).toBe(disc.id === 2);
+    }
+    expect(runtime.progress.gallery!.contour.attempts).toBe(0);
+    expect(act(runtime, { type: 'contour-commit' }).runtime.progress.gallery!.contour.solved).toBe(true);
+  });
+  it('requires explicit exact-once pickups and atomic two-power connection, retaining progress through reload', () => {
+    let runtime = fresh();
+    expect(act(runtime, { type: 'take-power', puzzle: 'shadow' }, 'shadow-panel').reason).toBe('blocked');
+    for (const [i, puzzle] of (['shadow', 'contour'] as const).entries()) {
+      runtime = solve(runtime, puzzle);
+      expect(galleryPowerCount(runtime.progress.gallery!)).toBe(i);
+      const pickup = act(runtime, { type: 'take-power', puzzle }, puzzle + '-panel');
+      expect(pickup.effects.filter(e => e.type === 'power-taken')).toHaveLength(1); runtime = pickup.runtime;
+      expect(act(runtime, { type: 'take-power', puzzle }, puzzle + '-panel').reason).toBe('already-complete');
+      expect(galleryPowerCount(runtime.progress.gallery!)).toBe(i + 1);
+      if (!i) expect(act(runtime, { type: 'connect-power' }, 'gallery-exit-panel').reason).toBe('blocked');
+    }
+    const connected = act(runtime, { type: 'connect-power' }, 'gallery-exit-panel'); runtime = connected.runtime;
+    expect(connected.effects.filter(e => e.type === 'power-connected')).toHaveLength(1);
+    expect(runtime.progress).toMatchObject({ sealA: false, sealB: false, variant: 'entrance', gallery: { powerConnected: true, powerTaken: { shadow: true, contour: true } } });
+    expect(act(runtime, { type: 'connect-power' }, 'gallery-exit-panel').reason).toBe('already-complete');
+    expect(createGalleryRuntime(restoreGalleryCheckpoint(createCheckpoint(runtime))!.checkpoint).progress).toEqual(runtime.progress);
+  });
+  it('migrates v1 unfinished, solved, old D and cleared records without mutating their raw structures', () => {
+    for (const stage of [0, 1, 2, 3, 4]) {
+      let runtime = fresh();
+      if (stage >= 1) runtime = solve(runtime, 'shadow');
+      if (stage >= 2) runtime = solve(runtime, 'contour');
+      const checkpoint = createCheckpoint(runtime), legacy = JSON.parse(JSON.stringify(checkpoint));
+      legacy.levelVersion = 1;
+      legacy.progress.gallery = { schemaVersion: 1, seed: runtime.progress.gallery!.seed, shadow: runtime.progress.gallery!.shadow, contour: runtime.progress.gallery!.contour, order: runtime.progress.gallery!.order };
+      legacy.progress.sealA = stage > 0; legacy.progress.emblem.phase = stage > 0 ? 'released' : 'unexamined';
+      legacy.progress.sealB = stage >= 3; legacy.progress.variant = stage >= 3 ? 'exit' : 'entrance';
+      legacy.progress.exitDoorOpen = stage === 4; legacy.progress.cleared = stage === 4;
+      legacy.pose = { position: { x: 500, y: 1.6, z: -500 }, yaw: 0, pitch: 0 };
+      const before = JSON.stringify(legacy), result = migrateGalleryV1Checkpoint(legacy)!;
+      expect(result).toBeDefined(); expect(JSON.stringify(legacy)).toBe(before);
+      expect(result.checkpoint.levelVersion).toBe(2);
+      expect(result.checkpoint.progress.gallery).toMatchObject({ powerTaken: { shadow: stage >= 1, contour: stage >= 2 }, powerConnected: stage >= 3, completedFromV1: stage === 4 });
+      expect(result.checkpoint.progress.cleared).toBe(stage === 4);
+      expect(restoreGalleryCheckpoint(result.checkpoint)?.recovered).toBe(false);
+      expect(migrateGalleryV1Checkpoint({ ...legacy, levelVersion: 3 })).toBeUndefined();
+    }
+  });
+  it.each([['shadow', 'contour'], ['contour', 'shadow']] as const)('walks light → %s → %s → power connection → service → actual outside', (first, second) => {
+    let runtime = fresh();
+    runtime = aim(runtime, GALLERY_LIGHT_FIXTURE.center); runtime = interact(runtime, 'gallery-light', matrices(runtime.pose));
+    expect(runtime.progress.gallery!.emergencyLit).toBe(true);
+    runtime = aim(runtime, GALLERY_EXIT_PANEL_FIXTURE.center); runtime = interact(runtime, 'gallery-exit-panel', matrices(runtime.pose));
+    expect(runtime.progress.gallery!.exitInspected).toBe(true);
+    runtime = walk(runtime, 0, -10);
     for (const puzzle of [first, second]) {
       if (puzzle === 'shadow') runtime = walk(walk(walk(runtime, -3, -9.6), -7, -9.6), -7, -10.7);
       else runtime = walk(walk(runtime, 9, -10), 9, -10.7);
       runtime = aim(runtime, puzzle === 'shadow' ? GALLERY_SHADOW_FIXTURE.center : GALLERY_CONTOUR_FIXTURE.center);
       runtime = interact(runtime, puzzle === 'shadow' ? 'shadow-panel' : 'contour-panel', matrices(runtime.pose));
-      expect(runtime.gallery!.mode).toBe(puzzle);
-      runtime = solve(runtime, puzzle);
-      if (puzzle === 'shadow') runtime = walk(walk(walk(runtime, -7, -12.6), -2, -12.6), 0, -10);
-      else runtime = walk(walk(walk(runtime, 9, -13), 5, -13), 0, -10);
+      expect(runtime.gallery!.mode).toBe(puzzle); runtime = solve(runtime, puzzle);
+      runtime = act(runtime, { type: 'take-power', puzzle }, puzzle + '-panel').runtime;
+      if (puzzle === 'shadow') runtime = walk(walk(walk(runtime, -7, -9.6), -3, -9.6), 0, -10);
+      else runtime = walk(walk(runtime, 9, -10), 0, -10);
     }
-    expect(runtime.progress.gallery!.order).toEqual(first === 'shadow' ? ['B', 'C'] : ['C', 'B']);
-    runtime = walk(walk(walk(runtime, 2, -13), 2, -18.5), GALLERY_OBSERVATION_POSE.position.x, GALLERY_OBSERVATION_POSE.position.z);
-    runtime = aim(runtime, getWorld(runtime).keyFrame.center);
-    runtime = evaluateRuntime(runtime, runtime.pose, 1 / 60, matrices(runtime.pose));
-    expect(runtime.alignment).toBe(true); expect(runtime.progress.sealB).toBe(false);
-    expect(occlusionCertificate(runtime.pose, GALLERY_CHANGED_REGION, getWorld(runtime).solids)).toBeDefined();
-    const oldPosition = runtime.pose.position;
-    runtime = interact(runtime, 'key', matrices(runtime.pose));
-    expect(runtime.progress).toMatchObject({ sealB: true, variant: 'exit' }); expect(runtime.pose.position).toBe(oldPosition);
-    expect(isSafePose(runtime.pose, getWorld(runtime))).toBe(true);
-    runtime = walk(walk(walk(walk(runtime, 0, -21), 5, -21), 5, -4), 0, -4);
-    runtime = walk(runtime, 0, 12);
+    runtime = walk(runtime, 0, 2); runtime = aim(runtime, GALLERY_EXIT_PANEL_FIXTURE.center);
+    runtime = interact(runtime, 'gallery-exit-panel', matrices(runtime.pose)); expect(runtime.progress.gallery!.powerConnected).toBe(true);
+    runtime = walk(walk(walk(runtime, 0, 9), 4, 9), 4, 17);
     runtime = aim(runtime, getWorld(runtime).interactables.find(item => item.id === 'exit')!.center);
     runtime = interact(runtime, 'exit', matrices(runtime.pose)); expect(runtime.progress.exitDoorOpen).toBe(true);
-    runtime = walk(runtime, 0, 15.5);
-    expect(runtime.progress.cleared).toBe(true); expect(runtime.pose.position.z).toBeGreaterThanOrEqual(14.75);
-    const resumed = createGalleryRuntime(restoreGalleryCheckpoint(createCheckpoint(runtime))!.checkpoint);
-    expect(resumed.progress).toMatchObject({ sealA: true, sealB: true, cleared: true, gallery: { order: runtime.progress.gallery!.order } });
+    runtime = walk(runtime, 4, 19.5);
+    expect(runtime.progress).toMatchObject({ sealA: false, sealB: false, variant: 'entrance', cleared: true });
+    expect(isSafePose(runtime.pose, getWorld(runtime))).toBe(true);
+    expect(createGalleryRuntime(restoreGalleryCheckpoint(createCheckpoint(runtime))!.checkpoint).progress.cleared).toBe(true);
   });
 });

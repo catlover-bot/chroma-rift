@@ -33,3 +33,11 @@ node scripts/preview-gallery.cjs --capture
 - [Expo Audio](https://docs.expo.dev/versions/latest/sdk/audio/) とインストール版 `plugin/src/withAudio.ts` / `src/AudioModule.ts`：plugin schemaと公開native module境界。
 
 依存のライセンスは各packageのLICENSEに従う。今回追加のexpo-audioはMIT。アプリ全体や提供キットのライセンスを新たに推定・変更していない。
+
+## Goal 007 の追加
+
+- 展示体: `src/rendering/firstPerson/GalleryActor.tsx` の自作階層mesh。Threeの基本geometryを組み合わせた非対称肩/顔/片腕/脚。外部キャラクター・画像・骨格データは使用しない。
+- 任意の展示番号13: `chromaticExhibit.ts` の独自の平面path。既存emblem色変換coreを使用。新たな正解図形や外部kitではない。
+- 四角いトレー、共通panel fixture、灯り/電源/棚: domain寸法と既存基本geometryによる本作のコード生成。
+- 音: Goal006の自作4 WAVをそのまま再利用。敵の実移動を既存足音に接続し、外部音源を追加していない。
+- `docs/qa-goal007/` の画像: 同リポジトリの実mesh/materialと実component由来HUDを使用したローカルbrowser WebGL/合成QA。iPhone録画や他作品の転載画像ではない。実行環境と対象版は各READMEに記載。

@@ -2,9 +2,9 @@ import type { CollisionVolume, FloorRegion, PlayerPose } from '../firstPerson/ty
 import type { GalleryFixture, GalleryPuzzle } from './types';
 
 export const GALLERY_CHAPTER_ID = 'perception-gallery-v1';
-export const GALLERY_LEVEL_VERSION = 1;
+export const GALLERY_LEVEL_VERSION = 2;
 export const GALLERY_SEED = 73;
-export const GALLERY_SPAWN: PlayerPose = { position: { x: 0, y: 1.6, z: 7 }, yaw: 0, pitch: 0 };
+export const GALLERY_SPAWN: PlayerPose = { position: { x: 0, y: 1.6, z: 2 }, yaw: Math.PI, pitch: 0 };
 export const GALLERY_A_OBSERVATION_POSE: PlayerPose = { position: { x: 1.95, y: 1.6, z: -4.9 }, yaw: 0, pitch: 0 };
 export const GALLERY_SHADOW_OBSERVATION_POSE: PlayerPose = { position: { x: -7, y: 1.6, z: -10.7 }, yaw: 0, pitch: 0 };
 export const GALLERY_CONTOUR_OBSERVATION_POSE: PlayerPose = { position: { x: 9, y: 1.6, z: -10.7 }, yaw: 0, pitch: 0 };
@@ -21,31 +21,43 @@ export const GALLERY_SHADOW_FIXTURE: GalleryFixture = { center: { x: -7, y: 1.75
 export const GALLERY_CONTOUR_FIXTURE: GalleryFixture = { ...GALLERY_SHADOW_FIXTURE, center: { x: 9, y: 1.75, z: -15.78 } };
 export function fixtureForPuzzle(puzzle: GalleryPuzzle): GalleryFixture { return puzzle === 'shadow' ? GALLERY_SHADOW_FIXTURE : GALLERY_CONTOUR_FIXTURE; }
 export const GALLERY_CHANGED_REGION: CollisionVolume = { id: 'gallery-changed-entrance', min: { x: -5.2, y: -0.25, z: 6 }, max: { x: 5.2, y: 3.4, z: 17.2 }, kind: 'wall', opaque: true };
+// The same authored volumes serve rendering, collision and later actor routing.
+export const GALLERY_LIGHT_FIXTURE: GalleryFixture = { center: { x: -0.72, y: 1.55, z: 5.78 }, width: 0.64, height: 0.9, maxDistance: 4.1, normal: { x: 0, y: 0, z: -1 }, right: { x: -1, y: 0, z: 0 } };
+export const GALLERY_EXIT_PANEL_FIXTURE: GalleryFixture = { ...GALLERY_LIGHT_FIXTURE, center: { x: 0.72, y: 1.55, z: 5.78 } };
+export const GALLERY_CHROMATIC_FIXTURE: GalleryFixture = { center: { x: -2.78, y: 1.75, z: -2 }, width: 1.2, height: 1.2, maxDistance: 3.4, normal: { x: 1, y: 0, z: 0 }, right: { x: 0, y: 0, z: -1 } };
+export const GALLERY_DISPLAY_POSITION = { x: 0, y: 0, z: 9 } as const;
+export const GALLERY_SERVICE_CHECKPOINT: PlayerPose = { position: { x: 0, y: 1.6, z: 7 }, yaw: Math.PI, pitch: 0 };
+export const GALLERY_FINAL_CHECKPOINT: PlayerPose = { position: { x: 4, y: 1.6, z: 17 }, yaw: Math.PI, pitch: 0 };
+export const GALLERY_OUTSIDE_POSE: PlayerPose = { position: { x: 4, y: 1.6, z: 19.5 }, yaw: Math.PI, pitch: 0 };
+export const GALLERY_FINAL_DOOR_FIXTURE: GalleryFixture = { center: { x: 4, y: 1.45, z: 17.78 }, width: 1.5, height: 2.6, maxDistance: 2.4, normal: { x: 0, y: 0, z: -1 }, right: { x: -1, y: 0, z: 0 } };
+export const GALLERY_SAFE_RETREATS: readonly PlayerPose[] = [
+  { position: { x: 1.7, y: 1.6, z: 12.1 }, yaw: -Math.PI / 2, pitch: 0 },
+  { position: { x: 6.3, y: 1.6, z: 14.8 }, yaw: Math.PI / 2, pitch: 0 },
+];
 export const GALLERY_FLOORS: readonly FloorRegion[] = [
   { id: 'gallery-entrance', minX: -3, maxX: 3, minZ: 0, maxZ: 6 },
-  { id: 'gallery-emblem', minX: -3, maxX: 3, minZ: -8, maxZ: 0 },
+  { id: 'gallery-introduction', minX: -3, maxX: 3, minZ: -8, maxZ: 0 },
   { id: 'gallery-hub', minX: -4, maxX: 4, minZ: -14, maxZ: -8 },
   { id: 'gallery-shadow', minX: -10, maxX: -4, minZ: -16, maxZ: -8 },
   { id: 'gallery-contour', minX: 6, maxX: 12, minZ: -16, maxZ: -8 },
   { id: 'gallery-east-link', minX: 4, maxX: 6, minZ: -11, maxZ: -9 },
-  { id: 'gallery-key-passage', minX: 1, maxX: 3, minZ: -18, maxZ: -14 },
-  { id: 'gallery-key', minX: -4, maxX: 4, minZ: -28, maxZ: -18 },
-  { id: 'gallery-return', minX: 4, maxX: 6, minZ: -22, maxZ: -3 },
-  { id: 'gallery-return-turn', minX: 3, maxX: 6, minZ: -5, maxZ: -3 },
+  { id: 'gallery-service-threshold', minX: -1, maxX: 1, minZ: 6, maxZ: 10 },
+  { id: 'gallery-service-turn', minX: -1, maxX: 5, minZ: 8, maxZ: 10 },
+  { id: 'gallery-service-corridor', minX: 3, maxX: 5, minZ: 8, maxZ: 18 },
+  { id: 'gallery-retreat-west', minX: 1, maxX: 3, minZ: 10, maxZ: 14 },
+  { id: 'gallery-retreat-east', minX: 5, maxX: 7, minZ: 13, maxZ: 17 },
+  { id: 'gallery-outside', minX: 3, maxX: 5, minZ: 18, maxZ: 21 },
 ];
 export const GALLERY_CHECKPOINT_POSES: readonly PlayerPose[] = [GALLERY_SPAWN,
-  { position: { x: 0, y: 1.6, z: 2 }, yaw: 0, pitch: 0 }, GALLERY_A_OBSERVATION_POSE,
+  { position: { x: 0, y: 1.6, z: -4.9 }, yaw: 0, pitch: 0 },
   { position: { x: 0, y: 1.6, z: -10 }, yaw: 0, pitch: 0 },
-  GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_OBSERVATION_POSE,
-  { position: { x: 5, y: 1.6, z: -19 }, yaw: Math.PI, pitch: 0 },
-  { position: { x: 0, y: 1.6, z: 10 }, yaw: Math.PI, pitch: 0 },
-  { position: { x: 0, y: 1.6, z: 15.5 }, yaw: Math.PI, pitch: 0 },
+  GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE,
+  GALLERY_SERVICE_CHECKPOINT, ...GALLERY_SAFE_RETREATS, GALLERY_FINAL_CHECKPOINT, GALLERY_OUTSIDE_POSE,
 ];
 export const GALLERY_CHAPTER = {
-  id: GALLERY_CHAPTER_ID, version: GALLERY_LEVEL_VERSION, title: '不確かな展示室', seed: GALLERY_SEED,
+  id: GALLERY_CHAPTER_ID, version: GALLERY_LEVEL_VERSION, title: '閉館後の展示室', seed: GALLERY_SEED,
   spawn: GALLERY_SPAWN, checkpoints: GALLERY_CHECKPOINT_POSES, rooms: GALLERY_FLOORS,
-  fixtureIds: ['emblem-panel', 'shadow-panel', 'contour-panel', 'key', 'exit'],
-  gates: { 'seal-a-door': ['A'], 'gallery-key-door': ['B', 'C'], 'gallery-shadow-shortcut': ['B'], 'gallery-contour-shortcut': ['C'], 'seal-b-door': ['D'], 'gallery-return-door': ['D'], 'exit-door': ['A', 'B', 'C', 'D', 'return'] },
-  landmarkIds: ['remembered-door-left', 'remembered-door-right', 'gallery-double-column', 'gallery-notched-frame'],
-  changedRegion: GALLERY_CHANGED_REGION, checkpointSchemaVersion: 1,
+  fixtureIds: ['gallery-light', 'gallery-exit-panel', 'shadow-panel', 'contour-panel', 'shadow-power', 'contour-power', 'exit'],
+  gates: { 'gallery-service-door': ['powerConnected'], 'exit-door': ['powerConnected', 'explicitOpen'] },
+  checkpointSchemaVersion: 2,
 } as const;

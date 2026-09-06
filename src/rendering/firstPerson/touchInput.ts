@@ -15,6 +15,7 @@ export function targetChangedTouches<T extends { identifier: PointerId }>(change
   return changed.length === 1 ? changed : [];
 }
 export type FirstPersonInput = {
+  releaseBarrier: PointerId[];
   stickPointer: PointerId | null;
   lookPointer: PointerId | null;
   right: number;
@@ -29,10 +30,26 @@ export type FirstPersonInput = {
   lastLookY: number;
 };
 export function createTouchInput(): FirstPersonInput {
-  return { stickPointer: null, lookPointer: null, right: 0, forward: 0, lookX: 0, lookY: 0, stickOriginX: 0, stickOriginY: 0, stickOffsetX: 0, stickOffsetY: 0, lastLookX: 0, lastLookY: 0 };
+  return { releaseBarrier: [], stickPointer: null, lookPointer: null, right: 0, forward: 0, lookX: 0, lookY: 0, stickOriginX: 0, stickOriginY: 0, stickOffsetX: 0, stickOffsetY: 0, lastLookX: 0, lastLookY: 0 };
 }
 export function clearTouchInput(input: FirstPersonInput): void {
-  Object.assign(input, createTouchInput());
+  const releaseBarrier = input.releaseBarrier;
+  Object.assign(input, createTouchInput(), { releaseBarrier });
+}
+/** Contact recovery keeps former owners suppressed until every finger lifts.
+ * A newly started finger joins that barrier instead of gaining fresh control. */
+export function requireAllPointersReleased(input: FirstPersonInput): void {
+  const ids = [input.stickPointer, input.lookPointer].filter((id): id is PointerId => id !== null);
+  input.releaseBarrier = [...new Set([...input.releaseBarrier, ...ids])];
+  clearTouchInput(input);
+}
+export function observeReleaseBarrier(input: FirstPersonInput, activeIds: readonly PointerId[]): void {
+  if (input.releaseBarrier.length) input.releaseBarrier = [...new Set(activeIds)];
+}
+function suppressedStart(input: FirstPersonInput, id: PointerId): boolean {
+  if (!input.releaseBarrier.length) return false;
+  if (validPointer(id) && !input.releaseBarrier.includes(id)) input.releaseBarrier.push(id);
+  return true;
 }
 export function validPointer(id: PointerId): boolean {
   return typeof id === 'number' ? Number.isFinite(id) : typeof id === 'string' && id.length > 0;
@@ -52,7 +69,7 @@ export function analogStickVector(dx: number, dy: number): { right: number; forw
 /** Native adapters already proved activation by the emitting hit view; direct
  * callers can additionally supply a local activation region. */
 export function beginStick(input: FirstPersonInput, id: PointerId, x: number, y: number, region?: InputRegion): void {
-  if (input.stickPointer !== null || input.lookPointer === id || !validStart(id, x, y, region)) return;
+  if (suppressedStart(input, id) || input.stickPointer !== null || input.lookPointer === id || !validStart(id, x, y, region)) return;
   input.stickPointer = id;
   input.stickOriginX = x;
   input.stickOriginY = y;
@@ -71,7 +88,7 @@ export function moveStick(input: FirstPersonInput, id: PointerId, x: number, y: 
   Object.assign(input, analogStickVector(dx, dy));
 }
 export function beginLook(input: FirstPersonInput, id: PointerId, x: number, y: number, region?: InputRegion): void {
-  if (input.lookPointer !== null || input.stickPointer === id || !validStart(id, x, y, region)) return;
+  if (suppressedStart(input, id) || input.lookPointer !== null || input.stickPointer === id || !validStart(id, x, y, region)) return;
   input.lookPointer = id;
   input.lastLookX = x;
   input.lastLookY = y;
@@ -88,6 +105,7 @@ export function moveLook(input: FirstPersonInput, id: PointerId, x: number, y: n
   input.lastLookY = y;
 }
 export function endPointer(input: FirstPersonInput, id: PointerId, discardLook = true): void {
+  input.releaseBarrier = input.releaseBarrier.filter(blocked => blocked !== id);
   if (input.stickPointer === id) {
     input.stickPointer = null;
     input.right = input.forward = input.stickOffsetX = input.stickOffsetY = 0;

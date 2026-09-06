@@ -1,3 +1,4 @@
+import { PanelFixture } from './PanelFixture';
 import { GlyphMark } from './GlyphMark';
 /* eslint-disable react/no-unknown-property -- These are R3F Three.js intrinsics, not DOM elements. */
 import { GalleryScene } from './GalleryScene';
@@ -74,18 +75,8 @@ function LegacyChapterScene({ world, runtime, progress, resources, assist, reduc
       })}
       {world.interactables.filter((item) => item.id !== 'key' && (lab || item.id === 'exit')).map((item) => <mesh key={`target-${item.id}`} geometry={resources.box} material={resources.neutral} position={[item.center.x, item.center.y, item.center.z]} rotation={[0, 0, Math.PI / 4]} scale={[0.2, 0.2, 0.06]} />)}
       {!lab ? <>
-        <group name="emblem-fixture">
-          <mesh name="emblem-backing" geometry={resources.box} material={resources.dark} position={[EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, -7.865]} scale={[EMBLEM_FIXTURE.frameWidth, EMBLEM_FIXTURE.frameHeight, 0.07]} />
-          {/* Exactly one planar chromatic surface. Chroma/guide changes only
-              its cached opaque texture, never these transforms or lighting. */}
-          <mesh name="emblem-plate" geometry={resources.plane} material={resources.emblemSurface!.material}
-            position={[EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, EMBLEM_FIXTURE.center.z]} rotation={[0, 0, 0]}
-            scale={[EMBLEM_FIXTURE.width, EMBLEM_FIXTURE.height, 1]} castShadow={false} receiveShadow={false} />
-          {[-1, 1].map((sign) => <group key={sign}>
-            <mesh name={`emblem-frame-horizontal-${sign}`} geometry={resources.box} material={resources.device} position={[1.95, 1.83 + sign * 0.8675, -7.815]} scale={[1.82, 0.085, 0.05]} />
-            <mesh name={`emblem-frame-vertical-${sign}`} geometry={resources.box} material={resources.trim} position={[1.95 + sign * 0.8675, 1.83, -7.815]} scale={[0.085, 1.65, 0.05]} />
-          </group>)}
-        </group>
+        <PanelFixture name="emblem" fixture={EMBLEM_FIXTURE} box={resources.box} plane={resources.plane}
+          surface={resources.emblemSurface!.material} backing={resources.dark} frame={resources.device} />
         {EMBLEM_SWITCHES.map((item) => <group name={`emblem-switch-fixture-${item.glyph}`} key={item.id}>
           <mesh geometry={resources.box} material={resources.trim} position={[item.center.x, item.center.y, item.center.z - 0.085]} scale={[0.42, 0.42, 0.025]} />
           {[-1, 1].map((sign) => <group key={sign}>

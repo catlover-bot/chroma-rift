@@ -22,6 +22,7 @@ export function createGalleryAudioOwner(options: GalleryAudioOptions, backend: A
   let epoch = 0;
   let lastSequence = -1;
   let walked = 0;
+  let actorWalked = 0;
   let ambiencePlaying = false;
   let listener: AudioPosition | undefined;
   let playedEvents = 0;
@@ -35,7 +36,7 @@ export function createGalleryAudioOwner(options: GalleryAudioOptions, backend: A
   }
   function stopAll() {
     epoch += 1;
-    walked = 0;
+    walked = actorWalked = 0;
     ambiencePlaying = false;
     for (const slot of slots) {
       slot.token += 1;
@@ -138,7 +139,7 @@ export function createGalleryAudioOwner(options: GalleryAudioOptions, backend: A
       preferences = normalizeAudioPreferences(next);
       if (!preferences.enabled) { stopAll(); return; }
       if (previous.effectsVolume > 0 && preferences.effectsVolume === 0) {
-        walked = 0;
+        walked = actorWalked = 0;
         for (const slot of slots) {
           if (slot.source === 'ambience') continue;
           slot.token += 1;
@@ -164,6 +165,22 @@ export function createGalleryAudioOwner(options: GalleryAudioOptions, backend: A
       if (walked >= FOOTSTEP_DISTANCE_METERS) {
         walked %= FOOTSTEP_DISTANCE_METERS;
         emit('footstep');
+      }
+    },
+    stopMovement() {
+      walked = actorWalked = 0;
+      for (const slot of slots) if (slot.source === 'footstep') {
+        slot.token += 1;
+        try { slot.player.pause(); } catch { /* Continue stopping other movement slots. */ }
+      }
+    },
+    actorMovement(distanceMeters, position, sessionId) {
+      if (sessionId !== options.sessionId || !playable() || slots.length === 0 || preferences.effectsVolume === 0) { actorWalked = 0; return; }
+      if (!Number.isFinite(distanceMeters) || distanceMeters < 0 || distanceMeters > MAX_AUDIO_TRAVEL_PER_UPDATE || !validPosition(position)) { actorWalked = 0; return; }
+      actorWalked += distanceMeters;
+      if (actorWalked >= FOOTSTEP_DISTANCE_METERS) {
+        actorWalked %= FOOTSTEP_DISTANCE_METERS;
+        emit('footstep', attenuation(position));
       }
     },
     setListenerPosition(position) { if (!disposed && validPosition(position)) listener = { ...position }; },

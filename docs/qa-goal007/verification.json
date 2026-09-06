@@ -1,0 +1,154 @@
+{
+  "goal": "007",
+  "recordedAt": "2026-09-06T16:38:43.212982+00:00",
+  "branch": "feat/goal-007-clear-horror-redesign",
+  "worktree": "/home/mhirotaka/workspace/chroma-rift",
+  "startHead": "922db3d4404c68eeb61b2f0278f43b21da015744",
+  "diagnosticRevision": "goal-007-horror-r1",
+  "baseline": {
+    "suites": 51,
+    "tests": 604,
+    "passed": true
+  },
+  "finalCheck": {
+    "suites": 56,
+    "tests": 674,
+    "passed": true,
+    "testSeconds": 61.803
+  },
+  "commands": {
+    "npm run lint": {
+      "result": "PASS（単体・最終check内）",
+      "exitStatus": 0
+    },
+    "npm run typecheck": {
+      "result": "PASS（単体・最終check内）",
+      "exitStatus": 0
+    },
+    "npm run test": {
+      "result": "単独670 PASS。追加修正後、最終check内は56 suites /674 tests PASS（61.803秒）",
+      "exitStatus": 0
+    },
+    "npm run export:ios": {
+      "result": "PASS（単体・最終check内、4音源・iOS Hermes bundle）",
+      "exitStatus": 0
+    },
+    "npm run check": {
+      "result": "PASS: lint → typecheck → 674 tests → iOS export",
+      "exitStatus": 0
+    },
+    "npm run doctor": {
+      "result": "PASS: 21/21",
+      "exitStatus": 0
+    },
+    "npx expo install --check": {
+      "result": "PASS: Dependencies are up to date",
+      "exitStatus": 0
+    },
+    "development/production inspect-three-bundle": {
+      "result": "両方PASS、three/build/three.cjs各1個、sameClassIdentity=true、依存辺14 /12",
+      "exitStatus": 0
+    },
+    "音源生成/検査": {
+      "result": "node scripts/generate-audio.cjs --check PASS、4 WAV完全一致、clipping 0、変更なし",
+      "exitStatus": 0
+    },
+    "git diff --check / 保護ファイル比較": {
+      "result": "PASS、保護6ファイルの開始時SHA-256一致",
+      "exitStatus": 0
+    }
+  },
+  "protectedFiles": [
+    {
+      "path": "package.json",
+      "before": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "after": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "match": true
+    },
+    {
+      "path": "package-lock.json",
+      "before": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "after": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "match": true
+    },
+    {
+      "path": "app.json",
+      "before": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "after": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "match": true
+    },
+    {
+      "path": "eas.json",
+      "before": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "after": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "match": true
+    },
+    {
+      "path": "metro.config.js",
+      "before": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "after": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "match": true
+    },
+    {
+      "path": "metro/withNativeThree.js",
+      "before": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "after": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "match": true
+    }
+  ],
+  "three": {
+    "development": {
+      "sameClassIdentity": true,
+      "threeSources": [
+        "node_modules/three/build/three.cjs"
+      ],
+      "edgeCount": 14,
+      "command": "expo export --platform ios --dev --no-bytecode --source-maps; node scripts/inspect-three-bundle.cjs <directory> --expect-single"
+    },
+    "production": {
+      "sameClassIdentity": true,
+      "threeSources": [
+        "/node_modules/three/build/three.cjs"
+      ],
+      "edgeCount": 12,
+      "command": "expo export --platform ios --no-bytecode --source-maps; node scripts/inspect-three-bundle.cjs <directory> --expect-single"
+    }
+  },
+  "nativeDependenciesChanged": false,
+  "externalActions": {
+    "push": false,
+    "pr": false,
+    "auth": false,
+    "cloudBuild": false
+  },
+  "deviceEvidence": {
+    "softwareWebGL": "qa-goal007/README.md",
+    "nativeR3F": "Installed native R3F with GL/context/renderer boundary replacement; actual scene matrices and lifecycle assertions",
+    "iPhoneGPU": "not performed",
+    "physicalTouch": "not performed",
+    "humanUnderstandingPerceptionFear": "not performed",
+    "realHearingHaptics": "not performed",
+    "devicePerformanceHeat": "not performed"
+  },
+  "finalLint": {
+    "command": "npm run lint",
+    "exitStatus": 0,
+    "sourceState": "After final preview script freeze"
+  },
+  "visualQA": {
+    "galleryViews": 61,
+    "compositeImagesOpened": 61,
+    "rawImagesOpened": 5,
+    "p0ImagesOpened": 40,
+    "pixelChecksPassed": 55,
+    "actorPosesPassed": 18,
+    "browserCreateDisposeCycles": 10,
+    "maxDrawCalls": 53,
+    "maxTriangles": 2400,
+    "browserExceptions": 0,
+    "sourceHashesMatched": 19,
+    "generatedImageHashesMatched": 122,
+    "openedImageHashesMatched": 66,
+    "record": "gallery/visual-review.json"
+  }
+}

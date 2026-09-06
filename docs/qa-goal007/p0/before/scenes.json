@@ -1,0 +1,1932 @@
+{
+  "sourceHashes": {
+    "src/rendering/firstPerson/GalleryScene.tsx": "989cfbb25324271ecbf1c449d1eb7e81daaba5c6fbfde9c3d4e1c97bf21d463f",
+    "src/rendering/firstPerson/ChapterScene.tsx": "727bc4efd67c87e15697f6ed21c0a83c38310229e26a146c43e6aefe41da34ec",
+    "src/domain/firstPerson/emblemFixture.ts": "3aeac2c3808ec21014b232ae16b8841fb91b8de2a5025acd50e52c9f29418ebf"
+  },
+  "boundary": "P0 historical Goal006 Gallery A and retained legacy ChapterScene; shared fixture applied only in after; one sampled scene callback; no native R3F/GL/input/HUD/audio/device/perception validation",
+  "three": "0.185.1",
+  "panels": [],
+  "snapshots": [
+    {
+      "id": "legacy-front",
+      "title": "legacy front",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -4.4
+        },
+        "yaw": 0,
+        "pitch": 0.06734667665863624
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "b028676d-cf3b-4f20-9827-aca18551ab43",
+      "file": "legacy-front.json",
+      "image": "legacy-front.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-near",
+      "title": "legacy near",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -6.25
+        },
+        "yaw": 0,
+        "pitch": 0.14638132947897994
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "d4b53433-9fb1-448b-ba6b-45254834f48a",
+      "file": "legacy-near.json",
+      "image": "legacy-near.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-left",
+      "title": "legacy left",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 0.2,
+          "y": 1.6,
+          "z": -5.5
+        },
+        "yaw": -0.6483319890872608,
+        "pitch": 0.07919815068043912
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "7354a7f0-8be0-44e3-94e2-db3920d9d172",
+      "file": "legacy-left.json",
+      "image": "legacy-left.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-right",
+      "title": "legacy right",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 2.65,
+          "y": 1.6,
+          "z": -5.5
+        },
+        "yaw": 0.2942345651111878,
+        "pitch": 0.0950013051567124
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "358228eb-48a0-4843-a0df-6938352a5760",
+      "file": "legacy-right.json",
+      "image": "legacy-right.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-move-0",
+      "title": "legacy move-0",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 0.6000000000000001,
+          "y": 1.6,
+          "z": -5.25
+        },
+        "yaw": -0.4852825635592213,
+        "pitch": 0.07930400611246656
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "b141b41a-e52f-4b97-b297-2e34ba1220fe",
+      "file": "legacy-move-0.json",
+      "image": "legacy-move-0.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-move-1",
+      "title": "legacy move-1",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.1,
+          "y": 1.6,
+          "z": -5.37
+        },
+        "yaw": -0.33521363321202535,
+        "pitch": 0.08878165841632658
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "bd8dfde0-79c5-4a3c-ad4e-2fea4cc6a9f0",
+      "file": "legacy-move-1.json",
+      "image": "legacy-move-1.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-move-2",
+      "title": "legacy move-2",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.6,
+          "y": 1.6,
+          "z": -5.49
+        },
+        "yaw": -0.14973294003362472,
+        "pitch": 0.09771646396791958
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "9f960149-9e72-44f0-ad0c-3dcebfe2c061",
+      "file": "legacy-move-2.json",
+      "image": "legacy-move-2.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-move-3",
+      "title": "legacy move-3",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 2.1,
+          "y": 1.6,
+          "z": -5.61
+        },
+        "yaw": 0.06807645825799956,
+        "pitch": 0.10392750043033734
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "77738cfd-80d8-41a9-9771-aaf8dbe62e3c",
+      "file": "legacy-move-3.json",
+      "image": "legacy-move-3.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-move-4",
+      "title": "legacy move-4",
+      "kind": "legacy",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 2.6,
+          "y": 1.6,
+          "z": -5.73
+        },
+        "yaw": 0.3028848683749715,
+        "pitch": 0.10515416005401704
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "2977431c-460c-4e5a-82f6-1627f0482105",
+      "file": "legacy-move-4.json",
+      "image": "legacy-move-4.png",
+      "inventory": {
+        "meshes": 165,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "legacy-wall",
+      "title": "legacy wall",
+      "kind": "legacy",
+      "wall": true,
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -4.4
+        },
+        "yaw": 0,
+        "pitch": 0.06734667665863624
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.125,
+            1.0050000000000001,
+            -7.81
+          ],
+          "max": [
+            2.775,
+            2.6550000000000002,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "emblem-backing",
+            "min": [
+              1.04,
+              0.92,
+              -7.9
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.83
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": 0.020000000000000462
+          },
+          {
+            "name": "emblem-frame-horizontal--1",
+            "min": [
+              1.04,
+              0.92,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              1.0050000000000001,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical--1",
+            "min": [
+              1.04,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              1.125,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-horizontal-1",
+            "min": [
+              1.04,
+              2.6550000000000002,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.74,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          },
+          {
+            "name": "emblem-frame-vertical-1",
+            "min": [
+              2.775,
+              1.0050000000000001,
+              -7.840000000000001
+            ],
+            "max": [
+              2.86,
+              2.6550000000000002,
+              -7.79
+            ],
+            "intersectsSurface": true,
+            "coplanarWithinMicrometre": false,
+            "behindSurfaceGap": -0.019999999999999574
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "732032fa-7a17-424f-a9d8-4fe08ee39068",
+      "file": "legacy-wall.json",
+      "image": "legacy-wall.png",
+      "inventory": {
+        "meshes": 166,
+        "instancedMeshes": 0,
+        "instances": 0,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-front",
+      "title": "gallery front",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -4.4
+        },
+        "yaw": 0,
+        "pitch": 0.12254994235555453
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "eea2035e-a6e6-4478-97d4-732debbe6e20",
+      "file": "gallery-front.json",
+      "image": "gallery-front.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-near",
+      "title": "gallery near",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -6.25
+        },
+        "yaw": 0,
+        "pitch": 0.2629947316809195
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "7c700181-6258-43f7-97d9-93ba778a9976",
+      "file": "gallery-near.json",
+      "image": "gallery-near.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-left",
+      "title": "gallery left",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 0.2,
+          "y": 1.6,
+          "z": -5.5
+        },
+        "yaw": -0.6483319890872608,
+        "pitch": 0.14392379306425054
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "b3fc4dd4-0e20-4a9a-85b3-d58d85051fd4",
+      "file": "gallery-left.json",
+      "image": "gallery-left.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-right",
+      "title": "gallery right",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 2.65,
+          "y": 1.6,
+          "z": -5.5
+        },
+        "yaw": 0.2942345651111878,
+        "pitch": 0.1722795237280214
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "2fdbcf7c-f982-4cfb-a8ed-13131ab834e5",
+      "file": "gallery-right.json",
+      "image": "gallery-right.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-move-0",
+      "title": "gallery move-0",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 0.6000000000000001,
+          "y": 1.6,
+          "z": -5.25
+        },
+        "yaw": -0.4852825635592213,
+        "pitch": 0.1441143066381727
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "883d64ca-7ac5-493a-bb68-dd8eb826cce8",
+      "file": "gallery-move-0.json",
+      "image": "gallery-move-0.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-move-1",
+      "title": "gallery move-1",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.1,
+          "y": 1.6,
+          "z": -5.37
+        },
+        "yaw": -0.33521363321202535,
+        "pitch": 0.16114094596757264
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "e004cc5a-b922-4a40-9d69-53b59a7df516",
+      "file": "gallery-move-1.json",
+      "image": "gallery-move-1.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-move-2",
+      "title": "gallery move-2",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 1.6,
+          "y": 1.6,
+          "z": -5.49
+        },
+        "yaw": -0.14973294003362472,
+        "pitch": 0.17713275630432632
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "d521c01f-2619-4d5b-b5ef-569e0a6496c0",
+      "file": "gallery-move-2.json",
+      "image": "gallery-move-2.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-move-3",
+      "title": "gallery move-3",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 2.1,
+          "y": 1.6,
+          "z": -5.61
+        },
+        "yaw": 0.06807645825799956,
+        "pitch": 0.1882125273288797
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "5279d317-b8ba-4f2d-bc6b-85a423cca898",
+      "file": "gallery-move-3.json",
+      "image": "gallery-move-3.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-move-4",
+      "title": "gallery move-4",
+      "kind": "gallery",
+      "wall": false,
+      "pose": {
+        "position": {
+          "x": 2.6,
+          "y": 1.6,
+          "z": -5.73
+        },
+        "yaw": 0.3028848683749715,
+        "pitch": 0.19039698188023862
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "9c9b1d41-a7a0-4729-9336-c541f68b5993",
+      "file": "gallery-move-4.json",
+      "image": "gallery-move-4.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "gallery-wall",
+      "title": "gallery wall",
+      "kind": "gallery",
+      "wall": true,
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -4.4
+        },
+        "yaw": 0,
+        "pitch": 0.12254994235555453
+      },
+      "panelAudit": {
+        "surfaceBounds": {
+          "min": [
+            1.25,
+            1.32,
+            -7.81
+          ],
+          "max": [
+            2.65,
+            2.7199999999999998,
+            -7.81
+          ]
+        },
+        "surfaceMaterial": {
+          "depthTest": true,
+          "depthWrite": true,
+          "transparent": false,
+          "renderOrder": 0
+        },
+        "parts": [
+          {
+            "name": "gallery-emblem-frame",
+            "min": [
+              1.17,
+              1.24,
+              -7.91
+            ],
+            "max": [
+              2.73,
+              2.8,
+              -7.8100000000000005
+            ],
+            "intersectsSurface": false,
+            "coplanarWithinMicrometre": true,
+            "behindSurfaceGap": 8.881784197001252e-16
+          }
+        ]
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "a1d7c441-a66d-46e9-a4ee-95da3a414eae",
+      "file": "gallery-wall.json",
+      "image": "gallery-wall.png",
+      "inventory": {
+        "meshes": 115,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    }
+  ]
+}

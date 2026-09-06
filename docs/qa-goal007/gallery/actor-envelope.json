@@ -1,0 +1,456 @@
+{
+  "allPassed": true,
+  "boundary": "Actual mesh world bounds and horizontal vertex radius at authored yaw and maximum stride. Arbitrary yaw at standby is a stress fixture, not a claim that every pose occurs in gameplay.",
+  "checks": [
+    {
+      "yaw": 0,
+      "travelledDistance": 0,
+      "maxHorizontalVertexRadius": 0.40019399260977107,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.044579776693897,
+        -5.551115123125783e-17,
+        15.635000000000002
+      ],
+      "max": [
+        4.85059457759644,
+        2.16205074348467,
+        15.961623649597168
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 0,
+      "travelledDistance": 0.2617993877991494,
+      "maxHorizontalVertexRadius": 0.4144079189423929,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.044579776693897,
+        -0.016850627483460667,
+        15.511893420553049
+      ],
+      "max": [
+        4.85059457759644,
+        2.16205074348467,
+        15.999560647096022
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 0,
+      "travelledDistance": 0.7853981633974483,
+      "maxHorizontalVertexRadius": 0.4144079189423929,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.044579776693897,
+        -0.016850627483460667,
+        15.511893420553049
+      ],
+      "max": [
+        4.85059457759644,
+        2.16205074348467,
+        15.999560647096022
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 0.7853981633974483,
+      "travelledDistance": 0,
+      "maxHorizontalVertexRadius": 0.40019399260977156,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.087814071664238,
+        -5.551115123125783e-17,
+        15.466833060261933
+      ],
+      "max": [
+        4.7831669397380665,
+        2.16205074348467,
+        16.162185928335763
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 0.7853981633974483,
+      "travelledDistance": 0.2617993877991494,
+      "maxHorizontalVertexRadius": 0.4144079189423912,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.087814071664238,
+        -0.016850627483460667,
+        15.404330803586681
+      ],
+      "max": [
+        4.7831669397380665,
+        2.16205074348467,
+        16.21044280962089
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 0.7853981633974483,
+      "travelledDistance": 0.7853981633974483,
+      "maxHorizontalVertexRadius": 0.41440791894239326,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.039557190379109,
+        -0.016850627483460667,
+        15.466833060261933
+      ],
+      "max": [
+        4.845669196413319,
+        2.16205074348467,
+        16.162185928335763
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 1.5707963267948966,
+      "travelledDistance": 0,
+      "maxHorizontalVertexRadius": 0.4001939926097702,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.285,
+        -5.551115123125783e-17,
+        15.39940542240356
+      ],
+      "max": [
+        4.611623649597168,
+        2.16205074348467,
+        16.205420223306103
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 1.5707963267948966,
+      "travelledDistance": 0.2617993877991494,
+      "maxHorizontalVertexRadius": 0.4144079189423921,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.161893420553049,
+        -0.016850627483460667,
+        15.39940542240356
+      ],
+      "max": [
+        4.64956064709602,
+        2.16205074348467,
+        16.205420223306103
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 1.5707963267948966,
+      "travelledDistance": 0.7853981633974483,
+      "maxHorizontalVertexRadius": 0.4144079189423921,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.161893420553049,
+        -0.016850627483460667,
+        15.39940542240356
+      ],
+      "max": [
+        4.64956064709602,
+        2.16205074348467,
+        16.205420223306103
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 3.141592653589793,
+      "travelledDistance": 0,
+      "maxHorizontalVertexRadius": 0.40019399260977107,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.04940542240356,
+        -5.551115123125783e-17,
+        15.638376350402833
+      ],
+      "max": [
+        4.855420223306103,
+        2.16205074348467,
+        15.965
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 3.141592653589793,
+      "travelledDistance": 0.2617993877991494,
+      "maxHorizontalVertexRadius": 0.4144079189423929,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.04940542240356,
+        -0.016850627483460667,
+        15.60043935290398
+      ],
+      "max": [
+        4.855420223306103,
+        2.16205074348467,
+        16.08810657944695
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": 3.141592653589793,
+      "travelledDistance": 0.7853981633974483,
+      "maxHorizontalVertexRadius": 0.4144079189423929,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.04940542240356,
+        -0.016850627483460667,
+        15.60043935290398
+      ],
+      "max": [
+        4.855420223306103,
+        2.16205074348467,
+        16.08810657944695
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": -1.5707963267948966,
+      "travelledDistance": 0,
+      "maxHorizontalVertexRadius": 0.40019399260977195,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.2883763504028325,
+        -5.551115123125783e-17,
+        15.394579776693897
+      ],
+      "max": [
+        4.615,
+        2.16205074348467,
+        16.20059457759644
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": -1.5707963267948966,
+      "travelledDistance": 0.2617993877991494,
+      "maxHorizontalVertexRadius": 0.41440791894239376,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.250439352903981,
+        -0.016850627483460667,
+        15.394579776693897
+      ],
+      "max": [
+        4.738106579446951,
+        2.16205074348467,
+        16.20059457759644
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": -1.5707963267948966,
+      "travelledDistance": 0.7853981633974483,
+      "maxHorizontalVertexRadius": 0.41440791894239376,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.250439352903981,
+        -0.016850627483460667,
+        15.394579776693897
+      ],
+      "max": [
+        4.738106579446951,
+        2.16205074348467,
+        16.20059457759644
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": false
+    },
+    {
+      "yaw": -1.9890206563741277,
+      "travelledDistance": 0,
+      "maxHorizontalVertexRadius": 0.40019399260976923,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.193862185836133,
+        -5.551115123125783e-17,
+        15.403123317605207
+      ],
+      "max": [
+        4.73144240000678,
+        2.16205074348467,
+        16.194497643946022
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": true
+    },
+    {
+      "yaw": -1.9890206563741277,
+      "travelledDistance": 0.2617993877991494,
+      "maxHorizontalVertexRadius": 0.41440791894239193,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.193862185836133,
+        -0.016850627483460667,
+        15.358434454448624
+      ],
+      "max": [
+        4.786380043421724,
+        2.16205074348467,
+        16.23063022621087
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": true
+    },
+    {
+      "yaw": -1.9890206563741277,
+      "travelledDistance": 0.7853981633974483,
+      "maxHorizontalVertexRadius": 0.41440791894239287,
+      "collisionRadius": 0.44,
+      "insideCollisionRadius": true,
+      "position": {
+        "x": 4.45,
+        "y": 0,
+        "z": 15.8
+      },
+      "min": [
+        4.1420380142463324,
+        -0.016850627483460667,
+        15.40535311032526
+      ],
+      "max": [
+        4.774604440363218,
+        2.16205074348467,
+        16.176657586071986
+      ],
+      "insideConservativeVolume": true,
+      "wallIntersections": [],
+      "standbyOrientation": true
+    }
+  ]
+}

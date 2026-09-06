@@ -40,7 +40,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   const proof = props.sceneMode === 'proof' && __DEV__;
   const lifecycle = useMemo(() => createCanvasLifecycle(controller, onError), [controller, onError]);
   const session = useMemo(() => createNativeSceneSession(controller, lifecycle, proof, onReady), [controller, lifecycle, proof, onReady]);
-  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery), [controller, proof, props.quality]);
+  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery), [controller, proof, props.quality]);
   const runtime = useMemo(() => ({ get current() { return controller.runtime; } }), [controller]);
   const world = useMemo(() => worldForController({ ...controller, runtime: snapshot.runtime }), [controller, snapshot.runtime]);
   const remainingStartup = useRef(props.startupTimeoutMs ?? 12000);
@@ -62,6 +62,9 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
       assist: snapshot.runtime.emblem.assist,
     });
   }, [props.emblemPalette, props.preferredColor, resources, snapshot.runtime.emblem.seed, snapshot.runtime.emblem.presentation, snapshot.runtime.emblem.assist]);
+  useLayoutEffect(() => {
+    resources?.galleryResources?.chromaticSurface.update(snapshot.runtime.gallery?.chromaticNeutral ?? false, props.emblemPalette ?? 'baseline');
+  }, [props.emblemPalette, resources, snapshot.runtime.gallery?.chromaticNeutral]);
   useEffect(() => { resources?.updatePalette(props.preferredColor, props.neutralColors, props.effectStrength); }, [props.effectStrength, props.neutralColors, props.preferredColor, resources]);
   useEffect(() => {
     if (props.paused || !appActive || lifecycle.ready || !lifecycle.active) return;

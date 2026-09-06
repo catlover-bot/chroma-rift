@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { CONTOUR_BACKGROUND, CONTOUR_DISC_RADIUS, CONTOUR_INK, CONTOUR_WEDGE_ANGLE } from '../../domain/gallery';
+import { createChromaticExhibitSurface } from './chromaticExhibit';
 import { galleryRaster } from './galleryGraphics';
 export function createGalleryResources() {
+  const chromaticSurface = createChromaticExhibitSurface();
   const materials: THREE.Material[] = [], geometries: THREE.BufferGeometry[] = [], textures: THREE.Texture[] = [];
   const basic = (color: string) => {
     const material = new THREE.MeshBasicMaterial({ color, fog: false, toneMapped: false, transparent: false, depthTest: true, depthWrite: true });
@@ -27,7 +29,13 @@ export function createGalleryResources() {
   }
   shape.closePath();
   const inducer = new THREE.ShapeGeometry(shape); geometries.push(inducer);
+  const actorBody = new THREE.IcosahedronGeometry(1, 0), actorHead = new THREE.SphereGeometry(1, 12, 8);
+  geometries.push(actorBody, actorHead);
+  const actorPorcelain = new THREE.MeshLambertMaterial({ color: '#C6C2AF' });
+  const actorCloth = new THREE.MeshLambertMaterial({ color: '#434846', flatShading: true });
+  materials.push(actorPorcelain, actorCloth);
   const warm = basic('#AA8466'), bright = basic(CONTOUR_BACKGROUND), ink = basic(CONTOUR_INK), guide = basic('#8A6540');
+  const exitSign = basic('#477965');
   const shelf = basic('#707070'), outline = basic('#D4C9AA'), selected = basic('#F2D38B');
   const roomA = new THREE.MeshLambertMaterial({ color: '#938071' });
   const roomB = new THREE.MeshLambertMaterial({ color: '#879392' });
@@ -35,9 +43,9 @@ export function createGalleryResources() {
   const roomD = new THREE.MeshLambertMaterial({ color: '#777F8B' });
   materials.push(roomA, roomB, roomC, roomD);
   let closed = false;
-  return { shadowPanel, sampleMaterials, inducer, warm, bright, ink, guide, shelf, outline, selected, roomA, roomB, roomC, roomD,
+  return { actorBody, actorHead, actorPorcelain, actorCloth, chromaticSurface, exitSign, shadowPanel, sampleMaterials, inducer, warm, bright, ink, guide, shelf, outline, selected, roomA, roomB, roomC, roomD,
     setComparison(compare: boolean) { if (!closed) shadowPanel.map = compare ? neutralMap : colorMap; },
-    dispose() { if (closed) return; closed = true; materials.forEach(m => m.dispose()); geometries.forEach(g => g.dispose()); textures.forEach(t => t.dispose()); },
+    dispose() { if (closed) return; closed = true; chromaticSurface.dispose(); materials.forEach(m => m.dispose()); geometries.forEach(g => g.dispose()); textures.forEach(t => t.dispose()); },
   };
 }
 export type GalleryResources = ReturnType<typeof createGalleryResources>;

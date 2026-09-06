@@ -14,10 +14,13 @@ export type InteractionEvaluation = {
   reason?: string;
 } | { kind: 'none'; target?: undefined; actionLabel?: undefined; reason?: undefined };
 
-function actionLabel(target: InteractableDefinition): string {
+function actionLabel(target: InteractableDefinition, progress?: PuzzleState): string {
   switch (target.id) {
-    case 'shadow-panel': return '見本を動かす';
-    case 'contour-panel': return '円盤を回す';
+    case 'gallery-light': return '非常灯を点ける';
+    case 'gallery-exit-panel': return progress?.gallery?.powerTaken.shadow && progress.gallery.powerTaken.contour ? '電源を接続' : '非常口を確認';
+    case 'chromatic-exhibit': return '色をほどく';
+    case 'shadow-power': case 'contour-power': return '電源を取る';
+    case 'shadow-panel': case 'contour-panel': return '装置を操作';
     case 'emblem-panel': return '紋章を調べる';
     case 'emblem-circle': return '丸の印を押す';
     case 'emblem-diamond': return 'ひし形の印を押す';
@@ -32,8 +35,13 @@ function actionLabel(target: InteractableDefinition): string {
 function lockedReason(target: InteractableDefinition, progress: PuzzleState | undefined, aligned: boolean): string | undefined {
   if (!progress) return undefined;
   switch (target.id) {
+    case 'gallery-light': return progress.gallery?.emergencyLit ? '非常灯は点いています。' : undefined;
+    case 'gallery-exit-panel': return progress.gallery?.powerConnected ? '電源を接続しました。サービス通路へ。' : undefined;
+    case 'chromatic-exhibit': return undefined;
+    case 'shadow-power': return progress.gallery?.shadow.solved && !progress.gallery.powerTaken.shadow ? undefined : '引き出しの電源は取得済みです。';
+    case 'contour-power': return progress.gallery?.contour.solved && !progress.gallery.powerTaken.contour ? undefined : '引き出しの電源は取得済みです。';
     case 'shadow-panel':
-    case 'contour-panel': return progress.gallery && progress.sealA ? undefined : '先に紋章の封印を解こう。';
+    case 'contour-panel': return progress.gallery ? undefined : 'この装置はありません。';
     case 'emblem-panel': return progress.sealA ? '紋章の封印は解けています。奥の回廊へ進もう。' : undefined;
     case 'emblem-circle':
     case 'emblem-diamond':
@@ -48,6 +56,7 @@ function lockedReason(target: InteractableDefinition, progress: PuzzleState | un
       if (progress.gallery && (!progress.gallery.shadow.solved || !progress.gallery.contour.solved)) return '二つの翼の封印を解こう。';
       return aligned ? undefined : '観察の輪から、欠けた鍵の形を重ねよう。';
     case 'exit':
+      if (progress.gallery) return progress.exitDoorOpen ? '非常扉は開いています。外へ歩こう。' : progress.gallery.powerConnected ? undefined : '出口の盤へ予備電源を二つ接続しよう。';
       if (progress.exitDoorOpen) return '扉は開いています。外へ歩こう。';
       return progress.variant === 'exit' && progress.sealA && progress.sealB ? undefined : '二つの封印を解くと開きます。';
   }
@@ -146,10 +155,10 @@ export function evaluateInteraction(world: WorldGeometry, pose: PlayerPose, prog
   if (selected) {
     const aligned = selected.target.id === 'key' && !!matrices && evaluateKeyAlignment(pose, world, matrices, previouslyAligned).aligned;
     const reason = lockedReason(selected.target, progress, aligned);
-    return { kind: reason ? 'locked' : 'ready', target: selected.target, actionLabel: actionLabel(selected.target), ...(reason ? { reason } : {}) };
+    return { kind: reason ? 'locked' : 'ready', target: selected.target, actionLabel: actionLabel(selected.target, progress), ...(reason ? { reason } : {}) };
   }
   // These cues explain a visible object; they cannot become an action target.
   // Require the real camera for distant cues as in the renderer readiness path.
   const visible = matchingCamera ? candidates.filter((candidate) => candidate.visible).sort((a, b) => (progress?.emblem?.phase !== 'observing' ? Number(b.target.id === 'emblem-panel') - Number(a.target.id === 'emblem-panel') : 0) || a.distance - b.distance || a.angle - b.angle || a.target.id.localeCompare(b.target.id))[0] : undefined;
-  return visible ? { kind: visible.reachable ? 'aim' : 'approach', target: visible.target, actionLabel: actionLabel(visible.target) } : { kind: 'none' };
+  return visible ? { kind: visible.reachable ? 'aim' : 'approach', target: visible.target, actionLabel: actionLabel(visible.target, progress) } : { kind: 'none' };
 }

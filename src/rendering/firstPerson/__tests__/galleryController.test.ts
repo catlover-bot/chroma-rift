@@ -118,7 +118,7 @@ describe('gallery logical touch points and actual Three camera (presentation con
   it('commits a manually selected pair only once, independently of compare and sound', () => {
     const { c } = setup();
     const event = jest.fn();
-    attachControllerAudio(c, { event, dispose: jest.fn(), setActive: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
+    attachControllerAudio(c, { event, dispose: jest.fn(), setActive: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
     galleryAction(c, { type: 'enter', puzzle: 'shadow' });
     const saved = c.runtime.progress.gallery!.shadow;
     const spec = createShadowSpec(saved.seed, saved.variant), pair = spec.samples.filter(s => s.color === '#808080');
@@ -176,7 +176,7 @@ describe('gallery logical touch points and actual Three camera (presentation con
   it('rejects stale sessions, background input and retired callbacks, and sends actual movement only on a presented frame', () => {
     const { c, camera } = setup();
     const movement = jest.fn(), dispose = jest.fn();
-    const detach = attachControllerAudio(c, { event: jest.fn(), dispose, setActive: jest.fn(), updatePreferences: jest.fn(), movement, setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
+    const detach = attachControllerAudio(c, { event: jest.fn(), dispose, setActive: jest.fn(), updatePreferences: jest.fn(), movement, actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() });
     expect(dispatchGalleryController(c, { ...galleryCommand(c, { type: 'enter', puzzle: 'shadow' }), sessionId: 'old' })).toBe(false);
     c.input.forward = .1; advanceController(c, 1 / 60, camera);
     expect(movement).not.toHaveBeenCalled();

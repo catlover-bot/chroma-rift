@@ -6,3 +6,5 @@ export * from './state';
 export * from './world';
 export * from './runtime';
 export * from './checkpoint';
+export * from './selectors';
+export * from './actor';
