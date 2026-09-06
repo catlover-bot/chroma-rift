@@ -7,11 +7,14 @@ import { PerspectiveCamera } from 'three';
 import App from '../../../App';
 import type { IllusionMazeCanvasProps } from '../../rendering/IllusionMazeCanvas';
 import { APPLICATION_STORAGE_KEY } from '../../storage/applicationStorage';
-import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
+import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { MOVE_SPEED, VERTICAL_FOV } from '../../domain/firstPerson';
 import * as appStateModule from '../../app/state';
+import * as nativeGateModule from '../NativeFirstPersonGate';
+import type { FirstPersonScreenProps } from '../FirstPersonScreen';
+import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING } from '../../types/application';
 
 let mockFirstPersonCanvasProps: FirstPersonCanvasProps | undefined;
 
@@ -80,6 +83,54 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
       expect(saved.quickSetupResult.answers).toEqual(['unclear', 'unclear', 'unclear']);
       expect(saved.calibrationProfile).toBeUndefined();
     });
+  });
+
+  it('merges same-render onboarding callbacks in App memory and independent storage without remounting the scene', async () => {
+    const Gate = nativeGateModule.NativeFirstPersonGate;
+    let latest: FirstPersonScreenProps | undefined;
+    jest.spyOn(nativeGateModule, 'NativeFirstPersonGate').mockImplementation((props) => { latest = props; return <Gate {...props} />; });
+    const view = await render(<App />);
+    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(view.getByText('迷宮へ入る'));
+    await view.findByTestId('first-person-native-canvas');
+    const controller = mockFirstPersonCanvasProps!.controller;
+    const notify = latest!.onOnboardingChange!;
+    // Independent semantic callbacks may capture the same pre-update props.
+    // The actual App, gate and screen remain mounted; only the GPU is mocked.
+    await act(() => {
+      notify({ ...DEFAULT_FIRST_PERSON_ONBOARDING, controlChoiceAcknowledged: true });
+      notify({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true });
+    });
+    expect(latest!.onboarding).toEqual({ schemaVersion: 1, controlChoiceAcknowledged: true, tutorialCompleted: true });
+    expect(mockFirstPersonCanvasProps!.controller).toBe(controller);
+    await waitFor(async () => {
+      expect(JSON.parse((await AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY))!)).toEqual(latest!.onboarding);
+    });
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBeNull();
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY)).toBeNull();
+  });
+
+  it('rejects prior-run onboarding and controls callbacks after the actual chapter restart', async () => {
+    const Gate = nativeGateModule.NativeFirstPersonGate;
+    let latest: FirstPersonScreenProps | undefined;
+    jest.spyOn(nativeGateModule, 'NativeFirstPersonGate').mockImplementation((props) => { latest = props; return <Gate {...props} />; });
+    const view = await render(<App />);
+    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(view.getByText('迷宮へ入る'));
+    await view.findByTestId('first-person-native-canvas');
+    const prior = latest!;
+    const priorController = mockFirstPersonCanvasProps!.controller;
+    await act(() => prior.onRestart());
+    await view.findByTestId('first-person-native-canvas');
+    expect(mockFirstPersonCanvasProps!.controller).not.toBe(priorController);
+    await act(() => {
+      prior.onOnboardingChange!({ ...DEFAULT_FIRST_PERSON_ONBOARDING, controlChoiceAcknowledged: true, tutorialCompleted: true });
+      prior.onControlsChange({ ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' });
+    });
+    expect(latest!.onboarding).toEqual(DEFAULT_FIRST_PERSON_ONBOARDING);
+    expect(latest!.controls.movementMode).toBe('standard');
+    expect(await AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY)).toBeNull();
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY)).toBeNull();
   });
 
   it('guides an older native build before mounting Canvas and can return home', async () => {
@@ -310,7 +361,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await waitFor(() => expect(finishDeletion).toBeDefined());
     expect(view.queryByText('補助表示')).toBeNull();
     expect(remove).toHaveBeenCalledTimes(2);
-    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY]);
+    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY]);
     await act(() => finishDeletion?.());
     expect(await view.findByText('あとで調整して遊ぶ')).toBeTruthy();
     await waitFor(async () => {

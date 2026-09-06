@@ -23,11 +23,13 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
   let cleanupShader: (() => void) | undefined;
   let pendingPublish: ((snapshot: RuntimeSnapshot) => void) | undefined;
   let previousRuntime: ChapterRuntime | undefined;
+  let previousTutorial: RuntimeController['tutorial'] | undefined;
   let adapterCanvas: object | undefined;
   let checkPresentation = false;
   const fail = (error: unknown, phase: Parameters<CanvasLifecycle['fail']>[1]) => {
     // Do not retain an automatic puzzle transition from a frame that failed.
     if (previousRuntime) { controller.runtime = previousRuntime; previousRuntime = undefined; }
+    if (previousTutorial) { controller.tutorial = previousTutorial; previousTutorial = undefined; }
     pendingPublish = undefined;
     lifecycle.fail(error, phase);
   };
@@ -96,6 +98,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         sync(state);
         if (!lifecycle.ready || proof) { stopController(controller); return; }
         previousRuntime = controller.runtime;
+        previousTutorial = { ...controller.tutorial };
         diagnostics.simulationTicks += 1;
         advanceController(controller, delta, state.camera as THREE.PerspectiveCamera);
         // Publish only after the same frame's native wrapper returns.
@@ -152,6 +155,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
               if (next.key !== lastKey) { lastKey = next.key; pendingPublish(next); }
             }
             previousRuntime = undefined;
+            previousTutorial = undefined;
             pendingPublish = undefined;
           } catch (error) { fail(error, diagnostics.renderReturns > completedBefore ? 'presentation' : 'render'); }
         };

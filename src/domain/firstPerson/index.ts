@@ -5,3 +5,5 @@ export * from './alignment';
 export * from './runtime';
 export * from './checkpoint';
 export * from './interactionCue';
+export * from './interaction';
+export * from './tutorial';

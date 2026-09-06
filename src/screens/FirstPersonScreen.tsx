@@ -1,7 +1,7 @@
 import * as Clipboard from 'expo-clipboard';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, AppState, Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { AccessibilityInfo, AppState, Modal, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActionButton, Body, ChoiceRow, Heading, SettingSwitch } from '../components/Layout';
 import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage } from '../domain/firstPerson';
@@ -10,16 +10,20 @@ import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
 import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
 import { commandController, controllerSnapshot, createController, interactController, stopController, type RuntimeSnapshot } from '../rendering/firstPerson/runtimeController';
+import { controlLayout } from '../rendering/firstPerson/controlLayout';
+import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
 import { TouchControls } from '../rendering/firstPerson/TouchControls';
 import type { PreferredColor } from '../rendering/IllusionPalette';
 import { UI_COLORS } from '../theme/ui';
-import type { AppSettings, FirstPersonChapterSummary, FirstPersonControls } from '../types/application';
-import { effectiveControlMode, firstGuideInstruction, simpleGuideAimInstruction } from './firstPersonControlMode';
+import { DEFAULT_FIRST_PERSON_ONBOARDING, type FirstPersonOnboarding, type AppSettings, type FirstPersonChapterSummary, type FirstPersonControls } from '../types/application';
+import { effectiveControlMode, simpleGuideAimInstruction } from './firstPersonControlMode';
 
 export type FirstPersonScreenProps = {
   settings: AppSettings;
   controls: FirstPersonControls;
   checkpoint?: CheckpointState;
+  onboarding?: FirstPersonOnboarding;
+  onOnboardingChange?: (next: FirstPersonOnboarding) => void;
   preferredColor: PreferredColor;
   onSettingsChange: (settings: AppSettings) => void;
   onControlsChange: (controls: FirstPersonControls) => void;
@@ -29,8 +33,8 @@ export type FirstPersonScreenProps = {
   onExit: () => void;
   scene?: 'chapter' | 'lab';
 };
-function GameButton({ label, onPress, disabled = false, testID }: { label: string; onPress: () => void; disabled?: boolean; testID?: string }) {
-  return <Pressable testID={testID} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress} style={({ pressed }) => [styles.gameButton, disabled && styles.disabled, pressed && styles.pressed]}><Text style={styles.buttonText}>{label}</Text></Pressable>;
+function GameButton({ label, onPress, disabled = false, testID, sessionKey }: { label: string; onPress: () => void; disabled?: boolean; testID?: string; sessionKey?: string }) {
+  return <SceneActionButton testID={testID} label={label} disabled={disabled} onPress={onPress} sessionKey={sessionKey} style={({ pressed }) => [styles.gameButton, disabled && styles.disabled, pressed && styles.pressed]}><Text pointerEvents="none" style={styles.buttonText}>{label}</Text></SceneActionButton>;
 }
 
 type RecoveryScene = 'chapter' | 'proof' | 'raw-gl';
@@ -42,12 +46,12 @@ export function FirstPersonScreen(props: FirstPersonScreenProps) {
   return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors} onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
 }
 
-function FirstPersonSession({ settings, controls, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onComplete, onRestart, onExit, scene = 'chapter', startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
+function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onComplete, onRestart, onExit, scene = 'chapter', startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
   startCheckpoint: CheckpointState | undefined; attempt: number; renderMode: RecoveryScene; neutralColors: boolean;
   onColorChange: (neutral: boolean) => void;
   onSessionChange: (checkpoint: CheckpointState, mode: RecoveryScene, retry: boolean) => void;
 }) {
-  const [controller] = useState(() => createController(startCheckpoint, scene === 'lab'));
+  const [controller] = useState(() => createController(startCheckpoint, scene === 'lab', onboarding.tutorialCompleted));
   const [snapshot, setSnapshot] = useState(() => controllerSnapshot(controller));
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -63,19 +67,30 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
   const completed = useRef(false);
   const lastProgress = useRef(JSON.stringify(snapshot.runtime.progress));
   const lastAnnounced = useRef('');
+  const tutorialSaved = useRef(onboarding.tutorialCompleted);
+  const onboardingRef = useRef(onboarding);
+  useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
   const lastTarget = useRef(snapshot.target?.id);
   const lastVariant = useRef(snapshot.runtime.progress.variant);
-  const { height, fontScale } = useWindowDimensions();
+  const { width, height, fontScale } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const [sceneSize, setSceneSize] = useState<{ width: number; height: number }>();
+  const layout = controlLayout(sceneSize?.width ?? width - insets.left - insets.right, sceneSize?.height ?? height - insets.top - insets.bottom, fontScale, controls.handedness);
   const compact = height < 650 || fontScale >= 1.5;
   const effectiveControls = effectiveControlMode(controls.movementMode, settings.reducedMotion, reader, fontScale);
   const simple = effectiveControls.mode === 'simple';
   const paused = snapshot.runtime.paused;
-  const blocked = paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
+  const controlSessionKey = [simple, controls.handedness, appActive, paused, showDiagnostics, renderMode].join(':');
+  const blocked = showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
 
   const publish = useCallback((next: RuntimeSnapshot) => {
     if (!mounted.current || failed.current || next.runtime !== controller.runtime) return;
     setSnapshot(next);
     if (renderMode !== 'chapter') return;
+    if (scene === 'chapter' && next.tutorial.complete && !tutorialSaved.current) {
+      tutorialSaved.current = true;
+      onOnboardingChange?.({ ...onboardingRef.current, tutorialCompleted: true });
+    }
     if (lastTarget.current !== next.target?.id) {
       lastTarget.current = next.target?.id;
       setNotice('');
@@ -93,7 +108,7 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
       completed.current = true;
       onComplete({ chapterId: CHAPTER_ID, seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '戻ったはずの入口'] });
     }
-  }, [controller, onCheckpoint, onComplete, renderMode, scene, settings.reducedMotion]);
+  }, [controller, onCheckpoint, onComplete, onOnboardingChange, renderMode, scene, settings.reducedMotion]);
   const pause = useCallback(() => {
     if (!mounted.current || failed.current) return;
     stopController(controller);
@@ -123,14 +138,15 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
     return () => { mounted.current = false; commandController(controller, { type: 'pause' }); };
   }, [controller]);
   useEffect(() => {
-    commandController(controller, { type: 'sensitivity', value: controls.sensitivity });
+    commandController(controller, { type: 'sensitivity', value: controls.sensitivity, vertical: controls.verticalSensitivity ?? 1 });
     stopController(controller);
-  }, [controller, controls.sensitivity, controls.handedness, simple]);
+  }, [controller, controls.sensitivity, controls.verticalSensitivity, controls.handedness, simple]);
   useEffect(() => {
     updateDiagnosticContext(controller.diagnostics, { effectiveControls: { mode: effectiveControls.mode, reason: effectiveControls.reason }, appActive, paused, sceneMode: renderMode === 'chapter' ? scene : renderMode });
   }, [appActive, controller, effectiveControls.mode, effectiveControls.reason, paused, renderMode, scene]);
   useEffect(() => {
     setDiagnosticsOpen(controller.diagnostics, showDiagnostics);
+    if (showDiagnostics) stopController(controller);
     if (!showDiagnostics) return;
     const refresh = () => setDiagnosticText(serializeDiagnostics(controller.diagnostics));
     refresh();
@@ -165,15 +181,29 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
     onComplete({ chapterId: CHAPTER_ID, seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '戻ったはずの入口'] });
   }, [onComplete, renderMode, scene, snapshot.runtime.progress.cleared]);
 
+  useEffect(() => {
+    if (!notice || paused) return;
+    const timer = setTimeout(() => setNotice(''), 4500);
+    return () => clearTimeout(timer);
+  }, [notice, paused]);
+
+  const changeMode = (movementMode: FirstPersonControls['movementMode']) => {
+    if (!mounted.current || failed.current) return;
+    stopController(controller);
+    onControlsChange({ ...controls, movementMode });
+    onOnboardingChange?.({ ...onboardingRef.current, controlChoiceAcknowledged: true });
+  };
   const examine = () => {
     if (!mounted.current || failed.current || blocked || !snapshot.target) return;
     const previous = controller.runtime;
+    const freshCue = controllerSnapshot(controller).cue;
     const changed = interactController(controller, snapshot.target.id);
     publish(controllerSnapshot(controller));
     if (changed) {
-      setNotice(controller.runtime.progress.exitDoorOpen && !previous.progress.exitDoorOpen ? '扉が開きます。自分で外へ歩こう。' : controller.runtime.progress.sealB && !previous.progress.sealB ? '鍵が重なりました。入口へ戻ろう。' : controller.runtime.progress.sealA && !previous.progress.sealA ? '封印が解けました。' : 'しるべを調べました。足跡をたどり、床の輪へ進もう。');
+      setNotice(controller.runtime.progress.exitDoorOpen && !previous.progress.exitDoorOpen ? '扉が開きます。自分で外へ歩こう。' : controller.runtime.progress.sealB && !previous.progress.sealB ? '鍵が重なりました。入口へ戻ろう。' : controller.runtime.progress.sealA && !previous.progress.sealA ? '封印が解けました。' : 'しるべを調べました。');
       void playSelectionHaptic(settings.haptics);
-    } else if ((snapshot.target.id === 'floor-device' && previous.progress.sealA) || (snapshot.target.id === 'key' && previous.progress.sealB)) setNotice('この封印は、すでに解けています。');
+    } else if (freshCue.reason) setNotice(freshCue.reason);
+    else if ((snapshot.target.id === 'floor-device' && previous.progress.sealA) || (snapshot.target.id === 'key' && previous.progress.sealB)) setNotice('この封印は、すでに解けています。');
     else if (snapshot.target.id === 'guide' && previous.progress.guideExamined) setNotice('足跡は、途切れていない。');
     else setNotice(snapshot.target.id === 'floor-device' ? '光のしるべと、中央の輪を確かめよう。' : '立つ場所と視線を確かめよう。');
   };
@@ -213,8 +243,8 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
     resume();
     setNotice(next.pose === previous.pose ? '目印や対象の近くまで、自分で歩こう。' : '視点を合わせました。位置は同じです。');
   };
-  const leave = () => { pause(); onExit(); };
-  const restart = () => { commandController(controller, { type: 'pause' }); onRestart(); };
+  const leave = () => { if (!mounted.current || failed.current) return; pause(); failed.current = true; onExit(); };
+  const restart = () => { if (!mounted.current || failed.current) return; pause(); failed.current = true; onRestart(); };
   const changeSession = (mode: RecoveryScene, retry = false) => {
     if (retry && attempt >= MAX_RENDER_RETRIES) return;
     stopController(controller);
@@ -225,8 +255,13 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
   const hint = hintForRuntime(snapshot.runtime);
   const cue = snapshot.cue;
   const targetLabel = snapshot.target?.label ?? (cue.kind === 'approach' ? `${cue.target?.label}に、もう少し近づこう。` : cue.kind === 'aim' ? cue.target?.id === 'guide' && simple ? simpleGuideAimInstruction(snapshot.runtime.pose, cue.target.center) : `${cue.target?.label}に中央の照準を合わせよう。` : '近くの目印に中央の照準を合わせよう。');
-  const keyNotAligned = snapshot.target?.id === 'key' && !snapshot.runtime.alignment && !snapshot.runtime.progress.sealB;
-  const initialObjective = scene === 'chapter' && !snapshot.runtime.progress.guideExamined ? firstGuideInstruction(effectiveControls.mode) : snapshot.objective;
+  const progress = snapshot.runtime.progress;
+  const shortObjective = progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : progress.guideExamined && progress.markActivated ? '輪の先の装置へ' : progress.guideExamined ? '床の輪に入る' : '光のしるべへ';
+  const actionLabel = cue.actionLabel ?? '調べる';
+  const contextLabel = cue.kind === 'approach' ? `${cue.target?.label} · 近づくと調べられます` : cue.kind === 'locked' ? cue.reason : snapshot.target?.label;
+  const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete && !snapshot.runtime.progress.guideExamined;
+  const moveSide = controls.handedness === 'right' ? '左' : '右';
+  const lookSide = controls.handedness === 'right' ? '右' : '左';
   const copyDiagnostics = async () => {
     try {
       await Clipboard.setStringAsync(serializeDiagnostics(controller.diagnostics));
@@ -256,29 +291,42 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
     <ActionButton label="ホームへ戻る" onPress={onExit} />
   </ScrollView>{diagnostics}</SafeAreaView>;
 
-  const simpleButtons = <View style={styles.simpleControls}>
-    <GameButton label="左を向く" onPress={() => turn(Math.PI / 8)} disabled={blocked} />
-    <GameButton label="前へ一歩" onPress={() => step(1)} disabled={blocked} testID="step-forward" />
-    <GameButton label="右を向く" onPress={() => turn(-Math.PI / 8)} disabled={blocked} />
-    <GameButton label="上を見る" onPress={() => turn(0, 0.15)} disabled={blocked} />
-    <GameButton label="後ろへ一歩" onPress={() => step(-1)} disabled={blocked} />
-    <GameButton label="下を見る" onPress={() => turn(0, -0.15)} disabled={blocked} />
+  const simpleButtons = <View style={styles.simpleControls} testID="button-movement-controls">
+    <GameButton sessionKey={controlSessionKey} label="左を向く" onPress={() => turn(Math.PI / 8)} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label="前へ一歩" onPress={() => step(1)} disabled={blocked} testID="step-forward" />
+    <GameButton sessionKey={controlSessionKey} label="右を向く" onPress={() => turn(-Math.PI / 8)} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label="上を見る" onPress={() => turn(0, 0.15)} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label="後ろへ一歩" onPress={() => step(-1)} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label="下を見る" onPress={() => turn(0, -0.15)} disabled={blocked} />
   </View>;
   const actions = <View style={styles.actions}>
-    <GameButton label={neutralColors ? '色を戻す' : '色をほどく'} onPress={toggleColor} disabled={blocked} />
-    <GameButton label={snapshot.target?.id === 'guide' ? 'しるべを調べる' : snapshot.target?.id === 'key' && !snapshot.runtime.progress.sealB ? '重ねる' : '調べる'} onPress={examine} disabled={blocked || !snapshot.target || keyNotAligned} testID="interact" />
+    <GameButton sessionKey={controlSessionKey} label={neutralColors ? '色を戻す' : '色を比べる'} onPress={toggleColor} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" />
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
-    <View style={styles.sceneArea} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
-      {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
-      {!simple && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!blocked} handedness={controls.handedness} /> : null}
-      <View pointerEvents="box-none" style={styles.header}>
-        <GameButton label="一時停止" onPress={() => openMenu('pause')} />
-        <Text style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : notice || (scene === 'lab' ? '3D確認室' : initialObjective)}</Text>
+    <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
+      {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused || showDiagnostics} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
+      {!simple && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!blocked} handedness={controls.handedness} layout={layout} /> : null}
+      <View pointerEvents="box-none" style={[styles.hudSlot, layout.pause]}>
+        <SceneActionButton label="一時停止" sessionKey={controlSessionKey} onPress={() => openMenu('pause')} style={({ pressed }) => [styles.pauseButton, pressed && styles.pressed]} testID="pause-control">
+          <View pointerEvents="none" style={styles.pauseSymbol}><View style={styles.pauseBar} /><View style={styles.pauseBar} /></View>
+        </SceneActionButton>
+      </View>
+      <View pointerEvents="none" style={[styles.hudSlot, layout.goal]}>
+        <Text testID="current-objective" style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective}</Text>
       </View>
       <View pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View>
+      {notice ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
+      {!simple && renderMode === 'chapter' ? <>
+        {contextLabel ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}><Text style={styles.contextText}>{contextLabel}</Text></View> : null}
+        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" /></View>
+        <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={neutralColors ? '色を戻す' : '色を比べる'} onPress={toggleColor} disabled={blocked} testID="compare-colors" /></View>
+        {intro && !snapshot.tutorial.moved ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.movement.left, width: layout.movement.width, top: layout.movement.top }]}><Text style={styles.tutorialText}>{moveSide}側をドラッグして歩く</Text></View> : null}
+        {intro && snapshot.tutorial.moved && !snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.look.left, width: layout.look.width, top: layout.look.top + 30 }]}><Text style={styles.tutorialText}>{lookSide}側をドラッグして見回す</Text></View> : null}
+        {intro && snapshot.tutorial.moved && snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 78 }]}><Text style={styles.tutorialText}>光のしるべを調べる</Text></View> : null}
+      </> : null}
       {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>部屋の描画を準備しています…</Text>{__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}</View> : null}
-      {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : !(simple && compact) ? <View pointerEvents="box-none" style={styles.bottom}>
+      {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !compact ? <View pointerEvents="box-none" style={styles.bottom}>
         <Text style={styles.target} accessibilityLabel={`照準：${targetLabel}`}>{targetLabel}</Text>
         {simple ? <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}</> : null}
         {actions}
@@ -293,9 +341,21 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
         <ScrollView contentContainerStyle={styles.menuContent}>
           {menu === 'pause' ? <>
             <ActionButton label="再開する" onPress={resume} variant="primary" />
+            <Body>{snapshot.objective}</Body>
+            <Body muted>操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}</Body>
+            {reader ? <Body>読み上げ中は移動・旋回・調べるボタンを表示します。保存したタッチ操作の希望は保持し、読み上げ終了後に戻します。</Body> : null}
+            <ChoiceRow>
+              <ActionButton label="ドラッグ操作" variant={controls.movementMode === 'standard' ? 'primary' : 'secondary'} onPress={() => changeMode('standard')} />
+              <ActionButton label="ボタン操作" variant={controls.movementMode === 'simple' ? 'primary' : 'secondary'} onPress={() => changeMode('simple')} />
+            </ChoiceRow>
+            {controls.movementMode === 'simple' && !onboarding.controlChoiceAcknowledged ? <View style={styles.choiceNotice}>
+              <Body>保存したボタン操作を使っています。ドラッグ操作も試せます。</Body>
+              <ActionButton label="ドラッグ操作を試す" onPress={() => { changeMode('standard'); resume(); }} />
+              <ActionButton label="今の操作を使う" onPress={() => onOnboardingChange?.({ ...onboardingRef.current, controlChoiceAcknowledged: true })} />
+            </View> : null}
             <ActionButton label="ヒント" onPress={() => openMenu('hints')} disabled={!ready || renderMode !== 'chapter'} />
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
-            <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右のスティックで歩き、左側をドラッグして見回します。' : '左のスティックで歩き、右側をドラッグして見回します。'}</Body>
+            <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>
             {__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}
             <ActionButton label="章を最初から" onPress={restart} />
             <ActionButton label="ホームへ戻る" onPress={leave} />
@@ -306,14 +366,15 @@ function FirstPersonSession({ settings, controls, preferredColor, onSettingsChan
             <ActionButton label="探索へ戻る" onPress={resume} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </> : <>
-            <Body>現在の操作：{simple ? '簡単操作' : '標準操作'}。理由：{effectiveControls.reason}。</Body>
-            <SettingSwitch label="簡単操作の希望" description="操作の希望を保存します。簡単操作は一歩と旋回のボタン、標準操作はスティックと見回す操作です。" value={controls.movementMode === 'simple'} onValueChange={(value) => onControlsChange({ ...controls, movementMode: value ? 'simple' : 'standard' })} />
-            {effectiveControls.forced ? <Body muted>希望を標準操作にしていても、上の条件が有効な間は簡単操作を表示します。</Body> : null}
+            <Body>現在の操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}。理由：{effectiveControls.reason}。</Body>
+            <SettingSwitch label="ボタン操作" description="一歩ずつ進む・向きを変えるボタンを使います。オフにするとドラッグ操作になります。" value={controls.movementMode === 'simple'} onValueChange={(value) => changeMode(value ? 'simple' : 'standard')} />
+            {effectiveControls.forced ? <Body muted>読み上げ中はボタンを表示します。保存したタッチ操作の希望は変わりません。</Body> : null}
             <Body>視点の感度</Body><ChoiceRow>{[0.6, 1, 1.5].map((value, index) => <ActionButton key={value} label={['ゆっくり', '標準', '速め'][index]!} variant={controls.sensitivity === value ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, sensitivity: value })} />)}</ChoiceRow>
-            <SettingSwitch label="左手で見回す" description="スティックを右側、見回す領域を左側にします。" value={controls.handedness === 'left'} onValueChange={(value) => onControlsChange({ ...controls, handedness: value ? 'left' : 'right' })} />
+            <Body>上下の感度</Body><ChoiceRow>{[0.6, 1].map((value) => <ActionButton key={value} label={value === 1 ? '同じ' : '控えめ'} variant={(controls.verticalSensitivity ?? 1) === value ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, verticalSensitivity: value })} />)}</ChoiceRow>
+            <SettingSwitch label="左手で見回す" description="歩く領域を右側、見回す領域を左側にします。" value={controls.handedness === 'left'} onValueChange={(value) => onControlsChange({ ...controls, handedness: value ? 'left' : 'right' })} />
             <SettingSwitch label="描画を軽くする" description="模様の解像度と装飾を減らします。謎の条件は同じです。" value={controls.quality === 'low'} onValueChange={(value) => onControlsChange({ ...controls, quality: value ? 'low' : 'standard' })} />
             <SettingSwitch label="補助表示" description="通行できる床の端を中立色で示します。" value={settings.depthAssist} onValueChange={(value) => onSettingsChange({ ...settings, depthAssist: value, depthAssistOverridden: true })} />
-            <SettingSwitch label="動きを減らす" description="簡単操作に切り替え、しるべの移動を省きます。" value={settings.reducedMotion} onValueChange={(value) => onSettingsChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })} />
+            <SettingSwitch label="動きを減らす" description="しるべの装飾的な動きを省きます。自分で歩く・見回す操作は変わりません。" value={settings.reducedMotion} onValueChange={(value) => onSettingsChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })} />
             <SettingSwitch label="軽い振動" description="操作が成立したときに知らせます。" value={settings.haptics} onValueChange={(value) => onSettingsChange({ ...settings, haptics: value })} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </>}
@@ -328,15 +389,14 @@ export default FirstPersonScreen;
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: UI_COLORS.background },
   sceneArea: { flex: 1, minHeight: 200, position: 'relative', overflow: 'hidden' },
-  header: { position: 'absolute', top: 8, left: 10, right: 10, flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
-  objective: { flex: 2, backgroundColor: '#142421D9', color: '#EEF0E5', borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, fontSize: 15, lineHeight: 21 },
+  objective: { backgroundColor: '#142421B8', color: '#EEF0E5', borderRadius: 10, paddingHorizontal: 10, paddingVertical: 8, fontSize: 15, lineHeight: 21 },
   reticle: { position: 'absolute', top: '50%', left: '50%', marginLeft: -4, marginTop: -4 },
   reticleDot: { width: 8, height: 8, borderRadius: 4, borderWidth: 1, borderColor: '#F0F0DF', backgroundColor: '#273A3599' },
-  reticleReady: { backgroundColor: '#ECE7CA', width: 10, height: 10 },
+  reticleReady: { backgroundColor: '#ECE7CA', borderColor: '#FFFFFF' },
   bottom: { position: 'absolute', left: 12, right: 12, bottom: 10, gap: 7 },
   target: { textAlign: 'center', color: '#F1F0DC', backgroundColor: '#13221BD9', borderRadius: 8, paddingVertical: 6, paddingHorizontal: 8, fontSize: 14 },
   direction: { color: '#F0EDE0', textAlign: 'center', fontSize: 13 },
-  gameButton: { flexGrow: 1, flexBasis: 75, minHeight: 48, minWidth: 44, paddingHorizontal: 9, paddingVertical: 10, backgroundColor: '#203A34E8', borderColor: '#ABBDB0', borderWidth: 1, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  gameButton: { flexGrow: 1, flexShrink: 1, minHeight: 48, minWidth: 44, paddingHorizontal: 9, paddingVertical: 10, backgroundColor: '#203A34E8', borderColor: '#ABBDB0', borderWidth: 1, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   buttonText: { color: '#F2F2E8', fontSize: 14, fontWeight: '600', textAlign: 'center' },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   simpleControls: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
@@ -349,5 +409,16 @@ const styles = StyleSheet.create({
   menuCard: { maxHeight: '92%', padding: 20, gap: 14, borderRadius: 20, borderWidth: 1, borderColor: '#50635A', backgroundColor: '#172522' },
   menuContent: { gap: 14, paddingBottom: 6 },
   errorCard: { flexGrow: 1, justifyContent: 'center', padding: 24, gap: 18 },
+  hudSlot: { position: 'absolute' },
+  pauseButton: { flex: 1, minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: '#162723D9', borderWidth: 1, borderColor: '#8F9E94' },
+  pauseSymbol: { flexDirection: 'row', gap: 5 },
+  pauseBar: { width: 4, height: 18, backgroundColor: '#F0EFE5', borderRadius: 1 },
+  notice: { position: 'absolute', left: 16, right: 16, alignItems: 'center' },
+  noticeText: { color: '#F4F1DF', backgroundColor: '#142421DC', borderRadius: 8, padding: 8, fontSize: 15, textAlign: 'center' },
+  context: { position: 'absolute', left: 16, right: 16, alignItems: 'center' },
+  contextText: { color: '#F4F1DF', backgroundColor: '#142421BA', borderRadius: 8, padding: 6, fontSize: 14, textAlign: 'center' },
+  tutorial: { position: 'absolute', padding: 8, alignItems: 'center' },
+  tutorialText: { color: '#F2EFDA', backgroundColor: '#142421BA', borderRadius: 8, padding: 6, fontSize: 15, textAlign: 'center' },
+  choiceNotice: { gap: 10, padding: 10, borderWidth: 1, borderColor: '#71867B', borderRadius: 12 },
   diagnosticText: { fontSize: 12, color: '#EEF0E5', fontFamily: 'monospace' },
 });

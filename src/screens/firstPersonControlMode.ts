@@ -7,23 +7,19 @@ export type EffectiveControlMode = {
   forced: boolean;
 };
 
-/** The saved preference is never overwritten by accessibility conditions. */
-export function effectiveControlMode(preference: FirstPersonControls['movementMode'], reducedMotion: boolean, screenReader: boolean, fontScale: number): EffectiveControlMode {
-  const reasons = [
-    ...(preference === 'simple' ? ['保存した簡単操作の希望'] : []),
-    ...(reducedMotion ? ['動きを減らす設定'] : []),
-    ...(screenReader ? ['画面の読み上げ'] : []),
-    ...(fontScale >= 1.5 ? ['文字の拡大'] : []),
-  ];
+/** Motion and typography affect presentation, never the saved touch preference. */
+export function effectiveControlMode(preference: FirstPersonControls['movementMode'], _reducedMotion: boolean, screenReader: boolean, _fontScale: number): EffectiveControlMode {
   return {
-    mode: reasons.length ? 'simple' : 'standard',
-    reason: reasons.length ? reasons.join('・') : '保存した標準操作の希望',
-    forced: preference === 'standard' && reasons.length > 0,
+    mode: screenReader ? 'simple' : preference,
+    reason: screenReader
+      ? '画面の読み上げ中はボタン操作を表示します。保存した操作設定は変わりません。'
+      : preference === 'simple' ? '保存したボタン操作の希望' : '保存したドラッグ操作の希望',
+    forced: screenReader && preference === 'standard',
   };
 }
 
 export function firstGuideInstruction(mode: EffectiveControlMode['mode']): string {
-  return mode === 'simple' ? '「前へ一歩」で、小さな光へ近づこう。' : 'スティックで前へ進み、小さな光へ近づこう。';
+  return mode === 'simple' ? '「前へ一歩」で、光のしるべへ近づこう。' : '左側をドラッグして歩こう。';
 }
 
 /** Describe a turn toward the already selected visible guide; never change pose. */

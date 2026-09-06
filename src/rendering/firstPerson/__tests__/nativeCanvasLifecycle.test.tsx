@@ -2,9 +2,10 @@ import { _roots, advance, useFrame } from '@react-three/fiber/native';
 import { act, fireEvent, render, type RenderResult } from '@testing-library/react-native';
 import { GLView } from 'expo-gl';
 import type { ComponentProps } from 'react';
+import { Dimensions } from 'react-native';
 import * as THREE from 'three';
 
-import { createCheckpoint, createInitialRuntime } from '../../../domain/firstPerson';
+import { createCheckpoint, createInitialRuntime, GUIDE_FIXTURE } from '../../../domain/firstPerson';
 import { FirstPersonScreen } from '../../../screens/FirstPersonScreen';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../../types/application';
 import { ChapterScene } from '../ChapterScene';
@@ -14,6 +15,7 @@ import { commandController, controllerSnapshot, createController } from '../runt
 
 // Keep installed native Canvas, Provider, reconciler, applyProps and useFrame.
 // Only the unavailable device GL context/renderer is replaced.
+jest.mock('react-native-safe-area-context', () => ({ ...jest.requireActual('react-native-safe-area-context'), useSafeAreaInsets: jest.fn(() => ({ top: 47, bottom: 34, left: 0, right: 0 })) }));
 jest.mock('expo-gl', () => ({ GLView: jest.fn(() => null) }));
 jest.mock('../ChapterScene', () => ({ ChapterScene: jest.fn((props) => jest.requireActual('../ChapterScene').ChapterScene(props)) }));
 jest.mock('../resources', () => ({ ...jest.requireActual('../resources'), createSceneResources: jest.fn((low: boolean) => jest.requireActual('../resources').createSceneResources(low)) }));
@@ -139,6 +141,39 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await view.unmount();
     expect(current.controller.runtime.paused).toBe(true);
     expect(renderer.dispose).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(['low', 'standard'] as const)('renders matching guide geometry and the same two-sided return landmark at %s quality', async (quality) => {
+    const current = { ...props(), quality };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    await createNativeContext(view);
+    await submitFrame(renderer);
+    const scene = rendererRoot(renderer).store.getState().scene;
+    const fixture = scene.getObjectByName('guide-fixture')!;
+    expect(fixture.position.toArray()).toEqual([GUIDE_FIXTURE.center.x, GUIDE_FIXTURE.center.y, GUIDE_FIXTURE.center.z]);
+    const bounds = new THREE.Box3().setFromObject(fixture);
+    expect(bounds.getSize(new THREE.Vector3()).x).toBeCloseTo(GUIDE_FIXTURE.diameter, 5);
+    expect(scene.getObjectByName('guide-front-ring')).toBeDefined();
+    expect(scene.getObjectByName('guide-back-ring')).toBeDefined();
+    const landmark = scene.getObjectByName('remembered-entry-landmark')!;
+    const remembered = landmark.children.map((object) => object.matrixWorld.toArray());
+    expect(scene.getObjectByName('entry-front-mark')!.getWorldPosition(new THREE.Vector3()).z).toBeLessThan(6);
+    expect(scene.getObjectByName('entry-back-mark')!.getWorldPosition(new THREE.Vector3()).z).toBeGreaterThan(6);
+    const beforeStatus = (scene.getObjectByName('guide-status') as THREE.Mesh).material;
+    const beforeDevice = (scene.getObjectByName('device-status') as THREE.Mesh).material;
+    // Authored appearance fixture only: progression/safe swapping are tested
+    // through real collision walking in the domain suite, not by this setup.
+    current.controller.runtime = { ...current.controller.runtime, progress: { ...current.controller.runtime.progress, guideExamined: true, markActivated: true, sealA: true, sealB: true, variant: 'exit' }, doorAOpen: 1, doorBOpen: 1 };
+    await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(current.controller)} />);
+    await submitFrame(renderer, 2);
+    expect(scene.getObjectByName('remembered-entry-landmark')!.children.map((object) => object.matrixWorld.toArray())).toEqual(remembered);
+    expect((scene.getObjectByName('guide-status') as THREE.Mesh).material).not.toBe(beforeStatus);
+    expect((scene.getObjectByName('device-status') as THREE.Mesh).material).not.toBe(beforeDevice);
+    expect(scene.getObjectByName('frame-seal-a-door')!.position.y).toBe(0);
+    expect(scene.getObjectByName('frame-exit-door')).toBeDefined();
+    expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+    expect(current.onError).not.toHaveBeenCalled();
+    await view.unmount();
   });
 
   it('publishes a presented aim cue after an explicit turn even inside the same compass and target bucket', async () => {
@@ -521,6 +556,34 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     }
   });
 
+  it.each(['render', 'presentation'] as const)('rolls back movement and look tutorial milestones when %s fails', async (phase) => {
+    const current = props();
+    const view = await render(<FirstPersonCanvas {...current} />);
+    await createNativeContext(view);
+    await submitFrame(renderer);
+    commandController(current.controller, { type: 'step', forward: 1 });
+    await submitFrame(renderer, 2);
+    expect(current.controller.tutorial.milestones.moved).toBe(false);
+    const before = { ...current.controller.tutorial };
+    let candidate: typeof before.milestones | undefined;
+    const fail = () => {
+      candidate = current.controller.tutorial.milestones;
+      throw new Error('Injected tutorial presentation fault');
+    };
+    if (phase === 'render') renderer.draw.mockImplementation(fail);
+    else deviceContext.endFrameEXP.mockImplementation(fail);
+    commandController(current.controller, { type: 'step', forward: 1 });
+    current.controller.input.lookX = 100;
+    const publishedBefore = jest.mocked(current.onSnapshot).mock.calls.length;
+    await submitFrame(renderer, 3);
+    expect(candidate).toMatchObject({ moved: true, looked: true });
+    expect(current.controller.tutorial).toEqual(before);
+    expect(current.controller.runtime.paused).toBe(true);
+    expect(current.onSnapshot).toHaveBeenCalledTimes(publishedBefore);
+    expect(current.onError).toHaveBeenCalledTimes(1);
+    await view.unmount();
+  });
+
   it('retries the actual error screen with fresh resources and preserved progress while old render callbacks remain inert', async () => {
     const initial = createInitialRuntime();
     const checkpoint = createCheckpoint({ ...initial, progress: { ...initial.progress, guideExamined: true } });
@@ -584,4 +647,36 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     expect(_roots.size).toBe(rootsBefore);
   });
+  it('keeps the same native renderer across input, notices, hints, mode, handedness and large text changes', async () => {
+    const originalDimensions = { window: Dimensions.get('window'), screen: Dimensions.get('screen') };
+    const screenProps = { settings: DEFAULT_SETTINGS, controls: DEFAULT_FIRST_PERSON_CONTROLS, preferredColor: 'neutral' as const, onSettingsChange: jest.fn(), onControlsChange: jest.fn(), onCheckpoint: jest.fn(), onComplete: jest.fn(), onRestart: jest.fn(), onExit: jest.fn() };
+    const view = await render(<FirstPersonScreen {...screenProps} />);
+    try {
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+      const state = rendererRoot(renderer).store.getState();
+      const input = chapterScene.mock.calls.at(-1)![0].runtime.current;
+      await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
+      await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+      await fireEvent.press(view.getByRole('button', { name: 'ヒント' }));
+      await fireEvent.press(view.getByRole('button', { name: '探索へ戻る' }));
+      await view.rerender(<FirstPersonScreen {...screenProps} controls={{ ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' }} />);
+      expect(view.getByRole('button', { name: '前へ一歩' })).toBeTruthy();
+      await view.rerender(<FirstPersonScreen {...screenProps} controls={{ ...DEFAULT_FIRST_PERSON_CONTROLS, handedness: 'left' }} settings={{ ...DEFAULT_SETTINGS, reducedMotion: true }} />);
+      await act(() => Dimensions.set({ window: { width: 320, height: 568, scale: 2, fontScale: 2 }, screen: { width: 320, height: 568, scale: 2, fontScale: 2 } }));
+      const point = { identifier: 77, pageX: 200, pageY: 300 };
+      await fireEvent(view.getByTestId('movement-stick'), 'touchStart', { nativeEvent: { changedTouches: [point], targetTouches: [point] } });
+      await fireEvent(view.getByTestId('movement-stick'), 'touchMove', { nativeEvent: { changedTouches: [{ ...point, pageY: 250 }] } });
+      await submitFrame(renderer, 1.016);
+      expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+      expect(rendererRoot(renderer).store.getState().gl).toBe(state.gl);
+      expect(renderer.dispose).not.toHaveBeenCalled();
+      expect(chapterScene.mock.calls.at(-1)![0].runtime.current.progress.sealA).toBe(input.progress.sealA);
+    } finally {
+      await view.unmount();
+      await act(() => Dimensions.set(originalDimensions));
+    }
+  });
+
 });

@@ -4,14 +4,20 @@ import {
   CHAPTER_ID, LEVEL_VERSION, createCheckpoint, createInitialRuntime, restoreCheckpoint,
   type CheckpointState,
 } from '../domain/firstPerson';
-import { DEFAULT_FIRST_PERSON_CONTROLS, type FirstPersonControls } from '../types/application';
+import {
+  DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING,
+  type FirstPersonControls, type FirstPersonOnboarding,
+} from '../types/application';
 import { resetApplicationStorage } from './applicationStorage';
 
 export const FIRST_PERSON_CHECKPOINT_KEY = 'chroma-rift.first-person.chapter.v1';
 export const FIRST_PERSON_CONTROLS_KEY = 'chroma-rift.first-person.controls.v1';
+export const FIRST_PERSON_ONBOARDING_KEY = 'chroma-rift.first-person.onboarding.v1';
 
 export type FirstPersonLoadResult = {
   controls: FirstPersonControls;
+  onboarding: FirstPersonOnboarding;
+  onboardingWritable: boolean;
   checkpoint: CheckpointState;
   status: 'empty' | 'loaded' | 'recovered' | 'blocked';
   controlsWritable: boolean;
@@ -23,7 +29,7 @@ type ControlsDocument = { schemaVersion: 1; controls: FirstPersonControls };
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
-export function isFirstPersonControls(value: unknown): value is FirstPersonControls {
+function hasValidBaseControls(value: unknown): value is FirstPersonControls {
   return isRecord(value) && typeof value.sensitivity === 'number' && Number.isFinite(value.sensitivity) &&
     value.sensitivity >= 0.5 && value.sensitivity <= 2 &&
     (value.movementMode === 'standard' || value.movementMode === 'simple') &&
@@ -31,23 +37,57 @@ export function isFirstPersonControls(value: unknown): value is FirstPersonContr
     (value.quality === 'low' || value.quality === 'standard');
 }
 
+const isSensitivity = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0.5 && value <= 2;
+
+export function isFirstPersonControls(value: unknown): value is FirstPersonControls {
+  return hasValidBaseControls(value) && (value.verticalSensitivity === undefined || isSensitivity(value.verticalSensitivity));
+}
+
+/** New optional fields fall back without rejecting an otherwise valid v1 preference. */
+function decodeControls(value: unknown): FirstPersonControls | undefined {
+  if (!hasValidBaseControls(value)) return undefined;
+  return { ...value, verticalSensitivity: isSensitivity(value.verticalSensitivity) ? value.verticalSensitivity : 1 };
+}
+
+function isFirstPersonOnboarding(value: unknown): value is FirstPersonOnboarding {
+  return isRecord(value) && value.schemaVersion === 1 &&
+    typeof value.controlChoiceAcknowledged === 'boolean' && typeof value.tutorialCompleted === 'boolean';
+}
+
 function initialCheckpoint(): CheckpointState {
   return createCheckpoint(createInitialRuntime());
 }
 
-export function decodeFirstPersonStorage(checkpointRaw: string | null, controlsRaw: string | null): FirstPersonLoadResult {
+export function decodeFirstPersonStorage(checkpointRaw: string | null, controlsRaw: string | null, onboardingRaw: string | null = null): FirstPersonLoadResult {
   const result: FirstPersonLoadResult = {
     controls: { ...DEFAULT_FIRST_PERSON_CONTROLS }, checkpoint: initialCheckpoint(),
-    status: checkpointRaw === null && controlsRaw === null ? 'empty' : 'loaded',
+    onboarding: { ...DEFAULT_FIRST_PERSON_ONBOARDING }, onboardingWritable: true,
+    status: checkpointRaw === null && controlsRaw === null && onboardingRaw === null ? 'empty' : 'loaded',
     controlsWritable: true, checkpointWritable: true,
   };
   if (controlsRaw !== null) {
     try {
       const value: unknown = JSON.parse(controlsRaw);
-      if (!isRecord(value) || value.schemaVersion !== 1 || !isFirstPersonControls(value.controls)) throw new Error('unsupported controls');
-      result.controls = value.controls;
+      if (!isRecord(value) || value.schemaVersion !== 1) throw new Error('unsupported controls');
+      const controls = decodeControls(value.controls);
+      if (!controls) throw new Error('unsupported controls');
+      result.controls = controls;
     } catch {
       result.controlsWritable = false;
+    }
+  }
+  if (onboardingRaw !== null) {
+    try {
+      const value: unknown = JSON.parse(onboardingRaw);
+      if (!isRecord(value) || value.schemaVersion !== 1) throw new Error('unsupported onboarding');
+      result.onboarding = {
+        schemaVersion: 1,
+        controlChoiceAcknowledged: value.controlChoiceAcknowledged === true,
+        tutorialCompleted: value.tutorialCompleted === true,
+      };
+    } catch {
+      result.onboardingWritable = false;
     }
   }
   if (checkpointRaw !== null) {
@@ -65,6 +105,9 @@ export function decodeFirstPersonStorage(checkpointRaw: string | null, controlsR
     result.message = !result.checkpointWritable
       ? '章の記録を読み込めませんでした。元の記録を保持し、安全な地点から始めます。この章の進行は保存されません。'
       : '操作設定を読み込めませんでした。元の設定を保持し、今回は標準設定を使います。操作設定の変更は保存されません。';
+  } else if (!result.onboardingWritable) {
+    result.status = 'blocked';
+    result.message = '操作案内の記録を読み込めませんでした。章の進行と操作設定はそのまま使えます。';
   } else if (result.status === 'recovered') {
     result.message = '保存位置を安全なチェックポイントへ戻しました。';
   }
@@ -73,8 +116,11 @@ export function decodeFirstPersonStorage(checkpointRaw: string | null, controlsR
 
 let progressEpoch = 0;
 let controlsEpoch = 0;
+let onboardingEpoch = 0;
 let progressWritable = true;
 let controlsWritable = true;
+let onboardingWritable = true;
+let latestOnboarding: FirstPersonOnboarding = { ...DEFAULT_FIRST_PERSON_ONBOARDING };
 let latestCheckpoint: CheckpointState | undefined;
 let mutations: Promise<unknown> = Promise.resolve();
 
@@ -98,15 +144,23 @@ export async function loadFirstPersonStorage(): Promise<FirstPersonLoadResult> {
   await mutations;
   const readProgressEpoch = progressEpoch;
   const readControlsEpoch = controlsEpoch;
-  const [checkpointRead, controlsRead] = await Promise.allSettled([
+  const readOnboardingEpoch = onboardingEpoch;
+  const [checkpointRead, controlsRead, onboardingRead] = await Promise.allSettled([
     AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY), AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY),
+    AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY),
   ]);
   const result = decodeFirstPersonStorage(
     checkpointRead.status === 'fulfilled' ? checkpointRead.value : null,
     controlsRead.status === 'fulfilled' ? controlsRead.value : null,
+    onboardingRead.status === 'fulfilled' ? onboardingRead.value : null,
   );
   if (checkpointRead.status === 'rejected') result.checkpointWritable = false;
   if (controlsRead.status === 'rejected') result.controlsWritable = false;
+  if (onboardingRead.status === 'rejected') {
+    result.onboardingWritable = false;
+    result.status = 'blocked';
+    result.message ??= '操作案内の記録を読み込めませんでした。章の進行と操作設定はそのまま使えます。';
+  }
   if (!result.checkpointWritable || !result.controlsWritable) {
     result.status = 'blocked';
     result.message ??= '一人称の保存領域を読み込めませんでした。読み込めなかったデータへの保存を停止しています。';
@@ -126,6 +180,13 @@ export async function loadFirstPersonStorage(): Promise<FirstPersonLoadResult> {
     result.controlsWritable = false;
     result.status = 'blocked';
     result.message = '読み込み中に保存データがリセットされました。';
+  }
+  if (readOnboardingEpoch === onboardingEpoch) {
+    onboardingWritable = result.onboardingWritable;
+    latestOnboarding = result.onboarding;
+  } else {
+    result.onboarding = { ...DEFAULT_FIRST_PERSON_ONBOARDING };
+    result.onboardingWritable = false;
   }
   return result;
 }
@@ -159,15 +220,39 @@ export function saveFirstPersonCheckpoint(checkpoint: CheckpointState, lease: nu
   });
 }
 
-export function saveFirstPersonControls(controls: FirstPersonControls): Promise<boolean> {
+export function saveFirstPersonControls(controls: FirstPersonControls, lease?: number): Promise<boolean> {
   const epoch = controlsEpoch;
   const document: ControlsDocument = { schemaVersion: 1, controls };
   const raw = JSON.stringify(document);
   return serializeMutation(async () => {
-    if (!controlsWritable || epoch !== controlsEpoch || !isFirstPersonControls(JSON.parse(raw).controls)) return false;
+    if (!controlsWritable || epoch !== controlsEpoch ||
+      (lease !== undefined && !isFirstPersonSessionCurrent(lease)) || !isFirstPersonControls(JSON.parse(raw).controls)) return false;
     try {
       await AsyncStorage.setItem(FIRST_PERSON_CONTROLS_KEY, raw);
-      return epoch === controlsEpoch;
+      return epoch === controlsEpoch && (lease === undefined || isFirstPersonSessionCurrent(lease));
+    } catch {
+      return false;
+    }
+  });
+}
+
+/** Acknowledgements are monotonic and never write to a puzzle/calibration document. */
+export function saveFirstPersonOnboarding(onboarding: FirstPersonOnboarding, lease: number): Promise<boolean> {
+  const epoch = onboardingEpoch;
+  const snapshot = { ...onboarding };
+  return serializeMutation(async () => {
+    if (!onboardingWritable || epoch !== onboardingEpoch || !isFirstPersonSessionCurrent(lease) ||
+      !isFirstPersonOnboarding(snapshot)) return false;
+    const next: FirstPersonOnboarding = {
+      schemaVersion: 1,
+      controlChoiceAcknowledged: latestOnboarding.controlChoiceAcknowledged || snapshot.controlChoiceAcknowledged,
+      tutorialCompleted: latestOnboarding.tutorialCompleted || snapshot.tutorialCompleted,
+    };
+    try {
+      await AsyncStorage.setItem(FIRST_PERSON_ONBOARDING_KEY, JSON.stringify(next));
+      if (epoch !== onboardingEpoch || !isFirstPersonSessionCurrent(lease)) return false;
+      latestOnboarding = next;
+      return true;
     } catch {
       return false;
     }
@@ -193,12 +278,14 @@ export function resetFirstPersonChapter(): Promise<boolean> {
 export async function resetAllApplicationStorage(): Promise<boolean> {
   progressEpoch += 1;
   controlsEpoch += 1;
+  onboardingEpoch += 1;
+  onboardingWritable = false;
   progressWritable = false;
   controlsWritable = false;
   const applicationReset = resetApplicationStorage();
   const firstPersonReset = serializeMutation(async () => {
     try {
-      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY]);
+      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY]);
       return true;
     } catch {
       return false;
@@ -209,5 +296,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   latestCheckpoint = undefined;
   progressWritable = succeeded;
   controlsWritable = succeeded;
+  onboardingWritable = succeeded;
+  latestOnboarding = { ...DEFAULT_FIRST_PERSON_ONBOARDING };
   return succeeded;
 }

@@ -1,58 +1,82 @@
-import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEvent } from 'react-native';
+import { useLayoutEffect, useMemo, useRef } from 'react';
+import { StyleSheet, Text, View, useWindowDimensions, type GestureResponderEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import { beginLook, beginStick, clearTouchInput, endPointer, moveLook, moveStick, targetChangedTouches, type FirstPersonInput, type InputRegion } from './touchInput';
+import { controlLayout, type ControlLayout } from './controlLayout';
+import { createTouchAdapter, type NativeTouchBatch, type TouchMode, type TouchPhase } from './touchAdapter';
+import { clearTouchInput, STICK_DIAMETER, type FirstPersonInput } from './touchInput';
 
-export function TouchControls({ input, enabled, handedness }: { input: FirstPersonInput; enabled: boolean; handedness: 'left' | 'right' }) {
-  const joystickRegion = { width: 124, height: 124 };
-  const lookRegion = useRef<InputRegion>({ width: 1, height: 1 });
+export type TouchControlsProps = { input: FirstPersonInput; enabled: boolean; handedness: 'left' | 'right'; layout?: ControlLayout };
+export function TouchControls({ input, enabled, handedness, layout: suppliedLayout }: TouchControlsProps) {
+  const window = useWindowDimensions();
+  const layout = suppliedLayout ?? controlLayout(window.width, window.height, window.fontScale, handedness);
+  const movement = layout.movement;
+  const sceneView = useRef<View>(null);
+  const sceneOrigin = useRef<{ x: number; y: number } | null>(null);
+  const sessionKey = JSON.stringify([handedness, layout]);
+  const adapter = useMemo(() => createTouchAdapter(input, enabled, sessionKey), [enabled, input, sessionKey]);
+  const anchorX = useSharedValue(movement.width / 2);
+  const anchorY = useSharedValue(movement.height - STICK_DIAMETER / 2 - 8);
   const knobX = useSharedValue(0);
   const knobY = useSharedValue(0);
+  const ringStyle = useAnimatedStyle(() => ({ transform: [{ translateX: anchorX.value - STICK_DIAMETER / 2 }, { translateY: anchorY.value - STICK_DIAMETER / 2 }] }));
   const knobStyle = useAnimatedStyle(() => ({ transform: [{ translateX: knobX.value }, { translateY: knobY.value }] }));
-  const syncKnob = () => { knobX.set(input.right * 34); knobY.set(-input.forward * 34); };
-  useEffect(() => {
-    if (!enabled) { clearTouchInput(input); knobX.set(0); knobY.set(0); }
-  }, [enabled, input, knobX, knobY]);
-  const touch = (event: GestureResponderEvent, mode: 'stick' | 'look', phase: 'start' | 'move' | 'end') => {
-    if (!enabled) return;
-    // RN 0.86 Fabric supplies targetTouches (TouchEventEmitter.cpp), although
-    // NativeTouchEvent's TS declaration omits it. Its primary fields can belong
-    // to another sibling because changedTouches is a global native batch.
-    const nativeEvent = event.nativeEvent as NativeTouchEvent & { targetTouches?: NativeTouchEvent[] };
-    for (const point of targetChangedTouches(nativeEvent.changedTouches, nativeEvent.targetTouches)) {
-      if (phase === 'end') endPointer(input, point.identifier);
-      else if (mode === 'stick') (phase === 'start' ? beginStick : moveStick)(input, point.identifier, point.locationX, point.locationY, joystickRegion);
-      else (phase === 'start' ? beginLook : moveLook)(input, point.identifier, point.locationX, point.locationY, lookRegion.current);
+  useLayoutEffect(() => {
+    clearTouchInput(input);
+    sceneOrigin.current = null;
+    sceneView.current?.measureInWindow((x, y) => {
+      if (adapter.isCurrent() && Number.isFinite(x) && Number.isFinite(y)) sceneOrigin.current = { x, y };
+    });
+    return () => adapter.dispose();
+  }, [adapter, input]);
+  useLayoutEffect(() => {
+    anchorX.set(movement.width / 2);
+    anchorY.set(Math.max(STICK_DIAMETER / 2, movement.height - STICK_DIAMETER / 2 - 8));
+    knobX.set(0);
+    knobY.set(0);
+  }, [adapter, anchorX, anchorY, knobX, knobY, movement.height, movement.width]);
+  const syncVisual = () => {
+    if (input.stickPointer === null) {
+      anchorX.set(movement.width / 2);
+      anchorY.set(Math.max(STICK_DIAMETER / 2, movement.height - STICK_DIAMETER / 2 - 8));
+    } else if (sceneOrigin.current) {
+      const radius = STICK_DIAMETER / 2;
+      // Clamp only the displayed ring. Its logical origin remains touch-down,
+      // so a start near the scene edge never produces an initial velocity.
+      anchorX.set(Math.max(radius, Math.min(movement.width - radius, input.stickOriginX - sceneOrigin.current.x - movement.left)));
+      anchorY.set(Math.max(radius, Math.min(movement.height - radius, input.stickOriginY - sceneOrigin.current.y - movement.top)));
     }
-    syncKnob();
+    knobX.set(input.stickOffsetX);
+    knobY.set(input.stickOffsetY);
   };
-  const cancel = () => { clearTouchInput(input); syncKnob(); };
+  const touch = (event: GestureResponderEvent, mode: TouchMode, phase: TouchPhase) => {
+    adapter.bind(mode, phase)(event.nativeEvent as unknown as NativeTouchBatch);
+    if (adapter.isCurrent()) syncVisual();
+  };
   return (
-    <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
+    <View ref={sceneView} pointerEvents="box-none" style={StyleSheet.absoluteFill} testID="touch-controls"
+      onLayout={() => sceneView.current?.measureInWindow((x, y) => { if (adapter.isCurrent() && Number.isFinite(x) && Number.isFinite(y)) sceneOrigin.current = { x, y }; })}>
       <View testID="look-region" accessible={false} pointerEvents={enabled ? 'auto' : 'none'}
-        style={[styles.look, handedness === 'right' ? styles.lookRight : styles.lookLeft]}
-        onLayout={(event) => { lookRegion.current = event.nativeEvent.layout; }}
-        onTouchStart={(event) => touch(event, 'look', 'start')} onTouchMove={(event) => touch(event, 'look', 'move')} onTouchEnd={(event) => touch(event, 'look', 'end')} onTouchCancel={cancel}>
-        <Text pointerEvents="none" style={styles.lookLabel}>ドラッグで見回す</Text>
-      </View>
+        style={[styles.zone, layout.look]}
+        onTouchStart={(event) => touch(event, 'look', 'start')} onTouchMove={(event) => touch(event, 'look', 'move')}
+        onTouchEnd={(event) => touch(event, 'look', 'end')} onTouchCancel={(event) => touch(event, 'look', 'cancel')} />
       <View testID="movement-stick" accessible={false} pointerEvents={enabled ? 'auto' : 'none'}
-        style={[styles.stick, handedness === 'right' ? styles.stickLeft : styles.stickRight]}
-        onTouchStart={(event) => touch(event, 'stick', 'start')} onTouchMove={(event) => touch(event, 'stick', 'move')} onTouchEnd={(event) => touch(event, 'stick', 'end')} onTouchCancel={cancel}>
-        <Text pointerEvents="none" style={styles.arrow}>↑</Text>
-        <Animated.View pointerEvents="none" style={[styles.knob, knobStyle]} />
-        <Text pointerEvents="none" style={styles.stickLabel}>歩く</Text>
+        style={[styles.zone, movement]}
+        onTouchStart={(event) => touch(event, 'stick', 'start')} onTouchMove={(event) => touch(event, 'stick', 'move')}
+        onTouchEnd={(event) => touch(event, 'stick', 'end')} onTouchCancel={(event) => touch(event, 'stick', 'cancel')}>
+        <Animated.View pointerEvents="none" style={[styles.ring, ringStyle]}>
+          <Text pointerEvents="none" style={styles.arrow}>↑</Text>
+          <Animated.View pointerEvents="none" style={[styles.knob, knobStyle]} />
+          <Text pointerEvents="none" style={styles.stickLabel}>歩く</Text>
+        </Animated.View>
       </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  look: { position: 'absolute', top: 90, bottom: 80, width: '48%', justifyContent: 'flex-end', paddingBottom: 125, alignItems: 'center' },
-  lookRight: { right: 0 }, lookLeft: { left: 0 },
-  lookLabel: { color: '#E4E6DE', backgroundColor: '#252C30A8', borderRadius: 8, padding: 8, fontSize: 12 },
-  stick: { position: 'absolute', bottom: 92, width: 124, height: 124, borderRadius: 62, borderColor: '#D8E0D18C', borderWidth: 1.5, backgroundColor: '#1520286E', alignItems: 'center', justifyContent: 'center' },
-  stickLeft: { left: 22 }, stickRight: { right: 22 },
-  arrow: { position: 'absolute', top: 5, color: '#E1E6DD', fontSize: 24 },
-  knob: { width: 42, height: 42, borderRadius: 21, backgroundColor: '#D9E0D3B8', borderWidth: 1, borderColor: '#EDF0E9' },
-  stickLabel: { position: 'absolute', bottom: 8, color: '#E5E8E0', fontSize: 14 },
+  zone: { position: 'absolute' },
+  ring: { position: 'absolute', left: 0, top: 0, width: STICK_DIAMETER, height: STICK_DIAMETER, borderRadius: STICK_DIAMETER / 2, borderColor: '#D8E0D16E', borderWidth: 1, backgroundColor: '#15202838', alignItems: 'center', justifyContent: 'center' },
+  arrow: { position: 'absolute', top: 4, color: '#E1E6DDB8', fontSize: 20 },
+  knob: { width: 34, height: 34, borderRadius: 17, backgroundColor: '#D9E0D37A', borderWidth: 1, borderColor: '#EDF0E980' },
+  stickLabel: { position: 'absolute', bottom: 7, color: '#E5E8E0B8', fontSize: 12 },
 });

@@ -1,6 +1,7 @@
 import { evaluateKeyAlignment } from './alignment';
-import { CHANGED_REGION, CHAPTER, EYE_HEIGHT, FLOOR_MARK, FLOOR_PUZZLE, getWorld, KEY_PUZZLE, OBSERVATION_POSE, PLAYER_RADIUS } from './chapter';
-import { clamp, forwardVector, isSafePose, MAX_FRAME_DELTA, rayBoxDistance, raySphereDistance, segmentOccluded, updatePlayer } from './geometry';
+import { CHANGED_REGION, CHAPTER, EYE_HEIGHT, FLOOR_MARK, FLOOR_PUZZLE, getWorld, GUIDE_FIXTURE, KEY_PUZZLE, OBSERVATION_POSE, PLAYER_RADIUS } from './chapter';
+import { clamp, isSafePose, MAX_FRAME_DELTA, segmentOccluded, updatePlayer } from './geometry';
+import { evaluateInteraction } from './interaction';
 import type { CameraMatrices, ChapterRuntime, CheckpointState, CollisionVolume, HintStage, InteractableDefinition, InteractableId, MovementInput, PlayerPose, PuzzleDefinition, PuzzleState, Vec3, WorldGeometry } from './types';
 
 export function initialProgress(): PuzzleState {
@@ -11,19 +12,9 @@ export function createInitialRuntime(checkpoint?: CheckpointState, session = 1):
   return { pose: checkpoint ? { ...checkpoint.pose, position: { ...checkpoint.pose.position } } : { ...CHAPTER.spawn, position: { ...CHAPTER.spawn.position } },
     progress, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.exitDoorOpen ? 1 : 0 };
 }
-export function findInteraction(world: WorldGeometry, pose: PlayerPose, _progress?: PuzzleState): InteractableDefinition | undefined {
-  const ray = forwardVector(pose);
-  const candidates = world.interactables.flatMap((target) => {
-    const distance = raySphereDistance(pose.position, ray, target.center, target.radius);
-    if (distance === undefined || distance > target.maxDistance) return [];
-    const blocked = world.solids.some((volume) => {
-      if (!volume.opaque || volume.id === `${target.id}-body`) return false;
-      const obstacle = rayBoxDistance(pose.position, ray, volume);
-      return obstacle !== undefined && obstacle < distance - 0.02;
-    });
-    return blocked ? [] : [{ target, distance }];
-  });
-  return candidates.sort((a, b) => a.distance - b.distance || a.target.id.localeCompare(b.target.id))[0]?.target;
+export function findInteraction(world: WorldGeometry, pose: PlayerPose, progress?: PuzzleState): InteractableDefinition | undefined {
+  const candidate = evaluateInteraction(world, pose, progress);
+  return candidate.kind === 'ready' || candidate.kind === 'locked' ? candidate.target : undefined;
 }
 
 function regionCorners(region: CollisionVolume): Vec3[] {
@@ -91,8 +82,8 @@ function prerequisitesMet(puzzle: PuzzleDefinition, progress: PuzzleState, keyAl
 }
 export function interact(runtime: ChapterRuntime, expectedId: InteractableId, matrices?: CameraMatrices): ChapterRuntime {
   if (runtime.paused || runtime.progress.cleared) return runtime;
-  const target = findInteraction(getWorld(runtime), runtime.pose, runtime.progress);
-  if (target?.id !== expectedId) return runtime;
+  const candidate = evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices, runtime.alignment);
+  if (candidate.kind !== 'ready' || candidate.target.id !== expectedId) return runtime;
   const progress = runtime.progress;
   switch (expectedId) {
     case 'guide':
@@ -116,7 +107,7 @@ export function setHintStage(runtime: ChapterRuntime, stage: HintStage): Chapter
 export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?: Vec3 } {
   const { progress } = runtime;
   const stage = Math.max(1, progress.hintStage) - 1;
-  if (!progress.guideExamined) return { text: ['入口の先の、小さな光に注目しよう。', FLOOR_PUZZLE.clues[0]!, '光のしるべに近づき、照準を合わせて「調べる」。'][stage]!, target: { x: 0, y: 1.05, z: -0.7 } };
+  if (!progress.guideExamined) return { text: ['入口の先の、光のしるべを探そう。', FLOOR_PUZZLE.clues[0]!, '光のしるべに近づき、照準を合わせて「調べる」。'][stage]!, target: GUIDE_FIXTURE.center };
   if (!progress.markActivated) return { text: ['色の床の上にある、中立色の輪を探そう。', FLOOR_PUZZLE.clues[1]!, '自分で前へ歩き、床の中央の輪に入ろう。'][stage]!, target: { ...FLOOR_MARK, y: 0.05 } };
   if (!progress.sealA) return { text: FLOOR_PUZZLE.hints[stage]!, target: { x: 1.6, y: 1.3, z: -7.4 } };
   if (!progress.sealB) return { text: KEY_PUZZLE.hints[stage]!, target: OBSERVATION_POSE.position };
@@ -131,7 +122,7 @@ export function objectiveForRuntime(runtime: ChapterRuntime): string {
   if (p.sealB) return '覚えのある入口へ戻ろう。';
   if (p.sealA) return KEY_PUZZLE.clues[0]!;
   if (p.markActivated && p.guideExamined) return '輪の先の装置を調べよう。';
-  return p.guideExamined ? FLOOR_PUZZLE.clues[0]! : '入口の光のしるべを調べよう。';
+  return p.guideExamined ? '床の輪に入ろう。' : '入口の光のしるべを調べよう。';
 }
 /** An explicit, local aim aid. It never moves the player or solves a puzzle. */
 export function assistAim(runtime: ChapterRuntime): ChapterRuntime {

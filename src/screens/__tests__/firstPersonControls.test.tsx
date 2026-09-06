@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import * as diagnostics from '../../rendering/firstPerson/diagnostics';
 import { advanceController, controllerSnapshot } from '../../rendering/firstPerson/runtimeController';
-import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
+import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT_SETTINGS } from '../../types/application';
 import { FirstPersonScreen, type FirstPersonScreenProps } from '../FirstPersonScreen';
 
 // This UI contract fixture represents a completed first-frame signal, not
@@ -18,13 +18,14 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonC
   React.useEffect(() => { if (mockSubmittedFrame) onReady(); }, [onReady]);
   return null;
 }) }));
+jest.mock('react-native-safe-area-context', () => ({ ...jest.requireActual('react-native-safe-area-context'), useSafeAreaInsets: jest.fn(() => ({ top: 47, bottom: 34, left: 0, right: 0 })) }));
 const canvas = jest.mocked(FirstPersonCanvas);
 const originalDimensions = { window: Dimensions.get('window'), screen: Dimensions.get('screen') };
 const scene = (): FirstPersonCanvasProps => canvas.mock.calls[canvas.mock.calls.length - 1]![0];
 function props(overrides: Partial<FirstPersonScreenProps> = {}): FirstPersonScreenProps {
   return { settings: { ...DEFAULT_SETTINGS }, controls: { ...DEFAULT_FIRST_PERSON_CONTROLS }, preferredColor: 'neutral', onSettingsChange: jest.fn(), onControlsChange: jest.fn(), onCheckpoint: jest.fn(), onComplete: jest.fn(), onRestart: jest.fn(), onExit: jest.fn(), ...overrides };
 }
-const touches = (identifier: number, locationX: number, locationY: number) => ({ nativeEvent: { changedTouches: [{ identifier, locationX, locationY }] } });
+const touches = (identifier: number, locationX: number, locationY: number) => ({ nativeEvent: { changedTouches: [{ identifier, locationX, locationY, pageX: locationX, pageY: locationY }] } });
 async function frame() {
   await act(() => {
     const current = scene();
@@ -48,17 +49,19 @@ describe('first-person control surface and lifecycle', () => {
     const stick = view.getByTestId('movement-stick');
     const look = view.getByTestId('look-region');
     await fireEvent(look, 'layout', { nativeEvent: { layout: { width: 200, height: 400 } } });
-    await fireEvent(stick, 'touchStart', touches(1, 62, 10));
+    await fireEvent(stick, 'touchStart', touches(1, 62, 60));
+    expect(scene().controller.input.forward).toBe(0);
+    await fireEvent(stick, 'touchMove', touches(1, 62, 10));
     await fireEvent(look, 'touchStart', touches(2, 50, 100));
     await fireEvent(look, 'touchMove', touches(2, 80, 110));
     expect(scene().controller.input.forward).toBeGreaterThan(0.9);
     expect(scene().controller.input.lookX).toBe(30);
-    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
+    await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
     expect(scene().controller.input.lookX).toBe(30);
     expect(scene().neutralColors).toBe(true);
     await fireEvent(stick, 'touchCancel', touches(1, 62, 10));
     expect(scene().controller.input.forward).toBe(0);
-    expect(scene().controller.input.lookX).toBe(0);
+    expect(scene().controller.input.lookX).toBe(30);
   });
   it('pauses and checkpoints on background, zeros inputs and rejects a stale snapshot', async () => {
     const listener = jest.spyOn(AppState, 'addEventListener');
@@ -83,27 +86,29 @@ describe('first-person control surface and lifecycle', () => {
     const stick = view.getByTestId('movement-stick');
     const look = view.getByTestId('look-region');
     await fireEvent(look, 'layout', { nativeEvent: { layout: { width: 200, height: 400 } } });
-    const stickTouch = { identifier: 1, locationX: 62, locationY: 10, target: 101 };
-    const lookTouch = { identifier: 2, locationX: 100, locationY: 250, target: 102 };
+    const stickTouch = { identifier: 1, locationX: 62, locationY: 60, pageX: 62, pageY: 60, target: 101 };
+    const lookTouch = { identifier: 2, locationX: 100, locationY: 250, pageX: 100, pageY: 250, target: 102 };
     const changedTouches = [stickTouch, lookTouch];
     await fireEvent(look, 'touchStart', { nativeEvent: { ...stickTouch, changedTouches, targetTouches: [lookTouch] } });
     await fireEvent(stick, 'touchStart', { nativeEvent: { ...stickTouch, changedTouches, targetTouches: [stickTouch] } });
     expect(scene().controller.input.lookPointer).toBe(2);
     expect(scene().controller.input.stickPointer).toBe(1);
-    expect(scene().controller.input.forward).toBeGreaterThan(0.9);
-    const changedMove = [{ ...stickTouch, locationY: 62 }, { ...lookTouch, locationX: 130 }];
+    expect(scene().controller.input.forward).toBe(0);
+    const changedMove = [{ ...stickTouch, locationY: 10, pageY: 10 }, { ...lookTouch, locationX: 130, pageX: 130 }];
     await fireEvent(look, 'touchMove', { nativeEvent: { ...changedMove[0], changedTouches: changedMove, targetTouches: [changedMove[1]] } });
     expect(scene().controller.input.lookX).toBe(30);
     await fireEvent(stick, 'touchEnd', { nativeEvent: { ...stickTouch, changedTouches, targetTouches: [stickTouch] } });
     expect(scene().controller.input.forward).toBe(0);
     expect(scene().controller.input.lookPointer).toBe(2);
   });
-  it('derives simple controls for reduced motion without overwriting persisted preferences', async () => {
+  it('retains drag controls for reduced motion without overwriting persisted preferences', async () => {
     const original = props({ settings: { ...DEFAULT_SETTINGS, reducedMotion: true } });
     const view = await render(<FirstPersonScreen {...original} />);
-    expect(view.queryByTestId('movement-stick')).toBeNull();
+    expect(view.getByTestId('movement-stick')).toBeTruthy();
+    expect(view.queryByTestId('button-movement-controls')).toBeNull();
     const startZ = scene().controller.runtime.pose.position.z;
-    await fireEvent.press(view.getByRole('button', { name: '前へ一歩' }));
+    await fireEvent(view.getByTestId('movement-stick'), 'touchStart', touches(1, 62, 100));
+    await fireEvent(view.getByTestId('movement-stick'), 'touchMove', touches(1, 62, 50));
     await frame();
     expect(scene().controller.runtime.pose.position.z).toBeLessThan(startZ);
     expect(original.onControlsChange).not.toHaveBeenCalled();
@@ -112,7 +117,7 @@ describe('first-person control surface and lifecycle', () => {
     const original = props();
     const view = await render(<FirstPersonScreen {...original} />);
     const runtime = scene().controller.runtime;
-    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
+    await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
     expect(scene().controller.runtime).toBe(runtime);
     expect(view.getByText('模様だけをグレーにしました。床とつながりは同じです。')).toBeTruthy();
     expect(original.onCheckpoint).not.toHaveBeenCalled();
@@ -137,20 +142,18 @@ describe('first-person control surface and lifecycle', () => {
     const screen = Dimensions.get('screen');
     await act(() => Dimensions.set({ window: { width: 320, height: 568, scale: 2, fontScale: 2 }, screen: { width: 320, height: 568, scale: 2, fontScale: 2 } }));
     try {
-      const view = await render(<FirstPersonScreen {...props()} />);
+      const view = await render(<FirstPersonScreen {...props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } })} />);
       expect(view.getByTestId('compact-first-person-controls')).toBeTruthy();
       expect(view.getByRole('button', { name: '前へ一歩' })).toHaveStyle({ minHeight: 48, minWidth: 44 });
       expect(view.getByRole('button', { name: '調べる' })).toHaveStyle({ minHeight: 48 });
       await view.unmount();
     } finally { await act(() => Dimensions.set({ window, screen })); }
   });
-  it('shows a clear GL failure route and delegates restart before replacing the current session', async () => {
+  it('shows a clear GL failure route and returns home', async () => {
     const original = props();
     const view = await render(<FirstPersonScreen {...original} />);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
-    await fireEvent.press(view.getByRole('button', { name: '章を最初から' }));
-    expect(original.onRestart).toHaveBeenCalledTimes(1);
-    expect(scene().controller.runtime.paused).toBe(true);
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
     await act(() => scene().onError('GLの初期化に失敗しました。'));
     expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
     await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
@@ -189,7 +192,7 @@ describe('first-person control surface and lifecycle', () => {
     const view = await render(<FirstPersonScreen {...props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } })} />);
     expect(view.getByRole('button', { name: '前へ一歩' })).toBeDisabled();
     await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
-    expect(scene().paused).toBe(false);
+    expect(scene().paused).toBe(true);
     expect(view.getByTestId('render-diagnostic-record')).toBeTruthy();
     await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
     const callbacks = listener.mock.calls.filter(([event]) => event === 'change').map(([, callback]) => callback);
@@ -211,7 +214,7 @@ describe('first-person control surface and lifecycle', () => {
     const old = scene();
     old.controller.runtime = { ...old.controller.runtime, progress: { ...old.controller.runtime.progress, guideExamined: true } };
     await act(() => old.onSnapshot(controllerSnapshot(old.controller)));
-    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
+    await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
     const checkpointCalls = jest.mocked(original.onCheckpoint).mock.calls.length;
     await act(() => scene().onError('描画が止まりました。'));
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
@@ -251,7 +254,7 @@ describe('first-person control surface and lifecycle', () => {
       await fireEvent.press(view.getByRole('button', { name: '診断をコピー' }));
       const payload = JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls[0]![0]);
       expect(payload.revision).toBe(diagnostics.DIAGNOSTIC_REVISION);
-      expect(payload.effectiveControls).toEqual({ mode: 'standard', reason: '保存した標準操作の希望' });
+      expect(payload.effectiveControls).toEqual({ mode: 'standard', reason: '保存したドラッグ操作の希望' });
       await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
       const closedCalls = serialize.mock.calls.length;
       await act(() => jest.advanceTimersByTime(2000));
@@ -266,8 +269,8 @@ describe('first-person control surface and lifecycle', () => {
     const view = await render(<FirstPersonScreen {...original} />);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: '操作と快適設定' }));
-    expect(view.getByText('現在の操作：簡単操作。理由：文字の拡大。')).toBeTruthy();
-    expect(view.getByRole('switch', { name: '簡単操作の希望' }).props.value).toBe(false);
+    expect(view.getByText('現在の操作：ドラッグ操作。理由：保存したドラッグ操作の希望。')).toBeTruthy();
+    expect(view.getByRole('switch', { name: 'ボタン操作' }).props.value).toBe(false);
     expect(original.onControlsChange).not.toHaveBeenCalled();
   });
 
@@ -300,7 +303,7 @@ describe('first-person control surface and lifecycle', () => {
   it('walks to the guide with real simple steps, explains aiming and shows first-action progress', async () => {
     const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } });
     const view = await render(<FirstPersonScreen {...original} />);
-    expect(view.getByText('「前へ一歩」で、小さな光へ近づこう。')).toBeTruthy();
+    expect(view.getByText('光のしるべへ')).toBeTruthy();
     await frame();
     expect(view.getByText('光のしるべに、もう少し近づこう。')).toBeTruthy();
     expect(view.getByTestId('interact')).toBeDisabled();
@@ -317,7 +320,113 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent.press(view.getByRole('button', { name: 'しるべを調べる' }));
     expect(scene().controller.runtime.progress.guideExamined).toBe(true);
     expect(scene().controller.runtime.progress.sealA).toBe(false);
-    expect(view.getByText('しるべを調べました。足跡をたどり、床の輪へ進もう。')).toBeTruthy();
+    expect(view.getByText('しるべを調べました。')).toBeTruthy();
     expect(original.onCheckpoint).toHaveBeenCalled();
   });
+  it.each([[320, 568, 2], [390, 844, 1], [430, 932, 2]])('keeps standard drag actions available at %i×%i, font %i', async (width, height, fontScale) => {
+    await act(() => Dimensions.set({ window: { width, height, fontScale, scale: 3 }, screen: { width, height, fontScale, scale: 3 } }));
+    const view = await render(<FirstPersonScreen {...props()} />);
+    expect(view.getByTestId('movement-stick')).toBeTruthy();
+    expect(view.queryByTestId('button-movement-controls')).toBeNull();
+    expect(view.getByTestId('interact')).toHaveStyle({ minHeight: 48, minWidth: 44 });
+    expect(view.getByTestId('pause-control')).toHaveStyle({ minHeight: 44, minWidth: 44 });
+    expect(view.getByTestId('current-objective').props.numberOfLines).toBeUndefined();
+    expect(view.getByTestId('compare-colors')).toBeTruthy();
+    await view.unmount();
+  });
+
+  it('offers the old simple preference choice on first pause and switches without replacing the controller', async () => {
+    const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' }, onboarding: DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange: jest.fn() });
+    const view = await render(<FirstPersonScreen {...original} />);
+    const initial = scene().controller;
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    expect(view.getByRole('button', { name: 'ドラッグ操作' })).toBeTruthy();
+    await fireEvent.press(view.getByRole('button', { name: 'ドラッグ操作を試す' }));
+    expect(original.onControlsChange).toHaveBeenCalledWith(expect.objectContaining({ movementMode: 'standard' }));
+    expect(original.onOnboardingChange).toHaveBeenCalledWith(expect.objectContaining({ controlChoiceAcknowledged: true }));
+    await view.rerender(<FirstPersonScreen {...original} controls={{ ...original.controls, movementMode: 'standard' }} />);
+    expect(scene().controller).toBe(initial);
+    expect(initial.input.forward).toBe(0);
+    expect(view.getByTestId('movement-stick')).toBeTruthy();
+    expect(initial.runtime.progress.sealA).toBe(false);
+  });
+
+  it('presents semantic VoiceOver buttons, explains them, then restores saved drag mode', async () => {
+    const listener = jest.spyOn(AccessibilityInfo, 'addEventListener');
+    const original = props();
+    const view = await render(<FirstPersonScreen {...original} />);
+    const callback = (listener.mock.calls as unknown as [string, (enabled: boolean) => void][]).filter(([name]) => name === 'screenReaderChanged').at(-1)![1];
+    const initial = scene().controller;
+    await act(() => callback(true));
+    expect(view.getByRole('button', { name: '前へ一歩' })).toBeTruthy();
+    expect(view.queryByTestId('movement-stick')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    expect(view.getByText(/読み上げ中は移動/)).toBeTruthy();
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
+    await act(() => callback(false));
+    expect(view.getByTestId('movement-stick')).toBeTruthy();
+    expect(scene().controller).toBe(initial);
+    expect(original.onControlsChange).not.toHaveBeenCalled();
+  });
+
+  it('requires fresh touch ownership after pause and rejects cached callbacks after mode replacement', async () => {
+    const original = props();
+    const view = await render(<FirstPersonScreen {...original} />);
+    const stick = view.getByTestId('movement-stick');
+    const oldStart = stick.props.onTouchStart;
+    await fireEvent(stick, 'touchStart', touches(1, 70, 130));
+    await fireEvent(stick, 'touchMove', touches(1, 70, 80));
+    expect(scene().controller.input.forward).toBe(1);
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
+    await fireEvent(view.getByTestId('movement-stick'), 'touchMove', touches(1, 70, 50));
+    expect(scene().controller.input.forward).toBe(0);
+    await view.rerender(<FirstPersonScreen {...original} controls={{ ...original.controls, movementMode: 'simple' }} />);
+    await act(() => oldStart(touches(3, 70, 80)));
+    expect(scene().controller.input.stickPointer).toBeNull();
+  });
+
+  it('retires callbacks immediately while an asynchronous chapter restart is pending', async () => {
+    const original = props();
+    const view = await render(<FirstPersonScreen {...original} />);
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    const old = scene();
+    await fireEvent.press(view.getByRole('button', { name: '章を最初から' }));
+    const writes = jest.mocked(original.onCheckpoint).mock.calls.length;
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
+    await act(() => { old.onReady(); old.onSnapshot(controllerSnapshot(old.controller)); });
+    expect(original.onRestart).toHaveBeenCalledTimes(1);
+    expect(old.controller.runtime.paused).toBe(true);
+    expect(original.onCheckpoint).toHaveBeenCalledTimes(writes);
+  });
+
+  it('lets a third native pointer compare colors and pause while both thumb owners remain independent', async () => {
+    const view = await render(<FirstPersonScreen {...props()} />);
+    const left = { identifier: 10, pageX: 70, pageY: 400 };
+    const right = { identifier: 20, pageX: 250, pageY: 300 };
+    const button = { identifier: 30, pageX: 75, pageY: 710 };
+    await fireEvent(view.getByTestId('movement-stick'), 'touchStart', { nativeEvent: { changedTouches: [left, right], targetTouches: [left] } });
+    await fireEvent(view.getByTestId('look-region'), 'touchStart', { nativeEvent: { changedTouches: [left, right], targetTouches: [right] } });
+    await fireEvent(view.getByTestId('movement-stick'), 'touchMove', { nativeEvent: { changedTouches: [{ ...left, pageY: 350 }] } });
+    const color = view.getByTestId('compare-colors');
+    await fireEvent(color, 'touchStart', { nativeEvent: { changedTouches: [left, button], targetTouches: [button], touches: [left, right, button] } });
+    await fireEvent(color, 'touchMove', { nativeEvent: { changedTouches: [{ ...left, pageX: 500 }], targetTouches: [button], touches: [left, right, button] } });
+    await fireEvent(color, 'touchEnd', { nativeEvent: { changedTouches: [button], targetTouches: [], touches: [left, right] } });
+    expect(scene().neutralColors).toBe(true);
+    expect(scene().controller.input.stickPointer).toBe(10);
+    expect(scene().controller.input.lookPointer).toBe(20);
+    expect(scene().controller.input.forward).toBe(1);
+    // A scene-owned drag ending over the action has no button ownership.
+    await fireEvent(view.getByTestId('compare-colors'), 'touchEnd', { nativeEvent: { changedTouches: [right], targetTouches: [] } });
+    expect(scene().neutralColors).toBe(true);
+    const pause = view.getByTestId('pause-control');
+    const third = { identifier: 40, pageX: 25, pageY: 25 };
+    await fireEvent(pause, 'touchStart', { nativeEvent: { changedTouches: [third], targetTouches: [third], touches: [left, right, third] } });
+    await fireEvent(pause, 'touchEnd', { nativeEvent: { changedTouches: [third], targetTouches: [], touches: [left, right] } });
+    expect(scene().paused).toBe(true);
+    expect(scene().controller.input.stickPointer).toBeNull();
+    expect(scene().controller.input.lookPointer).toBeNull();
+    expect(scene().controller.input.forward).toBe(0);
+  });
+
 });

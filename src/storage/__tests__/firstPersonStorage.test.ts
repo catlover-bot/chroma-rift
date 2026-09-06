@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { createCheckpoint, createInitialRuntime, getWorld, restoreCheckpoint, type CheckpointState } from '../../domain/firstPerson';
-import { DEFAULT_FIRST_PERSON_CONTROLS } from '../../types/application';
+import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING } from '../../types/application';
 import { APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, createDefaultApplication, loadApplication, saveApplication } from '../applicationStorage';
 import {
-  FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, beginFirstPersonSession, decodeFirstPersonStorage,
+  FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, beginFirstPersonSession, decodeFirstPersonStorage,
   isFirstPersonSessionCurrent, loadFirstPersonStorage, resetAllApplicationStorage, resetFirstPersonChapter,
-  saveFirstPersonCheckpoint, saveFirstPersonControls,
+  saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from '../firstPersonStorage';
 
 const freshCheckpoint = () => createCheckpoint(createInitialRuntime());
@@ -186,8 +186,9 @@ describe('first-person persistence and isolation', () => {
     await saveFirstPersonControls(DEFAULT_FIRST_PERSON_CONTROLS);
     const lease = beginFirstPersonSession();
     await saveFirstPersonCheckpoint(solvedCheckpoint(), lease);
+    await saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true }, lease);
     expect(await resetAllApplicationStorage()).toBe(true);
-    for (const key of [APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY]) expect(await AsyncStorage.getItem(key)).toBeNull();
+    for (const key of [APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY]) expect(await AsyncStorage.getItem(key)).toBeNull();
     expect(await saveFirstPersonCheckpoint(solvedCheckpoint(), lease)).toBe(false);
   });
 
@@ -235,4 +236,115 @@ describe('first-person persistence and isolation', () => {
     expect(await resetAllApplicationStorage()).toBe(true);
     expect(await saveFirstPersonControls(DEFAULT_FIRST_PERSON_CONTROLS)).toBe(true);
   });
+
+  it('preserves old simple preferences without inventing selection provenance or rewriting the raw save', async () => {
+    const raw = JSON.stringify({ schemaVersion: 1, controls: { sensitivity: 1.5, movementMode: 'simple', handedness: 'left', quality: 'low' } });
+    await AsyncStorage.setItem(FIRST_PERSON_CONTROLS_KEY, raw);
+    const loaded = await loadFirstPersonStorage();
+    expect(loaded.controls).toEqual({ sensitivity: 1.5, verticalSensitivity: 1, movementMode: 'simple', handedness: 'left', quality: 'low' });
+    expect(loaded.onboarding).toEqual(DEFAULT_FIRST_PERSON_ONBOARDING);
+    expect(loaded.controlsWritable).toBe(true);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY)).toBe(raw);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY)).toBeNull();
+  });
+
+  it.each([undefined, null, 'slow', 0, 3, -1, {}])('defaults malformed optional vertical sensitivity %p without discarding valid old preferences or progress', (verticalSensitivity) => {
+    const checkpoint = solvedCheckpoint();
+    const raw = JSON.stringify({ schemaVersion: 1, controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple', sensitivity: 0.5, verticalSensitivity } });
+    const loaded = decodeFirstPersonStorage(JSON.stringify(checkpoint), raw);
+    expect(loaded.controls.verticalSensitivity).toBe(1);
+    expect(loaded.controls.movementMode).toBe('simple');
+    expect(loaded.controls.sensitivity).toBe(0.5);
+    expect(loaded.controlsWritable).toBe(true);
+    expect(loaded.checkpoint).toEqual(checkpoint);
+  });
+
+  it('round-trips a valid separate vertical sensitivity', async () => {
+    const controls = { ...DEFAULT_FIRST_PERSON_CONTROLS, sensitivity: 1.5, verticalSensitivity: 0.5 };
+    expect(await saveFirstPersonControls(controls)).toBe(true);
+    expect((await loadFirstPersonStorage()).controls).toEqual(controls);
+    expect(await saveFirstPersonControls({ ...controls, verticalSensitivity: Number.NaN })).toBe(false);
+    expect((await loadFirstPersonStorage()).controls).toEqual(controls);
+  });
+
+  it('validates acknowledgement fields independently without deriving tutorial completion from puzzle state', () => {
+    const loaded = decodeFirstPersonStorage(JSON.stringify(solvedCheckpoint()), null, JSON.stringify({ schemaVersion: 1, controlChoiceAcknowledged: true, tutorialCompleted: 'yes' }));
+    expect(loaded.onboarding).toEqual({ schemaVersion: 1, controlChoiceAcknowledged: true, tutorialCompleted: false });
+    expect(loaded.onboardingWritable).toBe(true);
+    const missing = decodeFirstPersonStorage(JSON.stringify(solvedCheckpoint()), null);
+    expect(missing.onboarding.tutorialCompleted).toBe(false);
+  });
+
+  it('writes acknowledgements independently, merges out-of-order completions and retains them through chapter restart', async () => {
+    const application = JSON.stringify({ ...createDefaultApplication(), bestMazeScore: 998 });
+    const checkpoint = JSON.stringify(solvedCheckpoint());
+    const oldControls = controlsDocument({ ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' });
+    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, application);
+    await AsyncStorage.setItem(FIRST_PERSON_CHECKPOINT_KEY, checkpoint);
+    await AsyncStorage.setItem(FIRST_PERSON_CONTROLS_KEY, oldControls);
+    await loadFirstPersonStorage();
+    const lease = beginFirstPersonSession();
+    const choice = saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, controlChoiceAcknowledged: true }, lease);
+    const tutorial = saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true }, lease);
+    expect(await choice).toBe(true);
+    expect(await tutorial).toBe(true);
+    expect((await loadFirstPersonStorage()).onboarding).toEqual({ schemaVersion: 1, controlChoiceAcknowledged: true, tutorialCompleted: true });
+    expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBe(application);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBe(checkpoint);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY)).toBe(oldControls);
+    expect(await resetFirstPersonChapter()).toBe(true);
+    expect((await loadFirstPersonStorage()).onboarding.tutorialCompleted).toBe(true);
+    expect(await saveFirstPersonOnboarding(DEFAULT_FIRST_PERSON_ONBOARDING, lease)).toBe(false);
+  });
+
+  it.each(['{broken', '{"schemaVersion":99}'])('retains unreadable onboarding independently from chapter and control writes: %s', async (raw) => {
+    await AsyncStorage.setItem(FIRST_PERSON_ONBOARDING_KEY, raw);
+    const loaded = await loadFirstPersonStorage();
+    expect(loaded.onboardingWritable).toBe(false);
+    expect(loaded.controlsWritable).toBe(true);
+    expect(loaded.checkpointWritable).toBe(true);
+    const lease = beginFirstPersonSession();
+    expect(await saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true }, lease)).toBe(false);
+    expect(await saveFirstPersonControls(DEFAULT_FIRST_PERSON_CONTROLS, lease)).toBe(true);
+    expect(await saveFirstPersonCheckpoint(freshCheckpoint(), lease)).toBe(true);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY)).toBe(raw);
+  });
+
+  it('rejects queued control and onboarding callbacks after a session replacement', async () => {
+    let release: (() => void) | undefined;
+    let started: (() => void) | undefined;
+    const entered = new Promise<void>((resolve) => { started = resolve; });
+    jest.mocked(AsyncStorage.setItem).mockImplementationOnce(() => new Promise<void>((resolve) => { release = resolve; started?.(); }));
+    const oldLease = beginFirstPersonSession();
+    const inFlight = saveFirstPersonCheckpoint(freshCheckpoint(), oldLease);
+    await entered;
+    const oldControls = saveFirstPersonControls({ ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' }, oldLease);
+    const oldOnboarding = saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true }, oldLease);
+    beginFirstPersonSession();
+    release?.();
+    expect(await inFlight).toBe(false);
+    expect(await oldControls).toBe(false);
+    expect(await oldOnboarding).toBe(false);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY)).toBeNull();
+    expect(await AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY)).toBeNull();
+  });
+
+  it('full reset removes an in-flight onboarding write and rejects queued acknowledgement resurrection', async () => {
+    let release: (() => void) | undefined;
+    let started: (() => void) | undefined;
+    const entered = new Promise<void>((resolve) => { started = resolve; });
+    jest.mocked(AsyncStorage.setItem).mockImplementationOnce(() => new Promise<void>((resolve) => { release = resolve; started?.(); }));
+    const lease = beginFirstPersonSession();
+    const inFlight = saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true }, lease);
+    await entered;
+    const queued = saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, controlChoiceAcknowledged: true }, lease);
+    const resetting = resetAllApplicationStorage();
+    release?.();
+    expect(await inFlight).toBe(false);
+    expect(await queued).toBe(false);
+    expect(await resetting).toBe(true);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_ONBOARDING_KEY)).toBeNull();
+    expect((await loadFirstPersonStorage()).onboarding).toEqual(DEFAULT_FIRST_PERSON_ONBOARDING);
+  });
+
 });

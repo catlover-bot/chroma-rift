@@ -12,6 +12,7 @@ export const FLOOR_THICKNESS = 0.24;
 export const CEILING_BASE_Y = 3.2;
 export const CEILING_THICKNESS = 0.2;
 export const FLOOR_MARK = { x: 0, y: 0, z: -4 };
+export const GUIDE_FIXTURE = { center: { x: 0, y: 1.05, z: -0.7 }, radius: 0.22, diameter: 0.44 } as const;
 export const OBSERVATION_POSE: PlayerPose = { position: { x: 8, y: EYE_HEIGHT, z: -13.5 }, yaw: 0, pitch: 0 };
 export const CHANGED_REGION: CollisionVolume = { id: 'changed-entrance', min: { x: -5.2, y: -FLOOR_THICKNESS - 0.01, z: 6 }, max: { x: 5.2, y: CEILING_BASE_Y + CEILING_THICKNESS, z: 17.2 }, kind: 'wall', opaque: true };
 export const VARIANT_SAFE_REGION: FloorRegion = { id: 'occluded-observation-bay', minX: 7.6, maxX: 8.4, minZ: -14, maxZ: -13.2 };
@@ -140,7 +141,7 @@ export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' 
     ...(progress.variant === 'exit' ? [box('exit-door', -1, 1, 13.92, 14.12, 'door', runtime.doorExitOpen * 3.3, 3.2 + runtime.doorExitOpen * 3.3)] : []),
   ];
   const interactables: WorldGeometry['interactables'] = [
-    { id: 'guide', label: '光のしるべ', center: { x: 0, y: 1.05, z: -0.7 }, radius: 0.32, maxDistance: 2.2 },
+    { id: 'guide', label: '光のしるべ', center: GUIDE_FIXTURE.center, radius: GUIDE_FIXTURE.radius, maxDistance: 2.2 },
     { id: 'floor-device', label: progress.sealA ? '開いた床の封印' : '床の封印', center: { x: 1.6, y: 1.3, z: -7.4 }, radius: 0.34, maxDistance: 2.1 },
     { id: 'key', label: runtime.alignment && !progress.sealB ? '重ねる' : progress.sealB ? '重なった鍵' : '欠けた鍵', center: FRAME_CENTER, radius: 0.48, maxDistance: 8 },
     ...(progress.variant === 'exit' ? [{ id: 'exit' as const, label: '最後の扉', center: { x: 0, y: 1.4, z: 13.8 }, radius: 0.55, maxDistance: 2.2 }] : []),

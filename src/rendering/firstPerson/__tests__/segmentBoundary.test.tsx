@@ -20,7 +20,7 @@ describe('authored key segment JSX and installed R3F prop boundary', () => {
     const resources = createSceneResources(false);
     const view = await render(<ChapterScene world={world} runtime={{ current: runtime }} progress={runtime.progress} resources={resources} assist={false} reducedMotion lowQuality={false} lab={false} />);
     try {
-      const meshes = view.container.queryAll((node) => node.type === 'mesh' && node.props.geometry === resources.cylinder);
+      const meshes = view.container.queryAll((node) => node.type === 'mesh' && node.props.name === 'key-segment');
       const lines = [...world.keyFrame.outline, ...world.keyFragments.map((fragment) => fragment.points)];
       const endpoints = lines.flatMap((line) => line.slice(1).map((to, index) => ({ from: line[index]!, to })));
       expect(meshes).toHaveLength(endpoints.length);
@@ -30,6 +30,7 @@ describe('authored key segment JSX and installed R3F prop boundary', () => {
       const identities = { position: target.position, rotation: target.rotation, quaternion: target.quaternion, scale: target.scale };
       meshes.forEach((mesh, index) => {
         const props = mesh.props;
+        expect(props.geometry).toBe(resources.cylinder);
         expect(Array.isArray(props.position)).toBe(true);
         expect(Array.isArray(props.quaternion)).toBe(true);
         expect(Array.isArray(props.scale)).toBe(true);
@@ -54,7 +55,7 @@ describe('authored key segment JSX and installed R3F prop boundary', () => {
       });
       const stableTuples = meshes.map((mesh) => ({ position: mesh.props.position, quaternion: mesh.props.quaternion, scale: mesh.props.scale }));
       await view.rerender(<ChapterScene world={world} runtime={{ current: runtime }} progress={runtime.progress} resources={resources} assist reducedMotion lowQuality={false} lab={false} />);
-      const updatedMeshes = view.container.queryAll((node) => node.type === 'mesh' && node.props.geometry === resources.cylinder);
+      const updatedMeshes = view.container.queryAll((node) => node.type === 'mesh' && node.props.name === 'key-segment');
       updatedMeshes.forEach((mesh, index) => {
         expect(mesh.props.position).toBe(stableTuples[index]!.position);
         expect(mesh.props.quaternion).toBe(stableTuples[index]!.quaternion);

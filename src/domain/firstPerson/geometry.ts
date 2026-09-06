@@ -54,9 +54,15 @@ export function isSafePose(pose: PlayerPose, world: WorldGeometry): boolean {
   if (![position.x, position.y, position.z, yaw, pitch].every(Number.isFinite) || Math.abs(position.y - EYE_HEIGHT) > 0.001 || Math.abs(pitch) > MAX_PITCH) return false;
   return floorSupports(position, world) && !world.solids.some((volume) => circleIntersectsBox(position, volume));
 }
-export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number, world: WorldGeometry): PlayerPose {
+/** Already-shaped pad input skips a second dead zone; discrete/domain callers
+ * retain the established raw-input curve. Both paths clamp diagonal speed. */
+export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number, world: WorldGeometry, analogInput = false): PlayerPose {
   if (!Number.isFinite(dt) || dt <= 0 || !isSafePose(pose, world)) return pose;
-  const motion = normalizedInput(input);
+  const finite = Number.isFinite(input.strafe) && Number.isFinite(input.forward);
+  const length = Math.max(1, Math.hypot(input.strafe, input.forward));
+  const motion = analogInput
+    ? finite ? { strafe: input.strafe / length, forward: input.forward / length } : { strafe: 0, forward: 0 }
+    : normalizedInput(input);
   const elapsed = Math.min(MAX_FRAME_DELTA, dt);
   const distance = MOVE_SPEED * elapsed;
   const dx = (Math.cos(pose.yaw) * motion.strafe - Math.sin(pose.yaw) * motion.forward) * distance;

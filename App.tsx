@@ -26,10 +26,10 @@ import {
 import {
   beginFirstPersonSession, isFirstPersonSessionCurrent, loadFirstPersonStorage,
   resetAllApplicationStorage, resetFirstPersonChapter,
-  saveFirstPersonCheckpoint, saveFirstPersonControls,
+  saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from './src/storage/firstPersonStorage';
 import { UI_COLORS } from './src/theme/ui';
-import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_LAB_PARAMETERS, type FirstPersonControls, type PersistedApplication } from './src/types/application';
+import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT_LAB_PARAMETERS, type FirstPersonControls, type FirstPersonOnboarding, type PersistedApplication } from './src/types/application';
 
 export default function App() {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
@@ -42,6 +42,8 @@ export default function App() {
   const [firstPersonMessage, setFirstPersonMessage] = useState<string | undefined>();
   const [chapterLease, setChapterLease] = useState(0);
   const [completedAtEntry, setCompletedAtEntry] = useState(false);
+  const [onboarding, setOnboarding] = useState<FirstPersonOnboarding>({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
+  const [onboardingWritable, setOnboardingWritable] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -55,6 +57,8 @@ export default function App() {
       const [loaded, chapter] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage()]);
       if (!active) return;
       setControls(chapter.controls);
+      setOnboarding(chapter.onboarding);
+      setOnboardingWritable(chapter.onboardingWritable);
       setCheckpoint(chapter.checkpoint);
       setFirstPersonMessage(chapter.message);
       setStorageWritable(loaded.status !== 'blocked');
@@ -131,6 +135,8 @@ export default function App() {
     setStorageMessage(undefined);
     setFirstPersonMessage(undefined);
     setControls({ ...DEFAULT_FIRST_PERSON_CONTROLS });
+    setOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
+    setOnboardingWritable(true);
     setCheckpoint(createCheckpoint(createInitialRuntime()));
     setChapterLease(beginFirstPersonSession());
     dispatch({ type: 'RESET', defaults: createDefaultApplication(systemReducedMotion) });
@@ -171,12 +177,24 @@ export default function App() {
       <NativeFirstPersonGate
         key={`${lab ? 'lab' : 'chapter'}-${lease}`} scene={lab ? 'lab' : 'chapter'}
         settings={state.settings} controls={controls} {...(!lab ? { checkpoint } : {})}
+        onboarding={onboarding}
+        onOnboardingChange={(next) => {
+          if (lab || !isFirstPersonSessionCurrent(lease)) return;
+          setOnboarding((previous) => isFirstPersonSessionCurrent(lease) ? {
+            schemaVersion: 1,
+            controlChoiceAcknowledged: previous.controlChoiceAcknowledged || next.controlChoiceAcknowledged,
+            tutorialCompleted: previous.tutorialCompleted || next.tutorialCompleted,
+          } : previous);
+          if (onboardingWritable) void saveFirstPersonOnboarding(next, lease).then((saved) => {
+            if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('操作の案内を保存できませんでした。この起動中は続けられます。');
+          });
+        }}
         preferredColor={state.activeSetupSource === 'quick' ? state.quickSetupResult?.provisionalColor ?? 'neutral' : state.calibrationProfile?.preferredForegroundColor ?? state.quickSetupResult?.provisionalColor ?? 'neutral'}
         onSettingsChange={(settings) => { if (isFirstPersonSessionCurrent(lease)) dispatch({ type: 'UPDATE_SETTINGS', settings }); }}
         onControlsChange={(next) => {
           if (!isFirstPersonSessionCurrent(lease)) return;
           setControls(next);
-          void saveFirstPersonControls(next).then((saved) => {
+          void saveFirstPersonControls(next, lease).then((saved) => {
             if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('操作設定を保存できませんでした。この起動中は変更した設定で遊べます。');
           });
         }}

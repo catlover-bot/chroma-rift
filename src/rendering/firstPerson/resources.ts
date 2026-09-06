@@ -9,9 +9,11 @@ export function createSceneResources(lowQuality: boolean) {
   const cylinder = new THREE.CylinderGeometry(1, 1, 1, lowQuality ? 5 : 8);
   const ring = new THREE.RingGeometry(0.34, 0.39, lowQuality ? 24 : 48);
   const basic = (color: string) => new THREE.MeshBasicMaterial({ color, fog: false, toneMapped: false });
-  const wall = new THREE.MeshLambertMaterial({ color: '#A0AAA8', flatShading: true });
-  const floor = new THREE.MeshLambertMaterial({ color: '#707D7B', flatShading: true });
-  const door = new THREE.MeshLambertMaterial({ color: '#435551', flatShading: true });
+  const wall = new THREE.MeshLambertMaterial({ color: '#87938B', flatShading: true });
+  const floor = new THREE.MeshLambertMaterial({ color: '#52645D', flatShading: true });
+  const door = new THREE.MeshLambertMaterial({ color: '#344A42', flatShading: true });
+  const ceiling = new THREE.MeshLambertMaterial({ color: '#6B7B70', flatShading: true });
+  const trim = new THREE.MeshLambertMaterial({ color: '#465C50', flatShading: true });
   const device = new THREE.MeshLambertMaterial({ color: '#D0CDBB', flatShading: true });
   const neutral = basic('#E0DDC9');
   const quiet = basic('#899993');
@@ -44,10 +46,10 @@ export function createSceneResources(lowQuality: boolean) {
   };
   updatePalette('neutral', false, 'medium');
   return {
-    box, plane, cylinder, ring, wall, floor, door, device, neutral, quiet, dark, key, panel, texture, updatePalette,
+    box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette,
     dispose() {
       box.dispose(); plane.dispose(); cylinder.dispose(); ring.dispose(); texture.dispose();
-      [wall, floor, door, device, neutral, quiet, dark, key, panel].forEach((material) => material.dispose());
+      [wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel].forEach((material) => material.dispose());
     },
   };
 }

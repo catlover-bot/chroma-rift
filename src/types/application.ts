@@ -74,6 +74,8 @@ export type JourneyStageSummary = {
 /** First-person comfort preferences have their own persistence document. */
 export type FirstPersonControls = {
   sensitivity: number;
+  /** Optional in v1 saves; defaults to 1 when absent or malformed. */
+  verticalSensitivity?: number;
   movementMode: 'standard' | 'simple';
   handedness: 'left' | 'right';
   quality: 'low' | 'standard';
@@ -81,9 +83,23 @@ export type FirstPersonControls = {
 
 export const DEFAULT_FIRST_PERSON_CONTROLS: FirstPersonControls = {
   sensitivity: 1,
+  verticalSensitivity: 1,
   movementMode: 'standard',
   handedness: 'right',
   quality: 'standard',
+};
+
+/** Local introduction acknowledgements, independent from calibration and chapter progress. */
+export type FirstPersonOnboarding = {
+  schemaVersion: 1;
+  controlChoiceAcknowledged: boolean;
+  tutorialCompleted: boolean;
+};
+
+export const DEFAULT_FIRST_PERSON_ONBOARDING: FirstPersonOnboarding = {
+  schemaVersion: 1,
+  controlChoiceAcknowledged: false,
+  tutorialCompleted: false,
 };
 
 export type FirstPersonChapterSummary = {

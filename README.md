@@ -6,9 +6,10 @@
 
 ホームの「遊ぶ」→ 初回だけ3問 → 操作案内 → 入口 → 消えない床 → 重なる鍵 → 帰路 → 出口 → 結果。
 
-- 左下のスティックで連続移動、右側のドラッグで見回します。近くの対象へ照準を合わせ「調べる」。左右同時操作が可能です。
-- 「色をほどく」で床模様だけを無彩色にします。形や通行条件は同じです。
-- 一時停止から3段階ヒント、簡単操作（短いステップ／角度旋回）、感度、左右配置、低品質、補助表示を選べます。
+- 左下の広い領域をドラッグして歩き、右側をドラッグして見回します。指を離すと止まり、左右を同時に操作できます。光のしるべなどに近づき、中央の照準と対象名を見て右下のボタンで調べます。
+- 「色を比べる」で床模様だけを無彩色にします。形や通行条件は同じです。
+- 最初の一時停止メニューでドラッグ操作／ボタン操作（短いステップ・旋回）を切り替えられます。3段階ヒント、視点・上下の感度、左右配置、描画品質、補助表示も選べます。
+- Reduce Motionや文字拡大でもドラッグ操作を保ちます。VoiceOver中は読み上げ用ボタンを表示し、保存したタッチ操作は変えません。
 - 初回は3回答だけ。スキップでき、保存済みなら省略。詳細12問は「設定 → 詳しく調整する」に残しています。
 
 初回調整は以前の最大24タップから3タップを維持。開始まで5タップ、スキップ／設定済みなら2タップです。章の初見5〜8分は設計目標で、実測していません。時間制限・減点はありません。
@@ -23,20 +24,14 @@ Expo依存はexpo-gl 57.0.2、expo-asset 57.0.16、expo-file-system 57.0.6。@ty
 
 ## iPhoneで起動
 
-**Goal 002のDevelopment BuildへのReloadだけでは動きません。expo-glを含む新しいDevelopment Buildが必要です。** 古いビルドは案内からホームへ戻れます。
+**expo-gl入りのGoal 003系Development Buildはそのまま使い、Metroを再読み込みします。Goal 004のためのnative再ビルドは不要です。** 実機上の再利用確認は[実機チェックリスト](docs/IPHONE_VALIDATION.md)に従います。
 
-既存の認証・登録端末・developmentプロファイルを使い、ユーザー自身が実行します。
-
-```sh
+~~~sh
 cd /home/mhirotaka/workspace/chroma-rift
-npx eas-cli@latest build --platform ios --profile development
-```
+npx expo start --dev-client --tunnel --clear
+~~~
 
-完成したビルドを登録済みiPhoneへインストールした後:
-
-```sh
-npm run start:dev-client:tunnel
-```
+expo-glのないGoal 002の古いbuildは起動案内が表示されます。その場合の既存手順は[Development Build案内](docs/EAS_IOS_DEVELOPMENT_BUILD.md)を参照してください。
 
 新しいCHROMA RIFTからMetroへ接続します。LANでは `npm run start:dev-client` も利用可能。署名やBundle IDを作り直す手順ではありません。[実機チェックリスト](docs/IPHONE_VALIDATION.md)
 
@@ -44,8 +39,8 @@ npm run start:dev-client:tunnel
 
 WSL内でNode.js 24とnpmを使用。nvmは必須ではありません。新規チェックアウトは `npm ci`。検証は `npm run check`、`npm run doctor`、`npx expo install --check`、`git diff --check`。checkはlint、型検査、Jest、iOS JS exportを実行します。
 
-既存v1/v2設定・詳細生回答・プロフィール・旧スコアを保持。一人称の章と操作設定は別のversion付きキーです。「章を最初から」は章だけ、「全データを削除」は旧新の保存を削除します。不正JSONや未知の版は自動削除しません。旧2.5D、旧レール、最小一人称検証室は開発ビルドの設定画面に残しています。
+既存v1/v2設定・詳細生回答・プロフィール・旧スコアを保持。一人称の章・操作設定・導入の完了/操作案内確認は別のversion付きキーです。「章を最初から」は章だけ、「全データを削除」は旧新の保存を削除します。不正JSONや未知の版は自動削除しません。旧2.5D、旧レール、最小一人称検証室は開発ビルドの設定画面に残しています。
 
 新しいiPhoneビルドでのGL描画、VoiceOver、触覚、酔い、色の奥行き、性能は未確認です。テストやJS exportは60fpsや快適性を実証しません。広告・課金・共有API・バックエンド・カメラ／センサー権限は追加していません。
 
-[検証記録](docs/GOAL-003.md) · [設計判断](docs/ADR-003-FIRST-PERSON.md) · [完全な攻略](docs/FIRST_PERSON_CHAPTER.md) · [Goal 002](docs/GOAL-002.md)
+[Goal 004検証記録](docs/GOAL-004.md) · [ドラッグ操作設計](docs/CONTROLS-DESIGN.md) · [設計判断](docs/ADR-003-FIRST-PERSON.md) · [完全な攻略](docs/FIRST_PERSON_CHAPTER.md) · [Goal 002](docs/GOAL-002.md)

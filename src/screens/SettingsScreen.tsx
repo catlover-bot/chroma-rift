@@ -41,7 +41,7 @@ export function SettingsScreen({
         />
         <SettingSwitch
           label="動きを減らす"
-          description="仕掛けの動きを抑えます。一人称の歩行にカメラの揺れはありません。"
+          description="飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。"
           value={settings.reducedMotion}
           onValueChange={(value) =>
             onChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })

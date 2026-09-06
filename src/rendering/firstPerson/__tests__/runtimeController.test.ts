@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import { createCheckpoint, GUIDE_FIXTURE, MOVE_SPEED } from '../../../domain/firstPerson';
 import { forwardVector } from '../../../domain/firstPerson/geometry';
 import { advanceController, commandController, controllerSnapshot, createController, interactController, syncCamera, worldForController } from '../runtimeController';
 
@@ -77,5 +78,94 @@ describe('native scene runtime integration without GL', () => {
     expect(controller.input.forward).toBe(0);
     expect(controller.input.lookX).toBe(0);
     expect(controller.simpleStep).toBe(0);
+  });
+});
+
+
+describe('tutorial milestones from actual controller input, without GL', () => {
+  it('records user look before movement and never counts idle, menu, or assisted camera changes', () => {
+    const controller = createController();
+    const view = camera();
+    commandController(controller, { type: 'hint', stage: 3 });
+    commandController(controller, { type: 'aim' });
+    commandController(controller, { type: 'sensitivity', value: 1.5, vertical: 0.5 });
+    commandController(controller, { type: 'pause' });
+    advanceController(controller, 1 / 60, view);
+    commandController(controller, { type: 'resume' });
+    for (let i = 0; i < 20; i += 1) advanceController(controller, 1 / 60, view);
+    expect(controllerSnapshot(controller).tutorial).toEqual({ moved: false, looked: false, guideExamined: false, complete: false });
+    controller.input.lookX = 70;
+    advanceController(controller, 1 / 60, view);
+    expect(controllerSnapshot(controller).tutorial).toMatchObject({ moved: false, looked: true, complete: false });
+    controller.input.forward = 1;
+    for (let i = 0; i < 30; i += 1) advanceController(controller, 1 / 60, view);
+    expect(controllerSnapshot(controller).tutorial).toMatchObject({ moved: true, looked: true, complete: false });
+  });
+  it('requires meaningful collision-resolved displacement instead of walking against a wall', () => {
+    const initial = createController();
+    initial.runtime.pose = { ...initial.runtime.pose, position: { x: 0.65, y: 1.6, z: 7 } };
+    const controller = createController(createCheckpoint(initial.runtime));
+    controller.input.right = 1;
+    for (let i = 0; i < 120; i += 1) advanceController(controller, 1 / 60, camera());
+    expect(controller.runtime.pose.position.x).toBeLessThanOrEqual(0.66);
+    expect(controllerSnapshot(controller).tutorial.moved).toBe(false);
+    controller.input.right = 0;
+    controller.input.forward = 1;
+    for (let i = 0; i < 30; i += 1) advanceController(controller, 1 / 60, camera());
+    expect(controllerSnapshot(controller).tutorial.moved).toBe(true);
+  });
+  it('finishes on actual out-of-order guide discovery and restores completed or already-progressed introductions', () => {
+    const controller = createController();
+    const position = { x: 0, y: 1.6, z: 1 };
+    controller.runtime.pose = { position, yaw: 0, pitch: Math.atan2(GUIDE_FIXTURE.center.y - position.y, position.z - GUIDE_FIXTURE.center.z) };
+    syncCamera(controller, camera());
+    expect(controllerSnapshot(controller).tutorial.complete).toBe(false);
+    expect(interactController(controller, 'guide')).toBe(true);
+    expect(controllerSnapshot(controller).tutorial).toEqual({ moved: false, looked: false, guideExamined: true, complete: true });
+    expect(interactController(controller, 'guide')).toBe(false);
+    expect(controllerSnapshot(createController(createCheckpoint(controller.runtime))).tutorial.complete).toBe(true);
+    expect(controllerSnapshot(createController(undefined, false, true)).tutorial.complete).toBe(true);
+    expect(controllerSnapshot(createController()).tutorial.complete).toBe(false);
+  });
+  it('counts explicit user turns, preserves actual pitch limits and ignores automatic aim assist', () => {
+    const controller = createController();
+    controller.runtime.pose = { ...controller.runtime.pose, position: { x: 0, y: 1.6, z: 1 } };
+    commandController(controller, { type: 'hint', stage: 3 });
+    commandController(controller, { type: 'aim' });
+    expect(controller.runtime.pose.pitch).toBeLessThan(-0.2);
+    expect(controllerSnapshot(controller).tutorial.looked).toBe(false);
+    commandController(controller, { type: 'turn', yaw: 0.3, pitch: 0 });
+    expect(controllerSnapshot(controller).tutorial.looked).toBe(true);
+  });
+});
+
+describe('time-based movement and displacement-based look integration, without GL', () => {
+  it.each([30, 60, 120])('moves and looks comparably at %s Hz without replay or a second dead zone', (hz) => {
+    const controller = createController();
+    controller.input.forward = 0.1;
+    const initialZ = controller.runtime.pose.position.z;
+    for (let frame = 0; frame < hz; frame += 1) advanceController(controller, 1 / hz, camera());
+    expect(initialZ - controller.runtime.pose.position.z).toBeCloseTo(MOVE_SPEED * 0.1, 8);
+    controller.input.forward = 0;
+    commandController(controller, { type: 'sensitivity', value: 1.2, vertical: 0.5 });
+    for (let frame = 0; frame < hz; frame += 1) {
+      controller.input.lookX += 100 / hz;
+      controller.input.lookY += 80 / hz;
+      advanceController(controller, 1 / hz, camera());
+    }
+    expect(controller.runtime.pose.yaw).toBeCloseTo(-0.36, 8);
+    expect(controller.runtime.pose.pitch).toBeCloseTo(-0.144, 8);
+    const stopped = controller.runtime.pose;
+    advanceController(controller, 1 / hz, camera());
+    expect(controller.runtime.pose).toEqual(stopped);
+  });
+  it('rejects nonfinite sensitivity commands without corrupting the camera', () => {
+    const controller = createController();
+    commandController(controller, { type: 'sensitivity', value: NaN, vertical: Infinity });
+    expect(controller.sensitivity).toBe(1);
+    expect(controller.verticalSensitivity).toBe(1);
+    controller.input.lookX = 20;
+    advanceController(controller, 1 / 60, camera());
+    expect(Number.isFinite(controller.runtime.pose.yaw)).toBe(true);
   });
 });
