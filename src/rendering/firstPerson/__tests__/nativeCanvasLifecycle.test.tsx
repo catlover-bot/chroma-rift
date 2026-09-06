@@ -1,3 +1,5 @@
+import { GALLERY_CHAPTER_ID, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_CONTOUR_FIXTURE, createContourSpec, normalizeAngle } from '../../../domain/gallery';
+import { galleryAction } from '../galleryController';
 import { _roots, advance, useFrame } from '@react-three/fiber/native';
 import { act, fireEvent, render, type RenderResult } from '@testing-library/react-native';
 import { GLView } from 'expo-gl';
@@ -815,6 +817,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await fireEvent(view.getByTestId('movement-stick'), 'touchMove', { nativeEvent: { changedTouches: [{ ...point, pageY: 250 }] } });
       await submitFrame(renderer, 1.016);
       expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+      await view.rerender(<FirstPersonScreen {...screenProps} settings={{ ...DEFAULT_SETTINGS, audio: { enabled: false, musicVolume: 0, effectsVolume: .1 } }} />);
       expect(rendererRoot(renderer).store.getState().gl).toBe(state.gl);
       expect(renderer.dispose).not.toHaveBeenCalled();
       expect(chapterScene.mock.calls.at(-1)![0].runtime.current.progress.sealA).toBe(input.progress.sealA);
@@ -822,6 +825,96 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await view.unmount();
       await act(() => Dimensions.set(originalDimensions));
     }
+  });
+
+  it('mounts gallery through the actual native R3F boundary, preserving camera and geometry while B/C are manipulated', async () => {
+    const c = createController(undefined, false, true, GALLERY_CHAPTER_ID);
+    c.runtime.pose = GALLERY_SHADOW_OBSERVATION_POSE; c.runtime.progress.sealA = true; c.runtime.doorAOpen = 1;
+    const current = { ...props(), controller: c, snapshot: controllerSnapshot(c) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    await createNativeContext(view); await submitFrame(renderer);
+    const state = rendererRoot(renderer).store.getState(), initialCamera = state.camera;
+    const scene = state.scene, panel = scene.getObjectByName('shadow-context') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
+    expect(panel).toBeInstanceOf(THREE.Mesh);
+    const map = panel.material.map, samples = ['a', 'b', 'c'].map(id => scene.getObjectByName('sample-' + id + '-interior') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>);
+    const materials = samples.map(s => s.material), colors = materials.map(m => m.color.getHexString());
+    expect(samples.every(s => s.geometry === samples[0]!.geometry)).toBe(true);
+    expect(materials.every(m => !m.toneMapped && !m.fog && !m.transparent)).toBe(true);
+    expect(galleryAction(c, { type: 'enter', puzzle: 'shadow' })).toBe(true);
+    expect(galleryAction(c, { type: 'compare' })).toBe(true);
+    await submitFrame(renderer, 1.016);
+    expect(panel.material.map).not.toBe(map);
+    expect(panel.material.map!.colorSpace).toBe(THREE.SRGBColorSpace);
+    expect(samples.map(s => s.material.color.getHexString())).toEqual(colors);
+    expect(samples.map(s => s.material)).toEqual(materials);
+    expect(galleryAction(c, { type: 'leave' })).toBe(true);
+    c.runtime.pose = GALLERY_CONTOUR_OBSERVATION_POSE; syncCamera(c, initialCamera as THREE.PerspectiveCamera);
+    expect(galleryAction(c, { type: 'enter', puzzle: 'contour' })).toBe(true);
+    const contour = createContourSpec(c.runtime.progress.gallery!.contour.seed);
+    for (const disc of contour.discs) galleryAction(c, { type: 'contour-adjust', discId: disc.id, delta: normalizeAngle(disc.targetAngle - c.runtime.gallery!.contourAngles[disc.id]) });
+    await submitFrame(renderer, 1.032);
+    const inducingMeshes = contour.discs.map(d => scene.getObjectByName('contour-disc-' + d.id) as THREE.Mesh);
+    expect(inducingMeshes.map(m => m.rotation.z)).toEqual(c.runtime.gallery!.contourAngles);
+    expect(inducingMeshes.every(m => m.geometry === inducingMeshes[0]!.geometry)).toBe(true);
+    const notches = contour.discs.map(d => scene.getObjectByName('contour-notch-' + d.id) as THREE.Mesh);
+    for (const d of contour.discs) {
+      const offset = notches[d.id]!.position;
+      expect(offset.x * Math.cos(d.targetAngle) + offset.y * Math.sin(d.targetAngle)).toBeLessThan(-d.radius);
+    }
+    expect(scene.getObjectByName('contour-guide-only')!.visible).toBe(false);
+    const collisionMeshes = [...inducingMeshes, ...notches];
+    // Raycast the genuine transformed GPU geometries throughout the central
+    // triangle, away from the boundary. Neither fill nor external notches hit.
+    for (let a = 1; a < 10; a++) for (let b = 1; b < 10 - a; b++) {
+      const weights = [a / 10, b / 10, 1 - (a + b) / 10];
+      const x = contour.discs.reduce((sum, d, i) => sum + d.center.x * weights[i]!, 0);
+      const y = contour.discs.reduce((sum, d, i) => sum + d.center.y * weights[i]!, 0);
+      const ray = new THREE.Raycaster(new THREE.Vector3(GALLERY_CONTOUR_FIXTURE.center.x + x, GALLERY_CONTOUR_FIXTURE.center.y + y, -14), new THREE.Vector3(0, 0, -1));
+      expect(ray.intersectObjects(collisionMeshes)).toHaveLength(0);
+    }
+    expect(c.runtime.progress.gallery!.contour.solved).toBe(false);
+    await act(async () => { await jest.advanceTimersByTimeAsync(1000); });
+    galleryAction(c, { type: 'guide', enabled: true });
+    await submitFrame(renderer, 1.048);
+    expect(scene.getObjectByName('contour-guide-only')!.visible).toBe(true);
+    await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(c)} paused />);
+    await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(c)} assist={false} reducedMotion={false} />);
+    expect(rendererRoot(renderer).store.getState().camera).toBe(initialCamera);
+    expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+    expect(renderer.dispose).not.toHaveBeenCalled();
+    expect(current.onError).not.toHaveBeenCalled();
+    await view.unmount();
+  });
+
+  it('releases every gallery native root/context owner and scene resource on ten reentries (device GPU excluded)', async () => {
+    const rootsBefore = _roots.size;
+    for (let replay = 0; replay < 10; replay++) {
+      renderer = fakeRenderer();
+      const c = createController(undefined, false, true, GALLERY_CHAPTER_ID), current = { ...props(), controller: c, snapshot: controllerSnapshot(c) };
+      const view = await render(<FirstPersonCanvas {...current} />);
+      await createNativeContext(view); await submitFrame(renderer);
+      const scene = rendererRoot(renderer).store.getState().scene;
+      const resources = new Set<THREE.BufferGeometry | THREE.Material | THREE.Texture>();
+      scene.traverse(object => {
+        if (!(object instanceof THREE.Mesh)) return;
+        resources.add(object.geometry);
+        for (const m of Array.isArray(object.material) ? object.material : [object.material]) {
+          resources.add(m);
+          for (const value of Object.values(m)) if (value instanceof THREE.Texture) resources.add(value);
+        }
+      });
+      const counts = new Map<object, number>();
+      for (const resource of resources) resource.addEventListener('dispose', () => counts.set(resource, (counts.get(resource) ?? 0) + 1));
+      expect(resources.size).toBeGreaterThan(20);
+      await view.unmount();
+      await act(async () => { await jest.advanceTimersByTimeAsync(600); });
+      expect(renderer.dispose).toHaveBeenCalledTimes(1);
+      expect(_roots.size).toBe(rootsBefore);
+      expect(counts.size).toBe(resources.size);
+      expect([...counts.values()].every(n => n === 1)).toBe(true);
+      expect(c.runtime.paused).toBe(true);
+    }
+    expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(10);
   });
 
 });

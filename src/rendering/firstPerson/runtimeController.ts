@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { cancelGalleryManipulation } from '../../domain/gallery';
+import { galleryAction } from './galleryController';
+import type { createGalleryAudio } from '../../audio';
 
 import { reduceSeal, type SealAction, type SealCommand, type SealResult } from '../../domain/emblem';
 
@@ -17,6 +20,9 @@ import { createFirstPersonDiagnostics, type FirstPersonDiagnostics } from './dia
 
 export type RuntimeController = {
   runtime: ChapterRuntime;
+  audio?: ReturnType<typeof createGalleryAudio>;
+  audioSequence: number;
+  pendingFootstepDistance: number;
   retired: boolean;
   screenReader: boolean;
   commandSequence: number;
@@ -35,10 +41,10 @@ export type RuntimeController = {
   metrics: { frames: number; elapsed: number; drawCalls: number; geometries: number; textures: number };
 };
 export type RuntimeSnapshot = { runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };
-export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false): RuntimeController {
-  const runtime = createInitialRuntime(lab ? undefined : checkpoint);
+export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
+  const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, audioSequence: 0, pendingFootstepDistance: 0, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -53,7 +59,9 @@ export function worldForController(controller: RuntimeController) {
 }
 export function stopController(controller: RuntimeController): void {
   clearTouchInput(controller.input);
+  controller.runtime = cancelGalleryManipulation(controller.runtime);
   controller.simpleStep = 0;
+  controller.pendingFootstepDistance = 0;
 }
 export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 'turn'; yaw: number; pitch: number } | { type: 'step'; forward: number } | { type: 'hint'; stage: HintStage } | { type: 'sensitivity'; value: number; vertical?: number } | { type: 'verticalSensitivity'; value: number };
 /** Explicit commands are the only UI mutation boundary of the simulation store.
@@ -62,7 +70,7 @@ export function commandController(controller: RuntimeController, action: Control
   stopController(controller);
   if (controller.retired) return;
   switch (action.type) {
-    case 'pause': controller.runtime = pauseRuntime(controller.runtime); break;
+    case 'pause': controller.audio?.setActive(false); controller.runtime = pauseRuntime(controller.runtime); break;
     case 'resume':
       if (controller.diagnostics.appActive !== false && !['failed', 'closed'].includes(controller.diagnostics.stage)) controller.runtime = resumeRuntime(controller.runtime);
       break;
@@ -85,9 +93,9 @@ export function commandController(controller: RuntimeController, action: Control
       controller.viewCommandRevision += 1;
       break;
     }
-    case 'step': if (!controller.runtime.paused) controller.simpleStep = action.forward; break;
+    case 'step': if ((!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore') && !controller.runtime.paused) controller.simpleStep = action.forward; break;
     case 'turn':
-      if (!controller.runtime.paused) {
+      if (!controller.runtime.paused && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore')) {
         const before = controller.runtime.pose;
         controller.runtime = { ...controller.runtime, pose: adjustLook(before, action.yaw, action.pitch) };
         recordTutorialMotion(controller.tutorial, before, controller.runtime.pose, true);
@@ -111,6 +119,12 @@ export function syncCamera(controller: RuntimeController, camera: THREE.Perspect
 }
 export function advanceController(controller: RuntimeController, delta: number, camera: THREE.PerspectiveCamera): void {
   if (controller.retired || controller.runtime.paused || controller.runtime.progress.cleared) { stopController(controller); return; }
+  if (controller.runtime.gallery && controller.runtime.gallery.mode !== 'explore') {
+    clearTouchInput(controller.input); controller.simpleStep = 0;
+    const matrices = syncCamera(controller, camera);
+    controller.runtime = evaluateRuntime(controller.runtime, controller.runtime.pose, delta, matrices);
+    return;
+  }
   const before = controller.runtime.pose;
   const look = consumeLook(controller.input);
   const looked = adjustLook(controller.runtime.pose, -look.x * 0.003 * controller.sensitivity, -look.y * 0.003 * controller.sensitivity * controller.verticalSensitivity);
@@ -120,6 +134,7 @@ export function advanceController(controller: RuntimeController, delta: number, 
     ? updatePlayer(looked, { strafe: 0, forward: controller.simpleStep }, 0.25, world)
     : updatePlayer(looked, { strafe: controller.input.right, forward: controller.input.forward }, dt, world, true);
   recordTutorialMotion(controller.tutorial, before, pose, look.x !== 0 || look.y !== 0);
+  controller.pendingFootstepDistance += Math.hypot(pose.position.x - before.position.x, pose.position.z - before.position.z);
   controller.simpleStep = 0;
   controller.runtime = { ...controller.runtime, pose };
   const matrices = syncCamera(controller, camera);
@@ -137,12 +152,15 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   // Screen publishes explicit view commands before fresh camera matrices exist.
   // Their next presented cue must publish even when it matches the last frame's
   // semantic bucket. Continuous movement and idle frames do not advance this.
-  const key = `${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
+  const gallery = controller.runtime.gallery;
+  const galleryKey = gallery ? [gallery.mode, gallery.shadowCompare, gallery.contourGuide, gallery.activeDrag?.pointerId ?? '', gallery.feedback?.sequence ?? 0].join(':') : '';
+  const key = `${galleryKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
   return { runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
   controller.feedbackMessage = '';
   if (!controllerCanInteract(controller)) return false;
+  if (expectedId === 'shadow-panel' || expectedId === 'contour-panel') return galleryAction(controller, { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : 'contour' });
   if (!controller.lab && expectedId.startsWith('emblem-')) {
     const action: SealAction = expectedId === 'emblem-panel' ? { type: 'inspect' } :
       { type: 'choose', glyph: expectedId.slice(7) as 'circle' | 'diamond' | 'square' };
@@ -156,6 +174,7 @@ export function interactController(controller: RuntimeController, expectedId: In
     controller.runtime = { ...previous, progress: { ...previous.progress, guideExamined: true, sealA: true } };
   } else controller.runtime = interact(previous, expectedId, controller.matrices);
   if (controller.runtime !== previous && expectedId === 'guide') recordTutorialGuide(controller.tutorial);
+  if (controller.runtime !== previous) soundForControllerTransition(controller, previous);
   return controller.runtime !== previous;
 }
 
@@ -170,10 +189,12 @@ export function retireController(controller: RuntimeController): void {
   stopController(controller);
   controller.runtime = pauseRuntime(controller.runtime);
   controller.retired = true;
+  controller.audio?.dispose();
 }
 export function setControllerForeground(controller: RuntimeController, active: boolean): void {
   controller.diagnostics.appActive = active;
   if (!active) {
+    controller.audio?.setActive(false);
     stopController(controller);
     controller.runtime = pauseRuntime(controller.runtime);
   }
@@ -209,16 +230,23 @@ function applyEmblemControllerCommand(controller: RuntimeController, command: Se
   const result = reduceSeal(state, command, context);
   controller.feedbackMessage = result.effects.filter((effect) => effect.type === 'message').map((effect) => effect.text).join(' ');
   if (result.accepted) {
+    const previous = controller.runtime;
     controller.runtime = commitEmblemResult(controller.runtime, result);
     if (command.action.type === 'choose') controller.runtime = { ...controller.runtime,
       switchFeedback: { glyph: command.action.glyph, correct: result.state.phase === 'released', sequence: command.seq, remainingSeconds: EMBLEM_SWITCH_FEEDBACK_SECONDS } };
     if (result.effects.some((effect) => effect.type === 'stop-input')) stopController(controller);
+    if (!auxiliary) soundForControllerTransition(controller, previous);
   }
   return result;
 }
 /** Legacy lab comparison is still bounded; the chapter comparison is panel-authorized. */
 export function compareController(controller: RuntimeController, nowMs = performance.now()): boolean {
   if (!controllerCanInteract(controller)) return false;
+  if (controller.runtime.gallery) {
+    const cue = controllerSnapshot(controller).cue;
+    if (controller.runtime.gallery.mode === 'shadow' || cue.target?.id === 'shadow-panel') return galleryAction(controller, { type: 'compare' });
+    if (controller.runtime.gallery.mode === 'contour' || cue.target?.id === 'contour-panel') return galleryAction(controller, { type: 'guide', enabled: !controller.runtime.gallery.contourGuide });
+  }
   if (!controller.lab) {
     return dispatchEmblemController(controller, createEmblemCommand(controller, { type: 'compare' }, nowMs)).accepted;
   }
@@ -256,4 +284,33 @@ export function interactAccessibleEmblem(controller: RuntimeController, requeste
 export function setControllerScreenReader(controller: RuntimeController, enabled: boolean): void {
   stopController(controller);
   controller.screenReader = enabled;
+}
+
+/** Emit movement only after a successful native presentation, never a failed
+ * speculative simulation frame. Sources/players belong to the scene owner. */
+export function flushControllerAudioFrame(controller: RuntimeController): void {
+  const distance = controller.pendingFootstepDistance;
+  controller.pendingFootstepDistance = 0;
+  if (!controllerCanInteract(controller)) return;
+  controller.audio?.setListenerPosition(controller.runtime.pose.position);
+  if (distance > 0) controller.audio?.movement(distance, String(controller.runtime.session));
+}
+export function soundForControllerTransition(controller: RuntimeController, previous: ChapterRuntime): void {
+  const before = previous.progress, after = controller.runtime.progress;
+  const released = !before.sealA && after.sealA || !before.sealB && after.sealB ||
+    !!after.gallery && !!before.gallery && (!before.gallery.shadow.solved && after.gallery.shadow.solved || !before.gallery.contour.solved && after.gallery.contour.solved);
+  const sourceId = !before.sealA && after.sealA ? 'emblem-panel' : !before.sealB && after.sealB ? 'key' :
+    !before.exitDoorOpen && after.exitDoorOpen ? 'exit' : controller.runtime.gallery?.mode === 'shadow' ? 'shadow-panel' :
+    controller.runtime.gallery?.mode === 'contour' ? 'contour-panel' : !after.sealA ? 'emblem-panel' : 'key';
+  const source = worldForController(controller).interactables.find(target => target.id === sourceId)?.center;
+  controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence,
+    type: released ? 'unlock' : !before.exitDoorOpen && after.exitDoorOpen ? 'door' : 'interaction',
+    position: source ?? controller.runtime.pose.position });
+}
+
+/** The controller owns this mutable audio handle outside React state snapshots. */
+export function attachControllerAudio(controller: RuntimeController, owner: NonNullable<RuntimeController['audio']>): () => void {
+  controller.audio?.dispose();
+  controller.audio = owner;
+  return () => { owner.dispose(); if (controller.audio === owner) delete controller.audio; };
 }

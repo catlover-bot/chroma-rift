@@ -1,3 +1,4 @@
+import type { GalleryProgress, GalleryTransient } from '../gallery/types';
 import type { SealCheckpoint, SealState } from '../emblem/puzzle';
 import type { Glyph } from '../emblem/stimulus';
 
@@ -10,7 +11,7 @@ export type RoomVariant = 'entrance' | 'exit';
 export type CollisionVolume = {
   id: string; min: Vec3; max: Vec3; kind: 'wall' | 'door' | 'device'; opaque: boolean;
 };
-export type InteractableId = 'guide' | 'floor-device' | 'key' | 'exit' | 'emblem-panel' | 'emblem-circle' | 'emblem-diamond' | 'emblem-square';
+export type InteractableId = 'shadow-panel' | 'contour-panel' | 'guide' | 'floor-device' | 'key' | 'exit' | 'emblem-panel' | 'emblem-circle' | 'emblem-diamond' | 'emblem-square';
 export type RectangleInteractionTarget = {
   width: number; height: number; normal: Vec3; right: Vec3;
 };
@@ -22,18 +23,21 @@ export type InteractableDefinition = {
 export type KeyFragment = { id: string; points: readonly Vec3[]; strokeWidth: number };
 export type KeyFrame = { center: Vec3; width: number; height: number; outline: readonly (readonly Vec3[])[] };
 export type WorldGeometry = {
+  chapterId?: string; keyObservationPose?: PlayerPose;
   variant: RoomVariant; floors: readonly FloorRegion[]; solids: readonly CollisionVolume[];
   interactables: readonly InteractableDefinition[]; colorPanels: readonly FloorRegion[];
   keyFragments: readonly KeyFragment[]; keyFrame: KeyFrame;
 };
 export type HintStage = 0 | 1 | 2 | 3;
 export type PuzzleState = {
+  gallery?: GalleryProgress;
   /** Legacy monotonic flags only; the emblem has no guide/floor prerequisites. */
   emblem?: SealCheckpoint;
   guideExamined: boolean; markActivated: boolean; sealA: boolean; sealB: boolean;
   variant: RoomVariant; exitDoorOpen: boolean; cleared: boolean; hintStage: HintStage; usedLookAssist: boolean;
 };
 export type ChapterRuntime = {
+  chapterId?: string; gallery?: GalleryTransient;
   pose: PlayerPose; progress: PuzzleState; session: number; paused: boolean;
   emblem: SealState;
   switchFeedback?: { glyph: Glyph; correct: boolean; sequence: number; remainingSeconds: number } | undefined;

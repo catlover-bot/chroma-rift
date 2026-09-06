@@ -3,6 +3,7 @@ import { AccessibilityInfo, ActivityIndicator, StyleSheet, Text, View } from 're
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appReducer, initialAppState, persistedFromState } from './src/app/state';
+import { createGalleryRuntime } from './src/domain/gallery';
 import { createCheckpoint, createInitialRuntime, type CheckpointState } from './src/domain/firstPerson';
 import { CalibrationInstructionsScreen } from './src/screens/CalibrationInstructionsScreen';
 import { CalibrationResultScreen } from './src/screens/CalibrationResultScreen';
@@ -25,7 +26,7 @@ import {
 } from './src/storage/applicationStorage';
 import {
   beginFirstPersonSession, isFirstPersonSessionCurrent, loadFirstPersonStorage,
-  resetAllApplicationStorage, resetFirstPersonChapter,
+  resetAllApplicationStorage, resetFirstPersonChapter, loadGalleryStorage, resetGalleryChapter, saveGalleryCheckpoint,
   saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from './src/storage/firstPersonStorage';
 import { UI_COLORS } from './src/theme/ui';
@@ -37,8 +38,14 @@ export default function App() {
   const [storageMessage, setStorageMessage] = useState<string | undefined>();
   const [resetting, setResetting] = useState(false);
   const resetInFlight = useRef(false);
+  const [galleryStarted, setGalleryStarted] = useState(false);
   const [controls, setControls] = useState<FirstPersonControls>({ ...DEFAULT_FIRST_PERSON_CONTROLS });
   const [checkpoint, setCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createInitialRuntime()));
+  const [galleryCheckpoint, setGalleryCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createGalleryRuntime()));
+  const [hasLegacySave, setHasLegacySave] = useState(false);
+  const [hasGallerySave, setHasGallerySave] = useState(false);
+  const [galleryBlocked, setGalleryBlocked] = useState(false);
+  const [galleryMessage, setGalleryMessage] = useState<string | undefined>();
   const [firstPersonMessage, setFirstPersonMessage] = useState<string | undefined>();
   const [chapterLease, setChapterLease] = useState(0);
   const [completedAtEntry, setCompletedAtEntry] = useState(false);
@@ -54,12 +61,18 @@ export default function App() {
       } catch {
         // The in-app setting remains available if the platform preference cannot be read.
       }
-      const [loaded, chapter] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage()]);
+      const [loaded, chapter, gallery] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage()]);
       if (!active) return;
       setControls(chapter.controls);
       setOnboarding(chapter.onboarding);
       setOnboardingWritable(chapter.onboardingWritable);
       setCheckpoint(chapter.checkpoint);
+      setHasLegacySave(chapter.hasCheckpoint);
+      setGalleryCheckpoint(gallery.checkpoint);
+      setHasGallerySave(gallery.hasCheckpoint);
+      setGalleryStarted(gallery.status !== 'empty');
+      setGalleryBlocked(!gallery.checkpointWritable);
+      setGalleryMessage(gallery.message);
       setFirstPersonMessage(chapter.message);
       setStorageWritable(loaded.status !== 'blocked');
       setStorageMessage(loaded.message);
@@ -91,22 +104,50 @@ export default function App() {
   const navigateHome = () => dispatch({ type: 'NAVIGATE', screen: 'welcome' });
   const beginCalibration = () =>
     dispatch({ type: 'START_CALIBRATION', seed: Date.now() >>> 0, startedAt: new Date().toISOString() });
-  const beginChapter = (restart = false) => {
-    setCompletedAtEntry(!restart && checkpoint.progress.cleared);
-    setChapterLease(beginFirstPersonSession());
-    dispatch({ type: 'BEGIN_JOURNEY' });
+  const selectedCheckpoint = state.selectedChapterId === 'perception-gallery-v1' ? galleryCheckpoint : checkpoint;
+  const launchChapter = async (entry: CheckpointState, newGallery: boolean, restart = false) => {
+    const lease = beginFirstPersonSession();
+    let next = entry;
+    if (newGallery) {
+      // A run chooses its stimulus once. Failed writes retain this in-memory
+      // checkpoint too, so leaving, retrying or returning never rerolls it.
+      next = createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000)));
+      setGalleryStarted(true);
+      setGalleryCheckpoint(next);
+      const saved = await saveGalleryCheckpoint(next, lease);
+      if (!isFirstPersonSessionCurrent(lease)) return;
+      setHasGallerySave(saved);
+      setGalleryMessage(saved ? undefined : '章の進行を保存できませんでした。この起動中は同じ展示で続けられます。');
+    }
+    setCompletedAtEntry(!restart && next.progress.cleared);
+    setChapterLease(lease);
+    dispatch({ type: 'BEGIN_JOURNEY', chapterId: state.selectedChapterId });
+  };
+  const beginChapter = async () => {
+    if (resetInFlight.current) return;
+    resetInFlight.current = true;
+    setResetting(true);
+    await launchChapter(selectedCheckpoint, state.selectedChapterId === 'perception-gallery-v1' && !galleryStarted && !galleryBlocked);
+    resetInFlight.current = false;
+    setResetting(false);
   };
   const restartChapter = async () => {
     if (resetInFlight.current) return;
     resetInFlight.current = true;
     setResetting(true);
-    const removed = await resetFirstPersonChapter();
+    const gallery = state.selectedChapterId === 'perception-gallery-v1';
+    const removed = await (gallery ? resetGalleryChapter() : resetFirstPersonChapter());
     if (removed) {
-      setCheckpoint(createCheckpoint(createInitialRuntime()));
-      setFirstPersonMessage(undefined);
-      beginChapter(true);
+      if (gallery) {
+        setGalleryCheckpoint(createCheckpoint(createGalleryRuntime()));
+        setHasGallerySave(false); setGalleryBlocked(false); setGalleryMessage(undefined);
+      } else {
+        setCheckpoint(createCheckpoint(createInitialRuntime())); setHasLegacySave(false);
+        setFirstPersonMessage(undefined);
+      }
+      await launchChapter(gallery ? createCheckpoint(createGalleryRuntime()) : createCheckpoint(createInitialRuntime()), gallery, true);
     } else {
-      setFirstPersonMessage('章をリセットできませんでした。保存データを保持しています。');
+      (gallery ? setGalleryMessage : setFirstPersonMessage)('章をリセットできませんでした。保存データを保持しています。');
       navigateHome();
     }
     resetInFlight.current = false;
@@ -134,6 +175,9 @@ export default function App() {
     setStorageWritable(true);
     setStorageMessage(undefined);
     setFirstPersonMessage(undefined);
+    setGalleryMessage(undefined); setGalleryBlocked(false); setHasGallerySave(false); setHasLegacySave(false);
+    setGalleryStarted(false);
+    setGalleryCheckpoint(createCheckpoint(createGalleryRuntime()));
     setControls({ ...DEFAULT_FIRST_PERSON_CONTROLS });
     setOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
     setOnboardingWritable(true);
@@ -161,22 +205,23 @@ export default function App() {
       />
     );
   } else if (state.screen === 'playInstructions') {
-    screen = <PlayInstructionsScreen controls={controls} reducedMotion={state.settings.reducedMotion} onStart={() => beginChapter()} onBack={navigateHome} />;
+    screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} onStart={() => void beginChapter()} onBack={navigateHome} />;
   } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
-    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onReplay={() => void restartChapter()} onHome={navigateHome} />;
+    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onReplay={() => void restartChapter()} onHome={navigateHome} />;
   } else if (state.screen === 'firstPerson' || (state.screen === 'firstPersonLab' && __DEV__)) {
     const lab = state.screen === 'firstPersonLab';
     // Every callback captures this mounted run's lease; an old save/completion cannot adopt a new run.
     const lease = chapterLease;
     screen = !lab && completedAtEntry ? (
       <FirstPersonResultScreen
-        summary={{ chapterId: checkpoint.chapterId, seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '戻ったはずの入口'] }}
+        summary={{ chapterId: selectedCheckpoint.chapterId, seals: state.selectedChapterId === 'perception-gallery-v1' ? 4 : 2, discoveredMechanisms: state.selectedChapterId === 'perception-gallery-v1' ? ['触れない紋章', '影の見本', '描かれていない形', '重なる鍵', '戻ったはずの入口'] : ['触れない紋章', '重なる鍵', '戻ったはずの入口'] }}
+        onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })}
         onReplay={() => void restartChapter()} onHome={navigateHome}
       />
     ) : (
       <NativeFirstPersonGate
-        key={`${lab ? 'lab' : 'chapter'}-${lease}`} scene={lab ? 'lab' : 'chapter'}
-        settings={state.settings} controls={controls} {...(!lab ? { checkpoint } : {})}
+        key={`${lab ? 'lab' : state.selectedChapterId}-${lease}`} scene={lab ? 'lab' : 'chapter'} chapterId={lab ? 'returnless-entrance' : state.selectedChapterId}
+        settings={state.settings} controls={controls} {...(!lab ? { checkpoint: selectedCheckpoint } : {})}
         onboarding={onboarding}
         onOnboardingChange={(next) => {
           if (lab || !isFirstPersonSessionCurrent(lease)) return;
@@ -199,10 +244,13 @@ export default function App() {
           });
         }}
         onCheckpoint={(next) => {
-          if (lab || !isFirstPersonSessionCurrent(lease)) return;
-          setCheckpoint(next);
-          void saveFirstPersonCheckpoint(next, lease).then((saved) => {
-            if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('章の進行を保存できませんでした。この起動中はそのまま遊べます。');
+          if (lab || !isFirstPersonSessionCurrent(lease) || next.chapterId !== state.selectedChapterId) return;
+          const gallery = state.selectedChapterId === 'perception-gallery-v1';
+          if (gallery) setGalleryCheckpoint(next); else setCheckpoint(next);
+          void (gallery ? saveGalleryCheckpoint(next, lease) : saveFirstPersonCheckpoint(next, lease)).then((saved) => {
+            if (!isFirstPersonSessionCurrent(lease)) return;
+            if (saved) { if (gallery) setHasGallerySave(true); else setHasLegacySave(true); }
+            else (gallery ? setGalleryMessage : setFirstPersonMessage)('章の進行を保存できませんでした。この起動中はそのまま遊べます。');
           });
         }}
         onComplete={(summary) => {
@@ -240,6 +288,8 @@ export default function App() {
         onQuickSetup={() => dispatch({ type: 'START_QUICK_SETUP', sessionId: String(Date.now()) })}
         onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })}
         onReset={() => void reset()}
+        currentChapterName={state.selectedChapterId === 'perception-gallery-v1' ? '不確かな展示室' : '帰り道のない入口'}
+        onResetChapter={() => void restartChapter()}
         onBack={navigateHome}
         {...(__DEV__ ? {
           onDeveloperLab: () => dispatch({ type: 'NAVIGATE', screen: 'developerLab' }),
@@ -267,7 +317,13 @@ export default function App() {
   } else if (state.screen === 'stageResult' && state.latestMazeScore && __DEV__) {
     screen = <StageResultScreen score={state.latestMazeScore} bestScore={state.bestMazeScore} {...(state.calibrationProfile ? { profile: state.calibrationProfile } : {})} settings={state.settings} onRetry={() => dispatch({ type: 'NAVIGATE', screen: 'microMaze' })} onHome={navigateHome} />;
   } else {
-    screen = <WelcomeScreen hasSetup={hasSetup} onPlay={() => dispatch({ type: 'PLAY', sessionId: String(Date.now()) })} onSkip={() => dispatch({ type: 'SKIP_QUICK_SETUP', completedAt: new Date().toISOString() })} onSettings={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
+    screen = <WelcomeScreen hasSetup={hasSetup} gallerySaved={hasGallerySave || galleryStarted} galleryBlocked={galleryBlocked}
+      galleryCleared={galleryCheckpoint.progress.cleared}
+      gallerySolved={Number(galleryCheckpoint.progress.sealA) + Number(galleryCheckpoint.progress.sealB) + Number(galleryCheckpoint.progress.gallery?.shadow.solved ?? false) + Number(galleryCheckpoint.progress.gallery?.contour.solved ?? false)}
+      legacySaved={hasLegacySave} onLegacyContinue={() => dispatch({ type: 'PLAY', chapterId: 'returnless-entrance', sessionId: String(Date.now()) })}
+      onPlay={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1', sessionId: String(Date.now()) })}
+      onSkip={() => { dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' }); dispatch({ type: 'SKIP_QUICK_SETUP', completedAt: new Date().toISOString() }); }}
+      onSettings={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
   }
 
   return (
@@ -275,6 +331,7 @@ export default function App() {
       <View style={styles.application}>
         {screen}
         {storageMessage ? <Text accessibilityRole="alert" style={styles.notice}>{storageMessage}</Text> : null}
+        {galleryMessage ? <Text accessibilityRole="alert" style={styles.notice}>{galleryMessage}</Text> : null}
         {firstPersonMessage ? <Text accessibilityRole="alert" style={styles.notice}>{firstPersonMessage}</Text> : null}
       </View>
     </SafeAreaProvider>

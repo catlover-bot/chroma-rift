@@ -1,4 +1,6 @@
+import { GlyphMark } from './GlyphMark';
 /* eslint-disable react/no-unknown-property -- These are R3F Three.js intrinsics, not DOM elements. */
+import { GalleryScene } from './GalleryScene';
 import { useFrame } from '@react-three/fiber/native';
 import { useMemo, useRef, type RefObject } from 'react';
 import type * as THREE from 'three';
@@ -15,19 +17,8 @@ function Segment({ from, to, width, resources, faint = false }: { from: Vec3; to
   return <mesh name="key-segment" geometry={resources.cylinder} material={faint ? resources.quiet : resources.key} position={transform.position} quaternion={transform.quaternion} scale={transform.scale} />;
 }
 
-function GlyphMark({ glyph, resources }: { glyph: Glyph; resources: SceneResources }) {
-  if (glyph === 'circle') return <mesh name="emblem-glyph-circle" geometry={resources.ring} material={resources.neutral} scale={[0.34 / 0.78, 0.34 / 0.78, 1]} />;
-  const side = glyph === 'diamond' ? 0.34 / Math.SQRT2 : 0.34;
-  const stroke = 0.022;
-  return <group name={`emblem-glyph-${glyph}`} rotation={[0, 0, glyph === 'diamond' ? Math.PI / 4 : 0]}>
-    {[-1, 1].map((sign) => <group key={sign}>
-      <mesh geometry={resources.plane} material={resources.neutral} position={[0, sign * (side - stroke) / 2, 0]} scale={[side, stroke, 1]} />
-      <mesh geometry={resources.plane} material={resources.neutral} position={[sign * (side - stroke) / 2, 0, 0]} scale={[stroke, side - stroke * 2, 1]} />
-    </group>)}
-  </group>;
-}
 
-export function ChapterScene({ world, runtime, progress, resources, assist, reducedMotion, lowQuality, lab, onFrameError }: {
+function LegacyChapterScene({ world, runtime, progress, resources, assist, reducedMotion, lowQuality, lab, onFrameError }: {
   world: WorldGeometry; runtime: RefObject<ChapterRuntime>; progress: PuzzleState; resources: SceneResources; assist: boolean; reducedMotion: boolean; lowQuality: boolean; lab: boolean; onFrameError?: (error: unknown) => void;
 }) {
   const doorA = useRef<THREE.Mesh>(null);
@@ -137,4 +128,8 @@ export function ChapterScene({ world, runtime, progress, resources, assist, redu
       </> : null}
     </group>
   );
+}
+
+export function ChapterScene(props: Parameters<typeof LegacyChapterScene>[0]) {
+  return props.progress.gallery && !props.lab ? <GalleryScene {...props} /> : <LegacyChapterScene {...props} />;
 }

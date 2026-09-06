@@ -6,7 +6,7 @@ import type { CanvasLifecycle } from './canvasLifecycle';
 import { installShaderDiagnostics, recordContextDiagnostics, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
-import { advanceController, controllerSnapshot, recordFrameStats, stopController, syncCamera, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
+import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController, syncCamera, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
 
 function createTeardownOnlyRenderer() {
   return { render() {}, setSize() {}, setPixelRatio() {}, dispose() {}, getContext: () => ({ endFrameEXP() {} }) };
@@ -31,6 +31,8 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
     if (previousRuntime) { controller.runtime = previousRuntime; previousRuntime = undefined; }
     if (previousTutorial) { controller.tutorial = previousTutorial; previousTutorial = undefined; }
     pendingPublish = undefined;
+    controller.pendingFootstepDistance = 0;
+    controller.audio?.setActive(false);
     lifecycle.fail(error, phase);
   };
   const inspectGl = (renderer: THREE.WebGLRenderer, point: 'before native presentation' | 'after native wrapper return') => {
@@ -151,6 +153,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
               diagnostics.shaderErrors.length === 0;
             if (lifecycle.markReady(valid && sampledFrame)) onReady();
             if (lifecycle.ready && pendingPublish) {
+              flushControllerAudioFrame(controller);
               const next = controllerSnapshot(controller);
               if (next.key !== lastKey) { lastKey = next.key; pendingPublish(next); }
             }

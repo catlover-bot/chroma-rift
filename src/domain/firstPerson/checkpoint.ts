@@ -1,3 +1,4 @@
+import { createGalleryCheckpoint } from '../gallery/checkpoint';
 import { parseSealCheckpoint } from '../emblem/puzzle';
 import { CHAPTER, CHAPTER_ID, getWorld, LEVEL_VERSION } from './chapter';
 import { isSafePose } from './geometry';
@@ -51,6 +52,7 @@ function safeCheckpointPose(runtime: ChapterRuntime): PlayerPose {
   return { ...nearest, position: { ...nearest.position } };
 }
 export function createCheckpoint(runtime: ChapterRuntime): CheckpointState {
+  if (runtime.progress.gallery) return createGalleryCheckpoint(runtime);
   return { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: safeCheckpointPose(runtime), progress: { ...runtime.progress, emblem: emblemCheckpointForProgress(runtime.progress) } };
 }
 export function restoreCheckpoint(value: unknown): { checkpoint: CheckpointState; recovered: boolean; emblemStatus: EmblemCheckpointStatus } | undefined {

@@ -1,3 +1,5 @@
+import { advanceGallery, applyGalleryCommand, cancelGalleryManipulation, initialGalleryProgress, initialGalleryTransient } from '../gallery/state';
+import { GALLERY_CHAPTER_ID, GALLERY_CHANGED_REGION, GALLERY_SPAWN, GALLERY_EMBLEM_FIXTURE, GALLERY_OBSERVATION_POSE, GALLERY_SHADOW_FIXTURE, GALLERY_CONTOUR_FIXTURE } from '../gallery/definition';
 import { checkpointSeal, EMBLEM_SEED, parseSealCheckpoint, reduceSeal, sealHint, startSealSession, type SealCheckpoint, type SealResult } from '../emblem/puzzle';
 import type { Glyph } from '../emblem/stimulus';
 import { EMBLEM_FIXTURE, EMBLEM_SWITCH_FEEDBACK_SECONDS } from './emblemFixture';
@@ -19,14 +21,20 @@ export function emblemCheckpointForProgress(progress: PuzzleState): SealCheckpoi
   const checkpoint = parsed ?? fallback;
   return { ...checkpoint, phase: progress.sealA ? 'released' : checkpoint.phase === 'released' ? 'observing' : checkpoint.phase };
 }
-export function createInitialRuntime(checkpoint?: CheckpointState, session = ++runtimeSession): ChapterRuntime {
+export function createInitialRuntime(checkpoint?: CheckpointState, session = ++runtimeSession, chapterId = CHAPTER.id): ChapterRuntime {
   runtimeSession = Math.max(runtimeSession, session);
+  const selectedChapter = checkpoint?.chapterId ?? chapterId;
+  const galleryChapter = selectedChapter === GALLERY_CHAPTER_ID;
   const progress = checkpoint ? { ...checkpoint.progress } : initialProgress();
+  if (galleryChapter) progress.gallery ??= initialGalleryProgress();
+  else delete progress.gallery;
   const savedEmblem = emblemCheckpointForProgress(progress);
   progress.emblem = savedEmblem;
   if (!progress.sealA) progress.hintStage = savedEmblem.hintTier;
   const emblem = startSealSession(savedEmblem.seed, String(session), savedEmblem);
-  return { pose: checkpoint ? { ...checkpoint.pose, position: { ...checkpoint.pose.position } } : { ...CHAPTER.spawn, position: { ...CHAPTER.spawn.position } },
+  const spawn = galleryChapter ? GALLERY_SPAWN : CHAPTER.spawn;
+  return { chapterId: selectedChapter, ...(progress.gallery ? { gallery: initialGalleryTransient(progress.gallery, String(session)) } : {}),
+    pose: checkpoint ? { ...checkpoint.pose, position: { ...checkpoint.pose.position } } : { ...spawn, position: { ...spawn.position } },
     progress, emblem, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.exitDoorOpen ? 1 : 0 };
 }
 /** A reducer result and the existing door gate commit together in one runtime
@@ -74,16 +82,17 @@ export function occlusionCertificate(pose: PlayerPose, changed: CollisionVolume,
 export function canApplyReturnVariant(runtime: ChapterRuntime): boolean {
   if (!runtime.progress.sealA || !runtime.progress.sealB || runtime.progress.variant === 'exit') return false;
   const { position } = runtime.pose;
-  if (position.x >= CHANGED_REGION.min.x - PLAYER_RADIUS && position.x <= CHANGED_REGION.max.x + PLAYER_RADIUS && position.z >= CHANGED_REGION.min.z - PLAYER_RADIUS && position.z <= CHANGED_REGION.max.z + PLAYER_RADIUS) return false;
+  const changed = runtime.progress.gallery ? GALLERY_CHANGED_REGION : CHANGED_REGION;
+  if (position.x >= changed.min.x - PLAYER_RADIUS && position.x <= changed.max.x + PLAYER_RADIUS && position.z >= changed.min.z - PLAYER_RADIUS && position.z <= changed.max.z + PLAYER_RADIUS) return false;
   const world = getWorld(runtime);
-  if (!isSafePose(runtime.pose, world) || !occlusionCertificate(runtime.pose, CHANGED_REGION, world.solids)) return false;
+  if (!isSafePose(runtime.pose, world) || !occlusionCertificate(runtime.pose, changed, world.solids)) return false;
   const variant = { ...runtime, progress: { ...runtime.progress, variant: 'exit' as const } };
   return isSafePose(runtime.pose, getWorld(variant));
 }
 export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, dt: number, matrices?: CameraMatrices): ChapterRuntime {
   if (runtime.paused || runtime.progress.cleared) return runtime;
   const world = getWorld(runtime);
-  const pose = isSafePose(nextPose, world) ? nextPose : runtime.pose;
+  const pose = runtime.gallery && runtime.gallery.mode !== 'explore' ? runtime.pose : isSafePose(nextPose, world) ? nextPose : runtime.pose;
   const progress = runtime.progress;
   const elapsed = Number.isFinite(dt) ? clamp(dt, 0, MAX_FRAME_DELTA) : 0;
   const remaining = runtime.switchFeedback ? Math.max(0, runtime.switchFeedback.remainingSeconds - elapsed) : 0;
@@ -93,7 +102,9 @@ export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, d
     doorBOpen: runtime.progress.sealB ? Math.min(1, runtime.doorBOpen + elapsed / 1.25) : 0,
     doorExitOpen: runtime.progress.exitDoorOpen ? Math.min(1, runtime.doorExitOpen + elapsed / 1.25) : 0,
   };
-  next.alignment = runtime.progress.sealB || (!!matrices && runtime.progress.sealA && evaluateKeyAlignment(pose, getWorld(next), matrices, runtime.alignment).aligned);
+  next = advanceGallery(next, elapsed);
+  const keyAccessible = !runtime.progress.gallery || (runtime.progress.gallery.shadow.solved && runtime.progress.gallery.contour.solved);
+  next.alignment = runtime.progress.sealB || (!!matrices && runtime.progress.sealA && keyAccessible && evaluateKeyAlignment(pose, getWorld(next), matrices, runtime.alignment).aligned);
   if (canApplyReturnVariant(next)) next = { ...next, progress: { ...next.progress, variant: 'exit' } };
   if (next.progress.exitDoorOpen && next.progress.variant === 'exit' && next.pose.position.z >= 14.75) next = { ...next, progress: { ...next.progress, cleared: true } };
   return next;
@@ -111,6 +122,11 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
   if (candidate.kind !== 'ready' || candidate.target.id !== expectedId) return runtime;
   const progress = runtime.progress;
   switch (expectedId) {
+    case 'shadow-panel':
+    case 'contour-panel': {
+      if (!runtime.gallery || !matrices) return runtime;
+      return applyGalleryCommand(runtime, { sessionId: runtime.gallery.sessionId, seq: runtime.gallery.lastSeq + 1, nowMs: runtime.gallery.lastNowMs + 1, action: { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : 'contour' } }, { rendererReady: true, foreground: true, targetId: expectedId }).runtime;
+    }
     case 'guide':
     case 'floor-device': return runtime;
     case 'emblem-panel':
@@ -125,6 +141,7 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
       return next !== runtime && glyph ? { ...next, switchFeedback: { glyph, correct: next.progress.sealA, sequence: result.state.lastSeq, remainingSeconds: EMBLEM_SWITCH_FEEDBACK_SECONDS } } : next;
     }
     case 'key': {
+      if (progress.gallery && (!progress.gallery.shadow.solved || !progress.gallery.contour.solved)) return runtime;
       const actualAlignment = !!matrices && evaluateKeyAlignment(runtime.pose, getWorld(runtime), matrices, runtime.alignment).aligned;
       if (progress[KEY_PUZZLE.success.seal] || !prerequisitesMet(KEY_PUZZLE, progress, actualAlignment)) return runtime;
       const solved = { ...runtime, alignment: true, progress: { ...progress, [KEY_PUZZLE.success.seal]: true, hintStage: 0 as const } };
@@ -134,7 +151,10 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
       return progress.exitDoorOpen || progress.variant !== 'exit' || !progress.sealA || !progress.sealB ? runtime : { ...runtime, progress: { ...progress, exitDoorOpen: true } };
   }
 }
-export function pauseRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? runtime : { ...runtime, paused: true, emblem: { ...runtime.emblem, paused: true } }; }
+export function pauseRuntime(runtime: ChapterRuntime): ChapterRuntime {
+  const stopped = cancelGalleryManipulation(runtime, true);
+  return stopped.paused ? stopped : { ...stopped, paused: true, emblem: { ...stopped.emblem, paused: true } };
+}
 export function resumeRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? { ...runtime, paused: false, emblem: { ...runtime.emblem, paused: false } } : runtime; }
 export function setHintStage(runtime: ChapterRuntime, stage: HintStage): ChapterRuntime {
   if (runtime.progress.sealA) return { ...runtime, progress: { ...runtime.progress, hintStage: stage } };
@@ -148,17 +168,20 @@ export function setHintStage(runtime: ChapterRuntime, stage: HintStage): Chapter
 export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?: Vec3 } {
   const { progress } = runtime;
   const stage = Math.max(1, progress.hintStage) - 1;
-  if (!progress.sealA) return { text: sealHint(runtime.emblem), target: EMBLEM_FIXTURE.center };
-  if (!progress.sealB) return { text: KEY_PUZZLE.hints[stage]!, target: OBSERVATION_POSE.position };
+  if (!progress.sealA) return { text: sealHint(runtime.emblem), target: progress.gallery ? GALLERY_EMBLEM_FIXTURE.center : EMBLEM_FIXTURE.center };
+  if (progress.gallery && !progress.gallery.shadow.solved && (runtime.gallery?.mode !== 'contour' || progress.gallery.contour.solved)) return { text: ['左の格子棚で、三枚の見本を調べよう。', '見本を下の比較台へ動かすと、周りの明暗から離せる。', '同じ灰色の別々の二枚を左右のソケットへ置き、つなごう。'][stage]!, target: GALLERY_SHADOW_FIXTURE.center };
+  if (progress.gallery && !progress.gallery.contour.solved) return { text: ['右の翼で、欠けた円盤を回してみよう。', '三つの切り欠きが、中央へ向く配置を探そう。', '向きをそろえてから、封印に触れよう。輪郭ガイドも使えます。'][stage]!, target: GALLERY_CONTOUR_FIXTURE.center };
+  if (!progress.sealB) return { text: KEY_PUZZLE.hints[stage]!, target: progress.gallery ? GALLERY_OBSERVATION_POSE.position : OBSERVATION_POSE.position };
   if (progress.variant !== 'exit') return { text: '鍵の部屋の観察の輪へ戻ろう。帰り道の準備が整います。', target: OBSERVATION_POSE.position };
   if (progress.exitDoorOpen) return { text: '開いた最後の扉を、自分の足で通り抜けよう。', target: { x: 0, y: EYE_HEIGHT, z: 15.5 } };
   return { text: ['覚えのある入口へ戻ってみよう。', '二つ目の扉から帰ると、回廊を短く戻れる。', '最初にいた小さな扉の向こうへ進み、奥の最後の扉を調べよう。'][stage]!, target: { x: 0, y: EYE_HEIGHT, z: 12 } };
 }
 export function objectiveForRuntime(runtime: ChapterRuntime): string {
   const p = runtime.progress;
-  if (p.cleared) return '帰り道のない入口から脱出した。';
+  if (p.cleared) return p.gallery ? '不確かな展示室から外へ出た。' : '帰り道のない入口から脱出した。';
   if (p.exitDoorOpen) return '開いた扉の外へ歩こう。';
   if (p.sealB) return '覚えのある入口へ戻ろう。';
+  if (p.sealA && p.gallery && (!p.gallery.shadow.solved || !p.gallery.contour.solved)) return !p.gallery.shadow.solved && !p.gallery.contour.solved ? '左右の翼を探り、二つの封印を解こう。' : !p.gallery.shadow.solved ? '影の見本で、同じ二枚をつなごう。' : '円盤を回し、ないはずの輪郭をつなごう。';
   if (p.sealA) return KEY_PUZZLE.clues[0]!;
   return runtime.emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
 }
@@ -167,7 +190,8 @@ export function assistAim(runtime: ChapterRuntime): ChapterRuntime {
   if (runtime.paused || runtime.progress.hintStage < 3 || runtime.progress.cleared) return runtime;
   if (!runtime.progress.sealA || runtime.progress.sealB) return runtime;
   const world = getWorld(runtime);
-  if (Math.hypot(runtime.pose.position.x - OBSERVATION_POSE.position.x, runtime.pose.position.z - OBSERVATION_POSE.position.z) > 0.55) return runtime;
+  const observation = world.keyObservationPose ?? OBSERVATION_POSE;
+  if (Math.hypot(runtime.pose.position.x - observation.position.x, runtime.pose.position.z - observation.position.z) > 0.55) return runtime;
   const target = world.keyFrame.center;
   if (segmentOccluded(runtime.pose.position, target, world)) return runtime;
   const dx = target.x - runtime.pose.position.x;

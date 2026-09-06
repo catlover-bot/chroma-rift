@@ -146,6 +146,26 @@ describe('quick setup and retained legacy journey', () => {
 });
 
 describe('normal first-person chapter navigation', () => {
+  it('selects the new gallery by default while preserving explicit old-chapter continuation across setup', () => {
+    expect(quickStarted().selectedChapterId).toBe('perception-gallery-v1');
+    const legacy = appReducer(initialAppState, { type: 'PLAY', chapterId: 'returnless-entrance' });
+    const ready = appReducer(legacy, { type: 'SKIP_QUICK_SETUP' });
+    expect(appReducer(ready, { type: 'BEGIN_JOURNEY' }).selectedChapterId).toBe('returnless-entrance');
+    expect(persistedFromState(ready)).not.toHaveProperty('selectedChapterId');
+    const gallery = appReducer(ready, { type: 'PLAY', chapterId: 'perception-gallery-v1' });
+    expect(gallery.screen).toBe('playInstructions');
+    expect(gallery.quickSetupResult).toBe(ready.quickSetupResult);
+  });
+  it('requires all four gallery seals and rejects another chapter or old-run completion', () => {
+    const gallery = appReducer(initialAppState, { type: 'BEGIN_JOURNEY', chapterId: 'perception-gallery-v1' });
+    const summary = { chapterId: 'perception-gallery-v1', seals: 4, discoveredMechanisms: ['A', 'B', 'C', 'D'] };
+    const action = { type: 'COMPLETE_CHAPTER' as const, summary, journeyRun: gallery.journeyRun };
+    expect(appReducer(gallery, { ...action, summary: { ...summary, seals: 2 } })).toBe(gallery);
+    expect(appReducer(gallery, { ...action, summary: { ...summary, chapterId: 'returnless-entrance', seals: 2 } })).toBe(gallery);
+    expect(appReducer(gallery, action).screen).toBe('firstPersonResult');
+    expect(appReducer(appReducer(gallery, { type: 'BEGIN_JOURNEY' }), action).screen).toBe('firstPerson');
+  });
+
   it('enters first person after three setup answers', () => {
     let state = quickStarted();
     for (let index = 0; index < 3; index += 1) state = appReducer(state, quickAnswer(state));
@@ -164,7 +184,7 @@ describe('normal first-person chapter navigation', () => {
   });
 
   it('accepts this chapter once and ignores incomplete, wrong-chapter and stale completion callbacks', () => {
-    const chapter = appReducer(initialAppState, { type: 'BEGIN_JOURNEY' });
+    const chapter = appReducer(initialAppState, { type: 'BEGIN_JOURNEY', chapterId: 'returnless-entrance' });
     const summary = { chapterId: 'returnless-entrance', seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '帰路の変化'] };
     const action = { type: 'COMPLETE_CHAPTER' as const, summary, journeyRun: chapter.journeyRun };
     expect(appReducer(chapter, { ...action, summary: { ...summary, seals: 1 } })).toBe(chapter);

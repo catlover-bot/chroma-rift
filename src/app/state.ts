@@ -17,7 +17,9 @@ import type {
   ScreenName,
 } from '../types/application';
 
+export type PlayableChapterId = 'returnless-entrance' | 'perception-gallery-v1';
 export type AppState = PersistedApplication & {
+  selectedChapterId: PlayableChapterId;
   screen: ScreenName;
   hydrated: boolean;
   latestMazeScore?: MazeScore;
@@ -32,11 +34,11 @@ export type AppState = PersistedApplication & {
 export type AppAction =
   | { type: 'HYDRATE'; persisted: PersistedApplication; systemReducedMotion: boolean }
   | { type: 'NAVIGATE'; screen: ScreenName }
-  | { type: 'PLAY'; sessionId?: string }
+  | { type: 'PLAY'; sessionId?: string; chapterId?: PlayableChapterId }
   | { type: 'START_QUICK_SETUP'; sessionId: string }
   | { type: 'SKIP_QUICK_SETUP'; completedAt?: string }
   | { type: 'ADD_QUICK_RESPONSE'; sessionId: string; index: number; answer: QuickSetupAnswer; respondedAt: string }
-  | { type: 'BEGIN_JOURNEY' }
+  | { type: 'BEGIN_JOURNEY'; chapterId?: PlayableChapterId }
   | { type: 'BEGIN_LEGACY_JOURNEY' }
   | { type: 'COMPLETE_CHAPTER'; summary: FirstPersonChapterSummary; journeyRun: number }
   | { type: 'COMPLETE_STAGE'; summary: JourneyStageSummary; journeyRun: number }
@@ -51,6 +53,7 @@ export type AppAction =
 export const initialAppState: AppState = {
   ...createDefaultApplication(false),
   screen: 'welcome',
+  selectedChapterId: 'perception-gallery-v1',
   hydrated: false,
   quickSessionRevision: 0,
   stageIndex: 0,
@@ -70,9 +73,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       if ((action.screen === 'developerLab' || action.screen === 'firstPersonLab') && !__DEV__) return state;
       return { ...state, screen: action.screen };
     case 'PLAY':
-      if (state.quickSetupResult || state.calibrationProfile) return { ...state, screen: 'playInstructions' };
+      if (state.quickSetupResult || state.calibrationProfile) return { ...state, selectedChapterId: action.chapterId ?? 'perception-gallery-v1', screen: 'playInstructions' };
       return {
-        ...state, screen: 'quickSetup', quickSessionRevision: state.quickSessionRevision + 1,
+        ...state, selectedChapterId: action.chapterId ?? 'perception-gallery-v1', screen: 'quickSetup', quickSessionRevision: state.quickSessionRevision + 1,
         quickSetupSession: { id: action.sessionId ?? `quick-${state.quickSessionRevision + 1}`, responses: [], stimulus: createQuickSetupStimulusSpec(state.settings.emblemPalette ?? 'baseline') },
       };
     case 'START_QUICK_SETUP':
@@ -103,12 +106,12 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
     }
     case 'BEGIN_JOURNEY':
-      return { ...state, screen: 'firstPerson', firstPersonSummary: undefined, journeyRun: state.journeyRun + 1 };
+      return { ...state, selectedChapterId: action.chapterId ?? state.selectedChapterId, screen: 'firstPerson', firstPersonSummary: undefined, journeyRun: state.journeyRun + 1 };
     case 'BEGIN_LEGACY_JOURNEY':
       return { ...state, screen: 'illusionMaze', stageIndex: 0, journeySummaries: [], journeyRun: state.journeyRun + 1 };
     case 'COMPLETE_CHAPTER':
       if (state.screen !== 'firstPerson' || action.journeyRun !== state.journeyRun ||
-        action.summary.chapterId !== 'returnless-entrance' || action.summary.seals !== 2) return state;
+        action.summary.chapterId !== state.selectedChapterId || action.summary.seals !== (state.selectedChapterId === 'perception-gallery-v1' ? 4 : 2)) return state;
       return { ...state, screen: 'firstPersonResult', firstPersonSummary: action.summary };
     case 'COMPLETE_STAGE': {
       const expectedLevel = state.stageIndex === 0 ? 'floating-corridor' : 'impossible-bridge';
@@ -185,7 +188,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         ? { ...state, calibrationSession: { ...state.calibrationSession, environment: action.environment } }
         : state;
     case 'RESET':
-      return { ...action.defaults, screen: 'welcome', hydrated: true, quickSessionRevision: state.quickSessionRevision + 1, stageIndex: 0, journeySummaries: [], journeyRun: state.journeyRun + 1 };
+      return { ...action.defaults, screen: 'welcome', selectedChapterId: 'perception-gallery-v1', hydrated: true, quickSessionRevision: state.quickSessionRevision + 1, stageIndex: 0, journeySummaries: [], journeyRun: state.journeyRun + 1 };
   }
 }
 

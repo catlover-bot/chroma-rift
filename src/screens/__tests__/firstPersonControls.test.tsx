@@ -402,7 +402,13 @@ describe('first-person control surface and lifecycle', () => {
     expect(view.getByTestId('interact')).toHaveStyle({ minHeight: 48, minWidth: 44 });
     expect(view.getByTestId('pause-control')).toHaveStyle({ minHeight: 44, minWidth: 44 });
     expect(view.getByTestId('current-objective').props.numberOfLines).toBeUndefined();
-    expect(view.getByTestId('compare-colors')).toBeTruthy();
+    // Contextual comparison is absent at spawn and reachable after actually
+    // approaching the panel; all existing touch and minimum-size checks remain.
+    expect(view.queryByTestId('compare-colors')).toBeNull();
+    await approachEmblem(view);
+    expect(view.getByTestId('compare-colors')).toBeEnabled();
+    await fireEvent.press(view.getByTestId('compare-colors'));
+    expect(scene().controller.runtime.emblem.presentation).toBe('neutral');
     await view.unmount();
   });
 
@@ -548,7 +554,7 @@ describe('first-person control surface and lifecycle', () => {
     const view = await render(<FirstPersonScreen {...original} />);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     const old = scene();
-    await fireEvent.press(view.getByRole('button', { name: '章を最初から' }));
+    await fireEvent.press(view.getByRole('button', { name: 'この旧章を最初から' }));
     const writes = jest.mocked(original.onCheckpoint).mock.calls.length;
     await fireEvent.press(view.getByRole('button', { name: '再開する' }));
     await act(() => { old.onReady(); old.onSnapshot(controllerSnapshot(old.controller)); });

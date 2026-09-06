@@ -16,6 +16,8 @@ export type InteractionEvaluation = {
 
 function actionLabel(target: InteractableDefinition): string {
   switch (target.id) {
+    case 'shadow-panel': return '見本を動かす';
+    case 'contour-panel': return '円盤を回す';
     case 'emblem-panel': return '紋章を調べる';
     case 'emblem-circle': return '丸の印を押す';
     case 'emblem-diamond': return 'ひし形の印を押す';
@@ -30,6 +32,8 @@ function actionLabel(target: InteractableDefinition): string {
 function lockedReason(target: InteractableDefinition, progress: PuzzleState | undefined, aligned: boolean): string | undefined {
   if (!progress) return undefined;
   switch (target.id) {
+    case 'shadow-panel':
+    case 'contour-panel': return progress.gallery && progress.sealA ? undefined : '先に紋章の封印を解こう。';
     case 'emblem-panel': return progress.sealA ? '紋章の封印は解けています。奥の回廊へ進もう。' : undefined;
     case 'emblem-circle':
     case 'emblem-diamond':
@@ -41,6 +45,7 @@ function lockedReason(target: InteractableDefinition, progress: PuzzleState | un
     case 'key':
       if (progress.sealB) return '鍵は重なりました。入口へ戻ろう。';
       if (!progress.sealA) return '先に紋章の封印を解こう。';
+      if (progress.gallery && (!progress.gallery.shadow.solved || !progress.gallery.contour.solved)) return '二つの翼の封印を解こう。';
       return aligned ? undefined : '観察の輪から、欠けた鍵の形を重ねよう。';
     case 'exit':
       if (progress.exitDoorOpen) return '扉は開いています。外へ歩こう。';

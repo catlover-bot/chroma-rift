@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { normalizeAudioPreferences } from '../audio';
 
 import { quickPreference, QUICK_EMBLEM_SEEDS, QUICK_EMBLEM_RESOLUTION, QUICK_SETUP_ANSWERS, type QuickSetupResult } from '../domain/calibration/quickSetup';
 
@@ -254,6 +255,7 @@ export function decodePersistedApplication(raw: string | null, systemReducedMoti
         // v1 cannot tell whether the user explicitly chose assist: preserve it conservatively.
         settings: {
           ...value.settings,
+          audio: normalizeAudioPreferences(value.settings.audio),
           depthAssistOverridden: value.settings.depthAssistOverridden ?? true,
           // Additive optional setting: damaged/new values never invalidate old calibration.
           emblemPalette: oneOf(['baseline', 'muted', 'alternate'] as const, value.settings.emblemPalette)

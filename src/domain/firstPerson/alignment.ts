@@ -34,7 +34,8 @@ export function evaluateKeyAlignment(pose: PlayerPose, world: WorldGeometry, cam
   if (!cameraMatchesPose(pose, camera)) return fail('camera');
   // This broad observation bay is only a precondition. Actual displayed shape
   // agreement, aim, view-frustum inclusion and occlusion decide success below.
-  if (Math.hypot(pose.position.x - OBSERVATION_POSE.position.x, pose.position.z - OBSERVATION_POSE.position.z) > 1.2) return fail('position');
+  const observation = world.keyObservationPose ?? OBSERVATION_POSE;
+  if (Math.hypot(pose.position.x - observation.position.x, pose.position.z - observation.position.z) > 1.2) return fail('position');
   const { center, width, height } = world.keyFrame;
   const corners = [
     { x: center.x - width / 2, y: center.y - height / 2, z: center.z },

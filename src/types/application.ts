@@ -1,3 +1,4 @@
+import { DEFAULT_AUDIO_PREFERENCES, type AudioPreferences } from '../audio';
 import {
   DEFAULT_CALIBRATION_ENVIRONMENT,
   type CalibrationEnvironment,
@@ -35,6 +36,8 @@ export type AppSettings = {
   /** Explicit emblem preset, independent from legacy maze effect strength. */
   emblemPalette?: PaletteId;
   haptics: boolean;
+  /** Additive local sound preferences; older saves remain valid. */
+  audio?: AudioPreferences;
 };
 
 export type DeveloperLabParameters = {
@@ -119,6 +122,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   effectStrength: 'medium',
   emblemPalette: 'baseline',
   haptics: true,
+  audio: { ...DEFAULT_AUDIO_PREFERENCES },
 };
 
 export const DEFAULT_LAB_PARAMETERS: DeveloperLabParameters = {

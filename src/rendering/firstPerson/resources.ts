@@ -1,10 +1,12 @@
 import * as THREE from 'three';
+import { createGalleryResources } from './galleryResources';
 
 import { illusionPalette, type PreferredColor } from '../IllusionPalette';
 import { createEmblemSurface, DEFAULT_EMBLEM_APPEARANCE, type EmblemAppearance } from './emblemSurface';
 
 /** Explicitly owned by one scene mount; no geometries or materials are made in useFrame. */
-export function createSceneResources(lowQuality: boolean, emblemAppearance: EmblemAppearance | null = DEFAULT_EMBLEM_APPEARANCE) {
+export function createSceneResources(lowQuality: boolean, emblemAppearance: EmblemAppearance | null = DEFAULT_EMBLEM_APPEARANCE, gallery = false) {
+  const galleryResources = gallery ? createGalleryResources() : undefined;
   const emblemSurface = emblemAppearance ? createEmblemSurface(lowQuality ? 256 : 512, emblemAppearance) : undefined;
   const box = new THREE.BoxGeometry(1, 1, 1);
   const plane = new THREE.PlaneGeometry(1, 1);
@@ -48,9 +50,10 @@ export function createSceneResources(lowQuality: boolean, emblemAppearance: Embl
   };
   updatePalette('neutral', false, 'medium');
   return {
-    box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
+    galleryResources, box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
     dispose() {
       emblemSurface?.dispose();
+      galleryResources?.dispose();
       box.dispose(); plane.dispose(); cylinder.dispose(); ring.dispose(); texture.dispose();
       [wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel].forEach((material) => material.dispose());
     },

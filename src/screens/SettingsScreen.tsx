@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import { getGalleryAudioAvailability, normalizeAudioPreferences } from '../audio';
 
 import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
 import type { AppSettings, EffectStrength } from '../types/application';
@@ -15,6 +16,8 @@ export function SettingsScreen({
   onLegacyMaze,
   onLegacyJourney,
   onFirstPersonLab,
+  currentChapterName,
+  onResetChapter,
 }: {
   settings: AppSettings;
   onChange: (settings: AppSettings) => void;
@@ -26,7 +29,11 @@ export function SettingsScreen({
   onLegacyMaze?: () => void;
   onLegacyJourney?: () => void;
   onFirstPersonLab?: () => void;
+  currentChapterName?: string;
+  onResetChapter?: () => void;
 }) {
+  const audio = normalizeAudioPreferences(settings.audio);
+  const audioAvailability = getGalleryAudioAvailability();
   const set = <Key extends keyof AppSettings>(key: Key, value: AppSettings[Key]) =>
     onChange({ ...settings, [key]: value });
 
@@ -55,6 +62,18 @@ export function SettingsScreen({
           onValueChange={(value) => set('haptics', value)}
         />
       </Panel>
+      <SectionTitle>音</SectionTitle>
+      <Panel>
+        <SettingSwitch label="サウンド" description="無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。" value={audio.enabled} onValueChange={(enabled) => set('audio', { ...audio, enabled })} />
+        {audioAvailability === 'missing-native' ? <Body muted>音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。</Body> : null}
+        {audioAvailability === 'unavailable' ? <Body muted>音を再生できません。音なしで探索を続けられます。</Body> : null}
+        {(['musicVolume', 'effectsVolume'] as const).map((field) => <Panel key={field}>
+          <Body>{field === 'musicVolume' ? '環境音' : '効果音'} {Math.round(audio[field] * 100)}%</Body>
+          <ChoiceRow>{[0, 0.25, 0.5, 0.75, 1].map((volume) => <ActionButton key={volume}
+            label={`${field === 'musicVolume' ? '環境音' : '効果音'} ${Math.round(volume * 100)}%${audio[field] === volume ? '（選択中）' : ''}`}
+            onPress={() => set('audio', { ...audio, [field]: volume })} />)}</ChoiceRow>
+        </Panel>)}
+      </Panel>
       <SectionTitle>紋章の表示</SectionTitle>
       <Body muted>見え方を比べて選べます。奥行きの強さに決まった順序はありません。</Body>
       <ChoiceRow>
@@ -79,10 +98,14 @@ export function SettingsScreen({
       <ActionButton label="簡単に調整する（3問）" onPress={onQuickSetup} />
       <ActionButton label="詳しく調整する" onPress={onRecalibrate} />
       <Body muted>調整は表示のための目安です。見え方を診断するものではありません。</Body>
+      {onResetChapter ? <ActionButton label={`${currentChapterName ?? '現在の章'}だけを最初から`}
+        onPress={() => Alert.alert('この章だけを最初から', `${currentChapterName ?? '現在の章'}の進行をリセットします。他の章、表示と音の設定、調整結果は残ります。`, [
+          { text: 'キャンセル', style: 'cancel' }, { text: 'この章だけリセット', style: 'destructive', onPress: onResetChapter },
+        ])} variant="danger" /> : null}
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、一人称の進行を端末から削除します。', [
+          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、旧章と展示室の進行、音の設定を端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])

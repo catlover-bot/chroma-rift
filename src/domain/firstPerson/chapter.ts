@@ -1,3 +1,4 @@
+import { getGalleryWorld } from '../gallery/world';
 import { EMBLEM_FIXTURE, EMBLEM_FIXTURE_SOLIDS, EMBLEM_SWITCHES } from './emblemFixture';
 import type { ChapterDefinition, ChapterRuntime, CollisionVolume, FloorRegion, KeyFragment, KeyFrame, PlayerPose, PuzzleDefinition, Vec3, WorldGeometry } from './types';
 
@@ -86,7 +87,7 @@ function box(id: string, minX: number, maxX: number, minZ: number, maxZ: number,
 
 // Small integer-grid room union: merge exposed boundary edges into long walls.
 // This only constructs the authored chapter, not a maze generator or scene editor.
-function boundaryWalls(floors: readonly FloorRegion[]): CollisionVolume[] {
+export function boundaryWalls(floors: readonly FloorRegion[]): CollisionVolume[] {
   const cells = new Set<string>();
   for (const floor of floors) for (let x = floor.minX; x < floor.maxX; x += 1) for (let z = floor.minZ; z < floor.maxZ; z += 1) cells.add(`${x},${z}`);
   const lines = new Map<string, number[]>();
@@ -133,7 +134,8 @@ const layouts = {
 } as const;
 const staticWalls = { entrance: [...boundaryWalls(layouts.entrance), ...FIXED_WALLS], exit: [...boundaryWalls(layouts.exit), ...FIXED_WALLS] };
 
-export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment'>): WorldGeometry {
+export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment' | 'gallery'>): WorldGeometry {
+  if (runtime.progress.gallery) return getGalleryWorld(runtime);
   const { progress } = runtime;
   const solids = [...staticWalls[progress.variant],
     box(FLOOR_PUZZLE.success.opensDoor, -1, 1, -8.12, -7.92, 'door', runtime.doorAOpen * 3.3, 3.2 + runtime.doorAOpen * 3.3),
