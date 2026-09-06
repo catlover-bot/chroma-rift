@@ -1,0 +1,368 @@
+{
+  "boundary": "Pixel facts in browser-rendered scene snapshots; no perception claim",
+  "allPassed": true,
+  "checks": [
+    {
+      "id": "b-baseline",
+      "contract": "Native-mesh sample interior equals its canonical opaque RGBA after the browser color pipeline",
+      "passed": true,
+      "samples": [
+        {
+          "id": "sample-a",
+          "pixel": {
+            "x": 90,
+            "y": 363
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-b",
+          "pixel": {
+            "x": 195,
+            "y": 363
+          },
+          "actual": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "expected": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-c",
+          "pixel": {
+            "x": 299,
+            "y": 363
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "b-compare",
+      "contract": "Native-mesh sample interior equals its canonical opaque RGBA after the browser color pipeline",
+      "passed": true,
+      "samples": [
+        {
+          "id": "sample-a",
+          "pixel": {
+            "x": 90,
+            "y": 363
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-b",
+          "pixel": {
+            "x": 195,
+            "y": 363
+          },
+          "actual": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "expected": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-c",
+          "pixel": {
+            "x": 299,
+            "y": 363
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "b-wrong",
+      "contract": "Native-mesh sample interior equals its canonical opaque RGBA after the browser color pipeline",
+      "passed": true,
+      "samples": [
+        {
+          "id": "sample-a",
+          "pixel": {
+            "x": 150,
+            "y": 470
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-b",
+          "pixel": {
+            "x": 239,
+            "y": 470
+          },
+          "actual": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "expected": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-c",
+          "pixel": {
+            "x": 299,
+            "y": 363
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "b-correct",
+      "contract": "Native-mesh sample interior equals its canonical opaque RGBA after the browser color pipeline",
+      "passed": true,
+      "samples": [
+        {
+          "id": "sample-a",
+          "pixel": {
+            "x": 150,
+            "y": 470
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-b",
+          "pixel": {
+            "x": 195,
+            "y": 363
+          },
+          "actual": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "expected": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-c",
+          "pixel": {
+            "x": 239,
+            "y": 470
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "b-phone320",
+      "contract": "Native-mesh sample interior equals its canonical opaque RGBA after the browser color pipeline",
+      "passed": true,
+      "samples": [
+        {
+          "id": "sample-a",
+          "pixel": {
+            "x": 89,
+            "y": 244
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-b",
+          "pixel": {
+            "x": 160,
+            "y": 244
+          },
+          "actual": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "expected": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "id": "sample-c",
+          "pixel": {
+            "x": 230,
+            "y": 244
+          },
+          "actual": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "expected": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "a-color-vs-neutral",
+      "contract": "Identical camera/world pixels outside the emblem plate",
+      "passed": true,
+      "bounds": {
+        "left": 34,
+        "right": 355,
+        "top": 166,
+        "bottom": 486
+      },
+      "changedOutsidePlate": 0,
+      "changedInsidePlate": 101442
+    },
+    {
+      "id": "c-correct",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding an 18mm edge margin",
+      "inspectedPixels": 5832,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "c-phone320",
+      "contract": "Ordinary central triangle interior remains uniform background, excluding an 18mm edge margin",
+      "inspectedPixels": 2662,
+      "nonBackgroundPixels": 0,
+      "passed": true
+    }
+  ]
+}

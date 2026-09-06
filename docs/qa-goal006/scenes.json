@@ -1,0 +1,631 @@
+{
+  "sourceHashes": {
+    "src/rendering/firstPerson/GalleryScene.tsx": "989cfbb25324271ecbf1c449d1eb7e81daaba5c6fbfde9c3d4e1c97bf21d463f",
+    "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/firstPerson/galleryResources.ts": "46e390ff3b8bf48291ec0741c9ced5f3726c73ea80df2b881958c2fe8e03d3f5",
+    "src/domain/gallery/definition.ts": "e0f161af6f77f178baf8019031f4550c6ffa3d6c9ce1c188964a063245537a9d",
+    "src/domain/gallery/world.ts": "5d5b289b11942941820a9ced7f8b5359bb18fc423020c05077f79d168f315bfc",
+    "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+    "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6"
+  },
+  "boundary": "Authored fixture snapshots from existing GalleryScene + one sampled scene callback; no native R3F/GL/input/HUD/audio/device/perception validation",
+  "three": "0.185.1",
+  "panels": [
+    {
+      "file": "panel-shadow-baseline-512.png",
+      "kind": "shadow",
+      "state": "baseline",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-baseline-320.png",
+      "kind": "shadow",
+      "state": "baseline",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-guide-512.png",
+      "kind": "shadow",
+      "state": "guide",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-guide-320.png",
+      "kind": "shadow",
+      "state": "guide",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-wrong-512.png",
+      "kind": "shadow",
+      "state": "wrong",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-wrong-320.png",
+      "kind": "shadow",
+      "state": "wrong",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-correct-512.png",
+      "kind": "shadow",
+      "state": "correct",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-shadow-correct-320.png",
+      "kind": "shadow",
+      "state": "correct",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-baseline-512.png",
+      "kind": "contour",
+      "state": "baseline",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-baseline-320.png",
+      "kind": "contour",
+      "state": "baseline",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-guide-512.png",
+      "kind": "contour",
+      "state": "guide",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-guide-320.png",
+      "kind": "contour",
+      "state": "guide",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-wrong-512.png",
+      "kind": "contour",
+      "state": "wrong",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-wrong-320.png",
+      "kind": "contour",
+      "state": "wrong",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-correct-512.png",
+      "kind": "contour",
+      "state": "correct",
+      "width": 512,
+      "height": 384,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    },
+    {
+      "file": "panel-contour-correct-320.png",
+      "kind": "contour",
+      "state": "correct",
+      "width": 320,
+      "height": 240,
+      "source": "galleryGraphics.galleryRaster; same domain colors/positions used by native meshes; software raster, not GPU"
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "entry",
+      "title": "入口・初期視点",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "1ebdc834-af56-46ec-895c-fffdbaf1cccc",
+      "file": "entry.json",
+      "image": "entry.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "a-color",
+      "title": "A・紋章と三つの印",
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -4.9
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "width": 390,
+      "height": 844,
+      "camera": "02c657cc-d7bb-4234-a284-65c9a730c5a9",
+      "file": "a-color.json",
+      "image": "a-color.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "a-neutral",
+      "title": "A・同じカメラで無彩色",
+      "pose": {
+        "position": {
+          "x": 1.95,
+          "y": 1.6,
+          "z": -4.9
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "neutral": true,
+      "width": 390,
+      "height": 844,
+      "camera": "8fc97e98-044f-4b76-a49a-89bc34b17c50",
+      "file": "a-neutral.json",
+      "image": "a-neutral.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "hub",
+      "title": "中央回廊・A解放後",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -9.5
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "width": 390,
+      "height": 844,
+      "camera": "82beb33b-91a5-4be1-8560-cdd940bab518",
+      "file": "hub.json",
+      "image": "hub.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "b-baseline",
+      "title": "B・初期配置",
+      "pose": {
+        "position": {
+          "x": -7,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "shadow": "baseline",
+      "width": 390,
+      "height": 844,
+      "camera": "f0dbd98c-7149-4fed-9865-3dcd84ae309c",
+      "file": "b-baseline.json",
+      "image": "b-baseline.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "b-compare",
+      "title": "B・任意の中立比較",
+      "pose": {
+        "position": {
+          "x": -7,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "shadow": "baseline",
+      "compare": true,
+      "width": 390,
+      "height": 844,
+      "camera": "492fe739-a6a6-4189-b5a4-d6eb796e055e",
+      "file": "b-compare.json",
+      "image": "b-compare.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "b-wrong",
+      "title": "B・異なる見本を二枚配置",
+      "pose": {
+        "position": {
+          "x": -7,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "shadow": "wrong",
+      "width": 390,
+      "height": 844,
+      "camera": "dc8657e2-7bd0-4cb4-b042-754e6c30fbcc",
+      "file": "b-wrong.json",
+      "image": "b-wrong.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "b-correct",
+      "title": "B・同じ見本を二枚配置、ラッチ解放",
+      "pose": {
+        "position": {
+          "x": -7,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "shadow": "correct",
+      "width": 390,
+      "height": 844,
+      "camera": "54199047-c4fd-4053-8582-0b166b655df3",
+      "file": "b-correct.json",
+      "image": "b-correct.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "c-baseline",
+      "title": "C・ばらばらの円盤",
+      "pose": {
+        "position": {
+          "x": 9,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "contour": "baseline",
+      "width": 390,
+      "height": 844,
+      "camera": "14b74c2d-e317-490f-adbb-64b526098e29",
+      "file": "c-baseline.json",
+      "image": "c-baseline.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "c-guide",
+      "title": "C・任意の輪郭ガイド",
+      "pose": {
+        "position": {
+          "x": 9,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "contour": "baseline",
+      "guide": true,
+      "width": 390,
+      "height": 844,
+      "camera": "5577b9df-d294-4d68-92ae-f0fe8f4244de",
+      "file": "c-guide.json",
+      "image": "c-guide.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "c-wrong",
+      "title": "C・一枚だけ角度が不一致",
+      "pose": {
+        "position": {
+          "x": 9,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "contour": "wrong",
+      "width": 390,
+      "height": 844,
+      "camera": "bd481ccd-19e8-4c58-83bb-e414bbf5f892",
+      "file": "c-wrong.json",
+      "image": "c-wrong.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "c-correct",
+      "title": "C・通常描画の正答、中央に三角形を描かない",
+      "pose": {
+        "position": {
+          "x": 9,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "contour": "correct",
+      "width": 390,
+      "height": 844,
+      "camera": "7be6a782-b0e6-4bb1-abf2-6d06cbc5d752",
+      "file": "c-correct.json",
+      "image": "c-correct.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "d-key",
+      "title": "D・実投影の観察位置",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -19.5
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "solved": true,
+      "width": 390,
+      "height": 844,
+      "camera": "d9f8f3fa-f970-4467-b23b-0264ee7765f4",
+      "file": "d-key.json",
+      "image": "d-key.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "return-before",
+      "title": "同じ入口・変更前",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -0.2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "width": 390,
+      "height": 844,
+      "camera": "687e9f3c-d0f9-4614-aa8f-c99d073dc10a",
+      "file": "return-before.json",
+      "image": "return-before.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "return-after",
+      "title": "同じ入口・変更後",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -0.2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "variant": "exit",
+      "width": 390,
+      "height": 844,
+      "camera": "2265ce89-2221-4560-b8e1-0775b6721f4e",
+      "file": "return-after.json",
+      "image": "return-after.png",
+      "inventory": {
+        "meshes": 116,
+        "instancedMeshes": 13,
+        "instances": 149,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "final-door",
+      "title": "最後の扉",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 11.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "variant": "exit",
+      "width": 390,
+      "height": 844,
+      "camera": "c41e1e57-bd3f-4477-b63c-c01be2586c1d",
+      "file": "final-door.json",
+      "image": "final-door.png",
+      "inventory": {
+        "meshes": 116,
+        "instancedMeshes": 13,
+        "instances": 149,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "final-open",
+      "title": "最後の扉を開いた後",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 11.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "variant": "exit",
+      "finalDoorOpen": true,
+      "width": 390,
+      "height": 844,
+      "camera": "c343c8eb-4606-4cb9-88ac-6816b6d258f4",
+      "file": "final-open.json",
+      "image": "final-open.png",
+      "inventory": {
+        "meshes": 116,
+        "instancedMeshes": 13,
+        "instances": 149,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "b-phone320",
+      "title": "B・320px幅の実シーン",
+      "pose": {
+        "position": {
+          "x": -7,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "shadow": "baseline",
+      "width": 320,
+      "height": 568,
+      "camera": "660f45a0-bc85-451d-b9e7-37618004ba3c",
+      "file": "b-phone320.json",
+      "image": "b-phone320.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    },
+    {
+      "id": "c-phone320",
+      "title": "C・320px幅の実シーン",
+      "pose": {
+        "position": {
+          "x": 9,
+          "y": 1.6,
+          "z": -10.7
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "unlocked": true,
+      "contour": "correct",
+      "width": 320,
+      "height": 568,
+      "camera": "1023910f-7659-477f-834e-f531f95994b2",
+      "file": "c-phone320.json",
+      "image": "c-phone320.png",
+      "inventory": {
+        "meshes": 114,
+        "instancedMeshes": 13,
+        "instances": 136,
+        "frameCallbacksSampled": 1
+      }
+    }
+  ]
+}

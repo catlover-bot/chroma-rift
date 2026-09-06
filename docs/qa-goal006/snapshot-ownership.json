@@ -1,0 +1,140 @@
+{
+  "boundary": "CPU resource disposal in scene extraction and real React unmount effects; not native GPU, audio or application lifecycle",
+  "visits": 19,
+  "allDisposedExactlyOnce": true,
+  "checks": [
+    {
+      "id": "entry",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "a-color",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "a-neutral",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "hub",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-baseline",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-compare",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-wrong",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-correct",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-baseline",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-guide",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-wrong",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-correct",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "d-key",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "return-before",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "return-after",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "final-door",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "final-open",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "b-phone320",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    },
+    {
+      "id": "c-phone320",
+      "resources": 48,
+      "disposedOnce": 48,
+      "undisposed": 0,
+      "disposedMultiple": 0
+    }
+  ]
+}

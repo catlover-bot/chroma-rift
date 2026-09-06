@@ -1,4 +1,34 @@
-# 紋章で何を確かめたか — Goal 005
+# 知覚現象と検証 — Goal 006
+
+## 新章で確認できること
+
+| 対象 | コード・描画で検証した事実 | 知覚の未確認事項 |
+| --- | --- | --- |
+| A 色彩立体視を意図した刺激 | 既存coreのshape mask、切れ目、正解を保持。実WebGLでcolor/neutralの板外画素差分0。色比較でcamera/terrain不変。 | iPhoneで奥行きを感じるか、方向や個人差。 |
+| B 明暗の同時対比 | 三枚のうち二枚だけ同じopaque sRGB #808080、第三は#B0B0B0/#505050。source/socket/neutralで中心RGBA不変。unlit、toneMapped=false、fog=false。 | 同じ二枚が違う明るさに見えるか。Checker Shadowの完全再現とは呼ばない。 |
+| C Kanizsa型の主観的輪郭 | 各頂点から重心への方向に60°切欠き。通常の中央に追加線/fillなし。実mesh raycastと実WebGLの中央背景画素を検査。 | 描かれていない三角形を感じるか。その強さ。 |
+| D 幾何学的投影 | 実Threecameraの行列、frustum、遮蔽、位置とshape誤差を使用。明示操作で解放。 | 色彩立体視の発生を証明しない。 |
+| 帰路の空間変更 | 同じworld variantのgeometry/collision/floor/interactables。変更領域全体の遮蔽と安全位置を満たしてから切替。同じランドマークを保持。 | 医学的change blindness測定ではない。 |
+
+Bの描かれた明暗文脈は平面のgraphic cueで、物理照明によって暗くなった別物体を同一輝度の錯覚と呼んでいない。sRGB DataTextureまたはsRGB値から作るopaque MeshBasicMaterialを用い、出力変換は既存rendererに一度だけ任せる。選択表示は見本の外に置く。
+
+Cの外側ノッチは各円盤の重心と逆方向に置き、中央の三角形領域へ入れない。輪郭ガイドの破線は別groupで、通常は非表示。8°許容、円盤半径/辺長比、比較1000msは製品上の選択で、科学的最適値や安全保証ではない。正しく回した表示角と保存角を共有して明示commitを要求する。
+
+## 今回の表示証拠
+
+[35画像と検査詳細](qa-goal006/README.md)。本編のmesh/materialを抽出してLinux ChromiumのThree WebGLで19視点、共通domainからソフトウェアラスタ16枚を生成し、すべて開いた。Bの5場面×3見本の中心RGBA一致、A板外差分0、C中央の通常背景一致を確認した。native R3F境界は別の自動検査で、GL/端末境界だけ代替している。
+
+画像やpixel一致は知覚の証明ではない。iPhone実表示、Expo GLの実フレーム、実multi-touch、VoiceOver読み上げ、音の実聴、触覚、快適性、FPSは未実施。[実機手順](IPHONE_VALIDATION.md)で別に記録する。提供録画は未取得であり、依頼文の観察記述と区別する。
+
+Cの根拠として[Banica & Schwarzkopf (2016)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4982671/)の誘導文脈と輪郭に関する研究を参照した。その実験や眼別mask/点滅をアプリへ移していない。Aの過去コア検証と科学的資料は以下に保持する。
+
+---
+
+## Goal 005の過去記録
+
+以下はGoal005当時の実施範囲。browser未実施等の記述を、上記Goal006の新しいQA結果へ適用しない。
+
+### 紋章で何を確かめたか — Goal 005
 
 ## 仕組みと証拠の区別
 

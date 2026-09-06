@@ -1,0 +1,313 @@
+{
+  "environment": "Linux Chromium headless, browser Three WebGL/ANGLE SwiftShader; not iPhone, native R3F, or device performance",
+  "rendererCount": 1,
+  "screenshotKind": "WebGL canvas pixels (HUD not included)",
+  "browserErrors": [],
+  "allWithinBudget": true,
+  "results": [
+    {
+      "id": "entry",
+      "title": "入口・初期視点",
+      "width": 390,
+      "height": 844,
+      "calls": 77,
+      "triangles": 3066,
+      "geometries": 4,
+      "textures": 2,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "a-color",
+      "title": "A・紋章と三つの印",
+      "width": 390,
+      "height": 844,
+      "calls": 64,
+      "triangles": 2744,
+      "geometries": 4,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "a-neutral",
+      "title": "A・同じカメラで無彩色",
+      "width": 390,
+      "height": 844,
+      "calls": 64,
+      "triangles": 2744,
+      "geometries": 4,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "hub",
+      "title": "中央回廊・A解放後",
+      "width": 390,
+      "height": 844,
+      "calls": 43,
+      "triangles": 2498,
+      "geometries": 4,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "b-baseline",
+      "title": "B・初期配置",
+      "width": 390,
+      "height": 844,
+      "calls": 21,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "b-compare",
+      "title": "B・任意の中立比較",
+      "width": 390,
+      "height": 844,
+      "calls": 21,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "b-wrong",
+      "title": "B・異なる見本を二枚配置",
+      "width": 390,
+      "height": 844,
+      "calls": 21,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "b-correct",
+      "title": "B・同じ見本を二枚配置、ラッチ解放",
+      "width": 390,
+      "height": 844,
+      "calls": 21,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "c-baseline",
+      "title": "C・ばらばらの円盤",
+      "width": 390,
+      "height": 844,
+      "calls": 18,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "c-guide",
+      "title": "C・任意の輪郭ガイド",
+      "width": 390,
+      "height": 844,
+      "calls": 42,
+      "triangles": 2510,
+      "geometries": 4,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "c-wrong",
+      "title": "C・一枚だけ角度が不一致",
+      "width": 390,
+      "height": 844,
+      "calls": 18,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "c-correct",
+      "title": "C・通常描画の正答、中央に三角形を描かない",
+      "width": 390,
+      "height": 844,
+      "calls": 18,
+      "triangles": 1742,
+      "geometries": 3,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "d-key",
+      "title": "D・実投影の観察位置",
+      "width": 390,
+      "height": 844,
+      "calls": 33,
+      "triangles": 1946,
+      "geometries": 3,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "return-before",
+      "title": "同じ入口・変更前",
+      "width": 390,
+      "height": 844,
+      "calls": 6,
+      "triangles": 1248,
+      "geometries": 1,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "return-after",
+      "title": "同じ入口・変更後",
+      "width": 390,
+      "height": 844,
+      "calls": 9,
+      "triangles": 1500,
+      "geometries": 1,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "final-door",
+      "title": "最後の扉",
+      "width": 390,
+      "height": 844,
+      "calls": 8,
+      "triangles": 1476,
+      "geometries": 1,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "final-open",
+      "title": "最後の扉を開いた後",
+      "width": 390,
+      "height": 844,
+      "calls": 7,
+      "triangles": 1464,
+      "geometries": 1,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "b-phone320",
+      "title": "B・320px幅の実シーン",
+      "width": 320,
+      "height": 568,
+      "calls": 22,
+      "triangles": 1744,
+      "geometries": 3,
+      "textures": 1,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    },
+    {
+      "id": "c-phone320",
+      "title": "C・320px幅の実シーン",
+      "width": 320,
+      "height": 568,
+      "calls": 19,
+      "triangles": 1766,
+      "geometries": 3,
+      "textures": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "budget": {
+        "drawCalls": 150,
+        "triangles": 100000
+      },
+      "withinBudget": true
+    }
+  ]
+}
