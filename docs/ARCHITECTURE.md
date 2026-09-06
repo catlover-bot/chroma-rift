@@ -1,4 +1,23 @@
-# Architecture — Goal 002
+# Architecture — Goal 005
+
+## 通常本編と紋章
+
+通常フローは welcome → 初回quickSetup（3回答／スキップ）→ playInstructions → firstPerson → firstPersonResult。旧2.5D迷宮・詳細調整は保持する。
+
+- domain/emblem：プレビュー同梱coreを型付き移植した輪郭・sRGB画素・意味イベントreducer。画素ペアとマスクを種／表示／解像度で上限付きキャッシュ。
+- domain/firstPerson：既存の衝突・鍵投影・帰路遮蔽証明に紋章を統合。共有emblemFixtureがメッシュと照準矩形を定義。sealAとemblem checkpointは一つのruntime更新で確定。
+- rendering/firstPerson/runtimeController：一つのJSシミュレーション。描画完了・foreground・pause・現在のカメラを検査し、セッションID＋単調連番を確認してからhost側でtargetIdを作る。停止中に拒否したpacketも再利用できない。
+- rendering/firstPerson/emblemSurface：canonical threeの不透明DataTextureと白いMeshBasicMaterial。色／無彩色／静的ガイドはmapだけを交換する。所有するtexture/materialをscene寿命で一度disposeし、frameごとの再生成はしない。
+- screens/QuickSetupScreen：同じgetSealRasterPairのtop-down RGBAをSkiaへ渡す。ThreeはbottomUpRGBAで行を反転する。ネイティブSkia/GLの見た目の一致は実機確認待ち。
+- storage/firstPersonStorage：既存leaseと直列キューで新旧章保存を扱い、旧原文の一度だけのバックアップ、未知版の書込停止、reset世代を保つ。
+
+新quick結果だけschemaVersion2／stimulusVersion1／kind=emblemのspecを保存する。旧quick schemaVersion1／stimulusVersion2や詳細調整の刺激版は書き換えない。settings.emblemPaletteは任意項目でbaselineが既定。旧effectStrengthは旧コンテンツ用に保持する。
+
+通常の照準は大きな板の実ray-plane交点、印／普通の対象は元の6°範囲を使う。可視端の判定を板の中心が画面外という理由だけで拒否しない。VoiceOverの対象選択は可視・距離・遮蔽を再検査し、鍵の正解判定には接続しない。
+
+Native Canvas／renderer／contextの所有、実renderとendFrameEXP返却後のready、foreground時間の初期化期限、診断・最大2回の手動再試行を維持する。詳細は[FIRST_PERSON_CHAPTER](FIRST_PERSON_CHAPTER.md)と[GOAL-005](GOAL-005.md)。
+
+## 旧2.5Dコンテンツ（保持）
 
 ## フローと責務
 

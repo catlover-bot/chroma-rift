@@ -1,5 +1,6 @@
-import { completeQuickSetup, QUICK_SETUP_ANSWERS, skipQuickSetup } from '../quickSetup';
+import { completeQuickSetup, createQuickSetupStimulusSpec, QUICK_SETUP_ANSWERS, quickSetupRasterPair, skipQuickSetup } from '../quickSetup';
 import { segmentsWithSymmetricGaps } from '../stimulusGeometry';
+import { getSealRasterPair } from '../../emblem/presentation';
 
 describe('three-tap product setup', () => {
   for (const a of QUICK_SETUP_ANSWERS) for (const b of QUICK_SETUP_ANSWERS) for (const c of QUICK_SETUP_ANSWERS) {
@@ -21,6 +22,34 @@ describe('three-tap product setup', () => {
   });
   it('offers assist on skip without inventing responses or intensity', () => {
     expect(skipQuickSetup('now')).toMatchObject({ status: 'skipped', answers: [], provisionalColor: 'neutral', suggestDepthAssist: true });
+  });
+});
+
+describe('shared emblem quick setup specification', () => {
+  it('uses the wall generator and cached byte arrays for all three fixed trials', () => {
+    const spec = createQuickSetupStimulusSpec('muted');
+    for (const [index, seed] of spec.seeds.entries()) {
+      const setup = quickSetupRasterPair(spec, index);
+      const wall = getSealRasterPair(seed, 'muted', 'unknown', 512);
+      expect(setup).toBe(wall);
+      expect(setup.color.rgba).toBe(wall.color.rgba);
+      expect(setup.mask).toBe(wall.mask);
+      expect(setup.stimulus.version).toBe(spec.version);
+    }
+    expect(() => quickSetupRasterPair(spec, 3)).toThrow();
+  });
+
+  it('records the exact shared stimulus without using early answers to recolor later trials', () => {
+    const spec = createQuickSetupStimulusSpec('alternate');
+    const before = quickSetupRasterPair(spec, 2);
+    const result = completeQuickSetup(['blueFront', 'blueFront', 'blueFront'], 'now', spec);
+    expect(result).toMatchObject({
+      schemaVersion: 2, stimulusVersion: 1, provisionalColor: 'blue',
+      stimulus: { kind: 'emblem', version: 1, seeds: [21, 22, 23], paletteId: 'alternate', resolution: 512, preference: 'unknown', assistance: false },
+    });
+    expect(quickSetupRasterPair(spec, 2)).toBe(before);
+    expect(quickSetupRasterPair(spec, 2).stimulus.preference).toBe('unknown');
+    expect(skipQuickSetup('now', spec)).toMatchObject({ status: 'skipped', answers: [], stimulus: spec });
   });
 });
 

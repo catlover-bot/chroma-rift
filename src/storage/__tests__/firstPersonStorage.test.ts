@@ -4,7 +4,7 @@ import { createCheckpoint, createInitialRuntime, getWorld, restoreCheckpoint, ty
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING } from '../../types/application';
 import { APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, createDefaultApplication, loadApplication, saveApplication } from '../applicationStorage';
 import {
-  FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, beginFirstPersonSession, decodeFirstPersonStorage,
+  FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, beginFirstPersonSession, decodeFirstPersonStorage,
   isFirstPersonSessionCurrent, loadFirstPersonStorage, resetAllApplicationStorage, resetFirstPersonChapter,
   saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from '../firstPersonStorage';
@@ -188,7 +188,7 @@ describe('first-person persistence and isolation', () => {
     await saveFirstPersonCheckpoint(solvedCheckpoint(), lease);
     await saveFirstPersonOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING, tutorialCompleted: true }, lease);
     expect(await resetAllApplicationStorage()).toBe(true);
-    for (const key of [APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY]) expect(await AsyncStorage.getItem(key)).toBeNull();
+    for (const key of [APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY]) expect(await AsyncStorage.getItem(key)).toBeNull();
     expect(await saveFirstPersonCheckpoint(solvedCheckpoint(), lease)).toBe(false);
   });
 
@@ -221,7 +221,7 @@ describe('first-person persistence and isolation', () => {
     await resetFirstPersonChapter();
     jest.mocked(AsyncStorage.setItem).mockRejectedValueOnce(new Error('write failed'));
     expect(await saveFirstPersonCheckpoint(freshCheckpoint(), beginFirstPersonSession())).toBe(false);
-    jest.mocked(AsyncStorage.removeItem).mockRejectedValueOnce(new Error('reset failed'));
+    jest.mocked(AsyncStorage.multiRemove).mockRejectedValueOnce(new Error('reset failed'));
     expect(await resetFirstPersonChapter()).toBe(false);
     expect(await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY)).not.toBeNull();
     expect(await saveFirstPersonCheckpoint(freshCheckpoint(), beginFirstPersonSession())).toBe(false);

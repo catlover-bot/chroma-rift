@@ -1,3 +1,4 @@
+import { EMBLEM_FIXTURE } from '../emblemFixture';
 import { Box3, Frustum, Matrix4, PerspectiveCamera, Vector3 } from 'three';
 
 import {
@@ -23,12 +24,12 @@ function lookingAt(pose: PlayerPose, point: Vec3): PlayerPose {
 }
 
 describe('authored chapter startup camera and first landmark (real Three math, no GPU)', () => {
-  it('starts on the complete vestibule floor with an unobscured guide, doorway and floor in the actual canvas frustum', () => {
+  it('starts on the complete vestibule floor with an visible emblem, doorway and floor in the actual canvas frustum', () => {
     const runtime = createInitialRuntime();
     const world = getWorld(runtime);
     expect(world.floors.some((floor) => floor.id === 'small-vestibule')).toBe(true);
     expect(inspectPoseSafety(runtime.pose, world)).toEqual({ finite: true, eyeHeightValid: true, pitchValid: true, supportedFloor: true, intersectingSolidIds: [] });
-    const guide = world.interactables.find((item) => item.id === 'guide')!;
+    const guide = world.interactables.find((item) => item.id === 'emblem-panel')!;
     const doorway = world.solids.find((solid) => solid.id === 'floor-room-door-right')!;
     const landmarks = [guide.center, { x: 1.3, y: EYE_HEIGHT, z: doorway.max.z + 0.001 }, { x: 0, y: 0, z: 2 }];
     for (const [width, height] of [[320, 560], [390, 620], [430, 500]]) {
@@ -41,9 +42,9 @@ describe('authored chapter startup camera and first landmark (real Three math, n
         expect(segmentOccluded(runtime.pose.position, landmark, world)).toBe(false);
       }
       expect(frustum.intersectsBox(new Box3(new Vector3(doorway.min.x, doorway.min.y, doorway.min.z), new Vector3(doorway.max.x, doorway.max.y, doorway.max.z)))).toBe(true);
-      // Visibility alone neither makes the distant guide actionable nor opens a seal.
-      expect(interactionCue(world, runtime.pose, matrices)).toMatchObject({ kind: 'approach', target: { id: 'guide' } });
-      expect(interact(runtime, 'guide')).toBe(runtime);
+      // Visibility alone neither makes the distant emblem actionable nor opens a seal.
+      expect(interactionCue(world, runtime.pose, matrices)).toMatchObject({ kind: 'approach', target: { id: 'emblem-panel' } });
+      expect(interact(runtime, 'emblem-panel')).toBe(runtime);
     }
   });
 
@@ -58,17 +59,15 @@ describe('authored chapter startup camera and first landmark (real Three math, n
     }
   });
 
-  it('explains the close but level-view guide as needing aim, then enables only the existing range/LOS action', () => {
+  it('acquires the whole close plate at eye level and only records inspection with an actual camera', () => {
     const runtime = createInitialRuntime();
     const world = getWorld(runtime);
-    const pose = { ...runtime.pose, position: { x: 0, y: EYE_HEIGHT, z: 1 } };
+    const pose = { ...runtime.pose, position: { x: 1.95, y: EYE_HEIGHT, z: -5.8 } };
     expect(isSafePose(pose, world)).toBe(true);
-    expect(findInteraction(world, pose)).toBeUndefined();
-    expect(interactionCue(world, pose, view(pose).matrices)).toMatchObject({ kind: 'aim', target: { id: 'guide' } });
-    const aimed = lookingAt(pose, world.interactables[0]!.center);
-    expect(aimed.pitch).toBeLessThan(0);
-    expect(interactionCue(world, aimed, view(aimed).matrices)).toMatchObject({ kind: 'ready', target: { id: 'guide' } });
-    expect(interact({ ...runtime, pose: aimed }, 'guide').progress).toMatchObject({ guideExamined: true, markActivated: false, sealA: false });
+    expect(findInteraction(world, pose)?.id).toBe('emblem-panel');
+    const aimed = lookingAt(pose, EMBLEM_FIXTURE.center);
+    expect(interactionCue(world, aimed, view(aimed).matrices)).toMatchObject({ kind: 'ready', target: { id: 'emblem-panel' } });
+    expect(interact({ ...runtime, pose: aimed }, 'emblem-panel', view(aimed).matrices).progress).toMatchObject({ guideExamined: false, markActivated: false, sealA: false, emblem: { phase: 'observing' } });
   });
 
   it('does not offer visible-target explanations through a wall, behind the camera, or from stale/invalid matrices', () => {
@@ -100,7 +99,7 @@ describe('pose-only checkpoint recovery preserves validated chapter progress', (
       const saved = { ...checkpoint, pose };
       const restored = restoreCheckpoint(saved)!;
       expect(restored.recovered).toBe(true);
-      expect(restored.checkpoint.progress).toEqual(progress);
+      expect(restored.checkpoint.progress).toEqual(checkpoint.progress);
       expect(saved.pose).toBe(pose);
       const resumed = createInitialRuntime(restored.checkpoint);
       expect(isSafePose(resumed.pose, getWorld(resumed))).toBe(true);

@@ -21,10 +21,10 @@ export function recordTutorialMotion(tracker: TutorialTracker, before: PlayerPos
   if (Number.isFinite(look)) tracker.userLookRadians += look;
   const moved = tracker.milestones.moved || (Number.isFinite(displacement) && displacement >= TUTORIAL_MOVE_DISTANCE);
   const looked = tracker.milestones.looked || tracker.userLookRadians >= TUTORIAL_LOOK_RADIANS;
-  if (moved !== tracker.milestones.moved || looked !== tracker.milestones.looked) tracker.milestones = { ...tracker.milestones, moved, looked };
+  if (moved !== tracker.milestones.moved || looked !== tracker.milestones.looked) tracker.milestones = { ...tracker.milestones, moved, looked, complete: moved && looked };
 }
 
-/** Actual guide discovery ends the introduction even when performed first. */
+/** Retained only for the independent diagnostic lab and legacy introductions. */
 export function recordTutorialGuide(tracker: TutorialTracker): void {
   tracker.milestones = { ...tracker.milestones, guideExamined: true, complete: true };
 }

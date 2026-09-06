@@ -2,7 +2,7 @@ import type { RootState } from '@react-three/fiber/native';
 import type * as THREE from 'three';
 
 import { recordDiagnosticError } from './diagnostics';
-import { commandController, type RuntimeController } from './runtimeController';
+import { commandController, retireController, type RuntimeController } from './runtimeController';
 
 type FailurePhase = 'renderer initialization' | 'scene initialization' | 'scene mount' | 'simulation frame' | 'scene frame' | 'render' | 'presentation' | 'shader' | 'GL' | 'initialization timeout';
 const FAILURE_MESSAGE = '部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。';
@@ -95,6 +95,7 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
       if (!failed) diagnostics.stage = 'closed';
       diagnostics.rendererOwnership = 'closed';
       stop();
+      retireController(controller);
       renderer?.dispose();
       renderer = undefined;
       root = undefined;

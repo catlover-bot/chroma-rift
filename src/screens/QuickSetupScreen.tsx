@@ -1,38 +1,37 @@
-import { Canvas, Group, Line, Rect, vec } from '@shopify/react-native-skia';
-import { useEffect, useRef, useState } from 'react';
+import { AlphaType, Canvas, ColorType, FilterMode, Image, MipmapMode, Skia } from '@shopify/react-native-skia';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { ActionButton, Body, Screen } from '../components/Layout';
-import type { QuickSetupAnswer, QuickSetupSession } from '../domain/calibration/quickSetup';
-import { STIMULUS_COLORS } from '../theme/stimulus';
+import { createQuickSetupStimulusSpec, quickSetupRasterPair, type QuickSetupAnswer, type QuickSetupSession, type QuickSetupStimulusSpec } from '../domain/calibration/quickSetup';
+import { PALETTE_LABELS } from '../domain/emblem/color';
 import { UI_COLORS } from '../theme/ui';
 
-const TITLES = ['扉のしるし', '橋の模様', '光のかけら'];
+const DEFAULT_SPEC = createQuickSetupStimulusSpec();
 
-/** Static, separated, identical red/blue geometry: no intersection, shading or motion. */
-function QuickStimulus({ index, width, height }: { index: number; width: number; height: number }) {
-  const radius = Math.min(width * 0.11, height * 0.2);
-  const y = height / 2;
+/** Raw top-down bytes from the same cached raster consumed by the wall adapter.
+ * Skia's native ImageInfo API has no color-space argument in this installed
+ * version. Preserve its supplied sRGB bytes; actual display matching is pending. */
+export function QuickEmblemStimulus({ spec, index, size }: { spec: QuickSetupStimulusSpec; index: number; size: number }) {
+  const raster = useMemo(() => quickSetupRasterPair(spec, index).color, [index, spec]);
+  const image = useMemo(() => {
+    const data = Skia.Data.fromBytes(raster.rgba);
+    try {
+      return Skia.Image.MakeImage({
+        width: raster.width, height: raster.height, colorType: ColorType.RGBA_8888, alphaType: AlphaType.Opaque,
+      }, data, raster.width * 4);
+    } finally {
+      data.dispose();
+    }
+  }, [raster]);
+  useEffect(() => () => image?.dispose(), [image]);
   return (
-    <View style={{ width, height, alignSelf: 'center' }} accessibilityRole="image" accessibilityLabel={`${TITLES[index]}。同じ大きさの赤と青の模様`}>
-      <Canvas style={StyleSheet.absoluteFill}>
-        <Rect x={0} y={0} width={width} height={height} color={UI_COLORS.background} />
-        {[0, 1].map((side) => {
-          const x = width * (side === 0 ? 0.29 : 0.71);
-          const color = (side + index) % 2 === 0 ? STIMULUS_COLORS.red : STIMULUS_COLORS.blue;
-          return (
-            <Group key={side}>
-              {index === 0 ? <Rect x={x - radius} y={y - radius} width={radius * 2} height={radius * 2} color={color} style="stroke" strokeWidth={6} /> : null}
-              {index === 1 ? [-1, 0, 1].map((row) => (
-                <Line key={row} p1={vec(x - radius, y + row * radius * 0.65)} p2={vec(x + radius, y + row * radius * 0.65)} color={color} strokeWidth={6} />
-              )) : null}
-              {index === 2 ? [[0, -1, 1, 0], [1, 0, 0, 1], [0, 1, -1, 0], [-1, 0, 0, -1]].map(([x1 = 0, y1 = 0, x2 = 0, y2 = 0], segment) => (
-                <Line key={segment} p1={vec(x + x1 * radius, y + y1 * radius)} p2={vec(x + x2 * radius, y + y2 * radius)} color={color} strokeWidth={6} />
-              )) : null}
-            </Group>
-          );
-        })}
-      </Canvas>
+    <View style={{ width: size, height: size, alignSelf: 'center' }} accessibilityRole="image"
+      accessibilityLabel={`同じ平面に描いた赤と青の輪郭。${PALETTE_LABELS[spec.paletteId]}`}>
+      {image ? <Canvas style={StyleSheet.absoluteFill} testID="quick-emblem-canvas">
+        <Image image={image} x={0} y={0} width={size} height={size} fit="contain"
+          sampling={{ filter: FilterMode.Nearest, mipmap: MipmapMode.None }} />
+      </Canvas> : <Body>紋章を表示できませんでした。あとで調整して遊べます。</Body>}
     </View>
   );
 }
@@ -45,11 +44,15 @@ export function QuickSetupScreen({ session, onResponse, onSkip, onExit }: {
 }) {
   const { width, height } = useWindowDimensions();
   const index = session.responses.length;
+  const spec = session.stimulus ?? DEFAULT_SPEC;
   const submitted = useRef(false);
   const [locked, setLocked] = useState(false);
   useEffect(() => {
+    // App keys this screen by session ID. The initial false state needs no
+    // zero-ms timer, which could otherwise unlock after the first response.
+    if (index === 0) return;
     // A brief neutral input gate also catches a second physical tap after rerender.
-    const timer = setTimeout(() => { submitted.current = false; setLocked(false); }, index === 0 ? 0 : 300);
+    const timer = setTimeout(() => { submitted.current = false; setLocked(false); }, 300);
     return () => clearTimeout(timer);
   }, [session.id, index]);
   const submit = (answer: QuickSetupAnswer) => {
@@ -62,8 +65,9 @@ export function QuickSetupScreen({ session, onResponse, onSkip, onExit }: {
     <Screen>
       <Text accessibilityRole="header" style={styles.title}>見え方を、3つだけ</Text>
       <Text style={styles.progress} accessibilityLiveRegion="polite">{Math.min(index + 1, 3)} / 3</Text>
-      <QuickStimulus index={index} width={Math.max(180, Math.min(width - 40, 430))} height={Math.min(220, Math.max(130, height * 0.25))} />
+      <QuickEmblemStimulus spec={spec} index={Math.min(index, 2)} size={Math.min(320, Math.max(128, width - 40), Math.max(128, height * 0.27))} />
       <Body>どちらが手前に見えますか？</Body>
+      <Body muted>{PALETTE_LABELS[spec.paletteId]}。見え方は仮の表示設定にだけ使います。</Body>
       <View style={styles.answers}>
         <ActionButton label="赤が手前" onPress={() => submit('redFront')} disabled={locked} testID="quick-answer-red" />
         <ActionButton label="青が手前" onPress={() => submit('blueFront')} disabled={locked} testID="quick-answer-blue" />

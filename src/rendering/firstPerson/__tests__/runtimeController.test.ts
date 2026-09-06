@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
-import { createCheckpoint, GUIDE_FIXTURE, MOVE_SPEED } from '../../../domain/firstPerson';
+import { createCheckpoint, MOVE_SPEED, OBSERVATION_POSE } from '../../../domain/firstPerson';
+import { EMBLEM_FIXTURE } from '../../../domain/firstPerson/emblemFixture';
 import { forwardVector } from '../../../domain/firstPerson/geometry';
 import { advanceController, commandController, controllerSnapshot, createController, interactController, syncCamera, worldForController } from '../runtimeController';
 
@@ -40,6 +41,7 @@ describe('native scene runtime integration without GL', () => {
     }
     expect(controller.runtime.pose.position.z).toBeGreaterThan(-2.67);
     expect(controllerSnapshot(controller).target?.id).toBe('guide');
+    Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true }); // Mocked native presentation boundary.
     expect(interactController(controller, 'guide')).toBe(true);
     expect(interactController(controller, 'guide')).toBe(false);
     for (let index = 0; index < 100; index += 1) advanceController(controller, 1 / 60, view);
@@ -99,7 +101,7 @@ describe('tutorial milestones from actual controller input, without GL', () => {
     expect(controllerSnapshot(controller).tutorial).toMatchObject({ moved: false, looked: true, complete: false });
     controller.input.forward = 1;
     for (let i = 0; i < 30; i += 1) advanceController(controller, 1 / 60, view);
-    expect(controllerSnapshot(controller).tutorial).toMatchObject({ moved: true, looked: true, complete: false });
+    expect(controllerSnapshot(controller).tutorial).toMatchObject({ moved: true, looked: true, complete: true });
   });
   it('requires meaningful collision-resolved displacement instead of walking against a wall', () => {
     const initial = createController();
@@ -114,25 +116,28 @@ describe('tutorial milestones from actual controller input, without GL', () => {
     for (let i = 0; i < 30; i += 1) advanceController(controller, 1 / 60, camera());
     expect(controllerSnapshot(controller).tutorial.moved).toBe(true);
   });
-  it('finishes on actual out-of-order guide discovery and restores completed or already-progressed introductions', () => {
+  it('inspection does not replace the two motion lessons, and stored completion still bypasses them', () => {
     const controller = createController();
-    const position = { x: 0, y: 1.6, z: 1 };
-    controller.runtime.pose = { position, yaw: 0, pitch: Math.atan2(GUIDE_FIXTURE.center.y - position.y, position.z - GUIDE_FIXTURE.center.z) };
+    const position = { x: 1.95, y: 1.6, z: -5.7 };
+    controller.runtime.pose = { position, yaw: 0, pitch: Math.atan2(EMBLEM_FIXTURE.center.y - position.y, position.z - EMBLEM_FIXTURE.center.z) };
     syncCamera(controller, camera());
-    expect(controllerSnapshot(controller).tutorial.complete).toBe(false);
-    expect(interactController(controller, 'guide')).toBe(true);
-    expect(controllerSnapshot(controller).tutorial).toEqual({ moved: false, looked: false, guideExamined: true, complete: true });
-    expect(interactController(controller, 'guide')).toBe(false);
-    expect(controllerSnapshot(createController(createCheckpoint(controller.runtime))).tutorial.complete).toBe(true);
+    Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true }); // Mocked native presentation boundary.
+    expect(interactController(controller, 'emblem-panel')).toBe(true);
+    expect(controllerSnapshot(controller).tutorial).toMatchObject({ moved: false, looked: false, complete: false });
+    expect(controllerSnapshot(createController(createCheckpoint(controller.runtime))).tutorial.complete).toBe(false);
     expect(controllerSnapshot(createController(undefined, false, true)).tutorial.complete).toBe(true);
-    expect(controllerSnapshot(createController()).tutorial.complete).toBe(false);
+    const legacy = createCheckpoint(controller.runtime);
+    legacy.progress.guideExamined = true;
+    expect(controllerSnapshot(createController(legacy)).tutorial.complete).toBe(true);
   });
   it('counts explicit user turns, preserves actual pitch limits and ignores automatic aim assist', () => {
     const controller = createController();
-    controller.runtime.pose = { ...controller.runtime.pose, position: { x: 0, y: 1.6, z: 1 } };
+    controller.runtime.progress.sealA = true;
+    controller.runtime.pose = { ...OBSERVATION_POSE, yaw: 0.5, pitch: 0.4 };
     commandController(controller, { type: 'hint', stage: 3 });
     commandController(controller, { type: 'aim' });
-    expect(controller.runtime.pose.pitch).toBeLessThan(-0.2);
+    expect(controller.runtime.pose.pitch).toBeCloseTo(0);
+    expect(controller.runtime.pose.yaw).toBeCloseTo(0);
     expect(controllerSnapshot(controller).tutorial.looked).toBe(false);
     commandController(controller, { type: 'turn', yaw: 0.3, pitch: 0 });
     expect(controllerSnapshot(controller).tutorial.looked).toBe(true);

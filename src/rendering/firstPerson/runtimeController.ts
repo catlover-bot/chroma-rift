@@ -1,9 +1,14 @@
 import * as THREE from 'three';
 
+import { reduceSeal, type SealAction, type SealCommand, type SealResult } from '../../domain/emblem';
+
+import { EMBLEM_SWITCH_FEEDBACK_SECONDS } from '../../domain/firstPerson/emblemFixture';
 import { CAMERA_FAR, CAMERA_NEAR, getWorld, VERTICAL_FOV } from '../../domain/firstPerson/chapter';
-import { adjustLook, updatePlayer } from '../../domain/firstPerson/geometry';
-import { assistAim, createInitialRuntime, evaluateRuntime, interact, objectiveForRuntime, pauseRuntime, resumeRuntime, setHintStage } from '../../domain/firstPerson/runtime';
+import { cameraMatchesPose, projectWithCamera } from '../../domain/firstPerson/alignment';
+import { adjustLook, segmentOccluded, updatePlayer } from '../../domain/firstPerson/geometry';
+import { assistAim, commitEmblemResult, createInitialRuntime, evaluateRuntime, interact, objectiveForRuntime, pauseRuntime, resumeRuntime, setHintStage } from '../../domain/firstPerson/runtime';
 import { createTutorial, recordTutorialGuide, recordTutorialMotion, type TutorialMilestones, type TutorialTracker } from '../../domain/firstPerson/tutorial';
+import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { interactionCue } from '../../domain/firstPerson/interactionCue';
 import type { CameraMatrices, ChapterRuntime, CheckpointState, HintStage, InteractableDefinition, InteractableId } from '../../domain/firstPerson/types';
 import { getLabWorld } from './labRuntime';
@@ -12,6 +17,12 @@ import { createFirstPersonDiagnostics, type FirstPersonDiagnostics } from './dia
 
 export type RuntimeController = {
   runtime: ChapterRuntime;
+  retired: boolean;
+  screenReader: boolean;
+  commandSequence: number;
+  lastReceivedSequence: number;
+  feedbackMessage: string;
+  lastCompareMs: number;
   input: FirstPersonInput;
   lab: boolean;
   sensitivity: number;
@@ -27,7 +38,7 @@ export type RuntimeSnapshot = { runtime: ChapterRuntime; tutorial: TutorialMiles
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -49,15 +60,23 @@ export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 't
  * React holds immutable event snapshots; this small store advances independently. */
 export function commandController(controller: RuntimeController, action: ControllerAction): void {
   stopController(controller);
+  if (controller.retired) return;
   switch (action.type) {
     case 'pause': controller.runtime = pauseRuntime(controller.runtime); break;
-    case 'resume': controller.runtime = resumeRuntime(controller.runtime); break;
+    case 'resume':
+      if (controller.diagnostics.appActive !== false && !['failed', 'closed'].includes(controller.diagnostics.stage)) controller.runtime = resumeRuntime(controller.runtime);
+      break;
     case 'sensitivity':
       if (Number.isFinite(action.value) && action.value >= 0.5 && action.value <= 2) controller.sensitivity = action.value;
       if (action.vertical !== undefined && Number.isFinite(action.vertical) && action.vertical >= 0.5 && action.vertical <= 2) controller.verticalSensitivity = action.vertical;
       break;
     case 'verticalSensitivity': if (Number.isFinite(action.value) && action.value >= 0.5 && action.value <= 2) controller.verticalSensitivity = action.value; break;
-    case 'hint': controller.runtime = setHintStage(controller.runtime, action.stage); break;
+    case 'hint':
+      if (!controller.lab && !controller.runtime.progress.sealA) {
+        // Each voluntary tap advances exactly one tier in the supplied reducer.
+        if (action.stage > controller.runtime.emblem.hintTier) dispatchEmblemController(controller, createEmblemCommand(controller, { type: 'hint' }));
+      } else controller.runtime = setHintStage(controller.runtime, action.stage);
+      break;
     case 'aim': {
       const paused = controller.runtime.paused;
       const aimed = assistAim(resumeRuntime(controller.runtime));
@@ -91,7 +110,7 @@ export function syncCamera(controller: RuntimeController, camera: THREE.Perspect
   return matrices;
 }
 export function advanceController(controller: RuntimeController, delta: number, camera: THREE.PerspectiveCamera): void {
-  if (controller.runtime.paused || controller.runtime.progress.cleared) { stopController(controller); return; }
+  if (controller.retired || controller.runtime.paused || controller.runtime.progress.cleared) { stopController(controller); return; }
   const before = controller.runtime.pose;
   const look = consumeLook(controller.input);
   const looked = adjustLook(controller.runtime.pose, -look.x * 0.003 * controller.sensitivity, -look.y * 0.003 * controller.sensitivity * controller.verticalSensitivity);
@@ -118,11 +137,17 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   // Screen publishes explicit view commands before fresh camera matrices exist.
   // Their next presented cue must publish even when it matches the last frame's
   // semantic bucket. Continuous movement and idle frames do not advance this.
-  const key = `${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}`;
+  const key = `${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
   return { runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
-  if (controller.runtime.paused || controller.runtime.progress.cleared) return false;
+  controller.feedbackMessage = '';
+  if (!controllerCanInteract(controller)) return false;
+  if (!controller.lab && expectedId.startsWith('emblem-')) {
+    const action: SealAction = expectedId === 'emblem-panel' ? { type: 'inspect' } :
+      { type: 'choose', glyph: expectedId.slice(7) as 'circle' | 'diamond' | 'square' };
+    return dispatchEmblemController(controller, createEmblemCommand(controller, action)).accepted;
+  }
   const cue = interactionCue(worldForController(controller), controller.runtime.pose, controller.matrices, controller.lab ? undefined : controller.runtime.progress, controller.runtime.alignment);
   if (cue.kind !== 'ready' || cue.target.id !== expectedId) return false;
   const previous = controller.runtime;
@@ -132,4 +157,103 @@ export function interactController(controller: RuntimeController, expectedId: In
   } else controller.runtime = interact(previous, expectedId, controller.matrices);
   if (controller.runtime !== previous && expectedId === 'guide') recordTutorialGuide(controller.tutorial);
   return controller.runtime !== previous;
+}
+
+/** Presentation readiness comes from the existing native render/present gate. */
+export function controllerCanInteract(controller: RuntimeController): boolean {
+  const d = controller.diagnostics;
+  return !controller.retired && !controller.runtime.paused && !controller.runtime.progress.cleared &&
+    d.stage === 'ready' && d.rendererOwnership === 'live' && d.appActive !== false && !d.paused && !d.open &&
+    (d.sceneMode === 'chapter' || d.sceneMode === 'lab') && !!controller.matrices;
+}
+export function retireController(controller: RuntimeController): void {
+  stopController(controller);
+  controller.runtime = pauseRuntime(controller.runtime);
+  controller.retired = true;
+}
+export function setControllerForeground(controller: RuntimeController, active: boolean): void {
+  controller.diagnostics.appActive = active;
+  if (!active) {
+    stopController(controller);
+    controller.runtime = pauseRuntime(controller.runtime);
+  }
+}
+export function createEmblemCommand(controller: RuntimeController, action: SealAction, nowMs = performance.now()): SealCommand {
+  return { sessionId: controller.runtime.emblem.sessionId, seq: ++controller.commandSequence,
+    nowMs: Math.max(controller.runtime.emblem.lastNowMs, nowMs), action };
+}
+/** The host recomputes target/range/occlusion from its current camera. No UI can
+ * supply a PlayContext or claim that a selected glyph is reachable. */
+export function dispatchEmblemController(controller: RuntimeController, command: SealCommand): SealResult {
+  return applyEmblemControllerCommand(controller, command);
+}
+function applyEmblemControllerCommand(controller: RuntimeController, command: SealCommand, requestedAccessibleTarget?: InteractableId): SealResult {
+  const state = controller.runtime.emblem;
+  const rejected = (reason: SealResult['reason']): SealResult => ({ state, effects: [], accepted: false, reason });
+  if (controller.retired || command.sessionId !== state.sessionId || !Number.isSafeInteger(command.seq) ||
+      command.seq <= controller.lastReceivedSequence) return rejected('stale');
+  // Consume even a rejected packet; background taps cannot replay after resume.
+  controller.lastReceivedSequence = command.seq;
+  controller.commandSequence = Math.max(controller.commandSequence, command.seq);
+  if (controller.lab || ['failed', 'closed'].includes(controller.diagnostics.stage)) return rejected('blocked');
+  const auxiliary = command.action.type === 'hint' || command.action.type === 'assist';
+  if (!auxiliary && !controllerCanInteract(controller)) return rejected('blocked');
+  const cue = interactionCue(worldForController(controller), controller.runtime.pose, controller.matrices, controller.runtime.progress, controller.runtime.alignment);
+  const context = {
+    rendererReady: controllerCanInteract(controller),
+    foreground: controller.diagnostics.appActive !== false,
+    targetId: requestedAccessibleTarget
+      ? accessibleEmblemTargets(controller).find((target) => target.id === requestedAccessibleTarget)?.id ?? null
+      : cue.kind === 'ready' || cue.kind === 'locked' ? cue.target.id : null,
+  };
+  const result = reduceSeal(state, command, context);
+  controller.feedbackMessage = result.effects.filter((effect) => effect.type === 'message').map((effect) => effect.text).join(' ');
+  if (result.accepted) {
+    controller.runtime = commitEmblemResult(controller.runtime, result);
+    if (command.action.type === 'choose') controller.runtime = { ...controller.runtime,
+      switchFeedback: { glyph: command.action.glyph, correct: result.state.phase === 'released', sequence: command.seq, remainingSeconds: EMBLEM_SWITCH_FEEDBACK_SECONDS } };
+    if (result.effects.some((effect) => effect.type === 'stop-input')) stopController(controller);
+  }
+  return result;
+}
+/** Legacy lab comparison is still bounded; the chapter comparison is panel-authorized. */
+export function compareController(controller: RuntimeController, nowMs = performance.now()): boolean {
+  if (!controllerCanInteract(controller)) return false;
+  if (!controller.lab) {
+    return dispatchEmblemController(controller, createEmblemCommand(controller, { type: 'compare' }, nowMs)).accepted;
+  }
+  if (!Number.isFinite(nowMs) || nowMs - controller.lastCompareMs < 1000) return false;
+  controller.lastCompareMs = nowMs;
+  return true;
+}
+
+/** VoiceOver selects a visible physical fixture, with the same reach/occlusion.
+ * It never turns the camera, selects the key, or trusts the requested ID. */
+export function accessibleEmblemTargets(controller: RuntimeController): InteractableDefinition[] {
+  const matrices = controller.matrices, pose = controller.runtime.pose;
+  if (!controller.screenReader || !controllerCanInteract(controller) || !matrices || !cameraMatchesPose(pose, matrices)) return [];
+  const world = worldForController(controller);
+  return world.interactables.filter((target) => {
+    if (!target.id.startsWith('emblem-')) return false;
+    if (target.rectangle) {
+      const candidate = evaluateInteraction({ ...world, interactables: [target] }, pose, controller.runtime.progress, matrices, controller.runtime.alignment);
+      return candidate.kind === 'ready' || candidate.kind === 'locked' || candidate.kind === 'aim';
+    }
+    if (!projectWithCamera(target.center, matrices)) return false;
+    const d = { x: pose.position.x - target.center.x, y: pose.position.y - target.center.y, z: pose.position.z - target.center.z };
+    const distance = Math.hypot(d.x, d.y, d.z) - target.radius;
+    return distance <= target.maxDistance && !segmentOccluded(pose.position, target.center, world, target.id + '-body');
+  });
+}
+export function interactAccessibleEmblem(controller: RuntimeController, requestedId: InteractableId): boolean {
+  controller.feedbackMessage = '';
+  if (!accessibleEmblemTargets(controller).some((target) => target.id === requestedId)) return false;
+  const action: SealAction = requestedId === 'emblem-panel' ? { type: 'inspect' } :
+    { type: 'choose', glyph: requestedId.slice(7) as 'circle' | 'diamond' | 'square' };
+  return applyEmblemControllerCommand(controller, createEmblemCommand(controller, action), requestedId).accepted;
+}
+
+export function setControllerScreenReader(controller: RuntimeController, enabled: boolean): void {
+  stopController(controller);
+  controller.screenReader = enabled;
 }

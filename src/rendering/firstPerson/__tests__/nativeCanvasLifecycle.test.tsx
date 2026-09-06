@@ -5,20 +5,24 @@ import type { ComponentProps } from 'react';
 import { Dimensions } from 'react-native';
 import * as THREE from 'three';
 
-import { createCheckpoint, createInitialRuntime, GUIDE_FIXTURE } from '../../../domain/firstPerson';
+import { createSealStimulus } from '../../../domain/emblem';
+import { EMBLEM_FIXTURE, EMBLEM_LATCH, EMBLEM_SWITCHES, EMBLEM_SWITCH_TRAVEL } from '../../../domain/firstPerson/emblemFixture';
+import { getWorld } from '../../../domain/firstPerson/chapter';
+import { isSafePose, segmentOccluded } from '../../../domain/firstPerson/geometry';
+import { createCheckpoint, createInitialRuntime } from '../../../domain/firstPerson';
 import { FirstPersonScreen } from '../../../screens/FirstPersonScreen';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../../types/application';
 import { ChapterScene } from '../ChapterScene';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../FirstPersonCanvas';
 import { createSceneResources } from '../resources';
-import { commandController, controllerSnapshot, createController } from '../runtimeController';
+import { commandController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
 
 // Keep installed native Canvas, Provider, reconciler, applyProps and useFrame.
 // Only the unavailable device GL context/renderer is replaced.
 jest.mock('react-native-safe-area-context', () => ({ ...jest.requireActual('react-native-safe-area-context'), useSafeAreaInsets: jest.fn(() => ({ top: 47, bottom: 34, left: 0, right: 0 })) }));
 jest.mock('expo-gl', () => ({ GLView: jest.fn(() => null) }));
 jest.mock('../ChapterScene', () => ({ ChapterScene: jest.fn((props) => jest.requireActual('../ChapterScene').ChapterScene(props)) }));
-jest.mock('../resources', () => ({ ...jest.requireActual('../resources'), createSceneResources: jest.fn((low: boolean) => jest.requireActual('../resources').createSceneResources(low)) }));
+jest.mock('../resources', () => ({ ...jest.requireActual('../resources'), createSceneResources: jest.fn((...args: Parameters<typeof createSceneResources>) => jest.requireActual('../resources').createSceneResources(...args)) }));
 
 const glView = jest.mocked(GLView);
 const chapterScene = jest.mocked(ChapterScene);
@@ -143,43 +147,165 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     expect(renderer.dispose).toHaveBeenCalledTimes(1);
   });
 
-  it.each(['low', 'standard'] as const)('renders matching guide geometry and the same two-sided return landmark at %s quality', async (quality) => {
+  it.each(['low', 'standard'] as const)('renders a planar emblem, physical glyphs and the retained return landmark at %s quality', async (quality) => {
     const current = { ...props(), quality };
     const view = await render(<FirstPersonCanvas {...current} />);
     await createNativeContext(view);
     await submitFrame(renderer);
     const scene = rendererRoot(renderer).store.getState().scene;
-    const fixture = scene.getObjectByName('guide-fixture')!;
-    expect(fixture.position.toArray()).toEqual([GUIDE_FIXTURE.center.x, GUIDE_FIXTURE.center.y, GUIDE_FIXTURE.center.z]);
-    const bounds = new THREE.Box3().setFromObject(fixture);
-    expect(bounds.getSize(new THREE.Vector3()).x).toBeCloseTo(GUIDE_FIXTURE.diameter, 5);
-    expect(scene.getObjectByName('guide-front-ring')).toBeDefined();
-    expect(scene.getObjectByName('guide-back-ring')).toBeDefined();
+    const plate = scene.getObjectByName('emblem-plate') as THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+    expect(plate).toBeDefined();
+    expect(plate.position.toArray()).toEqual([EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, EMBLEM_FIXTURE.center.z]);
+    expect(plate.scale.toArray()).toEqual([EMBLEM_FIXTURE.width, EMBLEM_FIXTURE.height, 1]);
+    expect(plate.rotation.toArray().slice(0, 3)).toEqual([0, 0, 0]);
+    expect(plate.material).toBeInstanceOf(THREE.MeshBasicMaterial);
+    expect(plate.material).toMatchObject({ transparent: false, opacity: 1, toneMapped: false, fog: false, depthTest: true, depthWrite: true });
+    expect(plate.material.color.toArray()).toEqual([1, 1, 1]);
+    expect(plate.material.map!.colorSpace).toBe(THREE.SRGBColorSpace);
+    expect(plate.castShadow).toBe(false);
+    expect(plate.receiveShadow).toBe(false);
+    const plateSize = new THREE.Box3().setFromObject(plate).getSize(new THREE.Vector3());
+    expect(plateSize.x).toBeCloseTo(EMBLEM_FIXTURE.width, 10);
+    expect(plateSize.y).toBeCloseTo(EMBLEM_FIXTURE.height, 10);
+    expect(plateSize.z).toBe(0);
+    const fixtureBounds = new THREE.Box3().setFromObject(scene.getObjectByName('emblem-fixture')!);
+    expect(fixtureBounds.min.x).toBeGreaterThanOrEqual(1.0399);
+    expect(fixtureBounds.max.x).toBeLessThanOrEqual(2.8601);
+    expect(fixtureBounds.min.y).toBeGreaterThan(0.91);
+    expect(fixtureBounds.max.y).toBeLessThan(2.75);
+    for (const item of EMBLEM_SWITCHES) {
+      const glyph = scene.getObjectByName('emblem-switch-' + item.glyph)!;
+      expect(glyph.position.toArray()).toEqual([item.center.x, item.center.y, item.center.z]);
+      const glyphSize = new THREE.Box3().setFromObject(scene.getObjectByName('emblem-glyph-' + item.glyph)!).getSize(new THREE.Vector3());
+      expect(glyphSize.x).toBeCloseTo(item.width, 5);
+      expect(glyphSize.y).toBeCloseTo(item.height, 5);
+    }
+    expect(scene.getObjectByName('guide-fixture')).toBeUndefined();
+    expect(scene.getObjectByName('floor-device-face')).toBeUndefined();
+    const corridor = new THREE.PerspectiveCamera(65, 390 / 763, 0.08, 60);
+    corridor.position.set(0, 1.6, 1); corridor.updateMatrixWorld(true);
+    for (const x of [-0.5, 0.5]) for (const y of [-0.5, 0.5]) {
+      const corner = plate.localToWorld(new THREE.Vector3(x, y, 0));
+      const projected = corner.clone().project(corridor);
+      expect(Math.abs(projected.x)).toBeLessThan(1);
+      expect(Math.abs(projected.y)).toBeLessThan(1);
+      expect(segmentOccluded({ x: 0, y: 1.6, z: 1 }, { x: corner.x, y: corner.y, z: corner.z }, getWorld(current.controller.runtime), 'emblem-panel-body')).toBe(false);
+    }
+    expect(isSafePose({ position: { x: 1.95, y: 1.6, z: -5.7 }, yaw: 0, pitch: 0 }, getWorld(current.controller.runtime))).toBe(true);
     const landmark = scene.getObjectByName('remembered-entry-landmark')!;
     const remembered = landmark.children.map((object) => object.matrixWorld.toArray());
     expect(scene.getObjectByName('entry-front-mark')!.getWorldPosition(new THREE.Vector3()).z).toBeLessThan(6);
     expect(scene.getObjectByName('entry-back-mark')!.getWorldPosition(new THREE.Vector3()).z).toBeGreaterThan(6);
-    const beforeStatus = (scene.getObjectByName('guide-status') as THREE.Mesh).material;
-    const beforeDevice = (scene.getObjectByName('device-status') as THREE.Mesh).material;
-    // Authored appearance fixture only: progression/safe swapping are tested
-    // through real collision walking in the domain suite, not by this setup.
-    current.controller.runtime = { ...current.controller.runtime, progress: { ...current.controller.runtime.progress, guideExamined: true, markActivated: true, sealA: true, sealB: true, variant: 'exit' }, doorAOpen: 1, doorBOpen: 1 };
+    // Appearance fixture only; host command/progression tests prove actual
+    // eligibility and occluded return swapping.
+    current.controller.runtime = { ...current.controller.runtime, emblem: { ...current.controller.runtime.emblem, phase: 'released' },
+      progress: { ...current.controller.runtime.progress, sealA: true, sealB: true, variant: 'exit' }, doorAOpen: 1, doorBOpen: 1 };
     await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(current.controller)} />);
     await submitFrame(renderer, 2);
     expect(scene.getObjectByName('remembered-entry-landmark')!.children.map((object) => object.matrixWorld.toArray())).toEqual(remembered);
-    expect((scene.getObjectByName('guide-status') as THREE.Mesh).material).not.toBe(beforeStatus);
-    expect((scene.getObjectByName('device-status') as THREE.Mesh).material).not.toBe(beforeDevice);
+    expect(scene.getObjectByName('emblem-latch')!.position.x).toBeCloseTo(EMBLEM_LATCH.center.x + EMBLEM_LATCH.travel);
+    const answer = createSealStimulus(current.controller.runtime.emblem.seed).answer;
+    const winning = EMBLEM_SWITCHES.find((item) => item.glyph === answer)!;
+    expect(scene.getObjectByName('emblem-switch-' + answer)!.position.z).toBeCloseTo(winning.center.z - EMBLEM_SWITCH_TRAVEL);
     expect(scene.getObjectByName('frame-seal-a-door')!.position.y).toBe(0);
     expect(scene.getObjectByName('frame-exit-door')).toBeDefined();
+    expect(isSafePose({ position: { x: 0, y: 1.6, z: -8.02 }, yaw: 0, pitch: 0 }, getWorld(current.controller.runtime))).toBe(true);
     expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
     expect(current.onError).not.toHaveBeenCalled();
     await view.unmount();
   });
 
+  it.each([false, true])('returns the actual wrong glyph without frame React updates (Reduce Motion %s)', async (reducedMotion) => {
+    const controller = createController();
+    controller.runtime.pose = { position: { x: 1.95, y: 1.6, z: -5.7 }, yaw: 0, pitch: 0.1 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller), reducedMotion };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      expect(interactController(controller, 'emblem-panel')).toBe(true);
+      const wrong = EMBLEM_SWITCHES.find((item) => item.glyph !== createSealStimulus(controller.runtime.emblem.seed).answer)!;
+      const dx = wrong.center.x - controller.runtime.pose.position.x;
+      const dy = wrong.center.y - controller.runtime.pose.position.y;
+      const dz = wrong.center.z - controller.runtime.pose.position.z;
+      commandController(controller, { type: 'turn', yaw: Math.atan2(-dx, -dz), pitch: Math.atan2(dy, Math.hypot(dx, dz)) - controller.runtime.pose.pitch });
+      const state = rendererRoot(renderer).store.getState();
+      syncCamera(controller, state.camera as THREE.PerspectiveCamera);
+      expect(interactController(controller, wrong.id)).toBe(true);
+      const mesh = state.scene.getObjectByName('emblem-switch-' + wrong.glyph)!;
+      const surface = (resourceFactory.mock.results[0]!.value as ReturnType<typeof createSceneResources>).emblemSurface!;
+      const textures = surface.textures;
+      const material = surface.material;
+      const rendersBefore = chapterScene.mock.calls.length;
+      const elapsed = jest.spyOn(state.clock, 'getDelta').mockReturnValue(0);
+      await submitFrame(renderer, 2);
+      expect(mesh.position.z).toBeCloseTo(wrong.center.z - EMBLEM_SWITCH_TRAVEL);
+      elapsed.mockReturnValue(0.05);
+      await submitFrame(renderer, 3);
+      await submitFrame(renderer, 4);
+      expect(mesh.position.z).toBeCloseTo(wrong.center.z - EMBLEM_SWITCH_TRAVEL * (reducedMotion ? 1 : 5 / 7));
+      await submitFrame(renderer, 5);
+      await submitFrame(renderer, 6);
+      expect(mesh.position.z).toBeCloseTo(wrong.center.z - EMBLEM_SWITCH_TRAVEL * (reducedMotion ? 0 : 3 / 7));
+      await submitFrame(renderer, 7);
+      await submitFrame(renderer, 8);
+      await submitFrame(renderer, 9);
+      expect(mesh.position.z).toBeCloseTo(wrong.center.z);
+      // Expire beyond the decimal-sum boundary (7 * 0.05 rounds just below 0.35).
+      await submitFrame(renderer, 10);
+      expect(controller.runtime.switchFeedback).toBeUndefined();
+      expect(controller.runtime.progress.sealA).toBe(false);
+      expect(controller.runtime.emblem.attempts).toBe(1);
+      expect(chapterScene).toHaveBeenCalledTimes(rendersBefore);
+      expect(resourceFactory).toHaveBeenCalledTimes(1);
+      expect(surface.material).toBe(material);
+      expect(surface.textures).toEqual(textures);
+      expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+      expect(current.onError).not.toHaveBeenCalled();
+    } finally {
+      await view.unmount();
+    }
+  });
+
+  it('keeps actual R3F emblem geometry/material/context stable across comparison, guide and palette updates', async () => {
+    const current = props();
+    const view = await render(<FirstPersonCanvas {...current} />);
+    await createNativeContext(view);
+    await submitFrame(renderer);
+    const scene = rendererRoot(renderer).store.getState().scene;
+    const plate = scene.getObjectByName('emblem-plate') as THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+    const original = { geometry: plate.geometry, material: plate.material, matrix: plate.matrixWorld.toArray(), color: plate.material.map };
+    const surface = (resourceFactory.mock.results[0]!.value as ReturnType<typeof createSceneResources>).emblemSurface!;
+    const originalMaskKey = surface.stimulus.geometryKey;
+    for (const appearance of [
+      { presentation: 'neutral' as const, assist: false, palette: 'baseline' as const },
+      { presentation: 'color' as const, assist: true, palette: 'alternate' as const },
+      { presentation: 'neutral' as const, assist: true, palette: 'muted' as const },
+      { presentation: 'color' as const, assist: false, palette: 'baseline' as const },
+    ]) {
+      current.controller.runtime = { ...current.controller.runtime, emblem: { ...current.controller.runtime.emblem, presentation: appearance.presentation, assist: appearance.assist } };
+      await view.rerender(<FirstPersonCanvas {...current} snapshot={controllerSnapshot(current.controller)} emblemPalette={appearance.palette} reducedMotion={appearance.assist} />);
+      await submitFrame(renderer, 2);
+      expect(scene.getObjectByName('emblem-plate')).toBe(plate);
+      expect(plate.geometry).toBe(original.geometry);
+      expect(plate.material).toBe(original.material);
+      expect(plate.matrixWorld.toArray()).toEqual(original.matrix);
+      expect(surface.stimulus.geometryKey).toBe(originalMaskKey);
+      expect(plate.material).toMatchObject({ opacity: 1, transparent: false, depthTest: true, depthWrite: true, toneMapped: false, fog: false });
+      expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+      expect(resourceFactory).toHaveBeenCalledTimes(1);
+    }
+    expect(plate.material.map).toBe(original.color);
+    const disposed = surface.textures.map((texture) => { const fn = jest.fn(); texture.addEventListener('dispose', fn); return fn; });
+    await view.unmount();
+    expect(disposed.every((fn) => fn.mock.calls.length === 1)).toBe(true);
+    expect(renderer.dispose).toHaveBeenCalledTimes(1);
+  });
+
   it('publishes a presented aim cue after an explicit turn even inside the same compass and target bucket', async () => {
     const current = props();
-    // Close enough to the guide, but initially looking above its target sphere.
-    current.controller.runtime = { ...current.controller.runtime, pose: { ...current.controller.runtime.pose, position: { x: 0, y: 1.6, z: 1 } } };
+    // Close to the plate but looking above its rectangular acquisition area.
+    current.controller.runtime = { ...current.controller.runtime, pose: { position: { x: 1.95, y: 1.6, z: -5.7 }, yaw: 0, pitch: 0.6 } };
     const view = await render(<FirstPersonCanvas {...current} />);
     await createNativeContext(view);
     await submitFrame(renderer);
@@ -187,21 +313,21 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     const publish = jest.mocked(current.onSnapshot);
     expect(publish).toHaveBeenCalledTimes(1);
     const before = publish.mock.calls[0]![0];
-    expect(before.cue).toMatchObject({ kind: 'aim', target: { id: 'guide' } });
+    expect(before.cue).toMatchObject({ kind: 'aim', target: { id: 'emblem-panel' } });
     expect(before.direction).toBe('北');
-    // Overshoot below the guide: still 'aim' and north, but the instruction
+    // Overshoot below the plate: still 'aim' and north, but the instruction
     // now needs the opposite pitch correction. Screen publishes this command
     // immediately, before the real camera matrices have caught up.
-    commandController(current.controller, { type: 'turn', yaw: 0, pitch: -0.6 });
+    commandController(current.controller, { type: 'turn', yaw: 0, pitch: -0.9 });
     const command = controllerSnapshot(current.controller);
     expect(command.cue.kind).toBe('none');
     current.onSnapshot(command);
     await submitFrame(renderer, 3);
     expect(publish).toHaveBeenCalledTimes(3);
     const presented = publish.mock.calls[2]![0];
-    expect(presented.cue).toMatchObject({ kind: 'aim', target: { id: 'guide' } });
+    expect(presented.cue).toMatchObject({ kind: 'aim', target: { id: 'emblem-panel' } });
     expect(presented.direction).toBe(before.direction);
-    expect(presented.runtime.pose.pitch).toBeCloseTo(-0.6);
+    expect(presented.runtime.pose.pitch).toBeCloseTo(-0.3);
     expect(presented.key).not.toBe(before.key);
     // No subsequent per-frame React update is introduced by that command.
     await submitFrame(renderer, 4);
@@ -512,19 +638,18 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await view.unmount();
   });
 
-  it.each(['render', 'scene frame'] as const)('rolls back an unpresented floor-mark step when the %s fails', async (phase) => {
-    const initial = createInitialRuntime();
-    const checkpoint = createCheckpoint({ ...initial, pose: { ...initial.pose, position: { x: 0, y: 1.6, z: -5 } }, progress: { ...initial.progress, guideExamined: true } });
-    const controller = createController(checkpoint);
+  it.each(['render', 'scene frame'] as const)('rolls back unpresented walking/switch return when %s fails, preserving prior emblem observation', async (phase) => {
+    const controller = createController();
+    controller.runtime.pose = { position: { x: 1.95, y: 1.6, z: -5.7 }, yaw: 0, pitch: 0.1 };
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
-    const original = new Error('Injected fault during the first mark step');
+    const original = new Error('Injected fault during switch return');
     let frameShouldFail = false;
-    let candidateMarked = false;
+    let candidateRemaining = Number.POSITIVE_INFINITY;
     const ActualChapterScene = jest.requireActual('../ChapterScene').ChapterScene as typeof ChapterScene;
     chapterScene.mockImplementation(function FaultingScene(sceneProps: ComponentProps<typeof ChapterScene>) {
       useFrame(() => {
         if (frameShouldFail && phase === 'scene frame') {
-          candidateMarked = controller.runtime.progress.markActivated;
+          candidateRemaining = controller.runtime.switchFeedback?.remainingSeconds ?? 0;
           sceneProps.onFrameError?.(original);
         }
       });
@@ -535,16 +660,32 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await createNativeContext(view);
       await submitFrame(renderer);
       expect(current.onReady).toHaveBeenCalledTimes(1);
+      expect(interactController(controller, 'emblem-panel')).toBe(true);
+      expect(dispatchEmblemController(controller, createEmblemCommand(controller, { type: 'compare' })).accepted).toBe(true);
+      commandController(controller, { type: 'hint', stage: 1 });
+      commandController(controller, { type: 'hint', stage: 2 });
+      const wrong = EMBLEM_SWITCHES.find((item) => item.glyph !== createSealStimulus(controller.runtime.emblem.seed).answer)!;
+      const dx = wrong.center.x - controller.runtime.pose.position.x;
+      const dy = wrong.center.y - controller.runtime.pose.position.y;
+      const dz = wrong.center.z - controller.runtime.pose.position.z;
+      commandController(controller, { type: 'turn', yaw: Math.atan2(-dx, -dz), pitch: Math.atan2(dy, Math.hypot(dx, dz)) - controller.runtime.pose.pitch });
+      syncCamera(controller, rendererRoot(renderer).store.getState().camera as THREE.PerspectiveCamera);
+      expect(interactController(controller, wrong.id)).toBe(true);
       const before = controller.runtime;
-      expect(before.progress.markActivated).toBe(false);
+      expect(before.emblem).toMatchObject({ phase: 'observing', compared: true, presentation: 'neutral', hintTier: 2 });
+      expect(before.switchFeedback!.remainingSeconds).toBeGreaterThan(0);
+      // Drive the installed R3F callback with deterministic elapsed time;
+      // its always-loop clock otherwise sees no time under Jest fake timers.
+      jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(0.05);
       frameShouldFail = true;
-      if (phase === 'render') renderer.draw.mockImplementation(() => { candidateMarked = controller.runtime.progress.markActivated; throw original; });
-      // A 0.5375m backward step from z=-5 enters the authored mark radius.
+      if (phase === 'render') renderer.draw.mockImplementation(() => { candidateRemaining = controller.runtime.switchFeedback?.remainingSeconds ?? 0; throw original; });
       commandController(controller, { type: 'step', forward: -1 });
       await submitFrame(renderer, 2);
-      expect(candidateMarked).toBe(true);
+      expect(candidateRemaining).toBeLessThan(before.switchFeedback!.remainingSeconds);
       expect(controller.runtime.pose).toEqual(before.pose);
       expect(controller.runtime.progress).toEqual(before.progress);
+      expect(controller.runtime.emblem).toEqual({ ...before.emblem, paused: true });
+      expect(controller.runtime.switchFeedback).toEqual(before.switchFeedback);
       expect(controller.runtime.paused).toBe(true);
       expect(controller.input.forward).toBe(0);
       expect(current.onSnapshot).not.toHaveBeenCalled();
@@ -657,7 +798,11 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
       const state = rendererRoot(renderer).store.getState();
       const input = chapterScene.mock.calls.at(-1)![0].runtime.current;
-      await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
+      input.pose = { position: { x: 1.95, y: 1.6, z: -5.7 }, yaw: 0, pitch: 0.1 };
+      await submitFrame(renderer, 1.016);
+      expect(view.getByRole('button', { name: '色をほどく' })).toBeEnabled();
+      await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
+      expect(chapterScene.mock.calls.at(-1)![0].runtime.current.emblem.presentation).toBe('neutral');
       await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
       await fireEvent.press(view.getByRole('button', { name: 'ヒント' }));
       await fireEvent.press(view.getByRole('button', { name: '探索へ戻る' }));

@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 
 import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
 import type { AppSettings, EffectStrength } from '../types/application';
+import { PALETTE_IDS, PALETTE_LABELS } from '../domain/emblem/color';
 
 export function SettingsScreen({
   settings,
@@ -54,7 +55,18 @@ export function SettingsScreen({
           onValueChange={(value) => set('haptics', value)}
         />
       </Panel>
-      <SectionTitle>色模様の強さ</SectionTitle>
+      <SectionTitle>紋章の表示</SectionTitle>
+      <Body muted>見え方を比べて選べます。奥行きの強さに決まった順序はありません。</Body>
+      <ChoiceRow>
+        {PALETTE_IDS.map((palette) => (
+          <ActionButton
+            key={palette}
+            label={`${PALETTE_LABELS[palette]}${(settings.emblemPalette ?? 'baseline') === palette ? '（選択中）' : ''}`}
+            onPress={() => set('emblemPalette', palette)}
+          />
+        ))}
+      </ChoiceRow>
+      <SectionTitle>旧迷宮の色模様の強さ</SectionTitle>
       <ChoiceRow>
         {(['low', 'medium', 'high'] as const).map((strength) => (
           <ActionButton

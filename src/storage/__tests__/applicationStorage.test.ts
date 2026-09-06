@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { calculateCalibrationProfile } from '../../domain/calibration/scoring';
 import { generateCalibrationTrials } from '../../domain/calibration/trials';
 import { DEFAULT_CALIBRATION_ENVIRONMENT, type CalibrationResponse } from '../../domain/calibration/types';
-import { completeQuickSetup } from '../../domain/calibration/quickSetup';
+import { completeQuickSetup, createQuickSetupStimulusSpec } from '../../domain/calibration/quickSetup';
 import { APPLICATION_STORAGE_KEY, LEGACY_APPLICATION_STORAGE_KEY, createDefaultApplication, decodePersistedApplication, loadApplication, parsePersistedApplication, resetApplicationStorage, saveApplication } from '../applicationStorage';
 
 describe('persisted application parsing', () => {
@@ -71,6 +71,56 @@ describe('versioned persistence', () => {
     expect(await saveApplication(application)).toBe(true);
     expect((await loadApplication()).application).toEqual({ ...application, activeSetupSource: 'quick' });
     expect((await loadApplication()).application.calibrationProfile).toBeUndefined();
+  });
+
+  it('retains legacy quick answers and their original stimulus version without fabricating emblem trials', async () => {
+    const quick = { schemaVersion: 1, stimulusVersion: 2, kind: 'quick', status: 'completed',
+      answers: ['redFront', 'redFront', 'unclear'], provisionalColor: 'red', suggestDepthAssist: false, completedAt: 'before-emblem' };
+    const original = { ...legacyData(), schemaVersion: 2, settings: { ...createDefaultApplication().settings, emblemPalette: undefined }, quickSetupResult: quick, activeSetupSource: 'quick' };
+    const raw = JSON.stringify(original);
+    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, raw);
+    const loaded = await loadApplication();
+    expect(loaded.status).toBe('loaded');
+    expect(loaded.application.quickSetupResult).toEqual(quick);
+    expect(loaded.application.quickSetupResult).not.toHaveProperty('stimulus');
+    expect(loaded.application.calibrationSession).toEqual(original.calibrationSession);
+    expect(loaded.application.calibrationProfile).toEqual(original.calibrationProfile);
+    expect(loaded.application.bestMazeScore).toBe(432);
+    expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBe(raw);
+  });
+
+  it.each([undefined, null, 'strongest', 7, {}])('defaults invalid optional emblem palette %p without blocking old v1/v2 settings or calibration', (emblemPalette) => {
+    const old = legacyData();
+    for (const schemaVersion of [1, 2]) {
+      const loaded = decodePersistedApplication(JSON.stringify({ ...old, schemaVersion,
+        settings: { ...old.settings, depthAssistOverridden: true, emblemPalette } }));
+      expect(loaded.status).toBe(schemaVersion === 1 ? 'migrated' : 'loaded');
+      expect(loaded.application.settings.emblemPalette).toBe('baseline');
+      expect(loaded.application.settings.effectStrength).toBe(old.settings.effectStrength);
+      expect(loaded.application.calibrationSession).toEqual(old.calibrationSession);
+      expect(loaded.application.calibrationProfile).toEqual(old.calibrationProfile);
+    }
+  });
+
+  it('round-trips exact new emblem trial metadata without changing detailed calibration', async () => {
+    const old = legacyData();
+    const quickSetupResult = completeQuickSetup(['unclear', 'blueFront', 'unclear'], 'new', createQuickSetupStimulusSpec('alternate'));
+    const value = { ...createDefaultApplication(), quickSetupResult, calibrationSession: { ...old.calibrationSession, schemaVersion: 1 as const }, calibrationProfile: old.calibrationProfile,
+      settings: { ...createDefaultApplication().settings, emblemPalette: 'muted' as const } };
+    expect(await saveApplication(value)).toBe(true);
+    const loaded = await loadApplication();
+    expect(loaded.application.quickSetupResult).toEqual(quickSetupResult);
+    expect(loaded.application.settings.emblemPalette).toBe('muted');
+    expect(loaded.application.calibrationSession).toEqual(old.calibrationSession);
+  });
+
+  it.each([{ version: 99 }, { seeds: [21, 22, 21] }, { preference: 'blue' }, { assistance: true }, { resolution: 1 }])('preserves unsupported emblem result bytes and blocks replacement: %p', async (invalidSpec) => {
+    const result = completeQuickSetup(['unclear', 'unclear', 'unclear'], 'new');
+    const raw = JSON.stringify({ ...createDefaultApplication(), quickSetupResult: { ...result, stimulus: { ...createQuickSetupStimulusSpec(), ...invalidSpec } } });
+    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, raw);
+    expect((await loadApplication()).status).toBe('blocked');
+    expect(await saveApplication(createDefaultApplication())).toBe(false);
+    expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBe(raw);
   });
 
   it.each(['{broken', '{"schemaVersion":99}', JSON.stringify({ ...createDefaultApplication(), settings: {} })])('blocks autosave and preserves invalid or future data: %s', async (raw) => {

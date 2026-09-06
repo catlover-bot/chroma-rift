@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { completeQuickSetup, QUICK_SETUP_ANSWERS, type QuickSetupResult } from '../domain/calibration/quickSetup';
+import { quickPreference, QUICK_EMBLEM_SEEDS, QUICK_EMBLEM_RESOLUTION, QUICK_SETUP_ANSWERS, type QuickSetupResult } from '../domain/calibration/quickSetup';
+
+import { STIMULUS_VERSION } from '../domain/emblem/stimulus';
 
 import {
   CALIBRATION_ANSWERS,
@@ -194,15 +196,26 @@ export function createDefaultApplication(systemReducedMotion = false): Persisted
 }
 
 function isQuickSetup(value: unknown): value is QuickSetupResult {
-  if (!isRecord(value) || value.schemaVersion !== 1 || value.stimulusVersion !== 2 ||
-    value.kind !== 'quick' || !oneOf(['completed', 'skipped'] as const, value.status) ||
+  if (!isRecord(value) || value.kind !== 'quick' || !oneOf(['completed', 'skipped'] as const, value.status) ||
     !Array.isArray(value.answers) || !value.answers.every((answer) => oneOf(QUICK_SETUP_ANSWERS, answer)) ||
     !isString(value.completedAt) || typeof value.suggestDepthAssist !== 'boolean') return false;
+  if (value.schemaVersion === 1) {
+    // This is the original separated-shape setup, not an emblem trial.
+    if (value.stimulusVersion !== 2) return false;
+  } else if (value.schemaVersion === 2) {
+    const spec = value.stimulus;
+    if (value.stimulusVersion !== STIMULUS_VERSION || !isRecord(spec) || spec.kind !== 'emblem' ||
+      spec.version !== STIMULUS_VERSION || spec.resolution !== QUICK_EMBLEM_RESOLUTION ||
+      spec.preference !== 'unknown' || spec.assistance !== false ||
+      !oneOf(['baseline', 'muted', 'alternate'] as const, spec.paletteId) ||
+      !Array.isArray(spec.seeds) || spec.seeds.length !== QUICK_EMBLEM_SEEDS.length ||
+      !spec.seeds.every((seed, index) => seed === QUICK_EMBLEM_SEEDS[index])) return false;
+  } else return false;
   if (value.status === 'skipped') {
     return value.answers.length === 0 && value.provisionalColor === 'neutral' && value.suggestDepthAssist;
   }
   if (value.answers.length !== 3) return false;
-  const expected = completeQuickSetup(value.answers, value.completedAt);
+  const expected = quickPreference(value.answers);
   return value.provisionalColor === expected.provisionalColor && value.suggestDepthAssist === expected.suggestDepthAssist;
 }
 
@@ -239,7 +252,13 @@ export function decodePersistedApplication(raw: string | null, systemReducedMoti
       application: {
         schemaVersion: 2,
         // v1 cannot tell whether the user explicitly chose assist: preserve it conservatively.
-        settings: { ...value.settings, depthAssistOverridden: value.settings.depthAssistOverridden ?? true },
+        settings: {
+          ...value.settings,
+          depthAssistOverridden: value.settings.depthAssistOverridden ?? true,
+          // Additive optional setting: damaged/new values never invalidate old calibration.
+          emblemPalette: oneOf(['baseline', 'muted', 'alternate'] as const, value.settings.emblemPalette)
+            ? value.settings.emblemPalette : 'baseline',
+        },
         bestMazeScore: value.bestMazeScore,
         onboardingComplete: value.onboardingComplete,
         ...(value.calibrationProfile ? { calibrationProfile: value.calibrationProfile } : {}),

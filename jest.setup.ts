@@ -24,6 +24,19 @@ jest.mock('@shopify/react-native-skia', () => {
     React.createElement(View, props, children);
   return {
     Canvas: Component,
+    Image: Component,
+    AlphaType: { Opaque: 1 },
+    ColorType: { RGBA_8888: 4 },
+    FilterMode: { Nearest: 0 },
+    MipmapMode: { None: 0 },
+    Skia: {
+      Data: { fromBytes: jest.fn((bytes: Uint8Array) => ({ bytes, dispose: jest.fn() })) },
+      Image: {
+        MakeImage: jest.fn((info: { width: number; height: number }, data: { bytes: Uint8Array }, bytesPerRow: number) => ({
+          ...info, bytes: data.bytes, bytesPerRow, dispose: jest.fn(),
+        })),
+      },
+    },
     Circle: Component,
     Group: Component,
     Line: Component,

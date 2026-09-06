@@ -4,11 +4,11 @@
 
 ## 遊び方
 
-ホームの「遊ぶ」→ 初回だけ3問 → 操作案内 → 入口 → 消えない床 → 重なる鍵 → 帰路 → 出口 → 結果。
+ホームの「遊ぶ」→ 初回だけ3問 → 操作案内 → 入口 → 触れない紋章 → 重なる鍵 → 帰路 → 出口 → 結果。
 
-- 左下の広い領域をドラッグして歩き、右側をドラッグして見回します。指を離すと止まり、左右を同時に操作できます。光のしるべなどに近づき、中央の照準と対象名を見て右下のボタンで調べます。
-- 「色を比べる」で床模様だけを無彩色にします。形や通行条件は同じです。
-- 最初の一時停止メニューでドラッグ操作／ボタン操作（短いステップ・旋回）を切り替えられます。3段階ヒント、視点・上下の感度、左右配置、描画品質、補助表示も選べます。
+- 左下の広い領域をドラッグして歩き、右側をドラッグして見回します。指を離すと止まり、左右を同時に操作できます。壁の紋章や印に近づき、中央の照準と対象名を見て右下のボタンで調べます。
+- 紋章を調べ、「切れずにつながる輪郭」と同じ形の印を押すと、奥の扉が開きます。「色をほどく」は任意の無彩色比較です。色の見え方は正解条件に使いません。
+- 最初の一時停止メニューでドラッグ操作／ボタン操作（短いステップ・旋回）を切り替えられます。3段階ヒント、輪郭ガイド、表示A／控えめ／表示B、視点・上下の感度、左右配置、描画品質も選べます。
 - Reduce Motionや文字拡大でもドラッグ操作を保ちます。VoiceOver中は読み上げ用ボタンを表示し、保存したタッチ操作は変えません。
 - 初回は3回答だけ。スキップでき、保存済みなら省略。詳細12問は「設定 → 詳しく調整する」に残しています。
 
@@ -24,9 +24,10 @@ Expo依存はexpo-gl 57.0.2、expo-asset 57.0.16、expo-file-system 57.0.6。@ty
 
 ## iPhoneで起動
 
-**expo-gl入りのGoal 003系Development Buildはそのまま使い、Metroを再読み込みします。Goal 004のためのnative再ビルドは不要です。** 実機上の再利用確認は[実機チェックリスト](docs/IPHONE_VALIDATION.md)に従います。
+**expo-gl入りのGoal 003系Development Buildはそのまま使い、Metroを再読み込みします。Goal 005のためのnative再ビルドは不要です。** 実機上の再利用確認は[実機チェックリスト](docs/IPHONE_VALIDATION.md)に従います。
 
 ~~~sh
+# 起動中のMetroをCtrl+Cで停止してから
 cd /home/mhirotaka/workspace/chroma-rift
 npx expo start --dev-client --tunnel --clear
 ~~~
@@ -43,4 +44,4 @@ WSL内でNode.js 24とnpmを使用。nvmは必須ではありません。新規�
 
 新しいiPhoneビルドでのGL描画、VoiceOver、触覚、酔い、色の奥行き、性能は未確認です。テストやJS exportは60fpsや快適性を実証しません。広告・課金・共有API・バックエンド・カメラ／センサー権限は追加していません。
 
-[Goal 004検証記録](docs/GOAL-004.md) · [ドラッグ操作設計](docs/CONTROLS-DESIGN.md) · [設計判断](docs/ADR-003-FIRST-PERSON.md) · [完全な攻略](docs/FIRST_PERSON_CHAPTER.md) · [Goal 002](docs/GOAL-002.md)
+[Goal 005検証記録](docs/GOAL-005.md) · [錯視と検証の区別](docs/ILLUSION-EVIDENCE.md) · [Goal 004](docs/GOAL-004.md) · [ドラッグ操作設計](docs/CONTROLS-DESIGN.md) · [設計判断](docs/ADR-003-FIRST-PERSON.md) · [完全な攻略](docs/FIRST_PERSON_CHAPTER.md) · [Goal 002](docs/GOAL-002.md)

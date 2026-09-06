@@ -1,21 +1,32 @@
+import { parseSealCheckpoint } from '../emblem/puzzle';
 import { CHAPTER, CHAPTER_ID, getWorld, LEVEL_VERSION } from './chapter';
 import { isSafePose } from './geometry';
-import { createInitialRuntime, initialProgress } from './runtime';
+import { createInitialRuntime, emblemCheckpointForProgress, initialProgress } from './runtime';
 import type { ChapterRuntime, CheckpointState, PlayerPose, PuzzleState } from './types';
 
 function record(value: unknown): value is Record<string, unknown> { return typeof value === 'object' && value !== null && !Array.isArray(value); }
-function parseProgress(value: unknown): PuzzleState | undefined {
+export type EmblemCheckpointStatus = 'valid' | 'migrated' | 'invalid' | 'unsupported';
+function parseProgress(value: unknown): { progress: PuzzleState; emblemStatus: EmblemCheckpointStatus } | undefined {
   if (!record(value)) return undefined;
   for (const key of ['guideExamined', 'markActivated', 'sealA', 'sealB', 'exitDoorOpen', 'cleared', 'usedLookAssist']) if (typeof value[key] !== 'boolean') return undefined;
   if (value.variant !== 'entrance' && value.variant !== 'exit') return undefined;
   if (!Number.isInteger(value.hintStage) || Number(value.hintStage) < 0 || Number(value.hintStage) > 3) return undefined;
-  if (value.sealA && (!value.guideExamined || !value.markActivated)) return undefined;
   if (value.sealB && !value.sealA) return undefined;
   if (value.variant === 'exit' && !value.sealB) return undefined;
   if (value.exitDoorOpen && value.variant !== 'exit') return undefined;
   if (value.cleared && !value.exitDoorOpen) return undefined;
-  return { guideExamined: value.guideExamined as boolean, markActivated: value.markActivated as boolean, sealA: value.sealA as boolean, sealB: value.sealB as boolean,
+  const progress: PuzzleState = { guideExamined: value.guideExamined as boolean, markActivated: value.markActivated as boolean, sealA: value.sealA as boolean, sealB: value.sealB as boolean,
     variant: value.variant, exitDoorOpen: value.exitDoorOpen as boolean, cleared: value.cleared as boolean, hintStage: value.hintStage as PuzzleState['hintStage'], usedLookAssist: value.usedLookAssist as boolean };
+  const parsed = parseSealCheckpoint(value.emblem);
+  let emblemStatus: EmblemCheckpointStatus = parsed ? 'valid' : value.emblem === undefined ? 'migrated' : record(value.emblem) && Number.isInteger(value.emblem.schemaVersion) && Number(value.emblem.schemaVersion) > 1 ? 'unsupported' : 'invalid';
+  if (parsed) {
+    progress.emblem = parsed;
+    if (progress.sealA && parsed.phase !== 'released') emblemStatus = 'migrated';
+    if (!progress.sealA && parsed.phase === 'released') emblemStatus = 'invalid';
+  }
+  progress.emblem = emblemCheckpointForProgress(progress);
+  if (!progress.sealA) progress.hintStage = progress.emblem.hintTier;
+  return { progress, emblemStatus };
 }
 function parsePose(value: unknown): PlayerPose | undefined {
   if (!record(value) || !record(value.position)) return undefined;
@@ -40,12 +51,13 @@ function safeCheckpointPose(runtime: ChapterRuntime): PlayerPose {
   return { ...nearest, position: { ...nearest.position } };
 }
 export function createCheckpoint(runtime: ChapterRuntime): CheckpointState {
-  return { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: safeCheckpointPose(runtime), progress: { ...runtime.progress } };
+  return { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: safeCheckpointPose(runtime), progress: { ...runtime.progress, emblem: emblemCheckpointForProgress(runtime.progress) } };
 }
-export function restoreCheckpoint(value: unknown): { checkpoint: CheckpointState; recovered: boolean } | undefined {
+export function restoreCheckpoint(value: unknown): { checkpoint: CheckpointState; recovered: boolean; emblemStatus: EmblemCheckpointStatus } | undefined {
   if (!record(value) || value.schemaVersion !== 1 || value.chapterId !== CHAPTER_ID || !Number.isInteger(value.levelVersion) || Number(value.levelVersion) < 0 || Number(value.levelVersion) > LEVEL_VERSION) return undefined;
-  const progress = parseProgress(value.progress);
-  if (!progress) return undefined;
+  const parsed = parseProgress(value.progress);
+  if (!parsed) return undefined;
+  const { progress, emblemStatus } = parsed;
   const pose = parsePose(value.pose);
   const runtime = createInitialRuntime();
   runtime.progress = progress;
@@ -61,6 +73,6 @@ export function restoreCheckpoint(value: unknown): { checkpoint: CheckpointState
     // puzzle flags survive; coordinates never cross layout-version boundaries.
     runtime.pose = progress.cleared ? CHAPTER.checkpoints[CHAPTER.checkpoints.length - 1]! : progress.sealA ? CHAPTER.checkpoints[4]! : CHAPTER.spawn;
   }
-  return { checkpoint: { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: runtime.pose, progress }, recovered: !safe || oldLayout };
+  return { checkpoint: { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: runtime.pose, progress }, recovered: !safe || oldLayout, emblemStatus };
 }
 export const INITIAL_CHECKPOINT: CheckpointState = { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: CHAPTER.spawn, progress: initialProgress() };

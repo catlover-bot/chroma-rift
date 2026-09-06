@@ -5,6 +5,7 @@ import {
   type CalibrationSession,
 } from '../domain/calibration/types';
 import type { QuickSetupResult } from '../domain/calibration/quickSetup';
+import type { PaletteId } from '../domain/emblem/color';
 
 export type ScreenName =
   | 'welcome'
@@ -31,6 +32,8 @@ export type AppSettings = {
   reducedMotion: boolean;
   reducedMotionOverridden: boolean;
   effectStrength: EffectStrength;
+  /** Explicit emblem preset, independent from legacy maze effect strength. */
+  emblemPalette?: PaletteId;
   haptics: boolean;
 };
 
@@ -114,6 +117,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   reducedMotion: false,
   reducedMotionOverridden: false,
   effectStrength: 'medium',
+  emblemPalette: 'baseline',
   haptics: true,
 };
 

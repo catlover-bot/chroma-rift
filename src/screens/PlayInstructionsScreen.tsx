@@ -8,7 +8,7 @@ export function PlayInstructionsScreen({ controls, onStart, onBack }: { controls
       <Panel>
         <Body>{controls.movementMode === 'simple' ? '歩く・向くボタンで、少しずつ進もう。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回そう。' : '左側をドラッグして歩き、右側をドラッグして見回そう。'}</Body>
       </Panel>
-      <Body muted>光のしるべに近づいて調べよう。一時停止からドラッグ操作・ボタン操作を選べます。</Body>
+      <Body muted>壁の紋章に近づいて調べよう。一時停止からドラッグ操作・ボタン操作を選べます。</Body>
       <ActionButton label="迷宮へ入る" variant="primary" onPress={onStart} />
       <ActionButton label="ホームへ戻る" onPress={onBack} />
     </Screen>

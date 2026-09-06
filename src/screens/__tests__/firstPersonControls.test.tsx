@@ -5,17 +5,24 @@ import * as THREE from 'three';
 
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import * as diagnostics from '../../rendering/firstPerson/diagnostics';
-import { advanceController, controllerSnapshot } from '../../rendering/firstPerson/runtimeController';
+import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT_SETTINGS } from '../../types/application';
 import { FirstPersonScreen, type FirstPersonScreenProps } from '../FirstPersonScreen';
+import { createCheckpoint, MOVE_SPEED, VERTICAL_FOV, type InteractableId } from '../../domain/firstPerson';
+import { createSealStimulus, GLYPHS, GLYPH_LABELS, sealDescription, sealHint } from '../../domain/emblem';
 
 // This UI contract fixture represents a completed first-frame signal, not
 // native onCreated or GPU proof. Tests can withhold it to exercise startup.
 let mockSubmittedFrame = true;
 jest.mock('../../rendering/firstPerson/RawGLProof', () => ({ RawGLProof: jest.fn(() => null) }));
-jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonCanvas: jest.fn(({ onReady }: { onReady: () => void }) => {
+jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonCanvas: jest.fn(({ onReady, controller }: FirstPersonCanvasProps) => {
   const React = require('react');
-  React.useEffect(() => { if (mockSubmittedFrame) onReady(); }, [onReady]);
+  React.useEffect(() => {
+    if (mockSubmittedFrame) {
+      Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true });
+      onReady();
+    }
+  }, [controller, onReady]);
   return null;
 }) }));
 jest.mock('react-native-safe-area-context', () => ({ ...jest.requireActual('react-native-safe-area-context'), useSafeAreaInsets: jest.fn(() => ({ top: 47, bottom: 34, left: 0, right: 0 })) }));
@@ -34,6 +41,42 @@ async function frame() {
   });
 }
 
+async function walkTo(x: number, z: number) {
+  await act(() => {
+    const current = scene(), controller = current.controller;
+    const camera = new THREE.PerspectiveCamera(VERTICAL_FOV, 390 / 740, 0.08, 60);
+    for (let frame = 0; frame < 1000; frame += 1) {
+      const dx = x - controller.runtime.pose.position.x, dz = z - controller.runtime.pose.position.z;
+      const distance = Math.hypot(dx, dz);
+      if (distance < 0.001) break;
+      commandController(controller, { type: 'turn', yaw: Math.atan2(-dx, -dz) - controller.runtime.pose.yaw, pitch: -controller.runtime.pose.pitch });
+      controller.input.forward = 1;
+      advanceController(controller, Math.min(1 / 60, distance / MOVE_SPEED), camera);
+      if (frame === 999) throw new Error('Blocked test walk');
+    }
+    stopController(controller);
+    current.onSnapshot(controllerSnapshot(controller));
+  });
+}
+async function aimAt(id: InteractableId) {
+  await act(() => {
+    const current = scene(), controller = current.controller;
+    const target = worldForController(controller).interactables.find((item) => item.id === id)!;
+    const pose = controller.runtime.pose;
+    const dx = target.center.x - pose.position.x, dz = target.center.z - pose.position.z;
+    commandController(controller, { type: 'turn', yaw: Math.atan2(-dx, -dz) - pose.yaw,
+      pitch: Math.atan2(target.center.y - pose.position.y, Math.hypot(dx, dz)) - pose.pitch });
+    advanceController(controller, 0, new THREE.PerspectiveCamera(VERTICAL_FOV, 390 / 740, 0.08, 60));
+    current.onSnapshot(controllerSnapshot(controller));
+  });
+}
+async function approachEmblem(view: Awaited<ReturnType<typeof render>>, inspect = true) {
+  await walkTo(0, -6);
+  await walkTo(1.6, -6);
+  await aimAt('emblem-panel');
+  if (inspect) await fireEvent.press(view.getByRole('button', { name: '紋章を調べる' }));
+}
+
 describe('first-person control surface and lifecycle', () => {
   beforeEach(async () => {
     canvas.mockClear();
@@ -46,6 +89,7 @@ describe('first-person control surface and lifecycle', () => {
 
   it('routes two separate touch pointers and keeps button taps out of look input', async () => {
     const view = await render(<FirstPersonScreen {...props()} />);
+    await approachEmblem(view);
     const stick = view.getByTestId('movement-stick');
     const look = view.getByTestId('look-region');
     await fireEvent(look, 'layout', { nativeEvent: { layout: { width: 200, height: 400 } } });
@@ -56,9 +100,9 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent(look, 'touchMove', touches(2, 80, 110));
     expect(scene().controller.input.forward).toBeGreaterThan(0.9);
     expect(scene().controller.input.lookX).toBe(30);
-    await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
+    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
     expect(scene().controller.input.lookX).toBe(30);
-    expect(scene().neutralColors).toBe(true);
+    expect(scene().controller.runtime.emblem.presentation).toBe('neutral');
     await fireEvent(stick, 'touchCancel', touches(1, 62, 10));
     expect(scene().controller.input.forward).toBe(0);
     expect(scene().controller.input.lookX).toBe(30);
@@ -113,29 +157,52 @@ describe('first-person control surface and lifecycle', () => {
     expect(scene().controller.runtime.pose.position.z).toBeLessThan(startZ);
     expect(original.onControlsChange).not.toHaveBeenCalled();
   });
-  it('keeps color comparison independent of world progress and camera', async () => {
+  it('keeps panel color comparison independent of movement, geometry and unlocking and rate-limits repeated taps', async () => {
+    let now = 1000;
+    jest.spyOn(performance, 'now').mockImplementation(() => now);
     const original = props();
     const view = await render(<FirstPersonScreen {...original} />);
+    await approachEmblem(view);
     const runtime = scene().controller.runtime;
-    await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
-    expect(scene().controller.runtime).toBe(runtime);
-    expect(view.getByText('模様だけをグレーにしました。床とつながりは同じです。')).toBeTruthy();
-    expect(original.onCheckpoint).not.toHaveBeenCalled();
+    const controller = scene().controller;
+    const pose = runtime.pose;
+    const seed = runtime.emblem.seed;
+    jest.mocked(original.onCheckpoint).mockClear();
+    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
+    expect(controller.runtime.pose).toBe(pose);
+    expect(controller.runtime.emblem).toMatchObject({ seed, phase: 'observing', presentation: 'neutral', compared: true });
+    expect(controller.runtime.progress.sealA).toBe(false);
+    expect(controller.input.forward).toBe(0);
+    expect(controller.input.lookX).toBe(0);
+    expect(view.getByText('色だけを外した。輪郭も、壁も変わっていない。')).toBeTruthy();
+    expect(original.onCheckpoint).toHaveBeenCalledTimes(1);
     await fireEvent.press(view.getByRole('button', { name: '色を戻す' }));
-    expect(scene().controller.runtime).toBe(runtime);
+    expect(controller.runtime.emblem.presentation).toBe('neutral');
+    expect(view.getByText('ゆっくり見比べよう。')).toBeTruthy();
+    now += 1001;
+    await fireEvent.press(view.getByRole('button', { name: '色を戻す' }));
+    expect(controller.runtime.emblem.presentation).toBe('color');
+    expect(controller.runtime.pose).toBe(pose);
+    expect(controller.runtime.progress.sealA).toBe(false);
   });
-  it('offers three optional hint stages and never moves a distant player with aim assistance', async () => {
-    const view = await render(<FirstPersonScreen {...props()} />);
+  it('offers three voluntary contour hints and assistance without moving or unlocking', async () => {
+    const view = await render(<FirstPersonScreen {...props({ settings: { ...DEFAULT_SETTINGS, reducedMotion: true } })} />);
     const position = { ...scene().controller.runtime.pose.position };
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: 'ヒント' }));
     expect(scene().controller.runtime.progress.hintStage).toBe(1);
+    expect(view.getByText(sealHint({ hintTier: 1 }))).toBeTruthy();
     await fireEvent.press(view.getByRole('button', { name: '次のヒント' }));
+    expect(view.getByText(sealHint({ hintTier: 2 }))).toBeTruthy();
     await fireEvent.press(view.getByRole('button', { name: '次のヒント' }));
+    expect(view.getByText(sealHint({ hintTier: 3 }))).toBeTruthy();
     expect(scene().controller.runtime.progress.hintStage).toBe(3);
-    await fireEvent.press(view.getByRole('button', { name: '近くで視点を合わせる' }));
+    expect(view.queryByRole('button', { name: '近くで視点を合わせる' })).toBeNull();
+    await fireEvent(view.getByRole('switch', { name: '輪郭ガイド' }), 'valueChange', true);
+    expect(scene().controller.runtime.emblem).toMatchObject({ phase: 'unexamined', hintTier: 3, assist: true });
+    expect(scene().controller.runtime.progress.sealA).toBe(false);
     expect(scene().controller.runtime.pose.position).toEqual(position);
-    expect(view.getByText('目印や対象の近くまで、自分で歩こう。')).toBeTruthy();
+    expect(scene().reducedMotion).toBe(true);
   });
   it('keeps major controls scrollable at 320×568 with large text', async () => {
     const window = Dimensions.get('window');
@@ -204,25 +271,25 @@ describe('first-person control surface and lifecycle', () => {
     expect(scene().appActive).toBe(true);
     expect(scene().paused).toBe(false);
     expect(view.getByRole('button', { name: '前へ一歩' })).toBeDisabled();
-    await act(() => scene().onReady());
+    await act(() => { Object.assign(scene().controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true }); scene().onReady(); });
     expect(view.getByRole('button', { name: '前へ一歩' })).toBeEnabled();
   });
 
   it('retries with a fresh controller, preserves progress/palette and rejects old callbacks, with a two-retry bound', async () => {
-    const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } });
+    const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' }, settings: { ...DEFAULT_SETTINGS, emblemPalette: 'muted' } });
     const view = await render(<FirstPersonScreen {...original} />);
+    await approachEmblem(view);
     const old = scene();
-    old.controller.runtime = { ...old.controller.runtime, progress: { ...old.controller.runtime.progress, guideExamined: true } };
-    await act(() => old.onSnapshot(controllerSnapshot(old.controller)));
-    await fireEvent.press(view.getByRole('button', { name: '色を比べる' }));
+    const expectedPose = createCheckpoint(old.controller.runtime).pose;
+    await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
     const checkpointCalls = jest.mocked(original.onCheckpoint).mock.calls.length;
     await act(() => scene().onError('描画が止まりました。'));
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
     const fresh = scene();
     expect(fresh.controller).not.toBe(old.controller);
-    expect(fresh.controller.runtime.progress.guideExamined).toBe(true);
-    expect(fresh.controller.runtime.pose).toEqual(old.controller.runtime.pose);
-    expect(fresh.neutralColors).toBe(true);
+    expect(fresh.controller.runtime.emblem.phase).toBe('observing');
+    expect(fresh.controller.runtime.pose).toEqual(expectedPose);
+    expect(fresh.emblemPalette).toBe('muted');
     expect(fresh.controller.input.forward).toBe(0);
     await act(() => { old.onReady(); old.onError('以前のエラー'); old.onSnapshot(controllerSnapshot(old.controller)); });
     expect(view.queryByText('以前のエラー')).toBeNull();
@@ -277,9 +344,9 @@ describe('first-person control surface and lifecycle', () => {
   it('isolates proof sessions from chapter saves and restores the chapter when returning', async () => {
     const original = props();
     const view = await render(<FirstPersonScreen {...original} />);
+    await approachEmblem(view);
     const chapter = scene();
-    chapter.controller.runtime = { ...chapter.controller.runtime, progress: { ...chapter.controller.runtime.progress, guideExamined: true } };
-    await act(() => chapter.onSnapshot(controllerSnapshot(chapter.controller)));
+    const expectedPose = createCheckpoint(chapter.controller.runtime).pose;
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
     const writes = jest.mocked(original.onCheckpoint).mock.calls.length;
@@ -294,33 +361,37 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent.press(view.getByRole('button', { name: '探索へ戻る（進行を維持）' }));
     expect(scene().sceneMode).toBe('chapter');
     expect(scene().controller).not.toBe(chapter.controller);
-    expect(scene().controller.runtime.progress.guideExamined).toBe(true);
-    expect(scene().controller.runtime.pose).toEqual(chapter.controller.runtime.pose);
+    expect(scene().controller.runtime.emblem.phase).toBe('observing');
+    expect(scene().controller.runtime.pose).toEqual(expectedPose);
     expect(original.onCheckpoint).toHaveBeenCalledTimes(writes);
     expect(original.onComplete).not.toHaveBeenCalled();
   });
 
-  it('walks to the guide with real simple steps, explains aiming and shows first-action progress', async () => {
+  it('reaches the actual panel, inspects it, handles wrong/correct physical glyphs and leaves old prerequisites inert', async () => {
     const original = props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } });
     const view = await render(<FirstPersonScreen {...original} />);
-    expect(view.getByText('光のしるべへ')).toBeTruthy();
-    await frame();
-    expect(view.getByText('光のしるべに、もう少し近づこう。')).toBeTruthy();
+    expect(view.getByTestId('current-objective')).toHaveTextContent('壁の紋章を調べる');
     expect(view.getByTestId('interact')).toBeDisabled();
-    for (let index = 0; index < 11; index += 1) {
-      await fireEvent.press(view.getByRole('button', { name: '前へ一歩' }));
-      await frame();
-    }
-    expect(view.getByText('「下を見る」で、光に中央の照準を合わせよう。')).toBeTruthy();
-    for (let index = 0; index < 5; index += 1) await fireEvent.press(view.getByRole('button', { name: '下を見る' }));
+    const startZ = scene().controller.runtime.pose.position.z;
+    await fireEvent.press(view.getByRole('button', { name: '前へ一歩' }));
     await frame();
-    expect(view.getByText('「上を見る」で、光に中央の照準を合わせよう。')).toBeTruthy();
-    expect(view.getByTestId('interact')).toBeDisabled();
-    for (let index = 0; index < 3; index += 1) await fireEvent.press(view.getByRole('button', { name: '上を見る' }));
-    await fireEvent.press(view.getByRole('button', { name: 'しるべを調べる' }));
-    expect(scene().controller.runtime.progress.guideExamined).toBe(true);
+    expect(scene().controller.runtime.pose.position.z).toBeLessThan(startZ);
+    await approachEmblem(view);
+    expect(scene().controller.runtime.emblem.phase).toBe('observing');
+    expect(view.getByTestId('current-objective')).toHaveTextContent('切れずにつながる輪郭を探す');
+    expect(view.getByText('触れた指は、壁で止まる。')).toBeTruthy();
+    const answer = createSealStimulus(scene().controller.runtime.emblem.seed).answer;
+    const wrong = GLYPHS.find((glyph) => glyph !== answer)!;
+    await aimAt(`emblem-${wrong}`);
+    await fireEvent.press(view.getByRole('button', { name: GLYPH_LABELS[wrong] + 'の印を押す' }));
+    expect(scene().controller.runtime.emblem.attempts).toBe(1);
     expect(scene().controller.runtime.progress.sealA).toBe(false);
-    expect(view.getByText('しるべを調べました。')).toBeTruthy();
+    expect(view.getByText('印は戻った。色ではなく、切れ目を確かめよう。')).toBeTruthy();
+    await aimAt(`emblem-${answer}`);
+    await fireEvent.press(view.getByRole('button', { name: GLYPH_LABELS[answer] + 'の印を押す' }));
+    expect(scene().controller.runtime.progress).toMatchObject({ sealA: true, guideExamined: false, markActivated: false });
+    expect(scene().controller.runtime.emblem.phase).toBe('released');
+    expect(view.getByTestId('current-objective')).toHaveTextContent('欠けた鍵を探す');
     expect(original.onCheckpoint).toHaveBeenCalled();
   });
   it.each([[320, 568, 2], [390, 844, 1], [430, 932, 2]])('keeps standard drag actions available at %i×%i, font %i', async (width, height, fontScale) => {
@@ -357,7 +428,12 @@ describe('first-person control surface and lifecycle', () => {
     const view = await render(<FirstPersonScreen {...original} />);
     const callback = (listener.mock.calls as unknown as [string, (enabled: boolean) => void][]).filter(([name]) => name === 'screenReaderChanged').at(-1)![1];
     const initial = scene().controller;
+    await approachEmblem(view, false);
+    expect(view.queryByTestId('accessible-emblem-objects')).toBeNull();
+    // Turning VoiceOver on while idle must expose nearby physical objects
+    // without needing a movement frame to publish the new reader state.
     await act(() => callback(true));
+    expect(view.getByTestId('accessible-emblem-objects').props.accessibilityActions).toContainEqual({ name: 'emblem-panel', label: '紋章を調べる' });
     expect(view.getByRole('button', { name: '前へ一歩' })).toBeTruthy();
     expect(view.queryByTestId('movement-stick')).toBeNull();
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
@@ -367,6 +443,87 @@ describe('first-person control surface and lifecycle', () => {
     expect(view.getByTestId('movement-stick')).toBeTruthy();
     expect(scene().controller).toBe(initial);
     expect(original.onControlsChange).not.toHaveBeenCalled();
+  });
+
+  it('lets VoiceOver inspect the physical panel and choose visible glyphs without aiming or revealing the answer beforehand', async () => {
+    jest.mocked(AccessibilityInfo.isScreenReaderEnabled).mockResolvedValue(true);
+    const view = await render(<FirstPersonScreen {...props()} />);
+    expect(view.queryByTestId('accessible-emblem-objects')).toBeNull();
+    await approachEmblem(view, false);
+    const panel = view.getByTestId('accessible-emblem-objects');
+    expect(panel.props.accessibilityActions).toContainEqual({ name: 'emblem-panel', label: '紋章を調べる' });
+    expect(panel.props.accessibilityLabel).not.toContain('切れず');
+    const panelPose = scene().controller.runtime.pose;
+    await fireEvent(panel, 'accessibilityAction', { nativeEvent: { actionName: 'emblem-panel' } });
+    expect(scene().controller.runtime.emblem.phase).toBe('observing');
+    expect(scene().controller.runtime.pose).toBe(panelPose);
+    expect(view.getByTestId('accessible-emblem-objects').props.accessibilityLabel).toBe(sealDescription(scene().controller.runtime.emblem.seed));
+
+    const answer = createSealStimulus(scene().controller.runtime.emblem.seed).answer;
+    const wrong = GLYPHS.find((glyph) => glyph !== answer)!;
+    await aimAt(`emblem-${wrong}`);
+    const switches = view.getByTestId('accessible-emblem-objects');
+    expect(switches.props.accessibilityActions).toContainEqual({ name: `emblem-${wrong}`, label: GLYPH_LABELS[wrong] + 'の印を押す' });
+    const switchPose = scene().controller.runtime.pose;
+    await fireEvent(switches, 'accessibilityAction', { nativeEvent: { actionName: `emblem-${wrong}` } });
+    expect(scene().controller.runtime.emblem.attempts).toBe(1);
+    expect(scene().controller.runtime.progress.sealA).toBe(false);
+    expect(scene().controller.runtime.pose).toBe(switchPose);
+    await aimAt(`emblem-${answer}`);
+    const answerPose = scene().controller.runtime.pose;
+    await fireEvent(view.getByTestId('accessible-emblem-objects'), 'accessibilityAction', { nativeEvent: { actionName: `emblem-${answer}` } });
+    expect(scene().controller.runtime.emblem.phase).toBe('released');
+    expect(scene().controller.runtime.progress.sealA).toBe(true);
+    expect(scene().controller.runtime.pose).toBe(answerPose);
+  });
+
+  it('revalidates cached VoiceOver object actions after leaving range, pausing and retrying the renderer', async () => {
+    jest.mocked(AccessibilityInfo.isScreenReaderEnabled).mockResolvedValue(true);
+    const original = props();
+    const view = await render(<FirstPersonScreen {...original} />);
+    await approachEmblem(view);
+    const answer = createSealStimulus(scene().controller.runtime.emblem.seed).answer;
+    const action = { nativeEvent: { actionName: `emblem-${answer}` } };
+    await aimAt(`emblem-${answer}`);
+    const old = scene();
+    const cachedAction = view.getByTestId('accessible-emblem-objects').props.onAccessibilityAction;
+    const saved = jest.mocked(original.onCheckpoint);
+    const beforeUnknown = saved.mock.calls.length;
+    await act(() => cachedAction({ nativeEvent: { actionName: 'key' } }));
+    expect(old.controller.runtime.progress.sealA).toBe(false);
+    expect(saved).toHaveBeenCalledTimes(beforeUnknown);
+
+    await walkTo(0, -6);
+    await walkTo(0, -3);
+    expect(view.queryByTestId('accessible-emblem-objects')).toBeNull();
+    const beforeFar = saved.mock.calls.length;
+    await act(() => cachedAction(action));
+    expect(old.controller.runtime.emblem.phase).toBe('observing');
+    expect(saved).toHaveBeenCalledTimes(beforeFar);
+
+    await approachEmblem(view, false);
+    await aimAt(`emblem-${answer}`);
+    await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+    const beforePaused = saved.mock.calls.length;
+    await act(() => cachedAction(action));
+    expect(old.controller.runtime.progress.sealA).toBe(false);
+    expect(saved).toHaveBeenCalledTimes(beforePaused);
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
+
+    await act(() => old.onError('描画が止まりました。'));
+    await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+    const fresh = scene();
+    const beforeRetired = saved.mock.calls.length;
+    await act(() => cachedAction(action));
+    expect(fresh.controller).not.toBe(old.controller);
+    expect(old.controller.retired).toBe(true);
+    expect(fresh.controller.runtime.emblem.phase).toBe('observing');
+    expect(fresh.controller.runtime.progress.sealA).toBe(false);
+    expect(saved).toHaveBeenCalledTimes(beforeRetired);
+    await approachEmblem(view, false);
+    await aimAt(`emblem-${answer}`);
+    await fireEvent(view.getByTestId('accessible-emblem-objects'), 'accessibilityAction', action);
+    expect(fresh.controller.runtime.progress.sealA).toBe(true);
   });
 
   it('requires fresh touch ownership after pause and rejects cached callbacks after mode replacement', async () => {
@@ -402,6 +559,7 @@ describe('first-person control surface and lifecycle', () => {
 
   it('lets a third native pointer compare colors and pause while both thumb owners remain independent', async () => {
     const view = await render(<FirstPersonScreen {...props()} />);
+    await approachEmblem(view);
     const left = { identifier: 10, pageX: 70, pageY: 400 };
     const right = { identifier: 20, pageX: 250, pageY: 300 };
     const button = { identifier: 30, pageX: 75, pageY: 710 };
@@ -412,13 +570,13 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent(color, 'touchStart', { nativeEvent: { changedTouches: [left, button], targetTouches: [button], touches: [left, right, button] } });
     await fireEvent(color, 'touchMove', { nativeEvent: { changedTouches: [{ ...left, pageX: 500 }], targetTouches: [button], touches: [left, right, button] } });
     await fireEvent(color, 'touchEnd', { nativeEvent: { changedTouches: [button], targetTouches: [], touches: [left, right] } });
-    expect(scene().neutralColors).toBe(true);
+    expect(scene().controller.runtime.emblem.presentation).toBe('neutral');
     expect(scene().controller.input.stickPointer).toBe(10);
     expect(scene().controller.input.lookPointer).toBe(20);
     expect(scene().controller.input.forward).toBe(1);
     // A scene-owned drag ending over the action has no button ownership.
     await fireEvent(view.getByTestId('compare-colors'), 'touchEnd', { nativeEvent: { changedTouches: [right], targetTouches: [] } });
-    expect(scene().neutralColors).toBe(true);
+    expect(scene().controller.runtime.emblem.presentation).toBe('neutral');
     const pause = view.getByTestId('pause-control');
     const third = { identifier: 40, pageX: 25, pageY: 25 };
     await fireEvent(pause, 'touchStart', { nativeEvent: { changedTouches: [third], targetTouches: [third], touches: [left, right, third] } });

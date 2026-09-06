@@ -3,7 +3,9 @@ import { useFrame } from '@react-three/fiber/native';
 import { useMemo, useRef, type RefObject } from 'react';
 import type * as THREE from 'three';
 
-import { CEILING_BASE_Y, CEILING_THICKNESS, FLOOR_MARK, FLOOR_THICKNESS, GUIDE_FIXTURE, OBSERVATION_POSE } from '../../domain/firstPerson/chapter';
+import type { Glyph } from '../../domain/emblem';
+import { EMBLEM_FIXTURE, EMBLEM_LATCH, EMBLEM_SWITCHES, EMBLEM_SWITCH_TRAVEL, EMBLEM_SWITCH_FEEDBACK_SECONDS } from '../../domain/firstPerson/emblemFixture';
+import { CEILING_BASE_Y, CEILING_THICKNESS, FLOOR_THICKNESS, OBSERVATION_POSE } from '../../domain/firstPerson/chapter';
 import type { ChapterRuntime, PuzzleState, Vec3, WorldGeometry } from '../../domain/firstPerson/types';
 import type { SceneResources } from './resources';
 import { computeSegmentTransform } from './segmentTransform';
@@ -13,24 +15,43 @@ function Segment({ from, to, width, resources, faint = false }: { from: Vec3; to
   return <mesh name="key-segment" geometry={resources.cylinder} material={faint ? resources.quiet : resources.key} position={transform.position} quaternion={transform.quaternion} scale={transform.scale} />;
 }
 
+function GlyphMark({ glyph, resources }: { glyph: Glyph; resources: SceneResources }) {
+  if (glyph === 'circle') return <mesh name="emblem-glyph-circle" geometry={resources.ring} material={resources.neutral} scale={[0.34 / 0.78, 0.34 / 0.78, 1]} />;
+  const side = glyph === 'diamond' ? 0.34 / Math.SQRT2 : 0.34;
+  const stroke = 0.022;
+  return <group name={`emblem-glyph-${glyph}`} rotation={[0, 0, glyph === 'diamond' ? Math.PI / 4 : 0]}>
+    {[-1, 1].map((sign) => <group key={sign}>
+      <mesh geometry={resources.plane} material={resources.neutral} position={[0, sign * (side - stroke) / 2, 0]} scale={[side, stroke, 1]} />
+      <mesh geometry={resources.plane} material={resources.neutral} position={[sign * (side - stroke) / 2, 0, 0]} scale={[stroke, side - stroke * 2, 1]} />
+    </group>)}
+  </group>;
+}
+
 export function ChapterScene({ world, runtime, progress, resources, assist, reducedMotion, lowQuality, lab, onFrameError }: {
   world: WorldGeometry; runtime: RefObject<ChapterRuntime>; progress: PuzzleState; resources: SceneResources; assist: boolean; reducedMotion: boolean; lowQuality: boolean; lab: boolean; onFrameError?: (error: unknown) => void;
 }) {
   const doorA = useRef<THREE.Mesh>(null);
   const doorB = useRef<THREE.Mesh>(null);
   const doorExit = useRef<THREE.Mesh>(null);
-  const guideMarker = useRef<THREE.Mesh>(null);
-  const markerProgress = useRef(0);
+  const latch = useRef<THREE.Mesh>(null);
+  const switches = useRef<Record<Glyph, THREE.Group | null>>({ circle: null, diamond: null, square: null });
   useFrame((_, delta) => {
     try {
       if (runtime.current.paused) return;
       if (doorA.current) doorA.current.position.y = 1.6 + runtime.current.doorAOpen * 3.3;
       if (doorB.current) doorB.current.position.y = 1.6 + runtime.current.doorBOpen * 3.3;
       if (doorExit.current) doorExit.current.position.y = 1.6 + runtime.current.doorExitOpen * 3.3;
-      if (guideMarker.current) {
-        if (runtime.current.progress.guideExamined) markerProgress.current = reducedMotion ? 1 : Math.min(1, markerProgress.current + Math.min(delta, 0.05) / 1.7);
-        guideMarker.current.visible = runtime.current.progress.guideExamined;
-        guideMarker.current.position.set(0, 0.065, -0.95 - markerProgress.current * 3.05);
+      if (latch.current) latch.current.position.x = EMBLEM_LATCH.center.x + runtime.current.doorAOpen * EMBLEM_LATCH.travel;
+      const answer = resources.emblemSurface?.stimulus.answer;
+      for (const item of EMBLEM_SWITCHES) {
+        const mesh = switches.current[item.glyph];
+        if (!mesh) continue;
+        const feedback = runtime.current.switchFeedback;
+        const released = runtime.current.progress.sealA && item.glyph === answer;
+        const returning = feedback?.glyph === item.glyph && feedback.remainingSeconds > 0
+          ? reducedMotion ? Number(feedback.remainingSeconds > EMBLEM_SWITCH_FEEDBACK_SECONDS / 2) : Math.min(1, feedback.remainingSeconds / EMBLEM_SWITCH_FEEDBACK_SECONDS)
+          : 0;
+        mesh.position.z = item.center.z - EMBLEM_SWITCH_TRAVEL * (released ? 1 : returning);
       }
     } catch (error) {
       if (!onFrameError) throw error;
@@ -43,7 +64,7 @@ export function ChapterScene({ world, runtime, progress, resources, assist, redu
       <directionalLight intensity={1.7} position={[2, 6, 3]} />
       {world.floors.map((floor) => <mesh key={floor.id} geometry={resources.box} material={resources.floor} position={[(floor.minX + floor.maxX) / 2, -FLOOR_THICKNESS / 2, (floor.minZ + floor.maxZ) / 2]} scale={[floor.maxX - floor.minX, FLOOR_THICKNESS, floor.maxZ - floor.minZ]} />)}
       {world.floors.map((floor) => <mesh key={`ceiling-${floor.id}`} geometry={resources.box} material={resources.ceiling} position={[(floor.minX + floor.maxX) / 2, CEILING_BASE_Y + CEILING_THICKNESS / 2, (floor.minZ + floor.maxZ) / 2]} scale={[floor.maxX - floor.minX, CEILING_THICKNESS, floor.maxZ - floor.minZ]} />)}
-      {world.solids.map((solid) => <mesh key={solid.id} {...(solid.id === 'seal-a-door' ? { ref: doorA } : solid.id === 'seal-b-door' ? { ref: doorB } : solid.id === 'exit-door' ? { ref: doorExit } : {})} geometry={resources.box} material={solid.kind === 'wall' ? resources.wall : solid.kind === 'door' ? resources.door : resources.device} position={[(solid.min.x + solid.max.x) / 2, (solid.min.y + solid.max.y) / 2, (solid.min.z + solid.max.z) / 2]} scale={[solid.max.x - solid.min.x, solid.max.y - solid.min.y, solid.max.z - solid.min.z]} />)}
+      {world.solids.filter((solid) => !solid.id.startsWith('emblem-')).map((solid) => <mesh key={solid.id} {...(solid.id === 'seal-a-door' ? { ref: doorA } : solid.id === 'seal-b-door' ? { ref: doorB } : solid.id === 'exit-door' ? { ref: doorExit } : {})} geometry={resources.box} material={solid.kind === 'wall' ? resources.wall : solid.kind === 'door' ? resources.door : resources.device} position={[(solid.min.x + solid.max.x) / 2, (solid.min.y + solid.max.y) / 2, (solid.min.z + solid.max.z) / 2]} scale={[solid.max.x - solid.min.x, solid.max.y - solid.min.y, solid.max.z - solid.min.z]} />)}
       {world.colorPanels.map((panel) => <mesh key={panel.id} geometry={resources.plane} material={resources.panel} position={[(panel.minX + panel.maxX) / 2, 0.008, (panel.minZ + panel.maxZ) / 2]} rotation={[-Math.PI / 2, 0, 0]} scale={[panel.maxX - panel.minX, panel.maxZ - panel.minZ, 1]} />)}
       {world.solids.filter((solid) => solid.kind === 'wall').map((solid) => {
         const width = solid.max.x - solid.min.x;
@@ -62,21 +83,32 @@ export function ChapterScene({ world, runtime, progress, resources, assist, redu
       })}
       {world.interactables.filter((item) => item.id !== 'key' && (lab || item.id === 'exit')).map((item) => <mesh key={`target-${item.id}`} geometry={resources.box} material={resources.neutral} position={[item.center.x, item.center.y, item.center.z]} rotation={[0, 0, Math.PI / 4]} scale={[0.2, 0.2, 0.06]} />)}
       {!lab ? <>
-        {/* The guide's visible diameter and authored target share one definition.
-            Front/back rings stay legible from either side without billboarding. */}
-        <group name="guide-fixture" position={[GUIDE_FIXTURE.center.x, GUIDE_FIXTURE.center.y, GUIDE_FIXTURE.center.z]}>
-          <mesh geometry={resources.cylinder} material={resources.trim} rotation={[Math.PI / 2, 0, 0]} scale={[0.2, 0.045, 0.2]} />
-          <mesh name="guide-front-ring" geometry={resources.ring} material={progress.guideExamined ? resources.quiet : resources.neutral} position={[0, 0, 0.03]} scale={[GUIDE_FIXTURE.diameter / 0.78, GUIDE_FIXTURE.diameter / 0.78, 1]} />
-          <mesh name="guide-back-ring" geometry={resources.ring} material={progress.guideExamined ? resources.quiet : resources.neutral} position={[0, 0, -0.03]} rotation={[0, Math.PI, 0]} scale={[GUIDE_FIXTURE.diameter / 0.78, GUIDE_FIXTURE.diameter / 0.78, 1]} />
-          <mesh name="guide-status" geometry={resources.box} material={progress.guideExamined ? resources.quiet : resources.key} rotation={[0, 0, Math.PI / 4]} scale={[0.13, 0.13, 0.07]} />
+        <group name="emblem-fixture">
+          <mesh name="emblem-backing" geometry={resources.box} material={resources.dark} position={[EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, -7.865]} scale={[EMBLEM_FIXTURE.frameWidth, EMBLEM_FIXTURE.frameHeight, 0.07]} />
+          {/* Exactly one planar chromatic surface. Chroma/guide changes only
+              its cached opaque texture, never these transforms or lighting. */}
+          <mesh name="emblem-plate" geometry={resources.plane} material={resources.emblemSurface!.material}
+            position={[EMBLEM_FIXTURE.center.x, EMBLEM_FIXTURE.center.y, EMBLEM_FIXTURE.center.z]} rotation={[0, 0, 0]}
+            scale={[EMBLEM_FIXTURE.width, EMBLEM_FIXTURE.height, 1]} castShadow={false} receiveShadow={false} />
+          {[-1, 1].map((sign) => <group key={sign}>
+            <mesh name={`emblem-frame-horizontal-${sign}`} geometry={resources.box} material={resources.device} position={[1.95, 1.83 + sign * 0.8675, -7.815]} scale={[1.82, 0.085, 0.05]} />
+            <mesh name={`emblem-frame-vertical-${sign}`} geometry={resources.box} material={resources.trim} position={[1.95 + sign * 0.8675, 1.83, -7.815]} scale={[0.085, 1.65, 0.05]} />
+          </group>)}
         </group>
-        <group name="floor-device-face">
-          <mesh geometry={resources.box} material={resources.dark} position={[1.6, 0.98, -7.435]} scale={[0.68, 0.88, 0.03]} />
-          <mesh name="device-status" geometry={resources.box} material={progress.sealA ? resources.neutral : resources.key} position={[1.6, 1.3, -7.408]} scale={[0.44, 0.07, 0.025]} />
-          <mesh geometry={resources.box} material={resources.quiet} position={[1.6, 0.89, -7.414]} scale={[0.06, 0.46, 0.025]} />
-          <mesh geometry={resources.box} material={resources.quiet} position={[1.21, 0.72, -7.444]} scale={[0.04, 1.4, 0.025]} />
-          <mesh geometry={resources.box} material={resources.quiet} position={[1.99, 0.72, -7.444]} scale={[0.04, 1.4, 0.025]} />
-        </group>
+        {EMBLEM_SWITCHES.map((item) => <group name={`emblem-switch-fixture-${item.glyph}`} key={item.id}>
+          <mesh geometry={resources.box} material={resources.trim} position={[item.center.x, item.center.y, item.center.z - 0.085]} scale={[0.42, 0.42, 0.025]} />
+          {[-1, 1].map((sign) => <group key={sign}>
+            <mesh geometry={resources.box} material={resources.device} position={[item.center.x + sign * 0.19, item.center.y, item.center.z - 0.05]} scale={[0.04, 0.42, 0.08]} />
+            <mesh geometry={resources.box} material={resources.device} position={[item.center.x, item.center.y + sign * 0.19, item.center.z - 0.05]} scale={[0.34, 0.04, 0.08]} />
+          </group>)}
+          <group name={`emblem-switch-${item.glyph}`} ref={(mesh) => { switches.current[item.glyph] = mesh; }} position={[item.center.x, item.center.y, item.center.z]}>
+            <mesh geometry={resources.box} material={resources.dark} position={[0, 0, -0.02]} scale={[0.34, 0.34, 0.03]} />
+            <GlyphMark glyph={item.glyph} resources={resources} />
+          </group>
+        </group>)}
+        <mesh name="emblem-latch-housing" geometry={resources.box} material={resources.device} position={[1.1, EMBLEM_LATCH.center.y, -7.84]} scale={[0.16, 0.07, 0.12]} />
+        <mesh name="emblem-latch" ref={latch} geometry={resources.box} material={progress.sealA ? resources.neutral : resources.quiet}
+          position={[EMBLEM_LATCH.center.x, EMBLEM_LATCH.center.y, EMBLEM_LATCH.center.z]} scale={[EMBLEM_LATCH.width, EMBLEM_LATCH.height, EMBLEM_LATCH.depth]} />
         {/* This same two-sided landmark remains at the original z=6 partition
             in both worlds; recognizing the entry makes its changed space clear. */}
         <group name="remembered-entry-landmark" position={[0, 0, 6]}>
@@ -86,9 +118,7 @@ export function ChapterScene({ world, runtime, progress, resources, assist, redu
           <mesh name="entry-front-mark" geometry={resources.box} material={resources.neutral} position={[0, 2.96, -0.14]} rotation={[0, 0, Math.PI / 4]} scale={[0.2, 0.2, 0.04]} />
           <mesh name="entry-back-mark" geometry={resources.box} material={resources.neutral} position={[0, 2.96, 0.14]} rotation={[0, 0, Math.PI / 4]} scale={[0.2, 0.2, 0.04]} />
         </group>
-        <mesh geometry={resources.ring} material={progress.markActivated ? resources.key : resources.neutral} position={[FLOOR_MARK.x, 0.012, FLOOR_MARK.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.5, 1.5, 1]} />
         <mesh geometry={resources.ring} material={resources.neutral} position={[OBSERVATION_POSE.position.x, 0.012, OBSERVATION_POSE.position.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.1, 1.1, 1]} />
-        <mesh ref={guideMarker} geometry={resources.box} material={resources.neutral} scale={[0.14, 0.1, 0.14]} visible={progress.guideExamined} />
         {[-1.1, -2.05, -3, -4, -5, -6].flatMap((z, index) => [-0.2, 0.2].map((x) => <mesh key={`foot-${z}-${x}`} geometry={resources.box} material={resources.neutral} position={[x, 0.013, z + (x < 0 ? 0 : 0.18)]} rotation={[0, index % 2 ? 0.04 : -0.04, 0]} scale={[0.1, 0.008, 0.22]} />))}
         <mesh geometry={resources.plane} material={resources.dark} position={[world.keyFrame.center.x, world.keyFrame.center.y, world.keyFrame.center.z - 0.04]} scale={[world.keyFrame.width, world.keyFrame.height, 1]} />
         {world.keyFrame.outline.flatMap((line, lineIndex) => line.slice(1).map((point, index) => <Segment key={`outline-${lineIndex}-${index}`} from={line[index]!} to={point} width={0.007} resources={resources} faint />))}

@@ -1,0 +1,163 @@
+{
+  "sourceSha256": "99248b7900457ebe684a0549da0919d5c9f8afb71096122e9cae13110530a9f9",
+  "variants": {
+    "circle-outer": 0,
+    "circle-inner": 1,
+    "square-outer": 48,
+    "diamond-inner": 49,
+    "square-inner": 56,
+    "diamond-outer": 57
+  },
+  "records": [
+    {
+      "seed": 21,
+      "palette": "baseline",
+      "answer": "circle",
+      "geometryKey": "seal-1-21-circle-diamond-inner-2",
+      "color": "08e796b7a472f8079317d22e763270e7a3f87a3c0d626f668a930cc25d76fdc6",
+      "neutral": "9c08505e7db07e457932ecad769990086187833ee9f7aa1b9564b30ce4843147",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "66da55f50e2a52af916072d6eb710456f2b5144a57d7a8ce4e3c0909c7bdb3fc"
+    },
+    {
+      "seed": 21,
+      "palette": "muted",
+      "answer": "circle",
+      "geometryKey": "seal-1-21-circle-diamond-inner-2",
+      "color": "f8249c1078f75ee03553eab7fdf75e2c27c36ad079f1b7bb6792d09ab0ace342",
+      "neutral": "da9bed65433c73dbbc363cd5e42e8b8f668c1b06b1a09ad41d69441c3e7c230d",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "66da55f50e2a52af916072d6eb710456f2b5144a57d7a8ce4e3c0909c7bdb3fc"
+    },
+    {
+      "seed": 21,
+      "palette": "alternate",
+      "answer": "circle",
+      "geometryKey": "seal-1-21-circle-diamond-inner-2",
+      "color": "c19daaec5dd9927d7af3e4aeb15f9e2436df2b8d39faee55af11d34da6b0c0ac",
+      "neutral": "471747942ab9c28496e4345d7e3d05b70d9246b12b3065ef58fdc3fdebee63b0",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "66da55f50e2a52af916072d6eb710456f2b5144a57d7a8ce4e3c0909c7bdb3fc"
+    },
+    {
+      "seed": 22,
+      "palette": "baseline",
+      "answer": "circle",
+      "geometryKey": "seal-1-22-circle-square-outer-1",
+      "color": "dd83f40ec3791bdf0374a4dc66641644944572b49b44f405a2e2de89662a0f93",
+      "neutral": "3190cb241ca4d1fcb8085d816bcbfb1f91634647f4861c8230200fe3a1b60b21",
+      "continuous": "463e6a5225156e2bbe7d0a9a732dc736a0d03c106c49954095c0138d505aaab5",
+      "broken": "49f793824e018826f5455cd0d7cd7c21b294829a36847dca1f4281bce6af151d"
+    },
+    {
+      "seed": 22,
+      "palette": "muted",
+      "answer": "circle",
+      "geometryKey": "seal-1-22-circle-square-outer-1",
+      "color": "c54149f91177619a4eb0f1c58e44edd7e73b85e64469ca46308367f3fead606c",
+      "neutral": "4775e4b26765a5814b0caf4f88c6e024a42b991d6118de824868de6a8bc3ec50",
+      "continuous": "463e6a5225156e2bbe7d0a9a732dc736a0d03c106c49954095c0138d505aaab5",
+      "broken": "49f793824e018826f5455cd0d7cd7c21b294829a36847dca1f4281bce6af151d"
+    },
+    {
+      "seed": 22,
+      "palette": "alternate",
+      "answer": "circle",
+      "geometryKey": "seal-1-22-circle-square-outer-1",
+      "color": "8de899f57617dc8d6f9cb8a9e4b2ad7414131cf45dddc9adf3d39c58d2980503",
+      "neutral": "869f65500d92c5d34b04a448efe860e375c9caa2c607b9d0683482587f667fbe",
+      "continuous": "463e6a5225156e2bbe7d0a9a732dc736a0d03c106c49954095c0138d505aaab5",
+      "broken": "49f793824e018826f5455cd0d7cd7c21b294829a36847dca1f4281bce6af151d"
+    },
+    {
+      "seed": 23,
+      "palette": "baseline",
+      "answer": "circle",
+      "geometryKey": "seal-1-23-circle-diamond-inner-0",
+      "color": "46d18a2f66204817441c430e0b05faa7a4d4c659e8f5d43c4e19056341f8146d",
+      "neutral": "8bd812361a3afd00c575fbd9c036b08791f7b8d11f9f2136b34053d50beb4829",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "ab1cde75f638aa94066494d4d799f7f767c11b185283e5e4dfc64e69877b8227"
+    },
+    {
+      "seed": 23,
+      "palette": "muted",
+      "answer": "circle",
+      "geometryKey": "seal-1-23-circle-diamond-inner-0",
+      "color": "957a8e2666eb57b4c2d58de1de0b3fc08586ba4f66d0f7721c9decdb7d97e253",
+      "neutral": "70710a4ab935a6933947f94030bd4fc4728743b5e53e1c20e0901e0404d37d43",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "ab1cde75f638aa94066494d4d799f7f767c11b185283e5e4dfc64e69877b8227"
+    },
+    {
+      "seed": 23,
+      "palette": "alternate",
+      "answer": "circle",
+      "geometryKey": "seal-1-23-circle-diamond-inner-0",
+      "color": "2c02da7243cb9d48cfa2e41a686b6c67d4d551d5fedb9f5aef843c275f4e6062",
+      "neutral": "7440d28edff5d2215c1d11a6b3fde9957d9dcf7e76b8e728c7b405b0391b4712",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "ab1cde75f638aa94066494d4d799f7f767c11b185283e5e4dfc64e69877b8227"
+    },
+    {
+      "seed": 0,
+      "palette": "baseline",
+      "answer": "circle",
+      "geometryKey": "seal-1-0-circle-square-outer-1",
+      "color": "dd83f40ec3791bdf0374a4dc66641644944572b49b44f405a2e2de89662a0f93",
+      "neutral": "3190cb241ca4d1fcb8085d816bcbfb1f91634647f4861c8230200fe3a1b60b21",
+      "continuous": "463e6a5225156e2bbe7d0a9a732dc736a0d03c106c49954095c0138d505aaab5",
+      "broken": "49f793824e018826f5455cd0d7cd7c21b294829a36847dca1f4281bce6af151d"
+    },
+    {
+      "seed": 0,
+      "palette": "muted",
+      "answer": "circle",
+      "geometryKey": "seal-1-0-circle-square-outer-1",
+      "color": "c54149f91177619a4eb0f1c58e44edd7e73b85e64469ca46308367f3fead606c",
+      "neutral": "4775e4b26765a5814b0caf4f88c6e024a42b991d6118de824868de6a8bc3ec50",
+      "continuous": "463e6a5225156e2bbe7d0a9a732dc736a0d03c106c49954095c0138d505aaab5",
+      "broken": "49f793824e018826f5455cd0d7cd7c21b294829a36847dca1f4281bce6af151d"
+    },
+    {
+      "seed": 0,
+      "palette": "alternate",
+      "answer": "circle",
+      "geometryKey": "seal-1-0-circle-square-outer-1",
+      "color": "8de899f57617dc8d6f9cb8a9e4b2ad7414131cf45dddc9adf3d39c58d2980503",
+      "neutral": "869f65500d92c5d34b04a448efe860e375c9caa2c607b9d0683482587f667fbe",
+      "continuous": "463e6a5225156e2bbe7d0a9a732dc736a0d03c106c49954095c0138d505aaab5",
+      "broken": "49f793824e018826f5455cd0d7cd7c21b294829a36847dca1f4281bce6af151d"
+    },
+    {
+      "seed": 4294967295,
+      "palette": "baseline",
+      "answer": "circle",
+      "geometryKey": "seal-1-4294967295-circle-square-inner-3",
+      "color": "060fd338346a4ccdec17c6a9cbb1442bdcc8f6534761f0c26eb2a45e456f3c02",
+      "neutral": "425de94f456fe6c3dd6d241c26b94cede5bb7b4bb70f07b377225164c5cf3dcf",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "63d88c3eb48aff5e9bfa559a987132b3bfbfd6cd829ac5a9b4ae5fbaea2e59a5"
+    },
+    {
+      "seed": 4294967295,
+      "palette": "muted",
+      "answer": "circle",
+      "geometryKey": "seal-1-4294967295-circle-square-inner-3",
+      "color": "76edd2fac8563cd59d3840020d336ddcd671cea3756b4a1356d1491901f42a05",
+      "neutral": "09efde486828b8e322a33a7e883b3e20add9c481b15d42815beaec619b700fc4",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "63d88c3eb48aff5e9bfa559a987132b3bfbfd6cd829ac5a9b4ae5fbaea2e59a5"
+    },
+    {
+      "seed": 4294967295,
+      "palette": "alternate",
+      "answer": "circle",
+      "geometryKey": "seal-1-4294967295-circle-square-inner-3",
+      "color": "5394b3bd4fc3a5521012b15ba8680033b997fc58fcc58dfbcac3a6acf0d31cc7",
+      "neutral": "04ce5f18f01a913a72cf5856f9ef6f1ff823975855504663e3e4fd5e2ed0c1b9",
+      "continuous": "69fe731d4d10059dddd7a1b48e6c50818b7679a1a766a3bc8e4ef030be06dc12",
+      "broken": "63d88c3eb48aff5e9bfa559a987132b3bfbfd6cd829ac5a9b4ae5fbaea2e59a5"
+    }
+  ]
+}

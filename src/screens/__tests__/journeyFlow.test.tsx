@@ -7,10 +7,11 @@ import { PerspectiveCamera } from 'three';
 import App from '../../../App';
 import type { IllusionMazeCanvasProps } from '../../rendering/IllusionMazeCanvas';
 import { APPLICATION_STORAGE_KEY } from '../../storage/applicationStorage';
-import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
+import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
-import { MOVE_SPEED, VERTICAL_FOV } from '../../domain/firstPerson';
+import { MOVE_SPEED, VERTICAL_FOV, type InteractableId } from '../../domain/firstPerson';
+import { createSealStimulus, GLYPHS } from '../../domain/emblem';
 import * as appStateModule from '../../app/state';
 import * as nativeGateModule from '../NativeFirstPersonGate';
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
@@ -31,7 +32,12 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => {
       mockFirstPersonCanvasProps = props;
       const { onReady } = props;
       const initialReady = React.useRef(onReady);
-      React.useEffect(() => { initialReady.current(); }, []);
+      React.useEffect(() => {
+        // This fixture supplies the native boundary's completed presentation.
+        // The real native Canvas lifecycle tests retain their actual gate.
+        Object.assign(props.controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true });
+        initialReady.current();
+      }, [props.controller]);
       return React.createElement(View, { testID: 'first-person-native-canvas' });
     },
   };
@@ -180,7 +186,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
         publish();
       });
     };
-    const inspect = async (id: 'guide' | 'floor-device' | 'key' | 'exit') => {
+    const inspect = async (id: InteractableId) => {
       await act(() => {
         const controller = scene().controller;
         const target = worldForController(controller).interactables.find((candidate) => candidate.id === id)!;
@@ -197,12 +203,20 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     };
 
     expect(view.getByTestId('interact')).toBeDisabled();
-    await walk(0, 1);
-    await inspect('guide');
-    await walk(0, -4);
+    await walk(0, -6);
     await walk(1.6, -6);
-    await inspect('floor-device');
-    expect(scene().controller.runtime.progress.sealA).toBe(true);
+    await inspect('emblem-panel');
+    expect(view.getByTestId('current-objective')).toHaveTextContent('切れずにつながる輪郭を探す');
+    expect(scene().controller.runtime.emblem.phase).toBe('observing');
+    const seed = scene().controller.runtime.emblem.seed;
+    const answer = createSealStimulus(seed).answer;
+    const wrong = GLYPHS.find((glyph) => glyph !== answer)!;
+    await inspect(`emblem-${wrong}`);
+    expect(scene().controller.runtime.emblem.attempts).toBe(1);
+    expect(scene().controller.runtime.progress.sealA).toBe(false);
+    await inspect(`emblem-${answer}`);
+    expect(scene().controller.runtime.progress).toMatchObject({ sealA: true, guideExamined: false, markActivated: false });
+    expect(scene().controller.runtime.emblem).toMatchObject({ seed, phase: 'released' });
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     expect(scene().controller.runtime.paused).toBe(true);
     await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY))!).progress.sealA).toBe(true));
@@ -361,7 +375,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await waitFor(() => expect(finishDeletion).toBeDefined());
     expect(view.queryByText('補助表示')).toBeNull();
     expect(remove).toHaveBeenCalledTimes(2);
-    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY]);
+    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY]);
     await act(() => finishDeletion?.());
     expect(await view.findByText('あとで調整して遊ぶ')).toBeTruthy();
     await waitFor(async () => {

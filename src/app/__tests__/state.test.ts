@@ -1,6 +1,6 @@
 import { appReducer, initialAppState, persistedFromState } from '../state';
 import * as detailedScoring from '../../domain/calibration/scoring';
-import type { QuickSetupAnswer } from '../../domain/calibration/quickSetup';
+import { createQuickSetupStimulusSpec, type QuickSetupAnswer } from '../../domain/calibration/quickSetup';
 import type { CalibrationResponse } from '../../domain/calibration/types';
 import { createDefaultApplication } from '../../storage/applicationStorage';
 
@@ -31,6 +31,28 @@ describe('quick setup and retained legacy journey', () => {
     expect(classifier).not.toHaveBeenCalled();
     expect(appReducer(state, quickAnswer())).toBe(state);
     classifier.mockRestore();
+  });
+
+  it('freezes the presented palette into the quick session and preserves it after settings change', () => {
+    const base = { ...initialAppState, settings: { ...initialAppState.settings, emblemPalette: 'muted' as const } };
+    let state = appReducer(base, { type: 'PLAY', sessionId: 'emblem-setup' });
+    expect(state.quickSetupSession?.stimulus).toEqual(createQuickSetupStimulusSpec('muted'));
+    state = appReducer(state, { type: 'UPDATE_SETTINGS', settings: { ...state.settings, emblemPalette: 'alternate' } });
+    for (let index = 0; index < 3; index += 1) state = appReducer(state, quickAnswer(state, 'blueFront'));
+    expect(state.quickSetupResult).toMatchObject({ schemaVersion: 2, stimulusVersion: 1, stimulus: createQuickSetupStimulusSpec('muted') });
+    expect(state.settings.emblemPalette).toBe('alternate');
+    expect(appReducer(state, { type: 'PLAY' }).screen).toBe('playInstructions');
+  });
+
+  it('keeps old setup provenance and bypasses the questionnaire after upgrade', () => {
+    const legacy = { schemaVersion: 1 as const, stimulusVersion: 2 as const, kind: 'quick' as const,
+      status: 'completed' as const, answers: ['redFront', 'redFront', 'unclear'] as QuickSetupAnswer[],
+      provisionalColor: 'red' as const, suggestDepthAssist: false, completedAt: 'old' };
+    const state = { ...initialAppState, quickSetupResult: legacy };
+    expect(appReducer(state, { type: 'PLAY' }).screen).toBe('playInstructions');
+    expect(persistedFromState(state).quickSetupResult).toBe(legacy);
+    const restarted = appReducer(state, { type: 'START_QUICK_SETUP', sessionId: 'optional-retake' });
+    expect(appReducer(restarted, { type: 'SKIP_QUICK_SETUP' }).quickSetupResult).toBe(legacy);
   });
 
   it('ignores duplicate, out of sequence and previous-session taps', () => {

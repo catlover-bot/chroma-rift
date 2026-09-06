@@ -1,16 +1,40 @@
+import { checkpointSeal, EMBLEM_SEED, parseSealCheckpoint, reduceSeal, sealHint, startSealSession, type SealCheckpoint, type SealResult } from '../emblem/puzzle';
+import type { Glyph } from '../emblem/stimulus';
+import { EMBLEM_FIXTURE, EMBLEM_SWITCH_FEEDBACK_SECONDS } from './emblemFixture';
 import { evaluateKeyAlignment } from './alignment';
-import { CHANGED_REGION, CHAPTER, EYE_HEIGHT, FLOOR_MARK, FLOOR_PUZZLE, getWorld, GUIDE_FIXTURE, KEY_PUZZLE, OBSERVATION_POSE, PLAYER_RADIUS } from './chapter';
+import { CHANGED_REGION, CHAPTER, EYE_HEIGHT, getWorld, KEY_PUZZLE, OBSERVATION_POSE, PLAYER_RADIUS } from './chapter';
 import { clamp, isSafePose, MAX_FRAME_DELTA, segmentOccluded, updatePlayer } from './geometry';
 import { evaluateInteraction } from './interaction';
 import type { CameraMatrices, ChapterRuntime, CheckpointState, CollisionVolume, HintStage, InteractableDefinition, InteractableId, MovementInput, PlayerPose, PuzzleDefinition, PuzzleState, Vec3, WorldGeometry } from './types';
 
 export function initialProgress(): PuzzleState {
-  return { guideExamined: false, markActivated: false, sealA: false, sealB: false, variant: 'entrance', exitDoorOpen: false, cleared: false, hintStage: 0, usedLookAssist: false };
+  return { emblem: checkpointSeal(startSealSession(EMBLEM_SEED, 'initial')), guideExamined: false, markActivated: false, sealA: false, sealB: false, variant: 'entrance', exitDoorOpen: false, cleared: false, hintStage: 0, usedLookAssist: false };
 }
-export function createInitialRuntime(checkpoint?: CheckpointState, session = 1): ChapterRuntime {
+let runtimeSession = 0;
+/** The old host seal remains the downstream gate. Optional puzzle state is
+ * normalized to it so legacy saves resume without replaying the first room. */
+export function emblemCheckpointForProgress(progress: PuzzleState): SealCheckpoint {
+  const parsed = parseSealCheckpoint(progress.emblem);
+  const fallback = checkpointSeal(startSealSession(EMBLEM_SEED, 'checkpoint'));
+  const checkpoint = parsed ?? fallback;
+  return { ...checkpoint, phase: progress.sealA ? 'released' : checkpoint.phase === 'released' ? 'observing' : checkpoint.phase };
+}
+export function createInitialRuntime(checkpoint?: CheckpointState, session = ++runtimeSession): ChapterRuntime {
+  runtimeSession = Math.max(runtimeSession, session);
   const progress = checkpoint ? { ...checkpoint.progress } : initialProgress();
+  const savedEmblem = emblemCheckpointForProgress(progress);
+  progress.emblem = savedEmblem;
+  if (!progress.sealA) progress.hintStage = savedEmblem.hintTier;
+  const emblem = startSealSession(savedEmblem.seed, String(session), savedEmblem);
   return { pose: checkpoint ? { ...checkpoint.pose, position: { ...checkpoint.pose.position } } : { ...CHAPTER.spawn, position: { ...CHAPTER.spawn.position } },
-    progress, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.exitDoorOpen ? 1 : 0 };
+    progress, emblem, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.exitDoorOpen ? 1 : 0 };
+}
+/** A reducer result and the existing door gate commit together in one runtime
+ * value. Rejected/replayed results never produce another host transition. */
+export function commitEmblemResult(runtime: ChapterRuntime, result: SealResult): ChapterRuntime {
+  if (!result.accepted || result.state.sessionId !== runtime.emblem.sessionId || result.state.seed !== runtime.emblem.seed || result.state.lastSeq <= runtime.emblem.lastSeq) return runtime;
+  const emblem = runtime.progress.sealA && result.state.phase !== 'released' ? { ...result.state, phase: 'released' as const } : result.state;
+  return { ...runtime, emblem, progress: { ...runtime.progress, emblem: checkpointSeal(emblem), sealA: runtime.progress.sealA || emblem.phase === 'released', hintStage: runtime.progress.sealA ? runtime.progress.hintStage : emblem.phase === 'released' ? 0 : emblem.hintTier } };
 }
 export function findInteraction(world: WorldGeometry, pose: PlayerPose, progress?: PuzzleState): InteractableDefinition | undefined {
   const candidate = evaluateInteraction(world, pose, progress);
@@ -60,10 +84,11 @@ export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, d
   if (runtime.paused || runtime.progress.cleared) return runtime;
   const world = getWorld(runtime);
   const pose = isSafePose(nextPose, world) ? nextPose : runtime.pose;
-  const markActivated = runtime.progress.markActivated || Math.hypot(pose.position.x - FLOOR_MARK.x, pose.position.z - FLOOR_MARK.z) <= 0.66;
-  const progress = markActivated === runtime.progress.markActivated ? runtime.progress : { ...runtime.progress, markActivated };
+  const progress = runtime.progress;
   const elapsed = Number.isFinite(dt) ? clamp(dt, 0, MAX_FRAME_DELTA) : 0;
+  const remaining = runtime.switchFeedback ? Math.max(0, runtime.switchFeedback.remainingSeconds - elapsed) : 0;
   let next: ChapterRuntime = { ...runtime, pose, progress,
+    switchFeedback: runtime.switchFeedback && remaining > 0 ? { ...runtime.switchFeedback, remainingSeconds: remaining } : undefined,
     doorAOpen: runtime.progress.sealA ? Math.min(1, runtime.doorAOpen + elapsed / 1.25) : 0,
     doorBOpen: runtime.progress.sealB ? Math.min(1, runtime.doorBOpen + elapsed / 1.25) : 0,
     doorExitOpen: runtime.progress.exitDoorOpen ? Math.min(1, runtime.doorExitOpen + elapsed / 1.25) : 0,
@@ -87,9 +112,18 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
   const progress = runtime.progress;
   switch (expectedId) {
     case 'guide':
-      return progress.guideExamined ? runtime : { ...runtime, progress: { ...progress, guideExamined: true } };
-    case 'floor-device':
-      return progress[FLOOR_PUZZLE.success.seal] || !prerequisitesMet(FLOOR_PUZZLE, progress) ? runtime : { ...runtime, progress: { ...progress, [FLOOR_PUZZLE.success.seal]: true, hintStage: 0 } };
+    case 'floor-device': return runtime;
+    case 'emblem-panel':
+    case 'emblem-circle':
+    case 'emblem-diamond':
+    case 'emblem-square': {
+      if (!matrices) return runtime;
+      const glyph = expectedId === 'emblem-panel' ? undefined : expectedId.slice('emblem-'.length) as Glyph;
+      const result = reduceSeal(runtime.emblem, { sessionId: runtime.emblem.sessionId, seq: runtime.emblem.lastSeq + 1, nowMs: runtime.emblem.lastNowMs + 1,
+        action: glyph ? { type: 'choose', glyph } : { type: 'inspect' } }, { rendererReady: true, foreground: true, targetId: candidate.target.id });
+      const next = commitEmblemResult(runtime, result);
+      return next !== runtime && glyph ? { ...next, switchFeedback: { glyph, correct: next.progress.sealA, sequence: result.state.lastSeq, remainingSeconds: EMBLEM_SWITCH_FEEDBACK_SECONDS } } : next;
+    }
     case 'key': {
       const actualAlignment = !!matrices && evaluateKeyAlignment(runtime.pose, getWorld(runtime), matrices, runtime.alignment).aligned;
       if (progress[KEY_PUZZLE.success.seal] || !prerequisitesMet(KEY_PUZZLE, progress, actualAlignment)) return runtime;
@@ -100,16 +134,21 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
       return progress.exitDoorOpen || progress.variant !== 'exit' || !progress.sealA || !progress.sealB ? runtime : { ...runtime, progress: { ...progress, exitDoorOpen: true } };
   }
 }
-export function pauseRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? runtime : { ...runtime, paused: true }; }
-export function resumeRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? { ...runtime, paused: false } : runtime; }
-export function setHintStage(runtime: ChapterRuntime, stage: HintStage): ChapterRuntime { return { ...runtime, progress: { ...runtime.progress, hintStage: stage } }; }
+export function pauseRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? runtime : { ...runtime, paused: true, emblem: { ...runtime.emblem, paused: true } }; }
+export function resumeRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? { ...runtime, paused: false, emblem: { ...runtime.emblem, paused: false } } : runtime; }
+export function setHintStage(runtime: ChapterRuntime, stage: HintStage): ChapterRuntime {
+  if (runtime.progress.sealA) return { ...runtime, progress: { ...runtime.progress, hintStage: stage } };
+  let next = runtime;
+  while (next.emblem.hintTier < stage) {
+    next = commitEmblemResult(next, reduceSeal(next.emblem, { sessionId: next.emblem.sessionId, seq: next.emblem.lastSeq + 1, nowMs: next.emblem.lastNowMs + 1, action: { type: 'hint' } }, { rendererReady: false, foreground: false, targetId: null }));
+  }
+  return next;
+}
 
 export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?: Vec3 } {
   const { progress } = runtime;
   const stage = Math.max(1, progress.hintStage) - 1;
-  if (!progress.guideExamined) return { text: ['入口の先の、光のしるべを探そう。', FLOOR_PUZZLE.clues[0]!, '光のしるべに近づき、照準を合わせて「調べる」。'][stage]!, target: GUIDE_FIXTURE.center };
-  if (!progress.markActivated) return { text: ['色の床の上にある、中立色の輪を探そう。', FLOOR_PUZZLE.clues[1]!, '自分で前へ歩き、床の中央の輪に入ろう。'][stage]!, target: { ...FLOOR_MARK, y: 0.05 } };
-  if (!progress.sealA) return { text: FLOOR_PUZZLE.hints[stage]!, target: { x: 1.6, y: 1.3, z: -7.4 } };
+  if (!progress.sealA) return { text: sealHint(runtime.emblem), target: EMBLEM_FIXTURE.center };
   if (!progress.sealB) return { text: KEY_PUZZLE.hints[stage]!, target: OBSERVATION_POSE.position };
   if (progress.variant !== 'exit') return { text: '鍵の部屋の観察の輪へ戻ろう。帰り道の準備が整います。', target: OBSERVATION_POSE.position };
   if (progress.exitDoorOpen) return { text: '開いた最後の扉を、自分の足で通り抜けよう。', target: { x: 0, y: EYE_HEIGHT, z: 15.5 } };
@@ -121,23 +160,16 @@ export function objectiveForRuntime(runtime: ChapterRuntime): string {
   if (p.exitDoorOpen) return '開いた扉の外へ歩こう。';
   if (p.sealB) return '覚えのある入口へ戻ろう。';
   if (p.sealA) return KEY_PUZZLE.clues[0]!;
-  if (p.markActivated && p.guideExamined) return '輪の先の装置を調べよう。';
-  return p.guideExamined ? '床の輪に入ろう。' : '入口の光のしるべを調べよう。';
+  return runtime.emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
 }
 /** An explicit, local aim aid. It never moves the player or solves a puzzle. */
 export function assistAim(runtime: ChapterRuntime): ChapterRuntime {
   if (runtime.paused || runtime.progress.hintStage < 3 || runtime.progress.cleared) return runtime;
+  if (!runtime.progress.sealA || runtime.progress.sealB) return runtime;
   const world = getWorld(runtime);
-  let target: Vec3;
-  if (runtime.progress.sealA && !runtime.progress.sealB) {
-    if (Math.hypot(runtime.pose.position.x - OBSERVATION_POSE.position.x, runtime.pose.position.z - OBSERVATION_POSE.position.z) > 0.55) return runtime;
-    target = world.keyFrame.center;
-  } else {
-    const hint = hintForRuntime(runtime);
-    if (!hint.target || Math.hypot(hint.target.x - runtime.pose.position.x, hint.target.z - runtime.pose.position.z) > 2.4) return runtime;
-    target = hint.target;
-  }
-  if (segmentOccluded(runtime.pose.position, target, world, 'floor-device-body')) return runtime;
+  if (Math.hypot(runtime.pose.position.x - OBSERVATION_POSE.position.x, runtime.pose.position.z - OBSERVATION_POSE.position.z) > 0.55) return runtime;
+  const target = world.keyFrame.center;
+  if (segmentOccluded(runtime.pose.position, target, world)) return runtime;
   const dx = target.x - runtime.pose.position.x;
   const dz = target.z - runtime.pose.position.z;
   const pose = { ...runtime.pose, yaw: Math.atan2(-dx, -dz), pitch: clamp(Math.atan2(target.y - runtime.pose.position.y, Math.hypot(dx, dz)), -1.1, 1.1) };

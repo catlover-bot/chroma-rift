@@ -1,99 +1,97 @@
 import { PerspectiveCamera } from 'three';
-import { createInitialRuntime, evaluateInteraction, findInteraction, getWorld, GUIDE_FIXTURE, interact, INTERACTION_CONE_DEGREES, interactionCue, objectiveForRuntime, OBSERVATION_POSE, raySphereDistance, forwardVector } from '..';
+import { createSealStimulus } from '../../emblem/stimulus';
+import { EMBLEM_FIXTURE, EMBLEM_SWITCHES } from '../emblemFixture';
+import { createInitialRuntime, evaluateInteraction, findInteraction, getWorld, interact, INTERACTION_CONE_DEGREES, interactionCue, objectiveForRuntime, OBSERVATION_POSE, raySphereDistance, forwardVector } from '..';
 import type { ChapterRuntime, InteractableDefinition, PlayerPose, Vec3, WorldGeometry } from '..';
 
 function aim(pose: PlayerPose, center: Vec3): PlayerPose {
-  const dx = center.x - pose.position.x;
-  const dz = center.z - pose.position.z;
+  const dx = center.x - pose.position.x, dz = center.z - pose.position.z;
   return { ...pose, yaw: Math.atan2(-dx, -dz), pitch: Math.atan2(center.y - pose.position.y, Math.hypot(dx, dz)) };
 }
 function matrices(pose: PlayerPose, fov = 65) {
   const camera = new PerspectiveCamera(fov, 390 / 844, 0.08, 60);
   camera.position.set(pose.position.x, pose.position.y, pose.position.z);
-  camera.rotation.set(pose.pitch, pose.yaw, 0, 'YXZ');
-  camera.updateMatrixWorld(true);
+  camera.rotation.set(pose.pitch, pose.yaw, 0, 'YXZ'); camera.updateMatrixWorld(true);
   return { view: [...camera.matrixWorldInverse.elements], projection: [...camera.projectionMatrix.elements] };
 }
-function nearGuide(): ChapterRuntime {
+function nearGlyph(): ChapterRuntime {
   const initial = createInitialRuntime();
-  const pose = aim({ ...initial.pose, position: { x: 0, y: 1.6, z: 1.65 } }, GUIDE_FIXTURE.center);
-  return { ...initial, pose: { ...pose, yaw: pose.yaw + 5.8 * Math.PI / 180 } };
+  const point = EMBLEM_SWITCHES.find((item) => item.glyph === createSealStimulus(initial.emblem.seed).answer)!.center;
+  const pose = aim({ ...initial.pose, position: { x: point.x, y: 1.6, z: -5.6 } }, point);
+  return { ...initial, emblem: { ...initial.emblem, phase: 'observing' }, progress: { ...initial.progress, emblem: { ...initial.progress.emblem!, phase: 'observing' } }, pose: { ...pose, yaw: pose.yaw + 5.8 * Math.PI / 180 } };
+}
+function glyphWorld(runtime: ChapterRuntime): WorldGeometry {
+  const world = getWorld(runtime);
+  world.interactables = world.interactables.filter((item) => item.id === `emblem-${createSealStimulus(runtime.emblem.seed).answer}`);
+  return world;
 }
 
 describe('shared visible interaction acquisition (real Three projection, no GPU)', () => {
-  it('allows a guide inside the documented six-degree cone when its exact ray misses, in HUD and action', () => {
-    const runtime = nearGuide();
-    const world = getWorld(runtime);
-    const guide = world.interactables[0]!;
+  it('allows a physical glyph inside the six-degree cone when its exact ray misses, in HUD and action', () => {
+    const runtime = nearGlyph(), world = glyphWorld(runtime), glyph = world.interactables[0]!;
     expect(INTERACTION_CONE_DEGREES).toBe(6);
-    expect(raySphereDistance(runtime.pose.position, forwardVector(runtime.pose), guide.center, guide.radius)).toBeUndefined();
-    expect(interactionCue(world, runtime.pose, matrices(runtime.pose), runtime.progress)).toMatchObject({ kind: 'ready', target: { id: 'guide' }, actionLabel: 'しるべを調べる' });
-    expect(findInteraction(world, runtime.pose)?.id).toBe('guide');
-    expect(interact(runtime, 'guide', matrices(runtime.pose)).progress.guideExamined).toBe(true);
+    expect(raySphereDistance(runtime.pose.position, forwardVector(runtime.pose), glyph.center, glyph.radius)).toBeUndefined();
+    expect(interactionCue(world, runtime.pose, matrices(runtime.pose), runtime.progress)).toMatchObject({ kind: 'ready', target: { id: glyph.id } });
+    expect(findInteraction(world, runtime.pose)?.id).toBe(glyph.id);
+    expect(interact(runtime, glyph.id, matrices(runtime.pose)).progress.sealA).toBe(true);
   });
   it('rejects off-frustum cone candidates and stale or malformed camera matrices', () => {
-    const runtime = nearGuide();
-    const world = getWorld(runtime);
-    world.interactables = [world.interactables[0]!];
+    const runtime = nearGlyph(), world = glyphWorld(runtime), id = world.interactables[0]!.id;
     expect(evaluateInteraction(world, runtime.pose, runtime.progress, matrices(runtime.pose, 3))).toEqual({ kind: 'none' });
     const oldCamera = matrices({ ...runtime.pose, yaw: runtime.pose.yaw + 0.2 });
     expect(evaluateInteraction(world, runtime.pose, runtime.progress, oldCamera)).toEqual({ kind: 'none' });
-    expect(interact(runtime, 'guide', oldCamera)).toBe(runtime);
+    expect(interact(runtime, id, oldCamera)).toBe(runtime);
     expect(evaluateInteraction(world, runtime.pose, runtime.progress, { ...matrices(runtime.pose), view: Array(16).fill(NaN) })).toEqual({ kind: 'none' });
   });
-  it.each([6.3, 12, 180])('cannot acquire a missed target at %s degrees off its center', (degrees) => {
-    const runtime = nearGuide();
-    const direct = aim(runtime.pose, GUIDE_FIXTURE.center);
+  it.each([6.8, 12, 180])('cannot acquire a missed glyph at %s degrees yaw from its center', (degrees) => {
+    const runtime = nearGlyph(), world = glyphWorld(runtime), target = world.interactables[0]!;
+    const direct = aim(runtime.pose, target.center);
     runtime.pose = { ...direct, yaw: direct.yaw + degrees * Math.PI / 180 };
-    expect(findInteraction(getWorld(runtime), runtime.pose)).toBeUndefined();
-    expect(interact(runtime, 'guide', matrices(runtime.pose))).toBe(runtime);
+    expect(findInteraction(world, runtime.pose)).toBeUndefined();
+    expect(interact(runtime, target.id, matrices(runtime.pose))).toBe(runtime);
   });
-  it('shows a distant visible guide without granting reach and never reveals it through an opaque door', () => {
-    const runtime = nearGuide();
-    runtime.pose = aim({ ...runtime.pose, position: { ...runtime.pose.position, z: 2 } }, GUIDE_FIXTURE.center);
-    const world = getWorld(runtime);
-    expect(evaluateInteraction(world, runtime.pose, runtime.progress, matrices(runtime.pose))).toMatchObject({ kind: 'approach', target: { id: 'guide' } });
-    expect(interact(runtime, 'guide', matrices(runtime.pose))).toBe(runtime);
-    world.solids = [...world.solids, { id: 'closed-door', kind: 'door', opaque: true, min: { x: -3, y: 0, z: 0.2 }, max: { x: 3, y: 3.2, z: 0.4 } }];
+  it('shows a distant visible glyph without granting reach and never reveals it through an opaque door', () => {
+    const runtime = nearGlyph(), target = glyphWorld(runtime).interactables[0]!;
+    runtime.pose = aim({ ...runtime.pose, position: { ...runtime.pose.position, z: -5.2 } }, target.center);
+    const world = glyphWorld(runtime);
+    expect(evaluateInteraction(world, runtime.pose, runtime.progress, matrices(runtime.pose))).toMatchObject({ kind: 'approach', target: { id: target.id } });
+    expect(interact(runtime, target.id, matrices(runtime.pose))).toBe(runtime);
+    world.solids = [...world.solids, { id: 'closed-door', kind: 'door', opaque: true, min: { x: -3, y: 0, z: -6.1 }, max: { x: 3, y: 3.2, z: -6 } }];
     expect(evaluateInteraction(world, runtime.pose, runtime.progress, matrices(runtime.pose))).toEqual({ kind: 'none' });
   });
-  it('rejects cone candidates whose visible fixture center is behind a wall edge', () => {
-    const runtime = nearGuide();
-    const world = getWorld(runtime);
-    world.interactables = [world.interactables[0]!];
-    world.solids = [{ id: 'cover-guide', kind: 'wall', opaque: true, min: { x: -0.05, y: 0, z: 0.2 }, max: { x: 0.05, y: 3.2, z: 0.4 } }];
+  it('rejects cone candidates whose fixture center is behind a wall edge', () => {
+    const runtime = nearGlyph(), world = glyphWorld(runtime), x = world.interactables[0]!.center.x;
+    world.solids = [...world.solids, { id: 'cover', kind: 'wall', opaque: true, min: { x: x - 0.05, y: 0, z: -6.1 }, max: { x: x + 0.05, y: 3.2, z: -6 } }];
     expect(findInteraction(world, runtime.pose)).toBeUndefined();
     expect(evaluateInteraction(world, runtime.pose, runtime.progress, matrices(runtime.pose))).toEqual({ kind: 'none' });
   });
-  it('favors an exact reticle hit over a nearer cone candidate, with deterministic cone ties', () => {
+  it('favors exact hits over nearer cone candidates, with stable tie breaking', () => {
     const pose: PlayerPose = { position: { x: 0, y: 1.6, z: 0 }, yaw: 0, pitch: 0 };
-    const guide: InteractableDefinition = { id: 'guide', label: 'guide', center: { x: 0.1, y: 1.6, z: -1.5 }, radius: 0.02, maxDistance: 2.2 };
-    const device: InteractableDefinition = { ...guide, id: 'floor-device', center: { x: 0, y: 1.6, z: -1.9 } };
-    const world: WorldGeometry = { ...getWorld(createInitialRuntime()), solids: [], interactables: [guide, device] };
-    expect(evaluateInteraction(world, pose)).toMatchObject({ kind: 'ready', target: { id: 'floor-device' } });
-    world.interactables = [guide, { ...guide, id: 'floor-device' }];
+    const guide: InteractableDefinition = { id: 'guide', label: 'lab guide', center: { x: 0.1, y: 1.6, z: -1.5 }, radius: 0.02, maxDistance: 2.2 };
+    const glyph: InteractableDefinition = { ...guide, id: 'emblem-circle', center: { x: 0, y: 1.6, z: -1.9 } };
+    const world: WorldGeometry = { ...getWorld(createInitialRuntime()), solids: [], interactables: [guide, glyph] };
+    expect(evaluateInteraction(world, pose).target?.id).toBe('emblem-circle');
+    world.interactables = [guide, { ...guide, id: 'emblem-circle' }];
     const selected = evaluateInteraction(world, pose);
     world.interactables = [...world.interactables].reverse();
     expect(evaluateInteraction(world, pose)).toEqual(selected);
-    expect(selected.target?.id).toBe('floor-device');
+    expect(selected.target?.id).toBe('emblem-circle');
   });
-  it('gives a meaningful prerequisite reason and only unlocks the same candidate after real progress', () => {
-    const runtime = createInitialRuntime();
-    runtime.pose = aim({ ...runtime.pose, position: { x: 1.6, y: 1.6, z: -6 } }, { x: 1.6, y: 1.3, z: -7.4 });
-    const evaluate = () => evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices(runtime.pose));
-    expect(evaluate()).toMatchObject({ kind: 'locked', reason: '入口の光のしるべを先に調べよう。' });
-    expect(interact(runtime, 'floor-device', matrices(runtime.pose))).toBe(runtime);
-    runtime.progress.guideExamined = true;
-    expect(evaluate()).toMatchObject({ kind: 'locked', reason: '床の輪に入ると、装置の封印が解けます。' });
-    runtime.progress.markActivated = true;
-    expect(evaluate()).toMatchObject({ kind: 'ready', actionLabel: '装置を動かす' });
-    const solved = interact(runtime, 'floor-device', matrices(runtime.pose));
-    expect(solved.progress.sealA).toBe(true);
-    expect(interact(solved, 'floor-device', matrices(solved.pose))).toBe(solved);
+  it('requires actual plate inspection, then permits a glyph with no legacy floor/device flags', () => {
+    const initial = createInitialRuntime();
+    const glyph = EMBLEM_SWITCHES.find((item) => item.glyph === createSealStimulus(initial.emblem.seed).answer)!;
+    let runtime = { ...initial, pose: aim({ ...initial.pose, position: { x: 1.95, y: 1.6, z: -5.8 } }, glyph.center) };
+    expect(evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices(runtime.pose))).toMatchObject({ kind: 'locked', reason: 'まず壁の紋章を調べよう。' });
+    expect(interact(runtime, glyph.id, matrices(runtime.pose))).toBe(runtime);
+    runtime.pose = aim(runtime.pose, EMBLEM_FIXTURE.center);
+    runtime = interact(runtime, 'emblem-panel', matrices(runtime.pose));
+    runtime.pose = aim(runtime.pose, glyph.center);
+    expect(evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices(runtime.pose)).kind).toBe('ready');
+    expect(interact(runtime, glyph.id, matrices(runtime.pose)).progress).toMatchObject({ sealA: true, guideExamined: false, markActivated: false });
   });
-  it('rechecks a stale HUD target and changes progress at most once under rapid taps', () => {
-    let runtime = nearGuide();
-    const id = evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices(runtime.pose)).target!.id;
+  it('rechecks a stale HUD target and releases at most once under rapid taps', () => {
+    let runtime = nearGlyph();
+    const id = glyphWorld(runtime).interactables[0]!.id;
     const turned = { ...runtime, pose: { ...runtime.pose, yaw: Math.PI } };
     expect(interact(turned, id, matrices(turned.pose))).toBe(turned);
     let transitions = 0;
@@ -106,7 +104,7 @@ describe('shared visible interaction acquisition (real Three projection, no GPU)
   });
   it('never gives the key a cone or bypasses actual projection alignment with an exact hit', () => {
     const initial = createInitialRuntime();
-    const runtime = { ...initial, pose: { ...OBSERVATION_POSE, yaw: 5.8 * Math.PI / 180 }, progress: { ...initial.progress, guideExamined: true, markActivated: true, sealA: true }, doorAOpen: 1 };
+    const runtime = { ...initial, pose: { ...OBSERVATION_POSE, yaw: 5.8 * Math.PI / 180 }, progress: { ...initial.progress, sealA: true }, doorAOpen: 1 };
     expect(findInteraction(getWorld(runtime), runtime.pose)).toBeUndefined();
     expect(interact(runtime, 'key', matrices(runtime.pose))).toBe(runtime);
     runtime.pose = aim({ ...OBSERVATION_POSE, position: { ...OBSERVATION_POSE.position, x: 8.8 } }, getWorld(runtime).keyFrame.center);
@@ -114,12 +112,10 @@ describe('shared visible interaction acquisition (real Three projection, no GPU)
     expect(evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices(runtime.pose))).toMatchObject({ kind: 'locked' });
     expect(interact(runtime, 'key', matrices(runtime.pose))).toBe(runtime);
   });
-  it('rejects malformed poses and keeps post-guide objectives tied to floor progress', () => {
+  it('rejects malformed poses and keeps the objective tied to actual inspection', () => {
     const initial = createInitialRuntime();
     expect(evaluateInteraction(getWorld(initial), { ...initial.pose, yaw: NaN })).toEqual({ kind: 'none' });
-    initial.progress.guideExamined = true;
-    expect(objectiveForRuntime(initial)).toBe('床の輪に入ろう。');
-    initial.progress.markActivated = true;
-    expect(objectiveForRuntime(initial)).toBe('輪の先の装置を調べよう。');
+    expect(objectiveForRuntime(initial)).toBe('壁の紋章を調べる');
+    expect(objectiveForRuntime({ ...initial, emblem: { ...initial.emblem, phase: 'observing' } })).toBe('切れずにつながる輪郭を探す');
   });
 });

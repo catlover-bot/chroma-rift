@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber/native';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import type { PaletteId } from '../../domain/emblem';
 import { CAMERA_FAR, CAMERA_NEAR, VERTICAL_FOV } from '../../domain/firstPerson/chapter';
 import { hasNative3D } from '../../platform/native3D';
 import type { PreferredColor } from '../IllusionPalette';
@@ -12,12 +13,14 @@ import { recordCanvasLayout, updateDiagnosticEnvironment } from './diagnostics';
 import { createNativeSceneSession, type NativeSceneSession } from './nativeSceneSession';
 import { PROOF_CAMERA, ProofScene } from './ProofScene';
 import { createSceneResources } from './resources';
+import { DEFAULT_EMBLEM_APPEARANCE } from './emblemSurface';
 import { stopController, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
 
 export type FirstPersonCanvasProps = {
   controller: RuntimeController; snapshot: RuntimeSnapshot; paused: boolean; appActive?: boolean;
   sceneMode?: 'chapter' | 'proof'; startupTimeoutMs?: number;
   neutralColors: boolean; preferredColor: PreferredColor; effectStrength: 'low' | 'medium' | 'high';
+  emblemPalette?: PaletteId;
   assist: boolean; reducedMotion: boolean; quality: 'low' | 'standard';
   onSnapshot: (snapshot: RuntimeSnapshot) => void; onReady: () => void; onError: (message: string) => void;
 };
@@ -37,7 +40,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   const proof = props.sceneMode === 'proof' && __DEV__;
   const lifecycle = useMemo(() => createCanvasLifecycle(controller, onError), [controller, onError]);
   const session = useMemo(() => createNativeSceneSession(controller, lifecycle, proof, onReady), [controller, lifecycle, proof, onReady]);
-  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low'), [proof, props.quality]);
+  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }), [controller, proof, props.quality]);
   const runtime = useMemo(() => ({ get current() { return controller.runtime; } }), [controller]);
   const world = useMemo(() => worldForController({ ...controller, runtime: snapshot.runtime }), [controller, snapshot.runtime]);
   const remainingStartup = useRef(props.startupTimeoutMs ?? 12000);
@@ -50,6 +53,15 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   }, [controller, appActive, props.paused, proof]);
   useEffect(() => () => resources?.dispose(), [resources]);
   useEffect(() => () => session.close(), [session]);
+  useLayoutEffect(() => {
+    resources?.emblemSurface?.update({
+      seed: snapshot.runtime.emblem.seed,
+      palette: props.emblemPalette ?? 'baseline',
+      preference: props.preferredColor === 'neutral' ? 'unknown' : props.preferredColor,
+      presentation: snapshot.runtime.emblem.presentation,
+      assist: snapshot.runtime.emblem.assist,
+    });
+  }, [props.emblemPalette, props.preferredColor, resources, snapshot.runtime.emblem.seed, snapshot.runtime.emblem.presentation, snapshot.runtime.emblem.assist]);
   useEffect(() => { resources?.updatePalette(props.preferredColor, props.neutralColors, props.effectStrength); }, [props.effectStrength, props.neutralColors, props.preferredColor, resources]);
   useEffect(() => {
     if (props.paused || !appActive || lifecycle.ready || !lifecycle.active) return;

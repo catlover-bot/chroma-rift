@@ -1,3 +1,4 @@
+import { EMBLEM_FIXTURE, EMBLEM_FIXTURE_SOLIDS, EMBLEM_SWITCHES } from './emblemFixture';
 import type { ChapterDefinition, ChapterRuntime, CollisionVolume, FloorRegion, KeyFragment, KeyFrame, PlayerPose, PuzzleDefinition, Vec3, WorldGeometry } from './types';
 
 export const CHAPTER_ID = 'returnless-entrance';
@@ -30,12 +31,12 @@ const ROOMS: readonly FloorRegion[] = [
 ];
 const SPAWN: PlayerPose = { position: { x: 0, y: EYE_HEIGHT, z: 7 }, yaw: 0, pitch: 0 };
 export const FLOOR_PUZZLE: PuzzleDefinition = {
-  id: 'unbroken-floor', title: '消えない床',
-  prerequisites: ['guideExamined', 'markActivated'],
-  clues: ['足跡は、途切れていない。', '光の標識と足跡が示す床は続いている。'],
-  action: { type: 'inspect', target: 'floor-device' },
+  id: 'untouchable-emblem', title: '触れない紋章',
+  prerequisites: [],
+  clues: ['切れずにつながる輪郭を探す', '色ではなく、線のつながりを確かめよう。'],
+  action: { type: 'inspect', target: 'emblem-panel' },
   success: { seal: 'sealA', opensDoor: 'seal-a-door' },
-  hints: ['輪の先にある装置を見てみよう。', '踏んだ輪の印が、装置の封印につながっている。', '奥の装置に近づき、照準を合わせて「調べる」。'],
+  hints: ['浮いて見えるかより、線がどこへ続くかを見てみよう。', '二つの輪郭のうち、一つには切れ目がある。「色をほどく」で比べられる。', '切れずに一周できる輪郭と、同じ形の印を押そう。「輪郭ガイド」でも確認できる。'],
 };
 export const KEY_PUZZLE: PuzzleDefinition = {
   id: 'overlapping-key', title: '重なる鍵',
@@ -137,15 +138,15 @@ export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' 
   const solids = [...staticWalls[progress.variant],
     box(FLOOR_PUZZLE.success.opensDoor, -1, 1, -8.12, -7.92, 'door', runtime.doorAOpen * 3.3, 3.2 + runtime.doorAOpen * 3.3),
     box(KEY_PUZZLE.success.opensDoor, 10, 12, -12.12, -11.92, 'door', runtime.doorBOpen * 3.3, 3.2 + runtime.doorBOpen * 3.3),
-    box('floor-device-body', 1.18, 2.02, -7.8, -7.45, 'device', 0, 1.5),
+    ...EMBLEM_FIXTURE_SOLIDS,
     ...(progress.variant === 'exit' ? [box('exit-door', -1, 1, 13.92, 14.12, 'door', runtime.doorExitOpen * 3.3, 3.2 + runtime.doorExitOpen * 3.3)] : []),
   ];
   const interactables: WorldGeometry['interactables'] = [
-    { id: 'guide', label: '光のしるべ', center: GUIDE_FIXTURE.center, radius: GUIDE_FIXTURE.radius, maxDistance: 2.2 },
-    { id: 'floor-device', label: progress.sealA ? '開いた床の封印' : '床の封印', center: { x: 1.6, y: 1.3, z: -7.4 }, radius: 0.34, maxDistance: 2.1 },
+    { id: 'emblem-panel', label: '触れない紋章', center: EMBLEM_FIXTURE.center, radius: 0.01, maxDistance: EMBLEM_FIXTURE.maxDistance, rectangle: { width: EMBLEM_FIXTURE.width, height: EMBLEM_FIXTURE.height, normal: EMBLEM_FIXTURE.normal, right: EMBLEM_FIXTURE.right } },
+    ...EMBLEM_SWITCHES.map((item) => ({ id: item.id, label: item.glyph === 'circle' ? '丸の印' : item.glyph === 'diamond' ? 'ひし形の印' : '四角の印', center: item.center, radius: item.width / 2, maxDistance: item.maxDistance })),
     { id: 'key', label: runtime.alignment && !progress.sealB ? '重ねる' : progress.sealB ? '重なった鍵' : '欠けた鍵', center: FRAME_CENTER, radius: 0.48, maxDistance: 8 },
     ...(progress.variant === 'exit' ? [{ id: 'exit' as const, label: '最後の扉', center: { x: 0, y: 1.4, z: 13.8 }, radius: 0.55, maxDistance: 2.2 }] : []),
   ];
   return { variant: progress.variant, floors: layouts[progress.variant], solids, interactables,
-    colorPanels: [region('colored-flat-floor', -2.3, 2.3, -6.5, -1.5)], keyFragments: KEY_FRAGMENTS, keyFrame: KEY_FRAME };
+    colorPanels: [], keyFragments: KEY_FRAGMENTS, keyFrame: KEY_FRAME };
 }

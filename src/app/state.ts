@@ -1,6 +1,6 @@
 import { calculateCalibrationProfile } from '../domain/calibration/scoring';
 import { generateCalibrationTrials } from '../domain/calibration/trials';
-import { completeQuickSetup, skipQuickSetup, QUICK_SETUP_ANSWERS, type QuickSetupAnswer, type QuickSetupSession } from '../domain/calibration/quickSetup';
+import { completeQuickSetup, createQuickSetupStimulusSpec, skipQuickSetup, QUICK_SETUP_ANSWERS, type QuickSetupAnswer, type QuickSetupSession } from '../domain/calibration/quickSetup';
 import {
   DEFAULT_CALIBRATION_ENVIRONMENT,
   type CalibrationEnvironment,
@@ -73,17 +73,17 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       if (state.quickSetupResult || state.calibrationProfile) return { ...state, screen: 'playInstructions' };
       return {
         ...state, screen: 'quickSetup', quickSessionRevision: state.quickSessionRevision + 1,
-        quickSetupSession: { id: action.sessionId ?? `quick-${state.quickSessionRevision + 1}`, responses: [] },
+        quickSetupSession: { id: action.sessionId ?? `quick-${state.quickSessionRevision + 1}`, responses: [], stimulus: createQuickSetupStimulusSpec(state.settings.emblemPalette ?? 'baseline') },
       };
     case 'START_QUICK_SETUP':
       return {
         ...state, screen: 'quickSetup', quickSessionRevision: state.quickSessionRevision + 1,
-        quickSetupSession: { id: action.sessionId, responses: [] },
+        quickSetupSession: { id: action.sessionId, responses: [], stimulus: createQuickSetupStimulusSpec(state.settings.emblemPalette ?? 'baseline') },
       };
     case 'SKIP_QUICK_SETUP':
       return {
         ...state, screen: 'playInstructions', onboardingComplete: true, quickSetupSession: undefined,
-        quickSetupResult: state.quickSetupResult ?? skipQuickSetup(action.completedAt ?? ''),
+        quickSetupResult: state.quickSetupResult ?? skipQuickSetup(action.completedAt ?? '', state.quickSetupSession?.stimulus ?? createQuickSetupStimulusSpec(state.settings.emblemPalette ?? 'baseline')),
         activeSetupSource: state.activeSetupSource ?? (state.calibrationProfile ? 'detailed' : 'quick'),
         settings: state.settings.depthAssistOverridden || state.quickSetupResult || state.calibrationProfile
           ? state.settings : { ...state.settings, depthAssist: true },
@@ -94,7 +94,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         session.responses.length !== action.index || action.index >= 3 || !QUICK_SETUP_ANSWERS.includes(action.answer)) return state;
       const responses = [...session.responses, action.answer];
       if (responses.length < 3) return { ...state, quickSetupSession: { ...session, responses } };
-      const result = completeQuickSetup(responses, action.respondedAt);
+      const result = completeQuickSetup(responses, action.respondedAt, session.stimulus);
       return {
         ...state, screen: 'playInstructions', onboardingComplete: true, quickSetupSession: undefined,
         quickSetupResult: result,

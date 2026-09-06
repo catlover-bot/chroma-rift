@@ -19,7 +19,7 @@ export function effectiveControlMode(preference: FirstPersonControls['movementMo
 }
 
 export function firstGuideInstruction(mode: EffectiveControlMode['mode']): string {
-  return mode === 'simple' ? '「前へ一歩」で、光のしるべへ近づこう。' : '左側をドラッグして歩こう。';
+  return mode === 'simple' ? '「前へ一歩」で、壁の紋章へ近づこう。' : '左側をドラッグして歩こう。';
 }
 
 /** Describe a turn toward the already selected visible guide; never change pose. */

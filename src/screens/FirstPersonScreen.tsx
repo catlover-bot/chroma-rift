@@ -3,13 +3,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, AppState, Modal, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { GLYPH_LABELS, PALETTE_IDS, PALETTE_LABELS, sealDescription } from '../domain/emblem';
 import { ActionButton, Body, ChoiceRow, Heading, SettingSwitch } from '../components/Layout';
-import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage } from '../domain/firstPerson';
+import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage, type InteractableId } from '../domain/firstPerson';
 import { playSelectionHaptic } from '../platform/haptics';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
 import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
-import { commandController, controllerSnapshot, createController, interactController, stopController, type RuntimeSnapshot } from '../rendering/firstPerson/runtimeController';
+import { accessibleEmblemTargets, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController, type RuntimeSnapshot } from '../rendering/firstPerson/runtimeController';
 import { controlLayout } from '../rendering/firstPerson/controlLayout';
 import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
 import { TouchControls } from '../rendering/firstPerson/TouchControls';
@@ -106,7 +107,7 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
     }
     if (scene === 'chapter' && next.runtime.progress.cleared && !completed.current) {
       completed.current = true;
-      onComplete({ chapterId: CHAPTER_ID, seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '戻ったはずの入口'] });
+      onComplete({ chapterId: CHAPTER_ID, seals: 2, discoveredMechanisms: ['触れない紋章', '重なる鍵', '戻ったはずの入口'] });
     }
   }, [controller, onCheckpoint, onComplete, onOnboardingChange, renderMode, scene, settings.reducedMotion]);
   const pause = useCallback(() => {
@@ -135,7 +136,7 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
   const canvasReady = useCallback(() => { if (mounted.current && !failed.current) setReady(true); }, []);
   useEffect(() => {
     mounted.current = true;
-    return () => { mounted.current = false; commandController(controller, { type: 'pause' }); };
+    return () => { mounted.current = false; retireController(controller); };
   }, [controller]);
   useEffect(() => {
     commandController(controller, { type: 'sensitivity', value: controls.sensitivity, vertical: controls.verticalSensitivity ?? 1 });
@@ -156,18 +157,19 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
   useEffect(() => {
     const listener = AppState.addEventListener('change', (state) => {
       if (!mounted.current) return;
+      setControllerForeground(controller, state === 'active');
       setAppActive(state === 'active');
       if (!failed.current && state !== 'active') { setMenu('pause'); pause(); }
     });
     return () => listener.remove();
-  }, [pause]);
+  }, [controller, pause]);
   useEffect(() => {
     let active = true;
     let changed = false;
-    void AccessibilityInfo.isScreenReaderEnabled().then((enabled) => { if (active && !changed) setReader(enabled); }).catch(() => undefined);
-    const listener = AccessibilityInfo.addEventListener('screenReaderChanged', (enabled) => { changed = true; if (active) setReader(enabled); });
+    void AccessibilityInfo.isScreenReaderEnabled().then((enabled) => { if (active && !changed) { setControllerScreenReader(controller, enabled); setReader(enabled); } }).catch(() => undefined);
+    const listener = AccessibilityInfo.addEventListener('screenReaderChanged', (enabled) => { changed = true; if (active) { setControllerScreenReader(controller, enabled); setReader(enabled); } });
     return () => { active = false; listener.remove(); };
-  }, []);
+  }, [controller]);
   useEffect(() => {
     if (!reader) return;
     const message = paused ? '一時停止中。' : `${snapshot.objective} ${snapshot.target ? `照準：${snapshot.target.label}。` : ''}${notice}`;
@@ -178,7 +180,7 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
   useEffect(() => {
     if (failed.current || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || completed.current) return;
     completed.current = true;
-    onComplete({ chapterId: CHAPTER_ID, seals: 2, discoveredMechanisms: ['消えない床', '重なる鍵', '戻ったはずの入口'] });
+    onComplete({ chapterId: CHAPTER_ID, seals: 2, discoveredMechanisms: ['触れない紋章', '重なる鍵', '戻ったはずの入口'] });
   }, [onComplete, renderMode, scene, snapshot.runtime.progress.cleared]);
 
   useEffect(() => {
@@ -199,13 +201,15 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
     const freshCue = controllerSnapshot(controller).cue;
     const changed = interactController(controller, snapshot.target.id);
     publish(controllerSnapshot(controller));
-    if (changed) {
-      setNotice(controller.runtime.progress.exitDoorOpen && !previous.progress.exitDoorOpen ? '扉が開きます。自分で外へ歩こう。' : controller.runtime.progress.sealB && !previous.progress.sealB ? '鍵が重なりました。入口へ戻ろう。' : controller.runtime.progress.sealA && !previous.progress.sealA ? '封印が解けました。' : 'しるべを調べました。');
+    if (snapshot.target.id.startsWith('emblem-')) {
+      const description = reader && snapshot.target.id === 'emblem-panel' && controller.runtime.emblem.phase !== 'unexamined'
+        ? ' ' + sealDescription(controller.runtime.emblem.seed) : '';
+      setNotice((controller.feedbackMessage || freshCue.reason || '壁の近くで、印に照準を合わせよう。') + description);
+      if (changed && controller.runtime.progress.sealA && !previous.progress.sealA) void playSelectionHaptic(settings.haptics);
+    } else if (changed) {
+      setNotice(controller.runtime.progress.exitDoorOpen && !previous.progress.exitDoorOpen ? '扉が開きます。自分で外へ歩こう。' : controller.runtime.progress.sealB && !previous.progress.sealB ? '鍵が重なりました。入口へ戻ろう。' : '調べました。');
       void playSelectionHaptic(settings.haptics);
-    } else if (freshCue.reason) setNotice(freshCue.reason);
-    else if ((snapshot.target.id === 'floor-device' && previous.progress.sealA) || (snapshot.target.id === 'key' && previous.progress.sealB)) setNotice('この封印は、すでに解けています。');
-    else if (snapshot.target.id === 'guide' && previous.progress.guideExamined) setNotice('足跡は、途切れていない。');
-    else setNotice(snapshot.target.id === 'floor-device' ? '光のしるべと、中央の輪を確かめよう。' : '立つ場所と視線を確かめよう。');
+    } else setNotice(freshCue.reason ?? '立つ場所と視線を確かめよう。');
   };
   const step = (forward: number) => {
     if (!mounted.current || failed.current || blocked) return;
@@ -220,8 +224,22 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
   };
   const toggleColor = () => {
     if (!mounted.current || failed.current || blocked) return;
-    onColorChange(!neutralColors);
-    setNotice(neutralColors ? '色模様を戻しました。' : '模様だけをグレーにしました。床とつながりは同じです。');
+    if (!compareController(controller)) {
+      setNotice(controller.runtime.emblem.lastCompareMs !== null ? 'ゆっくり見比べよう。' : '紋章の近くで、壁に照準を合わせよう。');
+      return;
+    }
+    if (scene === 'chapter') {
+      publish(controllerSnapshot(controller));
+      setNotice(controller.feedbackMessage);
+    } else {
+      onColorChange(!neutralColors);
+      setNotice(neutralColors ? '色模様を戻しました。' : '色を外して比べます。形とカメラは同じです。');
+    }
+  };
+  const toggleOutline = (enabled: boolean) => {
+    if (!mounted.current || failed.current || renderMode !== 'chapter') return;
+    const result = dispatchEmblemController(controller, createEmblemCommand(controller, { type: 'assist', enabled }));
+    if (result.accepted) publish(controllerSnapshot(controller));
   };
   const openMenu = (section: 'pause' | 'hints' | 'settings') => {
     if (!mounted.current || failed.current) return;
@@ -243,23 +261,29 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
     resume();
     setNotice(next.pose === previous.pose ? '目印や対象の近くまで、自分で歩こう。' : '視点を合わせました。位置は同じです。');
   };
-  const leave = () => { if (!mounted.current || failed.current) return; pause(); failed.current = true; onExit(); };
-  const restart = () => { if (!mounted.current || failed.current) return; pause(); failed.current = true; onRestart(); };
+  const leave = () => { if (!mounted.current || failed.current) return; pause(); failed.current = true; retireController(controller); onExit(); };
+  const restart = () => { if (!mounted.current || failed.current) return; pause(); failed.current = true; retireController(controller); onRestart(); };
   const changeSession = (mode: RecoveryScene, retry = false) => {
     if (retry && attempt >= MAX_RENDER_RETRIES) return;
     stopController(controller);
     commandController(controller, { type: 'pause' });
     failed.current = true;
-    onSessionChange(createCheckpoint(controller.runtime), mode, retry);
+    const saved = createCheckpoint(controller.runtime);
+    retireController(controller);
+    onSessionChange(saved, mode, retry);
   };
   const hint = hintForRuntime(snapshot.runtime);
   const cue = snapshot.cue;
   const targetLabel = snapshot.target?.label ?? (cue.kind === 'approach' ? `${cue.target?.label}に、もう少し近づこう。` : cue.kind === 'aim' ? cue.target?.id === 'guide' && simple ? simpleGuideAimInstruction(snapshot.runtime.pose, cue.target.center) : `${cue.target?.label}に中央の照準を合わせよう。` : '近くの目印に中央の照準を合わせよう。');
   const progress = snapshot.runtime.progress;
-  const shortObjective = progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : progress.guideExamined && progress.markActivated ? '輪の先の装置へ' : progress.guideExamined ? '床の輪に入る' : '光のしるべへ';
+  const emblem = snapshot.runtime.emblem;
+  const shortObjective = progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
+  const colorIsNeutral = scene === 'chapter' ? emblem.presentation === 'neutral' : neutralColors;
+  const compareAvailable = scene === 'lab' || cue.target?.id === 'emblem-panel';
+  const colorLabel = colorIsNeutral ? '色を戻す' : '色をほどく';
   const actionLabel = cue.actionLabel ?? '調べる';
   const contextLabel = cue.kind === 'approach' ? `${cue.target?.label} · 近づくと調べられます` : cue.kind === 'locked' ? cue.reason : snapshot.target?.label;
-  const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete && !snapshot.runtime.progress.guideExamined;
+  const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete;
   const moveSide = controls.handedness === 'right' ? '左' : '右';
   const lookSide = controls.handedness === 'right' ? '右' : '左';
   const copyDiagnostics = async () => {
@@ -299,13 +323,24 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
     <GameButton sessionKey={controlSessionKey} label="後ろへ一歩" onPress={() => step(-1)} disabled={blocked} />
     <GameButton sessionKey={controlSessionKey} label="下を見る" onPress={() => turn(0, -0.15)} disabled={blocked} />
   </View>;
+  const accessibleTargets = reader ? accessibleEmblemTargets(controller) : [];
+  const accessibleObjects = reader && accessibleTargets.length ? <View accessible accessibilityRole="text" testID="accessible-emblem-objects"
+    accessibilityLabel={emblem.phase === 'unexamined' ? '近くの紋章と印。アクションから紋章を調べられます。' : sealDescription(emblem.seed)}
+    accessibilityActions={accessibleTargets.map((target) => ({ name: target.id, label: target.id === 'emblem-panel' ? '紋章を調べる' : GLYPH_LABELS[target.id.slice(7) as keyof typeof GLYPH_LABELS] + 'の印を押す' }))}
+    onAccessibilityAction={(event) => {
+      if (blocked || failed.current || !mounted.current) return;
+      const changed = interactAccessibleEmblem(controller, event.nativeEvent.actionName as InteractableId);
+      publish(controllerSnapshot(controller));
+      setNotice(controller.feedbackMessage + (controller.runtime.emblem.phase !== 'unexamined' ? ' ' + sealDescription(controller.runtime.emblem.seed) : ''));
+      if (changed && controller.runtime.emblem.phase === 'released') void playSelectionHaptic(settings.haptics);
+    }} style={styles.accessibleObjects}><Text style={styles.contextText}>近くの紋章と印を調べる</Text></View> : null;
   const actions = <View style={styles.actions}>
-    <GameButton sessionKey={controlSessionKey} label={neutralColors ? '色を戻す' : '色を比べる'} onPress={toggleColor} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked || !compareAvailable} />
     <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" />
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
     <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
-      {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused || showDiagnostics} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
+      {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused || showDiagnostics} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} emblemPalette={settings.emblemPalette ?? 'baseline'} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
       {!simple && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!blocked} handedness={controls.handedness} layout={layout} /> : null}
       <View pointerEvents="box-none" style={[styles.hudSlot, layout.pause]}>
         <SceneActionButton label="一時停止" sessionKey={controlSessionKey} onPress={() => openMenu('pause')} style={({ pressed }) => [styles.pauseButton, pressed && styles.pressed]} testID="pause-control">
@@ -313,27 +348,26 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
         </SceneActionButton>
       </View>
       <View pointerEvents="none" style={[styles.hudSlot, layout.goal]}>
-        <Text testID="current-objective" style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective}</Text>
+        <Text testID="current-objective" style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective}{scene === 'chapter' && emblem.assist ? ' · 輪郭ガイド使用中' : ''}</Text>
       </View>
       <View pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View>
       {notice ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
       {!simple && renderMode === 'chapter' ? <>
         {contextLabel ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}><Text style={styles.contextText}>{contextLabel}</Text></View> : null}
         <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || !snapshot.target} testID="interact" /></View>
-        <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={neutralColors ? '色を戻す' : '色を比べる'} onPress={toggleColor} disabled={blocked} testID="compare-colors" /></View>
+        <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked || !compareAvailable} testID="compare-colors" /></View>
         {intro && !snapshot.tutorial.moved ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.movement.left, width: layout.movement.width, top: layout.movement.top }]}><Text style={styles.tutorialText}>{moveSide}側をドラッグして歩く</Text></View> : null}
         {intro && snapshot.tutorial.moved && !snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.look.left, width: layout.look.width, top: layout.look.top + 30 }]}><Text style={styles.tutorialText}>{lookSide}側をドラッグして見回す</Text></View> : null}
-        {intro && snapshot.tutorial.moved && snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 78 }]}><Text style={styles.tutorialText}>光のしるべを調べる</Text></View> : null}
       </> : null}
       {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>部屋の描画を準備しています…</Text>{__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}</View> : null}
       {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !compact ? <View pointerEvents="box-none" style={styles.bottom}>
         <Text style={styles.target} accessibilityLabel={`照準：${targetLabel}`}>{targetLabel}</Text>
         {simple ? <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}</> : null}
-        {actions}
+        {actions}{accessibleObjects}
       </View> : null}
     </View>
     {simple && compact && renderMode === 'chapter' ? <ScrollView style={styles.compactControls} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
-      <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{simpleButtons}{actions}
+      <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleObjects}
     </ScrollView> : null}
     <Modal visible={paused && !showDiagnostics} transparent animationType="none" onRequestClose={resume}>
       <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
@@ -362,7 +396,9 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
           </> : menu === 'hints' ? <>
             <Body>ヒント {Math.max(1, snapshot.runtime.progress.hintStage)} / 3</Body>
             <Body>{hint.text}</Body>
-            {snapshot.runtime.progress.hintStage < 3 ? <ActionButton label="次のヒント" onPress={nextHint} /> : <ActionButton label="近くで視点を合わせる" onPress={aim} disabled={!ready} accessibilityHint="位置を移動せず、近くの目印や装置へ視線を合わせます" />}
+            {snapshot.runtime.progress.hintStage < 3 ? <ActionButton label="次のヒント" onPress={nextHint} /> : progress.sealA ? <ActionButton label="近くで視点を合わせる" onPress={aim} disabled={!ready} accessibilityHint="位置を移動せず、鍵の目印へ視線を合わせます" /> : null}
+            {!progress.sealA ? <SettingSwitch label="輪郭ガイド" description="切れていない線に静かな中立色の目印を重ねます。補助表示だけでは扉は開きません。" value={emblem.assist} onValueChange={toggleOutline} /> : null}
+            {reader && emblem.phase !== 'unexamined' ? <Body>{sealDescription(emblem.seed)}</Body> : null}
             <ActionButton label="探索へ戻る" onPress={resume} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </> : <>
@@ -373,8 +409,11 @@ function FirstPersonSession({ settings, controls, onboarding = DEFAULT_FIRST_PER
             <Body>上下の感度</Body><ChoiceRow>{[0.6, 1].map((value) => <ActionButton key={value} label={value === 1 ? '同じ' : '控えめ'} variant={(controls.verticalSensitivity ?? 1) === value ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, verticalSensitivity: value })} />)}</ChoiceRow>
             <SettingSwitch label="左手で見回す" description="歩く領域を右側、見回す領域を左側にします。" value={controls.handedness === 'left'} onValueChange={(value) => onControlsChange({ ...controls, handedness: value ? 'left' : 'right' })} />
             <SettingSwitch label="描画を軽くする" description="模様の解像度と装飾を減らします。謎の条件は同じです。" value={controls.quality === 'low'} onValueChange={(value) => onControlsChange({ ...controls, quality: value ? 'low' : 'standard' })} />
+            <Body>紋章の色表示</Body><ChoiceRow>{PALETTE_IDS.map((palette) => <ActionButton key={palette} label={PALETTE_LABELS[palette]} variant={(settings.emblemPalette ?? 'baseline') === palette ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, emblemPalette: palette })} />)}</ChoiceRow>
+            <Body muted>表示名は、奥行きの感じ方の強さを表す順序ではありません。</Body>
+            <SettingSwitch label="輪郭ガイド" description="紋章の切れていない線を、中立色の目印で示します。" value={emblem.assist} onValueChange={toggleOutline} />
             <SettingSwitch label="補助表示" description="通行できる床の端を中立色で示します。" value={settings.depthAssist} onValueChange={(value) => onSettingsChange({ ...settings, depthAssist: value, depthAssistOverridden: true })} />
-            <SettingSwitch label="動きを減らす" description="しるべの装飾的な動きを省きます。自分で歩く・見回す操作は変わりません。" value={settings.reducedMotion} onValueChange={(value) => onSettingsChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })} />
+            <SettingSwitch label="動きを減らす" description="印の動きを静かな反応にします。自分で歩く・見回す操作は変わりません。" value={settings.reducedMotion} onValueChange={(value) => onSettingsChange({ ...settings, reducedMotion: value, reducedMotionOverridden: true })} />
             <SettingSwitch label="軽い振動" description="操作が成立したときに知らせます。" value={settings.haptics} onValueChange={(value) => onSettingsChange({ ...settings, haptics: value })} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </>}
@@ -398,6 +437,7 @@ const styles = StyleSheet.create({
   direction: { color: '#F0EDE0', textAlign: 'center', fontSize: 13 },
   gameButton: { flexGrow: 1, flexShrink: 1, minHeight: 48, minWidth: 44, paddingHorizontal: 9, paddingVertical: 10, backgroundColor: '#203A34E8', borderColor: '#ABBDB0', borderWidth: 1, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   buttonText: { color: '#F2F2E8', fontSize: 14, fontWeight: '600', textAlign: 'center' },
+  accessibleObjects: { minHeight: 44, justifyContent: 'center' },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   simpleControls: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   compactControls: { maxHeight: '48%' },

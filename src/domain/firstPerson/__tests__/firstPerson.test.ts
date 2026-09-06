@@ -1,3 +1,5 @@
+import { createSealStimulus } from '../../emblem/stimulus';
+import { EMBLEM_FIXTURE } from '../emblemFixture';
 import { PerspectiveCamera } from 'three';
 import {
   adjustLook, assistAim, canApplyReturnVariant, CEILING_BASE_Y, CEILING_THICKNESS, CHANGED_REGION, CHAPTER, createCheckpoint,
@@ -6,7 +8,7 @@ import {
   occlusionCertificate, pauseRuntime, PLAYER_RADIUS, projectWithCamera, restoreCheckpoint,
   resumeRuntime, setHintStage, stepRuntime, updatePlayer, VERTICAL_FOV,
 } from '..';
-import type { CameraMatrices, ChapterRuntime, PlayerPose, Vec3, WorldGeometry } from '..';
+import type { CameraMatrices, ChapterRuntime, InteractableId, PlayerPose, Vec3, WorldGeometry } from '..';
 
 function matrices(pose: PlayerPose, aspect = 390 / 844, fov = VERTICAL_FOV): CameraMatrices {
   const camera = new PerspectiveCamera(fov, aspect, 0.08, 60);
@@ -25,7 +27,7 @@ function aim(runtime: ChapterRuntime, point: Vec3): ChapterRuntime {
   const dz = point.z - runtime.pose.position.z;
   return { ...runtime, pose: { ...runtime.pose, yaw: Math.atan2(-dx, -dz), pitch: Math.atan2(point.y - runtime.pose.position.y, Math.hypot(dx, dz)) } };
 }
-function inspect(runtime: ChapterRuntime, id: 'guide' | 'floor-device' | 'key' | 'exit'): ChapterRuntime {
+function inspect(runtime: ChapterRuntime, id: InteractableId): ChapterRuntime {
   const target = getWorld(runtime).interactables.find((candidate) => candidate.id === id)!;
   const looking = aim(runtime, target.center);
   expect(findInteraction(getWorld(looking), looking.pose)?.id).toBe(id);
@@ -55,10 +57,9 @@ function walkTo(runtime: ChapterRuntime, x: number, z: number): ChapterRuntime {
 }
 function solveA(): ChapterRuntime {
   let runtime = walkTo(createInitialRuntime(), 0, 1);
-  runtime = inspect(runtime, 'guide');
-  runtime = walkTo(runtime, 0, -4);
-  runtime = walkTo(runtime, 1.6, -6);
-  runtime = inspect(runtime, 'floor-device');
+  runtime = walkTo(runtime, 1.95, -5.8);
+  runtime = inspect(runtime, 'emblem-panel');
+  runtime = inspect(runtime, `emblem-${createSealStimulus(runtime.emblem.seed).answer}`);
   return waitDoors(runtime);
 }
 function toKey(runtime: ChapterRuntime): ChapterRuntime {
@@ -128,43 +129,41 @@ describe('continuous first-person movement', () => {
   });
 });
 
-describe('ray interaction and flat-floor puzzle', () => {
+describe('authoritative emblem inspection and first-door replacement', () => {
   it('rejects remote, behind-camera, and wall-occluded targets', () => {
     const runtime = createInitialRuntime();
     expect(findInteraction(getWorld(runtime), runtime.pose)).toBeUndefined();
-    const near = { ...runtime, pose: { ...origin, position: { x: 0, y: 1.6, z: 1 } } };
-    const target = getWorld(near).interactables[0]!;
-    const facing = aim(near, target.center);
-    expect(findInteraction(getWorld(facing), facing.pose)?.id).toBe('guide');
+    const facing = aim({ ...runtime, pose: { ...origin, position: { x: 1.95, y: 1.6, z: -5.8 } } }, EMBLEM_FIXTURE.center);
+    expect(findInteraction(getWorld(facing), facing.pose)?.id).toBe('emblem-panel');
     expect(findInteraction(getWorld(facing), { ...facing.pose, yaw: facing.pose.yaw + Math.PI })).toBeUndefined();
     const world = getWorld(facing);
-    world.solids = [...world.solids, { id: 'cover', min: { x: -1, y: 0, z: 0.3 }, max: { x: 1, y: 3, z: 0.4 }, kind: 'wall', opaque: true }];
+    world.solids = [...world.solids, { id: 'cover', min: { x: 0, y: 0, z: -6.5 }, max: { x: 3, y: 3, z: -6.4 }, kind: 'wall', opaque: true }];
     expect(findInteraction(world, facing.pose)).toBeUndefined();
   });
-  it('only operates the ID currently displayed by the same sight rule', () => {
-    const runtime = aim({ ...createInitialRuntime(), pose: { ...origin, position: { x: 0, y: 1.6, z: 1 } } }, { x: 0, y: 1.05, z: -0.7 });
-    expect(interact(runtime, 'floor-device')).toBe(runtime);
-    const operated = interact(runtime, findInteraction(getWorld(runtime), runtime.pose)!.id);
-    expect(operated.progress.guideExamined).toBe(true);
-    expect(interact(operated, 'guide')).toBe(operated);
+  it('only operates the fresh visible ID with matching camera matrices, and inspects once', () => {
+    const runtime = aim({ ...createInitialRuntime(), pose: { ...origin, position: { x: 1.95, y: 1.6, z: -5.8 } } }, EMBLEM_FIXTURE.center);
+    expect(interact(runtime, 'emblem-circle', matrices(runtime.pose))).toBe(runtime);
+    expect(interact(runtime, 'emblem-panel')).toBe(runtime);
+    expect(interact(runtime, 'emblem-panel', matrices({ ...runtime.pose, yaw: 1 }))).toBe(runtime);
+    const operated = interact(runtime, findInteraction(getWorld(runtime), runtime.pose)!.id, matrices(runtime.pose));
+    expect(operated.emblem.phase).toBe('observing');
+    expect(operated.progress.sealA).toBe(false);
+    expect(interact(operated, 'emblem-panel', matrices(operated.pose))).toBe(operated);
   });
-  it('requires guide, physically stepping on the mark, and a nearby device interaction', () => {
-    const initial = createInitialRuntime();
-    const atDevice = aim({ ...initial, pose: { ...origin, position: { x: 1.6, y: 1.6, z: -6 } } }, { x: 1.6, y: 1.3, z: -7.4 });
-    expect(interact(atDevice, 'floor-device')).toBe(atDevice);
+  it('replaces guide/floor/device gates with inspection and the correct world glyph only', () => {
     const solved = solveA();
-    expect(solved.progress).toMatchObject({ guideExamined: true, markActivated: true, sealA: true, sealB: false });
+    expect(solved.progress).toMatchObject({ guideExamined: false, markActivated: false, sealA: true, sealB: false, emblem: { phase: 'released' } });
     expect(solved.doorAOpen).toBe(1);
-    expect(inspect(solved, 'floor-device').progress).toEqual(solved.progress);
+    expect(getWorld(solved).interactables.some((item) => item.id === 'guide' || item.id === 'floor-device')).toBe(false);
+    expect(inspect(solved, `emblem-${createSealStimulus(solved.emblem.seed).answer}`).progress).toEqual(solved.progress);
   });
-  it('retains an earlier floor visit if the player examines the guide afterwards', () => {
-    let runtime = walkTo(createInitialRuntime(), 0, -4);
-    expect(runtime.progress.markActivated).toBe(true);
-    runtime = walkTo(runtime, 0, 1);
-    runtime = inspect(runtime, 'guide');
-    runtime = walkTo(runtime, 0, -4);
-    runtime = walkTo(runtime, 1.6, -6);
-    expect(inspect(runtime, 'floor-device').progress.sealA).toBe(true);
+  it('walking over the old floor mark and invoking old object IDs never solves or advances the new puzzle', () => {
+    const runtime = walkTo(createInitialRuntime(), 0, -4);
+    expect(runtime.progress.markActivated).toBe(false);
+    expect(runtime.emblem.phase).toBe('unexamined');
+    expect(interact(runtime, 'guide', matrices(runtime.pose))).toBe(runtime);
+    expect(interact(runtime, 'floor-device', matrices(runtime.pose))).toBe(runtime);
+    expect(runtime.progress.sealA).toBe(false);
   });
 });
 

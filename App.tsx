@@ -152,7 +152,7 @@ export default function App() {
     const session = state.quickSetupSession;
     screen = (
       <QuickSetupScreen
-        session={session}
+        key={session.id} session={session}
         onResponse={(index, answer) => dispatch({
           type: 'ADD_QUICK_RESPONSE', sessionId: session.id, index, answer, respondedAt: new Date().toISOString(),
         })}
