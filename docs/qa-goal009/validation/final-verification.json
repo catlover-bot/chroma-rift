@@ -1,0 +1,1806 @@
+{
+  "baselineHead": "d1f7b5513da5c0909089edc30fddc8c0665dadcb",
+  "branch": "feat/goal-009-uncanny-vault",
+  "checkedAtUtc": "2026-09-08T13:14:53.105524+00:00",
+  "check": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "jestSuites": 75,
+    "jestTests": 887,
+    "jestSeconds": 133.186,
+    "iosExport": "PASS",
+    "iosModules": 1513,
+    "hermes": "dist/_expo/static/js/ios/index-010c92c6fd1f0b0b58769356d70a78f8.hbc",
+    "hermesBytes": 5993312,
+    "hermesSha256": "1c0f80c7e233acaa469cdac228fd735ca3be9ecaba6f9c036e854172218ea556"
+  },
+  "doctor": {
+    "passed": 21,
+    "total": 21
+  },
+  "expoDependencies": "up-to-date",
+  "protectedFiles": [
+    {
+      "path": "package.json",
+      "baselineSha256": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "finalSha256": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "unchanged": true
+    },
+    {
+      "path": "package-lock.json",
+      "baselineSha256": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "finalSha256": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "unchanged": true
+    },
+    {
+      "path": "app.json",
+      "baselineSha256": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "finalSha256": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "unchanged": true
+    },
+    {
+      "path": "eas.json",
+      "baselineSha256": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "finalSha256": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "unchanged": true
+    },
+    {
+      "path": "metro.config.js",
+      "baselineSha256": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "finalSha256": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "unchanged": true
+    },
+    {
+      "path": "metro/withNativeThree.js",
+      "baselineSha256": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "finalSha256": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "unchanged": true
+    }
+  ],
+  "exports": [
+    {
+      "mode": "three-dev",
+      "bundle": ".expo/goal009/three-dev/_expo/static/js/ios/index-d41d8cd98f00b204e9800998ecf8427e.js",
+      "bundleSha256": "6572cf4e5d6a1775b210a14b4a172ec351f7f685f5210c5f11e741ff0de2840a",
+      "bytes": 6473388,
+      "sourceMapSha256": "e97bb525cd6af85667abc55b049684673dbed57852886137f576b966e42d71be",
+      "sourceMapSources": 1649,
+      "applicationSourcesChecked": 143,
+      "allApplicationSourceBytesMatch": true,
+      "checks": [
+        {
+          "path": "index.tsx",
+          "sha256": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75",
+          "mapSourceSha256": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75",
+          "matches": true
+        },
+        {
+          "path": "App.tsx",
+          "sha256": "1bfdac5b5f925eeff42a17f11586034718127dcaf3d4602161299a3bb69181ab",
+          "mapSourceSha256": "1bfdac5b5f925eeff42a17f11586034718127dcaf3d4602161299a3bb69181ab",
+          "matches": true
+        },
+        {
+          "path": "src/app/state.ts",
+          "sha256": "fb80d75339f2bda0bb344603ca9d5728e20b10329ec792ed9c34a399a212f583",
+          "mapSourceSha256": "fb80d75339f2bda0bb344603ca9d5728e20b10329ec792ed9c34a399a212f583",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/scoring.ts",
+          "sha256": "ab38eba62f6f5f2518ed237908607a736f550e13def18a92f8b0568b98af915c",
+          "mapSourceSha256": "ab38eba62f6f5f2518ed237908607a736f550e13def18a92f8b0568b98af915c",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/trials.ts",
+          "sha256": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e",
+          "mapSourceSha256": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/types.ts",
+          "sha256": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+          "mapSourceSha256": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/quickSetup.ts",
+          "sha256": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba",
+          "mapSourceSha256": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/presentation.ts",
+          "sha256": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+          "mapSourceSha256": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/stimulus.ts",
+          "sha256": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+          "mapSourceSha256": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/color.ts",
+          "sha256": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+          "mapSourceSha256": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+          "matches": true
+        },
+        {
+          "path": "src/storage/applicationStorage.ts",
+          "sha256": "47d1492222a3ab05e1fa570999c6ce9f5934e6f02772461d887bc67718726f69",
+          "mapSourceSha256": "47d1492222a3ab05e1fa570999c6ce9f5934e6f02772461d887bc67718726f69",
+          "matches": true
+        },
+        {
+          "path": "src/audio/index.ts",
+          "sha256": "ef441affd95b575c237e9a520fba9dc629ec9875d037a5ca9796cd5991ebbb6e",
+          "mapSourceSha256": "ef441affd95b575c237e9a520fba9dc629ec9875d037a5ca9796cd5991ebbb6e",
+          "matches": true
+        },
+        {
+          "path": "src/audio/nativeBackend.ts",
+          "sha256": "f9f0e4e061236eca5a44f700d5b560e441ba7d776af6e695c806d225ecdd9ae3",
+          "mapSourceSha256": "f9f0e4e061236eca5a44f700d5b560e441ba7d776af6e695c806d225ecdd9ae3",
+          "matches": true
+        },
+        {
+          "path": "src/audio/sources.ts",
+          "sha256": "bed9518219a31553b15b920a1c0dbc3bd62a8ae362f3650ec1903a0e6c3305c6",
+          "mapSourceSha256": "bed9518219a31553b15b920a1c0dbc3bd62a8ae362f3650ec1903a0e6c3305c6",
+          "matches": true
+        },
+        {
+          "path": "src/audio/owner.ts",
+          "sha256": "feac46aa662cea319c1e6e2e03645eb8592113c0efa33678a6acebadc88dd5f7",
+          "mapSourceSha256": "feac46aa662cea319c1e6e2e03645eb8592113c0efa33678a6acebadc88dd5f7",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/actor.ts",
+          "sha256": "bf67f4d4fec1eb5433614d757060a5249845258e15856e42bd12960d252c7c7b",
+          "mapSourceSha256": "bf67f4d4fec1eb5433614d757060a5249845258e15856e42bd12960d252c7c7b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/index.ts",
+          "sha256": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+          "mapSourceSha256": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/types.ts",
+          "sha256": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+          "mapSourceSha256": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/config.ts",
+          "sha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+          "mapSourceSha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/locomotion.ts",
+          "sha256": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+          "mapSourceSha256": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/pose.ts",
+          "sha256": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+          "mapSourceSha256": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/chapter.ts",
+          "sha256": "854fc99c7ed06abc47a26f6cf14094ed1e9e4d7427796051b799a3bee093f628",
+          "mapSourceSha256": "854fc99c7ed06abc47a26f6cf14094ed1e9e4d7427796051b799a3bee093f628",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/world.ts",
+          "sha256": "7216430c3b55debb9ce19d214fa3ef7db83931f001f386fdfb111ed553693c0e",
+          "mapSourceSha256": "7216430c3b55debb9ce19d214fa3ef7db83931f001f386fdfb111ed553693c0e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/panelFixture.ts",
+          "sha256": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+          "mapSourceSha256": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/definition.ts",
+          "sha256": "439c126977d7c665aeb98d92a500d88fe151b0e8a1388dbb6b482bdd18682eab",
+          "mapSourceSha256": "439c126977d7c665aeb98d92a500d88fe151b0e8a1388dbb6b482bdd18682eab",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/world.ts",
+          "sha256": "070619ac570390ff286229eafcece2965a53ff9ce80b685fa870f50033ee5a9b",
+          "mapSourceSha256": "070619ac570390ff286229eafcece2965a53ff9ce80b685fa870f50033ee5a9b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/definition.ts",
+          "sha256": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+          "mapSourceSha256": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/emblemFixture.ts",
+          "sha256": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+          "mapSourceSha256": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/alignment.ts",
+          "sha256": "b35e36ce7c6e0955b71ab593d5e2b23e3f0c7b35e2b98031d5f86e68a35832db",
+          "mapSourceSha256": "b35e36ce7c6e0955b71ab593d5e2b23e3f0c7b35e2b98031d5f86e68a35832db",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/geometry.ts",
+          "sha256": "70b48f58acc2d1d0509efc9c8379d525a14ccf56944c96ec4baa88275465128b",
+          "mapSourceSha256": "70b48f58acc2d1d0509efc9c8379d525a14ccf56944c96ec4baa88275465128b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/runtime.ts",
+          "sha256": "e99146faef0ca7c17c9a533a0d04f68c0fc71ecb39e1432c03ce2d6bf219bf6d",
+          "mapSourceSha256": "e99146faef0ca7c17c9a533a0d04f68c0fc71ecb39e1432c03ce2d6bf219bf6d",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/runtime.ts",
+          "sha256": "d1f28de3e92286beec4b5b656a8c5b5938b5f88debc84bba67e53b8cf6313831",
+          "mapSourceSha256": "d1f28de3e92286beec4b5b656a8c5b5938b5f88debc84bba67e53b8cf6313831",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/state.ts",
+          "sha256": "dd8907cd878cd9fb8806c217dac1c693a596397f69aae33cd48c2abb29b0a25d",
+          "mapSourceSha256": "dd8907cd878cd9fb8806c217dac1c693a596397f69aae33cd48c2abb29b0a25d",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/specs.ts",
+          "sha256": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+          "mapSourceSha256": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/actor.ts",
+          "sha256": "e68a54c000eabd2e73ead2464353ec69e1915e06025f93e51c2b3e446d50e84b",
+          "mapSourceSha256": "e68a54c000eabd2e73ead2464353ec69e1915e06025f93e51c2b3e446d50e84b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/selectors.ts",
+          "sha256": "884991687478d324bf672eeec7de3a09da60433997806fc2dd906df7e96673de",
+          "mapSourceSha256": "884991687478d324bf672eeec7de3a09da60433997806fc2dd906df7e96673de",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/state.ts",
+          "sha256": "24fdbad7265b6464ddd690e39cb705d205bd521fb5a881efbb3371c4aae61056",
+          "mapSourceSha256": "24fdbad7265b6464ddd690e39cb705d205bd521fb5a881efbb3371c4aae61056",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/contour.ts",
+          "sha256": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+          "mapSourceSha256": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/shadow.ts",
+          "sha256": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+          "mapSourceSha256": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/wiring.ts",
+          "sha256": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+          "mapSourceSha256": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/selectors.ts",
+          "sha256": "adae4268d351a45ee1d8cbf798d136dbb98a8ff20a25182cdb9e0954ef223f6e",
+          "mapSourceSha256": "adae4268d351a45ee1d8cbf798d136dbb98a8ff20a25182cdb9e0954ef223f6e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/interaction.ts",
+          "sha256": "98b2bd2c5dea9090a8c74ff8443ff91c3a74b597e259bead523b439985b67ca2",
+          "mapSourceSha256": "98b2bd2c5dea9090a8c74ff8443ff91c3a74b597e259bead523b439985b67ca2",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/puzzle.ts",
+          "sha256": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+          "mapSourceSha256": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+          "matches": true
+        },
+        {
+          "path": "src/audio/preferences.ts",
+          "sha256": "8bedaeb15741e7b919def034abb6ee06950726e9a4d7c7f8d4759c94b6197f4e",
+          "mapSourceSha256": "8bedaeb15741e7b919def034abb6ee06950726e9a4d7c7f8d4759c94b6197f4e",
+          "matches": true
+        },
+        {
+          "path": "src/types/application.ts",
+          "sha256": "1120e4d3fd70347091ea8fa8eaad63676f23737005daf8a28fc241f43221db28",
+          "mapSourceSha256": "1120e4d3fd70347091ea8fa8eaad63676f23737005daf8a28fc241f43221db28",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/index.ts",
+          "sha256": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+          "mapSourceSha256": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/types.ts",
+          "sha256": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+          "mapSourceSha256": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/runtime.ts",
+          "sha256": "208acaf2a7edae026376a40e6352f4c155ec839339e18f321bf583c5a494ee26",
+          "mapSourceSha256": "208acaf2a7edae026376a40e6352f4c155ec839339e18f321bf583c5a494ee26",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/checkpoint.ts",
+          "sha256": "533944bce99655860760c87baac969636bf2f094affcb92fc307482e5779f4c1",
+          "mapSourceSha256": "533944bce99655860760c87baac969636bf2f094affcb92fc307482e5779f4c1",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/index.ts",
+          "sha256": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+          "mapSourceSha256": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/surfaceOwner.ts",
+          "sha256": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+          "mapSourceSha256": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/checkpoint.ts",
+          "sha256": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+          "mapSourceSha256": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+          "matches": true
+        },
+        {
+          "path": "src/app/chapterSummary.ts",
+          "sha256": "424cbd0e81c3d18784ba0060db4f1bd36557d0dc9c51f7cfefc7b38fa435fa5a",
+          "mapSourceSha256": "424cbd0e81c3d18784ba0060db4f1bd36557d0dc9c51f7cfefc7b38fa435fa5a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/index.ts",
+          "sha256": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+          "mapSourceSha256": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/types.ts",
+          "sha256": "e2afbf2b99d86dce0e22b5f3a686403011047418750f864dc2bf2ed590b99bda",
+          "mapSourceSha256": "e2afbf2b99d86dce0e22b5f3a686403011047418750f864dc2bf2ed590b99bda",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/checkpoint.ts",
+          "sha256": "723cfd1f14aeb5896c74d58837bdd9cca5d10e64f5af7fa933cb9e3f5cbe9dde",
+          "mapSourceSha256": "723cfd1f14aeb5896c74d58837bdd9cca5d10e64f5af7fa933cb9e3f5cbe9dde",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/interactionCue.ts",
+          "sha256": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+          "mapSourceSha256": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/tutorial.ts",
+          "sha256": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+          "mapSourceSha256": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+          "matches": true
+        },
+        {
+          "path": "src/screens/CalibrationInstructionsScreen.tsx",
+          "sha256": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c",
+          "mapSourceSha256": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c",
+          "matches": true
+        },
+        {
+          "path": "src/components/Layout.tsx",
+          "sha256": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+          "mapSourceSha256": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+          "matches": true
+        },
+        {
+          "path": "src/theme/ui.ts",
+          "sha256": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+          "mapSourceSha256": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+          "matches": true
+        },
+        {
+          "path": "src/screens/CalibrationResultScreen.tsx",
+          "sha256": "1f4849e2073e289f1115bc694ac9d97d22f0b6d8b9c51f5288a3b12ad397df52",
+          "mapSourceSha256": "1f4849e2073e289f1115bc694ac9d97d22f0b6d8b9c51f5288a3b12ad397df52",
+          "matches": true
+        },
+        {
+          "path": "src/screens/CalibrationScreen.tsx",
+          "sha256": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000",
+          "mapSourceSha256": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/CalibrationStimulus.tsx",
+          "sha256": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3",
+          "mapSourceSha256": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/stimulusGeometry.ts",
+          "sha256": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc",
+          "mapSourceSha256": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc",
+          "matches": true
+        },
+        {
+          "path": "src/theme/stimulus.ts",
+          "sha256": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94",
+          "mapSourceSha256": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94",
+          "matches": true
+        },
+        {
+          "path": "src/screens/DeveloperLabScreen.tsx",
+          "sha256": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe",
+          "mapSourceSha256": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/IllusionPalette.ts",
+          "sha256": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+          "mapSourceSha256": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/index.ts",
+          "sha256": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+          "mapSourceSha256": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/types.ts",
+          "sha256": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+          "mapSourceSha256": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/levels.ts",
+          "sha256": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+          "mapSourceSha256": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/projection.ts",
+          "sha256": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+          "mapSourceSha256": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/state.ts",
+          "sha256": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+          "mapSourceSha256": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/reachability.ts",
+          "sha256": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+          "mapSourceSha256": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+          "matches": true
+        },
+        {
+          "path": "src/screens/IllusionMazeScreen.tsx",
+          "sha256": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7",
+          "mapSourceSha256": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7",
+          "matches": true
+        },
+        {
+          "path": "src/platform/haptics.ts",
+          "sha256": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+          "mapSourceSha256": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/IllusionMazeCanvas.tsx",
+          "sha256": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7",
+          "mapSourceSha256": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/IllusionMotion.ts",
+          "sha256": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026",
+          "mapSourceSha256": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026",
+          "matches": true
+        },
+        {
+          "path": "src/screens/JourneyResultScreen.tsx",
+          "sha256": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49",
+          "mapSourceSha256": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49",
+          "matches": true
+        },
+        {
+          "path": "src/screens/MicroMazeScreen.tsx",
+          "sha256": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6",
+          "mapSourceSha256": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6",
+          "matches": true
+        },
+        {
+          "path": "src/domain/maze/geometry.ts",
+          "sha256": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a",
+          "mapSourceSha256": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/maze/level.ts",
+          "sha256": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6",
+          "mapSourceSha256": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6",
+          "matches": true
+        },
+        {
+          "path": "src/domain/maze/scoring.ts",
+          "sha256": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b",
+          "mapSourceSha256": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/MazeCanvas.tsx",
+          "sha256": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3",
+          "mapSourceSha256": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/mazeGeometry.ts",
+          "sha256": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154",
+          "mapSourceSha256": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154",
+          "matches": true
+        },
+        {
+          "path": "src/screens/NativeFirstPersonGate.tsx",
+          "sha256": "37bb22d05193312676fbcb85ffc3fd59277a843667f272877963a430204c810b",
+          "mapSourceSha256": "37bb22d05193312676fbcb85ffc3fd59277a843667f272877963a430204c810b",
+          "matches": true
+        },
+        {
+          "path": "src/platform/native3D.ts",
+          "sha256": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e",
+          "mapSourceSha256": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e",
+          "matches": true
+        },
+        {
+          "path": "src/screens/FirstPersonScreen.tsx",
+          "sha256": "4a1404e147b99648a024eab3983fed7e64a13e4a246973485bfd16f407a6ddf9",
+          "mapSourceSha256": "4a1404e147b99648a024eab3983fed7e64a13e4a246973485bfd16f407a6ddf9",
+          "matches": true
+        },
+        {
+          "path": "src/screens/DiscoveryNotebook.tsx",
+          "sha256": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+          "mapSourceSha256": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+          "matches": true
+        },
+        {
+          "path": "src/content/illusionNotes.ts",
+          "sha256": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+          "mapSourceSha256": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+          "matches": true
+        },
+        {
+          "path": "src/content/illusionComparisons.ts",
+          "sha256": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+          "mapSourceSha256": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/chromaticExhibit.ts",
+          "sha256": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+          "mapSourceSha256": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+          "matches": true
+        },
+        {
+          "path": "src/screens/VaultNotebook.tsx",
+          "sha256": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+          "mapSourceSha256": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+          "matches": true
+        },
+        {
+          "path": "src/content/vaultNotes.ts",
+          "sha256": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+          "mapSourceSha256": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+          "matches": true
+        },
+        {
+          "path": "src/content/vaultComparisons.ts",
+          "sha256": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+          "mapSourceSha256": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/VaultManipulation.tsx",
+          "sha256": "654ee619008c65fad27042a93a2e8e6650294f2bf55d0755c0f337f1ed6d1b16",
+          "mapSourceSha256": "654ee619008c65fad27042a93a2e8e6650294f2bf55d0755c0f337f1ed6d1b16",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/vaultController.ts",
+          "sha256": "55588c16c4cffb12ead30a4ce0d015b4ca3dee240156c9db80fa6f060856bbbd",
+          "mapSourceSha256": "55588c16c4cffb12ead30a4ce0d015b4ca3dee240156c9db80fa6f060856bbbd",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/runtimeController.ts",
+          "sha256": "263948160fd1c7c93e657bc07c7a78927bacc768e835f7cfd821768579857ee6",
+          "mapSourceSha256": "263948160fd1c7c93e657bc07c7a78927bacc768e835f7cfd821768579857ee6",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/notebookCamera.ts",
+          "sha256": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+          "mapSourceSha256": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/galleryController.ts",
+          "sha256": "cad7fe640d58219a8cfce56f9d24e35e4c81608c2a02ab1b129ced7e83e6b4d6",
+          "mapSourceSha256": "cad7fe640d58219a8cfce56f9d24e35e4c81608c2a02ab1b129ced7e83e6b4d6",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/touchInput.ts",
+          "sha256": "f9dd110fbd42fa30234c94e6b110b74f1ff162dfacd6634790d6293f51d63162",
+          "mapSourceSha256": "f9dd110fbd42fa30234c94e6b110b74f1ff162dfacd6634790d6293f51d63162",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/manipulationProjection.ts",
+          "sha256": "572710f595cc24177ba670a2abc434346e45876f3ca477ed0cb490180fdd9ec4",
+          "mapSourceSha256": "572710f595cc24177ba670a2abc434346e45876f3ca477ed0cb490180fdd9ec4",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/labRuntime.ts",
+          "sha256": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+          "mapSourceSha256": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/diagnostics.ts",
+          "sha256": "2b61e633dd979171f4035a82812d859d30d583775328009498bdb9d0b156b1be",
+          "mapSourceSha256": "2b61e633dd979171f4035a82812d859d30d583775328009498bdb9d0b156b1be",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/SceneActionButton.tsx",
+          "sha256": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+          "mapSourceSha256": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/FirstPersonCanvas.tsx",
+          "sha256": "8664474b2f7ba8c583037da3b69b7f7c1a180010154ca5c335b8fc4861fd167e",
+          "mapSourceSha256": "8664474b2f7ba8c583037da3b69b7f7c1a180010154ca5c335b8fc4861fd167e",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/CanvasFailureBoundary.tsx",
+          "sha256": "e84bf0b6de838260e48cefe251e6e0d55b503a1b15b5804ec7ee0e3668da8c67",
+          "mapSourceSha256": "e84bf0b6de838260e48cefe251e6e0d55b503a1b15b5804ec7ee0e3668da8c67",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/canvasLifecycle.ts",
+          "sha256": "d06f876d01ab618556bad75ad9622a22723c358c8232a080d3e1e44aa1ad89d5",
+          "mapSourceSha256": "d06f876d01ab618556bad75ad9622a22723c358c8232a080d3e1e44aa1ad89d5",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/NotebookMaskScene.tsx",
+          "sha256": "9d4aef1faafeee22362bb318aa0d22bcfc8030f744ac00df642824c1361c031c",
+          "mapSourceSha256": "9d4aef1faafeee22362bb318aa0d22bcfc8030f744ac00df642824c1361c031c",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/ChapterScene.tsx",
+          "sha256": "d706b1f39a686e3447d7c103c907c0d581dc036b422ebc63a7f6239384a95f14",
+          "mapSourceSha256": "d706b1f39a686e3447d7c103c907c0d581dc036b422ebc63a7f6239384a95f14",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/PanelFixture.tsx",
+          "sha256": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+          "mapSourceSha256": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GlyphMark.tsx",
+          "sha256": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+          "mapSourceSha256": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/VaultScene.tsx",
+          "sha256": "f1738fe252c982252ed1b2bc84549f3488beffa916b38e4264b6079d78745ca0",
+          "mapSourceSha256": "f1738fe252c982252ed1b2bc84549f3488beffa916b38e4264b6079d78745ca0",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GalleryActor.tsx",
+          "sha256": "a08461149e3ce302c9105da7f42285fae77e14067a82b903d9a9134c0495faeb",
+          "mapSourceSha256": "a08461149e3ce302c9105da7f42285fae77e14067a82b903d9a9134c0495faeb",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/VaultDevices.tsx",
+          "sha256": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+          "mapSourceSha256": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GalleryScene.tsx",
+          "sha256": "4f9b12e7e089d98d1464885c1b175a975bd0b092ba9135eb1345c8ed46dc3bfd",
+          "mapSourceSha256": "4f9b12e7e089d98d1464885c1b175a975bd0b092ba9135eb1345c8ed46dc3bfd",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/segmentTransform.ts",
+          "sha256": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+          "mapSourceSha256": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx",
+          "sha256": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+          "mapSourceSha256": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/nativeSceneSession.ts",
+          "sha256": "da2314abae4b66daf85ea0ff5473cfadcebb7114f9d7775e32dbf9e38127fdee",
+          "mapSourceSha256": "da2314abae4b66daf85ea0ff5473cfadcebb7114f9d7775e32dbf9e38127fdee",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/nativeRendererFactory.ts",
+          "sha256": "e0201f5c963b24a98c7939f00c8be902f10429d243443af89bee23b0819bf52e",
+          "mapSourceSha256": "e0201f5c963b24a98c7939f00c8be902f10429d243443af89bee23b0819bf52e",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/ProofScene.tsx",
+          "sha256": "9fd7ecb09cb3225a3b8f95bbd8aa2bdcf175b915bfc30ba28d7a2bda42d05258",
+          "mapSourceSha256": "9fd7ecb09cb3225a3b8f95bbd8aa2bdcf175b915bfc30ba28d7a2bda42d05258",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/resources.ts",
+          "sha256": "4ac847923415aaa2894aa71d2ac14560394dc75d767e5836a82940938e0eeafc",
+          "mapSourceSha256": "4ac847923415aaa2894aa71d2ac14560394dc75d767e5836a82940938e0eeafc",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/vaultResources.ts",
+          "sha256": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+          "mapSourceSha256": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/galleryResources.ts",
+          "sha256": "ab3aa0da294bf5a8f7f18c83cd3c860e7db665961367040ecda94ba87254ac31",
+          "mapSourceSha256": "ab3aa0da294bf5a8f7f18c83cd3c860e7db665961367040ecda94ba87254ac31",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/exhibitSculpture.ts",
+          "sha256": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+          "mapSourceSha256": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/perceptualResources.ts",
+          "sha256": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+          "mapSourceSha256": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/galleryGraphics.ts",
+          "sha256": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+          "mapSourceSha256": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/emblemSurface.ts",
+          "sha256": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+          "mapSourceSha256": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/RawGLProof.tsx",
+          "sha256": "520a8e0ea9346c0112cf5479c2030b707b7bbf6e1eae737c51c385517ccbe47f",
+          "mapSourceSha256": "520a8e0ea9346c0112cf5479c2030b707b7bbf6e1eae737c51c385517ccbe47f",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/rawGLTriangle.ts",
+          "sha256": "029eaf7b1640af3771350bbed16efcad39ef2eab08864f65516e5426280d8ddb",
+          "mapSourceSha256": "029eaf7b1640af3771350bbed16efcad39ef2eab08864f65516e5426280d8ddb",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/controlLayout.ts",
+          "sha256": "df46342ccf2c1ac896d0d4a2c2336c5ca178cb3d7c845af0438c4094555a0b44",
+          "mapSourceSha256": "df46342ccf2c1ac896d0d4a2c2336c5ca178cb3d7c845af0438c4094555a0b44",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GalleryManipulation.tsx",
+          "sha256": "d4c9e058ebac7d879f08a583e96a656f518181ad85a23ff9c9237952065968cc",
+          "mapSourceSha256": "d4c9e058ebac7d879f08a583e96a656f518181ad85a23ff9c9237952065968cc",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/TouchControls.tsx",
+          "sha256": "c0a05ac35d8c656a0fe2bf55f489353612d463822df2a76cd5e085a8df47b0d0",
+          "mapSourceSha256": "c0a05ac35d8c656a0fe2bf55f489353612d463822df2a76cd5e085a8df47b0d0",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/touchAdapter.ts",
+          "sha256": "b56b588fa4d70c070c58160466b441c9c04e9994fb9a03b05ddac537e1bd27d4",
+          "mapSourceSha256": "b56b588fa4d70c070c58160466b441c9c04e9994fb9a03b05ddac537e1bd27d4",
+          "matches": true
+        },
+        {
+          "path": "src/screens/firstPersonControlMode.ts",
+          "sha256": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
+          "mapSourceSha256": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
+          "matches": true
+        },
+        {
+          "path": "src/screens/FirstPersonResultScreen.tsx",
+          "sha256": "a2c0510bf585a7859e07d1b5bbad7b419415e2c9517309885f836779f13a1a5f",
+          "mapSourceSha256": "a2c0510bf585a7859e07d1b5bbad7b419415e2c9517309885f836779f13a1a5f",
+          "matches": true
+        },
+        {
+          "path": "src/components/FreshPressButton.tsx",
+          "sha256": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85",
+          "mapSourceSha256": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85",
+          "matches": true
+        },
+        {
+          "path": "src/screens/PlayInstructionsScreen.tsx",
+          "sha256": "1bdb27002abd1e0f9f30e3b69e993e6bf432b8d856b2d4058760115e21fe7b9e",
+          "mapSourceSha256": "1bdb27002abd1e0f9f30e3b69e993e6bf432b8d856b2d4058760115e21fe7b9e",
+          "matches": true
+        },
+        {
+          "path": "src/screens/QuickSetupScreen.tsx",
+          "sha256": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246",
+          "mapSourceSha256": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246",
+          "matches": true
+        },
+        {
+          "path": "src/screens/SettingsScreen.tsx",
+          "sha256": "b8140307714dcf13afa470c82cfb5a6f850363dbcf4c4c5993024fda0c41d8a3",
+          "mapSourceSha256": "b8140307714dcf13afa470c82cfb5a6f850363dbcf4c4c5993024fda0c41d8a3",
+          "matches": true
+        },
+        {
+          "path": "src/screens/StageResultScreen.tsx",
+          "sha256": "971fe826dc726b1ccec5614309cd4f4088550944af30c289d55055f99be83923",
+          "mapSourceSha256": "971fe826dc726b1ccec5614309cd4f4088550944af30c289d55055f99be83923",
+          "matches": true
+        },
+        {
+          "path": "src/screens/WelcomeScreen.tsx",
+          "sha256": "97411d81640980450d7d30da4ba2300c43f686c9d3f89b510d6680d40875687a",
+          "mapSourceSha256": "97411d81640980450d7d30da4ba2300c43f686c9d3f89b510d6680d40875687a",
+          "matches": true
+        },
+        {
+          "path": "src/storage/firstPersonStorage.ts",
+          "sha256": "e6b8db835e1eceb97ac9dd0bdad9af23f18d360b5e0b170d76bc6cbcc474b8a0",
+          "mapSourceSha256": "e6b8db835e1eceb97ac9dd0bdad9af23f18d360b5e0b170d76bc6cbcc474b8a0",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "mode": "three-production",
+      "bundle": ".expo/goal009/three-production/_expo/static/js/ios/index-9da61bea8a2a8952e1f8be5b2f1e83d1.js",
+      "bundleSha256": "550d1943d1b58830c5d0b469a5f59ca8d6dc9389cf1ea85ed2d39b13991cd46c",
+      "bytes": 4338682,
+      "sourceMapSha256": "ef0ab964e363b2549b06cabb2092c67f78aa1267139e0e5f89e3baeefd144444",
+      "sourceMapSources": 1520,
+      "applicationSourcesChecked": 143,
+      "allApplicationSourceBytesMatch": true,
+      "checks": [
+        {
+          "path": "index.tsx",
+          "sha256": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75",
+          "mapSourceSha256": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75",
+          "matches": true
+        },
+        {
+          "path": "App.tsx",
+          "sha256": "1bfdac5b5f925eeff42a17f11586034718127dcaf3d4602161299a3bb69181ab",
+          "mapSourceSha256": "1bfdac5b5f925eeff42a17f11586034718127dcaf3d4602161299a3bb69181ab",
+          "matches": true
+        },
+        {
+          "path": "src/app/state.ts",
+          "sha256": "fb80d75339f2bda0bb344603ca9d5728e20b10329ec792ed9c34a399a212f583",
+          "mapSourceSha256": "fb80d75339f2bda0bb344603ca9d5728e20b10329ec792ed9c34a399a212f583",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/scoring.ts",
+          "sha256": "ab38eba62f6f5f2518ed237908607a736f550e13def18a92f8b0568b98af915c",
+          "mapSourceSha256": "ab38eba62f6f5f2518ed237908607a736f550e13def18a92f8b0568b98af915c",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/trials.ts",
+          "sha256": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e",
+          "mapSourceSha256": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/types.ts",
+          "sha256": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+          "mapSourceSha256": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/quickSetup.ts",
+          "sha256": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba",
+          "mapSourceSha256": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/presentation.ts",
+          "sha256": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+          "mapSourceSha256": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/stimulus.ts",
+          "sha256": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+          "mapSourceSha256": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/color.ts",
+          "sha256": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+          "mapSourceSha256": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+          "matches": true
+        },
+        {
+          "path": "src/storage/applicationStorage.ts",
+          "sha256": "47d1492222a3ab05e1fa570999c6ce9f5934e6f02772461d887bc67718726f69",
+          "mapSourceSha256": "47d1492222a3ab05e1fa570999c6ce9f5934e6f02772461d887bc67718726f69",
+          "matches": true
+        },
+        {
+          "path": "src/audio/index.ts",
+          "sha256": "ef441affd95b575c237e9a520fba9dc629ec9875d037a5ca9796cd5991ebbb6e",
+          "mapSourceSha256": "ef441affd95b575c237e9a520fba9dc629ec9875d037a5ca9796cd5991ebbb6e",
+          "matches": true
+        },
+        {
+          "path": "src/audio/nativeBackend.ts",
+          "sha256": "f9f0e4e061236eca5a44f700d5b560e441ba7d776af6e695c806d225ecdd9ae3",
+          "mapSourceSha256": "f9f0e4e061236eca5a44f700d5b560e441ba7d776af6e695c806d225ecdd9ae3",
+          "matches": true
+        },
+        {
+          "path": "src/audio/sources.ts",
+          "sha256": "bed9518219a31553b15b920a1c0dbc3bd62a8ae362f3650ec1903a0e6c3305c6",
+          "mapSourceSha256": "bed9518219a31553b15b920a1c0dbc3bd62a8ae362f3650ec1903a0e6c3305c6",
+          "matches": true
+        },
+        {
+          "path": "src/audio/owner.ts",
+          "sha256": "feac46aa662cea319c1e6e2e03645eb8592113c0efa33678a6acebadc88dd5f7",
+          "mapSourceSha256": "feac46aa662cea319c1e6e2e03645eb8592113c0efa33678a6acebadc88dd5f7",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/actor.ts",
+          "sha256": "bf67f4d4fec1eb5433614d757060a5249845258e15856e42bd12960d252c7c7b",
+          "mapSourceSha256": "bf67f4d4fec1eb5433614d757060a5249845258e15856e42bd12960d252c7c7b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/index.ts",
+          "sha256": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+          "mapSourceSha256": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/types.ts",
+          "sha256": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+          "mapSourceSha256": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/config.ts",
+          "sha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+          "mapSourceSha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/locomotion.ts",
+          "sha256": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+          "mapSourceSha256": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+          "matches": true
+        },
+        {
+          "path": "src/domain/actorMotion/pose.ts",
+          "sha256": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+          "mapSourceSha256": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/chapter.ts",
+          "sha256": "854fc99c7ed06abc47a26f6cf14094ed1e9e4d7427796051b799a3bee093f628",
+          "mapSourceSha256": "854fc99c7ed06abc47a26f6cf14094ed1e9e4d7427796051b799a3bee093f628",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/world.ts",
+          "sha256": "7216430c3b55debb9ce19d214fa3ef7db83931f001f386fdfb111ed553693c0e",
+          "mapSourceSha256": "7216430c3b55debb9ce19d214fa3ef7db83931f001f386fdfb111ed553693c0e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/panelFixture.ts",
+          "sha256": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+          "mapSourceSha256": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/definition.ts",
+          "sha256": "439c126977d7c665aeb98d92a500d88fe151b0e8a1388dbb6b482bdd18682eab",
+          "mapSourceSha256": "439c126977d7c665aeb98d92a500d88fe151b0e8a1388dbb6b482bdd18682eab",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/world.ts",
+          "sha256": "070619ac570390ff286229eafcece2965a53ff9ce80b685fa870f50033ee5a9b",
+          "mapSourceSha256": "070619ac570390ff286229eafcece2965a53ff9ce80b685fa870f50033ee5a9b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/definition.ts",
+          "sha256": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+          "mapSourceSha256": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/emblemFixture.ts",
+          "sha256": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+          "mapSourceSha256": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/alignment.ts",
+          "sha256": "b35e36ce7c6e0955b71ab593d5e2b23e3f0c7b35e2b98031d5f86e68a35832db",
+          "mapSourceSha256": "b35e36ce7c6e0955b71ab593d5e2b23e3f0c7b35e2b98031d5f86e68a35832db",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/geometry.ts",
+          "sha256": "70b48f58acc2d1d0509efc9c8379d525a14ccf56944c96ec4baa88275465128b",
+          "mapSourceSha256": "70b48f58acc2d1d0509efc9c8379d525a14ccf56944c96ec4baa88275465128b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/runtime.ts",
+          "sha256": "e99146faef0ca7c17c9a533a0d04f68c0fc71ecb39e1432c03ce2d6bf219bf6d",
+          "mapSourceSha256": "e99146faef0ca7c17c9a533a0d04f68c0fc71ecb39e1432c03ce2d6bf219bf6d",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/runtime.ts",
+          "sha256": "d1f28de3e92286beec4b5b656a8c5b5938b5f88debc84bba67e53b8cf6313831",
+          "mapSourceSha256": "d1f28de3e92286beec4b5b656a8c5b5938b5f88debc84bba67e53b8cf6313831",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/state.ts",
+          "sha256": "dd8907cd878cd9fb8806c217dac1c693a596397f69aae33cd48c2abb29b0a25d",
+          "mapSourceSha256": "dd8907cd878cd9fb8806c217dac1c693a596397f69aae33cd48c2abb29b0a25d",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/specs.ts",
+          "sha256": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+          "mapSourceSha256": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/actor.ts",
+          "sha256": "e68a54c000eabd2e73ead2464353ec69e1915e06025f93e51c2b3e446d50e84b",
+          "mapSourceSha256": "e68a54c000eabd2e73ead2464353ec69e1915e06025f93e51c2b3e446d50e84b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/selectors.ts",
+          "sha256": "884991687478d324bf672eeec7de3a09da60433997806fc2dd906df7e96673de",
+          "mapSourceSha256": "884991687478d324bf672eeec7de3a09da60433997806fc2dd906df7e96673de",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/state.ts",
+          "sha256": "24fdbad7265b6464ddd690e39cb705d205bd521fb5a881efbb3371c4aae61056",
+          "mapSourceSha256": "24fdbad7265b6464ddd690e39cb705d205bd521fb5a881efbb3371c4aae61056",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/contour.ts",
+          "sha256": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+          "mapSourceSha256": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/shadow.ts",
+          "sha256": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+          "mapSourceSha256": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/wiring.ts",
+          "sha256": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+          "mapSourceSha256": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/selectors.ts",
+          "sha256": "adae4268d351a45ee1d8cbf798d136dbb98a8ff20a25182cdb9e0954ef223f6e",
+          "mapSourceSha256": "adae4268d351a45ee1d8cbf798d136dbb98a8ff20a25182cdb9e0954ef223f6e",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/interaction.ts",
+          "sha256": "98b2bd2c5dea9090a8c74ff8443ff91c3a74b597e259bead523b439985b67ca2",
+          "mapSourceSha256": "98b2bd2c5dea9090a8c74ff8443ff91c3a74b597e259bead523b439985b67ca2",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/puzzle.ts",
+          "sha256": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+          "mapSourceSha256": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+          "matches": true
+        },
+        {
+          "path": "src/audio/preferences.ts",
+          "sha256": "8bedaeb15741e7b919def034abb6ee06950726e9a4d7c7f8d4759c94b6197f4e",
+          "mapSourceSha256": "8bedaeb15741e7b919def034abb6ee06950726e9a4d7c7f8d4759c94b6197f4e",
+          "matches": true
+        },
+        {
+          "path": "src/types/application.ts",
+          "sha256": "1120e4d3fd70347091ea8fa8eaad63676f23737005daf8a28fc241f43221db28",
+          "mapSourceSha256": "1120e4d3fd70347091ea8fa8eaad63676f23737005daf8a28fc241f43221db28",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/index.ts",
+          "sha256": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+          "mapSourceSha256": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/types.ts",
+          "sha256": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+          "mapSourceSha256": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/runtime.ts",
+          "sha256": "208acaf2a7edae026376a40e6352f4c155ec839339e18f321bf583c5a494ee26",
+          "mapSourceSha256": "208acaf2a7edae026376a40e6352f4c155ec839339e18f321bf583c5a494ee26",
+          "matches": true
+        },
+        {
+          "path": "src/domain/gallery/checkpoint.ts",
+          "sha256": "533944bce99655860760c87baac969636bf2f094affcb92fc307482e5779f4c1",
+          "mapSourceSha256": "533944bce99655860760c87baac969636bf2f094affcb92fc307482e5779f4c1",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/index.ts",
+          "sha256": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+          "mapSourceSha256": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+          "matches": true
+        },
+        {
+          "path": "src/domain/emblem/surfaceOwner.ts",
+          "sha256": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+          "mapSourceSha256": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+          "matches": true
+        },
+        {
+          "path": "src/domain/vault/checkpoint.ts",
+          "sha256": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+          "mapSourceSha256": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+          "matches": true
+        },
+        {
+          "path": "src/app/chapterSummary.ts",
+          "sha256": "424cbd0e81c3d18784ba0060db4f1bd36557d0dc9c51f7cfefc7b38fa435fa5a",
+          "mapSourceSha256": "424cbd0e81c3d18784ba0060db4f1bd36557d0dc9c51f7cfefc7b38fa435fa5a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/index.ts",
+          "sha256": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+          "mapSourceSha256": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/types.ts",
+          "sha256": "e2afbf2b99d86dce0e22b5f3a686403011047418750f864dc2bf2ed590b99bda",
+          "mapSourceSha256": "e2afbf2b99d86dce0e22b5f3a686403011047418750f864dc2bf2ed590b99bda",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/checkpoint.ts",
+          "sha256": "723cfd1f14aeb5896c74d58837bdd9cca5d10e64f5af7fa933cb9e3f5cbe9dde",
+          "mapSourceSha256": "723cfd1f14aeb5896c74d58837bdd9cca5d10e64f5af7fa933cb9e3f5cbe9dde",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/interactionCue.ts",
+          "sha256": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+          "mapSourceSha256": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+          "matches": true
+        },
+        {
+          "path": "src/domain/firstPerson/tutorial.ts",
+          "sha256": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+          "mapSourceSha256": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+          "matches": true
+        },
+        {
+          "path": "src/screens/CalibrationInstructionsScreen.tsx",
+          "sha256": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c",
+          "mapSourceSha256": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c",
+          "matches": true
+        },
+        {
+          "path": "src/components/Layout.tsx",
+          "sha256": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+          "mapSourceSha256": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+          "matches": true
+        },
+        {
+          "path": "src/theme/ui.ts",
+          "sha256": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+          "mapSourceSha256": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+          "matches": true
+        },
+        {
+          "path": "src/screens/CalibrationResultScreen.tsx",
+          "sha256": "1f4849e2073e289f1115bc694ac9d97d22f0b6d8b9c51f5288a3b12ad397df52",
+          "mapSourceSha256": "1f4849e2073e289f1115bc694ac9d97d22f0b6d8b9c51f5288a3b12ad397df52",
+          "matches": true
+        },
+        {
+          "path": "src/screens/CalibrationScreen.tsx",
+          "sha256": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000",
+          "mapSourceSha256": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/CalibrationStimulus.tsx",
+          "sha256": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3",
+          "mapSourceSha256": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3",
+          "matches": true
+        },
+        {
+          "path": "src/domain/calibration/stimulusGeometry.ts",
+          "sha256": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc",
+          "mapSourceSha256": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc",
+          "matches": true
+        },
+        {
+          "path": "src/theme/stimulus.ts",
+          "sha256": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94",
+          "mapSourceSha256": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94",
+          "matches": true
+        },
+        {
+          "path": "src/screens/DeveloperLabScreen.tsx",
+          "sha256": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe",
+          "mapSourceSha256": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/IllusionPalette.ts",
+          "sha256": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+          "mapSourceSha256": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/index.ts",
+          "sha256": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+          "mapSourceSha256": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/types.ts",
+          "sha256": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+          "mapSourceSha256": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/levels.ts",
+          "sha256": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+          "mapSourceSha256": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/projection.ts",
+          "sha256": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+          "mapSourceSha256": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/state.ts",
+          "sha256": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+          "mapSourceSha256": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/illusion/reachability.ts",
+          "sha256": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+          "mapSourceSha256": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+          "matches": true
+        },
+        {
+          "path": "src/screens/IllusionMazeScreen.tsx",
+          "sha256": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7",
+          "mapSourceSha256": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7",
+          "matches": true
+        },
+        {
+          "path": "src/platform/haptics.ts",
+          "sha256": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+          "mapSourceSha256": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/IllusionMazeCanvas.tsx",
+          "sha256": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7",
+          "mapSourceSha256": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/IllusionMotion.ts",
+          "sha256": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026",
+          "mapSourceSha256": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026",
+          "matches": true
+        },
+        {
+          "path": "src/screens/JourneyResultScreen.tsx",
+          "sha256": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49",
+          "mapSourceSha256": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49",
+          "matches": true
+        },
+        {
+          "path": "src/screens/MicroMazeScreen.tsx",
+          "sha256": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6",
+          "mapSourceSha256": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6",
+          "matches": true
+        },
+        {
+          "path": "src/domain/maze/geometry.ts",
+          "sha256": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a",
+          "mapSourceSha256": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a",
+          "matches": true
+        },
+        {
+          "path": "src/domain/maze/level.ts",
+          "sha256": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6",
+          "mapSourceSha256": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6",
+          "matches": true
+        },
+        {
+          "path": "src/domain/maze/scoring.ts",
+          "sha256": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b",
+          "mapSourceSha256": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/MazeCanvas.tsx",
+          "sha256": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3",
+          "mapSourceSha256": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/mazeGeometry.ts",
+          "sha256": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154",
+          "mapSourceSha256": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154",
+          "matches": true
+        },
+        {
+          "path": "src/screens/NativeFirstPersonGate.tsx",
+          "sha256": "37bb22d05193312676fbcb85ffc3fd59277a843667f272877963a430204c810b",
+          "mapSourceSha256": "37bb22d05193312676fbcb85ffc3fd59277a843667f272877963a430204c810b",
+          "matches": true
+        },
+        {
+          "path": "src/platform/native3D.ts",
+          "sha256": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e",
+          "mapSourceSha256": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e",
+          "matches": true
+        },
+        {
+          "path": "src/screens/FirstPersonScreen.tsx",
+          "sha256": "4a1404e147b99648a024eab3983fed7e64a13e4a246973485bfd16f407a6ddf9",
+          "mapSourceSha256": "4a1404e147b99648a024eab3983fed7e64a13e4a246973485bfd16f407a6ddf9",
+          "matches": true
+        },
+        {
+          "path": "src/screens/DiscoveryNotebook.tsx",
+          "sha256": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+          "mapSourceSha256": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+          "matches": true
+        },
+        {
+          "path": "src/content/illusionNotes.ts",
+          "sha256": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+          "mapSourceSha256": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+          "matches": true
+        },
+        {
+          "path": "src/content/illusionComparisons.ts",
+          "sha256": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+          "mapSourceSha256": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/chromaticExhibit.ts",
+          "sha256": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+          "mapSourceSha256": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+          "matches": true
+        },
+        {
+          "path": "src/screens/VaultNotebook.tsx",
+          "sha256": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+          "mapSourceSha256": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+          "matches": true
+        },
+        {
+          "path": "src/content/vaultNotes.ts",
+          "sha256": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+          "mapSourceSha256": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+          "matches": true
+        },
+        {
+          "path": "src/content/vaultComparisons.ts",
+          "sha256": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+          "mapSourceSha256": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/VaultManipulation.tsx",
+          "sha256": "654ee619008c65fad27042a93a2e8e6650294f2bf55d0755c0f337f1ed6d1b16",
+          "mapSourceSha256": "654ee619008c65fad27042a93a2e8e6650294f2bf55d0755c0f337f1ed6d1b16",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/vaultController.ts",
+          "sha256": "55588c16c4cffb12ead30a4ce0d015b4ca3dee240156c9db80fa6f060856bbbd",
+          "mapSourceSha256": "55588c16c4cffb12ead30a4ce0d015b4ca3dee240156c9db80fa6f060856bbbd",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/runtimeController.ts",
+          "sha256": "263948160fd1c7c93e657bc07c7a78927bacc768e835f7cfd821768579857ee6",
+          "mapSourceSha256": "263948160fd1c7c93e657bc07c7a78927bacc768e835f7cfd821768579857ee6",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/notebookCamera.ts",
+          "sha256": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+          "mapSourceSha256": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/galleryController.ts",
+          "sha256": "cad7fe640d58219a8cfce56f9d24e35e4c81608c2a02ab1b129ced7e83e6b4d6",
+          "mapSourceSha256": "cad7fe640d58219a8cfce56f9d24e35e4c81608c2a02ab1b129ced7e83e6b4d6",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/touchInput.ts",
+          "sha256": "f9dd110fbd42fa30234c94e6b110b74f1ff162dfacd6634790d6293f51d63162",
+          "mapSourceSha256": "f9dd110fbd42fa30234c94e6b110b74f1ff162dfacd6634790d6293f51d63162",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/manipulationProjection.ts",
+          "sha256": "572710f595cc24177ba670a2abc434346e45876f3ca477ed0cb490180fdd9ec4",
+          "mapSourceSha256": "572710f595cc24177ba670a2abc434346e45876f3ca477ed0cb490180fdd9ec4",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/labRuntime.ts",
+          "sha256": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+          "mapSourceSha256": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/diagnostics.ts",
+          "sha256": "2b61e633dd979171f4035a82812d859d30d583775328009498bdb9d0b156b1be",
+          "mapSourceSha256": "2b61e633dd979171f4035a82812d859d30d583775328009498bdb9d0b156b1be",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/SceneActionButton.tsx",
+          "sha256": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+          "mapSourceSha256": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/FirstPersonCanvas.tsx",
+          "sha256": "8664474b2f7ba8c583037da3b69b7f7c1a180010154ca5c335b8fc4861fd167e",
+          "mapSourceSha256": "8664474b2f7ba8c583037da3b69b7f7c1a180010154ca5c335b8fc4861fd167e",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/CanvasFailureBoundary.tsx",
+          "sha256": "e84bf0b6de838260e48cefe251e6e0d55b503a1b15b5804ec7ee0e3668da8c67",
+          "mapSourceSha256": "e84bf0b6de838260e48cefe251e6e0d55b503a1b15b5804ec7ee0e3668da8c67",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/canvasLifecycle.ts",
+          "sha256": "d06f876d01ab618556bad75ad9622a22723c358c8232a080d3e1e44aa1ad89d5",
+          "mapSourceSha256": "d06f876d01ab618556bad75ad9622a22723c358c8232a080d3e1e44aa1ad89d5",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/NotebookMaskScene.tsx",
+          "sha256": "9d4aef1faafeee22362bb318aa0d22bcfc8030f744ac00df642824c1361c031c",
+          "mapSourceSha256": "9d4aef1faafeee22362bb318aa0d22bcfc8030f744ac00df642824c1361c031c",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/ChapterScene.tsx",
+          "sha256": "d706b1f39a686e3447d7c103c907c0d581dc036b422ebc63a7f6239384a95f14",
+          "mapSourceSha256": "d706b1f39a686e3447d7c103c907c0d581dc036b422ebc63a7f6239384a95f14",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/PanelFixture.tsx",
+          "sha256": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+          "mapSourceSha256": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GlyphMark.tsx",
+          "sha256": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+          "mapSourceSha256": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/VaultScene.tsx",
+          "sha256": "f1738fe252c982252ed1b2bc84549f3488beffa916b38e4264b6079d78745ca0",
+          "mapSourceSha256": "f1738fe252c982252ed1b2bc84549f3488beffa916b38e4264b6079d78745ca0",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GalleryActor.tsx",
+          "sha256": "a08461149e3ce302c9105da7f42285fae77e14067a82b903d9a9134c0495faeb",
+          "mapSourceSha256": "a08461149e3ce302c9105da7f42285fae77e14067a82b903d9a9134c0495faeb",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/VaultDevices.tsx",
+          "sha256": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+          "mapSourceSha256": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GalleryScene.tsx",
+          "sha256": "4f9b12e7e089d98d1464885c1b175a975bd0b092ba9135eb1345c8ed46dc3bfd",
+          "mapSourceSha256": "4f9b12e7e089d98d1464885c1b175a975bd0b092ba9135eb1345c8ed46dc3bfd",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/segmentTransform.ts",
+          "sha256": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+          "mapSourceSha256": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx",
+          "sha256": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+          "mapSourceSha256": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/nativeSceneSession.ts",
+          "sha256": "da2314abae4b66daf85ea0ff5473cfadcebb7114f9d7775e32dbf9e38127fdee",
+          "mapSourceSha256": "da2314abae4b66daf85ea0ff5473cfadcebb7114f9d7775e32dbf9e38127fdee",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/nativeRendererFactory.ts",
+          "sha256": "e0201f5c963b24a98c7939f00c8be902f10429d243443af89bee23b0819bf52e",
+          "mapSourceSha256": "e0201f5c963b24a98c7939f00c8be902f10429d243443af89bee23b0819bf52e",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/ProofScene.tsx",
+          "sha256": "9fd7ecb09cb3225a3b8f95bbd8aa2bdcf175b915bfc30ba28d7a2bda42d05258",
+          "mapSourceSha256": "9fd7ecb09cb3225a3b8f95bbd8aa2bdcf175b915bfc30ba28d7a2bda42d05258",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/resources.ts",
+          "sha256": "4ac847923415aaa2894aa71d2ac14560394dc75d767e5836a82940938e0eeafc",
+          "mapSourceSha256": "4ac847923415aaa2894aa71d2ac14560394dc75d767e5836a82940938e0eeafc",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/vaultResources.ts",
+          "sha256": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+          "mapSourceSha256": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/galleryResources.ts",
+          "sha256": "ab3aa0da294bf5a8f7f18c83cd3c860e7db665961367040ecda94ba87254ac31",
+          "mapSourceSha256": "ab3aa0da294bf5a8f7f18c83cd3c860e7db665961367040ecda94ba87254ac31",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/exhibitSculpture.ts",
+          "sha256": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+          "mapSourceSha256": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/perceptualResources.ts",
+          "sha256": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+          "mapSourceSha256": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/galleryGraphics.ts",
+          "sha256": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+          "mapSourceSha256": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/emblemSurface.ts",
+          "sha256": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+          "mapSourceSha256": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/RawGLProof.tsx",
+          "sha256": "520a8e0ea9346c0112cf5479c2030b707b7bbf6e1eae737c51c385517ccbe47f",
+          "mapSourceSha256": "520a8e0ea9346c0112cf5479c2030b707b7bbf6e1eae737c51c385517ccbe47f",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/rawGLTriangle.ts",
+          "sha256": "029eaf7b1640af3771350bbed16efcad39ef2eab08864f65516e5426280d8ddb",
+          "mapSourceSha256": "029eaf7b1640af3771350bbed16efcad39ef2eab08864f65516e5426280d8ddb",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/controlLayout.ts",
+          "sha256": "df46342ccf2c1ac896d0d4a2c2336c5ca178cb3d7c845af0438c4094555a0b44",
+          "mapSourceSha256": "df46342ccf2c1ac896d0d4a2c2336c5ca178cb3d7c845af0438c4094555a0b44",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/GalleryManipulation.tsx",
+          "sha256": "d4c9e058ebac7d879f08a583e96a656f518181ad85a23ff9c9237952065968cc",
+          "mapSourceSha256": "d4c9e058ebac7d879f08a583e96a656f518181ad85a23ff9c9237952065968cc",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/TouchControls.tsx",
+          "sha256": "c0a05ac35d8c656a0fe2bf55f489353612d463822df2a76cd5e085a8df47b0d0",
+          "mapSourceSha256": "c0a05ac35d8c656a0fe2bf55f489353612d463822df2a76cd5e085a8df47b0d0",
+          "matches": true
+        },
+        {
+          "path": "src/rendering/firstPerson/touchAdapter.ts",
+          "sha256": "b56b588fa4d70c070c58160466b441c9c04e9994fb9a03b05ddac537e1bd27d4",
+          "mapSourceSha256": "b56b588fa4d70c070c58160466b441c9c04e9994fb9a03b05ddac537e1bd27d4",
+          "matches": true
+        },
+        {
+          "path": "src/screens/firstPersonControlMode.ts",
+          "sha256": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
+          "mapSourceSha256": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
+          "matches": true
+        },
+        {
+          "path": "src/screens/FirstPersonResultScreen.tsx",
+          "sha256": "a2c0510bf585a7859e07d1b5bbad7b419415e2c9517309885f836779f13a1a5f",
+          "mapSourceSha256": "a2c0510bf585a7859e07d1b5bbad7b419415e2c9517309885f836779f13a1a5f",
+          "matches": true
+        },
+        {
+          "path": "src/components/FreshPressButton.tsx",
+          "sha256": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85",
+          "mapSourceSha256": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85",
+          "matches": true
+        },
+        {
+          "path": "src/screens/PlayInstructionsScreen.tsx",
+          "sha256": "1bdb27002abd1e0f9f30e3b69e993e6bf432b8d856b2d4058760115e21fe7b9e",
+          "mapSourceSha256": "1bdb27002abd1e0f9f30e3b69e993e6bf432b8d856b2d4058760115e21fe7b9e",
+          "matches": true
+        },
+        {
+          "path": "src/screens/QuickSetupScreen.tsx",
+          "sha256": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246",
+          "mapSourceSha256": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246",
+          "matches": true
+        },
+        {
+          "path": "src/screens/SettingsScreen.tsx",
+          "sha256": "b8140307714dcf13afa470c82cfb5a6f850363dbcf4c4c5993024fda0c41d8a3",
+          "mapSourceSha256": "b8140307714dcf13afa470c82cfb5a6f850363dbcf4c4c5993024fda0c41d8a3",
+          "matches": true
+        },
+        {
+          "path": "src/screens/StageResultScreen.tsx",
+          "sha256": "971fe826dc726b1ccec5614309cd4f4088550944af30c289d55055f99be83923",
+          "mapSourceSha256": "971fe826dc726b1ccec5614309cd4f4088550944af30c289d55055f99be83923",
+          "matches": true
+        },
+        {
+          "path": "src/screens/WelcomeScreen.tsx",
+          "sha256": "97411d81640980450d7d30da4ba2300c43f686c9d3f89b510d6680d40875687a",
+          "mapSourceSha256": "97411d81640980450d7d30da4ba2300c43f686c9d3f89b510d6680d40875687a",
+          "matches": true
+        },
+        {
+          "path": "src/storage/firstPersonStorage.ts",
+          "sha256": "e6b8db835e1eceb97ac9dd0bdad9af23f18d360b5e0b170d76bc6cbcc474b8a0",
+          "mapSourceSha256": "e6b8db835e1eceb97ac9dd0bdad9af23f18d360b5e0b170d76bc6cbcc474b8a0",
+          "matches": true
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "These are emitted Metro factories and source bytes, not an iPhone render or frame-rate measurement.",
+    "Native source/config/dependencies were not changed. Existing Development Build reuse still requires device execution."
+  ]
+}

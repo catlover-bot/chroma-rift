@@ -6,7 +6,7 @@ export type AudioPosition = Readonly<{ x: number; y: number; z: number }>;
 export type GallerySoundEvent = {
   sessionId: string;
   sequence: number;
-  type: 'interaction' | 'unlock' | 'door' | 'door-close';
+  type: 'interaction' | 'unlock' | 'door' | 'door-close' | 'actor-plant';
   /** Taken from the same world fixture/door definition used for drawing and collision. */
   position?: AudioPosition;
 };

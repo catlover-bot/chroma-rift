@@ -118,7 +118,7 @@ export function SettingsScreen({
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、旧章と展示室の進行、音の設定を端末から削除します。', [
+          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、旧章と展示室の進行、音の設定、収蔵庫の進行を端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])

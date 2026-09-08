@@ -1,3 +1,6 @@
+import { vaultCheckpoint } from '../../../storage/testFixtures/vault';
+import { VAULT_CHAPTER_ID } from '../../../domain/vault/definition';
+import { vaultAction } from '../vaultController';
 import { canCloseGalleryExit, GALLERY_CHAPTER_ID, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_CONTOUR_FIXTURE, createContourSpec, normalizeAngle } from '../../../domain/gallery';
 import { galleryAction } from '../galleryController';
 import { _roots, advance, useFrame } from '@react-three/fiber/native';
@@ -96,6 +99,133 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     jest.restoreAllMocks();
     jest.useRealTimers();
+  });
+
+  it('mounts the actual vault ten times with one renderer per entry and releases every nested scene resource', async () => {
+    const rootsBefore = _roots.size;
+    for (let entry = 0; entry < 10; entry++) {
+      renderer = fakeRenderer();
+      const controller = createController(undefined, false, true, VAULT_CHAPTER_ID);
+      const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+      const view = await render(<FirstPersonCanvas {...current} />);
+      await createNativeContext(view);
+      expect(current.onReady).not.toHaveBeenCalled();
+      const native = rendererRoot(renderer).store.getState();
+      expect(native.scene.getObjectByName('uncanny-vault')).toBeDefined();
+      expect(native.scene.getObjectByName('vault-length-device')).toBeDefined();
+      expect(native.scene.getObjectByName('vault-rod-device')).toBeDefined();
+      expect(native.scene.getObjectByName('vault-exhibit-actor')).toBeDefined();
+      expect(native.scene.getObjectByName('emblem-switch-fixture-circle')).toBeUndefined();
+      await submitFrame(renderer);
+      expect(current.onReady).toHaveBeenCalledTimes(1);
+      expect(current.onError).not.toHaveBeenCalled();
+      expect(controller.diagnostics).toMatchObject({ rendererCreates: 1, contextCreates: 1, stage: 'ready' });
+      const resources = resourceFactory.mock.results.at(-1)!.value as ReturnType<typeof createSceneResources>;
+      const owned = new Set<THREE.Material | THREE.BufferGeometry | THREE.Texture>(), visited = new Set<object>();
+      const collect = (value: unknown) => {
+        if (!value || typeof value !== 'object' || visited.has(value)) return;
+        visited.add(value);
+        if (value instanceof THREE.Material || value instanceof THREE.BufferGeometry || value instanceof THREE.Texture) { owned.add(value); return; }
+        Object.values(value).forEach(collect);
+      };
+      collect(resources);
+      const counts = new Map<object, number>();
+      owned.forEach(resource => resource.addEventListener('dispose', () => counts.set(resource, (counts.get(resource) ?? 0) + 1)));
+      const oldRender = native.gl.render, drawCount = renderer.draw.mock.calls.length;
+      await view.unmount();
+      await act(async () => { await jest.advanceTimersByTimeAsync(600); });
+      expect(renderer.dispose).toHaveBeenCalledTimes(1);
+      expect(counts.size).toBe(owned.size);
+      expect([...counts.values()].every(count => count === 1)).toBe(true);
+      expect(_roots.size).toBe(rootsBefore);
+      await act(() => oldRender(native.scene, native.camera));
+      expect(renderer.draw).toHaveBeenCalledTimes(drawCount);
+    }
+  }, 30000);
+
+  it.each(['render', 'presentation'] as const)('rolls back vault movement/noise/actor observations when native %s fails', async phase => {
+    const controller = createController(undefined, false, true, VAULT_CHAPTER_ID);
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    await createNativeContext(view);
+    await submitFrame(renderer);
+    expect(vaultAction(controller, { type: 'enter', puzzle: 'length' })).toBe(true);
+    expect(vaultAction(controller, { type: 'adjust', delta: .2 })).toBe(true);
+    expect(vaultAction(controller, { type: 'adjust', delta: .12 })).toBe(true);
+    expect(vaultAction(controller, { type: 'commit' })).toBe(true);
+    expect(vaultAction(controller, { type: 'leave' })).toBe(true);
+    const native = rendererRoot(renderer).store.getState();
+    jest.spyOn(native.clock, 'getDelta').mockReturnValue(.05);
+    for (let i = 0; i < 65; i++) await submitFrame(renderer, i + 2);
+    controller.runtime = { ...controller.runtime, vault: { ...controller.runtime.vault!, noiseDistance: .64 } };
+    const before = controller.runtime, noticeBefore = controller.actorNotice;
+    jest.mocked(current.onSnapshot).mockClear();
+    let candidate: typeof before | undefined;
+    const fail = () => { candidate = controller.runtime; throw new Error('Injected vault ' + phase + ' failure'); };
+    if (phase === 'render') renderer.draw.mockImplementation(fail); else deviceContext.endFrameEXP.mockImplementation(fail);
+    commandController(controller, { type: 'step', forward: 1 });
+    await submitFrame(renderer, 99);
+    expect(candidate?.vault!.noiseSequence).toBe(before.vault!.noiseSequence + 1);
+    expect(candidate?.pose).not.toEqual(before.pose);
+    expect(controller.runtime.pose).toEqual(before.pose);
+    expect(controller.runtime.progress).toEqual(before.progress);
+    expect(controller.runtime.vault!.noiseSequence).toBe(before.vault!.noiseSequence);
+    expect(controller.runtime.vault!.noiseDistance).toBe(before.vault!.noiseDistance);
+    expect(controller.runtime.vault!.actor).toEqual(before.vault!.actor);
+    expect(controller.actorNotice).toEqual(noticeBefore);
+    expect(controller.pendingActorPlants).toEqual([]);
+    expect(controller.pendingActorEvents).toEqual([]);
+    expect(controller.input.forward).toBe(0);
+    expect(current.onSnapshot).not.toHaveBeenCalled();
+    expect(current.onError).toHaveBeenCalledTimes(1);
+    expect(controller.runtime.paused).toBe(true);
+    await view.unmount();
+  });
+
+  it.each(['success', 'render failure', 'presentation failure'] as const)('saves the vault exit immediately and presents its shared gate travel before one impact: %s', async outcome => {
+    const controller = createController(vaultCheckpoint('rod', 109, 'exit'));
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    controller.audio = audio;
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      expect(controller.diagnostics.stage).toBe('ready');
+      expect(vaultAction(controller, { type: 'close-exit' })).toBe(true);
+      expect(vaultAction(controller, { type: 'close-exit' })).toBe(false);
+      expect(createCheckpoint(controller.runtime).progress.vault!.finalDoorClosed).toBe(true);
+      expect(controller.runtime.progress.cleared).toBe(true);
+      expect(controller.runtime.vault!.exitClosureSeconds).toBe(1.4);
+      expect(audio.beginEnding).toHaveBeenCalledTimes(1);
+      expect(audio.event).not.toHaveBeenCalled();
+      const before = controller.runtime, native = rendererRoot(renderer).store.getState();
+      jest.spyOn(native.clock, 'getDelta').mockReturnValue(.05);
+      if (outcome === 'render failure') renderer.draw.mockImplementation(() => { throw new Error('vault closure draw failed'); });
+      if (outcome === 'presentation failure') deviceContext.endFrameEXP.mockImplementation(() => { throw new Error('vault closure presentation failed'); });
+      await submitFrame(renderer, 2);
+      if (outcome === 'success') {
+        expect(controller.runtime.vault!.exitClosureSeconds).toBeCloseTo(1.35, 12);
+        expect(audio.event).not.toHaveBeenCalled();
+        const gate = getWorld(controller.runtime).solids.find(solid => solid.id === 'vault-final-door')!;
+        expect(gate.min.y).toBeGreaterThan(0);
+        expect(native.scene.getObjectByName('vault-final-door')!.position.y).toBeCloseTo((gate.min.y + gate.max.y) / 2, 12);
+        for (let i = 0; i < 5; i++) await submitFrame(renderer, i + 3);
+        expect(getWorld(controller.runtime).solids.find(solid => solid.id === 'vault-final-door')!.min.y).toBe(0);
+        expect(audio.event.mock.calls.filter(([event]) => event.type === 'door-close')).toHaveLength(1);
+        for (let i = 0; i < 30; i++) await submitFrame(renderer, i + 10);
+        expect(controller.runtime.vault!.exitClosureSeconds).toBe(0);
+        expect(audio.event.mock.calls.filter(([event]) => event.type === 'door-close')).toHaveLength(1);
+      } else {
+        expect(controller.runtime.vault!.exitClosureSeconds).toBe(before.vault!.exitClosureSeconds);
+        expect(controller.runtime.paused).toBe(true);
+        expect(audio.event).not.toHaveBeenCalled();
+        expect(controller.pendingExitImpact).toBe(false);
+        expect(current.onError).toHaveBeenCalledTimes(1);
+      }
+      expect(controller.runtime.progress).toEqual(before.progress);
+      expect(controller.runtime.pose).toEqual(before.pose);
+      expect(controller.runtime.vault!.actor).toEqual(before.vault!.actor);
+    } finally { await view.unmount(); }
   });
 
   it('keeps one live renderer when the constructor requests the real native adapter context', async () => {
@@ -931,8 +1061,13 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     const view = await render(<FirstPersonCanvas {...current} />);
     try {
       await createNativeContext(view); await submitFrame(renderer);
-      const before = structuredClone(controller.runtime.gallery!.actor);
       jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(.05);
+      // Goal009 locomotion has a real launch/turn preparation. First establish
+      // a moving, successfully presented actor, then fail its next actual step.
+      for (let frame = 0; frame < 180 && controller.runtime.gallery!.actor.travelledDistance < .1; frame++) await submitFrame(renderer, 2 + frame);
+      expect(controller.runtime.gallery!.actor.travelledDistance).toBeGreaterThanOrEqual(.1);
+      const before = structuredClone(controller.runtime.gallery!.actor);
+      delete controller.actorNotice; audio.event.mockClear(); audio.actorMovement.mockClear(); jest.mocked(current.onSnapshot).mockClear();
       let candidateTravel = 0;
       const fail = () => { candidateTravel = controller.runtime.gallery!.actor.travelledDistance; throw new Error('Injected actor frame fault'); };
       if (phase === 'render') renderer.draw.mockImplementation(fail); else deviceContext.endFrameEXP.mockImplementation(fail);
@@ -940,7 +1075,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(candidateTravel).toBeGreaterThan(before.travelledDistance);
       expect(controller.runtime.gallery!.actor).toEqual(before);
       expect(controller.runtime.paused).toBe(true);
-      expect(controller.pendingActorFootstepDistance).toBe(0); expect(controller.pendingActorEvents).toEqual([]);
+      expect(controller.pendingActorFootstepDistance).toBe(0); expect(controller.pendingActorPlants).toEqual([]); expect(controller.pendingActorEvents).toEqual([]);
       expect(controller.actorNotice).toBeUndefined(); expect(audio.actorMovement).not.toHaveBeenCalled();
       expect(audio.setActive).toHaveBeenCalledWith(false);
       expect(current.onSnapshot).not.toHaveBeenCalled(); expect(current.onError).toHaveBeenCalledTimes(1);
@@ -995,7 +1130,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     Object.assign(g, { emergencyLit: true, powerConnected: true, powerTaken: { shadow: true, contour: true } });
     Object.assign(g.wiring, { solved: true, offset: 0 });
     Object.assign(g.story, { crossingStarted: true, crossingPresented: true, serviceWarned: true });
-    controller.runtime.pose = { position: { x: 4, y: 1.6, z: 24 }, yaw: Math.PI, pitch: 0 };
+    controller.runtime.pose = { position: { x: 4, y: 1.6, z: 24 }, yaw: 0, pitch: 0 };
     controller.runtime.gallery!.wiringDoorOpen = controller.runtime.gallery!.serviceDoorOpen = controller.runtime.doorExitOpen = 1;
     const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
     controller.audio = audio;
@@ -1058,7 +1193,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     } finally { await view.unmount(); }
   });
 
-  it('publishes the close-door HUD and safe checkpoint when continuous walking crosses the threshold with an unchanged cue and heading', async () => {
+  it('publishes the safe checkpoint on continuous arrival and requires a fresh player turn toward the visible door', async () => {
     const controller = createController(undefined, false, true, GALLERY_CHAPTER_ID), g = controller.runtime.progress.gallery!;
     Object.assign(g, { emergencyLit: true, powerConnected: true, powerTaken: { shadow: true, contour: true } });
     Object.assign(g.wiring, { solved: true, offset: 0 });
@@ -1079,12 +1214,17 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(after.cue.kind).toBe(before.cue.kind); expect(after.direction).toBe(before.direction);
       expect(controller.viewCommandRevision).toBe(revision);
       expect(after.key).not.toBe(before.key);
-      expect(after.objective).toContain('扉を閉める');
-      expect(jest.mocked(current.onSnapshot).mock.calls.some(([snapshot]) => canCloseGalleryExit(snapshot.runtime))).toBe(true);
+      expect(after.objective).toContain('取っ手');
+      expect(jest.mocked(current.onSnapshot).mock.calls.some(([snapshot]) => snapshot.runtime.gallery?.lastSafePose.position.z === 24)).toBe(true);
+      expect(canCloseGalleryExit(controller.runtime)).toBe(false);
       expect(controller.runtime.progress.cleared).toBe(false);
       const calls = jest.mocked(current.onSnapshot).mock.calls.length;
       for (let i = 0; i < 5; i++) await submitFrame(renderer, 10 + i);
       expect(current.onSnapshot).toHaveBeenCalledTimes(calls);
+      expect(galleryAction(controller, { type: 'close-exit' })).toBe(false);
+      commandController(controller, { type: 'turn', yaw: -Math.PI, pitch: 0 });
+      await submitFrame(renderer, 20);
+      expect(canCloseGalleryExit(controller.runtime)).toBe(true);
       expect(galleryAction(controller, { type: 'close-exit' })).toBe(true);
     } finally { await view.unmount(); }
   });

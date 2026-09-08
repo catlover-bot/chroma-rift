@@ -1,0 +1,37 @@
+{
+  "repository": "RealityBending/Pyllusion",
+  "commit": "3aaacb455af7750abff6491371e7a5c9c084a09c",
+  "use": "Principle/parameter separation only; no translated source or supplied images in runtime",
+  "files": [
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/LICENSE",
+      "sha256": "df6ff3a16279a99286277d76451e10f2f2daeee436727ec69ce57fba7f7e9bf6",
+      "status": "read; reference only"
+    },
+    {
+      "path": "pyllusion/MullerLyer/mullerlyer_parameters.py",
+      "url": "https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/MullerLyer/mullerlyer_parameters.py",
+      "sha256": "c91f33c2d5237160acff48c71e1cc7b054b3fc3a352faf68b13c05a36dfb1a2b",
+      "status": "read; reference only"
+    },
+    {
+      "path": "pyllusion/MullerLyer/mullerlyer_image.py",
+      "url": "https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/MullerLyer/mullerlyer_image.py",
+      "sha256": "3f6572ed3a38fa4aa0e69359e4ffc213c657e3acfb64134a04991ba192faa940",
+      "status": "read; reference only"
+    },
+    {
+      "path": "pyllusion/RodFrame/rodframe_parameters.py",
+      "url": "https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/RodFrame/rodframe_parameters.py",
+      "sha256": "8ca3aaee5c8dbec90bd49800fb4f3c20717647bc8d09a2b8ff2c93ae38baa7cb",
+      "status": "read; reference only"
+    },
+    {
+      "path": "pyllusion/RodFrame/rodframe_image.py",
+      "url": "https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/RodFrame/rodframe_image.py",
+      "sha256": "f712a2df41e6f4641d9ac74efc78409ffd5bb461c994b27cc19de5c0581d13e0",
+      "status": "read; reference only"
+    }
+  ]
+}

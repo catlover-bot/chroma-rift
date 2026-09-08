@@ -1,0 +1,45 @@
+{
+  "checkedAtUtc": "2026-09-08T13:22:28.020922+00:00",
+  "artifacts": [
+    {
+      "stage": "motion",
+      "filesChecked": 16,
+      "allArtifactHashesMatch": true
+    },
+    {
+      "stage": "devices",
+      "filesChecked": 77,
+      "allArtifactHashesMatch": true
+    },
+    {
+      "stage": "chapter",
+      "filesChecked": 148,
+      "allArtifactHashesMatch": true
+    }
+  ],
+  "finalChapterSourcesChecked": 95,
+  "allFinalChapterSourceHashesMatch": true,
+  "finalBundleApplicationSourcesStillMatch": true,
+  "protectedFilesStillMatch": true,
+  "primaryViewedImagesStillMatch": true,
+  "documentLinksChecked": 103,
+  "allLocalLinksExist": true,
+  "chapterFindings": {
+    "actualButtonsAtLeast44": true,
+    "pauseSeparate": true,
+    "controlsSeparateFromBoard": true,
+    "headingSeparateFromBoard": true,
+    "allBoardBoundsInside": true,
+    "meshWithinCollisionRadius": true,
+    "noVertexInsideWorldSolids": true,
+    "stanceWithin2cm": true,
+    "actualDoorMatchesCollider": true,
+    "noCameraChangeAfterClosing": true,
+    "completeExactlyOnce": true,
+    "oneRendererReleased": true,
+    "browserErrorsZero": true
+  },
+  "maxWebGLCalls": 97,
+  "maxWebGLTriangles": 4656,
+  "stageBoundary": "A/B preserve their captured stage source hashes; final app source agreement is separately verified by chapter and final Metro source maps."
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "image": "length-320-overview.png",
+    "order": "Left to right, then next row; half-resolution copies of the actual WebGL PNGs, no extra model or UI.",
+    "sourceImages": [
+      "length-baseline-320.png",
+      "length-context-off-320.png",
+      "length-guide-on-320.png",
+      "length-wrong-drag-320.png",
+      "length-wrong-released-320.png",
+      "length-wrong-committed-320.png",
+      "length-correct-drag-320.png",
+      "length-correct-released-320.png",
+      "length-correct-committed-320.png",
+      "length-gate-open-320.png"
+    ]
+  },
+  {
+    "image": "length-390-overview.png",
+    "order": "Left to right, then next row; half-resolution copies of the actual WebGL PNGs, no extra model or UI.",
+    "sourceImages": [
+      "length-baseline-390.png",
+      "length-context-off-390.png",
+      "length-guide-on-390.png",
+      "length-wrong-drag-390.png",
+      "length-wrong-released-390.png",
+      "length-wrong-committed-390.png",
+      "length-correct-drag-390.png",
+      "length-correct-released-390.png",
+      "length-correct-committed-390.png",
+      "length-gate-open-390.png"
+    ]
+  },
+  {
+    "image": "length-430-overview.png",
+    "order": "Left to right, then next row; half-resolution copies of the actual WebGL PNGs, no extra model or UI.",
+    "sourceImages": [
+      "length-baseline-430.png",
+      "length-context-off-430.png",
+      "length-guide-on-430.png",
+      "length-wrong-drag-430.png",
+      "length-wrong-released-430.png",
+      "length-wrong-committed-430.png",
+      "length-correct-drag-430.png",
+      "length-correct-released-430.png",
+      "length-correct-committed-430.png",
+      "length-gate-open-430.png"
+    ]
+  },
+  {
+    "image": "rod-320-overview.png",
+    "order": "Left to right, then next row; half-resolution copies of the actual WebGL PNGs, no extra model or UI.",
+    "sourceImages": [
+      "rod-baseline-320.png",
+      "rod-context-off-320.png",
+      "rod-guide-on-320.png",
+      "rod-wrong-drag-320.png",
+      "rod-wrong-released-320.png",
+      "rod-wrong-committed-320.png",
+      "rod-correct-drag-320.png",
+      "rod-correct-released-320.png",
+      "rod-correct-committed-320.png",
+      "rod-gate-open-320.png"
+    ]
+  },
+  {
+    "image": "rod-390-overview.png",
+    "order": "Left to right, then next row; half-resolution copies of the actual WebGL PNGs, no extra model or UI.",
+    "sourceImages": [
+      "rod-baseline-390.png",
+      "rod-context-off-390.png",
+      "rod-guide-on-390.png",
+      "rod-wrong-drag-390.png",
+      "rod-wrong-released-390.png",
+      "rod-wrong-committed-390.png",
+      "rod-correct-drag-390.png",
+      "rod-correct-released-390.png",
+      "rod-correct-committed-390.png",
+      "rod-gate-open-390.png"
+    ]
+  },
+  {
+    "image": "rod-430-overview.png",
+    "order": "Left to right, then next row; half-resolution copies of the actual WebGL PNGs, no extra model or UI.",
+    "sourceImages": [
+      "rod-baseline-430.png",
+      "rod-context-off-430.png",
+      "rod-guide-on-430.png",
+      "rod-wrong-drag-430.png",
+      "rod-wrong-released-430.png",
+      "rod-wrong-committed-430.png",
+      "rod-correct-drag-430.png",
+      "rod-correct-released-430.png",
+      "rod-correct-committed-430.png",
+      "rod-gate-open-430.png"
+    ]
+  }
+]

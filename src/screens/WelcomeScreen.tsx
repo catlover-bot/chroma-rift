@@ -3,8 +3,9 @@ import { Text, StyleSheet, View } from 'react-native';
 import { ActionButton, Body, Panel, Screen, SectionTitle } from '../components/Layout';
 import { UI_COLORS } from '../theme/ui';
 
-export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyContinue, gallerySaved = false, galleryPowerCount = 0, galleryCleared = false, galleryBlocked = false, legacySaved = false }: {
+export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyContinue, onVaultPlay, vaultSaved = false, vaultCleared = false, vaultBlocked = false, gallerySaved = false, galleryPowerCount = 0, galleryCleared = false, galleryBlocked = false, legacySaved = false }: {
   onPlay: () => void; onSkip: () => void; onSettings: () => void; hasSetup: boolean;
+  onVaultPlay?: () => void; vaultSaved?: boolean; vaultCleared?: boolean; vaultBlocked?: boolean;
   onLegacyContinue?: () => void; gallerySaved?: boolean; galleryPowerCount?: number; galleryCleared?: boolean; galleryBlocked?: boolean; legacySaved?: boolean;
 }) {
   return (
@@ -19,6 +20,12 @@ export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyCo
       {gallerySaved ? <Body muted>{galleryCleared ? 'クリア記録を保持しています。' : `予備電源 ${galleryPowerCount} / 2`}</Body> : null}
       <ActionButton label={galleryBlocked ? '保存を保持して展示室を試す' : gallerySaved ? '展示室の続きから' : '新しい展示室を始める'} onPress={onPlay} variant="primary" />
       {!hasSetup ? <ActionButton label="あとで調整して遊ぶ" onPress={onSkip} /> : null}
+      {onVaultPlay ? <Panel>
+        <SectionTitle>次の章：測れない収蔵庫</SectionTitle>
+        <Body muted>{vaultCleared ? '収蔵庫の脱出記録を保持しています。' : '長さを合わせ、針を鉛直へ。棚の間を抜けて搬出口へ向かおう。'}</Body>
+        <ActionButton label={vaultBlocked ? '保存を保持して収蔵庫を試す' : vaultSaved ? '収蔵庫の続きから' : '測れない収蔵庫を始める'} onPress={onVaultPlay} />
+        <Body muted>展示室をクリアする前でも、この章だけを試せます。</Body>
+      </Panel> : null}
       {onLegacyContinue ? <Panel>
         <SectionTitle>帰り道のない入口</SectionTitle>
         <Body muted>{legacySaved ? '前の章の進行は、そのまま残っています。' : 'はじまりの章を、ふたつの仕掛けでたどります。'}</Body>

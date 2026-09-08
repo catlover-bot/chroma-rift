@@ -1,3 +1,4 @@
+import type { ActorMotionState } from '../actorMotion';
 import type { PlayerPose, Vec3 } from '../firstPerson/types';
 
 export type GalleryPuzzle = 'shadow' | 'contour';
@@ -30,7 +31,7 @@ export type GalleryDrag = { kind: 'shadow'; sampleId: SampleId; pointerId: numbe
 export type HorrorIntensity = 'standard' | 'subdued';
 export type GalleryActorPhase = 'dormant' | 'departing' | 'crossing-pause' | 'telegraph' | 'patrol' | 'noticed' | 'approach' | 'search' | 'resolved';
 export type GalleryActor = {
-  position: Vec3; yaw: number; phase: GalleryActorPhase; phaseTime: number;
+  motion: ActorMotionState; position: Vec3; yaw: number; phase: GalleryActorPhase; phaseTime: number;
   routeIndex: number; routeDirection: 1 | -1; startupGrace: number; contactCooldown: number;
   travelledDistance: number; visible: boolean; intensity: HorrorIntensity; lastSeen?: Vec3 | undefined;
 };

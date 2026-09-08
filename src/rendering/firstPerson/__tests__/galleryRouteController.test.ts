@@ -168,7 +168,10 @@ describe('revised gallery in the shared live camera/controller with a mocked GL-
     if (intensity === 'standard') waitForPass(controller, camera, 17);
     walk(controller, camera, 6.3, 20.5); walk(controller, camera, 4, 20.5); walk(controller, camera, 4, 24);
     expect(controller.runtime.progress.cleared).toBe(false); expect(controller.runtime.doorExitOpen).toBe(1);
-    // The explicit close button is available without forcing a look behind.
+    // Goal009: arrival alone cannot operate an unseen door. A player turn
+    // targets the same physical pull handle; no camera movement is forced.
+    expect(galleryAction(controller, { type: 'close-exit' })).toBe(false);
+    lookAt(controller, camera, { x: 4, y: 1.4, z: 23.08 });
     expect(galleryAction(controller, { type: 'close-exit' })).toBe(true);
     expect(galleryAction(controller, { type: 'close-exit' })).toBe(false);
     expect(controller.runtime.progress.gallery!.finalDoorClosed).toBe(true);

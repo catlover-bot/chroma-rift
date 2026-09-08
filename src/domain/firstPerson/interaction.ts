@@ -16,6 +16,11 @@ export type InteractionEvaluation = {
 
 function actionLabel(target: InteractableDefinition, progress?: PuzzleState): string {
   switch (target.id) {
+    case 'vault-length': return '留め金を調整';
+    case 'vault-rod': return '針を調整';
+    case 'vault-cafe': return '目地を比べる';
+    case 'vault-partition': return '仕切りを閉める';
+    case 'vault-exit': return '搬出口を封鎖';
     case 'gallery-light': return '非常灯を点ける';
     case 'gallery-exit-panel': return progress?.gallery?.powerTaken.shadow && progress.gallery.powerTaken.contour ? '電源を接続' : '非常口を確認';
     case 'chromatic-exhibit': return '色をほどく';
@@ -39,6 +44,11 @@ function actionLabel(target: InteractableDefinition, progress?: PuzzleState): st
 function lockedReason(target: InteractableDefinition, progress: PuzzleState | undefined, aligned: boolean): string | undefined {
   if (!progress) return undefined;
   switch (target.id) {
+    case 'vault-length': return progress.vault ? undefined : 'この装置はありません。';
+    case 'vault-rod': return progress.vault?.length.solved ? undefined : '先に留め金を固定しよう。';
+    case 'vault-cafe': return undefined;
+    case 'vault-partition': return progress.vault?.rod.solved ? undefined : '制動ベイで針をロックしよう。';
+    case 'vault-exit': return progress.vault?.finalDoorClosed ? '搬出口を封鎖しました。' : progress.vault?.rod.solved ? undefined : '制動ベイで針をロックしよう。';
     case 'gallery-light': return progress.gallery?.emergencyLit ? '非常灯は点いています。' : undefined;
     case 'gallery-exit-panel': return progress.gallery?.powerConnected ? '電源を接続しました。サービス通路へ。' : undefined;
     case 'chromatic-exhibit': case 'mask-exhibit': case 'mask-window': case 'hybrid-exhibit': return undefined;

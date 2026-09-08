@@ -345,6 +345,7 @@ describe('revised gallery entry and power route', () => {
     runtime = walk(walk(walk(runtime, 4, 15.2), 4, 17.5), 6.3, 17.5);
     runtime = walk(walk(walk(runtime, 6.3, 20.5), 4, 20.5), 4, 24);
     expect(runtime.progress.cleared).toBe(false); expect(runtime.doorExitOpen).toBe(1);
+    runtime = aim(runtime, { x: 4, y: 1.4, z: 23.08 }); // Explicit player look at the pull handle.
     runtime = act(runtime, { type: 'close-exit' }, 'exit').runtime;
     expect(runtime.progress.gallery!.finalDoorClosed).toBe(true); expect(runtime.doorExitOpen).toBe(0);
     expect(runtime.progress).toMatchObject({ sealA: false, sealB: false, variant: 'entrance', cleared: true });

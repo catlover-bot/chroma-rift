@@ -60,7 +60,7 @@ it('shows the revised power-and-exit discoveries for gallery completion while pr
   const newGallery = jest.fn();
   await view.rerender(<FirstPersonResultScreen summary={{ chapterId: 'returnless-entrance', seals: 2, discoveredMechanisms: ['紋章', '鍵'] }} onReplay={jest.fn()} onHome={jest.fn()} onNewGallery={newGallery} />);
   expect(view.getByText('帰り道のない入口から脱出')).toBeTruthy();
-  await fireEvent.press(view.getByText('新しい展示室を始める'));
+  await fireEvent(view.getByRole('button', { name: '新しい展示室を始める' }), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
   expect(newGallery).toHaveBeenCalledTimes(1);
 });
 

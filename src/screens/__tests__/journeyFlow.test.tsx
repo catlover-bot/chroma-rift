@@ -4,11 +4,14 @@ import { AccessibilityInfo, Alert } from 'react-native';
 import { requireOptionalNativeModule } from 'expo';
 import { PerspectiveCamera } from 'three';
 
+import { skipQuickSetup } from '../../domain/calibration/quickSetup';
+import { vaultCheckpoint } from '../../storage/testFixtures/vault';
+import { createVaultCheckpoint } from '../../domain/vault/checkpoint';
 import App from '../../../App';
 import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import type { IllusionMazeCanvasProps } from '../../rendering/IllusionMazeCanvas';
-import { APPLICATION_STORAGE_KEY } from '../../storage/applicationStorage';
-import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
+import { APPLICATION_STORAGE_KEY, createDefaultApplication } from '../../storage/applicationStorage';
+import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { createGalleryRuntime } from '../../domain/gallery';
@@ -299,7 +302,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(reducer.mock.calls.some(([, action]) => action.type === 'COMPLETE_CHAPTER')).toBe(true);
     await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY))!).progress.cleared).toBe(true));
     const oldScene = scene();
-    await fireEvent.press(view.getByText('章を最初から遊ぶ'));
+    await fireEvent(view.getByText('章を最初から遊ぶ'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
     await view.findByTestId('first-person-native-canvas');
     expect(scene().controller.runtime.progress.sealA).toBe(false);
     expect(scene().controller.runtime.progress.sealB).toBe(false);
@@ -353,7 +356,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBe(oldRaw);
     expect(JSON.parse((await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY))!).progress.gallery.completedFromV1).toBe(true);
     const beforeReview = await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY);
-    await fireEvent.press(view.getByRole('button', { name: '発見メモを比べる' }));
+    await fireEvent(view.getByRole('button', { name: '発見メモを比べる' }), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
     expect(await view.findByTestId('discovery-notebook')).toBeTruthy();
     expect(view.getAllByRole('button').filter(button => String(button.props.accessibilityLabel).includes('自由比較'))).toHaveLength(7);
     expect(mockFirstPersonCanvasProps!.controller.runtime.paused).toBe(true);
@@ -362,7 +365,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(beforeReview);
     expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(source);
 
-    await fireEvent.press(view.getByRole('button', { name: '展示室を最初から遊ぶ' }));
+    await fireEvent(view.getByRole('button', { name: '展示室を最初から遊ぶ' }), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.cleared).toBe(false);
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.gallery!.completedFromV1).toBe(false);
@@ -494,7 +497,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await waitFor(() => expect(finishDeletion).toBeDefined());
     expect(view.queryByText('補助表示')).toBeNull();
     expect(remove).toHaveBeenCalledTimes(2);
-    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY]);
+    // Full reset must remove the new chapter's independent save and recovery key too.
+    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY]);
     await act(() => finishDeletion?.());
     expect(await view.findByText('あとで調整して遊ぶ')).toBeTruthy();
     await waitFor(async () => {
@@ -503,4 +507,86 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
       expect(raw.settings.depthAssistOverridden).toBe(false);
     });
   });
+  it('starts the separate vault directly with shared settings and continues its chosen seed without rewriting old chapters', async () => {
+    const defaults = createDefaultApplication(false);
+    defaults.quickSetupResult = skipQuickSetup('2026-09-08T00:00:00.000Z');
+    defaults.settings.audio = { enabled: false, musicVolume: .12, effectsVolume: .22, illusionEnabled: false };
+    defaults.settings.horrorIntensity = 'subdued';
+    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, JSON.stringify(defaults));
+    const old = JSON.stringify(createCheckpoint(createInitialRuntime())), gallery = JSON.stringify(createCheckpoint(createGalleryRuntime()));
+    await AsyncStorage.multiSet([[FIRST_PERSON_CHECKPOINT_KEY, old], [GALLERY_CHECKPOINT_KEY, gallery]]);
+    const view = await render(<App />);
+    await fireEvent.press(await view.findByText('測れない収蔵庫を始める'));
+    expect(view.getByText('準備できました')).toBeTruthy(); expect(view.queryByText('同じ・分かりにくい')).toBeNull();
+    await fireEvent.press(view.getByText('収蔵庫へ入る'));
+    expect(await view.findByTestId('first-person-native-canvas')).toBeTruthy();
+    const initial = mockFirstPersonCanvasProps!.controller;
+    expect(initial.runtime.chapterId).toBe('uncanny-vault-v1');
+    const firstSeed = initial.runtime.progress.vault!.seed;
+    expect(JSON.parse((await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY))!).progress.vault.seed).toBe(firstSeed);
+    expect(initial.horrorIntensity).toBe('subdued');
+    expect(initial.runtime.progress.gallery).toBeUndefined();
+    expect(initial.runtime.progress.sealA).toBe(false); expect(initial.runtime.progress.cleared).toBe(false);
+    await fireEvent.press(view.getByTestId('pause-control'));
+    await fireEvent.press(view.getByText('ホームへ戻る'));
+    await fireEvent.press(await view.findByText('収蔵庫の続きから'));
+    await fireEvent.press(view.getByText('収蔵庫へ入る'));
+    const second = mockFirstPersonCanvasProps!.controller;
+    expect(second).not.toBe(initial); expect(second.runtime.progress.vault!.seed).toBe(firstSeed);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBe(old);
+    expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(gallery);
+    expect(JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings.audio).toEqual(defaults.settings.audio);
+    // An old mounted run cannot write or complete after its lease was replaced.
+    const current = await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY);
+    initial.runtime.progress.cleared = true;
+    initial.runtime.progress.vault!.finalDoorClosed = true;
+    await act(() => mockFirstPersonCanvasProps!.onSnapshot(controllerSnapshot(initial)));
+    expect(await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY)).toBe(current);
+  });
+
+  it('keeps the gallery clear record while a fresh result press starts the new chapter', async () => {
+    const defaults = createDefaultApplication(false); defaults.quickSetupResult = skipQuickSetup('2026-09-08T00:00:00.000Z');
+    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, JSON.stringify(defaults));
+    const oldRaw = JSON.stringify(originalV1('cleared'));
+    await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, oldRaw);
+    const view = await render(<App />);
+    await fireEvent.press(await view.findByText('展示室の続きから'));
+    await fireEvent.press(view.getByText('展示室へ入る'));
+    expect(view.getByText('展示室のクリア記録')).toBeTruthy();
+    const next = view.getByRole('button', { name: '次の章へ：測れない収蔵庫' });
+    await fireEvent.press(next);
+    expect(view.queryByText('収蔵庫へ入る')).toBeNull();
+    await fireEvent(next, 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+    expect(view.getByText('収蔵庫へ入る')).toBeTruthy();
+    await fireEvent.press(view.getByText('収蔵庫へ入る'));
+    expect(mockFirstPersonCanvasProps!.controller.runtime.progress.vault!.length.solved).toBe(false);
+    expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(oldRaw);
+    expect(JSON.parse((await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY))!).progress.cleared).toBe(true);
+  });
+
+  it('resets only the selected vault and preserves old raw documents, shared settings and a stale run checkpoint', async () => {
+    const defaults = createDefaultApplication(false); defaults.quickSetupResult = skipQuickSetup('2026-09-08T00:00:00.000Z');
+    await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, JSON.stringify(defaults));
+    const old = JSON.stringify(createCheckpoint(createInitialRuntime())), gallery = JSON.stringify(createCheckpoint(createGalleryRuntime()));
+    await AsyncStorage.multiSet([[FIRST_PERSON_CHECKPOINT_KEY, old], [GALLERY_CHECKPOINT_KEY, gallery], [VAULT_CHECKPOINT_KEY, JSON.stringify(vaultCheckpoint('length', 100))]]);
+    const view = await render(<App />);
+    await fireEvent.press(await view.findByText('収蔵庫の続きから')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
+    const retired = mockFirstPersonCanvasProps!;
+    const savedBefore = createVaultCheckpoint(retired.controller.runtime);
+    const settingsBefore = JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings;
+    expect(savedBefore.progress.vault!.length.solved).toBe(true);
+    await fireEvent.press(view.getByTestId('pause-control')); await fireEvent.press(view.getByText('ホームへ戻る'));
+    await fireEvent.press(await view.findByText('設定'));
+    let confirm: (() => void) | undefined;
+    jest.spyOn(Alert, 'alert').mockImplementation((_title, _text, buttons) => { confirm = buttons?.find(button => button.text === 'この章だけリセット')?.onPress; });
+    await fireEvent.press(view.getByText('測れない収蔵庫だけを最初から'));
+    await act(() => confirm?.());
+    await view.findByTestId('first-person-native-canvas');
+    expect(mockFirstPersonCanvasProps!.controller.runtime.progress.vault!.length.solved).toBe(false);
+    await act(() => retired.onSnapshot(controllerSnapshot(retired.controller)));
+    expect(JSON.parse((await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY))!).progress.vault.length.solved).toBe(false);
+    expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBe(old); expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(gallery);
+    expect(JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings).toEqual(settingsBefore);
+  });
+
 });

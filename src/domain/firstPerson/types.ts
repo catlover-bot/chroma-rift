@@ -1,3 +1,4 @@
+import type { VaultProgress, VaultTransient } from '../vault/types';
 import type { GalleryProgress, GalleryTransient } from '../gallery/types';
 import type { SealCheckpoint, SealState } from '../emblem/puzzle';
 import type { Glyph } from '../emblem/stimulus';
@@ -11,7 +12,7 @@ export type RoomVariant = 'entrance' | 'exit';
 export type CollisionVolume = {
   id: string; min: Vec3; max: Vec3; kind: 'wall' | 'door' | 'device'; opaque: boolean;
 };
-export type InteractableId = 'wiring-panel' | 'mask-exhibit' | 'mask-window' | 'hybrid-exhibit' | 'gallery-light' | 'gallery-exit-panel' | 'chromatic-exhibit' | 'shadow-power' | 'contour-power' | 'shadow-panel' | 'contour-panel' | 'guide' | 'floor-device' | 'key' | 'exit' | 'emblem-panel' | 'emblem-circle' | 'emblem-diamond' | 'emblem-square';
+export type InteractableId = 'vault-length' | 'vault-rod' | 'vault-cafe' | 'vault-partition' | 'vault-exit' | 'wiring-panel' | 'mask-exhibit' | 'mask-window' | 'hybrid-exhibit' | 'gallery-light' | 'gallery-exit-panel' | 'chromatic-exhibit' | 'shadow-power' | 'contour-power' | 'shadow-panel' | 'contour-panel' | 'guide' | 'floor-device' | 'key' | 'exit' | 'emblem-panel' | 'emblem-circle' | 'emblem-diamond' | 'emblem-square';
 export type RectangleInteractionTarget = {
   width: number; height: number; normal: Vec3; right: Vec3;
 };
@@ -30,6 +31,7 @@ export type WorldGeometry = {
 };
 export type HintStage = 0 | 1 | 2 | 3;
 export type PuzzleState = {
+  vault?: VaultProgress;
   gallery?: GalleryProgress;
   /** Legacy monotonic flags only; the emblem has no guide/floor prerequisites. */
   emblem?: SealCheckpoint;
@@ -37,6 +39,7 @@ export type PuzzleState = {
   variant: RoomVariant; exitDoorOpen: boolean; cleared: boolean; hintStage: HintStage; usedLookAssist: boolean;
 };
 export type ChapterRuntime = {
+  vault?: VaultTransient;
   chapterId?: string; gallery?: GalleryTransient;
   pose: PlayerPose; progress: PuzzleState; session: number; paused: boolean;
   emblem: SealState;

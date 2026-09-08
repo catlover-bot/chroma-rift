@@ -1,0 +1,1936 @@
+
+> chroma-rift@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run export:ios
+
+
+> chroma-rift@0.1.0 lint
+> eslint .
+
+
+> chroma-rift@0.1.0 typecheck
+> tsc --noEmit
+
+
+> chroma-rift@0.1.0 test
+> jest --runInBand
+
+PASS src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx (28.091 s)
+  ● Console
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      775 |     current.controller.input.forward = 1;
+      776 |     await act(async () => {
+    > 777 |       glView.mock.calls.at(-1)![0].onContextCreate!({ ...deviceContext, endFrameEXP: jest.fn() } as never);
+          |                                    ^
+      778 |       await Promise.resolve();
+      779 |     });
+      780 |     expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(1);
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:777:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at Object.<anonymous> (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:776:14)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+
+      66 |   for (const layoutView of layoutViews) await fireEvent(layoutView, 'layout', { nativeEvent: { layout: { width: 390, height: 740, x: 0, y: 0 } } });
+      67 |   await act(async () => {
+    > 68 |     glView.mock.calls[glView.mock.calls.length - 1]![0].onContextCreate!(deviceContext as never);
+         |                                                         ^
+      69 |     await Promise.resolve();
+      70 |   });
+      71 | }
+
+      at warn (node_modules/three/build/three.cjs:2003:12)
+      at new Clock (node_modules/three/build/three.cjs:56252:3)
+      at node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:1041:14
+      at createStoreImpl (node_modules/zustand/vanilla.js:21:32)
+      at Object.createStore (node_modules/zustand/vanilla.js:24:53)
+      at createWithEqualityFnImpl (node_modules/zustand/traditional.js:21:23)
+      at Object.createWithEqualityFn (node_modules/zustand/traditional.js:26:81)
+      at createStore (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:974:33)
+      at Object.createRoot (node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js:15691:30)
+      at Object.onContextCreate (node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js:162:27)
+      at onContextCreate (src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:68:57)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at callback (node_modules/@testing-library/react-native/src/act.ts:72:33)
+      at callback (node_modules/@testing-library/react-native/src/act.ts:30:24)
+      at Object.<anonymous>.process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:29:25)
+      at _act (node_modules/@testing-library/react-native/src/act.ts:72:10)
+      at src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx:67:12
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS src/screens/__tests__/discoveryNotebook.test.tsx (9.211 s)
+PASS src/rendering/firstPerson/__tests__/galleryRouteController.test.ts (7.607 s)
+PASS src/content/__tests__/illusionComparisons.test.ts (7.312 s)
+PASS src/rendering/firstPerson/__tests__/chromaticExhibit.test.ts
+PASS src/rendering/firstPerson/__tests__/emblemSurface.test.ts
+PASS src/rendering/firstPerson/__tests__/resources.test.ts
+PASS src/screens/__tests__/journeyFlow.test.tsx
+PASS src/screens/__tests__/galleryManipulationScreen.test.tsx
+PASS src/domain/emblem/__tests__/emblem.test.ts
+PASS src/screens/__tests__/firstPersonControls.test.tsx
+PASS src/audio/__tests__/perceptualAssets.test.ts
+PASS src/domain/emblem/__tests__/kitContracts.test.ts
+PASS src/domain/gallery/__tests__/actor.test.ts
+PASS src/domain/gallery/__tests__/gallery.test.ts
+PASS src/domain/firstPerson/__tests__/firstPerson.test.ts
+PASS src/domain/firstPerson/__tests__/emblemIntegration.test.ts
+PASS src/audio/__tests__/assets.test.ts
+PASS src/screens/__tests__/illusionMaze.test.tsx
+PASS src/rendering/firstPerson/__tests__/galleryController.test.ts
+PASS src/screens/__tests__/QuickSetupScreen.test.tsx
+PASS src/rendering/firstPerson/__tests__/segmentBoundary.test.tsx
+PASS src/domain/calibration/__tests__/quickSetup.test.ts
+PASS src/rendering/firstPerson/__tests__/TouchControls.test.tsx
+PASS src/domain/illusion/__tests__/illusion.test.ts
+PASS src/screens/__tests__/galleryMenus.test.tsx
+PASS src/rendering/firstPerson/__tests__/PanelFixture.test.tsx
+PASS src/rendering/firstPerson/__tests__/diagnostics.test.ts
+PASS src/rendering/firstPerson/__tests__/notebookCamera.test.ts
+PASS src/storage/__tests__/firstPersonStorage.test.ts
+PASS src/rendering/firstPerson/__tests__/perceptualResources.test.ts
+PASS src/storage/__tests__/galleryV2Migration.test.ts
+PASS src/rendering/firstPerson/__tests__/runtimeController.test.ts
+PASS src/rendering/firstPerson/__tests__/SceneActionButton.test.tsx
+PASS src/storage/__tests__/emblemMigration.test.ts
+PASS src/storage/__tests__/galleryStorage.test.ts
+PASS src/storage/__tests__/galleryV3Migration.test.ts
+PASS src/rendering/firstPerson/__tests__/segmentModuleIdentity.test.ts
+PASS src/rendering/firstPerson/__tests__/exhibitSculpture.test.ts
+PASS src/screens/__tests__/PlayInstructionsScreen.test.tsx
+PASS src/storage/__tests__/applicationStorage.test.ts
+PASS src/domain/firstPerson/__tests__/interaction.test.ts
+PASS src/app/__tests__/state.test.ts
+PASS src/rendering/firstPerson/__tests__/actorController.test.ts
+PASS src/rendering/firstPerson/__tests__/emblemController.test.ts
+PASS src/rendering/firstPerson/__tests__/rawGLProof.test.tsx
+PASS src/domain/firstPerson/__tests__/rectangleInteraction.test.ts
+PASS src/domain/firstPerson/__tests__/startupGeometry.test.ts
+PASS src/screens/__tests__/flow.test.tsx
+PASS src/audio/__tests__/owner.test.ts
+PASS src/audio/__tests__/nativeBackend.test.ts
+PASS src/domain/gallery/__tests__/wiring.test.ts
+PASS src/rendering/firstPerson/__tests__/controlLayout.test.ts
+PASS src/rendering/firstPerson/__tests__/segmentTransform.test.ts
+PASS src/rendering/__tests__/IllusionMotion.test.ts
+PASS src/rendering/firstPerson/__tests__/canvasLifecycle.test.ts
+PASS src/domain/calibration/__tests__/trials.test.ts
+PASS src/rendering/firstPerson/__tests__/nativeRendererFactory.test.ts
+PASS src/platform/__tests__/threeResolver.test.ts
+PASS src/domain/maze/__tests__/maze.test.ts
+PASS src/rendering/firstPerson/__tests__/touchInput.test.ts
+PASS src/screens/__tests__/firstPersonControlMode.test.ts
+PASS src/platform/__tests__/native3D.test.ts
+PASS src/domain/calibration/__tests__/scoring.test.ts
+
+Test Suites: 64 passed, 64 total
+Tests:       782 passed, 782 total
+Snapshots:   0 total
+Time:        89.258 s
+Ran all test suites.
+
+> chroma-rift@0.1.0 export:ios
+> expo export --platform ios --output-dir dist
+
+Using src/app as the root directory for Expo Router.
+Starting Metro Bundler
+
+iOS Bundled 18755ms index.tsx (1491 modules)
+
+› Assets (10):
+assets/audio/ambience.wav (192KB)
+assets/audio/cloth.wav (20KB)
+assets/audio/door-impact.wav (24KB)
+assets/audio/footstep.wav (8.7KB)
+assets/audio/interaction.wav (6.8KB)
+assets/audio/mechanism.wav (33KB)
+assets/audio/shepard.wav (576KB)
+assets/perceptual/hybrid-composite.png (59KB)
+assets/perceptual/hybrid-high-pass.png (24KB)
+assets/perceptual/hybrid-low-pass.png (22KB)
+
+› ios bundles (1):
+_expo/static/js/ios/index-ef3a0d61233b0c66ad6505accffd21b1.hbc (5.8MB)
+
+› Files (1):
+metadata.json (771B)
+
+Exported: dist

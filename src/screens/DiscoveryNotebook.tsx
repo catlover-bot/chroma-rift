@@ -11,7 +11,18 @@ import type { AppSettings } from '../types/application';
 import { UI_COLORS } from '../theme/ui';
 
 export type NotebookPreview = { kind: 'mask'; yaw: number; window?: { x: number; y: number; width: number; height: number } } | undefined;
+export type NotebookComparisons = {
+  chromaticNeutral: boolean; shadowNeutral: boolean; contourGuide: boolean; rotation: number;
+  offset: number; cover: number; scale: number; component: 'composite' | 'low' | 'high'; yaw: number;
+};
+export function createNotebookComparisons(progress?: GalleryProgress): NotebookComparisons {
+  return { chromaticNeutral: false, shadowNeutral: false, contourGuide: false, rotation: 0,
+    offset: progress?.wiring.offset ?? 0, cover: progress?.wiring.cover ?? 0,
+    scale: 1, component: 'composite', yaw: 0 };
+}
 export type DiscoveryNotebookProps = { progress: GalleryProgress; completed: boolean; settings: AppSettings;
+  initialSelection?: DiscoveryId;
+  comparisons?: NotebookComparisons; onComparisonsChange?: (comparisons: NotebookComparisons) => void;
   onSettingsChange: (settings: AppSettings) => void; onClose: () => void;
   onPreview: (preview: NotebookPreview) => void; onPlaySound: () => void; onStopSound: () => void };
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -46,7 +57,7 @@ export function ComparisonSlider({ label, value, min, max, step, onChange }: { l
     <ChoiceRow><ActionButton label={`${label} −`} onPress={() => set(value - step)} /><ActionButton label={`${label} ＋`} onPress={() => set(value + step)} /></ChoiceRow>
   </View>;
 }
-function RasterFigure({ raster, width }: { raster: ComparisonRaster; width: number }) {
+export function RasterFigure({ raster, width }: { raster: ComparisonRaster; width: number }) {
   const image = useMemo(() => { const data = Skia.Data.fromBytes(raster.rgba);
     try { return Skia.Image.MakeImage({ width: raster.width, height: raster.height, colorType: ColorType.RGBA_8888, alphaType: AlphaType.Opaque }, data, raster.width * 4); }
     finally { data.dispose(); }
@@ -62,10 +73,12 @@ export function MaterialCredits() {
     <Body>{credit.title}</Body><Body muted>{credit.text}</Body>{credit.urls.map(url => <Text selectable key={url} style={styles.source}>{url}</Text>)}
   </Panel>)}<Body muted>説明とクレジットはオフラインで読めます。CC BY 素材の利用に、同ライセンスにない追加制限を設けません。</Body></View>;
 }
-export function DiscoveryNotebook({ progress, completed, settings, onSettingsChange, onClose, onPreview, onPlaySound, onStopSound }: DiscoveryNotebookProps) {
-  const [selected, setSelected] = useState<DiscoveryId | 'credits'>(), [neutral, setNeutral] = useState(false), [guide, setGuide] = useState(false);
-  const [rotation, setRotation] = useState(0), [offset, setOffset] = useState(progress.wiring.offset), [cover, setCover] = useState(progress.wiring.cover);
-  const [scale, setScale] = useState(1), [component, setComponent] = useState<'composite' | 'low' | 'high'>('composite'), [yaw, setYaw] = useState(0);
+export function DiscoveryNotebook({ progress, completed, settings, onSettingsChange, onClose, onPreview, onPlaySound, onStopSound, comparisons, onComparisonsChange, initialSelection }: DiscoveryNotebookProps) {
+  const [selected, setSelected] = useState<DiscoveryId | 'credits' | undefined>(() => initialSelection && (completed || progress.discoveries[initialSelection]) ? initialSelection : undefined);
+  const [localComparisons, setLocalComparisons] = useState(() => createNotebookComparisons(progress));
+  const values = comparisons ?? localComparisons;
+  const { chromaticNeutral, shadowNeutral, contourGuide: guide, rotation, offset, cover, scale, component, yaw } = values;
+  const neutral = selected === 'chromatic' ? chromaticNeutral : shadowNeutral;
   const owner = useMemo(() => lifetime(), []), { width, height } = useWindowDimensions(), figureWidth = Math.max(128, Math.min(360, width - 64));
   const insets = useSafeAreaInsets();
   const [notebookSize, setNotebookSize] = useState<{ width: number; height: number }>();
@@ -86,6 +99,11 @@ export function DiscoveryNotebook({ progress, completed, settings, onSettingsCha
   useLayoutEffect(() => { owner.activate(); return () => owner.dispose(); }, [owner]);
   useEffect(() => { onPreview(selected === 'mask' ? { kind: 'mask', yaw, ...(previewWindow ? { window: previewWindow } : {}) } : undefined); }, [onPreview, previewWindow, selected, yaw]);
   useEffect(() => () => { onStopSound(); onPreview(undefined); }, [onPreview, onStopSound]);
+  const update = (patch: Partial<NotebookComparisons>) => {
+    if (!owner.isActive()) return;
+    const next = { ...values, ...patch };
+    setLocalComparisons(next); onComparisonsChange?.(next);
+  };
   const audio = normalizeAudioPreferences(settings.audio), notes = availableIllusionNotes(progress.discoveries, completed);
   const note = ILLUSION_NOTES.find(item => item.id === selected);
   const choose = (id: DiscoveryId | 'credits' | undefined) => { if (!owner.isActive()) return; onStopSound(); setSelected(id); };
@@ -93,16 +111,16 @@ export function DiscoveryNotebook({ progress, completed, settings, onSettingsCha
   const raster = useMemo(() => selected === 'chromatic' ? chromaticComparison(neutral, settings.emblemPalette ?? 'baseline') : selected === 'shadow' || selected === 'contour' || selected === 'wiring' ? diagramComparison(selected, { seed: progress.seed, neutral, rotation, guide, offset, cover }) : undefined,
     [cover, guide, neutral, offset, progress.seed, rotation, selected, settings.emblemPalette]);
   const controls = <>
-    {selected === 'chromatic' ? <ActionButton label={neutral ? 'カラーに戻す' : '無彩色で比べる'} onPress={() => setNeutral(!neutral)} /> : null}
-    {selected === 'shadow' ? <ActionButton label={neutral ? '元の背景' : '同じ背景で比べる'} onPress={() => setNeutral(!neutral)} /> : null}
-    {selected === 'contour' ? <><ComparisonSlider key="contour-rotation" label="円盤の向き" value={rotation} min={-Math.PI} max={Math.PI} step={Math.PI / 36} onChange={setRotation} />
-      <ActionButton label={guide ? '輪郭ガイドを消す' : '補助の輪郭ガイド'} onPress={() => setGuide(!guide)} />{guide ? <Body>補助の輪郭ガイド使用中</Body> : null}</> : null}
-    {selected === 'wiring' ? <><ComparisonSlider key="wiring-offset" label="線の高さ" value={offset} min={-.28} max={.28} step={.014} onChange={setOffset} />
-      <ComparisonSlider key="wiring-cover" label="カバーの位置" value={cover} min={-.97} max={0} step={.097} onChange={setCover} /></> : null}
-    {selected === 'hybrid' ? <><ComparisonSlider key="hybrid-scale" label="画像の倍率" value={scale} min={.2} max={1.6} step={.1} onChange={setScale} />
-      <ChoiceRow><ActionButton label="同じ合成画像" onPress={() => setComponent('composite')} /><ActionButton label="補助：大きい成分" onPress={() => setComponent('low')} /><ActionButton label="補助：細かい成分" onPress={() => setComponent('high')} /></ChoiceRow>
+    {selected === 'chromatic' ? <><Body>{chromaticNeutral ? '表示：無彩色（比較の補助）' : '表示：カラー'}</Body><ActionButton label={chromaticNeutral ? 'カラーに戻す' : '無彩色で比べる'} onPress={() => update({ chromaticNeutral: !chromaticNeutral })} /></> : null}
+    {selected === 'shadow' ? <><Body>{shadowNeutral ? '背景：共通（比較の補助）' : '背景：元の展示'}</Body><ActionButton label={shadowNeutral ? '元の背景' : '同じ背景で比べる'} onPress={() => update({ shadowNeutral: !shadowNeutral })} /></> : null}
+    {selected === 'contour' ? <><ComparisonSlider key="contour-rotation" label="円盤の向き" value={rotation} min={-Math.PI} max={Math.PI} step={Math.PI / 36} onChange={rotation => update({ rotation })} />
+      <ActionButton label={guide ? '輪郭ガイドを消す' : '補助の輪郭ガイド'} onPress={() => update({ contourGuide: !guide })} /><Body>{guide ? '補助の輪郭ガイド使用中' : '輪郭ガイド：オフ'}</Body></> : null}
+    {selected === 'wiring' ? <><Body>{cover === 0 ? 'カバー：元の位置' : 'カバー：移動した比較位置（補助）'}</Body><ComparisonSlider key="wiring-offset" label="線の高さ" value={offset} min={-.28} max={.28} step={.014} onChange={offset => update({ offset })} />
+      <ComparisonSlider key="wiring-cover" label="カバーの位置" value={cover} min={-.97} max={0} step={.097} onChange={cover => update({ cover })} /></> : null}
+    {selected === 'hybrid' ? <><ComparisonSlider key="hybrid-scale" label="画像の倍率" value={scale} min={.2} max={1.6} step={.1} onChange={scale => update({ scale })} />
+      <ChoiceRow><ActionButton label="同じ合成画像" onPress={() => update({ component: 'composite' })} /><ActionButton label="補助：大きい成分" onPress={() => update({ component: 'low' })} /><ActionButton label="補助：細かい成分" onPress={() => update({ component: 'high' })} /></ChoiceRow>
       <Body>{component === 'composite' ? '拡大縮小しているのは同じ一枚です。' : '成分だけを表示する補助です。本編の画像は入れ替わりません。'}</Body></> : null}
-    {selected === 'mask' ? <ComparisonSlider key="mask-yaw" label="仮面を見る位置" value={yaw} min={-Math.PI / 2} max={Math.PI / 2} step={Math.PI / 18} onChange={setYaw} /> : null}
+    {selected === 'mask' ? <ComparisonSlider key="mask-yaw" label="仮面を見る位置" value={yaw} min={-Math.PI / 2} max={Math.PI / 2} step={Math.PI / 18} onChange={yaw => update({ yaw })} /> : null}
     {selected === 'shepard' ? <>
       <Body>最大12秒の自作音。音量は増え続けません。</Body>
       <ActionButton label="短い音を再生" disabled={!audio.enabled || !audio.illusionEnabled || audio.effectsVolume <= 0 || settings.horrorIntensity === 'subdued'} onPress={() => { if (owner.isActive()) onPlaySound(); }} />
@@ -112,7 +130,8 @@ export function DiscoveryNotebook({ progress, completed, settings, onSettingsCha
       {settings.horrorIntensity === 'subdued' ? <Body>控えめな怖さでは、この演出音を再生しません。</Body> : null}
     </> : null}
   </>;
-  const description = note ? <><Body>{progress.discoveries[note.id] ? note.discovery : 'クリア後の自由比較。本編の発見記録には追加しません。'}</Body><Body>{note.explanation}</Body><Body muted>{note.operation}</Body>{controls}
+  const aided = selected === 'chromatic' && chromaticNeutral || selected === 'shadow' && shadowNeutral || selected === 'contour' && guide || selected === 'wiring' && cover !== 0 || selected === 'hybrid' && component !== 'composite';
+  const description = note ? <><Body>{progress.discoveries[note.id] ? note.discovery : 'クリア後の自由比較。本編の発見記録には追加しません。'}</Body><Body>{note.explanation}</Body><Body muted>{note.operation}</Body>{controls}{aided ? <Body muted>補助を使った比較です。自然な見え方を確認した記録にはしません。</Body> : null}
     <Body>現象の資料</Body>{note.sources.map(source => <View key={source.url}><Body muted>{source.title}</Body><Text selectable style={styles.source}>{source.url}</Text></View>)}
     <Body>素材クレジット</Body><Body muted>{note.credit}</Body>{note.id === 'mask' ? <Text selectable style={styles.source}>https://creativecommons.org/licenses/by/4.0/</Text> : null}</> : null;
   return <SafeAreaView onLayout={event => { const { width, height } = event.nativeEvent.layout; if (owner.isActive() && width > 0 && height > 0) setNotebookSize(previous => previous?.width === width && previous.height === height ? previous : { width, height }); }} edges={['top', 'right', 'bottom', 'left']} style={[styles.notebook, selected === 'mask' && styles.maskNotebook]} accessibilityViewIsModal testID="discovery-notebook">

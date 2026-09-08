@@ -1,3 +1,5 @@
+import { getWorld } from '../firstPerson/chapter';
+import { evaluateInteraction } from '../firstPerson/interaction';
 import type { ChapterRuntime, PlayerPose } from '../firstPerson/types';
 import { angularDifference, CONTOUR_TOLERANCE, createContourSpec } from './contour';
 import { SAMPLE_IDS, validShadowAssignments } from './shadow';
@@ -47,6 +49,7 @@ export function galleryObjective(runtime: ChapterRuntime): string {
   if (device) return device.objective;
   if (g.powerConnected && !g.wiring.solved) return '隠れた配線を一本につなぐ';
   if (canCloseGalleryExit(runtime)) return '扉を閉める';
+  if (g.wiring.solved && isGalleryExitThreshold(runtime.pose)) return '入ってきた扉の取っ手を見て、閉める';
   if (g.wiring.solved) return '棚の陰を使い、奥の扉へ';
   const count = galleryPowerCount(g);
   if (count === 2) return '出口の盤へ、予備電源を2つ接続する';
@@ -60,7 +63,8 @@ export function isGalleryExitThreshold(pose: PlayerPose): boolean {
 }
 export function canCloseGalleryExit(runtime: ChapterRuntime): boolean {
   const g = runtime.progress.gallery;
-  return !!g && !runtime.paused && !runtime.progress.cleared && g.powerConnected && g.wiring.solved && !g.finalDoorClosed && runtime.gallery?.mode === 'explore' && isGalleryExitThreshold(runtime.pose);
+  return !!g && !runtime.paused && !runtime.progress.cleared && g.powerConnected && g.wiring.solved && !g.finalDoorClosed && runtime.gallery?.mode === 'explore' && isGalleryExitThreshold(runtime.pose) &&
+    evaluateInteraction({ ...getWorld(runtime), interactables: getWorld(runtime).interactables.filter(target => target.id === 'exit') }, runtime.pose, runtime.progress).kind === 'ready';
 }
 
 /** A visited, authored refuge can be remembered even while the player later

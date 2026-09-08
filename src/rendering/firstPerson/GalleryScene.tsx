@@ -95,7 +95,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       if (drawerC.current) drawerC.current.position.z = GALLERY_CONTOUR_FIXTURE.center.z + .09 + .22 * g.doorContourOpen;
       if (maskWindowHandle.current) maskWindowHandle.current.position.y = GALLERY_MASK_WINDOW_FIXTURE.center.y + (state.progress.gallery!.maskWindowOpen ? 1.6 : 0);
       if (lever.current) lever.current.rotation.x = state.progress.gallery!.emergencyLit ? -.5 : .5;
-      if (exitHandle.current) exitHandle.current.position.y = 1.2 + state.doorExitOpen * 3.3;
+      if (exitHandle.current) exitHandle.current.position.y = 1.4;
     } catch (e) { if (onFrameError) onFrameError(e); else throw e; }
   });
   const floorBlocks = world.floors.map(f => ({ position: [(f.minX + f.maxX) / 2, -.12, (f.minZ + f.maxZ) / 2], scale: [f.maxX - f.minX, .24, f.maxZ - f.minZ] } as Block));
@@ -109,7 +109,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
   ];
   return <group name="closed-gallery" dispose={null}>
     <PerceptualGalleryExhibits runtime={runtime} resources={resources} />
-    <GalleryActor runtime={runtime} resources={resources} reducedMotion={reducedMotion} />
+    <GalleryActor runtime={runtime} resources={resources} reducedMotion={reducedMotion} {...(onFrameError ? { onFrameError } : {})} />
     <ambientLight intensity={1.4} /><directionalLight intensity={1.35} position={[2, 6, 3]} />
     <InstancedBlocks name="gallery-floors" blocks={floorBlocks} resources={resources} material={resources.floor} />
     <InstancedBlocks name="gallery-ceilings" blocks={ceilings} resources={resources} material={resources.ceiling} />
@@ -196,7 +196,8 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
         })}
       </group>
     </group>
-    <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[3.55, 1.2 + runtime.current.doorExitOpen * 3.3, GALLERY_FINAL_DOOR_FIXTURE.center.z]} scale={[.1, .28, .1]} />
+    <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[4, 1.4, GALLERY_FINAL_DOOR_FIXTURE.center.z]} scale={[.52, .1, .1]} />
+    <mesh name="gallery-final-door-pull-cable" geometry={resources.box} material={r.outline} position={[4, 2.25, GALLERY_FINAL_DOOR_FIXTURE.center.z]} scale={[.018, 1.6, .018]} />
     <mesh name="gallery-exit-sign" geometry={resources.box} material={r.exitSign} position={[4, 2.9, 22.82]} scale={[.85, .25, .035]} />
   </group>;
 }

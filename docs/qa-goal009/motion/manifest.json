@@ -1,0 +1,66 @@
+{
+  "full-feet-half-turn.png": {
+    "bytes": 85206,
+    "sha256": "57da1ce86e7483a4e866e5b9050728583615fc8ff79715430002b93793bbf9ad"
+  },
+  "full-feet-overview.png": {
+    "bytes": 150452,
+    "sha256": "112fc663c32683f2eee490541613f4c889d0253027060c5e15e4be0b1e368a11"
+  },
+  "full-feet-right-turn.png": {
+    "bytes": 71881,
+    "sha256": "517bdd2c62cfd16261665f2f4723a685177886ee55f1b7939817f500c4dd0c88"
+  },
+  "full-feet-stop.png": {
+    "bytes": 66630,
+    "sha256": "335cadb854533641fd81d1349639099d6117e2c022e0c8290b626762d4bf77d9"
+  },
+  "full-feet-video.json": {
+    "bytes": 2395,
+    "sha256": "02062d4ea0a08d1a6faf86c7cf4faa4f48956fd8e91354302afdafc0c7be86bb"
+  },
+  "full-feet.mp4": {
+    "bytes": 311358,
+    "sha256": "6405122c8d594e63835771f8c61910edf79b98cb57cba761e54e0624b7b82804"
+  },
+  "player-height-half-turn.png": {
+    "bytes": 96290,
+    "sha256": "055900315dd07d4abd36f846605a0f80341b60a4d69c53bd67dc06b54d02b4ef"
+  },
+  "player-height-overview.png": {
+    "bytes": 163164,
+    "sha256": "478aeebe993d298e0dd263f6f29d752db5707e041906e5807e0eb43ba53361b0"
+  },
+  "player-height-right-turn.png": {
+    "bytes": 87077,
+    "sha256": "3da0d84f0dc8bedd99cc0ddced29810995a38fbe7334c1443e55b779a014a140"
+  },
+  "player-height-stop.png": {
+    "bytes": 65407,
+    "sha256": "4eaf21c72d0527859ab67a3afbca0094127dc1c129dcaa9720d7477d5f86f8d8"
+  },
+  "player-height-video.json": {
+    "bytes": 2399,
+    "sha256": "7253f31d9e632cb692e334cd5c67e6869312d1251cb073cd4df426d09e69111c"
+  },
+  "player-height.mp4": {
+    "bytes": 323959,
+    "sha256": "8e1787da5ff4d28f9dd8025c583b2057df86884b9ee1cca252b5c09bfdd72a58"
+  },
+  "source-hashes.json": {
+    "bytes": 5248,
+    "sha256": "71dba7ca32fb79fc78dbf91a41e7f5888b0f0c829bcfa2e5655ea61775ee68cf"
+  },
+  "timeline.json": {
+    "bytes": 5013567,
+    "sha256": "d1f6397fc18b119b400a302069ee56436b542d329c57b677767a17220fe34b29"
+  },
+  "visual-review.json": {
+    "bytes": 2914,
+    "sha256": "8475ba8e035733a992a8d95fec8f5f2107f0eb27b0c59cd20a0e99f1f9a22561"
+  },
+  "webgl.json": {
+    "bytes": 649,
+    "sha256": "c8aa1032fc47534ea0d8fc6f284c66ac983315e917f700d38969e2acebd60ea6"
+  }
+}

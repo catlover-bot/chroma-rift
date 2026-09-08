@@ -1,4 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createVaultCheckpoint, restoreVaultCheckpoint } from '../domain/vault/checkpoint';
+import { createVaultRuntime } from '../domain/vault/runtime';
 import { createGalleryRuntime, restoreGalleryCheckpoint, migrateGalleryV1Checkpoint, migrateGalleryV2Checkpoint } from '../domain/gallery';
 
 import {
@@ -10,6 +12,9 @@ import {
   type FirstPersonControls, type FirstPersonOnboarding,
 } from '../types/application';
 import { resetApplicationStorage } from './applicationStorage';
+
+export const VAULT_CHECKPOINT_KEY = 'chroma-rift.uncanny-vault.v1';
+export const VAULT_BACKUP_KEY = 'chroma-rift.uncanny-vault.backup.v1';
 
 export const GALLERY_V1_CHECKPOINT_KEY = 'chroma-rift.perception-gallery.v1';
 export const GALLERY_V1_BACKUP_KEY = 'chroma-rift.perception-gallery.backup.v1';
@@ -142,6 +147,9 @@ let controlsWritable = true;
 let onboardingWritable = true;
 let latestOnboarding: FirstPersonOnboarding = { ...DEFAULT_FIRST_PERSON_ONBOARDING };
 let latestCheckpoint: CheckpointState | undefined;
+let vaultWritable = true;
+let latestVaultCheckpoint: CheckpointState | undefined;
+let pendingVaultBackup: string | undefined;
 let galleryWritable = true;
 let latestGalleryCheckpoint: CheckpointState | undefined;
 let pendingGalleryBackup: { key: string; raw: string } | undefined;
@@ -342,10 +350,11 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   progressWritable = false;
   controlsWritable = false;
   galleryWritable = false;
+  vaultWritable = false;
   const applicationReset = resetApplicationStorage();
   const firstPersonReset = serializeMutation(async () => {
     try {
-      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY]);
+      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY]);
       return true;
     } catch {
       return false;
@@ -357,6 +366,9 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   pendingCheckpointBackup = undefined;
   latestGalleryCheckpoint = undefined;
   pendingGalleryBackup = undefined;
+  latestVaultCheckpoint = undefined;
+  pendingVaultBackup = undefined;
+  vaultWritable = succeeded;
   galleryWritable = succeeded;
   progressWritable = succeeded;
   controlsWritable = succeeded;
@@ -501,6 +513,111 @@ export function resetGalleryChapter(checkpoint: CheckpointState = initialGallery
       latestGalleryCheckpoint = restored.checkpoint;
       pendingGalleryBackup = undefined;
       galleryWritable = true;
+      return true;
+    } catch { return false; }
+  });
+}
+
+
+export type VaultLoadResult = {
+  checkpoint: CheckpointState; hasCheckpoint: boolean; checkpointWritable: boolean;
+  status: 'empty' | 'loaded' | 'recovered' | 'blocked'; message?: string;
+};
+const initialVaultCheckpoint = (): CheckpointState => createVaultCheckpoint(createVaultRuntime());
+
+/** This chapter has no predecessor key. Never reinterpret another chapter or
+ * an unknown vault version as a new run, even when saving before hydration. */
+export function decodeVaultStorage(raw: string | null): VaultLoadResult {
+  const fallback: VaultLoadResult = { checkpoint: initialVaultCheckpoint(), hasCheckpoint: raw !== null,
+    checkpointWritable: true, status: raw === null ? 'empty' : 'loaded' };
+  if (raw === null) return fallback;
+  try {
+    const restored = restoreVaultCheckpoint(JSON.parse(raw));
+    if (!restored) throw new Error('unsupported vault checkpoint');
+    return { ...fallback, checkpoint: restored.checkpoint, status: restored.recovered ? 'recovered' : 'loaded',
+      ...(restored.recovered ? { message: '収蔵庫の保存位置を安全な場所へ戻しました。元の記録を別に保持してから保存します。' } : {}) };
+  } catch {
+    return { ...fallback, checkpointWritable: false, status: 'blocked',
+      message: '収蔵庫の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。新規に始める場合は、この章だけをリセットしてください。' };
+  }
+}
+async function readVaultDocument(): Promise<{ result: VaultLoadResult; backup?: string }> {
+  const raw = await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY), result = decodeVaultStorage(raw);
+  return { result, ...(raw !== null && result.status === 'recovered' ? { backup: raw } : {}) };
+}
+export async function loadVaultStorage(): Promise<VaultLoadResult> {
+  await mutations;
+  const epoch = progressEpoch;
+  try {
+    const { result, backup } = await readVaultDocument();
+    if (epoch !== progressEpoch) return { checkpoint: initialVaultCheckpoint(), hasCheckpoint: result.hasCheckpoint,
+      status: 'blocked', checkpointWritable: false, message: '読み込み中に章が切り替わりました。' };
+    vaultWritable = result.checkpointWritable;
+    latestVaultCheckpoint = result.hasCheckpoint ? result.checkpoint : undefined;
+    pendingVaultBackup = backup;
+    return result;
+  } catch {
+    if (epoch === progressEpoch) vaultWritable = false;
+    return { checkpoint: initialVaultCheckpoint(), hasCheckpoint: false, status: 'blocked', checkpointWritable: false,
+      message: '収蔵庫の保存領域を読み込めませんでした。元のデータを保持し、保存を停止しています。' };
+  }
+}
+function vaultDoesNotRewind(previous: CheckpointState | undefined, next: CheckpointState): boolean {
+  const old = previous?.progress.vault, fresh = next.progress.vault;
+  if (!fresh) return false;
+  if (!old || !previous) return true;
+  return old.seed === fresh.seed && old.specVersion === fresh.specVersion &&
+    (!old.length.solved || fresh.length.solved && old.length.length === fresh.length.length) &&
+    (!old.rod.solved || fresh.rod.solved && old.rod.angle === fresh.rod.angle) &&
+    old.length.attempts <= fresh.length.attempts && old.rod.attempts <= fresh.rod.attempts &&
+    (!old.finalDoorClosed || fresh.finalDoorClosed) && (!previous.progress.cleared || next.progress.cleared) &&
+    (Object.keys(old.discoveries) as (keyof typeof old.discoveries)[]).every(key => !old.discoveries[key] || fresh.discoveries[key]) &&
+    (Object.keys(old.story) as (keyof typeof old.story)[]).every(key => !old.story[key] || fresh.story[key]);
+}
+export function saveVaultCheckpoint(checkpoint: CheckpointState, lease: number): Promise<boolean> {
+  const raw = JSON.stringify(checkpoint);
+  return serializeMutation(async () => {
+    if (!vaultWritable || !isFirstPersonSessionCurrent(lease)) return false;
+    const restored = restoreVaultCheckpoint(JSON.parse(raw));
+    if (!restored || restored.recovered) return false;
+    try {
+      if (!latestVaultCheckpoint) {
+        const previous = await readVaultDocument();
+        if (!isFirstPersonSessionCurrent(lease)) return false;
+        if (!previous.result.checkpointWritable) { vaultWritable = false; return false; }
+        latestVaultCheckpoint = previous.result.hasCheckpoint ? previous.result.checkpoint : undefined;
+        pendingVaultBackup = previous.backup;
+      }
+      if (!vaultDoesNotRewind(latestVaultCheckpoint, restored.checkpoint)) return false;
+      if (pendingVaultBackup !== undefined) {
+        const backup = await AsyncStorage.getItem(VAULT_BACKUP_KEY);
+        if (!isFirstPersonSessionCurrent(lease)) return false;
+        if (backup === null) await AsyncStorage.setItem(VAULT_BACKUP_KEY, pendingVaultBackup);
+        if (!isFirstPersonSessionCurrent(lease)) return false;
+        pendingVaultBackup = undefined;
+      }
+      await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, JSON.stringify(restored.checkpoint));
+      if (!isFirstPersonSessionCurrent(lease)) return false;
+      latestVaultCheckpoint = restored.checkpoint;
+      return true;
+    } catch { return false; }
+  });
+}
+/** Replace only this chapter after explicit reset. The shared epoch rejects all
+ * retired scene callbacks; the shared writer orders reset after active writes. */
+export function resetVaultChapter(checkpoint: CheckpointState = initialVaultCheckpoint()): Promise<boolean> {
+  const restored = restoreVaultCheckpoint(JSON.parse(JSON.stringify(checkpoint)));
+  if (!restored || restored.recovered) return Promise.resolve(false);
+  const epoch = ++progressEpoch;
+  vaultWritable = false;
+  return serializeMutation(async () => {
+    if (epoch !== progressEpoch) return false;
+    try {
+      await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, JSON.stringify(restored.checkpoint));
+      if (epoch !== progressEpoch) return false;
+      latestVaultCheckpoint = restored.checkpoint;
+      pendingVaultBackup = undefined;
+      vaultWritable = true;
       return true;
     } catch { return false; }
   });

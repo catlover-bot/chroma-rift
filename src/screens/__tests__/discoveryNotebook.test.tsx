@@ -74,3 +74,39 @@ it('normalizes the measured mask opening to SafeArea content rather than the who
   expect(p.onPreview).toHaveBeenLastCalledWith({ kind: 'mask', yaw: 0, window: { x: 0, y: 100 / 763, width: 1, height: 460 / 763 - 100 / 763 } });
   await view.unmount(); mockedInsets.mockReturnValue({ top: 0, bottom: 0, left: 0, right: 0 });
 });
+
+
+it('keeps background comparisons independent and labels every active aid without claiming natural perception', async () => {
+  const p = { ...props(), completed: true }, before = JSON.stringify(p.progress), view = await render(<DiscoveryNotebook {...p} />);
+  await fireEvent.press(view.getByRole('button', { name: '色の奥行き（自由比較）' }));
+  await fireEvent.press(view.getByRole('button', { name: '無彩色で比べる' }));
+  expect(view.getByText('表示：無彩色（比較の補助）')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: 'メモ一覧へ' }));
+  await fireEvent.press(view.getByRole('button', { name: '明暗の対比（自由比較）' }));
+  expect(view.getByText('背景：元の展示')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: '同じ背景で比べる' }));
+  expect(view.getByText('背景：共通（比較の補助）')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: 'メモ一覧へ' }));
+  await fireEvent.press(view.getByRole('button', { name: '主観的輪郭（自由比較）' }));
+  expect(view.getByText('輪郭ガイド：オフ')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: '補助の輪郭ガイド' }));
+  expect(view.getByText('補助の輪郭ガイド使用中')).toBeTruthy();
+  expect(view.getByText('補助を使った比較です。自然な見え方を確認した記録にはしません。')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: 'メモ一覧へ' }));
+  await fireEvent.press(view.getByRole('button', { name: '隠れた配線（自由比較）' }));
+  expect(view.getByText('カバー：元の位置')).toBeTruthy();
+  await fireEvent(view.getByRole('adjustable', { name: 'カバーの位置' }), 'accessibilityAction', { nativeEvent: { actionName: 'decrement' } });
+  expect(view.getByText('カバー：移動した比較位置（補助）')).toBeTruthy();
+  expect(JSON.stringify(p.progress)).toBe(before);
+});
+
+it('opens a specific observed structural comparison and rejects the same shortcut for an unobserved item', async () => {
+  const p = props(), hidden = await render(<DiscoveryNotebook {...p} initialSelection="hybrid" />);
+  expect(hidden.getByText('まだ発見メモはありません。')).toBeTruthy();
+  expect(hidden.queryByTestId('notebook-hybrid-image')).toBeNull(); await hidden.unmount();
+  p.progress.discoveries.hybrid = true;
+  const known = await render(<DiscoveryNotebook {...p} initialSelection="hybrid" />);
+  expect(known.getByTestId('notebook-hybrid-image')).toBeTruthy();
+  await fireEvent.press(known.getByRole('button', { name: '補助：大きい成分' }));
+  expect(known.getByText('成分だけを表示する補助です。本編の画像は入れ替わりません。')).toBeTruthy();
+});

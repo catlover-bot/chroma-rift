@@ -1,0 +1,54 @@
+{
+  "method": "Primary agent opened the listed local images with view_image. Motion/chapter sheets are decoded time-order frames, not continuous real-time video viewing. Final notice/search/dodge/exit sheets were reopened after the QA timestamp-to-PTS correction; hashes here identify those final decoded sheets.",
+  "images": [
+    {
+      "path": "motion/full-feet-half-turn.png",
+      "sha256": "57da1ce86e7483a4e866e5b9050728583615fc8ff79715430002b93793bbf9ad"
+    },
+    {
+      "path": "devices/length-baseline-390.png",
+      "sha256": "ed136a2a2146d833ad5270a569f50651c5a630ff3a2c1805d2c9d6802e985660"
+    },
+    {
+      "path": "devices/rod-baseline-390.png",
+      "sha256": "ffd125619894ac67bf15b3fe3ca6d42d4020fe049858bd3d35a6ec97612ba524"
+    },
+    {
+      "path": "chapter/notice-pursuit.png",
+      "sha256": "1cd6e207a3acbd59c4af821aaab7e71948e98ca5017c96bb75e9931aa3e5277b"
+    },
+    {
+      "path": "chapter/search-and-return.png",
+      "sha256": "c0e54eb812e21281d22e717c2cf2ff39f7e7ea8d8ddacae3f99166acf0481e95"
+    },
+    {
+      "path": "chapter/lateral-dodge.png",
+      "sha256": "5ec97934f1389853b39de40aebf015fefb8feb095cef2269bf506e260942d088"
+    },
+    {
+      "path": "chapter/final-door-and-result.png",
+      "sha256": "cb4d0dfc4cd637fc8f7ea82f69d5e1a63e34f0ea82724732f0b0a3e4fb507a03"
+    },
+    {
+      "path": "chapter/layout-length-320-font2-expanded.png",
+      "sha256": "b460676bbec453037fe9c44e3f210f61fb420c696b830c90058280c4689d924a"
+    },
+    {
+      "path": "chapter/layout-length-320-font2-expanded-bottom.png",
+      "sha256": "1160f5b2283f45a381da14e15619316648dfcca6edb20e311de362efa1840bb2"
+    }
+  ],
+  "observations": [
+    "Half-turn shows intermediate head/body directions and foot changes instead of one rendered body flip.",
+    "Notice/pursuit sequence shows the actual face, chest and limbs emerging past shelving before the player turns into cover.",
+    "Search sequence shows the same actor approach, look sideways and turn its back through the safe grille opening.",
+    "Dodge sequence shows lateral separation after the committed attack and the actor during recovery.",
+    "Exit handle becomes visible by player look input, door descends, result remains visible after the ending interval.",
+    "320x568 at fontScale2 keeps the entire length board between the heading and scrolling controls; assistance buttons can be reached at the bottom."
+  ],
+  "limits": [
+    "No iPhone/EXGL/Metal or native Yoga/text metrics measurement.",
+    "No real finger or VoiceOver session, audio listening, FPS, fear or illusion-perception evaluation.",
+    "Images do not prove human-perceived motion smoothness; MP4 artifacts are provided for that review."
+  ]
+}

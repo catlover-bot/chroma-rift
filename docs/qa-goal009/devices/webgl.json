@@ -1,0 +1,473 @@
+{
+  "boundary": "Linux Chromium ANGLE SwiftShader WebGL; one browser renderer. Not native GL, perceptual validation, or iPhone gameplay.",
+  "rendererCount": 1,
+  "disposed": {
+    "geometries": 0,
+    "textures": 0
+  },
+  "browserErrors": [],
+  "results": [
+    {
+      "id": "length-baseline-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-baseline-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-baseline-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-context-off-320",
+      "calls": 11,
+      "triangles": 206,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-context-off-390",
+      "calls": 11,
+      "triangles": 206,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-context-off-430",
+      "calls": 11,
+      "triangles": 206,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-guide-on-320",
+      "calls": 13,
+      "triangles": 230,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-guide-on-390",
+      "calls": 13,
+      "triangles": 230,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-guide-on-430",
+      "calls": 13,
+      "triangles": 230,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-drag-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-drag-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-drag-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-released-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-released-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-released-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-committed-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-committed-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-wrong-committed-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-drag-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-drag-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-drag-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-released-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-released-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-released-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-committed-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-committed-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-correct-committed-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-gate-open-320",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-gate-open-390",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "length-gate-open-430",
+      "calls": 19,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-baseline-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-baseline-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-baseline-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-context-off-320",
+      "calls": 10,
+      "triangles": 278,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-context-off-390",
+      "calls": 10,
+      "triangles": 278,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-context-off-430",
+      "calls": 10,
+      "triangles": 278,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-guide-on-320",
+      "calls": 12,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-guide-on-390",
+      "calls": 12,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-guide-on-430",
+      "calls": 12,
+      "triangles": 302,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-drag-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-drag-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-drag-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-released-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-released-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-released-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-committed-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-committed-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-wrong-committed-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-drag-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-drag-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-drag-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-released-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-released-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-released-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-committed-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-committed-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-correct-committed-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-gate-open-320",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-gate-open-390",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "rod-gate-open-430",
+      "calls": 14,
+      "triangles": 326,
+      "geometries": 3,
+      "textures": 0
+    },
+    {
+      "id": "cafe-context-on-320",
+      "calls": 36,
+      "triangles": 72,
+      "geometries": 1,
+      "textures": 0
+    },
+    {
+      "id": "cafe-context-on-390",
+      "calls": 36,
+      "triangles": 72,
+      "geometries": 1,
+      "textures": 0
+    },
+    {
+      "id": "cafe-context-on-430",
+      "calls": 36,
+      "triangles": 72,
+      "geometries": 1,
+      "textures": 0
+    },
+    {
+      "id": "cafe-neutral-320",
+      "calls": 36,
+      "triangles": 72,
+      "geometries": 1,
+      "textures": 0
+    },
+    {
+      "id": "cafe-neutral-390",
+      "calls": 36,
+      "triangles": 72,
+      "geometries": 1,
+      "textures": 0
+    },
+    {
+      "id": "cafe-neutral-430",
+      "calls": 36,
+      "triangles": 72,
+      "geometries": 1,
+      "textures": 0
+    }
+  ]
+}

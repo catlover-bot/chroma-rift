@@ -64,10 +64,13 @@ describe('one physical gallery actor across presentation, patrol and recovery', 
     expect(tick(runtime, 2).events).not.toContain('crossing');
     runtime.pose = { position: { x: 0, y: 1.6, z: 2 }, yaw: Math.PI, pitch: 0 };
     const first = advanceGalleryActor(runtime, .05, { intensity: 'standard', matrices: cameraFor(runtime) }); runtime = first.runtime;
-    expect(first.events).toEqual(['crossing']); expect(first.movedDistance).toBeGreaterThan(0);
+    expect(first.events).toEqual(['crossing']); expect(first.movedDistance).toBe(0);
+    // Goal009 adds a real launch anticipation and bounded head-first turn.
+    expect(runtime.gallery!.actor.motion.headYaw).not.toBe(0); expect(runtime.gallery!.actor.position).toEqual(start);
     expect(Math.hypot(runtime.gallery!.actor.position.x - start.x, runtime.gallery!.actor.position.z - start.z)).toBeLessThan(.04);
     for (let frame = 0; frame < 100 && runtime.gallery!.actor.phase !== 'crossing-pause'; frame++) runtime = tick(runtime, .05).runtime;
     expect(runtime.gallery!.actor.phase).toBe('crossing-pause');
+    expect(runtime.gallery!.actor.motion.travelledDistance).toBeGreaterThan(.7);
     expect(runtime.gallery!.actor.position.x).toBeCloseTo(actorCrossingPoint(runtime.progress.gallery!.seed).x, 2);
     const held = runtime.gallery!.actor.position;
     runtime = tick(runtime, 1.4).runtime; expect(runtime.gallery!.actor.position).toBe(held);
@@ -158,6 +161,7 @@ describe('one physical gallery actor across presentation, patrol and recovery', 
     runtime = tick(caught.runtime, 1).runtime;
     expect(runtime.progress.cleared).toBe(false); expect(runtime.progress.gallery!.finalDoorClosed).toBe(false);
     expect(getWorld(runtime).solids.find(solid => solid.id === 'exit-door')!.min.y).toBe(3.3);
+    runtime = { ...runtime, pose: { ...runtime.pose, yaw: 0, pitch: 0 } }; // Goal009: explicitly face the visible door.
     runtime = command(runtime, { type: 'close-exit' }, 'exit');
     expect(runtime.progress.cleared).toBe(true); expect(runtime.progress.gallery!.finalDoorClosed).toBe(true);
     expect(getWorld(runtime).solids.find(solid => solid.id === 'exit-door')!.min.y).toBe(0);
@@ -203,6 +207,7 @@ describe('one physical gallery actor across presentation, patrol and recovery', 
     const quiet = tick(runtime, 25, 'subdued'); expect(quiet.events).not.toContain('caught'); runtime = quiet.runtime;
     runtime.pose = { position: { x: 4, y: 1.6, z: 24 }, yaw: Math.PI, pitch: 0 };
     runtime = tick(runtime, 1).runtime; expect(runtime.progress.cleared).toBe(false); expect(runtime.progress.gallery!.story.resolved).toBe(false);
+    runtime = { ...runtime, pose: { ...runtime.pose, yaw: 0, pitch: 0 } }; // Goal009: explicitly face the visible door.
     runtime = command(runtime, { type: 'close-exit' }, 'exit');
     expect(runtime.progress.cleared).toBe(true); expect(runtime.gallery!.exitClosureSeconds).toBe(.6); expect(runtime.gallery!.actor.phase).toBe('resolved');
     const closed = getWorld(runtime).solids.find(solid => solid.id === 'exit-door')!; expect(closed.min.y).toBe(0);

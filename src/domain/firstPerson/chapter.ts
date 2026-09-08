@@ -1,3 +1,4 @@
+import { getVaultWorld } from '../vault/world';
 import { getGalleryWorld } from '../gallery/world';
 import { EMBLEM_FIXTURE, EMBLEM_FIXTURE_SOLIDS, EMBLEM_SWITCHES } from './emblemFixture';
 import type { ChapterDefinition, ChapterRuntime, CollisionVolume, FloorRegion, KeyFragment, KeyFrame, PlayerPose, PuzzleDefinition, Vec3, WorldGeometry } from './types';
@@ -134,7 +135,8 @@ const layouts = {
 } as const;
 const staticWalls = { entrance: [...boundaryWalls(layouts.entrance), ...FIXED_WALLS], exit: [...boundaryWalls(layouts.exit), ...FIXED_WALLS] };
 
-export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment' | 'gallery'>): WorldGeometry {
+export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment' | 'gallery' | 'vault'>): WorldGeometry {
+  if (runtime.progress.vault) return getVaultWorld(runtime);
   if (runtime.progress.gallery) return getGalleryWorld(runtime);
   const { progress } = runtime;
   const solids = [...staticWalls[progress.variant],

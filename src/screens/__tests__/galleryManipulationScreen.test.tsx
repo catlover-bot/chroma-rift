@@ -500,8 +500,15 @@ it('opens discovered notes over the same paused screen, preserves gameplay and r
 it('shows the final close action in standard drag mode and waits for the closing presentation tail before results', async () => {
   const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint);
   runtime.pose = { position: { x: 4, y: 1.6, z: 24 }, yaw: 0, pitch: 0 };
-  const props = screenProps('shadow', { checkpoint: createCheckpoint(runtime) }), view = await render(<FirstPersonScreen {...props} />);
+  const checkpoint = createCheckpoint(runtime); checkpoint.pose = { ...checkpoint.pose, yaw: 0 };
+  const props = screenProps('shadow', { checkpoint }), view = await render(<FirstPersonScreen {...props} />);
   await act(() => { advanceController(scene().controller, 0, new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60)); scene().onSnapshot(controllerSnapshot(scene().controller)); });
+  const oldClose = view.getByRole('button', { name: '扉を閉める' }).props.onAccessibilityAction;
+  await act(() => { commandController(scene().controller, { type: 'turn', yaw: Math.PI, pitch: 0 }); advanceController(scene().controller, 0, new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60)); scene().onSnapshot(controllerSnapshot(scene().controller)); });
+  expect(view.queryByRole('button', { name: '扉を閉める' })).toBeNull();
+  expect(view.getByTestId('current-objective')).toHaveTextContent('入ってきた扉の取っ手を見て、閉める');
+  await act(() => oldClose({ nativeEvent: { actionName: 'activate' } })); expect(scene().controller.runtime.progress.cleared).toBe(false);
+  await act(() => { commandController(scene().controller, { type: 'turn', yaw: -Math.PI, pitch: 0 }); advanceController(scene().controller, 0, new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60)); scene().onSnapshot(controllerSnapshot(scene().controller)); });
   expect(view.getByRole('button', { name: '扉を閉める' })).toBeEnabled(); await fireEvent.press(view.getByRole('button', { name: '扉を閉める' }));
   const controller = scene().controller; expect(controller.runtime.progress).toMatchObject({ cleared: true, gallery: { finalDoorClosed: true } }); expect(props.onComplete).not.toHaveBeenCalled();
   const camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
@@ -550,7 +557,12 @@ it.each([
   expect(controller.runtime.gallery!.lastSafePose).toEqual(scenario.expected);
   expect(JSON.stringify(controller.runtime.progress)).toBe(beforeProgress); expect(props.onCheckpoint).toHaveBeenCalledTimes(1);
   expect(props.onCheckpoint).toHaveBeenLastCalledWith(expect.objectContaining({ pose: scenario.expected, progress: controller.runtime.progress }));
-  if (scenario.label === 'final threshold') expect(view.getByRole('button', { name: '扉を閉める' })).toBeEnabled();
+  if (scenario.label === 'final threshold') {
+    expect(view.queryByRole('button', { name: '扉を閉める' })).toBeNull();
+    expect(view.getByTestId('current-objective')).toHaveTextContent('入ってきた扉の取っ手を見て、閉める');
+    await act(() => { commandController(controller, { type: 'turn', yaw: -Math.PI, pitch: 0 }); advanceController(controller, 0, camera); scene().onSnapshot(controllerSnapshot(controller)); });
+    expect(view.getByRole('button', { name: '扉を閉める' })).toBeEnabled();
+  }
   await act(() => { for (let frame = 0; frame < 30; frame++) { advanceController(controller, .05, camera); scene().onSnapshot(controllerSnapshot(controller)); } });
   expect(props.onCheckpoint).toHaveBeenCalledTimes(1); expect(props.onComplete).not.toHaveBeenCalled(); expect(controller.runtime.progress.cleared).toBe(false);
 });
@@ -580,7 +592,9 @@ function realAudioBackendHarness() {
 
 it('keeps the real audio owner active through one presented closing impact and stops at the end of the tail', async () => {
   const h = realAudioBackendHarness();
-  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint), props = screenProps('shadow', { checkpoint: createCheckpoint(runtime) });
+  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint), checkpoint = createCheckpoint(runtime);
+  checkpoint.pose = { ...checkpoint.pose, yaw: 0 }; // The visible pull handle must be faced before closing.
+  const props = screenProps('shadow', { checkpoint });
   const view = await render(<FirstPersonScreen {...props} />), controller = scene().controller;
   await act(async () => { await controller.audio!.whenReady(); });
   const camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
@@ -606,7 +620,9 @@ it('keeps the real audio owner active through one presented closing impact and s
 
 it.each(['background', 'failure'] as const)('cancels a pending real closing impact on %s before its seek resolves', async interruption => {
   const listener = jest.spyOn(AppState, 'addEventListener'), h = realAudioBackendHarness();
-  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint), props = screenProps('shadow', { checkpoint: createCheckpoint(runtime) });
+  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint), checkpoint = createCheckpoint(runtime);
+  checkpoint.pose = { ...checkpoint.pose, yaw: 0 }; // The visible pull handle must be faced before closing.
+  const props = screenProps('shadow', { checkpoint });
   const view = await render(<FirstPersonScreen {...props} />), controller = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
   await act(async () => { await controller.audio!.whenReady(); advanceController(controller, 0, camera); scene().onSnapshot(controllerSnapshot(controller)); });
   const ambientBeforeClose = h.player('ambience').pause.mock.calls.length;
@@ -627,7 +643,9 @@ it.each(['background', 'failure'] as const)('cancels a pending real closing impa
 
 it('discards an unpresented real closing impact across background and explicit resume while retaining completion', async () => {
   const listener = jest.spyOn(AppState, 'addEventListener'), h = realAudioBackendHarness();
-  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint), props = screenProps('shadow', { checkpoint: createCheckpoint(runtime) });
+  const runtime = createGalleryRuntime(migrateGalleryV2Checkpoint(originalV2('ending'))!.checkpoint), checkpoint = createCheckpoint(runtime);
+  checkpoint.pose = { ...checkpoint.pose, yaw: 0 }; // The visible pull handle must be faced before closing.
+  const props = screenProps('shadow', { checkpoint });
   const view = await render(<FirstPersonScreen {...props} />), controller = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
   await act(async () => { await controller.audio!.whenReady(); advanceController(controller, 0, camera); scene().onSnapshot(controllerSnapshot(controller)); });
   const ambientStarts = h.player('ambience').play.mock.calls.length, ambientBeforeClose = h.player('ambience').pause.mock.calls.length;
@@ -643,4 +661,41 @@ it('discards an unpresented real closing impact across background and explicit r
   expect(h.player('door-impact').seekTo).not.toHaveBeenCalled(); expect(h.player('door-impact').play).not.toHaveBeenCalled();
   expect(h.player('ambience').play).toHaveBeenCalledTimes(ambientStarts);
   expect(controller.runtime.progress).toMatchObject({ cleared: true, gallery: { finalDoorClosed: true } }); await view.unmount();
+});
+
+
+it('retains per-note guide and comparison settings after closing and reopening the paused notebook', async () => {
+  const props = screenProps('contour'); props.checkpoint!.progress.gallery!.discoveries.contour = true;
+  const view = await render(<FirstPersonScreen {...props} />), controller = scene().controller;
+  await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+  const checkpoint = createCheckpoint(controller.runtime), world = worldForController(controller);
+  await fireEvent.press(view.getByRole('button', { name: '発見メモ' }));
+  await fireEvent.press(view.getByRole('button', { name: '主観的輪郭' }));
+  await fireEvent.press(view.getByRole('button', { name: '補助の輪郭ガイド' }));
+  await fireEvent(view.getByRole('adjustable', { name: '円盤の向き' }), 'accessibilityAction', { nativeEvent: { actionName: 'increment' } });
+  const angle = view.getByRole('adjustable', { name: '円盤の向き' }).props.accessibilityValue.now;
+  await fireEvent.press(view.getByRole('button', { name: 'メモ一覧へ' }));
+  await fireEvent.press(view.getByRole('button', { name: '一時停止へ戻る' }));
+  await fireEvent.press(view.getByRole('button', { name: '発見メモ' }));
+  await fireEvent.press(view.getByRole('button', { name: '主観的輪郭' }));
+  expect(view.getByText('補助の輪郭ガイド使用中')).toBeTruthy();
+  expect(view.getByRole('adjustable', { name: '円盤の向き' }).props.accessibilityValue.now).toBe(angle);
+  expect(scene().controller).toBe(controller); expect(worldForController(controller)).toEqual(world);
+  expect(createCheckpoint(controller.runtime)).toEqual(checkpoint); expect(controller.runtime.gallery!.contourGuide).toBe(false);
+});
+
+it('offers an observed hybrid structural comparison from the normal HUD while retaining the chapter objective and Canvas owner', async () => {
+  const p = screenProps('shadow'), view = await render(<FirstPersonScreen {...p} />);
+  const c = scene().controller;
+  await act(() => { c.runtime = { ...c.runtime, pose: { position: { x: -.5, y: 1.6, z: -6.5 }, yaw: Math.PI / 2, pitch: 0 } }; });
+  await aimTarget(view, 'hybrid-exhibit');
+  expect(view.queryByRole('button', { name: '構造をメモで比べる' })).toBeNull();
+  const objective = view.getByTestId('current-objective').props.children;
+  await fireEvent.press(view.getByTestId('interact'));
+  expect(c.runtime.progress.gallery!.discoveries.hybrid).toBe(true);
+  expect(view.getByTestId('current-objective').props.children).toEqual(objective);
+  expect(view.getByText('発見メモで大きい成分と細部を比べられます。')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: '構造をメモで比べる' }));
+  expect(view.getByTestId('notebook-hybrid-image')).toBeTruthy();
+  expect(scene().controller).toBe(c); expect(c.runtime.paused).toBe(true);
 });

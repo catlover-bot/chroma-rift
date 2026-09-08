@@ -1,0 +1,26 @@
+{
+  "frameCount": 900,
+  "views": 2,
+  "singleRenderer": true,
+  "geometryCountStable": true,
+  "maxDrawCallsPerPair": 50,
+  "maxTrianglesPerPair": 6572,
+  "disposed": {
+    "geometries": 0,
+    "textures": 0,
+    "rendererCount": 1,
+    "animationStopped": true
+  },
+  "browserErrors": [],
+  "summary": {
+    "minY": 0,
+    "maxY": 2.154631110686717,
+    "maxRadius": 0.39132233960003554,
+    "maxAnchorError": 7.076311083754596e-17,
+    "maxStanceVertexSlip": 1.4033044459902308e-16,
+    "maxEyeDirectionError": 7.202508365721309e-16,
+    "maxYawRate": 2.0943951023932117,
+    "maxYawAcceleration": 8.37758040957332
+  },
+  "completeVideo": true
+}

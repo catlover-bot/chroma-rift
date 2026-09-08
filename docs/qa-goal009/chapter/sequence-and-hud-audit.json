@@ -1,0 +1,7087 @@
+{
+  "toolSHA256": "1fbf78df25c84fec4f9571199e59299eb756641afb8514d1d81239450ae8801f",
+  "boundary": "Actual Scene meshes, continuous controller state and actual Screen host tree translated to CSS. Native touch delivery, Yoga, sound listening, perceived motion/illusion/fear and device FPS are unverified. Vertex containment checks are sampled, not an arbitrary triangle/solid proof; authoritative collision radius also bounds actual horizontal extent.",
+  "findings": {
+    "actualButtonsAtLeast44": true,
+    "pauseSeparate": true,
+    "controlsSeparateFromBoard": true,
+    "headingSeparateFromBoard": true,
+    "allBoardBoundsInside": true,
+    "meshWithinCollisionRadius": true,
+    "noVertexInsideWorldSolids": true,
+    "stanceWithin2cm": true,
+    "actualDoorMatchesCollider": true,
+    "noCameraChangeAfterClosing": true,
+    "completeExactlyOnce": true,
+    "oneRendererReleased": true,
+    "browserErrorsZero": true
+  },
+  "reports": [
+    {
+      "id": "west",
+      "frameCount": 1227,
+      "duration": 40.9,
+      "phases": [
+        "idle",
+        "listen",
+        "patrol",
+        "investigate",
+        "notice",
+        "pursue",
+        "search",
+        "windup",
+        "attack",
+        "recover",
+        "resolved"
+      ],
+      "phaseStats": {
+        "idle": {
+          "frames": 233,
+          "maxActualSpeed": 0,
+          "maxRadius": 0.37830645197850954,
+          "minimumPlayerDistance": 9.897600719366284,
+          "observedLastSeenChanges": 0
+        },
+        "listen": {
+          "frames": 67,
+          "maxActualSpeed": 0.5499999362620634,
+          "maxRadius": 0.3905804745705813,
+          "minimumPlayerDistance": 4.300504103254266,
+          "observedLastSeenChanges": 0
+        },
+        "patrol": {
+          "frames": 74,
+          "maxActualSpeed": 0.7199999908391219,
+          "maxRadius": 0.3910120168138951,
+          "minimumPlayerDistance": 3.755183938769843,
+          "observedLastSeenChanges": 0
+        },
+        "investigate": {
+          "frames": 33,
+          "maxActualSpeed": 0.9999999772612368,
+          "maxRadius": 0.3908312315477539,
+          "minimumPlayerDistance": 3.236955009666407,
+          "observedLastSeenChanges": 0
+        },
+        "notice": {
+          "frames": 38,
+          "maxActualSpeed": 0.859999977260432,
+          "maxRadius": 0.39146809869215454,
+          "minimumPlayerDistance": 2.153823639194756,
+          "observedLastSeenChanges": 0
+        },
+        "pursue": {
+          "frames": 360,
+          "maxActualSpeed": 2.3499999999944587,
+          "maxRadius": 0.4143466235615476,
+          "minimumPlayerDistance": 1.5332914232091748,
+          "observedLastSeenChanges": 0
+        },
+        "search": {
+          "frames": 292,
+          "maxActualSpeed": 0.619999990942429,
+          "maxRadius": 0.3890205983596263,
+          "minimumPlayerDistance": 4.247992391543401,
+          "observedLastSeenChanges": 0
+        },
+        "windup": {
+          "frames": 22,
+          "maxActualSpeed": 2.2099999538795156,
+          "maxRadius": 0.3881856870204643,
+          "minimumPlayerDistance": 1.1509734874338409,
+          "observedLastSeenChanges": 0
+        },
+        "attack": {
+          "frames": 13,
+          "maxActualSpeed": 0.13999999999999999,
+          "maxRadius": 0.38811983257710647,
+          "minimumPlayerDistance": 1.256693102282287,
+          "observedLastSeenChanges": 0
+        },
+        "recover": {
+          "frames": 29,
+          "maxActualSpeed": 0,
+          "maxRadius": 0.3843669646830365,
+          "minimumPlayerDistance": 2.1732066824223257,
+          "observedLastSeenChanges": 0
+        },
+        "resolved": {
+          "frames": 66,
+          "maxActualSpeed": 0.6199999878266379,
+          "maxRadius": 0.3842641978399169,
+          "minimumPlayerDistance": 6.422612577360822,
+          "observedLastSeenChanges": 0
+        }
+      },
+      "summary": {
+        "minY": 0,
+        "maxY": 2.1606488935297223,
+        "maxRadius": 0.4143466235615476,
+        "maxStanceCornerSlip": 3.553147333202946e-15,
+        "maxPlayerFrameDistance": 0.035833333333335,
+        "penetrationVertices": 0,
+        "penetrationSolids": {}
+      },
+      "closure": {
+        "frames": 66,
+        "actualMeshVsWorldDoorMinYMaxError": 4.440892098500626e-16,
+        "maximumRibDeflection": 0.018000000000000002,
+        "cameraMatricesDuringClose": 1,
+        "completionCallbacks": 1,
+        "firstSavedClearTime": 38.7,
+        "firstResultTime": 40.1
+      },
+      "search": {
+        "frames": 292,
+        "occludedFrames": 292,
+        "lastSeenSamples": [
+          {
+            "x": -4.063265270792681,
+            "y": 1.6,
+            "z": 18.49501280549057
+          },
+          {
+            "x": 3,
+            "y": 1.6,
+            "z": 24.29666666666661
+          }
+        ],
+        "settledDirections": []
+      },
+      "attack": {
+        "windupSecondsSampled": 0.7333333333333333,
+        "attackSecondsSampled": 0.43333333333333335,
+        "committedTargets": [
+          {
+            "x": 3,
+            "y": 1.6,
+            "z": 24.29666666666661
+          }
+        ],
+        "hitFrames": 0,
+        "lateralDodgeDistance": null
+      }
+    },
+    {
+      "id": "east",
+      "frameCount": 1356,
+      "duration": 45.2,
+      "phases": [
+        "idle",
+        "listen",
+        "patrol",
+        "investigate",
+        "notice",
+        "pursue",
+        "search",
+        "resolved"
+      ],
+      "phaseStats": {
+        "idle": {
+          "frames": 233,
+          "maxActualSpeed": 0,
+          "maxRadius": 0.37830645197850954,
+          "minimumPlayerDistance": 9.897600719366284,
+          "observedLastSeenChanges": 0
+        },
+        "listen": {
+          "frames": 66,
+          "maxActualSpeed": 0.47999998590146753,
+          "maxRadius": 0.38921371928497656,
+          "minimumPlayerDistance": 7.828973812428647,
+          "observedLastSeenChanges": 0
+        },
+        "patrol": {
+          "frames": 400,
+          "maxActualSpeed": 0.7199999989801462,
+          "maxRadius": 0.39724408959711827,
+          "minimumPlayerDistance": 4.484608569368891,
+          "observedLastSeenChanges": 0
+        },
+        "investigate": {
+          "frames": 166,
+          "maxActualSpeed": 1.6100000000000037,
+          "maxRadius": 0.404186603176212,
+          "minimumPlayerDistance": 2.2715252788070917,
+          "observedLastSeenChanges": 0
+        },
+        "notice": {
+          "frames": 19,
+          "maxActualSpeed": 0.859999977260432,
+          "maxRadius": 0.39146809869215454,
+          "minimumPlayerDistance": 2.153823639194756,
+          "observedLastSeenChanges": 0
+        },
+        "pursue": {
+          "frames": 28,
+          "maxActualSpeed": 1.890000000000003,
+          "maxRadius": 0.4134803291798052,
+          "minimumPlayerDistance": 1.7157111591421517,
+          "observedLastSeenChanges": 0
+        },
+        "search": {
+          "frames": 378,
+          "maxActualSpeed": 1.7500000000000033,
+          "maxRadius": 0.390649525767006,
+          "minimumPlayerDistance": 2.191336867873435,
+          "observedLastSeenChanges": 0
+        },
+        "resolved": {
+          "frames": 66,
+          "maxActualSpeed": 0.719999985869495,
+          "maxRadius": 0.3904477740750429,
+          "minimumPlayerDistance": 19.12932454076484,
+          "observedLastSeenChanges": 0
+        }
+      },
+      "summary": {
+        "minY": 0,
+        "maxY": 2.1606489682201477,
+        "maxRadius": 0.4134803291798052,
+        "maxStanceCornerSlip": 1.7763568394002505e-15,
+        "maxPlayerFrameDistance": 0.03583333333333419,
+        "penetrationVertices": 0,
+        "penetrationSolids": {}
+      },
+      "closure": {
+        "frames": 66,
+        "actualMeshVsWorldDoorMinYMaxError": 4.440892098500626e-16,
+        "maximumRibDeflection": 0.01772653955421978,
+        "cameraMatricesDuringClose": 1,
+        "completionCallbacks": 1,
+        "firstSavedClearTime": 43,
+        "firstResultTime": 44.36666666666667
+      },
+      "search": {
+        "frames": 378,
+        "occludedFrames": 377,
+        "lastSeenSamples": [
+          {
+            "x": 1.9350000000000012,
+            "y": 1.6,
+            "z": 6.5
+          }
+        ],
+        "settledDirections": []
+      },
+      "attack": {
+        "windupSecondsSampled": 0,
+        "attackSecondsSampled": 0,
+        "committedTargets": [],
+        "hitFrames": 0,
+        "lateralDodgeDistance": null
+      }
+    },
+    {
+      "id": "search",
+      "frameCount": 934,
+      "duration": 31.133333333333333,
+      "phases": [
+        "idle",
+        "listen",
+        "patrol",
+        "investigate",
+        "notice",
+        "pursue",
+        "search",
+        "return"
+      ],
+      "phaseStats": {
+        "idle": {
+          "frames": 233,
+          "maxActualSpeed": 0,
+          "maxRadius": 0.37830645197850954,
+          "minimumPlayerDistance": 9.897600719366284,
+          "observedLastSeenChanges": 0
+        },
+        "listen": {
+          "frames": 41,
+          "maxActualSpeed": 0,
+          "maxRadius": 0.386929122084578,
+          "minimumPlayerDistance": 7.828973812428647,
+          "observedLastSeenChanges": 0
+        },
+        "patrol": {
+          "frames": 43,
+          "maxActualSpeed": 0.7199999908391219,
+          "maxRadius": 0.3910120168138951,
+          "minimumPlayerDistance": 4.484608569368891,
+          "observedLastSeenChanges": 0
+        },
+        "investigate": {
+          "frames": 16,
+          "maxActualSpeed": 0.9999999772612368,
+          "maxRadius": 0.3908084122998328,
+          "minimumPlayerDistance": 3.236955009666407,
+          "observedLastSeenChanges": 0
+        },
+        "notice": {
+          "frames": 19,
+          "maxActualSpeed": 0.859999977260432,
+          "maxRadius": 0.39146809869215454,
+          "minimumPlayerDistance": 2.153823639194756,
+          "observedLastSeenChanges": 0
+        },
+        "pursue": {
+          "frames": 206,
+          "maxActualSpeed": 2.3499999999944587,
+          "maxRadius": 0.4143466235615476,
+          "minimumPlayerDistance": 1.9035684954982715,
+          "observedLastSeenChanges": 0
+        },
+        "search": {
+          "frames": 316,
+          "maxActualSpeed": 0.6199999926998171,
+          "maxRadius": 0.39137427680598047,
+          "minimumPlayerDistance": 1.4994733630797092,
+          "observedLastSeenChanges": 0
+        },
+        "return": {
+          "frames": 60,
+          "maxActualSpeed": 0.6988812450675064,
+          "maxRadius": 0.393467170408011,
+          "minimumPlayerDistance": 1.4994733630797092,
+          "observedLastSeenChanges": 0
+        }
+      },
+      "summary": {
+        "minY": 0,
+        "maxY": 2.1606206027097135,
+        "maxRadius": 0.4143466235615476,
+        "maxStanceCornerSlip": 1.7763568394002505e-15,
+        "maxPlayerFrameDistance": 0.035833333333335,
+        "penetrationVertices": 0,
+        "penetrationSolids": {}
+      },
+      "closure": {
+        "frames": 0,
+        "actualMeshVsWorldDoorMinYMaxError": 4.440892098500626e-16,
+        "maximumRibDeflection": 0,
+        "cameraMatricesDuringClose": 0,
+        "completionCallbacks": 0
+      },
+      "search": {
+        "frames": 316,
+        "occludedFrames": 149,
+        "lastSeenSamples": [
+          {
+            "x": -4.063265270792681,
+            "y": 1.6,
+            "z": 18.49501280549057
+          },
+          {
+            "x": -4.6,
+            "y": 1.6,
+            "z": 18.5
+          }
+        ],
+        "settledDirections": [
+          0,
+          1,
+          2
+        ]
+      },
+      "attack": {
+        "windupSecondsSampled": 0,
+        "attackSecondsSampled": 0,
+        "committedTargets": [],
+        "hitFrames": 0,
+        "lateralDodgeDistance": null
+      }
+    },
+    {
+      "id": "entry-peek",
+      "frameCount": 87,
+      "duration": 2.9,
+      "phases": [
+        "idle"
+      ],
+      "phaseStats": {
+        "idle": {
+          "frames": 87,
+          "maxActualSpeed": 0,
+          "maxRadius": 0.37830645197850954,
+          "minimumPlayerDistance": 6.171709649683788,
+          "observedLastSeenChanges": 0
+        }
+      },
+      "summary": {
+        "minY": 0,
+        "maxY": 2.154631110686717,
+        "maxRadius": 0.37830645197850954,
+        "maxStanceCornerSlip": 0,
+        "maxPlayerFrameDistance": 0.035833333333333446,
+        "penetrationVertices": 0,
+        "penetrationSolids": {}
+      },
+      "closure": {
+        "frames": 0,
+        "actualMeshVsWorldDoorMinYMaxError": 4.440892098500626e-16,
+        "maximumRibDeflection": 0,
+        "cameraMatricesDuringClose": 0,
+        "completionCallbacks": 0
+      },
+      "search": {
+        "frames": 0,
+        "occludedFrames": 0,
+        "lastSeenSamples": [],
+        "settledDirections": []
+      },
+      "attack": {
+        "windupSecondsSampled": 0,
+        "attackSecondsSampled": 0,
+        "committedTargets": [],
+        "hitFrames": 0,
+        "lateralDodgeDistance": null
+      }
+    },
+    {
+      "id": "windup-dodge",
+      "frameCount": 76,
+      "duration": 2.533333333333333,
+      "phases": [
+        "pursue",
+        "windup",
+        "attack",
+        "recover"
+      ],
+      "phaseStats": {
+        "pursue": {
+          "frames": 19,
+          "maxActualSpeed": 1.0033333333333327,
+          "maxRadius": 0.3900218112503069,
+          "minimumPlayerDistance": 1.0160555555555497,
+          "observedLastSeenChanges": 0
+        },
+        "windup": {
+          "frames": 22,
+          "maxActualSpeed": 0.8633333333333326,
+          "maxRadius": 0.39223115932588903,
+          "minimumPlayerDistance": 0.9003611111111027,
+          "observedLastSeenChanges": 0
+        },
+        "attack": {
+          "frames": 13,
+          "maxActualSpeed": 1.1666666666666667,
+          "maxRadius": 0.4105537405144363,
+          "minimumPlayerDistance": 0.8991384576634236,
+          "observedLastSeenChanges": 0
+        },
+        "recover": {
+          "frames": 22,
+          "maxActualSpeed": 1.1433333333333338,
+          "maxRadius": 0.40464236893017846,
+          "minimumPlayerDistance": 1.1152833368651989,
+          "observedLastSeenChanges": 0
+        }
+      },
+      "summary": {
+        "minY": 0,
+        "maxY": 2.1606489682201477,
+        "maxRadius": 0.4105537405144363,
+        "maxStanceCornerSlip": 4.440892098500626e-16,
+        "maxPlayerFrameDistance": 0.03583333333333316,
+        "penetrationVertices": 0,
+        "penetrationSolids": {}
+      },
+      "closure": {
+        "frames": 0,
+        "actualMeshVsWorldDoorMinYMaxError": 4.440892098500626e-16,
+        "maximumRibDeflection": 0,
+        "cameraMatricesDuringClose": 0,
+        "completionCallbacks": 0
+      },
+      "search": {
+        "frames": 0,
+        "occludedFrames": 0,
+        "lastSeenSamples": [],
+        "settledDirections": []
+      },
+      "attack": {
+        "windupSecondsSampled": 0.7333333333333333,
+        "attackSecondsSampled": 0.43333333333333335,
+        "committedTargets": [
+          {
+            "x": 2.3,
+            "y": 1.6,
+            "z": 19.2
+          }
+        ],
+        "hitFrames": 0,
+        "lateralDodgeDistance": 1.0749999999999948
+      }
+    }
+  ],
+  "layoutAudits": [
+    {
+      "id": "layout-length-320-font1",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 410.84375,
+          "right": 114,
+          "bottom": 458.84375,
+          "width": 94,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 114,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 120,
+          "top": 410.84375,
+          "right": 186,
+          "bottom": 458.84375,
+          "width": 66,
+          "height": 48,
+          "visible": {
+            "left": 120,
+            "right": 186,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 192,
+          "top": 410.84375,
+          "right": 300,
+          "bottom": 458.84375,
+          "width": 108,
+          "height": 48,
+          "visible": {
+            "left": 192,
+            "right": 300,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 0,
+        "scrollHeight": 178,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font1",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 410.84375,
+          "right": 114,
+          "bottom": 458.84375,
+          "width": 94,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 114,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 120,
+          "top": 410.84375,
+          "right": 186,
+          "bottom": 458.84375,
+          "width": 66,
+          "height": 48,
+          "visible": {
+            "left": 120,
+            "right": 186,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 192,
+          "top": 410.84375,
+          "right": 300,
+          "bottom": 458.84375,
+          "width": 108,
+          "height": 48,
+          "visible": {
+            "left": 192,
+            "right": 300,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 0,
+        "scrollHeight": 178,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font1",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 410.84375,
+          "right": 135.5,
+          "bottom": 458.84375,
+          "width": 115.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 135.5,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 141.5,
+          "top": 410.84375,
+          "right": 285,
+          "bottom": 458.84375,
+          "width": 143.5,
+          "height": 48,
+          "visible": {
+            "left": 141.5,
+            "right": 285,
+            "top": 410.84375,
+            "bottom": 458.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 464.84375,
+          "right": 285,
+          "bottom": 512.84375,
+          "width": 265,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 464.84375,
+            "bottom": 512.84375
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 541.640625,
+          "right": 163.5,
+          "bottom": 589.640625,
+          "width": 143.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 163.5,
+            "top": 541.640625,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 169.5,
+          "top": 541.640625,
+          "right": 285,
+          "bottom": 589.640625,
+          "width": 115.5,
+          "height": 48,
+          "visible": {
+            "left": 169.5,
+            "right": 285,
+            "top": 541.640625,
+            "bottom": 558
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 0,
+        "scrollHeight": 220,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font1",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 368.84375,
+          "right": 135.5,
+          "bottom": 416.84375,
+          "width": 115.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 135.5,
+            "top": 380.046875,
+            "bottom": 416.84375
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 141.5,
+          "top": 368.84375,
+          "right": 285,
+          "bottom": 416.84375,
+          "width": 143.5,
+          "height": 48,
+          "visible": {
+            "left": 141.5,
+            "right": 285,
+            "top": 380.046875,
+            "bottom": 416.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 422.84375,
+          "right": 285,
+          "bottom": 470.84375,
+          "width": 265,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 422.84375,
+            "bottom": 470.84375
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 499.640625,
+          "right": 163.5,
+          "bottom": 547.640625,
+          "width": 143.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 163.5,
+            "top": 499.640625,
+            "bottom": 547.640625
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 169.5,
+          "top": 499.640625,
+          "right": 285,
+          "bottom": 547.640625,
+          "width": 115.5,
+          "height": 48,
+          "visible": {
+            "left": 169.5,
+            "right": 285,
+            "top": 499.640625,
+            "bottom": 547.640625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 42,
+        "scrollHeight": 220,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font2",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 427.640625,
+          "right": 185,
+          "bottom": 479.234375,
+          "width": 165,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 185,
+            "top": 427.640625,
+            "bottom": 479.234375
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 191,
+          "top": 427.640625,
+          "right": 300,
+          "bottom": 479.234375,
+          "width": 109,
+          "height": 51.59375,
+          "visible": {
+            "left": 191,
+            "right": 300,
+            "top": 427.640625,
+            "bottom": 479.234375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 485.234375,
+          "right": 300,
+          "bottom": 536.828125,
+          "width": 280,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 300,
+            "top": 485.234375,
+            "bottom": 536.828125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 0,
+        "scrollHeight": 178,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font2",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 427.640625,
+          "right": 185,
+          "bottom": 479.234375,
+          "width": 165,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 185,
+            "top": 427.640625,
+            "bottom": 479.234375
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 191,
+          "top": 427.640625,
+          "right": 300,
+          "bottom": 479.234375,
+          "width": 109,
+          "height": 51.59375,
+          "visible": {
+            "left": 191,
+            "right": 300,
+            "top": 427.640625,
+            "bottom": 479.234375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 485.234375,
+          "right": 300,
+          "bottom": 536.828125,
+          "width": 280,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 300,
+            "top": 485.234375,
+            "bottom": 536.828125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 0,
+        "scrollHeight": 178,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font2",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 427.640625,
+          "right": 285,
+          "bottom": 479.234375,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 427.640625,
+            "bottom": 479.234375
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 20,
+          "top": 485.234375,
+          "right": 285,
+          "bottom": 536.828125,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 485.234375,
+            "bottom": 536.828125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 542.828125,
+          "right": 285,
+          "bottom": 594.421875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 542.828125,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 673.609375,
+          "right": 285,
+          "bottom": 725.203125,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 673.609375,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 20,
+          "top": 731.203125,
+          "right": 285,
+          "bottom": 782.796875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 731.203125,
+            "bottom": 558
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 0,
+        "scrollHeight": 413,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-320-font2",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.748561793795986,
+        "right": 277.2514382062041,
+        "top": 196.71011028238323,
+        "bottom": 372.0394079717921
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 192.640625,
+          "right": 285,
+          "bottom": 244.234375,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 380.046875,
+            "bottom": 244.234375
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 20,
+          "top": 250.234375,
+          "right": 285,
+          "bottom": 301.828125,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 380.046875,
+            "bottom": 301.828125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 307.828125,
+          "right": 285,
+          "bottom": 359.421875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 380.046875,
+            "bottom": 359.421875
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 438.609375,
+          "right": 285,
+          "bottom": 490.203125,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 438.609375,
+            "bottom": 490.203125
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 20,
+          "top": 496.203125,
+          "right": 285,
+          "bottom": 547.796875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 496.203125,
+            "bottom": 547.796875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 380.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 177.953125,
+        "scrollTop": 235,
+        "scrollHeight": 413,
+        "clientHeight": 178
+      }
+    },
+    {
+      "id": "layout-length-390-font1.5",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 81.375,
+        "width": 310,
+        "height": 69.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 600.015625,
+          "right": 139.65625,
+          "bottom": 648.015625,
+          "width": 119.65625,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 139.65625,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 145.65625,
+          "top": 600.015625,
+          "right": 223.328125,
+          "bottom": 648.015625,
+          "width": 77.671875,
+          "height": 48,
+          "visible": {
+            "left": 145.65625,
+            "right": 223.328125,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 229.328125,
+          "top": 600.015625,
+          "right": 370,
+          "bottom": 648.015625,
+          "width": 140.671875,
+          "height": 48,
+          "visible": {
+            "left": 229.328125,
+            "right": 370,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 273,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font1.5",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 81.375,
+        "width": 310,
+        "height": 69.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 600.015625,
+          "right": 139.65625,
+          "bottom": 648.015625,
+          "width": 119.65625,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 139.65625,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 145.65625,
+          "top": 600.015625,
+          "right": 223.328125,
+          "bottom": 648.015625,
+          "width": 77.671875,
+          "height": 48,
+          "visible": {
+            "left": 145.65625,
+            "right": 223.328125,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 229.328125,
+          "top": 600.015625,
+          "right": 370,
+          "bottom": 648.015625,
+          "width": 140.671875,
+          "height": 48,
+          "visible": {
+            "left": 229.328125,
+            "right": 370,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 273,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font1.5",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 81.375,
+        "width": 310,
+        "height": 69.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 600.015625,
+          "right": 171,
+          "bottom": 648.015625,
+          "width": 151,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 171,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 177,
+          "top": 600.015625,
+          "right": 370,
+          "bottom": 648.015625,
+          "width": 193,
+          "height": 48,
+          "visible": {
+            "left": 177,
+            "right": 370,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 654.015625,
+          "right": 370,
+          "bottom": 702.015625,
+          "width": 350,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 654.015625,
+            "bottom": 702.015625
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 739.203125,
+          "right": 213,
+          "bottom": 787.203125,
+          "width": 193,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 213,
+            "top": 739.203125,
+            "bottom": 787.203125
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 219,
+          "top": 739.203125,
+          "right": 370,
+          "bottom": 787.203125,
+          "width": 151,
+          "height": 48,
+          "visible": {
+            "left": 219,
+            "right": 370,
+            "top": 739.203125,
+            "bottom": 787.203125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 273,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font1.5",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 81.375,
+        "width": 310,
+        "height": 69.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 600.015625,
+          "right": 171,
+          "bottom": 648.015625,
+          "width": 151,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 171,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 177,
+          "top": 600.015625,
+          "right": 370,
+          "bottom": 648.015625,
+          "width": 193,
+          "height": 48,
+          "visible": {
+            "left": 177,
+            "right": 370,
+            "top": 600.015625,
+            "bottom": 648.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 654.015625,
+          "right": 370,
+          "bottom": 702.015625,
+          "width": 350,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 654.015625,
+            "bottom": 702.015625
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 739.203125,
+          "right": 213,
+          "bottom": 787.203125,
+          "width": 193,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 213,
+            "top": 739.203125,
+            "bottom": 787.203125
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 219,
+          "top": 739.203125,
+          "right": 370,
+          "bottom": 787.203125,
+          "width": 151,
+          "height": 48,
+          "visible": {
+            "left": 219,
+            "right": 370,
+            "top": 739.203125,
+            "bottom": 787.203125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 273,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font2",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 131.78125,
+        "width": 310,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 608.421875,
+          "right": 220,
+          "bottom": 660.015625,
+          "width": 200,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 220,
+            "top": 608.421875,
+            "bottom": 660.015625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 226,
+          "top": 608.421875,
+          "right": 370,
+          "bottom": 660.015625,
+          "width": 144,
+          "height": 51.59375,
+          "visible": {
+            "left": 226,
+            "right": 370,
+            "top": 608.421875,
+            "bottom": 660.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 666.015625,
+          "right": 370,
+          "bottom": 717.609375,
+          "width": 350,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 666.015625,
+            "bottom": 717.609375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 273,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font2",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 131.78125,
+        "width": 310,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 608.421875,
+          "right": 220,
+          "bottom": 660.015625,
+          "width": 200,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 220,
+            "top": 608.421875,
+            "bottom": 660.015625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 226,
+          "top": 608.421875,
+          "right": 370,
+          "bottom": 660.015625,
+          "width": 144,
+          "height": 51.59375,
+          "visible": {
+            "left": 226,
+            "right": 370,
+            "top": 608.421875,
+            "bottom": 660.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 666.015625,
+          "right": 370,
+          "bottom": 717.609375,
+          "width": 350,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 666.015625,
+            "bottom": 717.609375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 273,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font2",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 131.78125,
+        "width": 310,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 608.421875,
+          "right": 156.5,
+          "bottom": 660.015625,
+          "width": 136.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 156.5,
+            "top": 608.421875,
+            "bottom": 660.015625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 162.5,
+          "top": 608.421875,
+          "right": 355,
+          "bottom": 660.015625,
+          "width": 192.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 162.5,
+            "right": 355,
+            "top": 608.421875,
+            "bottom": 660.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 666.015625,
+          "right": 355,
+          "bottom": 717.609375,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 666.015625,
+            "bottom": 717.609375
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 796.796875,
+          "right": 355,
+          "bottom": 848.390625,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 796.796875,
+            "bottom": 834
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 20,
+          "top": 854.390625,
+          "right": 355,
+          "bottom": 905.984375,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 854.390625,
+            "bottom": 834
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 0,
+        "scrollHeight": 355,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-390-font2",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 20.774271397823618,
+        "right": 369.22572860217656,
+        "top": 292.2946004900202,
+        "bottom": 552.8191202961136
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 131.78125,
+        "width": 310,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 526.421875,
+          "right": 156.5,
+          "bottom": 578.015625,
+          "width": 136.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 156.5,
+            "top": 560.828125,
+            "bottom": 578.015625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 162.5,
+          "top": 526.421875,
+          "right": 355,
+          "bottom": 578.015625,
+          "width": 192.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 162.5,
+            "right": 355,
+            "top": 560.828125,
+            "bottom": 578.015625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 584.015625,
+          "right": 355,
+          "bottom": 635.609375,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 584.015625,
+            "bottom": 635.609375
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 714.796875,
+          "right": 355,
+          "bottom": 766.390625,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 714.796875,
+            "bottom": 766.390625
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 20,
+          "top": 772.390625,
+          "right": 355,
+          "bottom": 823.984375,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 772.390625,
+            "bottom": 823.984375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 560.828125,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 273.171875,
+        "scrollTop": 82,
+        "scrollHeight": 355,
+        "clientHeight": 273
+      }
+    },
+    {
+      "id": "layout-length-430-font1",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 649.265625,
+          "right": 150.65625,
+          "bottom": 697.265625,
+          "width": 130.65625,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 150.65625,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 156.65625,
+          "top": 649.265625,
+          "right": 259.328125,
+          "bottom": 697.265625,
+          "width": 102.671875,
+          "height": 48,
+          "visible": {
+            "left": 156.65625,
+            "right": 259.328125,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 265.328125,
+          "top": 649.265625,
+          "right": 410,
+          "bottom": 697.265625,
+          "width": 144.671875,
+          "height": 48,
+          "visible": {
+            "left": 265.328125,
+            "right": 410,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font1",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 649.265625,
+          "right": 150.65625,
+          "bottom": 697.265625,
+          "width": 130.65625,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 150.65625,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 156.65625,
+          "top": 649.265625,
+          "right": 259.328125,
+          "bottom": 697.265625,
+          "width": 102.671875,
+          "height": 48,
+          "visible": {
+            "left": 156.65625,
+            "right": 259.328125,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 265.328125,
+          "top": 649.265625,
+          "right": 410,
+          "bottom": 697.265625,
+          "width": 144.671875,
+          "height": 48,
+          "visible": {
+            "left": 265.328125,
+            "right": 410,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font1",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 649.265625,
+          "right": 132,
+          "bottom": 697.265625,
+          "width": 112,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 132,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 138,
+          "top": 649.265625,
+          "right": 278,
+          "bottom": 697.265625,
+          "width": 140,
+          "height": 48,
+          "visible": {
+            "left": 138,
+            "right": 278,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 284,
+          "top": 649.265625,
+          "right": 410,
+          "bottom": 697.265625,
+          "width": 126,
+          "height": 48,
+          "visible": {
+            "left": 284,
+            "right": 410,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 726.0625,
+          "right": 226,
+          "bottom": 774.0625,
+          "width": 206,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 226,
+            "top": 726.0625,
+            "bottom": 774.0625
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 232,
+          "top": 726.0625,
+          "right": 410,
+          "bottom": 774.0625,
+          "width": 178,
+          "height": 48,
+          "visible": {
+            "left": 232,
+            "right": 410,
+            "top": 726.0625,
+            "bottom": 774.0625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font1",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 649.265625,
+          "right": 132,
+          "bottom": 697.265625,
+          "width": 112,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 132,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 138,
+          "top": 649.265625,
+          "right": 278,
+          "bottom": 697.265625,
+          "width": 140,
+          "height": 48,
+          "visible": {
+            "left": 138,
+            "right": 278,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 284,
+          "top": 649.265625,
+          "right": 410,
+          "bottom": 697.265625,
+          "width": 126,
+          "height": 48,
+          "visible": {
+            "left": 284,
+            "right": 410,
+            "top": 649.265625,
+            "bottom": 697.265625
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 726.0625,
+          "right": 226,
+          "bottom": 774.0625,
+          "width": 206,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 226,
+            "top": 726.0625,
+            "bottom": 774.0625
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 232,
+          "top": 726.0625,
+          "right": 410,
+          "bottom": 774.0625,
+          "width": 178,
+          "height": 48,
+          "visible": {
+            "left": 232,
+            "right": 410,
+            "top": 726.0625,
+            "bottom": 774.0625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font2",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 131.78125,
+        "width": 350,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 666.0625,
+          "right": 155.328125,
+          "bottom": 717.65625,
+          "width": 135.328125,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 155.328125,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 161.328125,
+          "top": 666.0625,
+          "right": 240.671875,
+          "bottom": 717.65625,
+          "width": 79.34375,
+          "height": 51.59375,
+          "visible": {
+            "left": 161.328125,
+            "right": 240.671875,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 246.671875,
+          "top": 666.0625,
+          "right": 410,
+          "bottom": 717.65625,
+          "width": 163.328125,
+          "height": 51.59375,
+          "visible": {
+            "left": 246.671875,
+            "right": 410,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font2",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 131.78125,
+        "width": 350,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 666.0625,
+          "right": 155.328125,
+          "bottom": 717.65625,
+          "width": 135.328125,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 155.328125,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 161.328125,
+          "top": 666.0625,
+          "right": 240.671875,
+          "bottom": 717.65625,
+          "width": 79.34375,
+          "height": 51.59375,
+          "visible": {
+            "left": 161.328125,
+            "right": 240.671875,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 246.671875,
+          "top": 666.0625,
+          "right": 410,
+          "bottom": 717.65625,
+          "width": 163.328125,
+          "height": 51.59375,
+          "visible": {
+            "left": 246.671875,
+            "right": 410,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font2",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 131.78125,
+        "width": 350,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 666.0625,
+          "right": 184,
+          "bottom": 717.65625,
+          "width": 164,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 184,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 190,
+          "top": 666.0625,
+          "right": 410,
+          "bottom": 717.65625,
+          "width": 220,
+          "height": 51.59375,
+          "visible": {
+            "left": 190,
+            "right": 410,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 723.65625,
+          "right": 410,
+          "bottom": 775.25,
+          "width": 390,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 410,
+            "top": 723.65625,
+            "bottom": 775.25
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 854.4375,
+          "right": 240,
+          "bottom": 906.03125,
+          "width": 220,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 240,
+            "top": 854.4375,
+            "bottom": 906.03125
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 246,
+          "top": 854.4375,
+          "right": 410,
+          "bottom": 906.03125,
+          "width": 164,
+          "height": 51.59375,
+          "visible": {
+            "left": 246,
+            "right": 410,
+            "top": 854.4375,
+            "bottom": 906.03125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-length-430-font2",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 22.608555619397666,
+        "right": 407.39144438060254,
+        "top": 322.7708147591218,
+        "bottom": 610.4590285734336
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 131.78125,
+        "width": 350,
+        "height": 119.78125
+      },
+      "controls": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "固定する",
+          "disabled": false,
+          "left": 20,
+          "top": 666.0625,
+          "right": 184,
+          "bottom": 717.65625,
+          "width": 164,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 184,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 190,
+          "top": 666.0625,
+          "right": 410,
+          "bottom": 717.65625,
+          "width": 220,
+          "height": 51.59375,
+          "visible": {
+            "left": 190,
+            "right": 410,
+            "top": 666.0625,
+            "bottom": 717.65625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 723.65625,
+          "right": 410,
+          "bottom": 775.25,
+          "width": 390,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 410,
+            "top": 723.65625,
+            "bottom": 775.25
+          }
+        },
+        {
+          "label": "端の飾りを畳む",
+          "disabled": false,
+          "left": 20,
+          "top": 854.4375,
+          "right": 240,
+          "bottom": 906.03125,
+          "width": 220,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 240,
+            "top": 854.4375,
+            "bottom": 906.03125
+          }
+        },
+        {
+          "label": "測定ガイド",
+          "disabled": false,
+          "left": 246,
+          "top": 854.4375,
+          "right": 410,
+          "bottom": 906.03125,
+          "width": 164,
+          "height": 51.59375,
+          "visible": {
+            "left": 246,
+            "right": 410,
+            "top": 854.4375,
+            "bottom": 906.03125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 618.46875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 303.53125,
+        "scrollTop": 0,
+        "scrollHeight": 304,
+        "clientHeight": 304
+      }
+    },
+    {
+      "id": "layout-rod-320-font1",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 427.84375,
+          "right": 123.328125,
+          "bottom": 475.84375,
+          "width": 103.328125,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 123.328125,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 129.328125,
+          "top": 427.84375,
+          "right": 190.671875,
+          "bottom": 475.84375,
+          "width": 61.34375,
+          "height": 48,
+          "visible": {
+            "left": 129.328125,
+            "right": 190.671875,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 196.671875,
+          "top": 427.84375,
+          "right": 300,
+          "bottom": 475.84375,
+          "width": 103.328125,
+          "height": 48,
+          "visible": {
+            "left": 196.671875,
+            "right": 300,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 0,
+        "scrollHeight": 161,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font1",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 427.84375,
+          "right": 123.328125,
+          "bottom": 475.84375,
+          "width": 103.328125,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 123.328125,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 129.328125,
+          "top": 427.84375,
+          "right": 190.671875,
+          "bottom": 475.84375,
+          "width": 61.34375,
+          "height": 48,
+          "visible": {
+            "left": 129.328125,
+            "right": 190.671875,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 196.671875,
+          "top": 427.84375,
+          "right": 300,
+          "bottom": 475.84375,
+          "width": 103.328125,
+          "height": 48,
+          "visible": {
+            "left": 196.671875,
+            "right": 300,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 0,
+        "scrollHeight": 161,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font1",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 427.84375,
+          "right": 142.5,
+          "bottom": 475.84375,
+          "width": 122.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 142.5,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 148.5,
+          "top": 427.84375,
+          "right": 285,
+          "bottom": 475.84375,
+          "width": 136.5,
+          "height": 48,
+          "visible": {
+            "left": 148.5,
+            "right": 285,
+            "top": 427.84375,
+            "bottom": 475.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 481.84375,
+          "right": 285,
+          "bottom": 529.84375,
+          "width": 265,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 481.84375,
+            "bottom": 529.84375
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 558.640625,
+          "right": 149.5,
+          "bottom": 606.640625,
+          "width": 129.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 149.5,
+            "top": 558.640625,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 155.5,
+          "top": 558.640625,
+          "right": 285,
+          "bottom": 606.640625,
+          "width": 129.5,
+          "height": 48,
+          "visible": {
+            "left": 155.5,
+            "right": 285,
+            "top": 558.640625,
+            "bottom": 558
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 0,
+        "scrollHeight": 220,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font1",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 64.59375,
+        "width": 240,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 368.84375,
+          "right": 142.5,
+          "bottom": 416.84375,
+          "width": 122.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 142.5,
+            "top": 397.046875,
+            "bottom": 416.84375
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 148.5,
+          "top": 368.84375,
+          "right": 285,
+          "bottom": 416.84375,
+          "width": 136.5,
+          "height": 48,
+          "visible": {
+            "left": 148.5,
+            "right": 285,
+            "top": 397.046875,
+            "bottom": 416.84375
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 422.84375,
+          "right": 285,
+          "bottom": 470.84375,
+          "width": 265,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 422.84375,
+            "bottom": 470.84375
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 499.640625,
+          "right": 149.5,
+          "bottom": 547.640625,
+          "width": 129.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 149.5,
+            "top": 499.640625,
+            "bottom": 547.640625
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 155.5,
+          "top": 499.640625,
+          "right": 285,
+          "bottom": 547.640625,
+          "width": 129.5,
+          "height": 48,
+          "visible": {
+            "left": 155.5,
+            "right": 285,
+            "top": 499.640625,
+            "bottom": 547.640625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 59,
+        "scrollHeight": 220,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font2",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 478.234375,
+          "right": 191.5,
+          "bottom": 529.828125,
+          "width": 171.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 191.5,
+            "top": 478.234375,
+            "bottom": 529.828125
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 197.5,
+          "top": 478.234375,
+          "right": 285,
+          "bottom": 529.828125,
+          "width": 87.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 197.5,
+            "right": 285,
+            "top": 478.234375,
+            "bottom": 529.828125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 535.828125,
+          "right": 285,
+          "bottom": 587.421875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 535.828125,
+            "bottom": 558
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 0,
+        "scrollHeight": 200,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font2",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 439.234375,
+          "right": 191.5,
+          "bottom": 490.828125,
+          "width": 171.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 191.5,
+            "top": 439.234375,
+            "bottom": 490.828125
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 197.5,
+          "top": 439.234375,
+          "right": 285,
+          "bottom": 490.828125,
+          "width": 87.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 197.5,
+            "right": 285,
+            "top": 439.234375,
+            "bottom": 490.828125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 496.828125,
+          "right": 285,
+          "bottom": 548.421875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 496.828125,
+            "bottom": 548.421875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 39,
+        "scrollHeight": 200,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font2",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 478.234375,
+          "right": 285,
+          "bottom": 529.828125,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 478.234375,
+            "bottom": 529.828125
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 20,
+          "top": 535.828125,
+          "right": 285,
+          "bottom": 587.421875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 535.828125,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 593.421875,
+          "right": 285,
+          "bottom": 645.015625,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 593.421875,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 724.203125,
+          "right": 285,
+          "bottom": 775.796875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 724.203125,
+            "bottom": 558
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 20,
+          "top": 781.796875,
+          "right": 285,
+          "bottom": 833.390625,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 781.796875,
+            "bottom": 558
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 0,
+        "scrollHeight": 446,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-320-font2",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 54.92536168458589,
+        "right": 265.0746383154141,
+        "top": 180.12653640067577,
+        "bottom": 389.04458246827966
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 308,
+        "bottom": 165.375,
+        "width": 240,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 193.234375,
+          "right": 285,
+          "bottom": 244.828125,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 397.046875,
+            "bottom": 244.828125
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 20,
+          "top": 250.828125,
+          "right": 285,
+          "bottom": 302.421875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 397.046875,
+            "bottom": 302.421875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 308.421875,
+          "right": 285,
+          "bottom": 360.015625,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 397.046875,
+            "bottom": 360.015625
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 439.203125,
+          "right": 285,
+          "bottom": 490.796875,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 439.203125,
+            "bottom": 490.796875
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 20,
+          "top": 496.796875,
+          "right": 285,
+          "bottom": 548.390625,
+          "width": 265,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 285,
+            "top": 496.796875,
+            "bottom": 548.390625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 397.046875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 160.953125,
+        "scrollTop": 285,
+        "scrollHeight": 446,
+        "clientHeight": 161
+      }
+    },
+    {
+      "id": "layout-rod-390-font1.5",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 106.5625,
+        "width": 310,
+        "height": 94.5625
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 625.28125,
+          "right": 153.65625,
+          "bottom": 673.28125,
+          "width": 133.65625,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 153.65625,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 159.65625,
+          "top": 625.28125,
+          "right": 230.328125,
+          "bottom": 673.28125,
+          "width": 70.671875,
+          "height": 48,
+          "visible": {
+            "left": 159.65625,
+            "right": 230.328125,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 236.328125,
+          "top": 625.28125,
+          "right": 370,
+          "bottom": 673.28125,
+          "width": 133.671875,
+          "height": 48,
+          "visible": {
+            "left": 236.328125,
+            "right": 370,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 248,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font1.5",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 106.5625,
+        "width": 310,
+        "height": 94.5625
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 625.28125,
+          "right": 153.65625,
+          "bottom": 673.28125,
+          "width": 133.65625,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 153.65625,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 159.65625,
+          "top": 625.28125,
+          "right": 230.328125,
+          "bottom": 673.28125,
+          "width": 70.671875,
+          "height": 48,
+          "visible": {
+            "left": 159.65625,
+            "right": 230.328125,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 236.328125,
+          "top": 625.28125,
+          "right": 370,
+          "bottom": 673.28125,
+          "width": 133.671875,
+          "height": 48,
+          "visible": {
+            "left": 236.328125,
+            "right": 370,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 248,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font1.5",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 106.5625,
+        "width": 310,
+        "height": 94.5625
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 625.28125,
+          "right": 181.5,
+          "bottom": 673.28125,
+          "width": 161.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 181.5,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 187.5,
+          "top": 625.28125,
+          "right": 370,
+          "bottom": 673.28125,
+          "width": 182.5,
+          "height": 48,
+          "visible": {
+            "left": 187.5,
+            "right": 370,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 679.28125,
+          "right": 370,
+          "bottom": 727.28125,
+          "width": 350,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 679.28125,
+            "bottom": 727.28125
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 764.46875,
+          "right": 192,
+          "bottom": 812.46875,
+          "width": 172,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 192,
+            "top": 764.46875,
+            "bottom": 812.46875
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 198,
+          "top": 764.46875,
+          "right": 370,
+          "bottom": 812.46875,
+          "width": 172,
+          "height": 48,
+          "visible": {
+            "left": 198,
+            "right": 370,
+            "top": 764.46875,
+            "bottom": 812.46875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 248,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font1.5",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 106.5625,
+        "width": 310,
+        "height": 94.5625
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 625.28125,
+          "right": 181.5,
+          "bottom": 673.28125,
+          "width": 161.5,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 181.5,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 187.5,
+          "top": 625.28125,
+          "right": 370,
+          "bottom": 673.28125,
+          "width": 182.5,
+          "height": 48,
+          "visible": {
+            "left": 187.5,
+            "right": 370,
+            "top": 625.28125,
+            "bottom": 673.28125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 679.28125,
+          "right": 370,
+          "bottom": 727.28125,
+          "width": 350,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 679.28125,
+            "bottom": 727.28125
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 764.46875,
+          "right": 192,
+          "bottom": 812.46875,
+          "width": 172,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 192,
+            "top": 764.46875,
+            "bottom": 812.46875
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 198,
+          "top": 764.46875,
+          "right": 370,
+          "bottom": 812.46875,
+          "width": 172,
+          "height": 48,
+          "visible": {
+            "left": 198,
+            "right": 370,
+            "top": 764.46875,
+            "bottom": 812.46875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 248,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font2",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 165.375,
+        "width": 310,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 633.6875,
+          "right": 234,
+          "bottom": 685.28125,
+          "width": 214,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 234,
+            "top": 633.6875,
+            "bottom": 685.28125
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 240,
+          "top": 633.6875,
+          "right": 370,
+          "bottom": 685.28125,
+          "width": 130,
+          "height": 51.59375,
+          "visible": {
+            "left": 240,
+            "right": 370,
+            "top": 633.6875,
+            "bottom": 685.28125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 691.28125,
+          "right": 370,
+          "bottom": 742.875,
+          "width": 350,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 691.28125,
+            "bottom": 742.875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 248,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font2",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 165.375,
+        "width": 310,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 633.6875,
+          "right": 234,
+          "bottom": 685.28125,
+          "width": 214,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 234,
+            "top": 633.6875,
+            "bottom": 685.28125
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 240,
+          "top": 633.6875,
+          "right": 370,
+          "bottom": 685.28125,
+          "width": 130,
+          "height": 51.59375,
+          "visible": {
+            "left": 240,
+            "right": 370,
+            "top": 633.6875,
+            "bottom": 685.28125
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 691.28125,
+          "right": 370,
+          "bottom": 742.875,
+          "width": 350,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 691.28125,
+            "bottom": 742.875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 248,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font2",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 165.375,
+        "width": 310,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 633.6875,
+          "right": 355,
+          "bottom": 685.28125,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 633.6875,
+            "bottom": 685.28125
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 20,
+          "top": 691.28125,
+          "right": 355,
+          "bottom": 742.875,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 691.28125,
+            "bottom": 742.875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 748.875,
+          "right": 355,
+          "bottom": 800.46875,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 748.875,
+            "bottom": 800.46875
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 879.65625,
+          "right": 184.5,
+          "bottom": 931.25,
+          "width": 164.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 184.5,
+            "top": 879.65625,
+            "bottom": 834
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 190.5,
+          "top": 879.65625,
+          "right": 355,
+          "bottom": 931.25,
+          "width": 164.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 190.5,
+            "right": 355,
+            "top": 879.65625,
+            "bottom": 834
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 0,
+        "scrollHeight": 355,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-390-font2",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 378,
+        "bottom": 165.375,
+        "width": 310,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 526.6875,
+          "right": 355,
+          "bottom": 578.28125,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 586.09375,
+            "bottom": 578.28125
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 20,
+          "top": 584.28125,
+          "right": 355,
+          "bottom": 635.875,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 586.09375,
+            "bottom": 635.875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 641.875,
+          "right": 355,
+          "bottom": 693.46875,
+          "width": 335,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 641.875,
+            "bottom": 693.46875
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 772.65625,
+          "right": 184.5,
+          "bottom": 824.25,
+          "width": 164.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 184.5,
+            "top": 772.65625,
+            "bottom": 824.25
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 190.5,
+          "top": 772.65625,
+          "right": 355,
+          "bottom": 824.25,
+          "width": 164.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 190.5,
+            "right": 355,
+            "top": 772.65625,
+            "bottom": 824.25
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 586.09375,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 247.90625,
+        "scrollTop": 107,
+        "scrollHeight": 355,
+        "clientHeight": 248
+      }
+    },
+    {
+      "id": "layout-rod-430-font1",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 677.171875,
+          "right": 160,
+          "bottom": 725.171875,
+          "width": 140,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 160,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 166,
+          "top": 677.171875,
+          "right": 264,
+          "bottom": 725.171875,
+          "width": 98,
+          "height": 48,
+          "visible": {
+            "left": 166,
+            "right": 264,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 270,
+          "top": 677.171875,
+          "right": 410,
+          "bottom": 725.171875,
+          "width": 140,
+          "height": 48,
+          "visible": {
+            "left": 270,
+            "right": 410,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 276,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font1",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 677.171875,
+          "right": 160,
+          "bottom": 725.171875,
+          "width": 140,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 160,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 166,
+          "top": 677.171875,
+          "right": 264,
+          "bottom": 725.171875,
+          "width": 98,
+          "height": 48,
+          "visible": {
+            "left": 166,
+            "right": 264,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 270,
+          "top": 677.171875,
+          "right": 410,
+          "bottom": 725.171875,
+          "width": 140,
+          "height": 48,
+          "visible": {
+            "left": 270,
+            "right": 410,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 276,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font1",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 677.171875,
+          "right": 141.328125,
+          "bottom": 725.171875,
+          "width": 121.328125,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 141.328125,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 147.328125,
+          "top": 677.171875,
+          "right": 282.671875,
+          "bottom": 725.171875,
+          "width": 135.34375,
+          "height": 48,
+          "visible": {
+            "left": 147.328125,
+            "right": 282.671875,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 288.671875,
+          "top": 677.171875,
+          "right": 410,
+          "bottom": 725.171875,
+          "width": 121.328125,
+          "height": 48,
+          "visible": {
+            "left": 288.671875,
+            "right": 410,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 753.96875,
+          "right": 212,
+          "bottom": 801.96875,
+          "width": 192,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 212,
+            "top": 753.96875,
+            "bottom": 801.96875
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 218,
+          "top": 753.96875,
+          "right": 410,
+          "bottom": 801.96875,
+          "width": 192,
+          "height": 48,
+          "visible": {
+            "left": 218,
+            "right": 410,
+            "top": 753.96875,
+            "bottom": 801.96875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 276,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font1",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 64.59375,
+        "width": 350,
+        "height": 52.59375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 677.171875,
+          "right": 141.328125,
+          "bottom": 725.171875,
+          "width": 121.328125,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 141.328125,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 147.328125,
+          "top": 677.171875,
+          "right": 282.671875,
+          "bottom": 725.171875,
+          "width": 135.34375,
+          "height": 48,
+          "visible": {
+            "left": 147.328125,
+            "right": 282.671875,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 288.671875,
+          "top": 677.171875,
+          "right": 410,
+          "bottom": 725.171875,
+          "width": 121.328125,
+          "height": 48,
+          "visible": {
+            "left": 288.671875,
+            "right": 410,
+            "top": 677.171875,
+            "bottom": 725.171875
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 753.96875,
+          "right": 212,
+          "bottom": 801.96875,
+          "width": 192,
+          "height": 48,
+          "visible": {
+            "left": 20,
+            "right": 212,
+            "top": 753.96875,
+            "bottom": 801.96875
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 218,
+          "top": 753.96875,
+          "right": 410,
+          "bottom": 801.96875,
+          "width": 192,
+          "height": 48,
+          "visible": {
+            "left": 218,
+            "right": 410,
+            "top": 753.96875,
+            "bottom": 801.96875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 276,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font2",
+      "frame": 0,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 165.375,
+        "width": 350,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 693.96875,
+          "right": 254,
+          "bottom": 745.5625,
+          "width": 234,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 254,
+            "top": 693.96875,
+            "bottom": 745.5625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 260,
+          "top": 693.96875,
+          "right": 410,
+          "bottom": 745.5625,
+          "width": 150,
+          "height": 51.59375,
+          "visible": {
+            "left": 260,
+            "right": 410,
+            "top": 693.96875,
+            "bottom": 745.5625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 751.5625,
+          "right": 410,
+          "bottom": 803.15625,
+          "width": 390,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 410,
+            "top": 751.5625,
+            "bottom": 803.15625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 276,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font2",
+      "frame": 0,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 165.375,
+        "width": 350,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 693.96875,
+          "right": 254,
+          "bottom": 745.5625,
+          "width": 234,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 254,
+            "top": 693.96875,
+            "bottom": 745.5625
+          }
+        },
+        {
+          "label": "補助",
+          "disabled": false,
+          "left": 260,
+          "top": 693.96875,
+          "right": 410,
+          "bottom": 745.5625,
+          "width": 150,
+          "height": 51.59375,
+          "visible": {
+            "left": 260,
+            "right": 410,
+            "top": 693.96875,
+            "bottom": 745.5625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 751.5625,
+          "right": 410,
+          "bottom": 803.15625,
+          "width": 390,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 410,
+            "top": 751.5625,
+            "bottom": 803.15625
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 276,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font2",
+      "frame": 1,
+      "scrollPosition": "top",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 165.375,
+        "width": 350,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 693.96875,
+          "right": 190.5,
+          "bottom": 745.5625,
+          "width": 170.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 190.5,
+            "top": 693.96875,
+            "bottom": 745.5625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 196.5,
+          "top": 693.96875,
+          "right": 395,
+          "bottom": 745.5625,
+          "width": 198.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 196.5,
+            "right": 395,
+            "top": 693.96875,
+            "bottom": 745.5625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 751.5625,
+          "right": 395,
+          "bottom": 803.15625,
+          "width": 375,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 395,
+            "top": 751.5625,
+            "bottom": 803.15625
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 882.34375,
+          "right": 204.5,
+          "bottom": 933.9375,
+          "width": 184.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 204.5,
+            "top": 882.34375,
+            "bottom": 922
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 210.5,
+          "top": 882.34375,
+          "right": 395,
+          "bottom": 933.9375,
+          "width": 184.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 210.5,
+            "right": 395,
+            "top": 882.34375,
+            "bottom": 922
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 0,
+        "scrollHeight": 298,
+        "clientHeight": 276
+      }
+    },
+    {
+      "id": "layout-rod-430-font2",
+      "frame": 1,
+      "scrollPosition": "bottom",
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": {
+        "left": 42.58879769372189,
+        "right": 387.4112023062781,
+        "top": 295.5597393053342,
+        "bottom": 638.3618853176702
+      },
+      "pause": {
+        "left": 12,
+        "top": 12,
+        "right": 60,
+        "bottom": 60,
+        "width": 48,
+        "height": 48
+      },
+      "objective": null,
+      "heading": {
+        "left": 68,
+        "top": 12,
+        "right": 418,
+        "bottom": 165.375,
+        "width": 350,
+        "height": 153.375
+      },
+      "controls": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625
+      },
+      "buttons": [
+        {
+          "label": "一時停止",
+          "disabled": false,
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48,
+          "visible": {
+            "left": 12,
+            "right": 60,
+            "top": 12,
+            "bottom": 60
+          }
+        },
+        {
+          "label": "ロックする",
+          "disabled": false,
+          "left": 20,
+          "top": 671.96875,
+          "right": 190.5,
+          "bottom": 723.5625,
+          "width": 170.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 190.5,
+            "top": 671.96875,
+            "bottom": 723.5625
+          }
+        },
+        {
+          "label": "補助を閉じる",
+          "disabled": false,
+          "left": 196.5,
+          "top": 671.96875,
+          "right": 395,
+          "bottom": 723.5625,
+          "width": 198.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 196.5,
+            "right": 395,
+            "top": 671.96875,
+            "bottom": 723.5625
+          }
+        },
+        {
+          "label": "探索へ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 729.5625,
+          "right": 395,
+          "bottom": 781.15625,
+          "width": 375,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 395,
+            "top": 729.5625,
+            "bottom": 781.15625
+          }
+        },
+        {
+          "label": "枠を消す",
+          "disabled": false,
+          "left": 20,
+          "top": 860.34375,
+          "right": 204.5,
+          "bottom": 911.9375,
+          "width": 184.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 20,
+            "right": 204.5,
+            "top": 860.34375,
+            "bottom": 911.9375
+          }
+        },
+        {
+          "label": "下げ振り",
+          "disabled": false,
+          "left": 210.5,
+          "top": 860.34375,
+          "right": 395,
+          "bottom": 911.9375,
+          "width": 184.5,
+          "height": 51.59375,
+          "visible": {
+            "left": 210.5,
+            "right": 395,
+            "top": 860.34375,
+            "bottom": 911.9375
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": {
+        "left": 12,
+        "top": 646.375,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 275.625,
+        "scrollTop": 22,
+        "scrollHeight": 298,
+        "clientHeight": 276
+      }
+    }
+  ],
+  "sheets": [
+    {
+      "id": "west-overview",
+      "video": "west",
+      "start": 0,
+      "rate": 0.5,
+      "tile": "5x5",
+      "sampleEverySourceFrames": 60
+    },
+    {
+      "id": "east-overview",
+      "video": "east",
+      "start": 0,
+      "rate": 0.5,
+      "tile": "5x5",
+      "sampleEverySourceFrames": 60
+    },
+    {
+      "id": "notice-pursuit",
+      "video": "west",
+      "start": 9,
+      "rate": 2,
+      "tile": "4x4",
+      "sampleEverySourceFrames": 15
+    },
+    {
+      "id": "length-operation",
+      "video": "west",
+      "start": 1,
+      "rate": 2,
+      "tile": "4x4",
+      "sampleEverySourceFrames": 15
+    },
+    {
+      "id": "rod-operation",
+      "video": "west",
+      "start": 19,
+      "rate": 2,
+      "tile": "4x4",
+      "sampleEverySourceFrames": 15
+    },
+    {
+      "id": "search-overview",
+      "video": "search",
+      "start": 0,
+      "rate": 0.7,
+      "tile": "5x5",
+      "sampleEverySourceFrames": 43
+    },
+    {
+      "id": "search-and-return",
+      "video": "search",
+      "start": 20,
+      "rate": 1,
+      "tile": "4x3",
+      "sampleEverySourceFrames": 30
+    },
+    {
+      "id": "partition-attack-blocked",
+      "video": "west",
+      "start": 33.8,
+      "rate": 5,
+      "tile": "4x3",
+      "sampleEverySourceFrames": 6
+    },
+    {
+      "id": "final-door-and-result",
+      "video": "west",
+      "start": 37.7,
+      "rate": 5,
+      "tile": "4x4",
+      "sampleEverySourceFrames": 6
+    },
+    {
+      "id": "lateral-dodge",
+      "video": "windup-dodge",
+      "start": 0,
+      "rate": 5,
+      "tile": "5x3",
+      "sampleEverySourceFrames": 6
+    },
+    {
+      "id": "entry-peek",
+      "video": "entry-peek",
+      "start": 0,
+      "rate": 4,
+      "tile": "4x3",
+      "sampleEverySourceFrames": 8
+    }
+  ]
+}

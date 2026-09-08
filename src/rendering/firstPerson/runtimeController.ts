@@ -1,3 +1,9 @@
+import { advanceVaultActor, type VaultActorEvent } from '../../domain/vault/actor';
+import { cancelVaultManipulation } from '../../domain/vault/state';
+import { VAULT_EXIT_FIXTURE, VAULT_METAL_FLOORS } from '../../domain/vault/definition';
+import type { VaultNoise } from '../../domain/vault/types';
+import { canCloseVaultExitController, vaultAction } from './vaultController';
+import type { ActorFootPlant } from '../../domain/actorMotion';
 import * as THREE from 'three';
 import { validNotebookWindow, type NotebookMaskPreview } from './notebookCamera';
 import { advanceGalleryActor, recordGalleryDiscovery, canCloseGalleryExit, resumeGalleryActor, cancelGalleryManipulation, contourAlignedCount, type GalleryActorEvent } from '../../domain/gallery';
@@ -28,7 +34,8 @@ export type RuntimeController = {
   audioSequence: number;
   pendingFootstepDistance: number;
   pendingActorFootstepDistance: number;
-  pendingActorEvents: GalleryActorEvent[];
+  pendingActorPlants: ActorFootPlant[];
+  pendingActorEvents: (GalleryActorEvent | VaultActorEvent)[];
   pendingExitImpact: boolean;
   actorNotice?: { sequence: number; text: string };
   retired: boolean;
@@ -52,7 +59,7 @@ export type RuntimeSnapshot = { actorNotice?: { sequence: number; text: string }
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorEvents: [], pendingExitImpact: false, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorPlants: [], pendingActorEvents: [], pendingExitImpact: false, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -67,10 +74,10 @@ export function worldForController(controller: RuntimeController) {
 }
 export function stopController(controller: RuntimeController): void {
   clearTouchInput(controller.input);
-  controller.runtime = cancelGalleryManipulation(controller.runtime);
+  controller.runtime = cancelVaultManipulation(cancelGalleryManipulation(controller.runtime));
   controller.simpleStep = 0;
   controller.pendingFootstepDistance = 0;
-  controller.pendingActorFootstepDistance = 0; controller.pendingActorEvents = [];
+  controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
   controller.pendingExitImpact = false;
 }
 export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 'turn'; yaw: number; pitch: number } | { type: 'step'; forward: number } | { type: 'hint'; stage: HintStage } | { type: 'sensitivity'; value: number; vertical?: number } | { type: 'verticalSensitivity'; value: number };
@@ -90,7 +97,7 @@ export function commandController(controller: RuntimeController, action: Control
       break;
     case 'verticalSensitivity': if (Number.isFinite(action.value) && action.value >= 0.5 && action.value <= 2) controller.verticalSensitivity = action.value; break;
     case 'hint':
-      if (!controller.lab && !controller.runtime.gallery && !controller.runtime.progress.sealA) {
+      if (!controller.lab && !controller.runtime.gallery && !controller.runtime.vault && !controller.runtime.progress.sealA) {
         // Each voluntary tap advances exactly one tier in the supplied reducer.
         if (action.stage > controller.runtime.emblem.hintTier) dispatchEmblemController(controller, createEmblemCommand(controller, { type: 'hint' }));
       } else controller.runtime = setHintStage(controller.runtime, action.stage);
@@ -103,9 +110,9 @@ export function commandController(controller: RuntimeController, action: Control
       controller.viewCommandRevision += 1;
       break;
     }
-    case 'step': if (!controller.input.releaseBarrier.length && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore') && !controller.runtime.paused) controller.simpleStep = action.forward; break;
+    case 'step': if (!controller.input.releaseBarrier.length && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore') && (!controller.runtime.vault || controller.runtime.vault.mode === 'explore') && !controller.runtime.paused) controller.simpleStep = action.forward; break;
     case 'turn':
-      if (!controller.input.releaseBarrier.length && !controller.runtime.paused && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore')) {
+      if (!controller.input.releaseBarrier.length && !controller.runtime.paused && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore') && (!controller.runtime.vault || controller.runtime.vault.mode === 'explore')) {
         const before = controller.runtime.pose;
         controller.runtime = { ...controller.runtime, pose: adjustLook(before, action.yaw, action.pitch) };
         recordTutorialMotion(controller.tutorial, before, controller.runtime.pose, true);
@@ -128,6 +135,14 @@ export function syncCamera(controller: RuntimeController, camera: THREE.Perspect
   return matrices;
 }
 export function advanceController(controller: RuntimeController, delta: number, camera: THREE.PerspectiveCamera): void {
+  if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.cleared && controller.runtime.vault?.exitClosureSeconds) {
+    const dt = Number.isFinite(delta) ? Math.max(0, Math.min(delta, .05)) : 0;
+    controller.runtime = { ...controller.runtime, vault: { ...controller.runtime.vault, exitClosureSeconds: Math.max(0, controller.runtime.vault.exitClosureSeconds - dt) } };
+    clearTouchInput(controller.input); controller.simpleStep = 0;
+    controller.pendingFootstepDistance = controller.pendingActorFootstepDistance = 0;
+    syncCamera(controller, camera);
+    return;
+  }
   if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.cleared && controller.runtime.gallery?.exitClosureSeconds) {
     const dt = Number.isFinite(delta) ? Math.max(0, Math.min(delta, .05)) : 0;
     controller.runtime = { ...controller.runtime, gallery: { ...controller.runtime.gallery, exitClosureSeconds: Math.max(0, controller.runtime.gallery.exitClosureSeconds - dt) } };
@@ -137,7 +152,7 @@ export function advanceController(controller: RuntimeController, delta: number, 
     return;
   }
   if (controller.retired || controller.runtime.paused || controller.runtime.progress.cleared) { stopController(controller); return; }
-  if (controller.runtime.gallery && controller.runtime.gallery.mode !== 'explore') {
+  if (controller.runtime.gallery && controller.runtime.gallery.mode !== 'explore' || controller.runtime.vault && controller.runtime.vault.mode !== 'explore') {
     clearTouchInput(controller.input); controller.simpleStep = 0;
     const matrices = syncCamera(controller, camera);
     controller.runtime = evaluateRuntime(controller.runtime, controller.runtime.pose, delta, matrices);
@@ -148,6 +163,7 @@ export function advanceController(controller: RuntimeController, delta: number, 
   const looked = adjustLook(controller.runtime.pose, -look.x * 0.003 * controller.sensitivity, -look.y * 0.003 * controller.sensitivity * controller.verticalSensitivity);
   const dt = Number.isFinite(delta) ? Math.max(0, Math.min(delta, 0.05)) : 0;
   const world = worldForController(controller);
+  const stepped = controller.simpleStep !== 0;
   const pose = controller.simpleStep
     ? updatePlayer(looked, { strafe: 0, forward: controller.simpleStep }, 0.25, world)
     : updatePlayer(looked, { strafe: controller.input.right, forward: controller.input.forward }, dt, world, true);
@@ -159,10 +175,33 @@ export function advanceController(controller: RuntimeController, delta: number, 
   controller.runtime = controller.lab
     ? { ...controller.runtime, doorAOpen: controller.runtime.progress.sealA ? Math.min(1, controller.runtime.doorAOpen + dt / 1.25) : 0 }
     : evaluateRuntime(controller.runtime, pose, dt, matrices);
+  if (controller.runtime.vault && controllerCanInteract(controller)) {
+    const live = controller.runtime.vault, position = pose.position;
+    const moved = Math.hypot(position.x - before.position.x, position.z - before.position.z);
+    const speed = moved / (stepped ? .25 : Math.max(dt, 1e-6));
+    const cumulative = live.noiseDistance + moved;
+    let noise: VaultNoise | undefined;
+    if (moved > 0 && cumulative >= .65) {
+      const metal = VAULT_METAL_FLOORS.some(f => position.x >= f.minX && position.x <= f.maxX && position.z >= f.minZ && position.z <= f.maxZ);
+      noise = { sequence: live.noiseSequence + 1, position: { ...position, y: .08 },
+        strength: Math.min(1.2, (speed <= .65 ? .1 : speed > 1.4 ? .8 : .4) * (metal ? 1.35 : 1)), kind: metal ? 'metal' : 'footstep' };
+    }
+    controller.runtime = { ...controller.runtime, vault: { ...live, noiseDistance: cumulative % .65, noiseSequence: noise?.sequence ?? live.noiseSequence } };
+    const actor = advanceVaultActor(controller.runtime, dt, { intensity: controller.horrorIntensity, matrices, ...(noise ? { noise } : {}) });
+    controller.runtime = actor.runtime;
+    controller.pendingActorPlants.push(...actor.footPlants);
+    controller.pendingActorEvents = [...controller.pendingActorEvents, ...actor.events].slice(-4);
+    if (actor.caught) {
+      requireAllPointersReleased(controller.input); clearTouchInput(controller.input);
+      controller.simpleStep = 0; controller.pendingFootstepDistance = 0;
+      syncCamera(controller, camera);
+    }
+  }
   if (controller.runtime.gallery && controllerCanInteract(controller)) {
     const actor = advanceGalleryActor(controller.runtime, dt, { intensity: controller.horrorIntensity, matrices });
     controller.runtime = actor.runtime;
     controller.pendingActorFootstepDistance += actor.movedDistance;
+    controller.pendingActorPlants.push(...actor.footPlants);
     controller.pendingActorEvents = [...controller.pendingActorEvents, ...actor.events].slice(-4);
     if (actor.caught) {
       requireAllPointersReleased(controller.input);
@@ -181,14 +220,23 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   // Screen publishes explicit view commands before fresh camera matrices exist.
   // Their next presented cue must publish even when it matches the last frame's
   // semantic bucket. Continuous movement and idle frames do not advance this.
+  const vault = controller.runtime.vault;
+  const vaultKey = vault ? [canCloseVaultExitController(controller), vault.mode, vault.checkpointId, vault.exitClosureSeconds > 0, vault.partitionClosed, vault.activeDrag?.pointerId ?? '', vault.feedback?.sequence ?? 0].join(':') : '';
   const gallery = controller.runtime.gallery;
   const galleryKey = gallery ? [canCloseGalleryExit(controller.runtime), JSON.stringify(gallery.lastSafePose), gallery.mode, gallery.exitClosureSeconds > 0, gallery.shadowCompare, gallery.contourGuide, gallery.activeDrag?.pointerId ?? '', gallery.feedback?.sequence ?? 0, contourAlignedCount(controller.runtime.progress.gallery!.contour.seed, gallery.contourAngles)].join(':') : '';
-  const key = `${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
+  const key = `${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${vaultKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
   return { ...(controller.actorNotice ? { actorNotice: controller.actorNotice } : {}), runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
   controller.feedbackMessage = '';
   if (!controllerCanInteract(controller)) return false;
+  if (controller.runtime.vault) {
+    if (expectedId === 'vault-length' || expectedId === 'vault-rod') return vaultAction(controller, { type: 'enter', puzzle: expectedId === 'vault-length' ? 'length' : 'rod' });
+    if (expectedId === 'vault-cafe') return vaultAction(controller, { type: 'cafe-inspect' });
+    if (expectedId === 'vault-partition') return vaultAction(controller, { type: 'close-partition' });
+    if (expectedId === 'vault-exit') return vaultAction(controller, { type: 'close-exit' });
+    return false;
+  }
   if (expectedId === 'shadow-panel' || expectedId === 'contour-panel' || expectedId === 'wiring-panel') return galleryAction(controller, { type: 'enter', puzzle: expectedId === 'shadow-panel' ? 'shadow' : expectedId === 'contour-panel' ? 'contour' : 'wiring' });
   if (controller.runtime.gallery) {
     if (expectedId === 'gallery-light') return galleryAction(controller, { type: 'light-on' });
@@ -256,7 +304,7 @@ function applyEmblemControllerCommand(controller: RuntimeController, command: Se
   // Consume even a rejected packet; background taps cannot replay after resume.
   controller.lastReceivedSequence = command.seq;
   controller.commandSequence = Math.max(controller.commandSequence, command.seq);
-  if (controller.lab || ['failed', 'closed'].includes(controller.diagnostics.stage)) return rejected('blocked');
+  if (controller.lab || controller.runtime.vault || controller.runtime.gallery || ['failed', 'closed'].includes(controller.diagnostics.stage)) return rejected('blocked');
   const auxiliary = command.action.type === 'hint' || command.action.type === 'assist';
   if (!auxiliary && !controllerCanInteract(controller)) return rejected('blocked');
   const cue = interactionCue(worldForController(controller), controller.runtime.pose, controller.matrices, controller.runtime.progress, controller.runtime.alignment);
@@ -282,6 +330,12 @@ function applyEmblemControllerCommand(controller: RuntimeController, command: Se
 /** Legacy lab comparison is still bounded; the chapter comparison is panel-authorized. */
 export function compareController(controller: RuntimeController, nowMs = performance.now()): boolean {
   if (!controllerCanInteract(controller)) return false;
+  if (controller.runtime.vault) {
+    const live = controller.runtime.vault, p = controller.runtime.progress.vault!;
+    if (live.mode === 'length') return vaultAction(controller, { type: 'aid', aid: 'finsHidden', enabled: !p.aids.finsHidden });
+    if (live.mode === 'rod') return vaultAction(controller, { type: 'aid', aid: 'frameHidden', enabled: !p.aids.frameHidden });
+    return vaultAction(controller, { type: 'cafe-inspect' });
+  }
   if (controller.runtime.gallery) {
     const cue = controllerSnapshot(controller).cue;
     if (controller.runtime.gallery.mode === 'shadow' || cue.target?.id === 'shadow-panel') return galleryAction(controller, { type: 'compare' });
@@ -331,16 +385,17 @@ export function setControllerScreenReader(controller: RuntimeController, enabled
 /** Emit movement only after a successful native presentation, never a failed
  * speculative simulation frame. Sources/players belong to the scene owner. */
 export function flushControllerAudioFrame(controller: RuntimeController): void {
-  const distance = controller.pendingFootstepDistance, actorDistance = controller.pendingActorFootstepDistance, actorEvents = controller.pendingActorEvents;
-  controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorEvents = [];
-  if (controller.pendingExitImpact) {
+  const distance = controller.pendingFootstepDistance, actorPlants = controller.pendingActorPlants, actorEvents = controller.pendingActorEvents;
+  controller.pendingActorPlants = [];
+  controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
+  if (controller.pendingExitImpact && (!controller.runtime.vault || controller.runtime.vault.exitClosureSeconds <= 1.15)) {
     controller.pendingExitImpact = false;
-    if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.gallery?.finalDoorClosed && controller.diagnostics.stage === 'ready' && controller.diagnostics.appActive !== false) {
-      controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'door-close', position: { x: 4, y: 1.45, z: 23 } });
+    if (!controller.retired && !controller.runtime.paused && (controller.runtime.progress.gallery?.finalDoorClosed || controller.runtime.progress.vault?.finalDoorClosed) && controller.diagnostics.stage === 'ready' && controller.diagnostics.appActive !== false) {
+      controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'door-close', position: controller.runtime.vault ? VAULT_EXIT_FIXTURE.center : { x: 4, y: 1.45, z: 23 } });
     }
   }
   if (!controllerCanInteract(controller)) return;
-  const messages = { foreshadow: '格子の奥に、展示体が立っている。', absence: '奥で足音。', crossing: '格子の向こうを、展示体が横切る。', warning: '通路に何かいる。棚の陰でやり過ごそう。', caught: '最後の安全な場所へ戻された。' };
+  const messages = { reveal: '隔壁の奥で頭が動いた。格子の先では棚を使おう。', noticed: 'こちらに気づいた。棚の陰へ。', windup: '肩を引いた。横へ避けよう。', 'final-warning': '搬出口の方へ足音。通路の仕切りで視線を切れる。', foreshadow: '格子の奥に、展示体が立っている。', absence: '奥で足音。', crossing: '格子の向こうを、展示体が横切る。', warning: '通路に何かいる。棚の陰でやり過ごそう。', caught: '最後の安全な場所へ戻された。' };
   if (actorEvents.includes('warning') && controller.audio) {
     const owner = controller.audio, session = controller.runtime.session;
     owner.playIllusion(String(session), controller.horrorIntensity, () => {
@@ -351,11 +406,23 @@ export function flushControllerAudioFrame(controller: RuntimeController): void {
   }
   if (actorEvents.length) controller.actorNotice = { sequence: (controller.actorNotice?.sequence ?? 0) + 1, text: actorEvents.map(event => messages[event]).join(' ') };
   controller.audio?.setListenerPosition(controller.runtime.pose.position);
-  if (actorDistance > 0 && controller.runtime.gallery?.mode === 'explore') controller.audio?.actorMovement(actorDistance, controller.runtime.gallery.actor.position, String(controller.runtime.session));
+  if (controller.runtime.gallery?.mode === 'explore' || controller.runtime.vault?.mode === 'explore') {
+    for (const plant of actorPlants) controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'actor-plant', position: plant.position });
+  }
   if (distance > 0) controller.audio?.movement(distance, String(controller.runtime.session));
 }
 export function soundForControllerTransition(controller: RuntimeController, previous: ChapterRuntime): void {
   const before = previous.progress, after = controller.runtime.progress;
+  if (before.vault && after.vault) {
+    const b = before.vault, a = after.vault;
+    if (!b.finalDoorClosed && a.finalDoorClosed) { controller.audio?.beginEnding(); controller.pendingExitImpact = true; return; }
+    const released = !b.length.solved && a.length.solved || !b.rod.solved && a.rod.solved;
+    const partition = previous.vault?.partitionClosed !== controller.runtime.vault?.partitionClosed;
+    const id = partition ? 'vault-partition' : controller.runtime.vault?.mode === 'rod' ? 'vault-rod' : 'vault-length';
+    controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: released ? 'unlock' : partition ? 'door' : 'interaction',
+      position: worldForController(controller).interactables.find(t => t.id === id)?.center ?? controller.runtime.pose.position });
+    return;
+  }
   if (before.gallery && after.gallery) {
     const b = before.gallery, a = after.gallery;
     if (!b.finalDoorClosed && a.finalDoorClosed) { controller.audio?.beginEnding(); controller.pendingExitImpact = true; return; }
@@ -410,7 +477,7 @@ export function setControllerNotebookPreview(controller: RuntimeController, prev
 /** Called before pausing so no owned pointer is lost before suppression. */
 export function prepareControllerNotebook(controller: RuntimeController): void {
   if (controller.retired) return;
-  const pointer = controller.runtime.gallery?.activeDrag?.pointerId;
+  const pointer = controller.runtime.vault?.activeDrag?.pointerId ?? controller.runtime.gallery?.activeDrag?.pointerId;
   if (pointer !== undefined && !controller.input.releaseBarrier.includes(pointer)) controller.input.releaseBarrier.push(pointer);
   requireAllPointersReleased(controller.input);
 }

@@ -17,7 +17,7 @@ import type {
   ScreenName,
 } from '../types/application';
 
-export type PlayableChapterId = 'returnless-entrance' | 'perception-gallery-v1';
+export type PlayableChapterId = 'returnless-entrance' | 'perception-gallery-v1' | 'uncanny-vault-v1';
 export type AppState = PersistedApplication & {
   selectedChapterId: PlayableChapterId;
   screen: ScreenName;
@@ -112,7 +112,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'COMPLETE_CHAPTER':
       if (state.screen !== 'firstPerson' || action.journeyRun !== state.journeyRun ||
         action.summary.chapterId !== state.selectedChapterId ||
-        (state.selectedChapterId === 'perception-gallery-v1' ? action.summary.chapterVersion !== 3 || action.summary.powerCount !== 2 : action.summary.seals !== 2)) return state;
+        (state.selectedChapterId === 'uncanny-vault-v1' ? action.summary.chapterVersion !== 1 || action.summary.deviceCount !== 2 : state.selectedChapterId === 'perception-gallery-v1' ? action.summary.chapterVersion !== 3 || action.summary.powerCount !== 2 : action.summary.seals !== 2)) return state;
       return { ...state, screen: 'firstPersonResult', firstPersonSummary: action.summary };
     case 'COMPLETE_STAGE': {
       const expectedLevel = state.stageIndex === 0 ? 'floating-corridor' : 'impossible-bridge';

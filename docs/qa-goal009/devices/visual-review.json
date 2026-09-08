@@ -1,0 +1,82 @@
+{
+  "inspection": "Actual isolated WebGL component images. Six ordered overview sheets show all 60 length/rod states at all three sizes; six cafe images show both appearances at all three sizes. Additional originals were opened for legibility.",
+  "opened": [
+    {
+      "file": "length-320-overview.png",
+      "sha256": "c2772a78ac02a1a8bbe7d23cf636e096e21c37ba0d53a88bd1506c333a346d5f"
+    },
+    {
+      "file": "length-390-overview.png",
+      "sha256": "7792c0c1961b56a4567c39d961cbdc3fdf5b428912691aef898474a03e6101c3"
+    },
+    {
+      "file": "length-430-overview.png",
+      "sha256": "b6535ff99491a6a511c8ef95fcac8d69cda9a4b16266d4b3520aaee47430af48"
+    },
+    {
+      "file": "rod-320-overview.png",
+      "sha256": "aae05a387f05200225a4921e2b599cddbd423f9d262450ed52ba793492665e89"
+    },
+    {
+      "file": "rod-390-overview.png",
+      "sha256": "a037b244aeff2955b44600b122fddd56a5c0c9de2568c6164a5920e4b26985b9"
+    },
+    {
+      "file": "rod-430-overview.png",
+      "sha256": "fdf5c974d5866a3e830d3608c54d79911c03b3ea75f3ab63eae7be1457d09fa0"
+    },
+    {
+      "file": "cafe-context-on-320.png",
+      "sha256": "a05ccb68d6a4a77804682225669dcc2f7dce4bbce16056a0ab06dd77e72d0fad"
+    },
+    {
+      "file": "cafe-context-on-390.png",
+      "sha256": "f75c6f0d20f3f06d0083116e1257c1910abc818a5d2cdbe6715581ff524e6174"
+    },
+    {
+      "file": "cafe-context-on-430.png",
+      "sha256": "ac392fdc8ab03b5d8368b5914facf07e1f52418a8972d22e98adb8c0cfdbfe82"
+    },
+    {
+      "file": "cafe-neutral-320.png",
+      "sha256": "384bdc8c42da9a3537fe4b42a8c530fb850f84b93c26ffea83841be508ab2ac7"
+    },
+    {
+      "file": "cafe-neutral-390.png",
+      "sha256": "2b0bea1f3faf05fae6bae9062fc75ff2dc044576ac5774e70804efda640b51e9"
+    },
+    {
+      "file": "cafe-neutral-430.png",
+      "sha256": "97d142e2b73ecf0f3894dd7a941bebc7aea85f61c7ba33cb927848a13f365c82"
+    },
+    {
+      "file": "length-baseline-320.png",
+      "sha256": "372e419fb5ee32f89a970c72cef6440da6e06301524ff59d94c2d39ebd417171"
+    },
+    {
+      "file": "length-correct-released-390.png",
+      "sha256": "83ba078a596fa2250105be7f8a8e34c2327732494f9b6ed1c6ff3e1f55c1f04e"
+    },
+    {
+      "file": "rod-correct-committed-320.png",
+      "sha256": "e5db77f1d34a81e031d625b6dd11640539fbf5cd46839cba73001ad4216c3e89"
+    }
+  ],
+  "observations": [
+    "Both rod endpoints, central rod, tilted frame and separate plumb reference remain distinguishable in the rendered images.",
+    "Hiding fins/frame changes context; the measured shaft/rod matrices and geometry remain identical.",
+    "Correct released/committed states share their measured geometry. Progress and feedback distinguish release from commit; this isolated scene does not paint an invented HUD.",
+    "All boards, including the cafe comparison at 3.4 m, fit in the final fixed-camera views.",
+    "Length latch withdraws only after correct commit and domain gate animation advancement."
+  ],
+  "limitations": [
+    "No subjective length/tilt perception or fear assessment.",
+    "The command sequence uses actual public domain actions with authored plane coordinates; native touch, actual HUD layout/fontScale, full chapter controller/AI and device performance are not claimed by Phase B.",
+    "Hit-size calculations use the actual shared .30 m radius and plate clipping. They do not prove native gesture reachability beneath HUD; integration must verify that separately."
+  ],
+  "corrections": [
+    "Authored length/rod observation distance was increased after projection exposed narrow portrait clipping; the camera is not jumped or refit on operation.",
+    "Cafe inspection camera was pulled back within its authored maxDistance to include all mortar rows and board sides.",
+    "A capture whose definition.ts changed mid-run was rejected by the source guard, then regenerated after freeze."
+  ]
+}

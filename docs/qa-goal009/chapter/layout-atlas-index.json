@@ -1,0 +1,86 @@
+[
+  {
+    "filename": "layout-320-font1-overview.png",
+    "order": "Left to right; length top row, rod bottom row. Baseline / expanded / baseline scroll bottom / expanded scroll bottom. Aspect ratio preserved.",
+    "files": [
+      "layout-length-320-font1-baseline.png",
+      "layout-length-320-font1-expanded.png",
+      "layout-length-320-font1-baseline-bottom.png",
+      "layout-length-320-font1-expanded-bottom.png",
+      "layout-rod-320-font1-baseline.png",
+      "layout-rod-320-font1-expanded.png",
+      "layout-rod-320-font1-baseline-bottom.png",
+      "layout-rod-320-font1-expanded-bottom.png"
+    ]
+  },
+  {
+    "filename": "layout-320-font2-overview.png",
+    "order": "Left to right; length top row, rod bottom row. Baseline / expanded / baseline scroll bottom / expanded scroll bottom. Aspect ratio preserved.",
+    "files": [
+      "layout-length-320-font2-baseline.png",
+      "layout-length-320-font2-expanded.png",
+      "layout-length-320-font2-baseline-bottom.png",
+      "layout-length-320-font2-expanded-bottom.png",
+      "layout-rod-320-font2-baseline.png",
+      "layout-rod-320-font2-expanded.png",
+      "layout-rod-320-font2-baseline-bottom.png",
+      "layout-rod-320-font2-expanded-bottom.png"
+    ]
+  },
+  {
+    "filename": "layout-390-font1.5-overview.png",
+    "order": "Left to right; length top row, rod bottom row. Baseline / expanded / baseline scroll bottom / expanded scroll bottom. Aspect ratio preserved.",
+    "files": [
+      "layout-length-390-font1.5-baseline.png",
+      "layout-length-390-font1.5-expanded.png",
+      "layout-length-390-font1.5-baseline-bottom.png",
+      "layout-length-390-font1.5-expanded-bottom.png",
+      "layout-rod-390-font1.5-baseline.png",
+      "layout-rod-390-font1.5-expanded.png",
+      "layout-rod-390-font1.5-baseline-bottom.png",
+      "layout-rod-390-font1.5-expanded-bottom.png"
+    ]
+  },
+  {
+    "filename": "layout-390-font2-overview.png",
+    "order": "Left to right; length top row, rod bottom row. Baseline / expanded / baseline scroll bottom / expanded scroll bottom. Aspect ratio preserved.",
+    "files": [
+      "layout-length-390-font2-baseline.png",
+      "layout-length-390-font2-expanded.png",
+      "layout-length-390-font2-baseline-bottom.png",
+      "layout-length-390-font2-expanded-bottom.png",
+      "layout-rod-390-font2-baseline.png",
+      "layout-rod-390-font2-expanded.png",
+      "layout-rod-390-font2-baseline-bottom.png",
+      "layout-rod-390-font2-expanded-bottom.png"
+    ]
+  },
+  {
+    "filename": "layout-430-font1-overview.png",
+    "order": "Left to right; length top row, rod bottom row. Baseline / expanded / baseline scroll bottom / expanded scroll bottom. Aspect ratio preserved.",
+    "files": [
+      "layout-length-430-font1-baseline.png",
+      "layout-length-430-font1-expanded.png",
+      "layout-length-430-font1-baseline-bottom.png",
+      "layout-length-430-font1-expanded-bottom.png",
+      "layout-rod-430-font1-baseline.png",
+      "layout-rod-430-font1-expanded.png",
+      "layout-rod-430-font1-baseline-bottom.png",
+      "layout-rod-430-font1-expanded-bottom.png"
+    ]
+  },
+  {
+    "filename": "layout-430-font2-overview.png",
+    "order": "Left to right; length top row, rod bottom row. Baseline / expanded / baseline scroll bottom / expanded scroll bottom. Aspect ratio preserved.",
+    "files": [
+      "layout-length-430-font2-baseline.png",
+      "layout-length-430-font2-expanded.png",
+      "layout-length-430-font2-baseline-bottom.png",
+      "layout-length-430-font2-expanded-bottom.png",
+      "layout-rod-430-font2-baseline.png",
+      "layout-rod-430-font2-expanded.png",
+      "layout-rod-430-font2-baseline-bottom.png",
+      "layout-rod-430-font2-expanded-bottom.png"
+    ]
+  }
+]

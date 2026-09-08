@@ -1,0 +1,103 @@
+{
+  "reviewedAtUTC": "2026-09-08T13:21:17.814348+00:00",
+  "method": "All 11 final video-decoded ordered sheets and 6 final layout atlases actually opened with view_image. This is time-ordered frame inspection, not full real-time video playback or sound listening. Atlases cover all 48 final logical-viewport layout PNGs.",
+  "openedImages": [
+    {
+      "file": "west-overview.png",
+      "sha256": "3f39481d2abd07d472dab36c5f08f6a4f9957d8388e6387c9bf237f1dc30abbd"
+    },
+    {
+      "file": "east-overview.png",
+      "sha256": "4943209d9534923aafc3ad803584943ca11910caa3ac33856fbe2cd275ce2d34"
+    },
+    {
+      "file": "notice-pursuit.png",
+      "sha256": "1cd6e207a3acbd59c4af821aaab7e71948e98ca5017c96bb75e9931aa3e5277b"
+    },
+    {
+      "file": "length-operation.png",
+      "sha256": "1d7b4fb18471f2e2c0578dbdf6acc338da0ead1cd4422b177f43d80241dc1c26"
+    },
+    {
+      "file": "rod-operation.png",
+      "sha256": "c7881a62574ea6be74ed29ce4efaf2bc7aa25de79ca3629a352a8781dccd85d3"
+    },
+    {
+      "file": "search-overview.png",
+      "sha256": "4190a05bf4c28bdd0cbf151a249fc16f8ba03f70ef3d144c1015bfff509b5f50"
+    },
+    {
+      "file": "search-and-return.png",
+      "sha256": "c0e54eb812e21281d22e717c2cf2ff39f7e7ea8d8ddacae3f99166acf0481e95"
+    },
+    {
+      "file": "partition-attack-blocked.png",
+      "sha256": "9b9d30b7224298c5b5207ceb2d0d862bdd7d60861a02fd4fde12ef5036b729e3"
+    },
+    {
+      "file": "final-door-and-result.png",
+      "sha256": "cb4d0dfc4cd637fc8f7ea82f69d5e1a63e34f0ea82724732f0b0a3e4fb507a03"
+    },
+    {
+      "file": "lateral-dodge.png",
+      "sha256": "5ec97934f1389853b39de40aebf015fefb8feb095cef2269bf506e260942d088"
+    },
+    {
+      "file": "entry-peek.png",
+      "sha256": "f8516c60e1c1e4de4f62e3d03f6d240f6f9dcf6243b9e15616bfb1131bfa7d97"
+    },
+    {
+      "file": "layout-320-font1-overview.png",
+      "sha256": "9b08c5e64323ca2e509c2e97f5b1e21c5bb2ac1c3c5f955346142af098f999fe"
+    },
+    {
+      "file": "layout-320-font2-overview.png",
+      "sha256": "8aea0f06dd7ddcd8d77348f26d29f5387b56ed9bb8a8780b63e917d0dcf8eccc"
+    },
+    {
+      "file": "layout-390-font1.5-overview.png",
+      "sha256": "09cbe62410104e2cc05c69758653322f7025c1dfe64749914d39724cbcc91eb5"
+    },
+    {
+      "file": "layout-390-font2-overview.png",
+      "sha256": "e2cdd77c7cfaca291667ba52fa89ced2e54042587a47ef346271f5b76672a85e"
+    },
+    {
+      "file": "layout-430-font1-overview.png",
+      "sha256": "a4a6325d14c129262aa2a12d023dcb1e00cdd20924c07aa86afc28290866a34e"
+    },
+    {
+      "file": "layout-430-font2-overview.png",
+      "sha256": "8ab5231b7d87f4b1d8d4fa7b679f790b17f16c31a548ea556fbc1dac447d9970"
+    }
+  ],
+  "temporalImageCount": 11,
+  "layoutAtlasCount": 6,
+  "layoutSourceImageCount": 48,
+  "fullRealTimePlaybackWatched": false,
+  "soundListened": false,
+  "nativeIPhoneTested": false,
+  "humanIllusionOrFearMeasured": false,
+  "observations": [
+    "West and east are continuous actual-controller routes. Comparison aids, direct touch dragging, release, incorrect commit, correct commit and leave are visible through the real Screen host tree.",
+    "West approximately 10.5-12.5s includes visible face/chest and walking across investigate 10.567s, notice 11.100s and pursue 11.733s. Before and after this interval physical panels/shelves occlude the actor; the phase log alone is not called visible motion.",
+    "Search clip 24-31s shows approach through the physical working-bay grille opening, face/chest looking to three search directions, and body turning away during return. Player remains inside the physically narrow access bay.",
+    "Isolated dodge fixture shows windup, attack toward its committed target, lateral movement out of that target, and an intentional look back during recover. Fixture initialization is separate from earned chapter travel.",
+    "Final door handle is visible before explicit closure, the actual plate descends, the camera stays fixed after semantic closure, and the real result component remains displayed. App navigation and async save success are outside the capture.",
+    "Entry peek shows a small face/shoulder portion beyond real grille bars and the lower partition. This does not measure discoverability for a new user.",
+    "Length heading at 320x568/fontScale2 was shortened after a 2.26px background overlap. Final DOM measured 31.335px heading/board separation. All 48 layout variants were viewed in six aspect-preserving atlases; end-of-scroll images wait two compositor frames."
+  ],
+  "limits": [
+    "React Native hosts/styles are translated to browser CSS, not Yoga or UIKit metrics.",
+    "Native ready/presentation/audio and native finger event delivery are stubbed. Actor/world/controller and WebGL meshes/materials are actual app code.",
+    "30fps is encoded sampling, not measured device frame rate. No iPhone/Metal/EXGL, audio listening, subjective fear or illusion perception is claimed."
+  ],
+  "rejectedOrAdjustedRuns": [
+    "An early search look target faced an opaque side wall; its phase log did not establish visible searching. Retargeted actual look input to the grille opening and recaptured.",
+    "A long search-and-return wait followed by the same outgoing route caused a real catch; kept search observation separate from successful continuous full routes.",
+    "Early width checks omitted heading-versus-board intersection. Added the check and fixed actual purpose text with parent/boundary owner.",
+    "Immediate scroll screenshots could retain stale compositor pixels. Final static layouts use a second pass waiting two compositor frames.",
+    "Offline Screen timeouts now follow simulation time; old fast-extraction subtitle duration is not used.",
+    "Final encoding uses exact current frameCount to exclude stale trailing scratch PNGs."
+  ]
+}

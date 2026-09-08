@@ -116,6 +116,7 @@ export type FirstPersonChapterSummary = {
   chapterId: string;
   seals?: number;
   powerCount?: 0 | 1 | 2;
+  deviceCount?: 2;
   chapterVersion?: 1 | 2 | 3;
   migratedCompletion?: boolean;
   discoveredMechanisms: string[];

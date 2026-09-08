@@ -1,3 +1,4 @@
+import { actorMotionEye, advanceActorMotion, createActorMotion, wrapActorAngle, type ActorFootPlant, type ActorGait, type ActorMotionState } from '../actorMotion';
 import { getWorld } from '../firstPerson/chapter';
 import { cameraMatchesPose, projectWithCamera } from '../firstPerson/alignment';
 import { clamp, MAX_FRAME_DELTA, segmentOccluded } from '../firstPerson/geometry';
@@ -20,10 +21,10 @@ export const GALLERY_ACTOR_ROUTE: readonly Vec3[] = [
 ];
 export function actorCrossingPoint(seed: number): Vec3 { return { x: [.18, .28, .38][seed % 3]!, y: 0, z: 9 }; }
 export type GalleryActorEvent = 'foreshadow' | 'absence' | 'crossing' | 'warning' | 'caught';
-export type GalleryActorStep = { runtime: ChapterRuntime; caught: boolean; movedDistance: number; events: GalleryActorEvent[] };
+export type GalleryActorStep = { runtime: ChapterRuntime; caught: boolean; movedDistance: number; events: GalleryActorEvent[]; footPlants: ActorFootPlant[] };
 export function initialGalleryActor(progress: GalleryProgress): GalleryActor {
   const position = progress.story.crossingStarted ? GALLERY_ACTOR_ROUTE[progress.wiring.solved ? 7 : 3]! : GALLERY_DISPLAY_POSITION;
-  return { position: { ...position }, yaw: 0, phase: progress.story.resolved ? 'resolved' : 'dormant', phaseTime: 0,
+  return { motion: createActorMotion(position), position: { ...position }, yaw: 0, phase: progress.story.resolved ? 'resolved' : 'dormant', phaseTime: 0,
     routeIndex: progress.wiring.solved ? 6 : 1, routeDirection: -1, startupGrace: ACTOR_TELEGRAPH_SECONDS,
     contactCooldown: ACTOR_TELEGRAPH_SECONDS, travelledDistance: 0, visible: true, intensity: 'standard' };
 }
@@ -43,13 +44,26 @@ function playerInDanger(runtime: ChapterRuntime): boolean {
   const p = runtime.pose.position;
   return !!runtime.progress.gallery?.wiring.solved && p.z >= 11.6 && p.z < 22.4 && p.x >= 3.15 && p.x <= 4.85;
 }
-function actorEye(actor: GalleryActor): Vec3 { return { x: actor.position.x, y: 1.82, z: actor.position.z }; }
+function motionFor(actor: GalleryActor): ActorMotionState {
+  const state = actor.motion;
+  // Cold restore / explicit test or authored relocation is separate from turns.
+  if (state && Math.hypot(state.position.x - actor.position.x, state.position.z - actor.position.z) < 1e-8 && Math.abs(wrapActorAngle(state.yaw - actor.yaw)) < 1e-8) return state;
+  return { ...createActorMotion(actor.position, actor.yaw), travelledDistance: actor.travelledDistance };
+}
+function actorEye(actor: GalleryActor): Vec3 { return actorMotionEye(motionFor(actor)).position; }
+function gaitFor(actor: GalleryActor): ActorGait {
+  return actor.phase === 'approach' ? 'pursue' : actor.phase === 'noticed' ? 'notice' : actor.phase === 'search' ? 'search' : actor.phase === 'patrol' || actor.phase === 'departing' ? 'patrol' : actor.phase === 'telegraph' ? 'listen' : 'idle';
+}
+function withMotion(actor: GalleryActor, motion: ActorMotionState): GalleryActor {
+  return { ...actor, motion, position: motion.position, yaw: motion.yaw, travelledDistance: motion.travelledDistance };
+}
 export function actorCanSeePlayer(runtime: ChapterRuntime): boolean {
   const actor = runtime.gallery?.actor;
   if (!actor || !playerInDanger(runtime) || !runtime.progress.gallery?.powerConnected) return false;
   const dx = runtime.pose.position.x - actor.position.x, dz = runtime.pose.position.z - actor.position.z, distance = Math.hypot(dx, dz);
   if (distance > 5.4 || distance < 1e-8) return distance < 1e-8;
-  return (-Math.sin(actor.yaw) * dx - Math.cos(actor.yaw) * dz) / distance >= Math.cos(52 * Math.PI / 180) &&
+  const eye = actorMotionEye(motionFor(actor));
+  return (-Math.sin(eye.yaw) * dx - Math.cos(eye.yaw) * dz) / distance >= Math.cos(52 * Math.PI / 180) &&
     !segmentOccluded(actorEye(actor), runtime.pose.position, getWorld(runtime));
 }
 /** This records possible on-screen presentation, never awareness or fear. A
@@ -83,18 +97,11 @@ export function actorRouteEdgeOpen(from: Vec3, to: Vec3, world: WorldGeometry): 
   for (let i = 0; i <= steps; i++) if (!allowed({ x: from.x + (to.x - from.x) * i / steps, y: 0, z: from.z + (to.z - from.z) * i / steps }, world)) return false;
   return true;
 }
-function move(actor: GalleryActor, target: Vec3, speed: number, dt: number, world: WorldGeometry): { actor: GalleryActor; distance: number } {
-  const dx = target.x - actor.position.x, dz = target.z - actor.position.z, length = Math.hypot(dx, dz);
-  if (length < 1e-7 || dt <= 0) return { actor, distance: 0 };
-  const total = Math.min(length, speed * dt), steps = Math.max(1, Math.ceil(total / (ACTOR_COLLISION_RADIUS / 4)));
-  let position = actor.position, moved = 0;
-  for (let i = 0; i < steps; i++) {
-    const next = { x: position.x + dx / length * total / steps, y: 0, z: position.z + dz / length * total / steps };
-    if (!actorRouteEdgeOpen(position, next, world)) break;
-    moved += Math.hypot(next.x - position.x, next.z - position.z); position = next;
-  }
-  return { actor: { ...actor, position, yaw: Math.atan2(-dx, -dz), travelledDistance: actor.travelledDistance + moved }, distance: moved };
+function move(actor: GalleryActor, target: Vec3, speed: number, dt: number, world: WorldGeometry): { actor: GalleryActor; distance: number; footPlants: ActorFootPlant[] } {
+  const result = advanceActorMotion(motionFor(actor), { target, maxSpeed: speed, gait: gaitFor(actor) }, dt, (from, to) => actorRouteEdgeOpen(from, to, world));
+  return { actor: withMotion(actor, result.state), distance: result.movedDistance, footPlants: result.footPlants };
 }
+
 function nearestRoute(position: Vec3): number {
   return [4, 5, 6, 7].sort((a, b) => Math.hypot(GALLERY_ACTOR_ROUTE[a]!.x - position.x, GALLERY_ACTOR_ROUTE[a]!.z - position.z) - Math.hypot(GALLERY_ACTOR_ROUTE[b]!.x - position.x, GALLERY_ACTOR_ROUTE[b]!.z - position.z))[0]!;
 }
@@ -109,12 +116,12 @@ export function resumeGalleryActor(runtime: ChapterRuntime): ChapterRuntime {
     startupGrace: Math.max(actor.startupGrace, ACTOR_TELEGRAPH_SECONDS), contactCooldown: Math.max(actor.contactCooldown, ACTOR_TELEGRAPH_SECONDS) } } };
 }
 export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options: { intensity: HorrorIntensity; matrices?: CameraMatrices }): GalleryActorStep {
-  const initial = { runtime, caught: false, movedDistance: 0, events: [] as GalleryActorEvent[] };
+  const initial = { runtime, caught: false, movedDistance: 0, events: [] as GalleryActorEvent[], footPlants: [] as ActorFootPlant[] };
   const gallery = runtime.progress.gallery, live = runtime.gallery;
   if (!gallery || !live || runtime.paused || runtime.progress.cleared || live.mode !== 'explore' || !Number.isFinite(dt) || dt <= 0) return initial;
   const elapsed = Math.min(MAX_FRAME_DELTA, dt), events: GalleryActorEvent[] = [];
   let story = gallery.story, actor: GalleryActor = { ...live.actor, startupGrace: Math.max(0, live.actor.startupGrace - elapsed), contactCooldown: Math.max(0, live.actor.contactCooldown - elapsed), phaseTime: live.actor.phaseTime + elapsed };
-  let movedDistance = 0;
+  let movedDistance = 0, motionAdvanced = false; const footPlants: ActorFootPlant[] = [];
   if (options.intensity !== actor.intensity) {
     const keep = actor.phase === 'dormant' || actor.phase === 'resolved' || presentationPhase(actor);
     actor = { ...actor, intensity: options.intensity, phase: keep ? actor.phase : 'patrol', phaseTime: keep ? actor.phaseTime : 0,
@@ -134,7 +141,7 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
       if (actor.phaseTime >= 1.6) actor = { ...actor, phase: 'departing', phaseTime: 0, routeIndex: 2 };
     } else {
       const target = actor.routeIndex === 1 ? actorCrossingPoint(gallery.seed) : GALLERY_ACTOR_ROUTE[actor.routeIndex]!;
-      const moved = move(actor, target, .62, elapsed, getWorld(runtime)); actor = moved.actor; movedDistance += moved.distance;
+      const moved = move(actor, target, .62, elapsed, getWorld(runtime)); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
       if (Math.hypot(actor.position.x - target.x, actor.position.z - target.z) < 1e-7) {
         if (actor.routeIndex === 1) actor = { ...actor, phase: 'crossing-pause', phaseTime: 0 };
         else if (actor.routeIndex === 3) actor = { ...actor, phase: 'dormant', phaseTime: 0, routeIndex: 4, routeDirection: 1 };
@@ -153,7 +160,7 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
     const world = getWorld(next), subdued = options.intensity === 'subdued', sees = actorCanSeePlayer(next);
     if (subdued) {
       const target = actor.position.z < 20.3 ? GALLERY_ACTOR_ROUTE[7]! : GALLERY_ACTOR_ROUTE[8]!;
-      const moved = move({ ...actor, phase: 'patrol', lastSeen: undefined }, target, .68, elapsed, world); actor = moved.actor; movedDistance += moved.distance;
+      const moved = move({ ...actor, phase: 'patrol', lastSeen: undefined }, target, .68, elapsed, world); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
     } else if (actor.startupGrace <= 0) {
       if ((actor.phase === 'patrol' || actor.phase === 'search') && sees) actor = { ...actor, phase: 'noticed', phaseTime: 0, lastSeen: { ...player } };
       if (actor.phase === 'noticed') {
@@ -163,12 +170,12 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
       }
       if (actor.phase === 'approach') {
         if (!sees) actor = { ...actor, phase: 'search', phaseTime: 0 };
-        else { const moved = move({ ...actor, lastSeen: { ...player } }, player, 1.25, elapsed, world); actor = moved.actor; movedDistance += moved.distance; }
+        else { const moved = move({ ...actor, lastSeen: { ...player } }, player, 1.25, elapsed, world); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true; }
       }
       if (actor.phase === 'search') {
         if (actor.phaseTime >= 3.2) actor = { ...actor, phase: 'patrol', phaseTime: 0, routeIndex: nearestRoute(actor.position), lastSeen: undefined };
         else if (actor.lastSeen) {
-          const moved = move(actor, actor.lastSeen, .58, elapsed, world); actor = moved.actor; movedDistance += moved.distance;
+          const moved = move(actor, actor.lastSeen, .58, elapsed, world); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
         }
       }
       if (actor.phase === 'patrol') {
@@ -178,7 +185,7 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
           if (actor.routeIndex >= 7) actor.routeDirection = -1;
           actor = { ...actor, routeIndex: Math.max(4, Math.min(7, actor.routeIndex + actor.routeDirection)) };
         }
-        const moved = move(actor, GALLERY_ACTOR_ROUTE[actor.routeIndex]!, .84, elapsed, world); actor = moved.actor; movedDistance += moved.distance;
+        const moved = move(actor, GALLERY_ACTOR_ROUTE[actor.routeIndex]!, .84, elapsed, world); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
       }
     }
     next = { ...next, gallery: { ...next.gallery!, actor } };
@@ -188,11 +195,18 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
       actor = { ...actor, phase: 'search', phaseTime: 0, routeIndex: nearestRoute(actor.position), lastSeen: undefined, startupGrace: ACTOR_TELEGRAPH_SECONDS, contactCooldown: 4 };
       const safe = live.lastSafePose;
       next = { ...next, pose: { ...safe, position: { ...safe.position } }, gallery: { ...next.gallery!, actor } };
-      events.push('caught'); return { runtime: next, caught: true, movedDistance, events };
+      events.push('caught'); return { runtime: next, caught: true, movedDistance, events, footPlants };
     }
+  }
+  if (!motionAdvanced) {
+    const target = actor.lastSeen;
+    const desiredHeading = target ? Math.atan2(-(target.x - actor.position.x), -(target.z - actor.position.z)) : actor.motion.desiredHeading;
+    const settled = advanceActorMotion(motionFor(actor), { maxSpeed: 0, gait: gaitFor(actor), desiredHeading, ...(target ? { lookTarget: target } : {}) }, elapsed, (from, to) => actorRouteEdgeOpen(from, to, getWorld(next)));
+    actor = withMotion(actor, settled.state); footPlants.push(...settled.footPlants);
+    next = { ...next, gallery: { ...next.gallery!, actor } };
   }
   // The safe threshold stops detection through playerInDanger; only the actual
   // closing operation sets resolved and freezes the actor behind the same door.
   if (isGalleryExitThreshold(runtime.pose)) actor.lastSeen = undefined;
-  return { runtime: next, caught: false, movedDistance, events };
+  return { runtime: next, caught: false, movedDistance, events, footPlants };
 }

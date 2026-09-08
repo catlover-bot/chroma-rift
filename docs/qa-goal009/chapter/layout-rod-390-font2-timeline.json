@@ -1,0 +1,483 @@
+{
+  "id": "layout-rod-390-font2",
+  "width": 390,
+  "height": 844,
+  "fontScale": 2,
+  "fps": 30,
+  "duration": 0.06666666666666667,
+  "frameCount": 2,
+  "boundary": "Actual continuous controller, shared player collision/AI/world, real Scene useFrame callbacks and Screen handlers. Native ready and audio backend stubbed; actual WebGL occurs during playback. HUD uses browser CSS, not Yoga. Result component receives actual Screen completion callback; App navigation/storage are outside this capture.",
+  "sceneMounts": 1,
+  "screenMounts": 1,
+  "callbacks": 5,
+  "timerClock": "Actual Screen setTimeout callbacks advanced with 60 Hz simulation; no native wall-clock or frame-rate claim",
+  "phases": [
+    "search"
+  ],
+  "summary": {
+    "minY": 0,
+    "maxY": 2.160084520054304,
+    "maxRadius": 0.3781667834762008,
+    "maxStanceCornerSlip": 0,
+    "maxPlayerFrameDistance": 0,
+    "penetrationVertices": 0,
+    "penetrationSolids": {}
+  },
+  "completionCount": 0,
+  "snapshots": [
+    {
+      "name": "baseline",
+      "frame": 0
+    },
+    {
+      "name": "expanded",
+      "frame": 1
+    }
+  ],
+  "events": [
+    {
+      "time": 0,
+      "phase": "search",
+      "position": {
+        "x": 2.071479889648494,
+        "y": 0,
+        "z": 6.844403575584695
+      },
+      "lastSeen": {
+        "x": 1.9350000000000012,
+        "y": 1.6,
+        "z": 6.5
+      },
+      "lastHeard": {
+        "x": 3.3324999999999947,
+        "y": 0.08,
+        "z": 6.5
+      }
+    }
+  ],
+  "frames": [
+    {
+      "frame": 0,
+      "time": 0,
+      "segment": "entry",
+      "pose": {
+        "position": {
+          "x": -4.6,
+          "y": 1.6,
+          "z": 18.5
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": 0.023918882497910503
+      },
+      "camera": [
+        1.1102230246251565e-16,
+        0,
+        -1,
+        0,
+        0.023916601846119972,
+        0.9997139571678162,
+        3.469446951953614e-18,
+        0,
+        0.9997139571678162,
+        -0.023916601846119972,
+        1.1102230246251565e-16,
+        0,
+        -4.6,
+        1.6,
+        18.5,
+        1
+      ],
+      "actor": {
+        "motion": {
+          "position": {
+            "x": 2.071479889648494,
+            "y": 0,
+            "z": 6.844403575584695
+          },
+          "yaw": -1.3043341747182549,
+          "desiredHeading": -1.3041833782708827,
+          "angularVelocity": 0.03362202271043822,
+          "velocity": {
+            "x": 0.598094642091791,
+            "y": 0,
+            "z": -0.1633486504961823
+          },
+          "speed": 0.6199999859014677,
+          "travelledDistance": 9.096245179454277,
+          "accumulator": 0,
+          "headYaw": 1.0122909661567112,
+          "headPitch": -0.16628540269433037,
+          "chestYaw": 0.41887902047863906,
+          "chestLean": 0.02199999999999997,
+          "pelvisShift": 0.010101270343067226,
+          "turnAge": 7.808333333333511,
+          "launchAge": 11.408333333333326,
+          "movingIntent": true,
+          "gait": "search",
+          "gaitTime": 5.441666666666727,
+          "feet": [
+            {
+              "name": "left",
+              "position": {
+                "x": 2.153862645743546,
+                "y": 0.028099127198070676,
+                "z": 6.713072430343227
+              },
+              "anchor": {
+                "x": 1.7259390245047288,
+                "y": 0,
+                "z": 6.829912914600363
+              },
+              "from": {
+                "x": 1.7259390245047288,
+                "y": 0,
+                "z": 6.829912914600363
+              },
+              "yaw": -1.304299715842145,
+              "fromYaw": -1.304043286509596,
+              "stance": false,
+              "swingTime": 0.3166666666666668,
+              "swingDuration": 0.40322580645161293
+            },
+            {
+              "name": "right",
+              "position": {
+                "x": 2.0255178986334537,
+                "y": 0,
+                "z": 6.965783375070301
+              },
+              "anchor": {
+                "x": 2.0255178986334537,
+                "y": 0,
+                "z": 6.965783375070301
+              },
+              "from": {
+                "x": 1.5370529268742346,
+                "y": 0,
+                "z": 7.099228028884872
+              },
+              "yaw": -1.304032581823514,
+              "fromYaw": -1.3043341747182637,
+              "stance": true,
+              "swingTime": 0,
+              "swingDuration": 0.40322580645161293
+            }
+          ],
+          "swingFoot": 0,
+          "nextFoot": 0,
+          "plantSequence": 44
+        },
+        "visible": true,
+        "phase": "search",
+        "phaseTime": 5.433333333333319,
+        "recognition": 0,
+        "routeIndex": 1,
+        "searchIndex": 0,
+        "startupGrace": 0,
+        "contactCooldown": 0,
+        "attackCommitted": false,
+        "attackHit": false,
+        "lastNoiseSequence": 49,
+        "intensity": "standard",
+        "navigationPath": [
+          {
+            "x": 3.3324999999999947,
+            "y": 0.08,
+            "z": 6.5
+          }
+        ],
+        "repathSeconds": 0,
+        "searchDwellSeconds": 0,
+        "revealTime": 1.4,
+        "navigationTarget": {
+          "x": 3.3324999999999947,
+          "y": 0.08,
+          "z": 6.5
+        },
+        "lastHeard": {
+          "x": 3.3324999999999947,
+          "y": 0.08,
+          "z": 6.5
+        },
+        "lastSeen": {
+          "x": 1.9350000000000012,
+          "y": 1.6,
+          "z": 6.5
+        },
+        "searchOrigin": {
+          "x": 3.3324999999999947,
+          "y": 0.08,
+          "z": 6.5
+        }
+      },
+      "occluded": true,
+      "progress": {
+        "schemaVersion": 1,
+        "specVersion": 1,
+        "seed": 109,
+        "length": {
+          "length": 1.2399999999999973,
+          "solved": true,
+          "attempts": 2
+        },
+        "rod": {
+          "angle": -0.22689280275926285,
+          "solved": false,
+          "attempts": 0
+        },
+        "discoveries": {
+          "length": true,
+          "rod": true,
+          "cafe": false
+        },
+        "aids": {
+          "finsHidden": false,
+          "lengthGuide": true,
+          "frameHidden": false,
+          "plumb": false,
+          "cafeNeutral": false
+        },
+        "story": {
+          "revealStarted": true,
+          "revealPresented": false,
+          "finalPursuitStarted": false
+        },
+        "finalDoorClosed": false
+      },
+      "mode": "rod",
+      "length": 1.2399999999999973,
+      "angle": -0.22689280275926285,
+      "drag": null,
+      "noiseSequence": 49,
+      "exitClosureSeconds": 0,
+      "finalDoorMinY": 3.3,
+      "hud": 0,
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "result": false,
+      "audit": {
+        "minY": 0,
+        "maxY": 2.160084520054304,
+        "radius": 0.3781667834762008,
+        "stanceCornerSlip": 0,
+        "penetrationVertices": 0
+      }
+    },
+    {
+      "frame": 1,
+      "time": 0,
+      "segment": "entry",
+      "pose": {
+        "position": {
+          "x": -4.6,
+          "y": 1.6,
+          "z": 18.5
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": 0.023918882497910503
+      },
+      "camera": [
+        1.1102230246251565e-16,
+        0,
+        -1,
+        0,
+        0.023916601846119972,
+        0.9997139571678162,
+        3.469446951953614e-18,
+        0,
+        0.9997139571678162,
+        -0.023916601846119972,
+        1.1102230246251565e-16,
+        0,
+        -4.6,
+        1.6,
+        18.5,
+        1
+      ],
+      "actor": {
+        "motion": {
+          "position": {
+            "x": 2.071479889648494,
+            "y": 0,
+            "z": 6.844403575584695
+          },
+          "yaw": -1.3043341747182549,
+          "desiredHeading": -1.3041833782708827,
+          "angularVelocity": 0.03362202271043822,
+          "velocity": {
+            "x": 0.598094642091791,
+            "y": 0,
+            "z": -0.1633486504961823
+          },
+          "speed": 0.6199999859014677,
+          "travelledDistance": 9.096245179454277,
+          "accumulator": 0,
+          "headYaw": 1.0122909661567112,
+          "headPitch": -0.16628540269433037,
+          "chestYaw": 0.41887902047863906,
+          "chestLean": 0.02199999999999997,
+          "pelvisShift": 0.010101270343067226,
+          "turnAge": 7.808333333333511,
+          "launchAge": 11.408333333333326,
+          "movingIntent": true,
+          "gait": "search",
+          "gaitTime": 5.441666666666727,
+          "feet": [
+            {
+              "name": "left",
+              "position": {
+                "x": 2.153862645743546,
+                "y": 0.028099127198070676,
+                "z": 6.713072430343227
+              },
+              "anchor": {
+                "x": 1.7259390245047288,
+                "y": 0,
+                "z": 6.829912914600363
+              },
+              "from": {
+                "x": 1.7259390245047288,
+                "y": 0,
+                "z": 6.829912914600363
+              },
+              "yaw": -1.304299715842145,
+              "fromYaw": -1.304043286509596,
+              "stance": false,
+              "swingTime": 0.3166666666666668,
+              "swingDuration": 0.40322580645161293
+            },
+            {
+              "name": "right",
+              "position": {
+                "x": 2.0255178986334537,
+                "y": 0,
+                "z": 6.965783375070301
+              },
+              "anchor": {
+                "x": 2.0255178986334537,
+                "y": 0,
+                "z": 6.965783375070301
+              },
+              "from": {
+                "x": 1.5370529268742346,
+                "y": 0,
+                "z": 7.099228028884872
+              },
+              "yaw": -1.304032581823514,
+              "fromYaw": -1.3043341747182637,
+              "stance": true,
+              "swingTime": 0,
+              "swingDuration": 0.40322580645161293
+            }
+          ],
+          "swingFoot": 0,
+          "nextFoot": 0,
+          "plantSequence": 44
+        },
+        "visible": true,
+        "phase": "search",
+        "phaseTime": 5.433333333333319,
+        "recognition": 0,
+        "routeIndex": 1,
+        "searchIndex": 0,
+        "startupGrace": 0,
+        "contactCooldown": 0,
+        "attackCommitted": false,
+        "attackHit": false,
+        "lastNoiseSequence": 49,
+        "intensity": "standard",
+        "navigationPath": [
+          {
+            "x": 3.3324999999999947,
+            "y": 0.08,
+            "z": 6.5
+          }
+        ],
+        "repathSeconds": 0,
+        "searchDwellSeconds": 0,
+        "revealTime": 1.4,
+        "navigationTarget": {
+          "x": 3.3324999999999947,
+          "y": 0.08,
+          "z": 6.5
+        },
+        "lastHeard": {
+          "x": 3.3324999999999947,
+          "y": 0.08,
+          "z": 6.5
+        },
+        "lastSeen": {
+          "x": 1.9350000000000012,
+          "y": 1.6,
+          "z": 6.5
+        },
+        "searchOrigin": {
+          "x": 3.3324999999999947,
+          "y": 0.08,
+          "z": 6.5
+        }
+      },
+      "occluded": true,
+      "progress": {
+        "schemaVersion": 1,
+        "specVersion": 1,
+        "seed": 109,
+        "length": {
+          "length": 1.2399999999999973,
+          "solved": true,
+          "attempts": 2
+        },
+        "rod": {
+          "angle": -0.22689280275926285,
+          "solved": false,
+          "attempts": 0
+        },
+        "discoveries": {
+          "length": true,
+          "rod": true,
+          "cafe": false
+        },
+        "aids": {
+          "finsHidden": false,
+          "lengthGuide": true,
+          "frameHidden": false,
+          "plumb": false,
+          "cafeNeutral": false
+        },
+        "story": {
+          "revealStarted": true,
+          "revealPresented": false,
+          "finalPursuitStarted": false
+        },
+        "finalDoorClosed": false
+      },
+      "mode": "rod",
+      "length": 1.2399999999999973,
+      "angle": -0.22689280275926285,
+      "drag": null,
+      "noiseSequence": 49,
+      "exitClosureSeconds": 0,
+      "finalDoorMinY": 3.3,
+      "hud": 1,
+      "panel": {
+        "left": 38.86796701019452,
+        "right": 351.1320329898055,
+        "top": 267.6528111305816,
+        "bottom": 578.0873725408944
+      },
+      "result": false,
+      "audit": {
+        "minY": 0,
+        "maxY": 2.160084520054304,
+        "radius": 0.3781667834762008,
+        "stanceCornerSlip": 0,
+        "penetrationVertices": 0
+      }
+    }
+  ],
+  "pendingUITimersAfterUnmount": 0
+}

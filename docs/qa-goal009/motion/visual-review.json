@@ -1,0 +1,56 @@
+{
+  "inspection": "Opened all eight timeordered decoded MP4 contact sheets. Each overview has 30 samples across the continuous 30 s clip; each right/half-turn/stop sheet has 12 ordered samples. Actual generated frames are 900 per clip.",
+  "fullRealtimeVideoWatched": false,
+  "audioHeard": false,
+  "nativeDeviceTest": false,
+  "openedSheets": [
+    {
+      "file": "full-feet-half-turn.png",
+      "sha256": "57da1ce86e7483a4e866e5b9050728583615fc8ff79715430002b93793bbf9ad"
+    },
+    {
+      "file": "full-feet-overview.png",
+      "sha256": "112fc663c32683f2eee490541613f4c889d0253027060c5e15e4be0b1e368a11"
+    },
+    {
+      "file": "full-feet-right-turn.png",
+      "sha256": "517bdd2c62cfd16261665f2f4723a685177886ee55f1b7939817f500c4dd0c88"
+    },
+    {
+      "file": "full-feet-stop.png",
+      "sha256": "335cadb854533641fd81d1349639099d6117e2c022e0c8290b626762d4bf77d9"
+    },
+    {
+      "file": "player-height-half-turn.png",
+      "sha256": "055900315dd07d4abd36f846605a0f80341b60a4d69c53bd67dc06b54d02b4ef"
+    },
+    {
+      "file": "player-height-overview.png",
+      "sha256": "478aeebe993d298e0dd263f6f29d752db5707e041906e5807e0eb43ba53361b0"
+    },
+    {
+      "file": "player-height-right-turn.png",
+      "sha256": "3da0d84f0dc8bedd99cc0ddced29810995a38fbe7334c1443e55b779a014a140"
+    },
+    {
+      "file": "player-height-stop.png",
+      "sha256": "4eaf21c72d0527859ab67a3afbca0094127dc1c129dcaa9720d7477d5f86f8d8"
+    }
+  ],
+  "findings": [
+    "Right-turn sequence shows head motion before chest/root turn; half-turn contains intermediate back/side poses, rather than one-frame whole-body reversal.",
+    "Feet visibly lift/replant during turns and locomotion. World-space planted corner stability is independently checked for all 900 simulation/render samples.",
+    "After 21 s stop input root decelerates over 0.1 s then remains still; final airborne foot settles.",
+    "Both fixed cameras show the whole actor for the complete final timeline, independently gated by projected world AABB for both actor versions."
+  ],
+  "limitations": [
+    "No full-speed continuous viewing tool was available: inspection was frame-based temporal review of video-decoded contact sheets and paired source frames.",
+    "No human fear, naturalness or attention study; no perception claim.",
+    "No native gesture/audio/render timing/FPS or chapter AI route is exercised by this motion-only inspection stage."
+  ],
+  "corrections": [
+    "Initial target was reached before stop: extended target to -8 m and issued stop during movement at 21 s. This exposed and led to a shared simulation deceleration fix.",
+    "Initial full-feet camera clipped the final position: moved the fixed inspection camera, kept old/new matched, and added a 900-frame projection gate.",
+    "A source guard rejected capture while locomotion.ts changed; final artifacts were regenerated after motion source freeze."
+  ]
+}

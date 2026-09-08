@@ -321,3 +321,18 @@ it('silences an accepted ending without premature impact or ambience replay afte
   await flush(); expect(h.count('door-impact')).toBe(1); expect(h.count('ambience')).toBe(ambientStarts);
   h.audio.dispose();
 });
+
+
+it('sounds a presented foot plant once without a travel threshold and consumes silent plants', async () => {
+  const h = harness(); h.audio.setActive(true); await h.audio.whenReady();
+  h.audio.setListenerPosition({ x: 0, y: 0, z: 0 });
+  const plant = { sessionId: 'visit-1', sequence: 1, type: 'actor-plant' as const, position: { x: 6, y: 0, z: 0 } };
+  expect(h.audio.event(plant)).toBe(true); expect(h.audio.event(plant)).toBe(false);
+  await flush(); expect(h.count('footstep')).toBe(1); expect(h.count('cloth')).toBe(1);
+  expect(h.of('footstep')[0]!.volume).toBeCloseTo(.6 * .5 * DEFAULT_AUDIO_PREFERENCES.effectsVolume);
+  h.audio.setActive(false); expect(h.audio.event({ ...plant, sequence: 2 })).toBe(false);
+  h.audio.setActive(true); expect(h.audio.event({ ...plant, sequence: 2 })).toBe(false);
+  expect(h.audio.event({ ...plant, sequence: 3, position: { x: NaN, y: 0, z: 0 } })).toBe(false);
+  await flush(); expect(h.count('footstep')).toBe(1);
+  expect(h.players).toHaveLength(10); h.audio.dispose();
+});

@@ -48,7 +48,7 @@ export function dispatchGalleryController(controller: RuntimeController, command
     }
     controller.audio?.stopMovement();
     if (action.type === 'enter') controller.audio?.stopIllusion();
-    controller.pendingActorFootstepDistance = 0; controller.pendingActorEvents = [];
+    controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
     clearTouchInput(controller.input); controller.simpleStep = 0; controller.pendingFootstepDistance = 0;
   }
   if (result.accepted && result.effects.some(e => e.type === 'gallery-released' || e.type === 'manipulated' || e.type === 'light-on' || e.type === 'power-taken' || e.type === 'power-connected' || e.type === 'exit-opened' || e.type === 'exit-closed' || e.type === 'wiring-released')) soundForControllerTransition(controller, previous);

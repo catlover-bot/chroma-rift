@@ -1,0 +1,26 @@
+Bytecode makes the app startup faster, disabling bytecode is highly discouraged and should only be used for debugging purposes.
+Using src/app as the root directory for Expo Router.
+Starting Metro Bundler
+
+iOS Bundled 1245ms index.tsx (1513 modules)
+
+› Assets (10):
+assets/audio/ambience.wav (192KB)
+assets/audio/cloth.wav (20KB)
+assets/audio/door-impact.wav (24KB)
+assets/audio/footstep.wav (8.7KB)
+assets/audio/interaction.wav (6.8KB)
+assets/audio/mechanism.wav (33KB)
+assets/audio/shepard.wav (576KB)
+assets/perceptual/hybrid-composite.png (59KB)
+assets/perceptual/hybrid-high-pass.png (24KB)
+assets/perceptual/hybrid-low-pass.png (22KB)
+
+› ios bundles (2):
+_expo/static/js/ios/index-9da61bea8a2a8952e1f8be5b2f1e83d1.js (4.3MB)
+_expo/static/js/ios/index-9da61bea8a2a8952e1f8be5b2f1e83d1.js.map (14MB)
+
+› Files (1):
+metadata.json (770B)
+
+Exported: .expo/goal009/three-production

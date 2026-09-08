@@ -1,0 +1,13 @@
+/home/mhirotaka/workspace/chroma-rift
+## feat/goal-009-uncanny-vault
+?? docs/qa-goal009/
+d1f7b55 feat: add perceptual exhibits and staged gallery escape
+8ca5ba3 feat: redesign gallery progression and add an avoidable exhibit
+922db3d docs: record Goal 006 verification and device acceptance steps
+ef4ae85 feat: add the playable perception gallery chapter and audio
+7be6d39 fix: reconcile Goal 005 with verified original kit
+aa8ff20 feat: integrate the untouchable emblem puzzle
+1fffa6f feat: make horror exploration drag-first and readable
+cee78a6 fix: restore first-person scene rendering and startup readiness
+v24.20.0
+11.19.0

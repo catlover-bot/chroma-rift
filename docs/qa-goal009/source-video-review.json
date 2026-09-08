@@ -1,0 +1,439 @@
+{
+  "source": {
+    "actualPath": "/mnt/c/Users/m.hirotaka/Downloads/ScreenRecording_09-08-2026 01-13-09_1.mp4",
+    "bytes": 92952858,
+    "sha256": "f52f8f782fe6923d3aeac4b395fcefdea90cbbd64a296bebc110a78c472897d5",
+    "format": {
+      "duration": "263.559410",
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "start_time": "0.000000",
+      "bit_rate": "2821462"
+    },
+    "streams": [
+      {
+        "codec_type": "video",
+        "codec_name": "hevc",
+        "width": 1170,
+        "height": 2532,
+        "r_frame_rate": "60/1",
+        "avg_frame_rate": "8175600/158159",
+        "time_base": "1/600",
+        "duration": "263.548333",
+        "sample_rate": null,
+        "channels": null
+      },
+      {
+        "codec_type": "audio",
+        "codec_name": "aac",
+        "width": null,
+        "height": null,
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/44100",
+        "duration": "263.548707",
+        "sample_rate": "44100",
+        "channels": 2
+      }
+    ]
+  },
+  "observations": {
+    "scope": "Read-only Goal009 video review; only .expo files generated. Original video was neither changed, copied to Git, nor uploaded.",
+    "fullVideoPlayback": false,
+    "audioListening": false,
+    "humanPerceptionOrFearTest": false,
+    "gameFPSMeasured": false,
+    "recordedDifficultyKnown": false,
+    "openedFrames": [
+      {
+        "file": "examples/frame-000s.png",
+        "sha256": "c5820a54c399c7760233bdc9e8714bcf575e5b53c9fe24aa285ff9fdc889d40d"
+      },
+      {
+        "file": "examples/frame-007s.png",
+        "sha256": "584d9645d97db936294fdba2b9ad1b2b076e0cb26024de1622f09f5ced0be2f8"
+      },
+      {
+        "file": "examples/frame-020s.png",
+        "sha256": "e4c6bee304ff72c1039272372dda14a0863b99c9ac70aee7a3467da7bf9b5993"
+      },
+      {
+        "file": "examples/frame-038s.png",
+        "sha256": "5f0545888e451ee2de5baa0d8b2bd9492e3d14fb420a91e26db58a6c57cd8e4b"
+      },
+      {
+        "file": "examples/frame-048s.png",
+        "sha256": "b43b11109057bf0d8e3d7b7072708752dbc63d8090d658ed2d073b9ebd4b216e"
+      },
+      {
+        "file": "examples/frame-056s.png",
+        "sha256": "2675752c716b6fea3b7ee8c6e52bbdc32a00f0092ff5cd39e2fb91972c46d625"
+      },
+      {
+        "file": "examples/frame-068s.png",
+        "sha256": "ea8efb909fe510c9b28110e114c50920649de9af0fc385b42b668fc893d7dcb1"
+      },
+      {
+        "file": "examples/frame-078s.png",
+        "sha256": "bdd6cdf3080a7bab4fc62179730f9b88d50d7081ecd2f57db3073872c113e759"
+      },
+      {
+        "file": "examples/frame-094s.png",
+        "sha256": "92fdee683653d844ad77ed1341b2db08cc368c167fe10e5e33ea9760871b11f7"
+      },
+      {
+        "file": "examples/frame-104s.png",
+        "sha256": "fb0df5d7e85d630096541aafea26e065775300c74e9209a77bf872d994b481fd"
+      },
+      {
+        "file": "examples/frame-123s.png",
+        "sha256": "a46019f234208ab247c71f6b6f075b213cee9a6de04e49a71e5c2752517e7c6c"
+      },
+      {
+        "file": "examples/frame-147s.png",
+        "sha256": "bce32f762c6f7addec0eccbc6965a3f72b6878bbd1ff95fbf45cfd6ba2578d67"
+      },
+      {
+        "file": "examples/frame-153s.png",
+        "sha256": "e10ed9e953dde135c12ca205e23a612c3952bca19970dc22a42ae7ad7b37ce94"
+      },
+      {
+        "file": "examples/frame-188s.png",
+        "sha256": "9996f645f9eb980c4c430fc0ff7459d303b3c09a913a7a53cf88f6f0b3946613"
+      },
+      {
+        "file": "examples/frame-208s.png",
+        "sha256": "619db25c469b93fbca2491596dec7ae9391838cae4a97348f22246161d3b8743"
+      },
+      {
+        "file": "examples/frame-216s.png",
+        "sha256": "b086f577b8f8830880088a57c6f6027d39ab11bd5cf6540269433e43e920e059"
+      },
+      {
+        "file": "turn-exit/frame-001.png",
+        "sha256": "2a22b7c543c41fcfd7b08613d0d734c6d3d495c78d0383fb92d25e8902d1f5ca"
+      },
+      {
+        "file": "turn-exit/frame-041.png",
+        "sha256": "7c610b78eb58c1567b9bf8b3124d6870895a4baf20f8570136f0b0896f1abe24"
+      },
+      {
+        "file": "turn-exit/frame-043.png",
+        "sha256": "5b9585d41073d757483af5c57492bcb1ee946acacc75abdea16e08d14d076071"
+      },
+      {
+        "file": "turn-exit/frame-045.png",
+        "sha256": "ddaf3d10d36da3746d28626bde4933ea7059d03f787b0ef734883a0de1859eec"
+      },
+      {
+        "file": "turn-exit/frame-047.png",
+        "sha256": "a8f83ab00e9b4c645ba47c9df8135217b673debe252828b75fa15680867aff74"
+      },
+      {
+        "file": "turn-exit/frame-048.png",
+        "sha256": "4ca22511555b27f2aae6273d66f289eed3a2576d21ccf1ba1cd572a20939ef48"
+      },
+      {
+        "file": "turn-exit/frame-049.png",
+        "sha256": "d74e88392fcc75197c8ac13c217032547d6c64fda2d2860fef2b98bb65a4bf78"
+      },
+      {
+        "file": "turn-exit/frame-050.png",
+        "sha256": "c28c1399f0ff752310907efd30bc16c47fa2768d7bf7ab363c1f4001f949106d"
+      },
+      {
+        "file": "turn-exit/frame-051.png",
+        "sha256": "51a73076bc2b6187359eb7b321151ec83dd8a3be19926b0550f7f01dee7d187d"
+      },
+      {
+        "file": "turn-exit/frame-091.png",
+        "sha256": "7f323f6a78c103dfa7aa73beaba4b636d03990526e0b5b5ad80b338a3116795a"
+      },
+      {
+        "file": "turn-exit/frame-111.png",
+        "sha256": "8354a4b7f6eaa2579a9d4fc9d27488457cad37c8013e52ebf38fd0c56103fda3"
+      },
+      {
+        "file": "turn-exit/frame-121.png",
+        "sha256": "16de4d91124c97072aec4f22539ca0a4dc15430b2aedb4654b1d4bfe7c8a41de"
+      },
+      {
+        "file": "turn-exit/frame-125.png",
+        "sha256": "04ef221e8332dac6f6f64a0978cd28219b1440e8312158f0bc9f74b5c456f611"
+      },
+      {
+        "file": "turn-exit/frame-126.png",
+        "sha256": "fc4aef03c97ed59b4e4058b3167aeb6b3505e21ee4535402a0f83229e264a686"
+      },
+      {
+        "file": "turn-exit/frame-128.png",
+        "sha256": "05e083151b24ca78221c323ba341153c27e50ef47a7715e4133682ec64933b16"
+      },
+      {
+        "file": "turn-detail/frame-012.png",
+        "sha256": "f8f3e4cfe073b81bda87b3801b702743099d6293c35af72a42d2a40cfd62a629"
+      },
+      {
+        "file": "turn-detail/frame-014.png",
+        "sha256": "4ca22511555b27f2aae6273d66f289eed3a2576d21ccf1ba1cd572a20939ef48"
+      },
+      {
+        "file": "turn-detail/frame-016.png",
+        "sha256": "cf71f70929d059de9ac60193323a6743ce7dc262c78573f0c21a0782bc3af9b6"
+      },
+      {
+        "file": "turn-detail/frame-017.png",
+        "sha256": "e0bfd9a8e1b6d9023db7139e79e8b60953223addcd24cc410392f0788e9b9546"
+      },
+      {
+        "file": "turn-detail/frame-018.png",
+        "sha256": "a5633382455e52334305a79653f811631175f831c0426c78f0dd24411de2e7fd"
+      },
+      {
+        "file": "turn-detail/frame-019.png",
+        "sha256": "bdf4f31a782a0028c0bd38a11d73a7034b8d5fed60451a638a67f03a89393785"
+      },
+      {
+        "file": "turn-detail/frame-020.png",
+        "sha256": "d74e88392fcc75197c8ac13c217032547d6c64fda2d2860fef2b98bb65a4bf78"
+      },
+      {
+        "file": "turn-detail/frame-021.png",
+        "sha256": "dd4e189c25a3299ca2a3f044fdc54e8e3726cf71e1a812c00e8667103ed629e8"
+      },
+      {
+        "file": "turn-detail/frame-022.png",
+        "sha256": "588229f2eb8e790f53d6d140576b759431350034bd7aae8b2a5b15aeece2b69f"
+      }
+    ],
+    "observations": [
+      {
+        "time": "0s / 7s",
+        "observed": "Home and an existing completed gallery record are visible; progression is already present.",
+        "inferenceLimit": "No assumption that this is a fresh save."
+      },
+      {
+        "time": "20s / 38s / 48s",
+        "observed": "20s shows Expo Dev Launcher Finding Dev Servers; 38s home; 48s playable scene.",
+        "inferenceLimit": "Not evidence for a 40-second production loading time."
+      },
+      {
+        "time": "56s",
+        "observed": "Exhibit 13 is grayscale, with restore-color comparison control.",
+        "inferenceLimit": "No claim about perceived depth."
+      },
+      {
+        "time": "68s / 78s",
+        "observed": "Mask side window/cabinet then a frontal face view.",
+        "inferenceLimit": "No claim that the player experienced hollow-face inversion."
+      },
+      {
+        "time": "94s / 104s",
+        "observed": "CLOSED letter/detail pattern at close distance; a smaller composite with broad face component at 104s.",
+        "inferenceLimit": "No claim about the player noticing a hybrid-image switch."
+      },
+      {
+        "time": "123s",
+        "observed": "One gray sample is placed into a lower socket, other samples remain above."
+      },
+      {
+        "time": "147s / 153s",
+        "observed": "Contour guide dotted triangle and guide-used label visible. Disc status changes 1/3 to 3/3.",
+        "inferenceLimit": "These guide-on images do not demonstrate spontaneous subjective contours."
+      },
+      {
+        "time": "188s / 208s / 216s",
+        "observed": "Wiring cover is leftward at 188s and centered later; 208s/216s display the different-height message.",
+        "inferenceLimit": "Elapsed interaction alone does not establish confusion, enjoyment, or frustration."
+      },
+      {
+        "time": "243s / approx247.5-248.1s",
+        "observed": "Rear silhouette seen while following; at decoded seek+PTS247.825s the back is visible, and the next decoded frame247.841667s shows front face/chest. No intermediate head-lead/chest-delay/step sequence appears between these two consecutive decoded frames.",
+        "inferenceLimit": "The 16.667ms interval is recorded video PTS, not a measurement of simulation FPS or body angular velocity. Camera also changes slightly."
+      },
+      {
+        "time": "approx254s / 255s",
+        "observed": "A plain wall dominates the view with no visible door panel/handle, while close-door control is available; the next sampled state reports escape from gallery."
+      },
+      {
+        "time": "approx255.4-255.5s / 255.7s",
+        "observed": "A result screen with buttons is visible, followed by home.",
+        "inferenceLimit": "No inference that the result auto-dismissed or that a specific finger/touch caused the transition."
+      }
+    ]
+  },
+  "turnDetailDecodedFrames": {
+    "boundary": "Original decoded frame timing after accurate seek, resized 1/3; not game simulation timestamps",
+    "startSeek": 247.5,
+    "frames": [
+      {
+        "file": "frame-001.png",
+        "relativeDecodedPTS": 0.00833333,
+        "seekPlusDecodedPTS": 247.50833333
+      },
+      {
+        "file": "frame-002.png",
+        "relativeDecodedPTS": 0.025,
+        "seekPlusDecodedPTS": 247.525
+      },
+      {
+        "file": "frame-003.png",
+        "relativeDecodedPTS": 0.0416667,
+        "seekPlusDecodedPTS": 247.5416667
+      },
+      {
+        "file": "frame-004.png",
+        "relativeDecodedPTS": 0.0583333,
+        "seekPlusDecodedPTS": 247.5583333
+      },
+      {
+        "file": "frame-005.png",
+        "relativeDecodedPTS": 0.075,
+        "seekPlusDecodedPTS": 247.575
+      },
+      {
+        "file": "frame-006.png",
+        "relativeDecodedPTS": 0.0916667,
+        "seekPlusDecodedPTS": 247.5916667
+      },
+      {
+        "file": "frame-007.png",
+        "relativeDecodedPTS": 0.108333,
+        "seekPlusDecodedPTS": 247.608333
+      },
+      {
+        "file": "frame-008.png",
+        "relativeDecodedPTS": 0.125,
+        "seekPlusDecodedPTS": 247.625
+      },
+      {
+        "file": "frame-009.png",
+        "relativeDecodedPTS": 0.141667,
+        "seekPlusDecodedPTS": 247.641667
+      },
+      {
+        "file": "frame-010.png",
+        "relativeDecodedPTS": 0.158333,
+        "seekPlusDecodedPTS": 247.658333
+      },
+      {
+        "file": "frame-011.png",
+        "relativeDecodedPTS": 0.191667,
+        "seekPlusDecodedPTS": 247.691667
+      },
+      {
+        "file": "frame-012.png",
+        "relativeDecodedPTS": 0.208333,
+        "seekPlusDecodedPTS": 247.708333
+      },
+      {
+        "file": "frame-013.png",
+        "relativeDecodedPTS": 0.225,
+        "seekPlusDecodedPTS": 247.725
+      },
+      {
+        "file": "frame-014.png",
+        "relativeDecodedPTS": 0.241667,
+        "seekPlusDecodedPTS": 247.741667
+      },
+      {
+        "file": "frame-015.png",
+        "relativeDecodedPTS": 0.258333,
+        "seekPlusDecodedPTS": 247.758333
+      },
+      {
+        "file": "frame-016.png",
+        "relativeDecodedPTS": 0.275,
+        "seekPlusDecodedPTS": 247.775
+      },
+      {
+        "file": "frame-017.png",
+        "relativeDecodedPTS": 0.291667,
+        "seekPlusDecodedPTS": 247.791667
+      },
+      {
+        "file": "frame-018.png",
+        "relativeDecodedPTS": 0.308333,
+        "seekPlusDecodedPTS": 247.808333
+      },
+      {
+        "file": "frame-019.png",
+        "relativeDecodedPTS": 0.325,
+        "seekPlusDecodedPTS": 247.825
+      },
+      {
+        "file": "frame-020.png",
+        "relativeDecodedPTS": 0.341667,
+        "seekPlusDecodedPTS": 247.841667
+      },
+      {
+        "file": "frame-021.png",
+        "relativeDecodedPTS": 0.358333,
+        "seekPlusDecodedPTS": 247.858333
+      },
+      {
+        "file": "frame-022.png",
+        "relativeDecodedPTS": 0.375,
+        "seekPlusDecodedPTS": 247.875
+      },
+      {
+        "file": "frame-023.png",
+        "relativeDecodedPTS": 0.391667,
+        "seekPlusDecodedPTS": 247.891667
+      },
+      {
+        "file": "frame-024.png",
+        "relativeDecodedPTS": 0.408333,
+        "seekPlusDecodedPTS": 247.908333
+      },
+      {
+        "file": "frame-025.png",
+        "relativeDecodedPTS": 0.425,
+        "seekPlusDecodedPTS": 247.925
+      },
+      {
+        "file": "frame-026.png",
+        "relativeDecodedPTS": 0.441667,
+        "seekPlusDecodedPTS": 247.941667
+      },
+      {
+        "file": "frame-027.png",
+        "relativeDecodedPTS": 0.475,
+        "seekPlusDecodedPTS": 247.975
+      },
+      {
+        "file": "frame-028.png",
+        "relativeDecodedPTS": 0.491667,
+        "seekPlusDecodedPTS": 247.991667
+      },
+      {
+        "file": "frame-029.png",
+        "relativeDecodedPTS": 0.508333,
+        "seekPlusDecodedPTS": 248.008333
+      },
+      {
+        "file": "frame-030.png",
+        "relativeDecodedPTS": 0.525,
+        "seekPlusDecodedPTS": 248.025
+      },
+      {
+        "file": "frame-031.png",
+        "relativeDecodedPTS": 0.541667,
+        "seekPlusDecodedPTS": 248.041667
+      },
+      {
+        "file": "frame-032.png",
+        "relativeDecodedPTS": 0.558333,
+        "seekPlusDecodedPTS": 248.058333
+      },
+      {
+        "file": "frame-033.png",
+        "relativeDecodedPTS": 0.575,
+        "seekPlusDecodedPTS": 248.075
+      }
+    ]
+  },
+  "retainedRawVideo": false,
+  "retainedSourceFrameImagesInGit": false,
+  "localExtractionDirectory": ".expo/goal009/video-review",
+  "limits": "Frame-based temporal inspection only. No real-time full-video playback, audio listening, user perception/fear or gameplay FPS measurement."
+}

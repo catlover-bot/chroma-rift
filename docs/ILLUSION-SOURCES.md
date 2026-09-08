@@ -1,4 +1,4 @@
-# 知覚表現の出典・素材台帳（Goal 008）
+# 知覚表現の出典・素材台帳（Goal 008 / 009）
 
 確認日: 2026-09-07。公開サイトは資料として読み、アプリはネットワークから素材を取得しない。「原理の参考」「コードの利用」「実素材」を区別する。錯視を感じることは攻略条件ではなく、この台帳や幾何検査は iPhone の知覚・怖さ・実聴の証明ではない。
 
@@ -73,3 +73,30 @@ Pyllusion 確認 revision: `3aaacb455af7750abff6491371e7a5c9c084a09c`。MIT の�
 | assets/audio/shepard.wav | bfc15c3aaaafc00a9b9856cbc79ed75d4c94ca1d409ba55ee5aaf5fc391281b2 |
 
 アプリのクレジットはネットワーク接続や外部リンクの訪問を必要としない。source URL は選択・コピーできる文字列で表示し、未発見のメモの一覧・説明をクレジットから開く導線は置かない。公開・アップロード・権利者への連絡は今回行っていない。
+
+## Goal 009 — 新章の独自図形と身体表現
+
+確認日: 2026-09-08。追加の長さ留め金・傾いた枠と針・Café Wall のタイルは [vault/specs.ts](../src/domain/vault/specs.ts) の独自幾何で生成する。Python を runtime に導入せず、公開コードの翻訳移植、作者の図版・動画・キャラクター・アニメーション素材のコピーはない。既存 CC BY の顔とその凸面・縮小加工の帰属は上段と THIRD_PARTY_NOTICES のまま保持し、新しい章の動的個体でも消さない。
+
+| 参照資料 | 実際の利用と限界 |
+| --- | --- |
+| [Pyllusion Müller-Lyer 公開本文](https://realitybendinglab.com/Pyllusion/_modules/pyllusion/MullerLyer/MullerLyer.html) / [RodFrame source](https://github.com/RealityBending/Pyllusion/tree/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/RodFrame) | 実長と V 字の文脈、針の実角と枠の角を分離する構成を参考にした。実装・メモ比較図は本作の shaft endpoints / gravity / 独立 frame spec を使う。MIT の参考であることと実コード転載を区別する |
+| [Michael Bach: Café Wall](https://michaelbach.de/ot/ang-cafewall/) | 平行な目地、行ごとのタイルずれ、明暗の文脈の説明を読んだ。5 行の小さな壁を独自生成し、色をそろえる比較でも目地・床・壁の位置を変えない。作者の画像・デモコードを使わず、全員への効果や単一の確定機序を主張しない |
+| [Frictional: Birth of a Monster, Part 4](https://frictionalgames.com/2011-03-birth-of-a-monster-part-4-its-alive/) | rig / animation / 暗所の輪郭の設計参考。本作の motion が怖いという実証ではなく、キャラクターや画像を取得して同梱していない |
+| [Three AnimationMixer](https://threejs.org/docs/pages/AnimationMixer.html) / [AnimationAction](https://threejs.org/docs/pages/AnimationAction.html) | アニメーションの所有境界の技術参考。本作は既存 simulation 内の自作曲線を使い、別 mixer に root を動かさせない |
+| [Xbox 117](https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/117) / [118](https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/118) | 動き・視覚刺激の設定参考。Reduce Motion、操作希望、怖さを独立させる。医学的保証や認証取得と表示しない |
+| [Expo: Development Builds](https://docs.expo.dev/develop/development-builds/use-development-builds/) | 対応済み native module と JavaScript 更新の境界を確認。既存 Build の再利用可否は最後の依存 / native diff で判定する |
+
+Pyllusion の固定 revision は 3aaacb455af7750abff6491371e7a5c9c084a09c。MIT License / Copyright (c) 2018 Dominique Makowski、全文は既存 [THIRD_PARTY_NOTICES](../THIRD_PARTY_NOTICES) に保持する。読んだ固定 source の SHA-256 は [reference-source-record.json](qa-goal009/reference-source-record.json) と以下に記録する。これは原理参照の読取記録で、アプリへの移植証明ではない。
+
+| 公開ファイル | SHA-256 |
+| --- | --- |
+| [LICENSE](https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/LICENSE) | df6ff3a16279a99286277d76451e10f2f2daeee436727ec69ce57fba7f7e9bf6 |
+| [pyllusion/MullerLyer/mullerlyer_parameters.py](https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/MullerLyer/mullerlyer_parameters.py) | c91f33c2d5237160acff48c71e1cc7b054b3fc3a352faf68b13c05a36dfb1a2b |
+| [pyllusion/MullerLyer/mullerlyer_image.py](https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/MullerLyer/mullerlyer_image.py) | 3f6572ed3a38fa4aa0e69359e4ffc213c657e3acfb64134a04991ba192faa940 |
+| [pyllusion/RodFrame/rodframe_parameters.py](https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/RodFrame/rodframe_parameters.py) | 8ca3aaee5c8dbec90bd49800fb4f3c20717647bc8d09a2b8ff2c93ae38baa7cb |
+| [pyllusion/RodFrame/rodframe_image.py](https://raw.githubusercontent.com/RealityBending/Pyllusion/3aaacb455af7750abff6491371e7a5c9c084a09c/pyllusion/RodFrame/rodframe_image.py) | f712a2df41e6f4641d9ac74efc78409ffd5bb461c994b27cc19de5c0581d13e0 |
+
+アプリの [新章メモ](../src/screens/VaultNotebook.tsx) と [説明・出典](../src/content/vaultNotes.ts) は、それぞれ事後の短い説明、同じ spec の操作比較、原理参考と独自素材の区分を offline で表示する。未観察の項目は通常メモに出さず、クリア後の自由比較でも discovery を作らない。補助使用の明示は、錯視を自然に知覚した証拠ではない。
+
+Goal 009 の追加図形は外部 bitmap・font を使わず、既存の外部素材と音源の帰属を維持する。公開資料を読むことは、そのページの画像・動画を自由に再配布できることを意味しない。実機の知覚・恐怖・実聴・性能は未確認で、ブラウザーの動的 QA と自動テストから推定しない。

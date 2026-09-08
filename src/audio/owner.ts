@@ -180,10 +180,17 @@ export function createGalleryAudioOwner(options: GalleryAudioOptions, backend: A
     },
     event(event: GallerySoundEvent) {
       if (disposed || event.sessionId !== options.sessionId || !Number.isSafeInteger(event.sequence) || event.sequence < 0 || event.sequence <= lastSequence) return false;
-      if (!['interaction', 'unlock', 'door', 'door-close'].includes(event.type)) return false;
+      if (!['interaction', 'unlock', 'door', 'door-close', 'actor-plant'].includes(event.type)) return false;
       // Consume even silent/paused/unready events: resuming never replays missed work.
       lastSequence = event.sequence;
       if (event.type === 'door-close') { stopAll(); ending = true; }
+      if (event.type === 'actor-plant') {
+        if (!event.position || !validPosition(event.position)) return false;
+        const gain = attenuation(event.position);
+        const accepted = emit('footstep', gain);
+        emit('cloth', gain);
+        return accepted;
+      }
       return emit(event.type === 'interaction' ? 'interaction' : event.type === 'door-close' ? 'door-impact' : 'mechanism', attenuation(event.position));
     },
     movement(distanceMeters, sessionId) {
