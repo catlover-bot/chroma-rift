@@ -10,7 +10,7 @@ export const VAULT_BRAKE_POSE: PlayerPose = { position: { x: -4.6, y: 1.6, z: 18
 export const VAULT_EXIT_POSE: PlayerPose = { position: { x: 3, y: 1.6, z: 29 }, yaw: 0, pitch: 0 };
 export const VAULT_CHECKPOINTS: Record<VaultCheckpointId, PlayerPose> = { entry: VAULT_SPAWN, brake: VAULT_BRAKE_POSE, exit: VAULT_EXIT_POSE };
 export const VAULT_LENGTH_FIXTURE: GalleryFixture = { center: { x: -1.15, y: 1.7, z: 3.9 }, width: 2.25, height: 1.65,
-  right: { x: -1, y: 0, z: 0 }, normal: { x: 0, y: 0, z: -1 }, maxDistance: 4.9 };
+  right: { x: -1, y: 0, z: 0 }, normal: { x: 0, y: 0, z: -1 }, maxDistance: 6.0 };
 export const VAULT_ROD_FIXTURE: GalleryFixture = { center: { x: -8.78, y: 1.7, z: 18.5 }, width: 1.8, height: 1.8,
   right: { x: 0, y: 0, z: -1 }, normal: { x: 1, y: 0, z: 0 }, maxDistance: 4.9 };
 export const VAULT_CAFE_FIXTURE: GalleryFixture = { center: { x: -4.86, y: 1.8, z: 7 }, width: 1.8, height: .9,

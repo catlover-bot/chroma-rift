@@ -1,9 +1,10 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { AccessibilityInfo, ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { AccessibilityInfo, ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appReducer, initialAppState, persistedFromState } from './src/app/state';
-import { createGalleryRuntime, galleryPowerCount } from './src/domain/gallery';
+import { createGalleryRuntime } from './src/domain/gallery';
+import { createTheatreRuntime, createTheatreCheckpoint } from './src/domain/theatre';
 import { createVaultRuntime } from './src/domain/vault/runtime';
 import { createVaultCheckpoint } from './src/domain/vault/checkpoint';
 import { chapterCompletionSummary } from './src/app/chapterSummary';
@@ -21,7 +22,8 @@ import { PlayInstructionsScreen } from './src/screens/PlayInstructionsScreen';
 import { QuickSetupScreen } from './src/screens/QuickSetupScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
 import { StageResultScreen } from './src/screens/StageResultScreen';
-import { WelcomeScreen } from './src/screens/WelcomeScreen';
+import { StageSelectScreen } from './src/screens/StageSelectScreen';
+import { emptyJournal, mergeStageHistory, resumableStage, STAGES, type StageCardState, type StageId } from './src/app/stages';
 import {
   createDefaultApplication,
   loadApplication,
@@ -30,7 +32,8 @@ import {
 import {
   beginFirstPersonSession, isFirstPersonSessionCurrent, loadFirstPersonStorage,
   resetAllApplicationStorage, resetFirstPersonChapter, loadGalleryStorage, resetGalleryChapter, saveGalleryCheckpoint,
-  loadVaultStorage, resetVaultChapter, saveVaultCheckpoint,
+  loadTheatreStorage, resetTheatreChapter, saveTheatreCheckpoint,
+  loadVaultStorage, resetVaultChapter, saveVaultCheckpoint, loadStageJournal, recordStageHistory, recordStageEntry,
   saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from './src/storage/firstPersonStorage';
 import { UI_COLORS } from './src/theme/ui';
@@ -38,6 +41,11 @@ import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT
 
 export default function App() {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
+  const [journal, setJournal] = useState(emptyJournal);
+  const [journalMessage, setJournalMessage] = useState<string | undefined>();
+  const [legacyBlocked, setLegacyBlocked] = useState(false);
+  const [settingsReturn, setSettingsReturn] = useState<'welcome' | 'playInstructions'>('welcome');
+  const [replayPending, setReplayPending] = useState(false);
   const [storageWritable, setStorageWritable] = useState(false);
   const [storageMessage, setStorageMessage] = useState<string | undefined>();
   const [resetting, setResetting] = useState(false);
@@ -47,6 +55,8 @@ export default function App() {
   const [controls, setControls] = useState<FirstPersonControls>({ ...DEFAULT_FIRST_PERSON_CONTROLS });
   const [checkpoint, setCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createInitialRuntime()));
   const [galleryCheckpoint, setGalleryCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createGalleryRuntime()));
+  const [theatreCheckpoint, setTheatreCheckpoint] = useState<CheckpointState>(() => createTheatreCheckpoint(createTheatreRuntime()));
+  const [theatreState, setTheatreState] = useState({ started: false, needsCommit: false, hasSave: false, blocked: false, message: undefined as string | undefined });
   const [vaultCheckpoint, setVaultCheckpoint] = useState<CheckpointState>(() => createVaultCheckpoint(createVaultRuntime()));
   const [vaultStarted, setVaultStarted] = useState(false);
   const [vaultNeedsCommit, setVaultNeedsCommit] = useState(false);
@@ -59,12 +69,16 @@ export default function App() {
   const [galleryMessage, setGalleryMessage] = useState<string | undefined>();
   const [firstPersonMessage, setFirstPersonMessage] = useState<string | undefined>();
   const [chapterLease, setChapterLease] = useState(0);
+  const selectionRevision = useRef(0);
+  const entryRoute = useRef<{ screen: string; chapterId: string; lease: number } | undefined>(undefined);
+  useLayoutEffect(() => { entryRoute.current = { screen: state.screen, chapterId: state.selectedChapterId, lease: chapterLease }; }, [state.screen, state.selectedChapterId, chapterLease]);
   const [completedAtEntry, setCompletedAtEntry] = useState(false);
   const [onboarding, setOnboarding] = useState<FirstPersonOnboarding>({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
   const [onboardingWritable, setOnboardingWritable] = useState(false);
 
   useEffect(() => {
     let active = true;
+    const hydrationLease = beginFirstPersonSession();
     void (async () => {
       let systemReducedMotion = false;
       try {
@@ -72,8 +86,16 @@ export default function App() {
       } catch {
         // The in-app setting remains available if the platform preference cannot be read.
       }
-      const [loaded, chapter, gallery, vault] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage(), loadVaultStorage()]);
+      const [loaded, chapter, gallery, vault, theatre, history] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage(), loadVaultStorage(), loadTheatreStorage(), loadStageJournal()]);
       if (!active) return;
+      setChapterLease(hydrationLease);
+      const known = [chapter, gallery, vault, theatre].filter(item => item.hasCheckpoint && item.checkpointWritable).map(item => item.checkpoint);
+      setJournal(mergeStageHistory(history.journal, known));
+      setJournalMessage(history.message);
+      if (history.writable) void recordStageHistory(known, hydrationLease).then(saved => {
+        if (active && !saved && isFirstPersonSessionCurrent(hydrationLease)) setJournalMessage('履歴を保存できませんでした。現在の章の記録を保持しています。');
+      });
+      setLegacyBlocked(!chapter.checkpointWritable);
       setControls(chapter.controls);
       setOnboarding(chapter.onboarding);
       setOnboardingWritable(chapter.onboardingWritable);
@@ -85,6 +107,8 @@ export default function App() {
       setGalleryNeedsCommit(gallery.status === 'migrated' || gallery.status === 'recovered');
       setGalleryBlocked(!gallery.checkpointWritable);
       setGalleryMessage(gallery.message);
+      setTheatreCheckpoint(theatre.checkpoint);
+      setTheatreState({ started: theatre.status !== 'empty', needsCommit: theatre.status === 'recovered', hasSave: theatre.hasCheckpoint, blocked: !theatre.checkpointWritable, message: theatre.message });
       setVaultCheckpoint(vault.checkpoint);
       setHasVaultSave(vault.hasCheckpoint);
       setVaultStarted(vault.status !== 'empty');
@@ -119,15 +143,26 @@ export default function App() {
     return () => subscription.remove();
   }, [state.settings]);
 
-  const navigateHome = () => dispatch({ type: 'NAVIGATE', screen: 'welcome' });
+  const navigateHome = () => { selectionRevision.current += 1; setReplayPending(false); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); };
+  const selectStage = (id: StageId, replay = false) => {
+    const selectionLease = chapterLease, revision = ++selectionRevision.current;
+    const choose = () => { if (!isFirstPersonSessionCurrent(selectionLease) || selectionRevision.current !== revision) return; setReplayPending(replay); dispatch({ type: 'PLAY', chapterId: id, sessionId: String(Date.now()) }); };
+    if (replay) Alert.alert('このステージをもう一度遊ぶ', (STAGES.find(stage => stage.id === id)?.title ?? 'この章') + 'の今回の進行を、新しい周回で置き換えます。過去の脱出・発見、他の章と設定は残ります。', [
+      { text: 'キャンセル', style: 'cancel', onPress: () => { if (selectionRevision.current === revision) selectionRevision.current += 1; } }, { text: 'もう一度遊ぶ', onPress: choose },
+    ]); else choose();
+  };
   const beginCalibration = () =>
     dispatch({ type: 'START_CALIBRATION', seed: Date.now() >>> 0, startedAt: new Date().toISOString() });
-  const selectedCheckpoint = state.selectedChapterId === 'uncanny-vault-v1' ? vaultCheckpoint : state.selectedChapterId === 'perception-gallery-v1' ? galleryCheckpoint : checkpoint;
+  const selectedCheckpoint = state.selectedChapterId === 'shadow-theatre-v1' ? theatreCheckpoint : state.selectedChapterId === 'uncanny-vault-v1' ? vaultCheckpoint : state.selectedChapterId === 'perception-gallery-v1' ? galleryCheckpoint : checkpoint;
   const launchChapter = async (entry: CheckpointState, newRun: boolean, restart = false) => {
     const lease = beginFirstPersonSession();
     let next = entry;
     const vault = state.selectedChapterId === 'uncanny-vault-v1';
-    if (newRun && vault) {
+    const theatre = state.selectedChapterId === 'shadow-theatre-v1';
+    if (newRun && theatre) {
+      next = createTheatreCheckpoint(createTheatreRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000)));
+      setTheatreState(previous => ({ ...previous, started: true })); setTheatreCheckpoint(next);
+    } else if (newRun && vault) {
       next = createVaultCheckpoint(createVaultRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000)));
       setVaultStarted(true); setVaultCheckpoint(next);
     } else if (newRun) {
@@ -150,15 +185,21 @@ export default function App() {
       setHasVaultSave(saved); setVaultNeedsCommit(!saved);
       setVaultMessage(saved ? undefined : '収蔵庫の進行を保存できませんでした。この起動中は同じ状態で続けられます。');
     }
+    if (theatre && (newRun || theatreState.needsCommit)) {
+      const saved = await saveTheatreCheckpoint(next, lease);
+      if (!isFirstPersonSessionCurrent(lease)) return;
+      setTheatreState(previous => ({ ...previous, hasSave: saved, needsCommit: !saved, message: saved ? undefined : '映写室の進行を保存できませんでした。この起動中は同じ状態で続けられます。' }));
+    }
     setCompletedAtEntry(!restart && next.progress.cleared);
     setChapterLease(lease);
     dispatch({ type: 'BEGIN_JOURNEY', chapterId: state.selectedChapterId });
   };
   const beginChapter = async () => {
+    if (replayPending) { await restartChapter(); return; }
     if (resetInFlight.current) return;
     resetInFlight.current = true;
     setResetting(true);
-    await launchChapter(selectedCheckpoint, state.selectedChapterId === 'uncanny-vault-v1' ? !vaultStarted && !vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' && !galleryStarted && !galleryBlocked);
+    await launchChapter(selectedCheckpoint, state.selectedChapterId === 'shadow-theatre-v1' ? !theatreState.started && !theatreState.blocked : state.selectedChapterId === 'uncanny-vault-v1' ? !vaultStarted && !vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' && !galleryStarted && !galleryBlocked);
     resetInFlight.current = false;
     setResetting(false);
   };
@@ -168,10 +209,15 @@ export default function App() {
     setResetting(true);
     const vault = state.selectedChapterId === 'uncanny-vault-v1';
     const gallery = state.selectedChapterId === 'perception-gallery-v1';
-    const next = vault ? createVaultCheckpoint(createVaultRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : gallery ? createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : createCheckpoint(createInitialRuntime());
-    const removed = await (vault ? resetVaultChapter(next) : gallery ? resetGalleryChapter(next) : resetFirstPersonChapter());
+    const theatre = state.selectedChapterId === 'shadow-theatre-v1';
+    const next = theatre ? createTheatreCheckpoint(createTheatreRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : vault ? createVaultCheckpoint(createVaultRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : gallery ? createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : createCheckpoint(createInitialRuntime());
+    const removed = await (theatre ? resetTheatreChapter(next) : vault ? resetVaultChapter(next) : gallery ? resetGalleryChapter(next) : resetFirstPersonChapter());
     if (removed) {
-      if (vault) {
+      setReplayPending(false);
+      setJournal(previous => mergeStageHistory(previous, [selectedCheckpoint]));
+      if (theatre) {
+        setTheatreCheckpoint(next); setTheatreState({ started: true, hasSave: true, needsCommit: false, blocked: false, message: undefined });
+      } else if (vault) {
         setVaultCheckpoint(next); setHasVaultSave(true); setVaultStarted(true);
         setVaultNeedsCommit(false); setVaultBlocked(false); setVaultMessage(undefined);
       } else if (gallery) {
@@ -186,12 +232,16 @@ export default function App() {
       setChapterLease(beginFirstPersonSession());
       dispatch({ type: 'BEGIN_JOURNEY', chapterId: state.selectedChapterId });
     } else {
-      (vault ? setVaultMessage : gallery ? setGalleryMessage : setFirstPersonMessage)('章をリセットできませんでした。保存データを保持しています。');
+      if (theatre) setTheatreState(previous => ({ ...previous, message: '章をリセットできませんでした。保存データを保持しています。' }));
+      else (vault ? setVaultMessage : gallery ? setGalleryMessage : setFirstPersonMessage)('章をリセットできませんでした。保存データを保持しています。');
       navigateHome();
     }
     resetInFlight.current = false;
     setResetting(false);
   };
+
+  const nextChapter = () => state.selectedChapterId === 'perception-gallery-v1' ? selectStage('uncanny-vault-v1', vaultCheckpoint.progress.cleared) : selectStage('shadow-theatre-v1', theatreCheckpoint.progress.cleared);
+  const confirmReplay = () => selectStage(state.selectedChapterId, true);
 
   const reset = async () => {
     if (resetInFlight.current) return;
@@ -212,12 +262,15 @@ export default function App() {
       // Reset does not depend on the platform preference being available.
     }
     setStorageWritable(true);
+    setJournal(emptyJournal()); setJournalMessage(undefined); setReplayPending(false); setLegacyBlocked(false);
     setStorageMessage(undefined);
     setFirstPersonMessage(undefined);
     setGalleryMessage(undefined); setGalleryBlocked(false); setHasGallerySave(false); setHasLegacySave(false);
     setGalleryStarted(false); setGalleryNeedsCommit(false);
     setVaultMessage(undefined); setVaultBlocked(false); setHasVaultSave(false); setVaultStarted(false); setVaultNeedsCommit(false);
     setVaultCheckpoint(createVaultCheckpoint(createVaultRuntime()));
+    setTheatreCheckpoint(createTheatreCheckpoint(createTheatreRuntime()));
+    setTheatreState({ started: false, needsCommit: false, hasSave: false, blocked: false, message: undefined });
     setGalleryCheckpoint(createCheckpoint(createGalleryRuntime()));
     setControls({ ...DEFAULT_FIRST_PERSON_CONTROLS });
     setOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
@@ -229,7 +282,6 @@ export default function App() {
     setResetting(false);
   };
 
-  const hasSetup = Boolean(state.quickSetupResult || state.calibrationProfile);
   let screen;
   if (!state.hydrated || resetting) {
     screen = <View style={styles.loading} accessibilityLabel="読み込み中"><ActivityIndicator color={UI_COLORS.text} /></View>;
@@ -246,9 +298,9 @@ export default function App() {
       />
     );
   } else if (state.screen === 'playInstructions') {
-    screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void beginChapter()} onBack={navigateHome} />;
+    screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void beginChapter()} onSettings={() => { setSettingsReturn('playInstructions'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} onBack={navigateHome} />;
   } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
-    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onNextChapter={() => dispatch({ type: 'PLAY', chapterId: 'uncanny-vault-v1' })} onReplay={() => void restartChapter()} onHome={navigateHome} onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }} />;
+    screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onNextChapter={nextChapter} onReplay={confirmReplay} onHome={navigateHome} onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }} />;
   } else if (state.screen === 'firstPerson' || state.screen === 'galleryNotes' || (state.screen === 'firstPersonLab' && __DEV__)) {
     const lab = state.screen === 'firstPersonLab', reviewOnly = state.screen === 'galleryNotes';
     // Every callback captures this mounted run's lease; an old save/completion cannot adopt a new run.
@@ -256,8 +308,8 @@ export default function App() {
     screen = !lab && !reviewOnly && completedAtEntry ? (
       <FirstPersonResultScreen
         summary={chapterCompletionSummary(selectedCheckpoint.chapterId, selectedCheckpoint.progress)}
-        onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onNextChapter={() => dispatch({ type: 'PLAY', chapterId: 'uncanny-vault-v1' })}
-        onReplay={() => void restartChapter()} onHome={navigateHome}
+        onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onNextChapter={nextChapter}
+        onReplay={confirmReplay} onHome={navigateHome}
         onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }}
       />
     ) : (
@@ -285,13 +337,31 @@ export default function App() {
             if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('操作設定を保存できませんでした。この起動中は変更した設定で遊べます。');
           });
         }}
+        onValidatedEntry={(entry) => {
+          if (entryRoute.current?.screen !== 'firstPerson' || entryRoute.current.lease !== lease || entryRoute.current.chapterId !== entry.chapterId) return;
+          if (lab || reviewOnly || !isFirstPersonSessionCurrent(lease) || entry.chapterId !== state.selectedChapterId || entry.progress.cleared) return;
+          const blocked = state.selectedChapterId === 'shadow-theatre-v1' ? theatreState.blocked : state.selectedChapterId === 'uncanny-vault-v1' ? vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' ? galleryBlocked : legacyBlocked;
+          if (blocked) return; // A read-only trial cannot become a resumable run.
+          if (entry.chapterId === 'returnless-entrance' && !hasLegacySave) {
+            void saveFirstPersonCheckpoint(entry, lease).then(saved => { if (saved && isFirstPersonSessionCurrent(lease)) setHasLegacySave(true); });
+          }
+          setJournal(previous => mergeStageHistory(previous, [entry], state.selectedChapterId));
+          void recordStageEntry(entry, lease, state.selectedChapterId).then(saved => {
+            if (!saved && isFirstPersonSessionCurrent(lease)) setJournalMessage('最後に入ったステージを保存できませんでした。この起動中は続けられます。');
+          });
+        }}
         onCheckpoint={(next) => {
           if (lab || reviewOnly || !isFirstPersonSessionCurrent(lease) || next.chapterId !== state.selectedChapterId) return;
-          const vault = state.selectedChapterId === 'uncanny-vault-v1', gallery = state.selectedChapterId === 'perception-gallery-v1';
-          if (vault) setVaultCheckpoint(next); else if (gallery) setGalleryCheckpoint(next); else setCheckpoint(next);
-          void (vault ? saveVaultCheckpoint(next, lease) : gallery ? saveGalleryCheckpoint(next, lease) : saveFirstPersonCheckpoint(next, lease)).then((saved) => {
+          const theatre = state.selectedChapterId === 'shadow-theatre-v1', vault = state.selectedChapterId === 'uncanny-vault-v1', gallery = state.selectedChapterId === 'perception-gallery-v1';
+          if (theatre) setTheatreCheckpoint(next); else if (vault) setVaultCheckpoint(next); else if (gallery) setGalleryCheckpoint(next); else setCheckpoint(next);
+          if (!(theatre ? theatreState.blocked : vault ? vaultBlocked : gallery ? galleryBlocked : legacyBlocked)) {
+            setJournal(previous => mergeStageHistory(previous, [next]));
+            void recordStageHistory([next], lease).then(saved => { if (!saved && isFirstPersonSessionCurrent(lease)) setJournalMessage('発見や脱出の履歴を保存できませんでした。現在の進行は保持しています。'); });
+          }
+          void (theatre ? saveTheatreCheckpoint(next, lease) : vault ? saveVaultCheckpoint(next, lease) : gallery ? saveGalleryCheckpoint(next, lease) : saveFirstPersonCheckpoint(next, lease)).then((saved) => {
             if (!isFirstPersonSessionCurrent(lease)) return;
-            if (saved) { if (vault) setHasVaultSave(true); else if (gallery) setHasGallerySave(true); else setHasLegacySave(true); }
+            if (saved) { if (theatre) setTheatreState(previous => ({ ...previous, hasSave: true })); else if (vault) setHasVaultSave(true); else if (gallery) setHasGallerySave(true); else setHasLegacySave(true); }
+            else if (theatre) setTheatreState(previous => ({ ...previous, message: '章の進行を保存できませんでした。この起動中はそのまま遊べます。' }));
             else (vault ? setVaultMessage : gallery ? setGalleryMessage : setFirstPersonMessage)('章の進行を保存できませんでした。この起動中はそのまま遊べます。');
           });
         }}
@@ -326,13 +396,16 @@ export default function App() {
     screen = (
       <SettingsScreen
         settings={state.settings}
+        controls={controls}
+        onControlsChange={(next) => { const lease = chapterLease; if (!isFirstPersonSessionCurrent(lease)) return; setControls(next); void saveFirstPersonControls(next, lease).then(saved => { if (!saved && isFirstPersonSessionCurrent(lease)) setFirstPersonMessage('操作設定を保存できませんでした。この起動中は変更した設定で遊べます。'); }); }}
         onChange={(settings) => dispatch({ type: 'UPDATE_SETTINGS', settings })}
         onQuickSetup={() => dispatch({ type: 'START_QUICK_SETUP', sessionId: String(Date.now()) })}
         onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })}
         onReset={() => void reset()}
-        currentChapterName={state.selectedChapterId === 'uncanny-vault-v1' ? '測れない収蔵庫' : state.selectedChapterId === 'perception-gallery-v1' ? '閉館後の展示室' : '帰り道のない入口'}
+        currentChapterName={state.selectedChapterId === 'shadow-theatre-v1' ? '影の映写室' : state.selectedChapterId === 'uncanny-vault-v1' ? '測れない収蔵庫' : state.selectedChapterId === 'perception-gallery-v1' ? '閉館後の展示室' : '帰り道のない入口'}
         onResetChapter={() => void restartChapter()}
-        onBack={navigateHome}
+        onBack={() => dispatch({ type: 'NAVIGATE', screen: settingsReturn })}
+        backLabel={settingsReturn === 'playInstructions' ? '入場前の準備へ戻る' : 'ホームへ戻る'}
         {...(__DEV__ ? {
           onDeveloperLab: () => dispatch({ type: 'NAVIGATE', screen: 'developerLab' }),
           onLegacyMaze: () => dispatch({ type: 'NAVIGATE', screen: 'microMaze' }),
@@ -359,21 +432,26 @@ export default function App() {
   } else if (state.screen === 'stageResult' && state.latestMazeScore && __DEV__) {
     screen = <StageResultScreen score={state.latestMazeScore} bestScore={state.bestMazeScore} {...(state.calibrationProfile ? { profile: state.calibrationProfile } : {})} settings={state.settings} onRetry={() => dispatch({ type: 'NAVIGATE', screen: 'microMaze' })} onHome={navigateHome} />;
   } else {
-    screen = <WelcomeScreen hasSetup={hasSetup} vaultSaved={hasVaultSave || vaultStarted} vaultCleared={vaultCheckpoint.progress.cleared} vaultBlocked={vaultBlocked}
-      onVaultPlay={() => dispatch({ type: 'PLAY', chapterId: 'uncanny-vault-v1', sessionId: String(Date.now()) })} gallerySaved={hasGallerySave || galleryStarted} galleryBlocked={galleryBlocked}
-      galleryCleared={galleryCheckpoint.progress.cleared}
-      galleryPowerCount={galleryCheckpoint.progress.gallery ? galleryPowerCount(galleryCheckpoint.progress.gallery) : 0}
-      legacySaved={hasLegacySave} onLegacyContinue={() => dispatch({ type: 'PLAY', chapterId: 'returnless-entrance', sessionId: String(Date.now()) })}
-      onPlay={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1', sessionId: String(Date.now()) })}
-      onSkip={() => { dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' }); dispatch({ type: 'SKIP_QUICK_SETUP', completedAt: new Date().toISOString() }); }}
-      onSettings={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
+    const entries = [
+      { id: 'perception-gallery-v1' as const, checkpoint: galleryCheckpoint, saved: hasGallerySave || galleryStarted, blocked: galleryBlocked },
+      { id: 'uncanny-vault-v1' as const, checkpoint: vaultCheckpoint, saved: hasVaultSave || vaultStarted, blocked: vaultBlocked },
+      { id: 'shadow-theatre-v1' as const, checkpoint: theatreCheckpoint, saved: theatreState.hasSave || theatreState.started, blocked: theatreState.blocked },
+      { id: 'returnless-entrance' as const, checkpoint, saved: hasLegacySave, blocked: legacyBlocked },
+    ];
+    const cards: StageCardState[] = entries.map(entry => ({ id: entry.id,
+      current: entry.blocked ? 'blocked' : entry.checkpoint.progress.cleared ? 'cleared' : entry.saved ? 'exploring' : 'new',
+      history: journal.history[entry.id] ?? { everCleared: false, discoveries: [] } }));
+    const lastResume = resumableStage(journal, cards);
+    screen = <StageSelectScreen cards={cards} {...(lastResume ? { lastResume } : {})} onSelect={selectStage} onSettings={() => { setSettingsReturn('welcome'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} />;
   }
 
   return (
     <SafeAreaProvider>
       <View style={styles.application}>
         {screen}
+        {journalMessage ? <Text accessibilityRole="alert" style={styles.notice}>{journalMessage}</Text> : null}
         {storageMessage ? <Text accessibilityRole="alert" style={styles.notice}>{storageMessage}</Text> : null}
+        {theatreState.message ? <Text accessibilityRole="alert" style={styles.notice}>{theatreState.message}</Text> : null}
         {vaultMessage ? <Text accessibilityRole="alert" style={styles.notice}>{vaultMessage}</Text> : null}
         {galleryMessage ? <Text accessibilityRole="alert" style={styles.notice}>{galleryMessage}</Text> : null}
         {firstPersonMessage ? <Text accessibilityRole="alert" style={styles.notice}>{firstPersonMessage}</Text> : null}

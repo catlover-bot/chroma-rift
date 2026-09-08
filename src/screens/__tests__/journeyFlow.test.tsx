@@ -11,7 +11,7 @@ import App from '../../../App';
 import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import type { IllusionMazeCanvasProps } from '../../rendering/IllusionMazeCanvas';
 import { APPLICATION_STORAGE_KEY, createDefaultApplication } from '../../storage/applicationStorage';
-import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
+import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { createGalleryRuntime } from '../../domain/gallery';
@@ -75,7 +75,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
 
   it('accepts exactly three single-tap answers then starts the actual first-person screen', async () => {
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('新しい展示室を始める'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
     const first = view.getByRole('button', { name: '同じ・分かりにくい' });
     await fireEvent.press(first);
     await fireEvent.press(first);
@@ -107,7 +107,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
       return new Promise<void>(resolve => { release = () => { void defaultWrite(key, raw).then(resolve); }; });
     });
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     expect(view.queryByTestId('first-person-native-canvas')).toBeNull();
     expect(JSON.parse(pendingRaw!).progress.gallery).toMatchObject({ seed: 0x40000000, shadow: { seed: 0x40000000, variant: 4 }, contour: { seed: 0x40000000 } });
@@ -118,7 +119,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     random.mockReturnValue(.75);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
-    await fireEvent.press(view.getByText('展示室の続きから'));
+    await fireEvent.press(view.getByTestId('select-perception-gallery-v1'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.gallery!.seed).toBe(0x40000000);
@@ -135,7 +136,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const defaultWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
     jest.mocked(AsyncStorage.setItem).mockImplementation((key, raw) => key === GALLERY_CHECKPOINT_KEY ? Promise.reject(new Error('full storage')) : defaultWrite(key, raw));
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.gallery!.seed).toBe(0x20000000);
@@ -143,7 +145,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     random.mockReturnValue(.875);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
-    await fireEvent.press(view.getByText('展示室の続きから'));
+    await fireEvent.press(view.getByTestId('select-perception-gallery-v1'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.gallery!.seed).toBe(0x20000000);
@@ -155,7 +157,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     let latest: FirstPersonScreenProps | undefined;
     jest.spyOn(nativeGateModule, 'NativeFirstPersonGate').mockImplementation((props) => { latest = props; return <Gate {...props} />; });
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
     const controller = mockFirstPersonCanvasProps!.controller;
@@ -180,7 +183,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     let latest: FirstPersonScreenProps | undefined;
     jest.spyOn(nativeGateModule, 'NativeFirstPersonGate').mockImplementation((props) => { latest = props; return <Gate {...props} />; });
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
     const prior = latest!;
@@ -201,13 +205,14 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
   it('guides an older native build before mounting Canvas and can return home', async () => {
     jest.mocked(requireOptionalNativeModule).mockReturnValue(null);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     expect(await view.findByText('3D対応の開発版が必要です')).toBeTruthy();
     expect(view.queryByTestId('first-person-native-canvas')).toBeNull();
     await fireEvent.press(view.getByText('ホームへ戻る'));
     // The stimulus is saved at entry, before the native build gate mounts.
-    expect(await view.findByText('展示室の続きから')).toBeTruthy();
+    expect(await view.findByTestId('select-perception-gallery-v1')).toBeTruthy();
     expect(requireOptionalNativeModule).toHaveBeenCalledWith('ExpoGL');
   });
 
@@ -215,7 +220,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const reducer = jest.spyOn(appStateModule, 'appReducer');
     const view = await render(<App />);
     // Goal 006 keeps this full route on the explicitly selected original chapter.
-    await fireEvent.press(await view.findByText('旧章を遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-returnless-entrance'));
     await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('迷宮へ入る'));
     await view.findByTestId('first-person-native-canvas');
@@ -302,7 +307,10 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(reducer.mock.calls.some(([, action]) => action.type === 'COMPLETE_CHAPTER')).toBe(true);
     await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY))!).progress.cleared).toBe(true));
     const oldScene = scene();
+    const replayAlert = jest.spyOn(Alert, 'alert');
     await fireEvent(view.getByText('章を最初から遊ぶ'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+    await act(() => replayAlert.mock.calls.at(-1)?.[2]?.find(button => button.text === 'もう一度遊ぶ')?.onPress?.());
+    await fireEvent.press(view.getByText('迷宮へ入る'));
     await view.findByTestId('first-person-native-canvas');
     expect(scene().controller.runtime.progress.sealA).toBe(false);
     expect(scene().controller.runtime.progress.sealB).toBe(false);
@@ -322,7 +330,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await AsyncStorage.setItem(FIRST_PERSON_CHECKPOINT_KEY, oldRaw);
     await AsyncStorage.setItem(GALLERY_CHECKPOINT_KEY, galleryRaw);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('展示室の続きから'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
     await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
@@ -330,7 +338,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.gallery!.shadow.inspected).toBe(true);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByText('ホームへ戻る'));
-    await fireEvent.press(await view.findByText('旧章の続きから'));
+    await fireEvent.press(await view.findByTestId('select-returnless-entrance'));
     await fireEvent.press(view.getByText('迷宮へ入る'));
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.chapterId).toBe('returnless-entrance');
@@ -345,7 +353,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const oldRaw = JSON.stringify(createCheckpoint(createInitialRuntime()));
     await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, source); await AsyncStorage.setItem(FIRST_PERSON_CHECKPOINT_KEY, oldRaw);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('展示室の続きから'));
+    await fireEvent.press(await view.findByTestId('review-perception-gallery-v1'));
     await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     expect(await view.findByText('展示室のクリア記録')).toBeTruthy();
@@ -365,7 +373,10 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(beforeReview);
     expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(source);
 
+    const replayAlert = jest.spyOn(Alert, 'alert');
     await fireEvent(view.getByRole('button', { name: '展示室を最初から遊ぶ' }), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+    await act(() => replayAlert.mock.calls.at(-1)?.[2]?.find(button => button.text === 'もう一度遊ぶ')?.onPress?.());
+    await fireEvent.press(view.getByText('展示室へ入る'));
     await view.findByTestId('first-person-native-canvas');
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.cleared).toBe(false);
     expect(mockFirstPersonCanvasProps!.controller.runtime.progress.gallery!.completedFromV1).toBe(false);
@@ -395,7 +406,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const raw = '{"schemaVersion":99,"futureChapter":"keep"}';
     await AsyncStorage.setItem(FIRST_PERSON_CHECKPOINT_KEY, raw);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('旧章の続きから'));
+    await fireEvent.press(await view.findByTestId('select-returnless-entrance'));
     await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('迷宮へ入る'));
     expect(await view.findByTestId('first-person-native-canvas')).toBeTruthy();
@@ -405,7 +416,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
 
   it('retains both handcrafted stages through explicit developer settings and actual adjacent destination controls', async () => {
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('新しい展示室を始める'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
     for (let index = 0; index < 3; index += 1) {
       await waitFor(() => expect(view.getByRole('button', { name: '赤が手前' })).toBeEnabled());
       expect(view.queryByText('強さ')).toBeNull();
@@ -451,7 +462,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
 
   it('persists skipping and skips setup after relaunch without exposing the lab on home', async () => {
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     expect(view.getByText('準備できました')).toBeTruthy();
     await waitFor(async () => {
       const raw = await AsyncStorage.getItem(APPLICATION_STORAGE_KEY);
@@ -459,10 +471,10 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     });
     await view.unmount();
     const reopened = await render(<App />);
-    await reopened.findByText('新しい展示室を始める');
+    await reopened.findByTestId('select-perception-gallery-v1');
     expect(reopened.queryByText('開発者ラボ')).toBeNull();
     expect(reopened.queryByText('あとで調整して遊ぶ')).toBeNull();
-    await fireEvent.press(reopened.getByText('新しい展示室を始める'));
+    await fireEvent.press(reopened.getByTestId('select-perception-gallery-v1'));
     expect(reopened.getByText('準備できました')).toBeTruthy();
     await fireEvent.press(reopened.getByText('展示室へ入る'));
     expect(await reopened.findByTestId('first-person-native-canvas')).toBeTruthy();
@@ -472,7 +484,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const raw = '{"schemaVersion":99,"futureData":"preserve"}';
     await AsyncStorage.setItem(APPLICATION_STORAGE_KEY, raw);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('あとで調整して遊ぶ'));
+    await fireEvent.press(await view.findByTestId('select-perception-gallery-v1'));
+    await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     expect(await view.findByTestId('first-person-native-canvas')).toBeTruthy();
     expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBe(raw);
@@ -498,9 +511,9 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(view.queryByText('補助表示')).toBeNull();
     expect(remove).toHaveBeenCalledTimes(2);
     // Full reset must remove the new chapter's independent save and recovery key too.
-    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY]);
+    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY]);
     await act(() => finishDeletion?.());
-    expect(await view.findByText('あとで調整して遊ぶ')).toBeTruthy();
+    expect(await view.findByTestId('select-perception-gallery-v1')).toBeTruthy();
     await waitFor(async () => {
       const raw = JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!);
       expect(raw.quickSetupResult).toBeUndefined();
@@ -516,7 +529,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const old = JSON.stringify(createCheckpoint(createInitialRuntime())), gallery = JSON.stringify(createCheckpoint(createGalleryRuntime()));
     await AsyncStorage.multiSet([[FIRST_PERSON_CHECKPOINT_KEY, old], [GALLERY_CHECKPOINT_KEY, gallery]]);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('測れない収蔵庫を始める'));
+    await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1'));
     expect(view.getByText('準備できました')).toBeTruthy(); expect(view.queryByText('同じ・分かりにくい')).toBeNull();
     await fireEvent.press(view.getByText('収蔵庫へ入る'));
     expect(await view.findByTestId('first-person-native-canvas')).toBeTruthy();
@@ -529,7 +542,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(initial.runtime.progress.sealA).toBe(false); expect(initial.runtime.progress.cleared).toBe(false);
     await fireEvent.press(view.getByTestId('pause-control'));
     await fireEvent.press(view.getByText('ホームへ戻る'));
-    await fireEvent.press(await view.findByText('収蔵庫の続きから'));
+    await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1'));
     await fireEvent.press(view.getByText('収蔵庫へ入る'));
     const second = mockFirstPersonCanvasProps!.controller;
     expect(second).not.toBe(initial); expect(second.runtime.progress.vault!.seed).toBe(firstSeed);
@@ -550,7 +563,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const oldRaw = JSON.stringify(originalV1('cleared'));
     await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, oldRaw);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('展示室の続きから'));
+    await fireEvent.press(await view.findByTestId('review-perception-gallery-v1'));
     await fireEvent.press(view.getByText('展示室へ入る'));
     expect(view.getByText('展示室のクリア記録')).toBeTruthy();
     const next = view.getByRole('button', { name: '次の章へ：測れない収蔵庫' });
@@ -570,7 +583,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const old = JSON.stringify(createCheckpoint(createInitialRuntime())), gallery = JSON.stringify(createCheckpoint(createGalleryRuntime()));
     await AsyncStorage.multiSet([[FIRST_PERSON_CHECKPOINT_KEY, old], [GALLERY_CHECKPOINT_KEY, gallery], [VAULT_CHECKPOINT_KEY, JSON.stringify(vaultCheckpoint('length', 100))]]);
     const view = await render(<App />);
-    await fireEvent.press(await view.findByText('収蔵庫の続きから')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
+    await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
     const retired = mockFirstPersonCanvasProps!;
     const savedBefore = createVaultCheckpoint(retired.controller.runtime);
     const settingsBefore = JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings;

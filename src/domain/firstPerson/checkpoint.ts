@@ -1,3 +1,5 @@
+import { createTheatreCheckpoint, restoreTheatreCheckpoint } from '../theatre/checkpoint';
+import { THEATRE_CHAPTER_ID } from '../theatre/definition';
 import { createVaultCheckpoint } from '../vault/checkpoint';
 import { createGalleryCheckpoint } from '../gallery/checkpoint';
 import { parseSealCheckpoint } from '../emblem/puzzle';
@@ -53,11 +55,13 @@ function safeCheckpointPose(runtime: ChapterRuntime): PlayerPose {
   return { ...nearest, position: { ...nearest.position } };
 }
 export function createCheckpoint(runtime: ChapterRuntime): CheckpointState {
+  if (runtime.progress.theatre) return createTheatreCheckpoint(runtime);
   if (runtime.progress.vault) return createVaultCheckpoint(runtime);
   if (runtime.progress.gallery) return createGalleryCheckpoint(runtime);
   return { schemaVersion: 1, chapterId: CHAPTER_ID, levelVersion: LEVEL_VERSION, pose: safeCheckpointPose(runtime), progress: { ...runtime.progress, emblem: emblemCheckpointForProgress(runtime.progress) } };
 }
 export function restoreCheckpoint(value: unknown): { checkpoint: CheckpointState; recovered: boolean; emblemStatus: EmblemCheckpointStatus } | undefined {
+  if (record(value) && value.chapterId === THEATRE_CHAPTER_ID) return restoreTheatreCheckpoint(value);
   if (!record(value) || value.schemaVersion !== 1 || value.chapterId !== CHAPTER_ID || !Number.isInteger(value.levelVersion) || Number(value.levelVersion) < 0 || Number(value.levelVersion) > LEVEL_VERSION) return undefined;
   const parsed = parseProgress(value.progress);
   if (!parsed) return undefined;

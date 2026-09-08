@@ -1,3 +1,5 @@
+import { THEATRE_CHAPTER_ID, THEATRE_CHECKPOINTS } from '../../../domain/theatre/definition';
+import { theatreAction } from '../theatreController';
 import { vaultCheckpoint } from '../../../storage/testFixtures/vault';
 import { VAULT_CHAPTER_ID } from '../../../domain/vault/definition';
 import { vaultAction } from '../vaultController';
@@ -101,20 +103,28 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     jest.useRealTimers();
   });
 
-  it('mounts the actual vault ten times with one renderer per entry and releases every nested scene resource', async () => {
+  it.each([VAULT_CHAPTER_ID, THEATRE_CHAPTER_ID])('mounts %s ten times with one renderer per entry and releases every nested scene resource', async chapterId => {
     const rootsBefore = _roots.size;
     for (let entry = 0; entry < 10; entry++) {
       renderer = fakeRenderer();
-      const controller = createController(undefined, false, true, VAULT_CHAPTER_ID);
+      const controller = createController(undefined, false, true, chapterId);
       const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
       const view = await render(<FirstPersonCanvas {...current} />);
       await createNativeContext(view);
       expect(current.onReady).not.toHaveBeenCalled();
       const native = rendererRoot(renderer).store.getState();
+      if (chapterId === THEATRE_CHAPTER_ID) {
+        for (const name of ['shadow-theatre', 'movable-point-light', 'actual-coat-occluding-surface', 'point-source-projected-opaque-shadow',
+          'ames-skewed-walls-floor-ceiling', 'theatre-aisle-actor', 'theatre-fire-curtain']) expect(native.scene.getObjectByName(name)).toBeDefined();
+        const near = native.scene.getObjectByName('ames-static-near') as THREE.Mesh;
+        const far = native.scene.getObjectByName('ames-static-far') as THREE.Mesh;
+        expect(near.geometry).toBe(far.geometry); expect(near.scale.toArray()).toEqual([1,1,1]); expect(far.scale.toArray()).toEqual([1,1,1]);
+      } else {
       expect(native.scene.getObjectByName('uncanny-vault')).toBeDefined();
       expect(native.scene.getObjectByName('vault-length-device')).toBeDefined();
       expect(native.scene.getObjectByName('vault-rod-device')).toBeDefined();
       expect(native.scene.getObjectByName('vault-exhibit-actor')).toBeDefined();
+      }
       expect(native.scene.getObjectByName('emblem-switch-fixture-circle')).toBeUndefined();
       await submitFrame(renderer);
       expect(current.onReady).toHaveBeenCalledTimes(1);
@@ -143,6 +153,76 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     }
   }, 30000);
 
+
+  it.each(['render', 'presentation'] as const)('rolls back the theatre exit crossing and suppresses publication when native %s fails', async phase => {
+    const controller = createController(undefined, false, true, THEATRE_CHAPTER_ID);
+    controller.runtime.progress.theatre = { ...controller.runtime.progress.theatre!, light: { rail: .65, accepted: true, attempts: 1 }, curtainAccepted: true, passageSealed: true };
+    controller.runtime.progress.exitDoorOpen = true;
+    controller.runtime.theatre = { ...controller.runtime.theatre!, lightGateOpen: 1, curtainOpenness: 0, rail: .65, checkpointId: 'booth', lastSafePose: THEATRE_CHECKPOINTS.booth };
+    controller.runtime.pose = { position: { x: 0, y: 1.6, z: 23.29 }, yaw: Math.PI, pitch: 0 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      const native = rendererRoot(renderer).store.getState();
+      jest.spyOn(native.clock, 'getDelta').mockReturnValue(.05);
+      const before = controller.runtime;
+      let candidate: typeof before | undefined;
+      jest.mocked(current.onSnapshot).mockClear();
+      const fail = () => { candidate = controller.runtime; throw new Error('Injected theatre ' + phase + ' failure'); };
+      if (phase === 'render') renderer.draw.mockImplementation(fail); else deviceContext.endFrameEXP.mockImplementation(fail);
+      controller.input.forward = 1;
+      await submitFrame(renderer, 2);
+      expect(candidate?.progress.theatre?.completed).toBe(true);
+      expect(controller.runtime.progress.theatre?.completed).toBe(false);
+      expect(controller.runtime.progress.theatre?.curtainAccepted).toBe(true);
+      expect(controller.runtime.pose).toEqual(before.pose);
+      expect(controller.pendingProjectorPulse).toBe(false);
+      expect(current.onSnapshot).not.toHaveBeenCalled();
+      expect(current.onError).toHaveBeenCalledTimes(1);
+    } finally { await view.unmount(); }
+  });
+
+  it.each(['idle', 'step-turn', 'pause'] as const)('lowers the curtain without clearing and preserves only a successfully presented impact after %s', async input => {
+    const controller = createController(undefined, false, true, THEATRE_CHAPTER_ID);
+    controller.runtime.progress.theatre = { ...controller.runtime.progress.theatre!, light: { rail: .65, accepted: true, attempts: 1 } };
+    controller.runtime.progress.exitDoorOpen = true;
+    controller.runtime.theatre = { ...controller.runtime.theatre!, lightGateOpen: 1, rail: .65, checkpointId: 'booth', lastSafePose: THEATRE_CHECKPOINTS.booth };
+    controller.runtime.pose = { position: { x: 1.04, y: 1.6, z: 21.3 }, yaw: 0, pitch: Math.atan2(-.3,2.12) };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view); await submitFrame(renderer);
+      const native = rendererRoot(renderer).store.getState();
+      jest.spyOn(native.clock, 'getDelta').mockReturnValue(.05);
+      const event = jest.fn();
+      controller.audio = { event, beginEnding: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), movement: jest.fn(), setActive: jest.fn(), dispose: jest.fn() } as unknown as NonNullable<typeof controller.audio>;
+      expect(theatreAction(controller, { type: 'lower-curtain' })).toBe(true);
+      expect(createCheckpoint(controller.runtime).progress.theatre).toMatchObject({ curtainAccepted: true, passageSealed: false, completed: false });
+      const curtain = native.scene.getObjectByName('theatre-fire-curtain')!;
+      const start = curtain.position.y;
+      if (input === 'step-turn') {
+        commandController(controller, { type: 'turn', yaw: .1, pitch: 0 });
+        commandController(controller, { type: 'step', forward: -1 });
+        expect(controller.pendingExitImpact).toBe(true);
+      }
+      if (input === 'pause') {
+        commandController(controller, { type: 'pause' });
+        expect(controller.pendingExitImpact).toBe(false);
+        commandController(controller, { type: 'resume' });
+      }
+      for (let frame=0;frame<24;frame++) {
+        await submitFrame(renderer,frame+2);
+        const bounds = getWorld(controller.runtime).solids.find(s=>s.id==='theatre-fire-curtain')!;
+        expect(curtain.position.y).toBeCloseTo((bounds.min.y+bounds.max.y)/2,8);
+        if(!controller.runtime.progress.theatre?.passageSealed)expect(event).not.toHaveBeenCalled();
+      }
+      expect(curtain.position.y).toBeLessThan(start);
+      expect(controller.runtime.progress.theatre).toMatchObject({ curtainAccepted:true,passageSealed:true,completed:false });
+      expect(event.mock.calls.filter(call=>call[0].type==='door-close')).toHaveLength(input === 'pause' ? 0 : 1);
+      expect(renderer.draw.mock.calls.length).toBe(deviceContext.endFrameEXP.mock.calls.length);
+    } finally { await view.unmount(); }
+  });
   it.each(['render', 'presentation'] as const)('rolls back vault movement/noise/actor observations when native %s fails', async phase => {
     const controller = createController(undefined, false, true, VAULT_CHAPTER_ID);
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };

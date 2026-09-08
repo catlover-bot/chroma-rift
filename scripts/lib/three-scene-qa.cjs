@@ -37,6 +37,8 @@ async function mountThree(element, THREE) {
     if (cache.has(node.props)) return cache.get(node.props);
     const p = node.props;
     const object = node.type === 'primitive' ? p.object : node.type === 'mesh' ? new THREE.Mesh(p.geometry, p.material)
+      : node.type === 'lineSegments' ? new THREE.LineSegments(p.geometry, p.material)
+      : node.type === 'line' ? new THREE.Line(p.geometry, p.material)
       : node.type === 'ambientLight' ? new THREE.AmbientLight(p.color ?? 0xffffff, p.intensity)
       : node.type === 'directionalLight' ? new THREE.DirectionalLight(p.color ?? 0xffffff, p.intensity) : new THREE.Group();
     if (!object?.isObject3D) throw new Error('Unsupported Three host: ' + node.type);

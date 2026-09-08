@@ -74,3 +74,20 @@ git diff --check
 担当検査は **4 suites / 47 tests PASS（10.277秒）**、typecheck/対象ESLint/diffチェックもPASS。 最終監査で最終安全域からの接触復帰だけがサービス入口へ戻る不整合を修正し、保存再開との対照1件を追加した。変更後のactor13件と実controller6経路は **2 suites / 19 tests PASS（9.539秒）**、typecheck/対象ESLint/diffチェックも再通過。標準/控えめ、B/C両順、任意展示を調べる/無視する、補助あり/なし、音ownerを接続しない条件を同じ実controllerで確認した。
 
 新モデルは別担当の実Threeメッシュ検査で876姿勢、最大水平半径0.425340m、専用半径0.44m内。足底minYが0以上で片足の接地があり、実移動に対するstance足の固定も検査した。これはiPhone FPS、音の実聴や人間の恐怖の証拠ではない。[画像・資源QA](qa-goal008) と [実機手順](IPHONE_VALIDATION.md) を分けて参照する。ソフトウェアWebGL、2D比較、native GL境界の代替、物理iPhoneを混同しない。
+
+
+## Goal 010 の独立した第三ステージ
+
+`shadow-theatre-v1` は既存gallery/vaultのパラメータを変えずに追加した章。詳細と明示攻略は [SHADOW-THEATRE](SHADOW-THEATRE.md) を参照する。6–10分は未測定の設計目標であり、以下は知覚／恐怖の測定結果ではない。
+
+| 段階 | 実際のきっかけ | 安全・情報の境界 |
+| --- | --- | --- |
+| 影の予期 | 入り口から受光面と小道具の投影を見る | 静止cast面と実actorは別ID。触れた／見たことではゲートを開かない。 |
+| 実験 | 光源を物理レールで動かし、両窓の面積遮蔽率が許容範囲で明示固定 | 最初は閉ゲート、解放後も幅.76mの実jambでactorを排除する。誤答で脅威を生成しない。 |
+| 横切り | ゲートを通りz>4.4で、同じ一体が別の開口を連続移動 | cameraを待たない。見逃しは進行停止条件ではない。終了後の猶予を省かない。 |
+| 任意観察 | 点検窓→側面構造の明示確認、別の保守取っ手 | floor/ceiling/propsは固定。発見・窓・bypassを分け、必須ゲートの迂回にしない。水平な歩廊自体は無敵域ではなく、通常の視認・接触が成立する。 |
+| 囮の選択 | 実映写機のhandle travel.8π→5秒motor、次回まで1.2秒cooldown | 音源は実機位置。muteでも同じevidence、実LOSの視覚を優先。操作中もAIが進む。 |
+| 追跡と回復 | .45秒認識→.65秒反応→.75秒windup→.42秒固定target攻撃 | Goal009接地motion/実head視線/壁判定を再使用。隠れた現在位置をlastSeenへ渡さない。接触は最後の安全保存地点と全指解除から回復。 |
+| 幕と退出 | 保護側の実handle→1.05秒の実降下→サービス出口歩行 | 受理・封鎖・completedを分ける。掃引volumeに身体があれば拒否し、cold途中復帰は閉幕の安定状態から再開。 |
+
+新章は9 waypointの実world loopを使い、半径.44mのactorが保護通路の.70/.76m開口を通れないことをplayerとの対照で検査した。実controller8経路では、自然到達したsafe bayからの囮／無操作の同状態対照、実捕捉から進行を失わない再走破、任意展示の省略を含む。新domain41件＋controller8件、旧firstPerson/vaultを含む担当回帰12 suites / 174 tests（14.639秒）を確認した。最後に歩廊の安全flagを実保護通路だけへ限定し、actor14件＋実controller8件の22件（5.955秒）を再通過した。最終アプリ集計・native frame/資源・実画像の記録は [GOAL-010](GOAL-010.md) と [QA](qa-goal010) に分ける。

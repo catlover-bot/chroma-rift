@@ -16,6 +16,12 @@ export type InteractionEvaluation = {
 
 function actionLabel(target: InteractableDefinition, progress?: PuzzleState): string {
   switch (target.id) {
+    case 'theatre-light': return '灯りを動かす';
+    case 'theatre-inspection': return '側面の点検窓を開く';
+    case 'theatre-ames-side': return '部屋の構造を調べる';
+    case 'theatre-bypass': return '保守通路を開く';
+    case 'theatre-projector': return '映写機を回す';
+    case 'theatre-curtain': return '防火幕を下ろす';
     case 'vault-length': return '留め金を調整';
     case 'vault-rod': return '針を調整';
     case 'vault-cafe': return '目地を比べる';
@@ -44,6 +50,12 @@ function actionLabel(target: InteractableDefinition, progress?: PuzzleState): st
 function lockedReason(target: InteractableDefinition, progress: PuzzleState | undefined, aligned: boolean): string | undefined {
   if (!progress) return undefined;
   switch (target.id) {
+    case 'theatre-light': return progress.theatre ? undefined : 'この装置はありません。';
+    case 'theatre-inspection': return progress.theatre?.inspectionShutterOpen ? '点検窓は開いています。' : progress.theatre?.light.accepted ? undefined : '先に灯りを固定しよう。';
+    case 'theatre-ames-side': return progress.theatre?.inspectionShutterOpen ? undefined : '側面の点検窓を開こう。';
+    case 'theatre-bypass': return progress.theatre?.bypassOpen ? '保守通路は開いています。' : progress.theatre?.inspectionShutterOpen ? undefined : '側面の点検窓を開こう。';
+    case 'theatre-projector': return progress.theatre?.light.accepted ? undefined : '先に灯りを固定しよう。';
+    case 'theatre-curtain': return progress.theatre?.curtainAccepted ? '防火幕は下がっています。奥の出口へ。' : progress.theatre?.light.accepted ? undefined : '先に灯りを固定しよう。';
     case 'vault-length': return progress.vault ? undefined : 'この装置はありません。';
     case 'vault-rod': return progress.vault?.length.solved ? undefined : '先に留め金を固定しよう。';
     case 'vault-cafe': return undefined;

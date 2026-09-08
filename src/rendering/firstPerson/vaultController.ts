@@ -3,7 +3,7 @@ import type { InteractableDefinition } from '../../domain/firstPerson/types';
 import { applyVaultCommand, isVaultExitThreshold } from '../../domain/vault/state';
 import type { VaultAction, VaultCommand, VaultDevice } from '../../domain/vault/types';
 import { controllerCanInteract, soundForControllerTransition, worldForController, type RuntimeController } from './runtimeController';
-import { fixtureFullyVisible, fixtureScreenBounds, pointOnFixture, type PanelPoint } from './manipulationProjection';
+import { fixtureAcquisition, acquisitionResult, fixtureScreenBounds, pointOnFixture, type PanelPoint } from './manipulationProjection';
 import { clearTouchInput, requireAllPointersReleased } from './touchInput';
 
 export function vaultDeviceScreenBounds(controller: RuntimeController, puzzle?: VaultDevice) {
@@ -14,14 +14,20 @@ export function vaultDeviceScreenBounds(controller: RuntimeController, puzzle?: 
   return fixtureScreenBounds({ ...target, rectangle: { ...target.rectangle, width: target.rectangle.width + .16, height: target.rectangle.height + .16 } },
     controller.matrices, size.width, size.height);
 }
-export function vaultPanelTarget(controller: RuntimeController, puzzle: VaultDevice): InteractableDefinition | undefined {
+export function vaultDeviceAcquisition(controller: RuntimeController, puzzle: VaultDevice) {
   const world = worldForController(controller), target = world.interactables.find(t => t.id === 'vault-' + puzzle);
-  if (!target || !fixtureFullyVisible(controller.runtime.pose, controller.matrices, world, target)) return;
-  if (controller.viewport) {
-    const b = vaultDeviceScreenBounds(controller, puzzle), s = controller.viewport;
-    if (!b || b.left < 10 || b.right > s.width - 10 || b.top < 70 || b.bottom > s.height - 90) return;
+  if (!target || !controllerCanInteract(controller)) return acquisitionResult(puzzle === 'length' ? 'vault-length' : 'vault-rod', 'busy');
+  const result = fixtureAcquisition(controller.runtime.pose, controller.matrices, world, target,
+    controller.viewport ? { ...controller.viewport, top: 70, bottom: 90, side: 10, padding: .08 } : undefined);
+  if (result.kind === 'ready' && controller.runtime.vault?.mode === 'explore' && !controller.screenReader) {
+    const cue = evaluateInteraction(world, controller.runtime.pose, controller.runtime.progress, controller.matrices);
+    if (cue.kind !== 'ready' || cue.target.id !== target.id) return acquisitionResult(target.id, 'busy', '装置の面に中央の照準を向けよう。');
   }
-  return target;
+  return result;
+}
+export function vaultPanelTarget(controller: RuntimeController, puzzle: VaultDevice): InteractableDefinition | undefined {
+  return vaultDeviceAcquisition(controller, puzzle).kind === 'ready'
+    ? worldForController(controller).interactables.find(t => t.id === 'vault-' + puzzle) : undefined;
 }
 export function canCloseVaultExitController(controller: RuntimeController): boolean {
   const runtime = controller.runtime;
@@ -54,7 +60,7 @@ export function dispatchVaultController(controller: RuntimeController, command: 
     controller.audio?.stopMovement();
   }
   if (result.accepted && ['commit', 'drag-end', 'adjust', 'close-exit', 'close-partition'].includes(a.type)) soundForControllerTransition(controller, previous);
-  if (!result.accepted && a.type === 'enter') controller.feedbackMessage = '装置全体と取っ手が見える床の目印へ。視点は自分で動かせます。';
+  if (!result.accepted && a.type === 'enter') controller.feedbackMessage = vaultDeviceAcquisition(controller, a.puzzle).message;
   return result.accepted;
 }
 export function vaultAction(controller: RuntimeController, action: VaultAction, accessible = false): boolean {

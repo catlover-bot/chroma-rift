@@ -1,0 +1,93 @@
+{
+  "generatedBy": "scripts/generate-perceptual-audio.cjs (original synthesis)",
+  "listeningVerified": false,
+  "parameters": {
+    "cloth": {
+      "duration": 0.42,
+      "peak": 0.13,
+      "seed": 1129074516
+    },
+    "door-impact": {
+      "duration": 0.5,
+      "peak": 0.2,
+      "seed": 1146048338
+    },
+    "shepard": {
+      "duration": 12,
+      "peak": 0.16,
+      "rms": 0.065,
+      "seed": 0,
+      "baseHz": 27.5,
+      "octaves": 8,
+      "centerHz": 440,
+      "sigmaOctaves": 1.05,
+      "edgeFadeSeconds": 0.08
+    }
+  },
+  "colorSpace": "not applicable: mono linear PCM16",
+  "playback": "12-second finite optional cue; WAV edges are smoothed for looping but runtime does not force a loop",
+  "sources": {
+    "cloth": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 0.42,
+      "peak": 0.1300048828125,
+      "peakDbfs": -17.72080671713998,
+      "rms": 0.022074622828252982,
+      "dc": 1.1201888795882936e-7,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0,
+      "sha256": "9ca8d101577af92b6fa2be1dea6b989a475a0a1a3e911f1607454e49df71b0cb",
+      "maxAdjacentDelta": 0.08331298828125,
+      "rmsWindows": [
+        0.022074622828252982
+      ]
+    },
+    "door-impact": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 0.5,
+      "peak": 0.199981689453125,
+      "peakDbfs": -13.980195340071585,
+      "rms": 0.06557238927970573,
+      "dc": 6.357828776041667e-8,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0,
+      "sha256": "ad517be84d5b421691f9b41fb0eb43e4efe82fc3b3eff3315a35371236a06c77",
+      "maxAdjacentDelta": 0.004547119140625,
+      "rmsWindows": [
+        0.06557238927970573
+      ]
+    },
+    "shepard": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 12,
+      "peak": 0.1136474609375,
+      "peakDbfs": -18.888805253008258,
+      "rms": 0.064998013444134,
+      "dc": -3.390842013888889e-9,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0,
+      "sha256": "bfc15c3aaaafc00a9b9856cbc79ed75d4c94ca1d409ba55ee5aaf5fc391281b2",
+      "maxAdjacentDelta": 0.026611328125,
+      "rmsWindows": [
+        0.06362243148707859,
+        0.06527479374852183,
+        0.06526444157949642,
+        0.06526960277919212,
+        0.06526953751281682,
+        0.06525131259852686,
+        0.06528450042332709,
+        0.06528048814399545,
+        0.06526739875037584,
+        0.06524757676902222,
+        0.0652941175358899,
+        0.06361496916495975
+      ]
+    }
+  }
+}

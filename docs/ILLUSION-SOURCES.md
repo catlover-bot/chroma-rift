@@ -1,6 +1,20 @@
-# 知覚表現の出典・素材台帳（Goal 008 / 009）
+# 知覚表現の出典・素材台帳（Goal 008 / 009 / 010）
 
-確認日: 2026-09-07。公開サイトは資料として読み、アプリはネットワークから素材を取得しない。「原理の参考」「コードの利用」「実素材」を区別する。錯視を感じることは攻略条件ではなく、この台帳や幾何検査は iPhone の知覚・怖さ・実聴の証明ではない。
+旧版の確認日: 2026-09-07、Goal 010の追加確認日: 2026-09-09。公開サイトは資料として読み、アプリはネットワークから素材を取得しない。「原理の参考」「コードの利用」「実素材」を区別する。錯視を感じることは攻略条件ではなく、この台帳や幾何検査は iPhone の知覚・怖さ・実聴の証明ではない。
+
+## Goal 010 の追加 — 2026-09-09
+
+追加のコート輪郭、歪んだ部屋、2展示物、レール、映写機、防火幕、ステージサムネイルは本作の手続き生成図形。外部の写真・型紙・図版・音声・人物は追加していない。展示体の顔に使う既存Wael Tsar / cmglee由来のCC BY 4.0素材と帰属は維持する。映写機の可聴フィードバックは既存の自作機械操作音を有限の間隔で再利用し、ゲーム内の音源判定とスピーカー出力を分離する。
+
+| 一次資料 | 参照内容 / 同梱の有無 |
+| --- | --- |
+| [Exploratorium — Ames Chair](https://www.exploratorium.edu/snacks/ames-chair) | Ames roomの説明と固定観察点の考え方を確認。ページの活動はCC BY-NC-SA 4.0。参照のみで、写真・型紙・文章・図をアプリに取り込まない。本作の部屋は独自の射影変換で生成 |
+| [Three.js — Shadows](https://threejs.org/manual/en/shadows.html) | shadow mapの追加描画コストを参照。本作は限定した受光面へ独自の点光源幾何を投影し、室内の多灯動的影は導入しない |
+| [Frictional Games — 9 Years, 9 Lessons on Horror](https://frictionalgames.com/2019-10-9-years-9-lessons-on-horror/) | 不確かさ、因果関係、間の設計の参考。キャラクター、場面、UI、文章、音は転載しない |
+| [Microsoft — XAG 118](https://learn.microsoft.com/en-us/xbox/accessibility/xbox-accessibility-guidelines/118) | 光刺激に関する設計指針を参照。点滅・全画面パルスを追加しない。特定の周波数やテスト合格から安全性を保証しない |
+| [Expo — Use development builds](https://docs.expo.dev/develop/development-builds/use-development-builds/) | 既存Development BuildとJS更新の利用手順。JS exportをnative buildや端末表示の検査と扱わない |
+
+新しい知覚の説明は [ILLUSION-EVIDENCE](ILLUSION-EVIDENCE.md)。旧素材のライセンス・作者・改変と各ファイルの来歴は下記の台帳を引き継ぐ。
 
 ## 実際に同梱する外部素材
 

@@ -3,18 +3,29 @@ import type { InteractableDefinition } from '../../domain/firstPerson/types';
 import { projectWithCamera } from '../../domain/firstPerson/alignment';
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { clearTouchInput, requireAllPointersReleased } from './touchInput';
-import { fixtureFullyVisible, fixtureScreenBounds, pointOnFixture, type PanelPoint } from './manipulationProjection';
+import { fixtureAcquisition, acquisitionResult, fixtureScreenBounds, pointOnFixture, type PanelPoint } from './manipulationProjection';
 import { controllerCanInteract, soundForControllerTransition, worldForController, type RuntimeController } from './runtimeController';
 
-export function galleryPanelTarget(controller: RuntimeController, puzzle: GalleryDevice): InteractableDefinition | undefined {
+export function galleryDeviceAcquisition(controller: RuntimeController, puzzle: GalleryDevice) {
   const world = worldForController(controller), target = world.interactables.find(t => t.id === puzzle + '-panel');
-  if (!target || !fixtureFullyVisible(controller.runtime.pose, controller.matrices, world, target)) return;
+  if (!target || !controllerCanInteract(controller)) return acquisitionResult(puzzle === 'shadow' ? 'shadow-panel' : puzzle === 'contour' ? 'contour-panel' : 'wiring-panel', 'busy');
   const viewport = controller.viewport ?? (typeof controller.diagnostics.rnLayout === 'object' ? controller.diagnostics.rnLayout : undefined);
-  if (viewport) {
-    const bounds = deviceBounds(controller, target, viewport);
-    if (!bounds || bounds.top < 64 || bounds.bottom > viewport.height - 72) return;
+  const result = fixtureAcquisition(controller.runtime.pose, controller.matrices, world, target, viewport ? { ...viewport, top: 64, bottom: 72, side: 0 } : undefined);
+  if (result.kind !== 'ready') return result;
+  if (controller.runtime.gallery?.mode === 'explore' && !controller.screenReader) {
+    const cue = evaluateInteraction(world, controller.runtime.pose, controller.runtime.progress, controller.matrices);
+    if (cue.kind !== 'ready' || cue.target.id !== target.id) return acquisitionResult(target.id, 'busy', '装置の面に中央の照準を向けよう。');
   }
-  return target;
+  if (!viewport) return result;
+  const bounds = deviceBounds(controller, target, viewport);
+  if (!bounds) return acquisitionResult(target.id, 'tooNear');
+  if (bounds.top < 64) return acquisitionResult(target.id, 'offscreenTop');
+  if (bounds.bottom > viewport.height - 72) return acquisitionResult(target.id, 'offscreenBottom', '引き出しの下まで見えるよう、少し下を見よう。');
+  return result;
+}
+export function galleryPanelTarget(controller: RuntimeController, puzzle: GalleryDevice): InteractableDefinition | undefined {
+  return galleryDeviceAcquisition(controller, puzzle).kind === 'ready'
+    ? worldForController(controller).interactables.find(t => t.id === puzzle + '-panel') : undefined;
 }
 export function galleryCommand(controller: RuntimeController, action: GalleryAction, nowMs = performance.now()): GalleryCommand {
   return { sessionId: String(controller.runtime.session), seq: ++controller.commandSequence, nowMs, action };
@@ -52,12 +63,7 @@ export function dispatchGalleryController(controller: RuntimeController, command
     clearTouchInput(controller.input); controller.simpleStep = 0; controller.pendingFootstepDistance = 0;
   }
   if (result.accepted && result.effects.some(e => e.type === 'gallery-released' || e.type === 'manipulated' || e.type === 'light-on' || e.type === 'power-taken' || e.type === 'power-connected' || e.type === 'exit-opened' || e.type === 'exit-closed' || e.type === 'wiring-released')) soundForControllerTransition(controller, previous);
-  if (!result.accepted && action.type === 'enter') {
-    const panel = worldForController(controller).interactables.find(t => t.id === action.puzzle + '-panel');
-    const eye = controller.runtime.pose.position;
-    const far = panel && Math.hypot(panel.center.x - eye.x, panel.center.y - eye.y, panel.center.z - eye.z) > panel.maxDistance;
-    controller.feedbackMessage = far ? '少し近づくと、装置を操作できます。' : '板全体が見える位置へ。床の輪が目印です。';
-  }
+  if (!result.accepted && action.type === 'enter') controller.feedbackMessage = galleryDeviceAcquisition(controller, action.puzzle).message;
   return result.accepted;
 }
 export function galleryAction(controller: RuntimeController, action: GalleryAction, accessible = false): boolean {

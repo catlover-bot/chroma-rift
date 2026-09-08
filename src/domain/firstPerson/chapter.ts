@@ -1,3 +1,4 @@
+import { getTheatreWorld } from '../theatre/world';
 import { getVaultWorld } from '../vault/world';
 import { getGalleryWorld } from '../gallery/world';
 import { EMBLEM_FIXTURE, EMBLEM_FIXTURE_SOLIDS, EMBLEM_SWITCHES } from './emblemFixture';
@@ -135,7 +136,8 @@ const layouts = {
 } as const;
 const staticWalls = { entrance: [...boundaryWalls(layouts.entrance), ...FIXED_WALLS], exit: [...boundaryWalls(layouts.exit), ...FIXED_WALLS] };
 
-export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment' | 'gallery' | 'vault'>): WorldGeometry {
+export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment' | 'gallery' | 'vault' | 'theatre'>): WorldGeometry {
+  if (runtime.progress.theatre) return getTheatreWorld(runtime);
   if (runtime.progress.vault) return getVaultWorld(runtime);
   if (runtime.progress.gallery) return getGalleryWorld(runtime);
   const { progress } = runtime;

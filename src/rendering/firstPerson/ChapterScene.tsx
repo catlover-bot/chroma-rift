@@ -1,6 +1,7 @@
 import { PanelFixture } from './PanelFixture';
 import { GlyphMark } from './GlyphMark';
 /* eslint-disable react/no-unknown-property -- These are R3F Three.js intrinsics, not DOM elements. */
+import { TheatreScene } from './TheatreScene';
 import { VaultScene } from './VaultScene';
 import { GalleryScene } from './GalleryScene';
 import { useFrame } from '@react-three/fiber/native';
@@ -123,6 +124,7 @@ function LegacyChapterScene({ world, runtime, progress, resources, assist, reduc
 }
 
 export function ChapterScene(props: Parameters<typeof LegacyChapterScene>[0]) {
+  if (props.progress.theatre && !props.lab) return <TheatreScene {...props} />;
   if (props.progress.vault && !props.lab) return <VaultScene {...props} />;
   return props.progress.gallery && !props.lab ? <GalleryScene {...props} /> : <LegacyChapterScene {...props} />;
 }

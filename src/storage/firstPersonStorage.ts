@@ -1,4 +1,7 @@
+import { createStageJournalStorage, STAGE_JOURNAL_KEY } from './stageJournalStorage';
+import type { StageId } from '../app/stages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createTheatreRuntime, createTheatreCheckpoint, restoreTheatreCheckpoint } from '../domain/theatre';
 import { createVaultCheckpoint, restoreVaultCheckpoint } from '../domain/vault/checkpoint';
 import { createVaultRuntime } from '../domain/vault/runtime';
 import { createGalleryRuntime, restoreGalleryCheckpoint, migrateGalleryV1Checkpoint, migrateGalleryV2Checkpoint } from '../domain/gallery';
@@ -12,6 +15,11 @@ import {
   type FirstPersonControls, type FirstPersonOnboarding,
 } from '../types/application';
 import { resetApplicationStorage } from './applicationStorage';
+
+export { STAGE_JOURNAL_KEY } from './stageJournalStorage';
+
+export const THEATRE_CHECKPOINT_KEY = 'chroma-rift.shadow-theatre.v1';
+export const THEATRE_BACKUP_KEY = 'chroma-rift.shadow-theatre.backup.v1';
 
 export const VAULT_CHECKPOINT_KEY = 'chroma-rift.uncanny-vault.v1';
 export const VAULT_BACKUP_KEY = 'chroma-rift.uncanny-vault.backup.v1';
@@ -147,6 +155,9 @@ let controlsWritable = true;
 let onboardingWritable = true;
 let latestOnboarding: FirstPersonOnboarding = { ...DEFAULT_FIRST_PERSON_ONBOARDING };
 let latestCheckpoint: CheckpointState | undefined;
+let theatreWritable = true;
+let latestTheatreCheckpoint: CheckpointState | undefined;
+let pendingTheatreBackup: string | undefined;
 let vaultWritable = true;
 let latestVaultCheckpoint: CheckpointState | undefined;
 let pendingVaultBackup: string | undefined;
@@ -161,6 +172,17 @@ function serializeMutation<T>(operation: () => Promise<T>): Promise<T> {
   mutations = result.catch(() => undefined);
   return result;
 }
+
+function validateJournalCheckpoint(value: unknown): CheckpointState | undefined {
+  if (!isRecord(value)) return;
+  const restored = value.chapterId === 'shadow-theatre-v1' ? restoreTheatreCheckpoint(value) : value.chapterId === 'uncanny-vault-v1' ? restoreVaultCheckpoint(value) :
+    value.chapterId === 'perception-gallery-v1' ? restoreGalleryCheckpoint(value) : value.chapterId === CHAPTER_ID ? restoreCheckpoint(value) : undefined;
+  return restored && !restored.recovered && restored.emblemStatus === 'valid' ? restored.checkpoint : undefined;
+}
+const stageJournal = createStageJournalStorage({ enqueue: serializeMutation, epoch: () => progressEpoch, current: isFirstPersonSessionCurrent, validate: validateJournalCheckpoint });
+export const loadStageJournal = () => stageJournal.load();
+export const recordStageHistory = (checkpoints: readonly CheckpointState[], lease: number) => stageJournal.record(checkpoints, lease);
+export const recordStageEntry = (checkpoint: CheckpointState, lease: number, id: StageId) => stageJournal.record([checkpoint], lease, id);
 
 /** Capture this lease in each mounted run's callbacks, never read a newer lease from an old callback. */
 export function beginFirstPersonSession(): number {
@@ -326,10 +348,14 @@ export function saveFirstPersonOnboarding(onboarding: FirstPersonOnboarding, lea
 }
 
 export function resetFirstPersonChapter(): Promise<boolean> {
-  progressEpoch += 1;
+  const epoch = ++progressEpoch;
   progressWritable = false;
   return serializeMutation(async () => {
+    if (epoch !== progressEpoch) return false;
     try {
+      const raw = latestCheckpoint ? null : await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY);
+      const old = latestCheckpoint ?? (raw ? decodeFirstPersonStorage(raw, null) : undefined)?.checkpoint;
+      if (!isFirstPersonSessionCurrent(epoch) || !await stageJournal.preserveUnlocked(old, epoch)) return false;
       await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_PRE_EMBLEM_KEY]);
       latestCheckpoint = undefined;
       pendingCheckpointBackup = undefined;
@@ -351,10 +377,11 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   controlsWritable = false;
   galleryWritable = false;
   vaultWritable = false;
+  theatreWritable = false;
   const applicationReset = resetApplicationStorage();
   const firstPersonReset = serializeMutation(async () => {
     try {
-      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY]);
+      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY]);
       return true;
     } catch {
       return false;
@@ -362,6 +389,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   });
   const [applicationRemoved, chapterRemoved] = await Promise.all([applicationReset, firstPersonReset]);
   const succeeded = applicationRemoved && chapterRemoved;
+  stageJournal.resetCache(succeeded);
   latestCheckpoint = undefined;
   pendingCheckpointBackup = undefined;
   latestGalleryCheckpoint = undefined;
@@ -369,6 +397,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   latestVaultCheckpoint = undefined;
   pendingVaultBackup = undefined;
   vaultWritable = succeeded;
+  latestTheatreCheckpoint = undefined; pendingTheatreBackup = undefined; theatreWritable = succeeded;
   galleryWritable = succeeded;
   progressWritable = succeeded;
   controlsWritable = succeeded;
@@ -508,6 +537,8 @@ export function resetGalleryChapter(checkpoint: CheckpointState = initialGallery
   return serializeMutation(async () => {
     if (epoch !== progressEpoch) return false;
     try {
+      const old = latestGalleryCheckpoint ?? (await readGalleryDocument()).result.checkpoint;
+      if (!isFirstPersonSessionCurrent(epoch) || !await stageJournal.preserveUnlocked(old, epoch)) return false;
       await AsyncStorage.setItem(GALLERY_CHECKPOINT_KEY, JSON.stringify(restored.checkpoint));
       if (epoch !== progressEpoch) return false;
       latestGalleryCheckpoint = restored.checkpoint;
@@ -613,11 +644,119 @@ export function resetVaultChapter(checkpoint: CheckpointState = initialVaultChec
   return serializeMutation(async () => {
     if (epoch !== progressEpoch) return false;
     try {
+      const old = latestVaultCheckpoint ?? (await readVaultDocument()).result.checkpoint;
+      if (!isFirstPersonSessionCurrent(epoch) || !await stageJournal.preserveUnlocked(old, epoch)) return false;
       await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, JSON.stringify(restored.checkpoint));
       if (epoch !== progressEpoch) return false;
       latestVaultCheckpoint = restored.checkpoint;
       pendingVaultBackup = undefined;
       vaultWritable = true;
+      return true;
+    } catch { return false; }
+  });
+}
+
+
+export type TheatreLoadResult = {
+  checkpoint: CheckpointState; hasCheckpoint: boolean; checkpointWritable: boolean;
+  status: 'empty' | 'loaded' | 'recovered' | 'blocked'; message?: string;
+};
+const initialTheatreCheckpoint = (): CheckpointState => createTheatreCheckpoint(createTheatreRuntime());
+
+/** This chapter has no predecessor key. Never reinterpret another chapter or
+ * an unknown theatre version as a new run, even when saving before hydration. */
+export function decodeTheatreStorage(raw: string | null): TheatreLoadResult {
+  const fallback: TheatreLoadResult = { checkpoint: initialTheatreCheckpoint(), hasCheckpoint: raw !== null,
+    checkpointWritable: true, status: raw === null ? 'empty' : 'loaded' };
+  if (raw === null) return fallback;
+  try {
+    const restored = restoreTheatreCheckpoint(JSON.parse(raw));
+    if (!restored) throw new Error('unsupported theatre checkpoint');
+    return { ...fallback, checkpoint: restored.checkpoint, status: restored.recovered ? 'recovered' : 'loaded',
+      ...(restored.recovered ? { message: '影の映写室の保存位置を安全な場所へ戻しました。元の記録を別に保持してから保存します。' } : {}) };
+  } catch {
+    return { ...fallback, checkpointWritable: false, status: 'blocked',
+      message: '影の映写室の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。新規に始める場合は、この章だけをリセットしてください。' };
+  }
+}
+async function readTheatreDocument(): Promise<{ result: TheatreLoadResult; backup?: string }> {
+  const raw = await AsyncStorage.getItem(THEATRE_CHECKPOINT_KEY), result = decodeTheatreStorage(raw);
+  return { result, ...(raw !== null && result.status === 'recovered' ? { backup: raw } : {}) };
+}
+export async function loadTheatreStorage(): Promise<TheatreLoadResult> {
+  await mutations;
+  const epoch = progressEpoch;
+  try {
+    const { result, backup } = await readTheatreDocument();
+    if (epoch !== progressEpoch) return { checkpoint: initialTheatreCheckpoint(), hasCheckpoint: result.hasCheckpoint,
+      status: 'blocked', checkpointWritable: false, message: '読み込み中に章が切り替わりました。' };
+    theatreWritable = result.checkpointWritable;
+    latestTheatreCheckpoint = result.hasCheckpoint ? result.checkpoint : undefined;
+    pendingTheatreBackup = backup;
+    return result;
+  } catch {
+    if (epoch === progressEpoch) theatreWritable = false;
+    return { checkpoint: initialTheatreCheckpoint(), hasCheckpoint: false, status: 'blocked', checkpointWritable: false,
+      message: '影の映写室の保存領域を読み込めませんでした。元のデータを保持し、保存を停止しています。' };
+  }
+}
+function theatreDoesNotRewind(previous: CheckpointState | undefined, next: CheckpointState): boolean {
+  const old = previous?.progress.theatre, fresh = next.progress.theatre;
+  if (!fresh) return false;
+  if (!old || !previous) return true;
+  return old.seed === fresh.seed && old.specVersion === fresh.specVersion &&
+    (!old.light.accepted || fresh.light.accepted && old.light.rail === fresh.light.rail) && old.light.attempts <= fresh.light.attempts &&
+    (!old.inspectionShutterOpen || fresh.inspectionShutterOpen) && (!old.bypassOpen || fresh.bypassOpen) &&
+    (!old.curtainAccepted || fresh.curtainAccepted) && (!old.passageSealed || fresh.passageSealed) && (!old.completed || fresh.completed) &&
+    (Object.keys(old.discoveries) as (keyof typeof old.discoveries)[]).every(key => !old.discoveries[key] || fresh.discoveries[key]) &&
+    (Object.keys(old.story) as (keyof typeof old.story)[]).every(key => !old.story[key] || fresh.story[key]);
+}
+export function saveTheatreCheckpoint(checkpoint: CheckpointState, lease: number): Promise<boolean> {
+  const raw = JSON.stringify(checkpoint);
+  return serializeMutation(async () => {
+    if (!theatreWritable || !isFirstPersonSessionCurrent(lease)) return false;
+    const restored = restoreTheatreCheckpoint(JSON.parse(raw));
+    if (!restored || restored.recovered) return false;
+    try {
+      if (!latestTheatreCheckpoint) {
+        const previous = await readTheatreDocument();
+        if (!isFirstPersonSessionCurrent(lease)) return false;
+        if (!previous.result.checkpointWritable) { theatreWritable = false; return false; }
+        latestTheatreCheckpoint = previous.result.hasCheckpoint ? previous.result.checkpoint : undefined;
+        pendingTheatreBackup = previous.backup;
+      }
+      if (!theatreDoesNotRewind(latestTheatreCheckpoint, restored.checkpoint)) return false;
+      if (pendingTheatreBackup !== undefined) {
+        const backup = await AsyncStorage.getItem(THEATRE_BACKUP_KEY);
+        if (!isFirstPersonSessionCurrent(lease)) return false;
+        if (backup === null) await AsyncStorage.setItem(THEATRE_BACKUP_KEY, pendingTheatreBackup);
+        if (!isFirstPersonSessionCurrent(lease)) return false;
+        pendingTheatreBackup = undefined;
+      }
+      await AsyncStorage.setItem(THEATRE_CHECKPOINT_KEY, JSON.stringify(restored.checkpoint));
+      if (!isFirstPersonSessionCurrent(lease)) return false;
+      latestTheatreCheckpoint = restored.checkpoint;
+      return true;
+    } catch { return false; }
+  });
+}
+/** Replace only this chapter after explicit reset. The shared epoch rejects all
+ * retired scene callbacks; the shared writer orders reset after active writes. */
+export function resetTheatreChapter(checkpoint: CheckpointState = initialTheatreCheckpoint()): Promise<boolean> {
+  const restored = restoreTheatreCheckpoint(JSON.parse(JSON.stringify(checkpoint)));
+  if (!restored || restored.recovered) return Promise.resolve(false);
+  const epoch = ++progressEpoch;
+  theatreWritable = false;
+  return serializeMutation(async () => {
+    if (epoch !== progressEpoch) return false;
+    try {
+      const old = latestTheatreCheckpoint ?? (await readTheatreDocument()).result.checkpoint;
+      if (!isFirstPersonSessionCurrent(epoch) || !await stageJournal.preserveUnlocked(old, epoch)) return false;
+      await AsyncStorage.setItem(THEATRE_CHECKPOINT_KEY, JSON.stringify(restored.checkpoint));
+      if (epoch !== progressEpoch) return false;
+      latestTheatreCheckpoint = restored.checkpoint;
+      pendingTheatreBackup = undefined;
+      theatreWritable = true;
       return true;
     } catch { return false; }
   });

@@ -1,0 +1,107 @@
+Selected command headings, suite statuses and summary from final-check.log. Verbose known Three.Clock deprecation stack traces omitted. Full raw log remains local .expo/goal010/final-check.log.
+
+> chroma-rift@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run export:ios
+> chroma-rift@0.1.0 lint
+> eslint .
+> chroma-rift@0.1.0 typecheck
+> tsc --noEmit
+> chroma-rift@0.1.0 test
+> jest --runInBand
+PASS src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx (62.003 s)
+PASS src/screens/__tests__/discoveryNotebook.test.tsx (10.106 s)
+PASS src/rendering/firstPerson/__tests__/galleryRouteController.test.ts (8.39 s)
+PASS src/content/__tests__/illusionComparisons.test.ts (6.425 s)
+PASS src/rendering/firstPerson/__tests__/theatreRouteController.test.ts
+PASS src/rendering/firstPerson/__tests__/vaultRouteController.test.ts
+PASS src/rendering/firstPerson/__tests__/chromaticExhibit.test.ts
+PASS src/domain/gallery/__tests__/actor.test.ts
+PASS src/rendering/firstPerson/__tests__/emblemSurface.test.ts
+PASS src/rendering/firstPerson/__tests__/theatreResources.test.ts
+PASS src/rendering/firstPerson/__tests__/resources.test.ts
+PASS src/screens/__tests__/galleryManipulationScreen.test.tsx
+PASS src/screens/__tests__/journeyFlow.test.tsx
+PASS src/rendering/firstPerson/__tests__/actorFrameBoundary.test.tsx
+PASS src/domain/emblem/__tests__/emblem.test.ts
+PASS src/domain/actorMotion/__tests__/motion.test.ts
+PASS src/audio/__tests__/perceptualAssets.test.ts
+PASS src/screens/__tests__/firstPersonControls.test.tsx
+PASS src/screens/__tests__/vaultNotebook.test.tsx
+PASS src/domain/theatre/__tests__/optics.test.ts
+PASS src/screens/__tests__/theatreNotebook.test.tsx
+PASS src/domain/firstPerson/__tests__/firstPerson.test.ts
+PASS src/domain/emblem/__tests__/kitContracts.test.ts
+PASS src/domain/gallery/__tests__/gallery.test.ts
+PASS src/screens/__tests__/vaultManipulationScreen.test.tsx
+PASS src/domain/vault/__tests__/actor.test.ts
+PASS src/screens/__tests__/stageFlow.test.tsx
+PASS src/content/__tests__/vaultComparisons.test.ts
+PASS src/screens/__tests__/theatreScreen.test.tsx
+PASS src/domain/firstPerson/__tests__/emblemIntegration.test.ts
+PASS src/domain/theatre/__tests__/actor.test.ts
+PASS src/audio/__tests__/assets.test.ts
+PASS src/screens/__tests__/illusionMaze.test.tsx
+PASS src/screens/__tests__/QuickSetupScreen.test.tsx
+PASS src/rendering/firstPerson/__tests__/segmentBoundary.test.tsx
+PASS src/rendering/firstPerson/__tests__/galleryController.test.ts
+PASS src/rendering/firstPerson/__tests__/TouchControls.test.tsx
+PASS src/domain/calibration/__tests__/quickSetup.test.ts
+PASS src/storage/__tests__/firstPersonStorage.test.ts
+PASS src/rendering/firstPerson/__tests__/apparatusAcquisition.test.ts
+PASS src/screens/__tests__/galleryMenus.test.tsx
+PASS src/rendering/firstPerson/__tests__/notebookCamera.test.ts
+PASS src/rendering/firstPerson/__tests__/PanelFixture.test.tsx
+PASS src/rendering/firstPerson/__tests__/diagnostics.test.ts
+PASS src/domain/illusion/__tests__/illusion.test.ts
+PASS src/rendering/firstPerson/__tests__/runtimeController.test.ts
+PASS src/rendering/firstPerson/__tests__/perceptualResources.test.ts
+PASS src/storage/__tests__/galleryV2Migration.test.ts
+PASS src/storage/__tests__/galleryStorage.test.ts
+PASS src/rendering/firstPerson/__tests__/segmentModuleIdentity.test.ts
+PASS src/storage/__tests__/emblemMigration.test.ts
+PASS src/storage/__tests__/vaultStorage.test.ts
+PASS src/rendering/firstPerson/__tests__/SceneActionButton.test.tsx
+PASS src/storage/__tests__/galleryV3Migration.test.ts
+PASS src/rendering/firstPerson/__tests__/exhibitSculpture.test.ts
+PASS src/screens/__tests__/PlayInstructionsScreen.test.tsx
+PASS src/storage/__tests__/theatreStorage.test.ts
+PASS src/storage/__tests__/stageJournalStorage.test.ts
+PASS src/rendering/firstPerson/__tests__/emblemController.test.ts
+PASS src/storage/__tests__/applicationStorage.test.ts
+PASS src/domain/firstPerson/__tests__/interaction.test.ts
+PASS src/app/__tests__/state.test.ts
+PASS src/rendering/firstPerson/__tests__/rawGLProof.test.tsx
+PASS src/domain/theatre/__tests__/state.test.ts
+PASS src/screens/__tests__/flow.test.tsx
+PASS src/domain/firstPerson/__tests__/rectangleInteraction.test.ts
+PASS src/audio/__tests__/nativeBackend.test.ts
+PASS src/screens/__tests__/resultFreshPress.test.tsx
+PASS src/domain/firstPerson/__tests__/startupGeometry.test.ts
+PASS src/domain/gallery/__tests__/wiring.test.ts
+PASS src/domain/theatre/__tests__/perspectiveExhibit.test.ts
+PASS src/rendering/firstPerson/__tests__/actorController.test.ts
+PASS src/audio/__tests__/owner.test.ts
+PASS src/domain/vault/__tests__/checkpoint.test.ts
+PASS src/rendering/firstPerson/__tests__/segmentTransform.test.ts
+PASS src/rendering/firstPerson/__tests__/touchInput.test.ts
+PASS src/rendering/firstPerson/__tests__/controlLayout.test.ts
+PASS src/domain/calibration/__tests__/trials.test.ts
+PASS src/screens/__tests__/firstPersonControlMode.test.ts
+PASS src/rendering/firstPerson/__tests__/canvasLifecycle.test.ts
+PASS src/domain/vault/__tests__/devices.test.ts
+PASS src/rendering/__tests__/IllusionMotion.test.ts
+PASS src/rendering/firstPerson/__tests__/nativeRendererFactory.test.ts
+PASS src/platform/__tests__/threeResolver.test.ts
+PASS src/platform/__tests__/native3D.test.ts
+PASS src/domain/maze/__tests__/maze.test.ts
+PASS src/domain/calibration/__tests__/scoring.test.ts
+Test Suites: 87 passed, 87 total
+Tests:       987 passed, 987 total
+Snapshots:   0 total
+Time:        149.468 s, estimated 164 s
+Ran all test suites.
+> chroma-rift@0.1.0 export:ios
+> expo export --platform ios --output-dir dist
+iOS Bundled 13013ms index.tsx (1534 modules)
+_expo/static/js/ios/index-eb68a210c9f3d70843da54c701c3634b.hbc (6.2MB)
+Exported: dist

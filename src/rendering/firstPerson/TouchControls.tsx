@@ -6,8 +6,8 @@ import { controlLayout, type ControlLayout } from './controlLayout';
 import { createTouchAdapter, type NativeTouchBatch, type TouchMode, type TouchPhase } from './touchAdapter';
 import { clearTouchInput, STICK_DIAMETER, type FirstPersonInput } from './touchInput';
 
-export type TouchControlsProps = { input: FirstPersonInput; enabled: boolean; handedness: 'left' | 'right'; layout?: ControlLayout };
-export function TouchControls({ input, enabled, handedness, layout: suppliedLayout }: TouchControlsProps) {
+export type TouchControlsProps = { input: FirstPersonInput; enabled: boolean; handedness: 'left' | 'right'; layout?: ControlLayout; showMovementLabel?: boolean };
+export function TouchControls({ input, enabled, handedness, layout: suppliedLayout, showMovementLabel = true }: TouchControlsProps) {
   const window = useWindowDimensions();
   const layout = suppliedLayout ?? controlLayout(window.width, window.height, window.fontScale, handedness);
   const movement = layout.movement;
@@ -67,7 +67,7 @@ export function TouchControls({ input, enabled, handedness, layout: suppliedLayo
         <Animated.View pointerEvents="none" style={[styles.ring, ringStyle]}>
           <Text pointerEvents="none" style={styles.arrow}>↑</Text>
           <Animated.View pointerEvents="none" style={[styles.knob, knobStyle]} />
-          <Text pointerEvents="none" style={styles.stickLabel}>歩く</Text>
+          {showMovementLabel ? <Text pointerEvents="none" style={styles.stickLabel}>歩く</Text> : null}
         </Animated.View>
       </View>
     </View>

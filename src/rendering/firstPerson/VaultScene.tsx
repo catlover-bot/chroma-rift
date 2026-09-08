@@ -47,6 +47,31 @@ const gateFrames: Block[] = [ [0, 5, 2], [3, 20, 3], [3, 23.7, 3], [3, 27.6, 3] 
   { position: [x! + width! / 2, 1.55, z!] as Block['position'], scale: [.10, 3.1, .22] as Block['scale'] },
   { position: [x!, 3.1, z!] as Block['position'], scale: [width! + .1, .10, .22] as Block['scale'] },
 ]);
+// Flat original shelf endcaps and wall-mounted outlines distinguish junctions.
+// Every volume lies on an existing solid face; navigation and gates are unchanged.
+const landmarkEnds: Block[] = [
+  { position: [0, 1.2, 8.991], scale: [2.85, .12, .025] },
+  { position: [0, 1.8, 8.991], scale: [2.85, .12, .025] },
+  { position: [0, .6, 8.991], scale: [2.85, .12, .025] },
+  ...[-.34, 0, .34].map(x => ({ position: [3.8 + x, 1.2, 14.241] as Block['position'], scale: [.11, 1.85, .025] as Block['scale'] })),
+  { position: [-3.45, .9, 12.241], scale: [1.1, .65, .025] },
+  { position: [-3.45, 1.75, 12.241], scale: [.55, .45, .025] },
+];
+const tallFrame: Block[] = [
+  { position: [-4.895, 1.35, 10.55], scale: [.025, 2.7, .12] },
+  { position: [-4.895, 1.35, 11.95], scale: [.025, 2.7, .12] },
+  { position: [-4.895, 2.68, 11.25], scale: [.025, .12, 1.5] },
+  { position: [-4.895, .08, 11.25], scale: [.025, .12, 1.5] },
+];
+const floorBreaks: Block[] = [
+  { position: [-3.35, .012, 6.35], scale: [2.65, .012, .09] },
+  { position: [3.1, .012, 6.35], scale: [3.25, .012, .09] },
+  { position: [0, .012, 17.25], scale: [3.1, .012, .12] },
+  { position: [-1.15, .012, -1.61], scale: [1.3, .012, .035] },
+  { position: [-1.15, .012, -.99], scale: [1.3, .012, .035] },
+  { position: [-1.8, .012, -1.3], scale: [.035, .012, .65] },
+  { position: [-.5, .012, -1.3], scale: [.035, .012, .65] },
+];
 export function VaultScene({ world, runtime, resources, reducedMotion, onFrameError }: {
   world: WorldGeometry; runtime: RefObject<ChapterRuntime>; resources: SceneResources; reducedMotion: boolean; onFrameError?: ((error: unknown) => void) | undefined;
 }) {
@@ -74,6 +99,9 @@ export function VaultScene({ world, runtime, resources, reducedMotion, onFrameEr
     <Blocks name="vault-ceilings" blocks={ceilings} resources={resources} material={resources.ceiling} />
     <Blocks name="vault-solid-walls-and-shelves" blocks={walls} resources={resources} material={r.wall} />
     <Blocks name="vault-covered-inventory" blocks={rackBodies} resources={resources} material={r.cloth} />
+    <Blocks name="vault-distinct-shelf-endcaps" blocks={landmarkEnds} resources={resources} material={r.board} />
+    <Blocks name="vault-tall-wall-frame" blocks={tallFrame} resources={resources} material={r.guide} />
+    <Blocks name="vault-floor-junctions-and-observation-area" blocks={floorBreaks} resources={resources} material={resources.quiet} />
     <Blocks name="vault-shelf-ledges" blocks={rackFaces} resources={resources} material={r.rack} />
     <Blocks name="vault-physical-metal-floor" blocks={metal} resources={resources} material={r.rack} />
     <Blocks name="vault-work-lamps" blocks={lights} resources={resources} material={resources.neutral} />

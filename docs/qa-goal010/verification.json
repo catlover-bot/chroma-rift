@@ -1,0 +1,219 @@
+{
+  "goal": "010",
+  "recordedAtUtc": "2026-09-08T18:33:40.429251+00:00",
+  "workspace": "/home/mhirotaka/workspace/chroma-rift",
+  "branch": "feat/goal-010-shadow-theatre",
+  "startHead": "04e481e41e0dc8ab73589e9283a110f6985157fb",
+  "initialStatus": "clean",
+  "commitLocator": "The local commit containing this record; resolve with git log -1 -- docs/GOAL-010.md.",
+  "preservedAncestors": [
+    "04e481e",
+    "aa8ff20",
+    "7be6d39"
+  ],
+  "environment": {
+    "node": "24.20.0",
+    "npm": "11.19.0",
+    "expo": "57.0.20",
+    "reactNative": "0.86.3",
+    "three": "0.185.1",
+    "r3f": "9.7.0",
+    "react": "19.2.3",
+    "typescript": "6.0.3"
+  },
+  "baseline": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "suites": 75,
+    "tests": 887,
+    "testSeconds": 117.975,
+    "iosModules": 1513,
+    "doctorPassed": 20,
+    "doctorTotal": 21,
+    "doctorExitCode": 1,
+    "dependencyExitCode": 1,
+    "note": "The same Expo patch recommendation was already present at the clean start."
+  },
+  "final": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "subcommands": {
+      "npm run lint": 0,
+      "npm run typecheck": 0,
+      "npm run test": 0,
+      "npm run export:ios": 0
+    },
+    "suites": 87,
+    "tests": 987,
+    "testSeconds": 149.468,
+    "sourceFilesVerifiedUnchangedDuringCheck": 259,
+    "sourceManifest": "tested-source-sha256.json",
+    "checkOutput": "check-output.txt",
+    "rawCheckLogSha256": "c55e3bdf4b092b5f38d29ac362ce49d93681460045a3aafad38c3a00be3ee7bd",
+    "iosModules": 1534,
+    "iosBundle": {
+      "file": "index-eb68a210c9f3d70843da54c701c3634b.hbc",
+      "bytes": 6152721,
+      "sha256": "b8781a5d6169e88d4f9665fe6b076d63e1fc62c4d668bef108221dfd4f77048a"
+    }
+  },
+  "otherCommands": {
+    "npm run doctor": {
+      "exitCode": 1,
+      "passed": 20,
+      "total": 21,
+      "reason": "Expo installed 57.0.20; current patch recommendation ~57.0.21. No upgrade or exclusion per task.",
+      "output": "final-doctor.txt",
+      "rawLogSha256": "b99929b5f6442c7c7935851738ccff49f7d276bac474a86c6d156a181d528de9"
+    },
+    "npx expo install --check": {
+      "exitCode": 1,
+      "reason": "same Expo patch recommendation",
+      "output": "final-dependencies.txt",
+      "rawLogSha256": "23fbe749e36711a32ae16a10108285b2bfed562a9b037ef5d13fec93c3f128ac"
+    },
+    "npm ls --depth=0": {
+      "exitCode": 0,
+      "output": "npm-ls.txt",
+      "rawLogSha256": "28de77f1d4d87b32049be60e0b84cc61c5d58ff6c152c69beedbf88b6b523560"
+    },
+    "node scripts/generate-audio.cjs --check": {
+      "exitCode": 0,
+      "output": "audio-assets-check.json"
+    },
+    "node scripts/generate-perceptual-audio.cjs --check": {
+      "exitCode": 0,
+      "output": "perceptual-audio-check.json"
+    },
+    "git diff --check": {
+      "exitCode": 0
+    },
+    "npm run lint after final QA scripts": {
+      "exitCode": 0,
+      "rawLogSha256": "13e317d2e5d426d7cf4f5ec3c622e33f7b72f144db5cd6c2a7f9624404c54da5"
+    }
+  },
+  "metro": {
+    "developmentExportExitCode": 0,
+    "productionExportExitCode": 0,
+    "identityCommand": "node scripts/inspect-three-bundle.cjs OUTPUT --expect-single",
+    "devIdentityExitCode": 0,
+    "productionIdentityExitCode": 0,
+    "details": "bundle-source-verification.json"
+  },
+  "protectedFiles": {
+    "package.json": {
+      "before": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "after": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296"
+    },
+    "package-lock.json": {
+      "before": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "after": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff"
+    },
+    "app.json": {
+      "before": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "after": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744"
+    },
+    "eas.json": {
+      "before": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "after": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0"
+    },
+    "metro.config.js": {
+      "before": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "after": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185"
+    },
+    "metro/withNativeThree.js": {
+      "before": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "after": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+    }
+  },
+  "protectedMatched": 6,
+  "assetsAndThirdPartyNoticesByteIdenticalToStart": true,
+  "verificationBoundaries": [
+    "Tests and software WebGL are not iPhone execution, human optical perception, comfort, fear, actual audio listening, app FPS/frame-time distribution, thermal behavior or first-time stage duration.",
+    "iOS JS/Hermes export is not a native build or IPA. Installed user Development Build was not remotely inspected.",
+    "Personal source recording excluded from Git. Original bounded QA outputs only; raw frame/runtime dumps remain in ignored .expo."
+  ],
+  "prohibitedOperationsPerformed": {
+    "push": false,
+    "pr": false,
+    "authentication": false,
+    "easBuild": false,
+    "nativeBuild": false,
+    "upload": false,
+    "reset": false,
+    "clean": false,
+    "amend": false
+  },
+  "routes": {
+    "source": "src/rendering/firstPerson/__tests__/theatreRouteController.test.ts",
+    "count": 8,
+    "kind": "Actual shared controller, camera and collisions; native presentation/audio boundaries substituted. Automated routes, not human playtests.",
+    "matrix": [
+      {
+        "inspect": false,
+        "decoy": false,
+        "intensity": "standard",
+        "muted": false,
+        "cold": false
+      },
+      {
+        "inspect": true,
+        "decoy": true,
+        "intensity": "standard",
+        "muted": false,
+        "cold": false
+      },
+      {
+        "inspect": true,
+        "decoy": false,
+        "intensity": "standard",
+        "muted": true,
+        "cold": false
+      },
+      {
+        "inspect": false,
+        "decoy": true,
+        "intensity": "standard",
+        "muted": true,
+        "cold": false
+      },
+      {
+        "inspect": false,
+        "decoy": false,
+        "intensity": "subdued",
+        "muted": false,
+        "cold": false
+      },
+      {
+        "inspect": true,
+        "decoy": true,
+        "intensity": "subdued",
+        "muted": true,
+        "cold": true
+      }
+    ],
+    "additional": [
+      "Same naturally reached hidden bay state; actual projector noise investigation followed by alternate route and exit.",
+      "Actual notice/pursue/windup/attack/capture; committed light remains solved, fresh finger release required, east-lane retry completes."
+    ],
+    "sharedAssertions": [
+      "Wrong light and canceled drag do not unlock.",
+      "Release and explicit lock are separate.",
+      "Curtain acceptance, sealed passage and exit completion are separate.",
+      "Cold accepted-curtain resume is closed but not completed.",
+      "Cleared resume stays cleared; a fresh replay starts unsolved."
+    ]
+  },
+  "precommitAudit": {
+    "visualArtifactsChecked": 60,
+    "manualDecodedFramesReviewed": 58,
+    "localDocumentationLinksChecked": 110,
+    "missingLinks": [],
+    "sourceFilesUnchanged": 259,
+    "visualSourceFilesMatched": 161,
+    "qaBytesBeforeAuditMetadata": 4794521,
+    "artifactLintExitCode": 0
+  },
+  "textLogNormalization": "Committed command logs preserve content; trailing spaces and blank EOF lines are normalized. Original logs remain local."
+}

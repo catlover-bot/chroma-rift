@@ -2,6 +2,8 @@ import type { PuzzleState } from '../domain/firstPerson';
 import type { FirstPersonChapterSummary } from '../types/application';
 
 export function chapterCompletionSummary(chapterId: string, progress: PuzzleState): FirstPersonChapterSummary {
+  if (chapterId === 'shadow-theatre-v1') return { chapterId, chapterVersion: 1, deviceCount: 1, serviceRouteFound: progress.theatre?.bypassOpen === true,
+    discoveredMechanisms: [...(progress.theatre?.discoveries.shadow ? ['影の大きさ'] : []), ...(progress.theatre?.discoveries.depth ? ['部屋の奥行き'] : []), ...(progress.theatre?.bypassOpen ? ['保守通路を発見'] : []), '防火幕を下ろし、サービス出口から脱出'] };
   if (chapterId === 'uncanny-vault-v1') return { chapterId, chapterVersion: 1, deviceCount: 2,
     discoveredMechanisms: ['長さの留め金', '鉛直のブレーキ', ...(progress.vault?.discoveries.cafe ? ['平行な目地'] : []), '搬出口の扉を閉めて脱出'] };
   if (chapterId !== 'perception-gallery-v1') return { chapterId, seals: 2,

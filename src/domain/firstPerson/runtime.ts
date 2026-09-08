@@ -1,3 +1,8 @@
+import { createTheatreRuntime } from '../theatre/runtime';
+import { THEATRE_CHAPTER_ID } from '../theatre/definition';
+import { advanceTheatre, applyTheatreCommand, cancelTheatreManipulation } from '../theatre/state';
+import { theatreHint, theatreObjective } from '../theatre/selectors';
+import type { TheatreAction } from '../theatre/types';
 import { createVaultRuntime } from '../vault/runtime';
 import { VAULT_CHAPTER_ID } from '../vault/definition';
 import { advanceVault, applyVaultCommand, cancelVaultManipulation } from '../vault/state';
@@ -30,6 +35,7 @@ export function emblemCheckpointForProgress(progress: PuzzleState): SealCheckpoi
 export function createInitialRuntime(checkpoint?: CheckpointState, session = ++runtimeSession, chapterId = CHAPTER.id): ChapterRuntime {
   runtimeSession = Math.max(runtimeSession, session);
   const selectedChapter = checkpoint?.chapterId ?? chapterId;
+  if (selectedChapter === THEATRE_CHAPTER_ID) return createTheatreRuntime(checkpoint, session);
   if (selectedChapter === VAULT_CHAPTER_ID) return createVaultRuntime(checkpoint, session);
   const galleryChapter = selectedChapter === GALLERY_CHAPTER_ID;
   const progress = checkpoint ? { ...checkpoint.progress } : initialProgress();
@@ -47,7 +53,7 @@ export function createInitialRuntime(checkpoint?: CheckpointState, session = ++r
 /** A reducer result and the existing door gate commit together in one runtime
  * value. Rejected/replayed results never produce another host transition. */
 export function commitEmblemResult(runtime: ChapterRuntime, result: SealResult): ChapterRuntime {
-  if (runtime.progress.gallery || runtime.progress.vault) return runtime;
+  if (runtime.progress.gallery || runtime.progress.vault || runtime.progress.theatre) return runtime;
   if (!result.accepted || result.state.sessionId !== runtime.emblem.sessionId || result.state.seed !== runtime.emblem.seed || result.state.lastSeq <= runtime.emblem.lastSeq) return runtime;
   const emblem = runtime.progress.sealA && result.state.phase !== 'released' ? { ...result.state, phase: 'released' as const } : result.state;
   return { ...runtime, emblem, progress: { ...runtime.progress, emblem: checkpointSeal(emblem), sealA: runtime.progress.sealA || emblem.phase === 'released', hintStage: runtime.progress.sealA ? runtime.progress.hintStage : emblem.phase === 'released' ? 0 : emblem.hintTier } };
@@ -88,7 +94,7 @@ export function occlusionCertificate(pose: PlayerPose, changed: CollisionVolume,
   return undefined;
 }
 export function canApplyReturnVariant(runtime: ChapterRuntime): boolean {
-  if (runtime.progress.gallery || runtime.progress.vault) return false;
+  if (runtime.progress.gallery || runtime.progress.vault || runtime.progress.theatre) return false;
   if (!runtime.progress.sealA || !runtime.progress.sealB || runtime.progress.variant === 'exit') return false;
   const { position } = runtime.pose;
   const changed = CHANGED_REGION;
@@ -101,7 +107,7 @@ export function canApplyReturnVariant(runtime: ChapterRuntime): boolean {
 export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, dt: number, matrices?: CameraMatrices): ChapterRuntime {
   if (runtime.paused || runtime.progress.cleared) return runtime;
   const world = getWorld(runtime);
-  const pose = (runtime.gallery && runtime.gallery.mode !== 'explore' || runtime.vault && runtime.vault.mode !== 'explore') ? runtime.pose : isSafePose(nextPose, world) ? nextPose : runtime.pose;
+  const pose = (runtime.gallery && runtime.gallery.mode !== 'explore' || runtime.vault && runtime.vault.mode !== 'explore' || runtime.theatre && (runtime.theatre.mode !== 'explore' || runtime.theatre.projectorArmed)) ? runtime.pose : isSafePose(nextPose, world) ? nextPose : runtime.pose;
   const progress = runtime.progress;
   const elapsed = Number.isFinite(dt) ? clamp(dt, 0, MAX_FRAME_DELTA) : 0;
   const remaining = runtime.switchFeedback ? Math.max(0, runtime.switchFeedback.remainingSeconds - elapsed) : 0;
@@ -111,6 +117,7 @@ export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, d
     doorBOpen: runtime.progress.sealB ? Math.min(1, runtime.doorBOpen + elapsed / 1.25) : 0,
     doorExitOpen: runtime.progress.gallery ? runtime.progress.gallery.finalDoorClosed ? 0 : 1 : runtime.progress.exitDoorOpen ? Math.min(1, runtime.doorExitOpen + elapsed / 1.25) : 0,
   };
+  if (runtime.progress.theatre) return { ...advanceTheatre(next, elapsed), alignment: false };
   if (runtime.progress.vault) return { ...advanceVault(next, elapsed), alignment: false };
   next = advanceGallery(next, elapsed);
   if (runtime.progress.gallery) {
@@ -145,6 +152,12 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
     if (action) return applyGalleryCommand(runtime, { sessionId: runtime.gallery.sessionId, seq: runtime.gallery.lastSeq + 1, nowMs: runtime.gallery.lastNowMs + 1001, action }, { rendererReady: true, foreground: true, targetId: expectedId }).runtime;
   }
   switch (expectedId) {
+    case 'theatre-light': case 'theatre-inspection': case 'theatre-ames-side': case 'theatre-bypass': case 'theatre-projector': case 'theatre-curtain': {
+      if (!runtime.theatre || !matrices) return runtime;
+      const type: TheatreAction['type'] = expectedId === 'theatre-light' ? 'enter-light' : expectedId === 'theatre-inspection' ? 'open-inspection' : expectedId === 'theatre-ames-side' ? 'inspect-depth' : expectedId === 'theatre-bypass' ? 'open-bypass' : expectedId === 'theatre-projector' ? 'enter-projector' : 'lower-curtain';
+      const action = { type } as TheatreAction;
+      return applyTheatreCommand(runtime, {sessionId:runtime.theatre.sessionId,seq:runtime.theatre.lastSeq+1,nowMs:runtime.theatre.lastNowMs+1,action}, {rendererReady:true,foreground:true,targetId:expectedId}).runtime;
+    }
     case 'vault-length': case 'vault-rod': case 'vault-cafe': case 'vault-partition': case 'vault-exit': {
       if (!runtime.vault || !matrices) return runtime;
       const action = expectedId === 'vault-length' || expectedId === 'vault-rod'
@@ -186,12 +199,12 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
   }
 }
 export function pauseRuntime(runtime: ChapterRuntime): ChapterRuntime {
-  const stopped = cancelVaultManipulation(cancelGalleryManipulation(runtime, true), true);
+  const stopped = cancelTheatreManipulation(cancelVaultManipulation(cancelGalleryManipulation(runtime, true), true), true);
   return stopped.paused ? stopped : { ...stopped, paused: true, emblem: { ...stopped.emblem, paused: true } };
 }
 export function resumeRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? { ...runtime, paused: false, emblem: { ...runtime.emblem, paused: false } } : runtime; }
 export function setHintStage(runtime: ChapterRuntime, stage: HintStage): ChapterRuntime {
-  if (runtime.progress.gallery || runtime.progress.vault || runtime.progress.sealA) return { ...runtime, progress: { ...runtime.progress, hintStage: stage } };
+  if (runtime.progress.gallery || runtime.progress.vault || runtime.progress.theatre || runtime.progress.sealA) return { ...runtime, progress: { ...runtime.progress, hintStage: stage } };
   let next = runtime;
   while (next.emblem.hintTier < stage) {
     next = commitEmblemResult(next, reduceSeal(next.emblem, { sessionId: next.emblem.sessionId, seq: next.emblem.lastSeq + 1, nowMs: next.emblem.lastNowMs + 1, action: { type: 'hint' } }, { rendererReady: false, foreground: false, targetId: null }));
@@ -201,6 +214,7 @@ export function setHintStage(runtime: ChapterRuntime, stage: HintStage): Chapter
 
 export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?: Vec3 } {
   const { progress } = runtime;
+  if (progress.theatre) return theatreHint(runtime);
   if (progress.vault) return vaultHint(runtime);
   const stage = Math.max(1, progress.hintStage) - 1;
   if (progress.gallery) {
@@ -222,6 +236,7 @@ export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?
 }
 export function objectiveForRuntime(runtime: ChapterRuntime): string {
   const p = runtime.progress;
+  if (p.theatre) return theatreObjective(runtime);
   if (p.vault) return vaultObjective(runtime);
   if (p.gallery) return galleryObjective(runtime);
   if (p.cleared) return '帰り道のない入口から脱出した。';
@@ -232,7 +247,7 @@ export function objectiveForRuntime(runtime: ChapterRuntime): string {
 }
 /** An explicit, local aim aid. It never moves the player or solves a puzzle. */
 export function assistAim(runtime: ChapterRuntime): ChapterRuntime {
-  if (runtime.progress.gallery || runtime.progress.vault) return runtime;
+  if (runtime.progress.gallery || runtime.progress.vault || runtime.progress.theatre) return runtime;
   if (runtime.paused || runtime.progress.hintStage < 3 || runtime.progress.cleared) return runtime;
   if (!runtime.progress.sealA || runtime.progress.sealB) return runtime;
   const world = getWorld(runtime);

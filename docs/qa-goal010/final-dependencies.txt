@@ -1,0 +1,4 @@
+The following packages should be updated for best compatibility with the installed expo version:
+  expo@57.0.20 - expected version: ~57.0.21
+Your project may not work correctly until you install the expected versions of the packages.
+Found outdated dependencies

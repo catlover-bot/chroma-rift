@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { getGalleryAudioAvailability, normalizeAudioPreferences } from '../audio';
 
 import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
-import type { AppSettings, EffectStrength } from '../types/application';
+import type { AppSettings, EffectStrength, FirstPersonControls } from '../types/application';
 import { PALETTE_IDS, PALETTE_LABELS } from '../domain/emblem/color';
 
 export function SettingsScreen({
@@ -19,8 +19,11 @@ export function SettingsScreen({
   onLegacyJourney,
   onFirstPersonLab,
   currentChapterName,
-  onResetChapter,
+  onResetChapter, controls, onControlsChange, backLabel = 'ホームへ戻る',
 }: {
+  controls?: FirstPersonControls;
+  onControlsChange?: (controls: FirstPersonControls) => void;
+  backLabel?: string;
   settings: AppSettings;
   onChange: (settings: AppSettings) => void;
   onRecalibrate: () => void;
@@ -65,6 +68,17 @@ export function SettingsScreen({
           onValueChange={(value) => set('haptics', value)}
         />
       </Panel>
+      {controls && onControlsChange ? <Panel>
+        <SectionTitle>操作</SectionTitle>
+        <ChoiceRow>
+          <ActionButton label="右手で見回す" variant={controls.handedness === 'right' ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, handedness: 'right' })} />
+          <ActionButton label="左手で見回す" variant={controls.handedness === 'left' ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, handedness: 'left' })} />
+        </ChoiceRow>
+        <SettingSwitch label="簡単なボタン操作" description="ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。" value={controls.movementMode === 'simple'} onValueChange={simple => onControlsChange({ ...controls, movementMode: simple ? 'simple' : 'standard' })} />
+        <Body>視点の感度</Body>
+        <ChoiceRow>{[0.6, 1, 1.5].map((sensitivity, index) => <ActionButton key={sensitivity} label={['ゆっくり', '標準', '速め'][index]!} variant={controls.sensitivity === sensitivity ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, sensitivity })} />)}</ChoiceRow>
+        <Body>上下の感度</Body><ChoiceRow>{[0.6, 1].map(verticalSensitivity => <ActionButton key={verticalSensitivity} label={verticalSensitivity === 1 ? '上下の感度：同じ' : '上下の感度：控えめ'} variant={(controls.verticalSensitivity ?? 1) === verticalSensitivity ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, verticalSensitivity })} />)}</ChoiceRow>
+      </Panel> : null}
       <SectionTitle>怖さ</SectionTitle>
       <Panel>
         <Body>標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。</Body>
@@ -112,13 +126,13 @@ export function SettingsScreen({
       <ActionButton label="詳しく調整する" onPress={onRecalibrate} />
       <Body muted>調整は表示のための目安です。見え方を診断するものではありません。</Body>
       {onResetChapter ? <ActionButton label={`${currentChapterName ?? '現在の章'}だけを最初から`}
-        onPress={() => Alert.alert('この章だけを最初から', `${currentChapterName ?? '現在の章'}の進行をリセットします。他の章、表示と音の設定、調整結果は残ります。`, [
+        onPress={() => Alert.alert('この章だけを最初から', `${currentChapterName ?? '現在の章'}の今回の進行をリセットします。過去の脱出・発見と、他の章、表示と音の設定、調整結果は残ります。`, [
           { text: 'キャンセル', style: 'cancel' }, { text: 'この章だけリセット', style: 'destructive', onPress: onResetChapter },
         ])} variant="danger" /> : null}
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、旧章と展示室の進行、音の設定、収蔵庫の進行を端末から削除します。', [
+          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、旧章と展示室の進行、音の設定、収蔵庫と映写室の進行、ステージ履歴を端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])
@@ -127,7 +141,7 @@ export function SettingsScreen({
       />
       <ActionButton label={credits ? "クレジットを閉じる" : "出典と素材クレジット"} onPress={() => setCredits(!credits)} />
       {credits ? <MaterialCredits /> : null}
-      <ActionButton label="ホームへ戻る" onPress={onBack} />
+      <ActionButton label={backLabel} onPress={onBack} />
       {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
       {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}
       {onLegacyJourney ? <ActionButton label="旧2.5D迷宮（開発用）" onPress={onLegacyJourney} /> : null}

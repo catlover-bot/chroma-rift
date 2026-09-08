@@ -1,0 +1,58 @@
+{
+  "generatedBy": "scripts/generate-audio.cjs (original synthesis)",
+  "listeningVerified": false,
+  "sources": {
+    "footstep": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 0.18,
+      "peak": 0.220001220703125,
+      "peakDbfs": -13.151498188723107,
+      "rms": 0.03857046181454963,
+      "dc": -1.2715657552083333e-7,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0,
+      "sha256": "ec4366dcddfe8800292b57917ac129d68b1f0f0f029be4c9fafc9a68328cec87"
+    },
+    "interaction": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 0.14,
+      "peak": 0.17999267578125,
+      "peakDbfs": -14.894903334878773,
+      "rms": 0.027436164397084874,
+      "dc": -3.0880882626488097e-7,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0,
+      "sha256": "477a1ce825fdf4bd9d6a4dbe9b98184ba29084e3027853ffefbfc54ed57db149"
+    },
+    "mechanism": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 0.68,
+      "peak": 0.259979248046875,
+      "peakDbfs": -11.701226334307924,
+      "rms": 0.04037640817624649,
+      "dc": 1.869949640012255e-9,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0,
+      "sha256": "38a08a0805920e63f3a0408597b8d4e15178826841b789fcb8d4bd2e13249db2"
+    },
+    "ambience": {
+      "format": "PCM16LE",
+      "channels": 1,
+      "sampleRate": 24000,
+      "duration": 4,
+      "peak": 0.045013427734375,
+      "peakDbfs": -26.933158292910726,
+      "rms": 0.015502462964529196,
+      "dc": 0,
+      "clippedSamples": 0,
+      "loopBoundaryDelta": 0.000823974609375,
+      "sha256": "50406f566d9f94c46f45bfc038e43a0eed48eb4cad2c83e554b4382b53f4e847"
+    }
+  }
+}

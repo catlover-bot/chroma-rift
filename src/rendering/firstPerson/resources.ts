@@ -1,3 +1,4 @@
+import { createTheatreResources } from './theatreResources';
 import { createVaultResources } from './vaultResources';
 import * as THREE from 'three';
 import { createGalleryResources } from './galleryResources';
@@ -6,7 +7,8 @@ import { illusionPalette, type PreferredColor } from '../IllusionPalette';
 import { createEmblemSurface, DEFAULT_EMBLEM_APPEARANCE, type EmblemAppearance } from './emblemSurface';
 
 /** Explicitly owned by one scene mount; no geometries or materials are made in useFrame. */
-export function createSceneResources(lowQuality: boolean, emblemAppearance: EmblemAppearance | null = DEFAULT_EMBLEM_APPEARANCE, gallery = false, vault = false) {
+export function createSceneResources(lowQuality: boolean, emblemAppearance: EmblemAppearance | null = DEFAULT_EMBLEM_APPEARANCE, gallery = false, vault = false, theatre = false) {
+  const theatreResources = theatre ? createTheatreResources() : undefined;
   const vaultResources = vault ? createVaultResources() : undefined;
   const galleryResources = gallery ? createGalleryResources() : undefined;
   const emblemSurface = emblemAppearance ? createEmblemSurface(lowQuality ? 256 : 512, emblemAppearance) : undefined;
@@ -52,11 +54,12 @@ export function createSceneResources(lowQuality: boolean, emblemAppearance: Embl
   };
   updatePalette('neutral', false, 'medium');
   return {
-    vaultResources, galleryResources, box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
+    theatreResources, vaultResources, galleryResources, box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
     dispose() {
       emblemSurface?.dispose();
       galleryResources?.dispose();
       vaultResources?.dispose();
+      theatreResources?.dispose();
       box.dispose(); plane.dispose(); cylinder.dispose(); ring.dispose(); texture.dispose();
       [wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel].forEach((material) => material.dispose());
     },

@@ -8,7 +8,7 @@ import { VAULT_BRAKE_POSE, VAULT_EXIT_POSE } from '../../domain/vault/definition
 import { vaultCheckpoint } from '../../storage/testFixtures/vault';
 import type { VaultDevice } from '../../domain/vault/types';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
-import { advanceController, commandController, controllerSnapshot, worldForController } from '../../rendering/firstPerson/runtimeController';
+import { advanceController, commandController, controllerSnapshot, syncCamera, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { fixturePointInWorld } from '../../rendering/firstPerson/manipulationProjection';
 import { vaultDeviceScreenBounds } from '../../rendering/firstPerson/vaultController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
@@ -223,4 +223,55 @@ it('rejects device entry when an unusually narrow viewport clips the actual boar
   await fireEvent.press(view.getByTestId('interact'));
   expect(scene().controller.runtime.vault!.mode).toBe('explore');
   expect(scene().controller.runtime.progress.vault!.discoveries.length).toBe(false);
+});
+
+
+it('uses one real acquisition result for disabled interaction, correction text and accessible announcement', async () => {
+  jest.mocked(AccessibilityInfo.isScreenReaderEnabled).mockResolvedValue(true);
+  const view = await render(<FirstPersonScreen {...props()} />);
+  await fireEvent(view.getByTestId('first-person-play'), 'layout', { nativeEvent: { layout: viewport } });
+  const c = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
+  await act(() => {
+    c.runtime.pose = { position: { x: -1.15, y: 1.6, z: .9 }, yaw: Math.PI, pitch: 0 };
+    syncCamera(c, camera); scene().onSnapshot(controllerSnapshot(c));
+  });
+  const rejected = controllerSnapshot(c).acquisition!;
+  expect(rejected.kind).toBe('tooNear'); expect(view.getByTestId('interact')).toBeDisabled();
+  expect(view.getAllByText(rejected.message, { exact: false }).length).toBeGreaterThan(0);
+  expect(jest.mocked(AccessibilityInfo.announceForAccessibility).mock.calls.some(([text]) => text.includes(rejected.message))).toBe(true);
+  await fireEvent.press(view.getByTestId('interact'));
+  expect(c.runtime.vault!.mode).toBe('explore'); expect(c.feedbackMessage).not.toBe('今は操作できません');
+  await act(() => {
+    c.runtime.pose = { position: { x: -1.15, y: 1.6, z: -1.3 }, yaw: Math.PI, pitch: 0 };
+    syncCamera(c, camera); scene().onSnapshot(controllerSnapshot(c));
+  });
+  expect(controllerSnapshot(c).acquisition?.kind).toBe('ready');
+  expect(view.getByTestId('interact')).toBeEnabled();
+  await fireEvent(view.getByTestId('interact'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+  expect(c.runtime.vault!.mode).toBe('length');
+});
+
+it('removes movement and look labels after actual collision-aware movement and user look, while keeping pause help', async () => {
+  const p = props('length', { onboarding: { schemaVersion: 1, tutorialCompleted: false, controlChoiceAcknowledged: true } });
+  const view = await render(<FirstPersonScreen {...p} />);
+  const c = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
+  expect(view.getByText('歩く')).toBeTruthy();
+  expect(view.getByText('左側をドラッグして歩く')).toBeTruthy();
+  await act(() => {
+    c.input.forward = -1;
+    for (let frame = 0; frame < 20; frame++) advanceController(c, .05, camera);
+    c.input.forward = 0;
+    scene().onSnapshot(controllerSnapshot(c));
+  });
+  expect(c.tutorial.milestones.moved).toBe(true);
+  expect(view.queryByText('歩く')).toBeNull(); expect(view.queryByText('左側をドラッグして歩く')).toBeNull();
+  expect(view.getByText('右側をドラッグして見回す')).toBeTruthy();
+  await act(() => {
+    commandController(c, { type: 'turn', yaw: .3, pitch: 0 }); advanceController(c, 0, camera);
+    scene().onSnapshot(controllerSnapshot(c));
+  });
+  expect(c.tutorial.milestones.looked).toBe(true);
+  expect(view.queryByText('右側をドラッグして見回す')).toBeNull();
+  await fireEvent.press(view.getByTestId('pause-control'));
+  expect(view.getByRole('button', { name: '操作と快適設定' })).toBeEnabled();
 });

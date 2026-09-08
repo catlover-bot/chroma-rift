@@ -41,7 +41,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   const proof = props.sceneMode === 'proof' && __DEV__;
   const lifecycle = useMemo(() => createCanvasLifecycle(controller, onError), [controller, onError]);
   const session = useMemo(() => createNativeSceneSession(controller, lifecycle, proof, onReady), [controller, lifecycle, proof, onReady]);
-  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery || controller.runtime.vault ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery || !!controller.runtime.vault, !!controller.runtime.vault), [controller, proof, props.quality]);
+  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery || !!controller.runtime.vault || !!controller.runtime.theatre, !!controller.runtime.vault, !!controller.runtime.theatre), [controller, proof, props.quality]);
   const runtime = useMemo(() => ({ get current() { return controller.runtime; } }), [controller]);
   const world = useMemo(() => worldForController({ ...controller, runtime: snapshot.runtime }), [controller, snapshot.runtime]);
   const remainingStartup = useRef(props.startupTimeoutMs ?? 12000);
