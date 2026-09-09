@@ -3,9 +3,11 @@ import { THEATRE_CHAPTER_ID } from '../theatre/definition';
 import { createVaultCheckpoint } from '../vault/checkpoint';
 import { createGalleryCheckpoint } from '../gallery/checkpoint';
 import { parseSealCheckpoint } from '../emblem/puzzle';
-import { CHAPTER, CHAPTER_ID, getWorld, LEVEL_VERSION } from './chapter';
+import { getWorld } from './chapter';
+import { CHAPTER, CHAPTER_ID, LEVEL_VERSION } from './legacyDefinition';
 import { isSafePose } from './geometry';
-import { createInitialRuntime, emblemCheckpointForProgress, initialProgress } from './runtime';
+import { createInitialRuntime } from './runtime';
+import { emblemCheckpointForProgress, initialProgress } from './baseRuntime';
 import type { ChapterRuntime, CheckpointState, PlayerPose, PuzzleState } from './types';
 
 function record(value: unknown): value is Record<string, unknown> { return typeof value === 'object' && value !== null && !Array.isArray(value); }

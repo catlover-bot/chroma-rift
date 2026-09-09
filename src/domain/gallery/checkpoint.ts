@@ -1,7 +1,7 @@
 import { parseSealCheckpoint } from '../emblem';
 import { isSafePose } from '../firstPerson/geometry';
-import { getWorld } from '../firstPerson/chapter';
-import { emblemCheckpointForProgress } from '../firstPerson/runtime';
+import { getGalleryWorld } from './world';
+import { emblemCheckpointForProgress } from '../firstPerson/baseRuntime';
 import type { ChapterRuntime, CheckpointState, PlayerPose, PuzzleState } from '../firstPerson/types';
 import { contourAligned, normalizeAngle } from './contour';
 import { GALLERY_CHAPTER_ID, GALLERY_CHECKPOINT_POSES, GALLERY_FINAL_CHECKPOINT, GALLERY_LEVEL_VERSION, GALLERY_OUTSIDE_POSE, GALLERY_SAFE_RETREATS, GALLERY_SERVICE_CHECKPOINT, GALLERY_SPAWN, GALLERY_WIRING_OBSERVATION_POSE } from './definition';
@@ -105,7 +105,7 @@ export function gallerySafeCheckpointPose(runtime: ChapterRuntime): PlayerPose {
     const retreat = GALLERY_SAFE_RETREATS.find(pose => Math.abs(pose.position.x - p.x) < .65 && Math.abs(pose.position.z - p.z) < .75);
     candidates = [retreat ?? (p.x < -.3 && p.z <= 13 ? GALLERY_WIRING_OBSERVATION_POSE : runtime.gallery?.lastSafePose ?? GALLERY_SERVICE_CHECKPOINT)];
   }
-  const valid = candidates.filter(pose => unlocked(pose, runtime.progress) && isSafePose(pose, getWorld(runtime)));
+  const valid = candidates.filter(pose => unlocked(pose, runtime.progress) && isSafePose(pose, getGalleryWorld(runtime)));
   const nearest = valid.sort((a, b) => Math.hypot(a.position.x - p.x, a.position.z - p.z) - Math.hypot(b.position.x - p.x, b.position.z - p.z))[0] ?? GALLERY_SPAWN;
   return { ...nearest, position: { ...nearest.position } };
 }
@@ -126,7 +126,7 @@ export function restoreGalleryCheckpoint(value: unknown): GalleryRestoreResult |
   const progress: PuzzleState = { ...host, gallery };
   const pose = parsePose(value.pose);
   const runtime = createGalleryRuntime({ schemaVersion: 1, chapterId: GALLERY_CHAPTER_ID, levelVersion: GALLERY_LEVEL_VERSION, progress, pose: GALLERY_SPAWN });
-  const safe = !!pose && named(pose) && unlocked(pose, progress) && isSafePose(pose, getWorld(runtime));
+  const safe = !!pose && named(pose) && unlocked(pose, progress) && isSafePose(pose, getGalleryWorld(runtime));
   runtime.pose = safe ? pose! : progress.cleared ? GALLERY_OUTSIDE_POSE : gallery.powerConnected ? GALLERY_SERVICE_CHECKPOINT : GALLERY_SPAWN;
   return { checkpoint: { schemaVersion: 1, chapterId: GALLERY_CHAPTER_ID, levelVersion: GALLERY_LEVEL_VERSION, progress, pose: runtime.pose }, recovered: !safe, emblemStatus: 'valid' };
 }

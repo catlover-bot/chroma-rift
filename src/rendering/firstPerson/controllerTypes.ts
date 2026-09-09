@@ -1,0 +1,45 @@
+import type { DeviceAcquisition } from './manipulationProjection';
+import type { ActorFootPlant } from '../../domain/actorMotion';
+import type { GalleryActorEvent } from '../../domain/gallery/actor';
+import type { VaultActorEvent } from '../../domain/vault/actor';
+import type { createGalleryAudio } from '../../audio';
+import type { CameraMatrices, ChapterRuntime, InteractableDefinition } from '../../domain/firstPerson/types';
+import type { TutorialMilestones, TutorialTracker } from '../../domain/firstPerson/tutorial';
+import type { interactionCue } from '../../domain/firstPerson/interactionCue';
+import type { FirstPersonInput } from './touchInput';
+import type { FirstPersonDiagnostics } from './diagnostics';
+import type { NotebookMaskPreview } from './notebookCamera';
+
+/** Controller state contracts have no runtime imports or initialization. */
+export type RuntimeController = {
+  runtime: ChapterRuntime;
+  notebookPreview?: NotebookMaskPreview | undefined;
+  viewport?: { width: number; height: number };
+  horrorIntensity: 'standard' | 'subdued';
+  audio?: ReturnType<typeof createGalleryAudio>;
+  audioSequence: number;
+  pendingFootstepDistance: number;
+  pendingActorFootstepDistance: number;
+  pendingActorPlants: ActorFootPlant[];
+  pendingActorEvents: (GalleryActorEvent | VaultActorEvent)[];
+  pendingExitImpact: boolean;
+  pendingProjectorPulse: boolean;
+  actorNotice?: { sequence: number; text: string };
+  retired: boolean;
+  screenReader: boolean;
+  commandSequence: number;
+  lastReceivedSequence: number;
+  feedbackMessage: string;
+  lastCompareMs: number;
+  input: FirstPersonInput;
+  lab: boolean;
+  sensitivity: number;
+  verticalSensitivity: number;
+  tutorial: TutorialTracker;
+  simpleStep: number;
+  viewCommandRevision: number;
+  matrices: CameraMatrices | undefined;
+  diagnostics: FirstPersonDiagnostics;
+  metrics: { frames: number; elapsed: number; drawCalls: number; geometries: number; textures: number };
+};
+export type RuntimeSnapshot = { acquisition?: DeviceAcquisition; actorNotice?: { sequence: number; text: string }; runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };

@@ -6,7 +6,9 @@ import { THEATRE_METAL_FLOORS, THEATRE_PROJECTOR } from '../../domain/theatre/de
 import { applyTheatreCommand } from '../../domain/theatre/state';
 import type { TheatreAction, TheatreCommand, TheatreNoise } from '../../domain/theatre/types';
 import { acquisitionResult, fixtureAcquisition, fixtureScreenBounds, fixturePointInWorld, pointOnFixture, type PanelPoint } from './manipulationProjection';
-import { controllerCanInteract, soundForControllerTransition, syncCamera, worldForController, type RuntimeController } from './runtimeController';
+import { controllerCanInteract, syncCamera, worldForController } from './controllerContext';
+import { soundForControllerTransition } from './controllerTransitionAudio';
+import type { RuntimeController } from './controllerTypes';
 import { clearTouchInput, requireAllPointersReleased } from './touchInput';
 import type * as THREE from 'three';
 

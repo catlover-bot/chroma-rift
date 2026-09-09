@@ -1,67 +1,37 @@
+import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
+import { controllerCanInteract, syncCamera, worldForController } from './controllerContext';
+import { soundForControllerTransition } from './controllerTransitionAudio';
 import { cancelTheatreManipulation } from '../../domain/theatre/state';
 import { THEATRE_CURTAIN_FIXTURE, THEATRE_PROJECTOR } from '../../domain/theatre/definition';
 import { evaluateLight } from '../../domain/theatre/lightGate';
 import { theatreAction, theatreDeviceAcquisition, advanceTheatreControllerActor } from './theatreController';
-import type { DeviceAcquisition } from './manipulationProjection';
-import { advanceVaultActor, type VaultActorEvent } from '../../domain/vault/actor';
+import { advanceVaultActor } from '../../domain/vault/actor';
 import { cancelVaultManipulation } from '../../domain/vault/state';
 import { VAULT_EXIT_FIXTURE, VAULT_METAL_FLOORS } from '../../domain/vault/definition';
 import type { VaultNoise } from '../../domain/vault/types';
 import { canCloseVaultExitController, vaultAction, vaultDeviceAcquisition } from './vaultController';
-import type { ActorFootPlant } from '../../domain/actorMotion';
-import * as THREE from 'three';
+import type * as THREE from 'three';
 import { validNotebookWindow, type NotebookMaskPreview } from './notebookCamera';
-import { advanceGalleryActor, recordGalleryDiscovery, canCloseGalleryExit, resumeGalleryActor, cancelGalleryManipulation, contourAlignedCount, type GalleryActorEvent } from '../../domain/gallery';
+import { advanceGalleryActor, recordGalleryDiscovery, canCloseGalleryExit, resumeGalleryActor, cancelGalleryManipulation, contourAlignedCount } from '../../domain/gallery';
 import { galleryAction, galleryDeviceAcquisition } from './galleryController';
-import type { createGalleryAudio } from '../../audio';
 
 import { reduceSeal, type SealAction, type SealCommand, type SealResult } from '../../domain/emblem';
 
 import { EMBLEM_SWITCH_FEEDBACK_SECONDS } from '../../domain/firstPerson/emblemFixture';
-import { CAMERA_FAR, CAMERA_NEAR, getWorld, VERTICAL_FOV } from '../../domain/firstPerson/chapter';
 import { cameraMatchesPose, projectWithCamera } from '../../domain/firstPerson/alignment';
 import { adjustLook, segmentOccluded, updatePlayer } from '../../domain/firstPerson/geometry';
 import { assistAim, commitEmblemResult, createInitialRuntime, evaluateRuntime, interact, objectiveForRuntime, pauseRuntime, resumeRuntime, setHintStage } from '../../domain/firstPerson/runtime';
-import { createTutorial, recordTutorialGuide, recordTutorialMotion, type TutorialMilestones, type TutorialTracker } from '../../domain/firstPerson/tutorial';
+import { createTutorial, recordTutorialGuide, recordTutorialMotion } from '../../domain/firstPerson/tutorial';
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { interactionCue } from '../../domain/firstPerson/interactionCue';
-import type { CameraMatrices, ChapterRuntime, CheckpointState, HintStage, InteractableDefinition, InteractableId } from '../../domain/firstPerson/types';
-import { getLabWorld } from './labRuntime';
-import { clearTouchInput, requireAllPointersReleased, consumeLook, createTouchInput, type FirstPersonInput } from './touchInput';
-import { createFirstPersonDiagnostics, type FirstPersonDiagnostics } from './diagnostics';
+import type { CheckpointState, HintStage, InteractableDefinition, InteractableId } from '../../domain/firstPerson/types';
+import { clearTouchInput, requireAllPointersReleased, consumeLook, createTouchInput } from './touchInput';
+import { createFirstPersonDiagnostics } from './diagnostics';
 
-export type RuntimeController = {
-  runtime: ChapterRuntime;
-  notebookPreview?: NotebookMaskPreview | undefined;
-  viewport?: { width: number; height: number };
-  horrorIntensity: 'standard' | 'subdued';
-  audio?: ReturnType<typeof createGalleryAudio>;
-  audioSequence: number;
-  pendingFootstepDistance: number;
-  pendingActorFootstepDistance: number;
-  pendingActorPlants: ActorFootPlant[];
-  pendingActorEvents: (GalleryActorEvent | VaultActorEvent)[];
-  pendingExitImpact: boolean;
-  pendingProjectorPulse: boolean;
-  actorNotice?: { sequence: number; text: string };
-  retired: boolean;
-  screenReader: boolean;
-  commandSequence: number;
-  lastReceivedSequence: number;
-  feedbackMessage: string;
-  lastCompareMs: number;
-  input: FirstPersonInput;
-  lab: boolean;
-  sensitivity: number;
-  verticalSensitivity: number;
-  tutorial: TutorialTracker;
-  simpleStep: number;
-  viewCommandRevision: number;
-  matrices: CameraMatrices | undefined;
-  diagnostics: FirstPersonDiagnostics;
-  metrics: { frames: number; elapsed: number; drawCalls: number; geometries: number; textures: number };
-};
-export type RuntimeSnapshot = { acquisition?: DeviceAcquisition; actorNotice?: { sequence: number; text: string }; runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };
+export type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
+export { controllerCanInteract, syncCamera, worldForController } from './controllerContext';
+export { soundForControllerTransition } from './controllerTransitionAudio';
+
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
@@ -74,9 +44,6 @@ export function recordFrameStats(controller: RuntimeController, delta: number, i
   controller.metrics.drawCalls = info.render.calls;
   controller.metrics.geometries = info.memory.geometries;
   controller.metrics.textures = info.memory.textures;
-}
-export function worldForController(controller: RuntimeController) {
-  return controller.lab ? getLabWorld(controller.runtime) : getWorld(controller.runtime);
 }
 export function stopController(controller: RuntimeController): void {
   clearTouchInput(controller.input);
@@ -131,19 +98,6 @@ export function commandController(controller: RuntimeController, action: Control
         controller.viewCommandRevision += 1;
       }
   }
-}
-export function syncCamera(controller: RuntimeController, camera: THREE.PerspectiveCamera): CameraMatrices {
-  const pose = controller.runtime.pose;
-  camera.fov = VERTICAL_FOV;
-  camera.near = CAMERA_NEAR;
-  camera.far = CAMERA_FAR;
-  camera.position.set(pose.position.x, pose.position.y, pose.position.z);
-  camera.rotation.set(pose.pitch, pose.yaw, 0, 'YXZ');
-  camera.updateProjectionMatrix();
-  camera.updateMatrixWorld(true);
-  const matrices = { view: camera.matrixWorldInverse.elements, projection: camera.projectionMatrix.elements };
-  controller.matrices = matrices;
-  return matrices;
 }
 export function advanceController(controller: RuntimeController, delta: number, camera: THREE.PerspectiveCamera): void {
   if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.cleared && controller.runtime.vault?.exitClosureSeconds) {
@@ -297,13 +251,6 @@ export function interactController(controller: RuntimeController, expectedId: In
   return controller.runtime !== previous;
 }
 
-/** Presentation readiness comes from the existing native render/present gate. */
-export function controllerCanInteract(controller: RuntimeController): boolean {
-  const d = controller.diagnostics;
-  return !controller.retired && !controller.runtime.paused && !controller.runtime.progress.cleared &&
-    d.stage === 'ready' && d.rendererOwnership === 'live' && d.appActive !== false && !d.paused && !d.open &&
-    (d.sceneMode === 'chapter' || d.sceneMode === 'lab') && !!controller.matrices;
-}
 export function retireController(controller: RuntimeController): void {
   stopController(controller);
   controller.runtime = pauseRuntime(controller.runtime);
@@ -448,49 +395,6 @@ export function flushControllerAudioFrame(controller: RuntimeController): void {
   }
   if (distance > 0) controller.audio?.movement(distance, String(controller.runtime.session));
 }
-export function soundForControllerTransition(controller: RuntimeController, previous: ChapterRuntime): void {
-  const before = previous.progress, after = controller.runtime.progress;
-  if (before.theatre && after.theatre) {
-    const b = before.theatre, a = after.theatre;
-    if (!b.curtainAccepted && a.curtainAccepted) { controller.audio?.beginEnding(); controller.pendingExitImpact = true; return; }
-    const unlocked = !b.light.accepted && a.light.accepted;
-    controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: unlocked ? 'unlock' : 'interaction',
-      position: worldForController(controller).interactables.find(t => t.id === (unlocked ? 'theatre-light' : !b.bypassOpen && a.bypassOpen ? 'theatre-bypass' : 'theatre-inspection'))?.center ?? controller.runtime.pose.position });
-    return;
-  }
-  if (before.vault && after.vault) {
-    const b = before.vault, a = after.vault;
-    if (!b.finalDoorClosed && a.finalDoorClosed) { controller.audio?.beginEnding(); controller.pendingExitImpact = true; return; }
-    const released = !b.length.solved && a.length.solved || !b.rod.solved && a.rod.solved;
-    const partition = previous.vault?.partitionClosed !== controller.runtime.vault?.partitionClosed;
-    const id = partition ? 'vault-partition' : controller.runtime.vault?.mode === 'rod' ? 'vault-rod' : 'vault-length';
-    controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: released ? 'unlock' : partition ? 'door' : 'interaction',
-      position: worldForController(controller).interactables.find(t => t.id === id)?.center ?? controller.runtime.pose.position });
-    return;
-  }
-  if (before.gallery && after.gallery) {
-    const b = before.gallery, a = after.gallery;
-    if (!b.finalDoorClosed && a.finalDoorClosed) { controller.audio?.beginEnding(); controller.pendingExitImpact = true; return; }
-    const released = !b.wiring.solved && a.wiring.solved || !b.shadow.solved && a.shadow.solved || !b.contour.solved && a.contour.solved;
-    const door = !b.powerConnected && a.powerConnected || !before.exitDoorOpen && after.exitDoorOpen;
-    const sourceId = !b.wiring.solved && a.wiring.solved ? 'wiring-panel' : !b.emergencyLit && a.emergencyLit ? 'gallery-light' : !b.powerConnected && a.powerConnected ? 'gallery-exit-panel' :
-      !before.exitDoorOpen && after.exitDoorOpen ? 'exit' : !b.powerTaken.shadow && a.powerTaken.shadow ? 'shadow-panel' :
-      !b.powerTaken.contour && a.powerTaken.contour ? 'contour-panel' : controller.runtime.gallery?.mode === 'shadow' ? 'shadow-panel' : 'contour-panel';
-    controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence,
-      type: released ? 'unlock' : door ? 'door' : 'interaction', position: worldForController(controller).interactables.find(t => t.id === sourceId)?.center ?? controller.runtime.pose.position });
-    return;
-  }
-  const released = !before.sealA && after.sealA || !before.sealB && after.sealB ||
-    !!after.gallery && !!before.gallery && (!before.gallery.shadow.solved && after.gallery.shadow.solved || !before.gallery.contour.solved && after.gallery.contour.solved);
-  const sourceId = !before.sealA && after.sealA ? 'emblem-panel' : !before.sealB && after.sealB ? 'key' :
-    !before.exitDoorOpen && after.exitDoorOpen ? 'exit' : controller.runtime.gallery?.mode === 'shadow' ? 'shadow-panel' :
-    controller.runtime.gallery?.mode === 'contour' ? 'contour-panel' : !after.sealA ? 'emblem-panel' : 'key';
-  const source = worldForController(controller).interactables.find(target => target.id === sourceId)?.center;
-  controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence,
-    type: released ? 'unlock' : !before.exitDoorOpen && after.exitDoorOpen ? 'door' : 'interaction',
-    position: source ?? controller.runtime.pose.position });
-}
-
 /** The controller owns this mutable audio handle outside React state snapshots. */
 export function attachControllerAudio(controller: RuntimeController, owner: NonNullable<RuntimeController['audio']>): () => void {
   controller.audio?.dispose();

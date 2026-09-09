@@ -1,7 +1,7 @@
 import { createPanelFixture, panelFixtureSolid } from '../firstPerson/panelFixture';
 import type { ChapterRuntime, CollisionVolume, InteractableDefinition, InteractableId, WorldGeometry } from '../firstPerson/types';
 import type { GalleryFixture } from '../gallery/types';
-import { ACTOR_COLLISION_RADIUS } from '../gallery/actor';
+import { ACTOR_COLLISION_RADIUS } from '../actorMotion/envelope';
 import { VAULT_CAFE_FIXTURE, VAULT_CHAPTER_ID, VAULT_EXIT_FIXTURE, VAULT_FLOORS, VAULT_LENGTH_FIXTURE, VAULT_PARTITION_FIXTURE, VAULT_ROD_FIXTURE, VAULT_SOLIDS } from './definition';
 const target = (id: InteractableId, label: string, f: GalleryFixture): InteractableDefinition => ({ id, label, center: f.center, radius: .01,
   maxDistance: f.maxDistance, rectangle: { width: f.width, height: f.height, normal: f.normal, right: f.right } });

@@ -2,7 +2,7 @@ import { ACTOR_MOTION,actorMotionEye,advanceActorMotion,createActorMotion,type A
 import { cameraMatchesPose,projectWithCamera } from '../firstPerson/alignment';
 import { segmentOccluded } from '../firstPerson/geometry';
 import type { CameraMatrices,ChapterRuntime,Vec3,WorldGeometry } from '../firstPerson/types';
-import { VAULT_AI,vaultActorEdgeOpen,vaultNoiseAudibility } from '../vault/actor';
+import { VAULT_AI,vaultActorEdgeOpen,vaultNoiseAudibility } from '../vault/actorPolicy';
 import { THEATRE_ACTOR_SPAWN,THEATRE_CROSSING,THEATRE_PATROL } from './definition';
 import type { TheatreActor,TheatreNoise,TheatreProgress } from './types';
 import { getTheatreWorld } from './world';

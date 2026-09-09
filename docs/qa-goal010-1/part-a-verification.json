@@ -1,0 +1,54 @@
+{
+  "baseline": {
+    "suites": 87,
+    "tests": 987,
+    "check": 0,
+    "npmLs": 0,
+    "doctor": 1,
+    "doctorChecks": "20/21",
+    "expoDependencyCheck": 1,
+    "advisory": "expo 57.0.20 expected ~57.0.21"
+  },
+  "branch": "fix/goal-010-1-stage-boundaries",
+  "partA": {
+    "check": 0,
+    "lint": 0,
+    "typecheck": 0,
+    "suites": 89,
+    "tests": 1022,
+    "testSeconds": 165.839,
+    "iosExport": 0,
+    "iosBundle": "index-b049e56142afc768fd9b48f7be285c92.hbc",
+    "devExport": 0,
+    "devMetroActualModuleProbe": 0,
+    "devThreeSameClassIdentity": true
+  },
+  "protected": {
+    "package.json": {
+      "sha256": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "unchanged": true
+    },
+    "package-lock.json": {
+      "sha256": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "unchanged": true
+    },
+    "app.json": {
+      "sha256": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "unchanged": true
+    },
+    "eas.json": {
+      "sha256": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "unchanged": true
+    },
+    "metro.config.js": {
+      "sha256": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "unchanged": true
+    },
+    "metro/withNativeThree.js": {
+      "sha256": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "unchanged": true
+    }
+  },
+  "nativeStartup": "not run; actual Metro domain/controller loader executed in Node VM only",
+  "baselineCommit": "bafd563f18b0e97c60cb1ffdcab1c6138c8dc8a3"
+}

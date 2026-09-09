@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEvent } from 'react-native';
 import { evaluateLight } from '../../domain/theatre/lightGate';
 import type { TheatreAction } from '../../domain/theatre/types';
-import type { RuntimeController } from './runtimeController';
+import type { RuntimeController } from './controllerTypes';
 import { theatreAction, theatreDeviceScreenBounds, theatrePointer } from './theatreController';
 import { SceneActionButton } from './SceneActionButton';
 import { observeReleaseBarrier, requireAllPointersReleased, targetChangedTouches } from './touchInput';

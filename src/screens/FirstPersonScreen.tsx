@@ -8,7 +8,6 @@ import { VaultDeviceHeading, VaultDeviceControls, VaultTouchLayer } from '../ren
 import { vaultAction, vaultPanelTarget, vaultDeviceScreenBounds, canCloseVaultExitController } from '../rendering/firstPerson/vaultController';
 import { chapterCompletionSummary } from '../app/chapterSummary';
 import { canCloseGalleryExit, galleryPowerCount } from '../domain/gallery';
-import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport } from '../rendering/firstPerson/runtimeController';
 import * as Clipboard from 'expo-clipboard';
 import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -22,7 +21,8 @@ import { playSelectionHaptic } from '../platform/haptics';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
 import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
-import { accessibleEmblemTargets, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController, type RuntimeSnapshot } from '../rendering/firstPerson/runtimeController';
+import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
+import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
 import { controlLayout } from '../rendering/firstPerson/controlLayout';
 import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
 import { GalleryDeviceControls, GalleryTouchLayer } from '../rendering/firstPerson/GalleryManipulation';

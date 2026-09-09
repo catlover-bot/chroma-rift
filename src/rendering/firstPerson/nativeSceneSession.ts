@@ -7,7 +7,9 @@ import type { CanvasLifecycle } from './canvasLifecycle';
 import { installShaderDiagnostics, recordContextDiagnostics, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
-import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController, syncCamera, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
+import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
+import { syncCamera, worldForController } from './controllerContext';
+import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
 function createTeardownOnlyRenderer() {
   return { render() {}, setSize() {}, setPixelRatio() {}, dispose() {}, getContext: () => ({ endFrameEXP() {} }) };

@@ -1,8 +1,9 @@
 import { actorMotionEye, advanceActorMotion, createActorMotion, wrapActorAngle, type ActorFootPlant, type ActorGait, type ActorMotionState } from '../actorMotion';
-import { getWorld } from '../firstPerson/chapter';
+import { getGalleryWorld } from './world';
+import { ACTOR_COLLISION_RADIUS, ACTOR_MODEL_BOUNDS } from '../actorMotion/envelope';
 import { cameraMatchesPose, projectWithCamera } from '../firstPerson/alignment';
 import { clamp, MAX_FRAME_DELTA, segmentOccluded } from '../firstPerson/geometry';
-import { occlusionCertificate } from '../firstPerson/runtime';
+import { occlusionCertificate } from '../firstPerson/occlusion';
 import type { CameraMatrices, ChapterRuntime, CollisionVolume, Vec3, WorldGeometry } from '../firstPerson/types';
 import { GALLERY_DISPLAY_POSITION } from './definition';
 import { galleryPowerCount, isGalleryExitThreshold } from './selectors';
@@ -11,8 +12,7 @@ import type { GalleryActor, GalleryProgress, HorrorIntensity } from './types';
 export const ACTOR_TELEGRAPH_SECONDS = 2.75;
 export const GALLERY_ACTOR_STEP_DISTANCE = .48;
 export const ACTOR_CONTACT_DISTANCE = .68;
-export const ACTOR_COLLISION_RADIUS = .44;
-export const ACTOR_MODEL_BOUNDS = { halfWidth: .52, halfDepth: .52, height: 2.24 } as const;
+export { ACTOR_COLLISION_RADIUS, ACTOR_MODEL_BOUNDS } from '../actorMotion/envelope';
 /** One continuous route: display, framed crossing, staging before the closed
  * shutter, and four patrol points. The final point is subdued off-lane rest. */
 export const GALLERY_ACTOR_ROUTE: readonly Vec3[] = [
@@ -34,7 +34,7 @@ function volumeAt(position: Vec3): CollisionVolume {
     min: { x: position.x - ACTOR_MODEL_BOUNDS.halfWidth, y: -.04, z: position.z - ACTOR_MODEL_BOUNDS.halfDepth },
     max: { x: position.x + ACTOR_MODEL_BOUNDS.halfWidth, y: ACTOR_MODEL_BOUNDS.height, z: position.z + ACTOR_MODEL_BOUNDS.halfDepth } };
 }
-export function actorVolumeOccluded(runtime: ChapterRuntime, position: Vec3, world = getWorld(runtime)): boolean {
+export function actorVolumeOccluded(runtime: ChapterRuntime, position: Vec3, world = getGalleryWorld(runtime)): boolean {
   return !!occlusionCertificate(runtime.pose, volumeAt(position), world.solids);
 }
 function servicePosition(position: Vec3): boolean {
@@ -64,13 +64,13 @@ export function actorCanSeePlayer(runtime: ChapterRuntime): boolean {
   if (distance > 5.4 || distance < 1e-8) return distance < 1e-8;
   const eye = actorMotionEye(motionFor(actor));
   return (-Math.sin(eye.yaw) * dx - Math.cos(eye.yaw) * dz) / distance >= Math.cos(52 * Math.PI / 180) &&
-    !segmentOccluded(actorEye(actor), runtime.pose.position, getWorld(runtime));
+    !segmentOccluded(actorEye(actor), runtime.pose.position, getGalleryWorld(runtime));
 }
 /** This records possible on-screen presentation, never awareness or fear. A
  * camera outside the authored pose cannot mark the event as presented. */
 function crossingPossiblyPresented(runtime: ChapterRuntime, matrices?: CameraMatrices): boolean {
   if (!matrices || !cameraMatchesPose(runtime.pose, matrices)) return false;
-  const actor = runtime.gallery!.actor, world = getWorld(runtime);
+  const actor = runtime.gallery!.actor, world = getGalleryWorld(runtime);
   return [-.18, 0, .18].some(dx => [1.55, 1.9, 2.08].some(y => {
     const point = { x: actor.position.x + dx, y, z: actor.position.z };
     return !!projectWithCamera(point, matrices) && !segmentOccluded(runtime.pose.position, point, world);
@@ -141,7 +141,7 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
       if (actor.phaseTime >= 1.6) actor = { ...actor, phase: 'departing', phaseTime: 0, routeIndex: 2 };
     } else {
       const target = actor.routeIndex === 1 ? actorCrossingPoint(gallery.seed) : GALLERY_ACTOR_ROUTE[actor.routeIndex]!;
-      const moved = move(actor, target, .62, elapsed, getWorld(runtime)); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
+      const moved = move(actor, target, .62, elapsed, getGalleryWorld(runtime)); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
       if (Math.hypot(actor.position.x - target.x, actor.position.z - target.z) < 1e-7) {
         if (actor.routeIndex === 1) actor = { ...actor, phase: 'crossing-pause', phaseTime: 0 };
         else if (actor.routeIndex === 3) actor = { ...actor, phase: 'dormant', phaseTime: 0, routeIndex: 4, routeDirection: 1 };
@@ -157,7 +157,7 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
   if (actor.phase === 'telegraph' && actor.phaseTime >= ACTOR_TELEGRAPH_SECONDS) actor = { ...actor, phase: 'patrol', phaseTime: 0 };
   let next = { ...runtime, progress: { ...runtime.progress, gallery: { ...gallery, story } }, gallery: { ...live, actor } };
   if (['patrol', 'noticed', 'approach', 'search'].includes(actor.phase) && !story.resolved && gallery.wiring.solved) {
-    const world = getWorld(next), subdued = options.intensity === 'subdued', sees = actorCanSeePlayer(next);
+    const world = getGalleryWorld(next), subdued = options.intensity === 'subdued', sees = actorCanSeePlayer(next);
     if (subdued) {
       const target = actor.position.z < 20.3 ? GALLERY_ACTOR_ROUTE[7]! : GALLERY_ACTOR_ROUTE[8]!;
       const moved = move({ ...actor, phase: 'patrol', lastSeen: undefined }, target, .68, elapsed, world); actor = moved.actor; movedDistance += moved.distance; footPlants.push(...moved.footPlants); motionAdvanced = true;
@@ -201,7 +201,7 @@ export function advanceGalleryActor(runtime: ChapterRuntime, dt: number, options
   if (!motionAdvanced) {
     const target = actor.lastSeen;
     const desiredHeading = target ? Math.atan2(-(target.x - actor.position.x), -(target.z - actor.position.z)) : actor.motion.desiredHeading;
-    const settled = advanceActorMotion(motionFor(actor), { maxSpeed: 0, gait: gaitFor(actor), desiredHeading, ...(target ? { lookTarget: target } : {}) }, elapsed, (from, to) => actorRouteEdgeOpen(from, to, getWorld(next)));
+    const settled = advanceActorMotion(motionFor(actor), { maxSpeed: 0, gait: gaitFor(actor), desiredHeading, ...(target ? { lookTarget: target } : {}) }, elapsed, (from, to) => actorRouteEdgeOpen(from, to, getGalleryWorld(next)));
     actor = withMotion(actor, settled.state); footPlants.push(...settled.footPlants);
     next = { ...next, gallery: { ...next.gallery!, actor } };
   }

@@ -1,4 +1,4 @@
-import { EYE_HEIGHT, PLAYER_HEIGHT, PLAYER_RADIUS } from './chapter';
+import { EYE_HEIGHT, PLAYER_HEIGHT, PLAYER_RADIUS } from './constants';
 import type { CollisionVolume, MovementInput, PlayerPose, Vec3, WorldGeometry } from './types';
 
 export const MOVE_SPEED = 2.15;

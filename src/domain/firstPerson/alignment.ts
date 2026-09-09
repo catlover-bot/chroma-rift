@@ -1,4 +1,4 @@
-import { OBSERVATION_POSE } from './chapter';
+import { OBSERVATION_POSE } from './legacyDefinition';
 import { forwardVector, segmentOccluded, shapeSegmentOccluded } from './geometry';
 import type { CameraMatrices, PlayerPose, Vec3, WorldGeometry } from './types';
 

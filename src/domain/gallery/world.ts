@@ -1,8 +1,8 @@
 import { createPanelFixture, panelFixtureSolid } from '../firstPerson/panelFixture';
-import { boundaryWalls } from '../firstPerson/chapter';
+import { boundaryWalls } from '../firstPerson/boundaryWalls';
 import type { ChapterRuntime, CollisionVolume, InteractableDefinition, InteractableId, WorldGeometry } from '../firstPerson/types';
 import { GALLERY_CHAPTER_ID, GALLERY_CHROMATIC_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_FINAL_DOOR_FIXTURE, GALLERY_FLOORS, GALLERY_LIGHT_FIXTURE, GALLERY_SHADOW_FIXTURE, GALLERY_WIRING_FIXTURE, GALLERY_MASK_FIXTURE, GALLERY_MASK_WINDOW_FIXTURE, GALLERY_HYBRID_FIXTURE } from './definition';
-import { ACTOR_COLLISION_RADIUS } from './actor';
+import { ACTOR_COLLISION_RADIUS } from '../actorMotion/envelope';
 import type { GalleryFixture } from './types';
 
 const box = (id: string, minX: number, maxX: number, minZ: number, maxZ: number, kind: CollisionVolume['kind'] = 'wall', minY = 0, maxY = 3.2): CollisionVolume => ({ id, min: { x: minX, y: minY, z: minZ }, max: { x: maxX, y: maxY, z: maxZ }, kind, opaque: true });

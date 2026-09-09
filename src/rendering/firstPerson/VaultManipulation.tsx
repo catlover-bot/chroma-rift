@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEvent } from 'react-native';
 import { LENGTH_SPEC } from '../../domain/vault/specs';
 import type { VaultAction, VaultDevice } from '../../domain/vault/types';
-import type { RuntimeController } from './runtimeController';
+import type { RuntimeController } from './controllerTypes';
 import { vaultAction, vaultDeviceScreenBounds, vaultPointer } from './vaultController';
 import { SceneActionButton } from './SceneActionButton';
 import { observeReleaseBarrier, requireAllPointersReleased, targetChangedTouches } from './touchInput';

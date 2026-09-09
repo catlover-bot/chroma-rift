@@ -4,7 +4,9 @@ import { projectWithCamera } from '../../domain/firstPerson/alignment';
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { clearTouchInput, requireAllPointersReleased } from './touchInput';
 import { fixtureAcquisition, acquisitionResult, fixtureScreenBounds, pointOnFixture, type PanelPoint } from './manipulationProjection';
-import { controllerCanInteract, soundForControllerTransition, worldForController, type RuntimeController } from './runtimeController';
+import { controllerCanInteract, worldForController } from './controllerContext';
+import { soundForControllerTransition } from './controllerTransitionAudio';
+import type { RuntimeController } from './controllerTypes';
 
 export function galleryDeviceAcquisition(controller: RuntimeController, puzzle: GalleryDevice) {
   const world = worldForController(controller), target = world.interactables.find(t => t.id === puzzle + '-panel');

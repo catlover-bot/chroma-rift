@@ -1,3 +1,5 @@
+import { createBaseRuntime, initialProgress } from './baseRuntime';
+import { createGalleryRuntime } from '../gallery/runtime';
 import { createTheatreRuntime } from '../theatre/runtime';
 import { THEATRE_CHAPTER_ID } from '../theatre/definition';
 import { advanceTheatre, applyTheatreCommand, cancelTheatreManipulation } from '../theatre/state';
@@ -7,48 +9,33 @@ import { createVaultRuntime } from '../vault/runtime';
 import { VAULT_CHAPTER_ID } from '../vault/definition';
 import { advanceVault, applyVaultCommand, cancelVaultManipulation } from '../vault/state';
 import { vaultHint, vaultObjective } from '../vault/selectors';
-import { advanceGallery, applyGalleryCommand, cancelGalleryManipulation, initialGalleryProgress, initialGalleryTransient } from '../gallery/state';
-import { GALLERY_CHAPTER_ID, GALLERY_SPAWN, GALLERY_SHADOW_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_FINAL_DOOR_FIXTURE } from '../gallery/definition';
+import { advanceGallery, applyGalleryCommand, cancelGalleryManipulation } from '../gallery/state';
+import { GALLERY_CHAPTER_ID, GALLERY_SHADOW_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_FINAL_DOOR_FIXTURE } from '../gallery/definition';
 import { galleryDeviceStatus, galleryObjective, galleryPowerCount } from '../gallery/selectors';
 import type { GalleryAction } from '../gallery/types';
-import { checkpointSeal, EMBLEM_SEED, parseSealCheckpoint, reduceSeal, sealHint, startSealSession, type SealCheckpoint, type SealResult } from '../emblem/puzzle';
+import { checkpointSeal, reduceSeal, sealHint, type SealResult } from '../emblem/puzzle';
 import type { Glyph } from '../emblem/stimulus';
 import { EMBLEM_FIXTURE, EMBLEM_SWITCH_FEEDBACK_SECONDS } from './emblemFixture';
 import { evaluateKeyAlignment } from './alignment';
-import { CHANGED_REGION, CHAPTER, EYE_HEIGHT, getWorld, KEY_PUZZLE, OBSERVATION_POSE, PLAYER_RADIUS } from './chapter';
+import { getWorld } from './chapter';
+import { CHANGED_REGION, CHAPTER, KEY_PUZZLE, OBSERVATION_POSE } from './legacyDefinition';
+import { EYE_HEIGHT, PLAYER_RADIUS } from './constants';
+import { occlusionCertificate } from './occlusion';
 import { clamp, isSafePose, MAX_FRAME_DELTA, segmentOccluded, updatePlayer } from './geometry';
 import { evaluateInteraction } from './interaction';
-import type { CameraMatrices, ChapterRuntime, CheckpointState, CollisionVolume, HintStage, InteractableDefinition, InteractableId, MovementInput, PlayerPose, PuzzleDefinition, PuzzleState, Vec3, WorldGeometry } from './types';
+import type { CameraMatrices, ChapterRuntime, CheckpointState, HintStage, InteractableDefinition, InteractableId, MovementInput, PlayerPose, PuzzleDefinition, PuzzleState, Vec3, WorldGeometry } from './types';
 
-export function initialProgress(): PuzzleState {
-  return { emblem: checkpointSeal(startSealSession(EMBLEM_SEED, 'initial')), guideExamined: false, markActivated: false, sealA: false, sealB: false, variant: 'entrance', exitDoorOpen: false, cleared: false, hintStage: 0, usedLookAssist: false };
-}
-let runtimeSession = 0;
-/** The old host seal remains the downstream gate. Optional puzzle state is
- * normalized to it so legacy saves resume without replaying the first room. */
-export function emblemCheckpointForProgress(progress: PuzzleState): SealCheckpoint {
-  const parsed = parseSealCheckpoint(progress.emblem);
-  const fallback = checkpointSeal(startSealSession(EMBLEM_SEED, 'checkpoint'));
-  const checkpoint = parsed ?? fallback;
-  return { ...checkpoint, phase: progress.sealA ? 'released' : checkpoint.phase === 'released' ? 'observing' : checkpoint.phase };
-}
-export function createInitialRuntime(checkpoint?: CheckpointState, session = ++runtimeSession, chapterId = CHAPTER.id): ChapterRuntime {
-  runtimeSession = Math.max(runtimeSession, session);
+export { occlusionCertificate } from './occlusion';
+
+export { initialProgress, emblemCheckpointForProgress } from './baseRuntime';
+export function createInitialRuntime(checkpoint?: CheckpointState, session?: number, chapterId = CHAPTER.id): ChapterRuntime {
   const selectedChapter = checkpoint?.chapterId ?? chapterId;
   if (selectedChapter === THEATRE_CHAPTER_ID) return createTheatreRuntime(checkpoint, session);
   if (selectedChapter === VAULT_CHAPTER_ID) return createVaultRuntime(checkpoint, session);
-  const galleryChapter = selectedChapter === GALLERY_CHAPTER_ID;
+  if (selectedChapter === GALLERY_CHAPTER_ID) return createGalleryRuntime(checkpoint, session);
   const progress = checkpoint ? { ...checkpoint.progress } : initialProgress();
-  if (galleryChapter) progress.gallery ??= initialGalleryProgress();
-  else delete progress.gallery;
-  const savedEmblem = emblemCheckpointForProgress(progress);
-  progress.emblem = savedEmblem;
-  if (!galleryChapter && !progress.sealA) progress.hintStage = savedEmblem.hintTier;
-  const emblem = startSealSession(savedEmblem.seed, String(session), savedEmblem);
-  const spawn = galleryChapter ? GALLERY_SPAWN : CHAPTER.spawn;
-  return { chapterId: selectedChapter, ...(progress.gallery ? { gallery: initialGalleryTransient(progress.gallery, String(session), checkpoint?.pose) } : {}),
-    pose: checkpoint ? { ...checkpoint.pose, position: { ...checkpoint.pose.position } } : { ...spawn, position: { ...spawn.position } },
-    progress, emblem, session, paused: false, alignment: false, doorAOpen: progress.sealA ? 1 : 0, doorBOpen: progress.sealB ? 1 : 0, doorExitOpen: progress.gallery ? progress.gallery.finalDoorClosed ? 0 : 1 : progress.exitDoorOpen ? 1 : 0 };
+  delete progress.gallery;
+  return createBaseRuntime(selectedChapter, checkpoint?.pose ?? CHAPTER.spawn, progress, session);
 }
 /** A reducer result and the existing door gate commit together in one runtime
  * value. Rejected/replayed results never produce another host transition. */
@@ -63,36 +50,6 @@ export function findInteraction(world: WorldGeometry, pose: PlayerPose, progress
   return candidate.kind === 'ready' || candidate.kind === 'locked' ? candidate.target : undefined;
 }
 
-function regionCorners(region: CollisionVolume): Vec3[] {
-  return [region.min.x, region.max.x].flatMap((x) => [region.min.y, region.max.y].flatMap((y) => [region.min.z, region.max.z].map((z) => ({ x, y, z }))));
-}
-/** Certifies an entire convex changed volume lies behind one opaque rectangle.
- * Every ray to that volume crosses the same wall plane within its rectangle;
- * fractional-linear extrema occur at box vertices. This does not depend on yaw
- * or a one-point frustum test, so a simultaneous turn cannot expose a swap. */
-export function occlusionCertificate(pose: PlayerPose, changed: CollisionVolume, blockers: readonly CollisionVolume[]): string | undefined {
-  for (const wall of blockers) {
-    if (!wall.opaque || wall.kind !== 'wall') continue;
-    const xThin = wall.max.x - wall.min.x <= 0.25;
-    const zThin = wall.max.z - wall.min.z <= 0.25;
-    if (!xThin && !zThin) continue;
-    const axis = xThin ? 'x' : 'z';
-    const across = axis === 'x' ? 'z' : 'x';
-    const plane = (wall.min[axis] + wall.max[axis]) / 2;
-    const cameraSide = pose.position[axis] - plane;
-    if (Math.abs(cameraSide) < PLAYER_RADIUS) continue;
-    const hidden = regionCorners(changed).every((point) => {
-      const targetSide = point[axis] - plane;
-      if (cameraSide * targetSide >= 0) return false;
-      const t = (plane - pose.position[axis]) / (point[axis] - pose.position[axis]);
-      const horizontal = pose.position[across] + (point[across] - pose.position[across]) * t;
-      const vertical = pose.position.y + (point.y - pose.position.y) * t;
-      return horizontal > wall.min[across] + 0.03 && horizontal < wall.max[across] - 0.03 && vertical > wall.min.y + 0.03 && vertical < wall.max.y - 0.03;
-    });
-    if (hidden) return wall.id;
-  }
-  return undefined;
-}
 export function canApplyReturnVariant(runtime: ChapterRuntime): boolean {
   if (runtime.progress.gallery || runtime.progress.vault || runtime.progress.theatre) return false;
   if (!runtime.progress.sealA || !runtime.progress.sealB || runtime.progress.variant === 'exit') return false;

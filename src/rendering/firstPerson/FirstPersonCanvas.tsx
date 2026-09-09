@@ -15,7 +15,9 @@ import { createNativeSceneSession, type NativeSceneSession } from './nativeScene
 import { PROOF_CAMERA, ProofScene } from './ProofScene';
 import { createSceneResources } from './resources';
 import { DEFAULT_EMBLEM_APPEARANCE } from './emblemSurface';
-import { stopController, worldForController, type RuntimeController, type RuntimeSnapshot } from './runtimeController';
+import { stopController } from './runtimeController';
+import { worldForController } from './controllerContext';
+import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
 export type FirstPersonCanvasProps = {
   controller: RuntimeController; snapshot: RuntimeSnapshot; paused: boolean; appActive?: boolean;

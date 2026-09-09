@@ -2,7 +2,8 @@ import type { RootState } from '@react-three/fiber/native';
 import type * as THREE from 'three';
 
 import { recordDiagnosticError } from './diagnostics';
-import { commandController, retireController, type RuntimeController } from './runtimeController';
+import { commandController, retireController } from './runtimeController';
+import type { RuntimeController } from './controllerTypes';
 
 type FailurePhase = 'renderer initialization' | 'scene initialization' | 'scene mount' | 'simulation frame' | 'scene frame' | 'render' | 'presentation' | 'shader' | 'GL' | 'initialization timeout';
 const FAILURE_MESSAGE = '部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。';

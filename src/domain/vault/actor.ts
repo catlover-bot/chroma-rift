@@ -1,18 +1,13 @@
 import { ACTOR_MOTION, actorMotionEye, advanceActorMotion, createActorMotion, type ActorFootPlant, type ActorGait } from '../actorMotion';
 import { cameraMatchesPose, projectWithCamera } from '../firstPerson/alignment';
-import { clamp, segmentOccluded } from '../firstPerson/geometry';
+import { segmentOccluded } from '../firstPerson/geometry';
 import type { CameraMatrices, ChapterRuntime, Vec3, WorldGeometry } from '../firstPerson/types';
-import { ACTOR_COLLISION_RADIUS, ACTOR_MODEL_BOUNDS } from '../gallery/actor';
+import { VAULT_AI, vaultActorEdgeOpen, vaultNoiseAudibility } from './actorPolicy';
 import { getVaultWorld } from './world';
 import type { VaultActor, VaultActorPhase, VaultNoise, VaultProgress } from './types';
 
-export const VAULT_AI = Object.freeze({
-  patrolSpeed: .72, investigateSpeed: 1.0, pursueSpeed: 2.35, searchSpeed: .62,
-  visionRange: 6.4, visionHalfAngle: 52 * Math.PI / 180, recognitionSeconds: .45,
-  noiseThreshold: .22, noiseRange: 7, occludedNoiseGain: .28,
-  revealSeconds: 1.4, noticeSeconds: .65, windupSeconds: .75, attackSeconds: .42, recoverSeconds: .95,
-  searchSeconds: 4.2, returnPause: .6, contactDistance: .68, coldGrace: 3, repathSeconds: .35,
-});
+export { VAULT_AI, vaultActorEdgeOpen, vaultNoiseAudibility } from './actorPolicy';
+
 /** A small authored graph around both sides of the real central rack. Edges are
  * checked against the same body footprint and currently closed world doors. */
 export const VAULT_ACTOR_ROUTE: readonly Vec3[] = [
@@ -36,24 +31,6 @@ export function initialVaultActor(progress: VaultProgress): VaultActor {
     attackCommitted: false, attackHit: false, lastNoiseSequence: -1, intensity: 'standard', navigationPath: [], repathSeconds: 0, searchDwellSeconds: 0,
     revealTime: progress.story.revealStarted ? VAULT_AI.revealSeconds : 0 };
 }
-function bodyAllowed(position: Vec3, world: WorldGeometry): boolean {
-  if (![position.x, position.y, position.z].every(Number.isFinite)) return false;
-  for (let i = -1; i < 16; i++) {
-    const x = position.x + (i < 0 ? 0 : Math.cos(i * Math.PI / 8) * ACTOR_COLLISION_RADIUS);
-    const z = position.z + (i < 0 ? 0 : Math.sin(i * Math.PI / 8) * ACTOR_COLLISION_RADIUS);
-    if (!world.floors.some(floor => x >= floor.minX && x <= floor.maxX && z >= floor.minZ && z <= floor.maxZ)) return false;
-  }
-  return !world.solids.some(solid => {
-    if (solid.id === 'vault-actor-body' || solid.max.y <= 0 || solid.min.y >= ACTOR_MODEL_BOUNDS.height) return false;
-    const dx = position.x - clamp(position.x, solid.min.x, solid.max.x), dz = position.z - clamp(position.z, solid.min.z, solid.max.z);
-    return dx * dx + dz * dz < ACTOR_COLLISION_RADIUS ** 2 - 1e-8;
-  });
-}
-export function vaultActorEdgeOpen(from: Vec3, to: Vec3, world: WorldGeometry): boolean {
-  const steps = Math.max(1, Math.ceil(distance(from, to) / (ACTOR_COLLISION_RADIUS / 4)));
-  for (let i = 0; i <= steps; i++) if (!bodyAllowed({ x: from.x + (to.x - from.x) * i / steps, y: 0, z: from.z + (to.z - from.z) * i / steps }, world)) return false;
-  return true;
-}
 export function vaultActorCanSeePlayer(runtime: ChapterRuntime): boolean {
   const actor = runtime.vault?.actor;
   if (!actor || !runtime.progress.vault?.length.solved || !actor.visible) return false;
@@ -61,13 +38,6 @@ export function vaultActorCanSeePlayer(runtime: ChapterRuntime): boolean {
   const dx = p.x - eye.position.x, dy = p.y - eye.position.y, dz = p.z - eye.position.z, length = Math.hypot(dx, dy, dz);
   return length <= VAULT_AI.visionRange && (length < 1e-7 || (eye.direction.x * dx + eye.direction.y * dy + eye.direction.z * dz) / length >= Math.cos(VAULT_AI.visionHalfAngle)) &&
     !segmentOccluded(eye.position, p, getVaultWorld(runtime));
-}
-/** A game event, never an audio preference or microphone observation. */
-export function vaultNoiseAudibility(actor: VaultActor, noise: VaultNoise, world: WorldGeometry): number {
-  if (!Number.isSafeInteger(noise.sequence) || noise.sequence < 0 || !['footstep', 'metal'].includes(noise.kind) || ![noise.position.x, noise.position.y, noise.position.z, noise.strength].every(Number.isFinite) || noise.strength <= 0) return 0;
-  const ear = actorMotionEye(actor.motion).position, range = distance(ear, noise.position);
-  if (range > VAULT_AI.noiseRange) return 0;
-  return Math.min(1.2, noise.strength) / (1 + range * .6) * (segmentOccluded(ear, noise.position, world) ? VAULT_AI.occludedNoiseGain : 1);
 }
 function safePlayer(runtime: ChapterRuntime): boolean {
   const p = runtime.pose.position;

@@ -2,7 +2,9 @@ import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import type { InteractableDefinition } from '../../domain/firstPerson/types';
 import { applyVaultCommand, isVaultExitThreshold } from '../../domain/vault/state';
 import type { VaultAction, VaultCommand, VaultDevice } from '../../domain/vault/types';
-import { controllerCanInteract, soundForControllerTransition, worldForController, type RuntimeController } from './runtimeController';
+import { controllerCanInteract, worldForController } from './controllerContext';
+import { soundForControllerTransition } from './controllerTransitionAudio';
+import type { RuntimeController } from './controllerTypes';
 import { fixtureAcquisition, acquisitionResult, fixtureScreenBounds, pointOnFixture, type PanelPoint } from './manipulationProjection';
 import { clearTouchInput, requireAllPointersReleased } from './touchInput';
 

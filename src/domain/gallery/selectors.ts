@@ -1,4 +1,4 @@
-import { getWorld } from '../firstPerson/chapter';
+import { getGalleryWorld } from './world';
 import { evaluateInteraction } from '../firstPerson/interaction';
 import type { ChapterRuntime, PlayerPose } from '../firstPerson/types';
 import { angularDifference, CONTOUR_TOLERANCE, createContourSpec } from './contour';
@@ -64,7 +64,7 @@ export function isGalleryExitThreshold(pose: PlayerPose): boolean {
 export function canCloseGalleryExit(runtime: ChapterRuntime): boolean {
   const g = runtime.progress.gallery;
   return !!g && !runtime.paused && !runtime.progress.cleared && g.powerConnected && g.wiring.solved && !g.finalDoorClosed && runtime.gallery?.mode === 'explore' && isGalleryExitThreshold(runtime.pose) &&
-    evaluateInteraction({ ...getWorld(runtime), interactables: getWorld(runtime).interactables.filter(target => target.id === 'exit') }, runtime.pose, runtime.progress).kind === 'ready';
+    evaluateInteraction({ ...getGalleryWorld(runtime), interactables: getGalleryWorld(runtime).interactables.filter(target => target.id === 'exit') }, runtime.pose, runtime.progress).kind === 'ready';
 }
 
 /** A visited, authored refuge can be remembered even while the player later

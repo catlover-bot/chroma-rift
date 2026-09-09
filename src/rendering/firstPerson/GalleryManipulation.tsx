@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEve
 import { CONTOUR_DISC_IDS, createContourSpec, createShadowSpec, galleryDeviceStatus, getWiringSpec, SAMPLE_IDS, type SampleId } from '../../domain/gallery';
 import { angularDifference, CONTOUR_TOLERANCE } from '../../domain/gallery';
 import { galleryAction, galleryPointer } from './galleryController';
-import type { RuntimeController } from './runtimeController';
+import type { RuntimeController } from './controllerTypes';
 import { SceneActionButton } from './SceneActionButton';
 import { observeReleaseBarrier, targetChangedTouches } from './touchInput';
 
