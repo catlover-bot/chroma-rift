@@ -17,6 +17,8 @@ export function createTheatreResources() {
   const wall = new THREE.MeshLambertMaterial({ color: '#606770' }), floor = new THREE.MeshLambertMaterial({ color: '#535858' }),
     curtain = new THREE.MeshLambertMaterial({ color: '#624B48' }), metal = new THREE.MeshLambertMaterial({ color: '#888C88' });
   const receiver = basic('#D6CFAD'), shadow = basic('#272C2D'), amber = basic('#ECD6A1'), dark = basic('#303738'), line = new THREE.LineBasicMaterial({ color: '#A8B5AD', toneMapped: false });
+  // Neutral architectural marks have their own materials; optical surfaces keep their original colors.
+  const trim = basic('#79827E'), label = basic('#D4D8D0');
   receiver.polygonOffset = true; receiver.polygonOffsetFactor = 1; receiver.polygonOffsetUnits = 1;
   const coat = triangles(COAT_TRIANGLES.flatMap(t => t.map(opticalWorldPoint)));
   const shadowGeometry = new THREE.BufferGeometry();
@@ -57,8 +59,8 @@ export function createTheatreResources() {
     shadowGeometry.computeBoundingSphere(); lastRail = rail; revision++;
   };
   updateLight(LIGHT_SPEC.initialRail);
-  return { wall, floor, curtain, metal, receiver, shadow, amber, dark, line, coat, shadowGeometry, room, roomEdges, frameEdges, prop, updateLight,
+  return { wall, floor, curtain, metal, receiver, shadow, amber, dark, line, trim, label, coat, shadowGeometry, room, roomEdges, frameEdges, prop, updateLight,
     get lightRevision() { return revision; },
-    dispose() { [wall,floor,curtain,metal,receiver,shadow,amber,dark,line,coat,shadowGeometry,room,roomEdges,frameEdges,prop].forEach(r => r.dispose()); } };
+    dispose() { [wall,floor,curtain,metal,receiver,shadow,amber,dark,line,trim,label,coat,shadowGeometry,room,roomEdges,frameEdges,prop].forEach(r => r.dispose()); } };
 }
 export type TheatreResources = ReturnType<typeof createTheatreResources>;

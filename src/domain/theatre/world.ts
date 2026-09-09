@@ -1,3 +1,4 @@
+import { theatreProjectorStatus, theatreTargetLabel } from './deviceStatus';
 import type { ChapterRuntime, CollisionVolume, WorldGeometry } from '../firstPerson/types';
 import { THEATRE_AMES_SIDE_FIXTURE, THEATRE_BYPASS_FIXTURE, THEATRE_CHAPTER_ID, THEATRE_CURTAIN, THEATRE_CURTAIN_FIXTURE, THEATRE_FLOORS, THEATRE_INSPECTION_FIXTURE, THEATRE_LIGHT_FIXTURE, THEATRE_PROJECTOR_FIXTURE, THEATRE_SPAWN, theatreTarget } from './definition';
 export const theatreBox = (id:string,minX:number,maxX:number,minZ:number,maxZ:number,minY=0,maxY=3.5,kind:CollisionVolume['kind']='wall',opaque=true):CollisionVolume => ({ id,min:{ x:minX,y:minY,z:minZ },max:{ x:maxX,y:maxY,z:maxZ },kind,opaque });
@@ -25,7 +26,7 @@ export const THEATRE_STATIC_SOLIDS: readonly CollisionVolume[] = [
 let cache: { key:string; world:WorldGeometry } | undefined;
 export function getTheatreWorld(runtime:Pick<ChapterRuntime,'progress'|'theatre'>):WorldGeometry {
   const p=runtime.progress.theatre!,v=runtime.theatre!, actor=v.actor;
-  const key=[v.lightGateOpen,p.inspectionShutterOpen,p.bypassOpen,v.curtainOpenness,actor.visible,actor.motion.position.x,actor.motion.position.z].join('/');
+  const key=[v.lightGateOpen,p.light.accepted,p.inspectionShutterOpen,p.bypassOpen,p.curtainAccepted,p.passageSealed,v.curtainOpenness,theatreProjectorStatus(runtime).key,actor.visible,actor.motion.position.x,actor.motion.position.z].join('/');
   if (cache?.key===key) return cache.world;
   const solids:CollisionVolume[]=[...THEATRE_STATIC_SOLIDS,
     B('theatre-light-gate',1.05,2.95,3.95,4.05,3.6*v.lightGateOpen,3.3+3.6*v.lightGateOpen,'door'),
@@ -34,8 +35,8 @@ export function getTheatreWorld(runtime:Pick<ChapterRuntime,'progress'|'theatre'
     B('theatre-bypass-gate',-5.58,-4.82,10.7,10.82,p.bypassOpen?3.6:0,p.bypassOpen?6.9:3.3,'door'),
     B('theatre-fire-curtain',THEATRE_CURTAIN.minX,THEATRE_CURTAIN.maxX,THEATRE_CURTAIN.z-THEATRE_CURTAIN.depth/2,THEATRE_CURTAIN.z+THEATRE_CURTAIN.depth/2,THEATRE_CURTAIN.height*v.curtainOpenness,THEATRE_CURTAIN.height*(1+v.curtainOpenness),'door')];
   if(actor.visible)solids.push(B('theatre-actor-body',actor.motion.position.x-.44,actor.motion.position.x+.44,actor.motion.position.z-.44,actor.motion.position.z+.44,0,2.22,'device',false));
-  const interactables=[theatreTarget('theatre-light','灯りを動かす',THEATRE_LIGHT_FIXTURE),theatreTarget('theatre-inspection','側面の点検窓を開く',THEATRE_INSPECTION_FIXTURE),theatreTarget('theatre-projector','映写機を回す',THEATRE_PROJECTOR_FIXTURE),theatreTarget('theatre-curtain','防火幕を下ろす',THEATRE_CURTAIN_FIXTURE)];
-  if(p.inspectionShutterOpen)interactables.push(theatreTarget('theatre-ames-side','部屋の構造を調べる',THEATRE_AMES_SIDE_FIXTURE),theatreTarget('theatre-bypass','保守通路の取っ手を開く',THEATRE_BYPASS_FIXTURE));
+  const interactables=[theatreTarget('theatre-light',theatreTargetLabel('theatre-light',runtime),THEATRE_LIGHT_FIXTURE),theatreTarget('theatre-inspection',theatreTargetLabel('theatre-inspection',runtime),THEATRE_INSPECTION_FIXTURE),theatreTarget('theatre-projector',theatreTargetLabel('theatre-projector',runtime),THEATRE_PROJECTOR_FIXTURE),theatreTarget('theatre-curtain',theatreTargetLabel('theatre-curtain',runtime),THEATRE_CURTAIN_FIXTURE)];
+  if(p.inspectionShutterOpen)interactables.push(theatreTarget('theatre-ames-side',theatreTargetLabel('theatre-ames-side',runtime),THEATRE_AMES_SIDE_FIXTURE),theatreTarget('theatre-bypass',theatreTargetLabel('theatre-bypass',runtime),THEATRE_BYPASS_FIXTURE));
   const world:WorldGeometry={ chapterId:THEATRE_CHAPTER_ID,variant:'entrance',floors:THEATRE_FLOORS,solids,interactables,colorPanels:[],keyObservationPose:THEATRE_SPAWN,keyFragments:[],keyFrame:{ center:{ x:0,y:0,z:0 },width:0,height:0,outline:[] } };
   cache={key,world};return world;
 }

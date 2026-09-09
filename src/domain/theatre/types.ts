@@ -19,7 +19,7 @@ export type TheatreDrag = {
 };
 export type TheatreTransient = {
   sessionId: string; lastSeq: number; lastNowMs: number; mode: 'explore' | 'light';
-  rail: number; activeDrag: TheatreDrag | null; actor: TheatreActor;
+  rail: number; lightDragCompleted: boolean; activeDrag: TheatreDrag | null; actor: TheatreActor;
   lastSafePose: PlayerPose; checkpointId: TheatreCheckpointId;
   lightGateOpen: number; curtainOpenness: number; curtainSeconds: number;
   projectorSeconds: number; projectorCooldown: number; projectorPulseSeconds: number;

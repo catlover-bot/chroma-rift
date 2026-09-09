@@ -1,5 +1,7 @@
 import { createNotebookComparisons, DiscoveryNotebook, type NotebookPreview } from './DiscoveryNotebook';
 import { TheatreNotebook } from './TheatreNotebook';
+import { theatreProjectorStatus } from '../domain/theatre/deviceStatus';
+import { worldForController } from '../rendering/firstPerson/controllerContext';
 import { TheatreDeviceHeading, TheatreDeviceControls, TheatreTouchLayer } from '../rendering/firstPerson/TheatreManipulation';
 import { theatreAction, theatreDeviceAcquisition, theatreDeviceScreenBounds } from '../rendering/firstPerson/theatreController';
 import { VaultNotebook } from './VaultNotebook';
@@ -118,6 +120,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const gallery = snapshot.runtime.gallery;
   const vault = snapshot.runtime.vault;
   const theatre = snapshot.runtime.theatre;
+  const projectorStatus = theatre ? theatreProjectorStatus(snapshot.runtime) : undefined;
   const independentChapter = !!gallery || !!vault || !!theatre;
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
   const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
@@ -265,11 +268,12 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   }, [controller]);
   useEffect(() => {
     if (!reader) return;
-    const message = paused ? '一時停止中。' : `${snapshot.acquisition && snapshot.acquisition.kind !== 'ready' ? snapshot.acquisition.message : snapshot.objective} ${snapshot.target ? `照準：${snapshot.target.label}。` : ''}${notice}`;
+    const theatreReason = snapshot.runtime.theatre && snapshot.cue.kind === 'locked' ? snapshot.cue.reason : undefined;
+    const message = paused ? '一時停止中。' : `${snapshot.acquisition && snapshot.acquisition.kind !== 'ready' ? snapshot.acquisition.message : theatreReason ?? snapshot.objective} ${snapshot.target ? `照準：${snapshot.target.label}。` : ''}${notice}`;
     if (message === lastAnnounced.current) return;
     lastAnnounced.current = message;
     AccessibilityInfo.announceForAccessibility(message);
-  }, [notice, paused, reader, snapshot.objective, snapshot.target, snapshot.acquisition]);
+  }, [notice, paused, reader, snapshot.objective, snapshot.target, snapshot.acquisition, snapshot.cue, snapshot.runtime.theatre]);
   useEffect(() => {
     if (failed.current || reviewOnly || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || (snapshot.runtime.gallery && snapshot.runtime.gallery.exitClosureSeconds > 0) || (snapshot.runtime.vault && snapshot.runtime.vault.exitClosureSeconds > 0) || completed.current) return;
     completed.current = true;
@@ -289,7 +293,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     onOnboardingChange?.({ ...onboardingRef.current, controlChoiceAcknowledged: true });
   };
   const examine = () => {
-    if (!mounted.current || failed.current || blocked || !snapshot.target || snapshot.acquisition && snapshot.acquisition.kind !== 'ready') return;
+    if (!mounted.current || failed.current || blocked || !snapshot.target || snapshot.acquisition && snapshot.acquisition.kind !== 'ready' || theatre && snapshot.cue.kind === 'locked') return;
     const previous = controller.runtime;
     const freshCue = controllerSnapshot(controller).cue;
     const changed = interactController(controller, snapshot.target.id);
@@ -370,7 +374,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const hint = hintForRuntime(snapshot.runtime);
   const cue = snapshot.cue;
   const acquisitionBlocked = !!snapshot.acquisition && snapshot.acquisition.kind !== 'ready';
-  const targetLabel = acquisitionBlocked ? snapshot.acquisition!.message : snapshot.target?.label ?? (cue.kind === 'approach' ? `${cue.target?.label}に、もう少し近づこう。` : cue.kind === 'aim' ? cue.target?.id === 'guide' && simple ? simpleGuideAimInstruction(snapshot.runtime.pose, cue.target.center) : `${cue.target?.label}に中央の照準を合わせよう。` : '近くの目印に中央の照準を合わせよう。');
+  const interactionBlocked = acquisitionBlocked || !!theatre && cue.kind === 'locked';
+  const targetLabel = acquisitionBlocked ? snapshot.acquisition!.message : theatre && cue.kind === 'locked' ? cue.reason ?? cue.target.label : snapshot.target?.label ?? (cue.kind === 'approach' ? `${cue.target?.label}に、もう少し近づこう。` : cue.kind === 'aim' ? cue.target?.id === 'guide' && simple ? simpleGuideAimInstruction(snapshot.runtime.pose, cue.target.center) : `${cue.target?.label}に中央の照準を合わせよう。` : '近くの目印に中央の照準を合わせよう。');
   const progress = snapshot.runtime.progress;
   const emblem = snapshot.runtime.emblem;
   const shortObjective = independentChapter ? snapshot.objective : progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
@@ -381,6 +386,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const openStructureNotes = () => { if (blocked || !structureNote) return; openNotes(); setNotebookSelection(structureNote); };
   const actionLabel = cue.actionLabel ?? '調べる';
   const contextLabel = acquisitionBlocked ? snapshot.acquisition!.message : cue.kind === 'approach' ? `${cue.target?.label} · 近づくと調べられます` : cue.kind === 'locked' ? cue.reason : snapshot.target?.label;
+  // A motor/noise-state readout survives the automatic return to exploration.
+  // It never claims that an enemy heard the emitter or changed its behavior.
+  const projectorReadout = !manipulating && projectorStatus && (projectorStatus.phase !== 'idle' || snapshot.target?.id === 'theatre-projector') ? projectorStatus.message : undefined;
   const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete;
   const moveSide = controls.handedness === 'right' ? '左' : '右';
   const lookSide = controls.handedness === 'right' ? '右' : '左';
@@ -445,7 +453,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const deviceControls = manipulating && theatre ? <TheatreDeviceControls controller={controller} enabled={!blocked} simple={simple} reader={reader} sessionKey={controlSessionKey} onChange={deviceChanged} /> : manipulating && vault ? <VaultDeviceControls controller={controller} enabled={!blocked} simple={simple} reader={reader} sessionKey={controlSessionKey} onChange={deviceChanged} /> : manipulating ? <GalleryDeviceControls controller={controller} enabled={!blocked} simple={simple} reader={reader} sessionKey={controlSessionKey} onChange={deviceChanged} /> : null;
   const accessibleDevices = reader && theatre && !manipulating ? <View style={styles.actions}>
     {(['light', 'projector'] as const).filter(device => snapshot.target?.id !== 'theatre-' + device && theatreDeviceAcquisition(controller, device).kind === 'ready').map(device => <GameButton key={device} sessionKey={controlSessionKey}
-      label={device === 'light' ? '灯りを動かす' : '映写機を回す'} disabled={blocked} onPress={() => { theatreAction(controller, { type: device === 'light' ? 'enter-light' : 'enter-projector' }, true); deviceChanged(); }} />)}
+      label={worldForController(controller).interactables.find(target => target.id === 'theatre-' + device)!.label} disabled={blocked} onPress={() => { theatreAction(controller, { type: device === 'light' ? 'enter-light' : 'enter-projector' }, true); deviceChanged(); }} />)}
   </View> : reader && vault && !manipulating ? <View style={styles.actions}>
     {(['length', 'rod'] as const).filter(puzzle => !!vaultPanelTarget(controller, puzzle)).map(puzzle => <GameButton key={puzzle} sessionKey={controlSessionKey}
       label={puzzle === 'length' ? '長さの留め金を動かす' : '鉛直の針を動かす'} disabled={blocked} onPress={() => { vaultAction(controller, { type: 'enter', puzzle }, true); deviceChanged(); }} />)}
@@ -460,7 +468,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     {compareAvailable ? <GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} /> : null}
     {canCloseExit ? <GameButton sessionKey={controlSessionKey} label="扉を閉める" disabled={blocked || !controller.matrices} onPress={closeExit} /> : null}
     {independentChapter && Object.values(progress.theatre?.discoveries ?? progress.vault?.discoveries ?? progress.gallery!.discoveries).some(Boolean) ? <GameButton sessionKey={controlSessionKey} label="発見メモ" disabled={blocked} onPress={openNotes} /> : null}
-    <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || acquisitionBlocked || !snapshot.target} testID="interact" />
+    <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || interactionBlocked || !snapshot.target} testID="interact" />
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
     <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
@@ -484,8 +492,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       {!manipulating ? <View testID="first-person-reticle" pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View> : null}
       {notice && !manipulating ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
       {!simple && !manipulating && renderMode === 'chapter' ? <>
-        {contextLabel ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}><Text style={styles.contextText}>{contextLabel}</Text></View> : null}
-        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : acquisitionBlocked || !snapshot.target)} testID="interact" /></View>
+        {contextLabel || projectorReadout ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}>
+          {contextLabel && contextLabel !== projectorReadout ? <Text style={styles.contextText}>{contextLabel}</Text> : null}
+          {projectorReadout ? <Text testID="theatre-projector-status" accessibilityLiveRegion="polite" style={styles.contextText}>{projectorReadout}</Text> : null}
+        </View> : null}
+        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : interactionBlocked || !snapshot.target)} testID="interact" /></View>
         {compareAvailable ? <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} testID="compare-colors" /></View> : null}
         {!compareAvailable && structureNote ? <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label="構造をメモで比べる" onPress={openStructureNotes} disabled={blocked} /></View> : null}
         {intro && !snapshot.tutorial.moved ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.movement.left, width: layout.movement.width, top: layout.movement.top }]}><Text style={styles.tutorialText}>{moveSide}側をドラッグして歩く</Text></View> : null}
@@ -498,7 +509,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
         {manipulating ? deviceControls : <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
       </View> : null}
       {independentChapter && simple && !manipulating && renderMode === 'chapter' ? <ScrollView style={[styles.bottom, { height: '45%', maxHeight: '45%' }]} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
-        <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleDevices}
+        <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>
+        {projectorReadout ? <Text testID="theatre-projector-status" accessibilityLiveRegion="polite" style={styles.contextText}>{projectorReadout}</Text> : null}
+        {simpleButtons}{actions}{accessibleDevices}
       </ScrollView> : null}
     </View>
     {!independentChapter && simple && compact && renderMode === 'chapter' ? <ScrollView style={styles.compactControls} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>

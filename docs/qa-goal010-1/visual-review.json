@@ -1,0 +1,196 @@
+{
+  "method": "Full images opened with view_image; before/after each15 final390 portrait views and final320 lamp scroll top/bottom. Additionally35timeordered decoded final clip frames per motion-review. No native iPhone operated, no real-time full-video playback or audio listening.",
+  "stills": [
+    {
+      "file": "stills/before/light-shadow-shadow-390.png",
+      "sha256": "8df25072f838a4c478c5fb6912c39c25f9a8d80e0f81233ee4ed35776ff546c4",
+      "bytes": 30916,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/light-shadow-shadow-390.png",
+      "sha256": "aaa34c53060444751facf2e1de91d0af8a43e9233d406b8d29dee3ae63429cd8",
+      "bytes": 39786,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/light-light-shadow-390.png",
+      "sha256": "9f6101af6b8c4dcff2be2451cd22e4985d2a9fc2a317cae4ebc118136a488ea2",
+      "bytes": 30683,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/light-light-shadow-390.png",
+      "sha256": "f02b368813819cf0624528c5741f6a2d5e1577e11f12cae767c3a661c8e93898",
+      "bytes": 39309,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/light-light-light-390.png",
+      "sha256": "c459e0f7a2e558174fdbe70bfc962990429d085544352379ad88cff357a4a6bc",
+      "bytes": 29458,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/light-light-light-390.png",
+      "sha256": "77260e886136d2d84e8bbd5b669d87e42a7d4b613be7436b0e792dd79b747d1d",
+      "bytes": 40225,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/light-solved-explore-390.png",
+      "sha256": "a174451200f96ce51dfb5b75cda801484596edfb615a4d5da90adce692e3545d",
+      "bytes": 30038,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/light-solved-explore-390.png",
+      "sha256": "2463e03cdf2c93e2775346ce9a3a386d1d1ba90fae4502db9d90baab0aa3122f",
+      "bytes": 36338,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/first-junction-390.png",
+      "sha256": "a77a2ede2f66b76c2c11d1ce982249d1091383c534bb963cfa3b64541ba6f1d9",
+      "bytes": 23591,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/first-junction-390.png",
+      "sha256": "ec1975b3a8948f5dd9b08ff41774e0bfeb5fce253d408ae22f5f0c3225a09fa8",
+      "bytes": 24803,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/shelf-edge-390.png",
+      "sha256": "ac99011bae1289ff1f54f24769c14ed0563f596f0464c2a1a22e10a1688c8fb8",
+      "bytes": 22549,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/shelf-edge-390.png",
+      "sha256": "4be3e9aed9f5973d062d1239092f633d11505f31ee319aaeb83fa471778f9258",
+      "bytes": 23850,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/control-room-entrance-390.png",
+      "sha256": "b486f22adec42a56caebbd4ed414f53c50beb5f5cb7455f0ce03852428db4502",
+      "bytes": 21724,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/control-room-entrance-390.png",
+      "sha256": "d9921683e6c9d6f11c31202d86092fcedd4e5195ed8b95bc087a3e2cebbf71b3",
+      "bytes": 22182,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/projector-unarmed-390.png",
+      "sha256": "0abf622187bda1e55b917317d3e3701e40669a8539062fb5337ad5fb4c83f1eb",
+      "bytes": 33311,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/projector-unarmed-390.png",
+      "sha256": "2c9b6e43706eae2cd4e386657e887f750e61da40737b3351658d95d32e97c451",
+      "bytes": 42636,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/projector-armed-390.png",
+      "sha256": "1f1c51d0fe5f559c6b948f687f4edaf7617e4ac0fa78d2252dea5f6aedc235ae",
+      "bytes": 31059,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/projector-armed-390.png",
+      "sha256": "e1c0422b828fc9b52761273ef74ff16d54306510afa0107d9521b1bf8bdf0a28",
+      "bytes": 26370,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/projector-running-390.png",
+      "sha256": "bf8bd749d7f86963bc2fba02d9a452bff76ac7e3d1f4aa0e8c0b3ef55f53f9ff",
+      "bytes": 37228,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/projector-running-390.png",
+      "sha256": "67a04929914dc1c6470fb38b29f4fd854dd107da7bd7bec4f466fca028944ef4",
+      "bytes": 40834,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/projector-cooldown-390.png",
+      "sha256": "17777fe3bcc3393a29827ee7bcca0e488334ba5e37f70a9fffa2b69c741d1464",
+      "bytes": 37234,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/projector-cooldown-390.png",
+      "sha256": "81379291d032492b59362baef09c0206e7e29b53b94110d542b1ee1b00e8de87",
+      "bytes": 35323,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/maintenance-closed-390.png",
+      "sha256": "2fb9a06d06f892b41e6e4cafc298f2bffd06ca712a80e5d2a9b09e4ae86218fd",
+      "bytes": 29633,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/maintenance-closed-390.png",
+      "sha256": "94afb3588704d1bc730a9b85ff7a8ddb2ad14dd57bed4f36f1c487a706cb47d8",
+      "bytes": 29147,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/maintenance-open-390.png",
+      "sha256": "dd793ed6331c315eae4da28cb54b118032522b4a93eb3fb498626c856cce17e5",
+      "bytes": 33592,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/maintenance-open-390.png",
+      "sha256": "9b58f4cf56d658194793721a1b92005d58b21eab902562449cad297f120ad192",
+      "bytes": 37605,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/curtain-closed-390.png",
+      "sha256": "13f7bbf84b5d226ff6807ce131e6a24b8b1125bd1824602242fa529502d4ca0b",
+      "bytes": 30930,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/curtain-closed-390.png",
+      "sha256": "7b57e0da6958b159b4d3ea57998c65cd72a2f6a2fc20f9585677513d6fffaffd",
+      "bytes": 33164,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/before/theatre-result-390.png",
+      "sha256": "ce9b8483026810611bacd44c31b872f6d566ba442cc89ae6333eb1fc38335261",
+      "bytes": 83972,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/theatre-result-390.png",
+      "sha256": "ce9b8483026810611bacd44c31b872f6d566ba442cc89ae6333eb1fc38335261",
+      "bytes": 83972,
+      "method": "Actually opened full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/light-shadow-shadow-320.png",
+      "sha256": "950eccf09354b783efef565924d244b2b8ac15199a255ca63f87172151708509",
+      "method": "Actually opened final full portrait image with view_image"
+    },
+    {
+      "file": "stills/after/light-shadow-shadow-320-bottom.png",
+      "sha256": "d8662580e2a65e9471b6314278f1ca43158ce5bb6ce15cd77231b8172fa40ef3",
+      "method": "Actually opened final full portrait image with view_image"
+    }
+  ],
+  "decodedFrameCountActuallyOpened": 35
+}

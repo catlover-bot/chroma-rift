@@ -9,3 +9,5 @@ export * from './world';
 export * from './checkpoint';
 export * from './selectors';
 export * from './actor';
+
+export * from './deviceStatus';

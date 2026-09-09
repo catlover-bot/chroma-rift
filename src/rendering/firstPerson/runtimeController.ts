@@ -3,8 +3,8 @@ import { controllerCanInteract, syncCamera, worldForController } from './control
 import { soundForControllerTransition } from './controllerTransitionAudio';
 import { cancelTheatreManipulation } from '../../domain/theatre/state';
 import { THEATRE_CURTAIN_FIXTURE, THEATRE_PROJECTOR } from '../../domain/theatre/definition';
-import { evaluateLight } from '../../domain/theatre/lightGate';
-import { theatreAction, theatreDeviceAcquisition, advanceTheatreControllerActor } from './theatreController';
+import { theatreLightStatus, theatreProjectorStatus } from '../../domain/theatre/deviceStatus';
+import { theatreAction, theatreDeviceAcquisition, theatreCurtainAcquisition, advanceTheatreControllerActor } from './theatreController';
 import { advanceVaultActor } from '../../domain/vault/actor';
 import { cancelVaultManipulation } from '../../domain/vault/state';
 import { VAULT_EXIT_FIXTURE, VAULT_METAL_FLOORS } from '../../domain/vault/definition';
@@ -185,7 +185,7 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   const target = cue.kind === 'ready' || cue.kind === 'locked' ? cue.target : undefined;
   const candidate = cue.target?.id;
   const acquisition = candidate === 'vault-length' || candidate === 'vault-rod' ? vaultDeviceAcquisition(controller, candidate === 'vault-length' ? 'length' : 'rod')
-    : candidate === 'shadow-panel' || candidate === 'contour-panel' || candidate === 'wiring-panel' ? galleryDeviceAcquisition(controller, candidate === 'shadow-panel' ? 'shadow' : candidate === 'contour-panel' ? 'contour' : 'wiring') : candidate === 'theatre-light' || candidate === 'theatre-projector' ? theatreDeviceAcquisition(controller, candidate === 'theatre-light' ? 'light' : 'projector') : undefined;
+    : candidate === 'shadow-panel' || candidate === 'contour-panel' || candidate === 'wiring-panel' ? galleryDeviceAcquisition(controller, candidate === 'shadow-panel' ? 'shadow' : candidate === 'contour-panel' ? 'contour' : 'wiring') : candidate === 'theatre-light' || candidate === 'theatre-projector' ? theatreDeviceAcquisition(controller, candidate === 'theatre-light' ? 'light' : 'projector') : candidate === 'theatre-curtain' ? theatreCurtainAcquisition(controller) : undefined;
   const tutorial = controller.tutorial.milestones;
   const directions = ['北', '北西', '西', '南西', '南', '南東', '東', '北東'];
   const direction = directions[(Math.round(controller.runtime.pose.yaw / (Math.PI / 4)) + 8) % 8]!;
@@ -198,8 +198,10 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   const gallery = controller.runtime.gallery;
   const galleryKey = gallery ? [canCloseGalleryExit(controller.runtime), JSON.stringify(gallery.lastSafePose), gallery.mode, gallery.exitClosureSeconds > 0, gallery.shadowCompare, gallery.contourGuide, gallery.activeDrag?.pointerId ?? '', gallery.feedback?.sequence ?? 0, contourAlignedCount(controller.runtime.progress.gallery!.contour.seed, gallery.contourAngles)].join(':') : '';
   const theatre = controller.runtime.theatre;
+  const lightStatus = theatre ? theatreLightStatus(controller.runtime) : undefined;
   const theatreKey = theatre ? [theatre.mode, theatre.projectorArmed, theatre.checkpointId, theatre.activeDrag?.pointerId ?? '', theatre.feedback?.sequence ?? 0,
-    theatre.projectorSeconds > 0, theatre.projectorCooldown > 0, ...evaluateLight(theatre.rail).windows.map(w => w.lit)].join(':') : '';
+    theatreProjectorStatus(controller.runtime).key, lightStatus!.released, lightStatus!.canCommit, lightStatus!.showDragCue,
+    ...lightStatus!.windows.map(w => w.lit)].join(':') : '';
   const key = `${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${vaultKey}|${theatreKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
   return { ...(acquisition ? { acquisition } : {}), ...(controller.actorNotice ? { actorNotice: controller.actorNotice } : {}), runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }

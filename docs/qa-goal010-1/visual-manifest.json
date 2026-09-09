@@ -1,0 +1,290 @@
+{
+  "scope": "Only this bounded visual/warning/video metadata package; parent Part A/final validation files and README are excluded. Original personal video, its extracted images, raw scene/host/frame JSON and raw rendered frames remain ignored local artifacts.",
+  "files": [
+    {
+      "file": "clips/chapter-reentry.mp4",
+      "bytes": 730442,
+      "sha256": "d1a32d3f4c549927617cb03e765da065f1dc70e98c29bec4661df11938f46b44"
+    },
+    {
+      "file": "clips/light-operation.mp4",
+      "bytes": 187531,
+      "sha256": "373b9fc8b133bd1496cda502aa6873e2a8544f88e0a36a6501c28e4d78c5ba5b"
+    },
+    {
+      "file": "clips/maintenance.mp4",
+      "bytes": 36038,
+      "sha256": "3c09ad7ffb393c0c7591eb099fe61239b70287f542d7fcb8f5719f7e7dd73849"
+    },
+    {
+      "file": "clips/projector-control.mp4",
+      "bytes": 113963,
+      "sha256": "23439a69298b38e277c5f91d0c44e9c4ade2abbd11aa53820a653de3fe9c3692"
+    },
+    {
+      "file": "clips/projector.mp4",
+      "bytes": 107155,
+      "sha256": "e6c74a55a2272bba969e602448ee19c37b1ba9fad4e1aa5ac44f5a14cf750585"
+    },
+    {
+      "file": "motion-review.json",
+      "bytes": 29329,
+      "sha256": "231732a6ee0fea7850c2e4f089553a519e68f11f65035e534042a4a2568cb63b"
+    },
+    {
+      "file": "review/chapter-reentry-006900.png",
+      "bytes": 86047,
+      "sha256": "fd445e875ca9989e98a808d2e27cafaf466730afd9908dc2b6d4a8208b5d6e32"
+    },
+    {
+      "file": "review/chapter-reentry-015400.png",
+      "bytes": 72371,
+      "sha256": "2c137cca1901e261e195fb9d6ea783d4cfa0c681377922ec3e235508e84741b8"
+    },
+    {
+      "file": "review/light-006000.png",
+      "bytes": 77129,
+      "sha256": "1052f23b1c169f8384ea6f830cee6cb1883ba43de475ae3c6d2196fe093244a2"
+    },
+    {
+      "file": "review/light-013500.png",
+      "bytes": 83530,
+      "sha256": "7eb2704301343262f48c30c9ee3d87045ff96fb943a1536a36f8147c563dbf02"
+    },
+    {
+      "file": "review/light-014500.png",
+      "bytes": 79233,
+      "sha256": "de1216af9d6a6adf6cf445cbc54542405dbc2cb922cb6275b7f1fea7a1f9e189"
+    },
+    {
+      "file": "review/light-016000.png",
+      "bytes": 95037,
+      "sha256": "f0b9bbfd67d37d756926ed7367f4e083d638e0ff791e7f544e801f93a646609b"
+    },
+    {
+      "file": "review/maintenance-000000.png",
+      "bytes": 63434,
+      "sha256": "f6df0dd9f0022e82c73d3334d69dbe96fc0ebc8e8c0e4dd33a1bc0750769bd64"
+    },
+    {
+      "file": "review/maintenance-001050.png",
+      "bytes": 100452,
+      "sha256": "fa97cc5a5fc1c06d37e194a7c3c3c8a3f1c63768edb74667417b3c7e90b9a616"
+    },
+    {
+      "file": "review/projector-000500.png",
+      "bytes": 109355,
+      "sha256": "a29b851af5e5276955db04d74b7ea729006b1ba24a18d44004e7885a83a9f7fa"
+    },
+    {
+      "file": "review/projector-002200.png",
+      "bytes": 82775,
+      "sha256": "08330ef398781307f9352d79b38c5256590859bd8046fe3e012f4b8f7cfddee0"
+    },
+    {
+      "file": "review/projector-005500.png",
+      "bytes": 54480,
+      "sha256": "da4d7fc0e77baccf4be633cc1650abed1259e66b17369a0c5f9d5749f23a5a1f"
+    },
+    {
+      "file": "review/projector-control-002200.png",
+      "bytes": 63170,
+      "sha256": "8f91ef16b87ad3ebbdcfeb5039b166099b6ee7844ea8f8ca5c76cd9cb8990b77"
+    },
+    {
+      "file": "stills/after/control-room-entrance-390.png",
+      "bytes": 22182,
+      "sha256": "d9921683e6c9d6f11c31202d86092fcedd4e5195ed8b95bc087a3e2cebbf71b3"
+    },
+    {
+      "file": "stills/after/curtain-closed-390.png",
+      "bytes": 33164,
+      "sha256": "7b57e0da6958b159b4d3ea57998c65cd72a2f6a2fc20f9585677513d6fffaffd"
+    },
+    {
+      "file": "stills/after/first-junction-390.png",
+      "bytes": 24803,
+      "sha256": "ec1975b3a8948f5dd9b08ff41774e0bfeb5fce253d408ae22f5f0c3225a09fa8"
+    },
+    {
+      "file": "stills/after/light-light-light-320-bottom.png",
+      "bytes": 24171,
+      "sha256": "4d8dffc16102a67cf538431e4dd63a33a395d4501987b361fefdd416868fccb5"
+    },
+    {
+      "file": "stills/after/light-light-light-320.png",
+      "bytes": 27192,
+      "sha256": "dfe0ac7a7e1d591d155933238f55f62048359df6bc5bf6eb72c8fd3b85ab2bcc"
+    },
+    {
+      "file": "stills/after/light-light-light-390.png",
+      "bytes": 40225,
+      "sha256": "77260e886136d2d84e8bbd5b669d87e42a7d4b613be7436b0e792dd79b747d1d"
+    },
+    {
+      "file": "stills/after/light-light-shadow-390.png",
+      "bytes": 39309,
+      "sha256": "f02b368813819cf0624528c5741f6a2d5e1577e11f12cae767c3a661c8e93898"
+    },
+    {
+      "file": "stills/after/light-shadow-shadow-320-bottom.png",
+      "bytes": 24231,
+      "sha256": "d8662580e2a65e9471b6314278f1ca43158ce5bb6ce15cd77231b8172fa40ef3"
+    },
+    {
+      "file": "stills/after/light-shadow-shadow-320.png",
+      "bytes": 27296,
+      "sha256": "950eccf09354b783efef565924d244b2b8ac15199a255ca63f87172151708509"
+    },
+    {
+      "file": "stills/after/light-shadow-shadow-390.png",
+      "bytes": 39786,
+      "sha256": "aaa34c53060444751facf2e1de91d0af8a43e9233d406b8d29dee3ae63429cd8"
+    },
+    {
+      "file": "stills/after/light-solved-explore-390.png",
+      "bytes": 36338,
+      "sha256": "2463e03cdf2c93e2775346ce9a3a386d1d1ba90fae4502db9d90baab0aa3122f"
+    },
+    {
+      "file": "stills/after/maintenance-closed-390.png",
+      "bytes": 29147,
+      "sha256": "94afb3588704d1bc730a9b85ff7a8ddb2ad14dd57bed4f36f1c487a706cb47d8"
+    },
+    {
+      "file": "stills/after/maintenance-open-390.png",
+      "bytes": 37605,
+      "sha256": "9b58f4cf56d658194793721a1b92005d58b21eab902562449cad297f120ad192"
+    },
+    {
+      "file": "stills/after/projector-armed-390.png",
+      "bytes": 26370,
+      "sha256": "e1c0422b828fc9b52761273ef74ff16d54306510afa0107d9521b1bf8bdf0a28"
+    },
+    {
+      "file": "stills/after/projector-cooldown-390.png",
+      "bytes": 35323,
+      "sha256": "81379291d032492b59362baef09c0206e7e29b53b94110d542b1ee1b00e8de87"
+    },
+    {
+      "file": "stills/after/projector-running-390.png",
+      "bytes": 40834,
+      "sha256": "67a04929914dc1c6470fb38b29f4fd854dd107da7bd7bec4f466fca028944ef4"
+    },
+    {
+      "file": "stills/after/projector-unarmed-390.png",
+      "bytes": 42636,
+      "sha256": "2c9b6e43706eae2cd4e386657e887f750e61da40737b3351658d95d32e97c451"
+    },
+    {
+      "file": "stills/after/shelf-edge-390.png",
+      "bytes": 23850,
+      "sha256": "4be3e9aed9f5973d062d1239092f633d11505f31ee319aaeb83fa471778f9258"
+    },
+    {
+      "file": "stills/after/theatre-result-390.png",
+      "bytes": 83972,
+      "sha256": "ce9b8483026810611bacd44c31b872f6d566ba442cc89ae6333eb1fc38335261"
+    },
+    {
+      "file": "stills/before/control-room-entrance-390.png",
+      "bytes": 21724,
+      "sha256": "b486f22adec42a56caebbd4ed414f53c50beb5f5cb7455f0ce03852428db4502"
+    },
+    {
+      "file": "stills/before/curtain-closed-390.png",
+      "bytes": 30930,
+      "sha256": "13f7bbf84b5d226ff6807ce131e6a24b8b1125bd1824602242fa529502d4ca0b"
+    },
+    {
+      "file": "stills/before/first-junction-390.png",
+      "bytes": 23591,
+      "sha256": "a77a2ede2f66b76c2c11d1ce982249d1091383c534bb963cfa3b64541ba6f1d9"
+    },
+    {
+      "file": "stills/before/light-light-light-390.png",
+      "bytes": 29458,
+      "sha256": "c459e0f7a2e558174fdbe70bfc962990429d085544352379ad88cff357a4a6bc"
+    },
+    {
+      "file": "stills/before/light-light-shadow-390.png",
+      "bytes": 30683,
+      "sha256": "9f6101af6b8c4dcff2be2451cd22e4985d2a9fc2a317cae4ebc118136a488ea2"
+    },
+    {
+      "file": "stills/before/light-shadow-shadow-390.png",
+      "bytes": 30916,
+      "sha256": "8df25072f838a4c478c5fb6912c39c25f9a8d80e0f81233ee4ed35776ff546c4"
+    },
+    {
+      "file": "stills/before/light-solved-explore-390.png",
+      "bytes": 30038,
+      "sha256": "a174451200f96ce51dfb5b75cda801484596edfb615a4d5da90adce692e3545d"
+    },
+    {
+      "file": "stills/before/maintenance-closed-390.png",
+      "bytes": 29633,
+      "sha256": "2fb9a06d06f892b41e6e4cafc298f2bffd06ca712a80e5d2a9b09e4ae86218fd"
+    },
+    {
+      "file": "stills/before/maintenance-open-390.png",
+      "bytes": 33592,
+      "sha256": "dd793ed6331c315eae4da28cb54b118032522b4a93eb3fb498626c856cce17e5"
+    },
+    {
+      "file": "stills/before/projector-armed-390.png",
+      "bytes": 31059,
+      "sha256": "1f1c51d0fe5f559c6b948f687f4edaf7617e4ac0fa78d2252dea5f6aedc235ae"
+    },
+    {
+      "file": "stills/before/projector-cooldown-390.png",
+      "bytes": 37234,
+      "sha256": "17777fe3bcc3393a29827ee7bcca0e488334ba5e37f70a9fffa2b69c741d1464"
+    },
+    {
+      "file": "stills/before/projector-running-390.png",
+      "bytes": 37228,
+      "sha256": "bf8bd749d7f86963bc2fba02d9a452bff76ac7e3d1f4aa0e8c0b3ef55f53f9ff"
+    },
+    {
+      "file": "stills/before/projector-unarmed-390.png",
+      "bytes": 33311,
+      "sha256": "0abf622187bda1e55b917317d3e3701e40669a8539062fb5337ad5fb4c83f1eb"
+    },
+    {
+      "file": "stills/before/shelf-edge-390.png",
+      "bytes": 22549,
+      "sha256": "ac99011bae1289ff1f54f24769c14ed0563f596f0464c2a1a22e10a1688c8fb8"
+    },
+    {
+      "file": "stills/before/theatre-result-390.png",
+      "bytes": 83972,
+      "sha256": "ce9b8483026810611bacd44c31b872f6d566ba442cc89ae6333eb1fc38335261"
+    },
+    {
+      "file": "video-review.json",
+      "bytes": 4015,
+      "sha256": "7fa66e3dcf77a01d354a6c16d3284050693b34bd35bd60f19088c51d9fd59f53"
+    },
+    {
+      "file": "visual-comparison.json",
+      "bytes": 203639,
+      "sha256": "b3abb3a7f95a9c2028312fa80250e3183ca96e6e83da0e74acb1aee650d56e4d"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 8165,
+      "sha256": "076942554ddcd46cf9a06fde12031e360563b7ab66c0d0adf5a4815861ae79c2"
+    },
+    {
+      "file": "visual-source-hashes.json",
+      "bytes": 110491,
+      "sha256": "58f346c2c9fb910d4b84392979bb79f4d8151ce9a3444ba0964330a67d91e28a"
+    },
+    {
+      "file": "warning-audit.json",
+      "bytes": 27485,
+      "sha256": "bcb63138b39e4dc6cbecd1054de32b6b2039bea0cf3014ec52449485d780c869"
+    }
+  ]
+}

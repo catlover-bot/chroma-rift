@@ -1,0 +1,394 @@
+{
+  "baselineCommit": "bafd563f18b0e97c60cb1ffdcab1c6138c8dc8a3",
+  "partACommit": "5e33c7c5118e88d53c315ca5f57026e14106733a",
+  "branch": "fix/goal-010-1-stage-boundaries",
+  "baselineTests": {
+    "suites": 87,
+    "tests": 987
+  },
+  "partATests": {
+    "suites": 89,
+    "tests": 1022
+  },
+  "finalTests": {
+    "suites": 90,
+    "tests": 1036,
+    "seconds": 173.82,
+    "addedSinceBaseline": 49,
+    "existingAssertionsChanged": "four commit-button text lookups; behavior/release/save/not-auto-clear assertions retained"
+  },
+  "commands": {
+    "final-frozen-check": 0,
+    "final-dev-export": 0,
+    "final-prod-export": 0,
+    "final-dev-three": 0,
+    "final-prod-three": 0,
+    "final-dev-sources": 0,
+    "final-prod-sources": 0,
+    "metro-stage-entry-final": 0,
+    "runtime-cycles-final": 0,
+    "final-doctor": 1,
+    "final-dependencies": 1,
+    "final-npm-ls": 0,
+    "final-repo-lint": 0,
+    "git-diff-check": 0,
+    "git-staged-diff-check": 0
+  },
+  "combinedCheckIncludes": [
+    "lint",
+    "typecheck",
+    "full Jest",
+    "iOS export"
+  ],
+  "combinedCheckLogSha256": "1aa52ea857d121d18be70460c4042d0d7611636b4b098caf48a46240bd6c0010",
+  "frozenInputVerification": {
+    "files": 281,
+    "changed": [],
+    "ok": true
+  },
+  "runtimeGraph": [
+    {
+      "platform": "ios",
+      "counts": {
+        "production": 179,
+        "runtimeEdges": 523,
+        "assets": 12,
+        "externalEdges": 120,
+        "erasedEdges": 312
+      },
+      "sccs": 0,
+      "errors": 0,
+      "appReachable": 174,
+      "directReachable": 74
+    },
+    {
+      "platform": "android",
+      "counts": {
+        "production": 179,
+        "runtimeEdges": 523,
+        "assets": 12,
+        "externalEdges": 120,
+        "erasedEdges": 312
+      },
+      "sccs": 0,
+      "errors": 0,
+      "appReachable": 174,
+      "directReachable": 74
+    },
+    {
+      "platform": "neutral",
+      "counts": {
+        "production": 179,
+        "runtimeEdges": 523,
+        "assets": 12,
+        "externalEdges": 120,
+        "erasedEdges": 312
+      },
+      "sccs": 0,
+      "errors": 0,
+      "appReachable": 174,
+      "directReachable": 74
+    }
+  ],
+  "metroDevelopmentExecution": {
+    "registeredModules": 1673,
+    "firstPartyCycles": 0,
+    "entryOrders": 6,
+    "allPassed": true,
+    "scope": "Actual emitted iOS development Metro loader/factories executed in isolated Node VM registries; domain/controller entries only. No RN App mount, native GL, audio bridge, or physical iPhone startup."
+  },
+  "bundles": {
+    "dev": {
+      "sameClassIdentity": true,
+      "threeSources": [
+        "node_modules/three/build/three.cjs"
+      ],
+      "firstPartySourceCount": 174,
+      "sourceCorrespondence": true,
+      "bundleSha256": "4ccdf0d824de6fdfac2e43eeafc32e9508db401fa56bcf84e55d91eb58ce521e"
+    },
+    "prod": {
+      "sameClassIdentity": true,
+      "threeSources": [
+        "/node_modules/three/build/three.cjs"
+      ],
+      "firstPartySourceCount": 174,
+      "sourceCorrespondence": true,
+      "bundleSha256": "55672331998580f68b3279a6efd2b025e5c94fa5380bb850fce3ea8ec4b141f4"
+    }
+  },
+  "hermesBundle": "index-afdb20930ebb8cacb3b0c92cc1b55bc2.hbc",
+  "doctor": {
+    "passed": 20,
+    "total": 21,
+    "advisory": "expo 57.0.20 expected ~57.0.21; no upgrade or exclusion"
+  },
+  "protectedFiles": {
+    "package.json": {
+      "sha256": "7fac2bab3799f977a27195894dd1a1cab8addb93e0eda0584ad8aa0e43012296",
+      "unchanged": true
+    },
+    "package-lock.json": {
+      "sha256": "559864399dab7b55cb7a01d9e22ea08630e7c389d61624a031ba56588b0e26ff",
+      "unchanged": true
+    },
+    "app.json": {
+      "sha256": "a54fe526c605a25af69ff8f7dc2db43a25ab623004aa3119e74d7910b8837744",
+      "unchanged": true
+    },
+    "eas.json": {
+      "sha256": "8964d8f8aa6ecdf34b6ed01683c2cf88b5fa7b0d80db16c9a9bdbc9e6e8153c0",
+      "unchanged": true
+    },
+    "metro.config.js": {
+      "sha256": "125af6c4ee15a27739bd4b982253d1859f7663f850f9795d3f7738ff1a243185",
+      "unchanged": true
+    },
+    "metro/withNativeThree.js": {
+      "sha256": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "unchanged": true
+    }
+  },
+  "historyAssetsIntegrity": {
+    "baselineCommit": "bafd563f18b0e97c60cb1ffdcab1c6138c8dc8a3",
+    "partACommit": "5e33c7c5118e88d53c315ca5f57026e14106733a",
+    "ancestors": {
+      "04e481e": true,
+      "d1f7b55": true,
+      "aa8ff20": true,
+      "7be6d39": true,
+      "bafd563f18b0e97c60cb1ffdcab1c6138c8dc8a3": true,
+      "5e33c7c": true
+    },
+    "unchangedPaths": {
+      "assets/audio/ambience.wav": {
+        "sha256": "50406f566d9f94c46f45bfc038e43a0eed48eb4cad2c83e554b4382b53f4e847",
+        "matchesBaseline": true
+      },
+      "assets/audio/analysis.json": {
+        "sha256": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17",
+        "matchesBaseline": true
+      },
+      "assets/audio/cloth.wav": {
+        "sha256": "9ca8d101577af92b6fa2be1dea6b989a475a0a1a3e911f1607454e49df71b0cb",
+        "matchesBaseline": true
+      },
+      "assets/audio/door-impact.wav": {
+        "sha256": "ad517be84d5b421691f9b41fb0eb43e4efe82fc3b3eff3315a35371236a06c77",
+        "matchesBaseline": true
+      },
+      "assets/audio/footstep.wav": {
+        "sha256": "ec4366dcddfe8800292b57917ac129d68b1f0f0f029be4c9fafc9a68328cec87",
+        "matchesBaseline": true
+      },
+      "assets/audio/interaction.wav": {
+        "sha256": "477a1ce825fdf4bd9d6a4dbe9b98184ba29084e3027853ffefbfc54ed57db149",
+        "matchesBaseline": true
+      },
+      "assets/audio/mechanism.wav": {
+        "sha256": "38a08a0805920e63f3a0408597b8d4e15178826841b789fcb8d4bd2e13249db2",
+        "matchesBaseline": true
+      },
+      "assets/audio/perceptual-analysis.json": {
+        "sha256": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c",
+        "matchesBaseline": true
+      },
+      "assets/audio/shepard.wav": {
+        "sha256": "bfc15c3aaaafc00a9b9856cbc79ed75d4c94ca1d409ba55ee5aaf5fc391281b2",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hollow-mask.json": {
+        "sha256": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hybrid-composite.png": {
+        "sha256": "22ba6c8b7eb68c52843fa6f07c26d4063f758c390c563ebf4f85498cf9082ffa",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hybrid-high-pass.png": {
+        "sha256": "0e248f74cd51f8b48e2a607bc4bbbc15d7890706f55a8a6dc2b7033223eb1df1",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hybrid-low-pass.png": {
+        "sha256": "80ad4bc90e4fd61caac8ea584c71444766bf5f7288f4ccfc6df6e115e482d2ca",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hybrid-source-high.png": {
+        "sha256": "c6e309d19ec06d58c69ff0c3e069f1dba786038a88c6ce378fe592fde43b5e7b",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hybrid-source-low.png": {
+        "sha256": "e14d41a15a79dde142e73bfd4e6c773c42f6e3740e4141e87d5e5c036e7bbd1b",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/hybrid-texture.json": {
+        "sha256": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/manifest.json": {
+        "sha256": "e69988a3798ff5f4b1b9609cdbb9373ad6311c22a359d24a4d8bc01265fcfa8a",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/source/acquisition.json": {
+        "sha256": "c9bb915b7690783850647e8c46f1b7deb9b68f0665fc638a9794e41d8d1653fd",
+        "matchesBaseline": true
+      },
+      "assets/perceptual/source/hollow-face-original.stl": {
+        "sha256": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75",
+        "matchesBaseline": true
+      },
+      "src/audio/__tests__/assets.test.ts": {
+        "sha256": "6ea5416ccbd1cdf1adb5723347be26875619327c576ea9aa7af649d14e946352",
+        "matchesBaseline": true
+      },
+      "src/audio/__tests__/nativeBackend.test.ts": {
+        "sha256": "e1178a7f476196b1f2deebbc89190db8c440a13e48e2ba64acafdcf828c3bab1",
+        "matchesBaseline": true
+      },
+      "src/audio/__tests__/owner.test.ts": {
+        "sha256": "28946b8dd9380e0d804140d4427507f46419c063d640f4b64dd7109d3eb8a93d",
+        "matchesBaseline": true
+      },
+      "src/audio/__tests__/perceptualAssets.test.ts": {
+        "sha256": "6ae307adfd9e2547c34852203c1a9c19f064c3bfed86d21ccdf12bb74bcf5bc2",
+        "matchesBaseline": true
+      },
+      "src/audio/index.ts": {
+        "sha256": "ef441affd95b575c237e9a520fba9dc629ec9875d037a5ca9796cd5991ebbb6e",
+        "matchesBaseline": true
+      },
+      "src/audio/nativeBackend.ts": {
+        "sha256": "f9f0e4e061236eca5a44f700d5b560e441ba7d776af6e695c806d225ecdd9ae3",
+        "matchesBaseline": true
+      },
+      "src/audio/owner.ts": {
+        "sha256": "feac46aa662cea319c1e6e2e03645eb8592113c0efa33678a6acebadc88dd5f7",
+        "matchesBaseline": true
+      },
+      "src/audio/preferences.ts": {
+        "sha256": "8bedaeb15741e7b919def034abb6ee06950726e9a4d7c7f8d4759c94b6197f4e",
+        "matchesBaseline": true
+      },
+      "src/audio/sources.ts": {
+        "sha256": "bed9518219a31553b15b920a1c0dbc3bd62a8ae362f3650ec1903a0e6c3305c6",
+        "matchesBaseline": true
+      },
+      "src/audio/types.ts": {
+        "sha256": "35cff2639f0da96a5ac9625a8078328efe1d09fe2d717002db3b86d4d72db555",
+        "matchesBaseline": true
+      },
+      "src/domain/actorMotion/config.ts": {
+        "sha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+        "matchesBaseline": true
+      },
+      "src/domain/theatre/definition.ts": {
+        "sha256": "920eaa717f54e146aeb5d99d8b246550adc57a26020cc0b44aa8c217efdc265f",
+        "matchesBaseline": true
+      },
+      "src/domain/theatre/lightGate.ts": {
+        "sha256": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+        "matchesBaseline": true
+      },
+      "src/domain/theatre/perspectiveExhibit.ts": {
+        "sha256": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+        "matchesBaseline": true
+      },
+      "src/domain/theatre/projection.ts": {
+        "sha256": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+        "matchesBaseline": true
+      },
+      "docs/ASSET-PROVENANCE.md": {
+        "sha256": "ca30124df35fd6770535e7753090b471f13d98e9269862497bce2c0c5e8cc924",
+        "matchesBaseline": true
+      },
+      "docs/ILLUSION-SOURCES.md": {
+        "sha256": "ca9b48fbd0bf77a8e09cf6232fb3608048189893c6f6625a167d922959701e59",
+        "matchesBaseline": true
+      }
+    },
+    "allMatch": true,
+    "files": 36
+  },
+  "nativeDeviceStartup": "Not performed: no physical iPhone/native execution access. Node VM actual Metro module execution and software WebGL QA are separate evidence.",
+  "nativeRebuildAssessment": "No native dependency/config/API changes; existing expo-gl + expo-audio development build assumed.",
+  "forbiddenOperations": "No push/PR/EAS build/auth/signing/submission/reset/clean/amend/stash; local commits only.",
+  "qaSourceVerification": {
+    "before-stills": {
+      "files": 106,
+      "matches": true,
+      "mismatches": []
+    },
+    "after-stills": {
+      "files": 116,
+      "matches": true,
+      "mismatches": []
+    },
+    "light-clip": {
+      "files": 114,
+      "matches": true,
+      "mismatches": []
+    },
+    "maintenance-clip": {
+      "files": 114,
+      "matches": true,
+      "mismatches": []
+    },
+    "projector-clip": {
+      "files": 114,
+      "matches": true,
+      "mismatches": []
+    },
+    "projector-control-clip": {
+      "files": 114,
+      "matches": true,
+      "mismatches": []
+    },
+    "chapter-reentry-clip": {
+      "files": 159,
+      "matches": true,
+      "mismatches": []
+    },
+    "baseline-warning-resources": {
+      "files": 62,
+      "matches": true,
+      "mismatches": []
+    },
+    "final-warning-resources": {
+      "files": 53,
+      "matches": true,
+      "mismatches": []
+    }
+  },
+  "qaArtifacts": {
+    "verifiedManifestEntries": 57,
+    "mismatches": 0,
+    "disallowedPersonalPaths": 0,
+    "stillsPerRevision": 45,
+    "samePoseAndSemanticState": 45,
+    "encodedClips": 5,
+    "encodedSeconds": 59,
+    "encodedFrames": 1770,
+    "openedDecodedFrameSamples": 35,
+    "continuousRealTimePlayback": false
+  },
+  "qaToolPostCaptureFormatting": {
+    "scripts/preview-chapter-reentry.cjs": {
+      "capturedSha256": "55eb53931c55baebf4d8691aa4e228ee1531ffca2a6854f20d4cabdfc1dc362d",
+      "finalSha256": "75db0c409ee7aac1d6644bfcd55053d1e6b440e73c8beaa3ce74591f43ebddc5",
+      "astIdentical": true,
+      "change": "Removed only redundant blank line at EOF; executable AST unchanged"
+    },
+    "scripts/preview-theatre-readability.cjs": {
+      "capturedSha256": "73b82821d3a259590bb77eca943973d1d9b4ffd43da213a26fb06210d7d161a5",
+      "finalSha256": "13c3b69f7a0082bf22940d47ab265bfd222c0621451dc7ab13bc09fdc874dfe2",
+      "astIdentical": true,
+      "change": "Removed only redundant blank line at EOF; executable AST unchanged"
+    },
+    "scripts/trace-renderer-warnings.cjs": {
+      "capturedSha256": "e8cea43c530a7511f27b6a6da96ca20634fa9e990071469330948b4ee347f6ee",
+      "finalSha256": "7e60c55d004c5fadd15b77b02036c231d94d81c5bb31cdeac4f7598d223027de",
+      "astIdentical": true,
+      "change": "Removed only redundant blank line at EOF; executable AST unchanged"
+    }
+  }
+}

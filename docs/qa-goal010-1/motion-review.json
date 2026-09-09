@@ -1,0 +1,933 @@
+{
+  "method": "Five final H.264 clips decoded with ffmpeg; 35 selected timeordered frames actually opened with view_image. Entire clips were not played/watched in real time. Actual continuous Scene/component/controller values drive software WebGL; native Canvas/ready/audio are stubbed. Encoding rate is not measured native FPS.",
+  "totalSeconds": 59,
+  "totalEncodedFrames": 1770,
+  "sameStartProjectorControl": true,
+  "visualFindings": [
+    "Light 0/2 -> released 1/2 (first-use drag cue disappears only after the actual completed drag) -> released 2/2 still unaccepted -> explicit commit -> optional observation exit.",
+    "Maintenance opens at 1s while camera remains stationary, immediately shows opened/disabled state; 3s stationary follow-up retains it.",
+    "Projector manipulation -> starting at 0.5s -> running at 1.3s -> cooldown at 5.5s -> idle at 6.7s. Actual actor changes patrol -> investigate at 0.5s -> search at 5.5167s; control remains patrol. Actor head/chest is visibly in the bay opening at 2.2s in both forks with different position/direction, so response conclusion also uses continuous runtime events, not visibility alone. It is outside the sampled view at some later moments.",
+    "Actual App selection -> preparation -> gallery -> pause/home -> vault -> pause/home -> theatre -> pause/home -> theatre reentry -> home. Four distinct simulated Canvas boundary sessions, maximum one live owner, all retired on return; isolated memory storage, not native startup."
+  ],
+  "clips": [
+    {
+      "file": "clips/light-operation.mp4",
+      "sha256": "373b9fc8b133bd1496cda502aa6873e2a8544f88e0a36a6501c28e4d78c5ba5b",
+      "bytes": 187531,
+      "duration": 20,
+      "frames": 600,
+      "sceneMounts": 1,
+      "screenMounts": 1,
+      "phaseDurations": {
+        "idle": 20.000000000000146
+      },
+      "initialStateHashes": {},
+      "preparationSeconds": 0,
+      "completedCallbackCount": 0,
+      "events": [
+        {
+          "time": 0,
+          "type": "projector-phase",
+          "from": "",
+          "to": "idle",
+          "remainingSeconds": 0,
+          "cooldownSeconds": 0
+        },
+        {
+          "time": 0,
+          "type": "actor-phase",
+          "from": "",
+          "to": "idle",
+          "position": {
+            "x": 2.8,
+            "y": 0,
+            "z": 6.55
+          }
+        },
+        {
+          "time": 1,
+          "type": "enter-light"
+        },
+        {
+          "time": 2,
+          "type": "drag-start",
+          "rail": 0
+        },
+        {
+          "time": 6,
+          "type": "drag-release",
+          "rail": 0.2499999999999967
+        },
+        {
+          "time": 6.5,
+          "type": "disabled-button-not-delivered",
+          "label": "灯りを固定して扉を開く"
+        },
+        {
+          "time": 6.5,
+          "type": "wrong-retains-closed-gate"
+        },
+        {
+          "time": 7.5,
+          "type": "drag-start",
+          "rail": 0.25
+        },
+        {
+          "time": 13.5,
+          "type": "correct-release-still-unaccepted",
+          "rail": 0.6499999999999988
+        },
+        {
+          "time": 14.5,
+          "type": "actual-button",
+          "label": "灯りを固定して扉を開く"
+        },
+        {
+          "time": 14.5,
+          "type": "accepted-after-explicit-commit"
+        },
+        {
+          "time": 15.5,
+          "type": "actual-button",
+          "label": "観察を終える"
+        }
+      ],
+      "final": {
+        "accepted": true,
+        "gate": 1,
+        "chapterCompleted": false
+      },
+      "pendingUITimersAfterUnmount": 0,
+      "boundary": "Actual Screen buttons, TheatreTouchLayer native-event shape, controller and live Scene. Native ready/audio stubs; UI timeout callbacks follow the 60 Hz simulation. Light uses a fixed camera; route changes use actual controller turn input. Route corner turns are commanded immediately; this is not a human gesture recording. Browser CSS is not Yoga. No claim of real finger interaction, actual device timing, audio or perceived illusion.",
+      "id": "light",
+      "encodingFramesPerSecond": 30,
+      "webgl": {
+        "maxCalls": 74,
+        "maxTriangles": 2787,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "errors": []
+      },
+      "cameraMetricNote": "Global camera delta includes unrecorded route preparation. Stationary maintenance capture is separately asserted in its final event; lamp camera delta <=2.45e-16."
+    },
+    {
+      "file": "clips/maintenance.mp4",
+      "sha256": "3c09ad7ffb393c0c7591eb099fe61239b70287f542d7fcb8f5719f7e7dd73849",
+      "bytes": 36038,
+      "duration": 4,
+      "frames": 120,
+      "sceneMounts": 1,
+      "screenMounts": 1,
+      "phaseDurations": {
+        "crossing": 2.7333333333333285,
+        "patrol": 1.266666666666667
+      },
+      "initialStateHashes": {},
+      "preparationSeconds": 10.416666666666666,
+      "completedCallbackCount": 0,
+      "events": [
+        {
+          "time": 0,
+          "type": "maintenance-closed",
+          "pose": {
+            "position": {
+              "x": -5.2,
+              "y": 1.6,
+              "z": 9.6
+            },
+            "yaw": -3.0438657462310736,
+            "pitch": -0.2847593102733593
+          },
+          "opened": false
+        },
+        {
+          "time": 0,
+          "type": "projector-phase",
+          "from": "",
+          "to": "idle",
+          "remainingSeconds": 0,
+          "cooldownSeconds": 0
+        },
+        {
+          "time": 0,
+          "type": "actor-phase",
+          "from": "",
+          "to": "crossing",
+          "position": {
+            "x": -0.5724166666666433,
+            "y": 0,
+            "z": 6.55
+          }
+        },
+        {
+          "time": 1,
+          "type": "actual-screen-interact",
+          "id": "bypass"
+        },
+        {
+          "time": 1,
+          "type": "maintenance-opened-without-movement"
+        },
+        {
+          "time": 2.7333333333333334,
+          "type": "actor-phase",
+          "from": "crossing",
+          "to": "patrol",
+          "position": {
+            "x": -2.528618244855105,
+            "y": 0,
+            "z": 6.561123173613404
+          }
+        },
+        {
+          "time": 4,
+          "type": "maintenance-stationary-snapshot",
+          "cameraMatrixDifference": 0,
+          "opened": true
+        }
+      ],
+      "final": {
+        "accepted": true,
+        "gate": 1,
+        "chapterCompleted": false
+      },
+      "pendingUITimersAfterUnmount": 0,
+      "boundary": "Actual Screen buttons, TheatreTouchLayer native-event shape, controller and live Scene. Native ready/audio stubs; UI timeout callbacks follow the 60 Hz simulation. Light uses a fixed camera; route changes use actual controller turn input. Route corner turns are commanded immediately; this is not a human gesture recording. Browser CSS is not Yoga. No claim of real finger interaction, actual device timing, audio or perceived illusion.",
+      "id": "maintenance",
+      "encodingFramesPerSecond": 30,
+      "webgl": {
+        "maxCalls": 40,
+        "maxTriangles": 1992,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "errors": []
+      },
+      "cameraMetricNote": "Global camera delta includes unrecorded route preparation. Stationary maintenance capture is separately asserted in its final event; lamp camera delta <=2.45e-16."
+    },
+    {
+      "file": "clips/projector.mp4",
+      "sha256": "e6c74a55a2272bba969e602448ee19c37b1ba9fad4e1aa5ac44f5a14cf750585",
+      "bytes": 107155,
+      "duration": 8,
+      "frames": 240,
+      "sceneMounts": 1,
+      "screenMounts": 1,
+      "phaseDurations": {
+        "patrol": 0.49999999999999994,
+        "investigate": 5.016666666666654,
+        "search": 2.4833333333333294
+      },
+      "initialStateHashes": {
+        "runtime": "11d9cc80dcc5f46fb9771f8095732bfafed90cf4bec0a0f3b16ac087d92cad28",
+        "pose": "346d2836527c03a2933d13ff5e8c62f7fbe29c76d5c4edf4f4e878795514eeaa"
+      },
+      "preparationSeconds": 22.633333333333333,
+      "completedCallbackCount": 0,
+      "events": [
+        {
+          "time": 0,
+          "type": "same-start",
+          "runtimeHash": "11d9cc80dcc5f46fb9771f8095732bfafed90cf4bec0a0f3b16ac087d92cad28",
+          "preparationSeconds": 22.633333333333333
+        },
+        {
+          "time": 0,
+          "type": "actual-screen-interact",
+          "id": "projector"
+        },
+        {
+          "time": 0,
+          "type": "projector-phase",
+          "from": "",
+          "to": "armed",
+          "remainingSeconds": 0,
+          "cooldownSeconds": 0
+        },
+        {
+          "time": 0,
+          "type": "actor-phase",
+          "from": "",
+          "to": "patrol",
+          "position": {
+            "x": -2.5993062933969933,
+            "y": 0,
+            "z": 12.879433750623734
+          }
+        },
+        {
+          "time": 0.5,
+          "type": "projector-crank-released"
+        },
+        {
+          "time": 0.5,
+          "type": "projector-phase",
+          "from": "armed",
+          "to": "starting",
+          "remainingSeconds": 4.983333333333333,
+          "cooldownSeconds": 6.183333333333334
+        },
+        {
+          "time": 0.5,
+          "type": "actor-phase",
+          "from": "patrol",
+          "to": "investigate",
+          "position": {
+            "x": -2.599506143111504,
+            "y": 0,
+            "z": 13.240017019937886
+          }
+        },
+        {
+          "time": 1.3,
+          "type": "projector-phase",
+          "from": "starting",
+          "to": "running",
+          "remainingSeconds": 4.183333333333336,
+          "cooldownSeconds": 5.383333333333336
+        },
+        {
+          "time": 2,
+          "type": "same-view-through-bay-opening"
+        },
+        {
+          "time": 5.5,
+          "type": "projector-phase",
+          "from": "running",
+          "to": "cooldown",
+          "remainingSeconds": 0,
+          "cooldownSeconds": 1.1833333333333513
+        },
+        {
+          "time": 5.516666666666667,
+          "type": "actor-phase",
+          "from": "investigate",
+          "to": "search",
+          "position": {
+            "x": -2.600000688687518,
+            "y": 0,
+            "z": 16.254197446190574
+          }
+        },
+        {
+          "time": 6.7,
+          "type": "projector-phase",
+          "from": "cooldown",
+          "to": "idle",
+          "remainingSeconds": 0,
+          "cooldownSeconds": 0
+        }
+      ],
+      "final": {
+        "accepted": true,
+        "gate": 1,
+        "chapterCompleted": false
+      },
+      "pendingUITimersAfterUnmount": 0,
+      "boundary": "Actual Screen buttons, TheatreTouchLayer native-event shape, controller and live Scene. Native ready/audio stubs; UI timeout callbacks follow the 60 Hz simulation. Light uses a fixed camera; route changes use actual controller turn input. Route corner turns are commanded immediately; this is not a human gesture recording. Browser CSS is not Yoga. No claim of real finger interaction, actual device timing, audio or perceived illusion.",
+      "id": "projector",
+      "encodingFramesPerSecond": 30,
+      "webgl": {
+        "maxCalls": 45,
+        "maxTriangles": 4870,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "errors": []
+      },
+      "cameraMetricNote": "Global camera delta includes unrecorded route preparation. Stationary maintenance capture is separately asserted in its final event; lamp camera delta <=2.45e-16."
+    },
+    {
+      "file": "clips/projector-control.mp4",
+      "sha256": "23439a69298b38e277c5f91d0c44e9c4ade2abbd11aa53820a653de3fe9c3692",
+      "bytes": 113963,
+      "duration": 8,
+      "frames": 240,
+      "sceneMounts": 1,
+      "screenMounts": 1,
+      "phaseDurations": {
+        "patrol": 7.999999999999977
+      },
+      "initialStateHashes": {
+        "runtime": "11d9cc80dcc5f46fb9771f8095732bfafed90cf4bec0a0f3b16ac087d92cad28",
+        "pose": "346d2836527c03a2933d13ff5e8c62f7fbe29c76d5c4edf4f4e878795514eeaa"
+      },
+      "preparationSeconds": 22.633333333333333,
+      "completedCallbackCount": 0,
+      "events": [
+        {
+          "time": 0,
+          "type": "same-start",
+          "runtimeHash": "11d9cc80dcc5f46fb9771f8095732bfafed90cf4bec0a0f3b16ac087d92cad28",
+          "preparationSeconds": 22.633333333333333
+        },
+        {
+          "time": 0,
+          "type": "projector-phase",
+          "from": "",
+          "to": "idle",
+          "remainingSeconds": 0,
+          "cooldownSeconds": 0
+        },
+        {
+          "time": 0,
+          "type": "actor-phase",
+          "from": "",
+          "to": "patrol",
+          "position": {
+            "x": -2.5993062933969933,
+            "y": 0,
+            "z": 12.879433750623734
+          }
+        },
+        {
+          "time": 0.5,
+          "type": "no-projector-input"
+        },
+        {
+          "time": 2,
+          "type": "same-view-through-bay-opening"
+        }
+      ],
+      "final": {
+        "accepted": true,
+        "gate": 1,
+        "chapterCompleted": false
+      },
+      "pendingUITimersAfterUnmount": 0,
+      "boundary": "Actual Screen buttons, TheatreTouchLayer native-event shape, controller and live Scene. Native ready/audio stubs; UI timeout callbacks follow the 60 Hz simulation. Light uses a fixed camera; route changes use actual controller turn input. Route corner turns are commanded immediately; this is not a human gesture recording. Browser CSS is not Yoga. No claim of real finger interaction, actual device timing, audio or perceived illusion.",
+      "id": "projector-control",
+      "encodingFramesPerSecond": 30,
+      "webgl": {
+        "maxCalls": 45,
+        "maxTriangles": 4870,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "errors": []
+      },
+      "cameraMetricNote": "Global camera delta includes unrecorded route preparation. Stationary maintenance capture is separately asserted in its final event; lamp camera delta <=2.45e-16."
+    },
+    {
+      "file": "clips/chapter-reentry.mp4",
+      "sha256": "d1a32d3f4c549927617cb03e765da065f1dc70e98c29bec4661df11938f46b44",
+      "bytes": 730442,
+      "method": "Actual App selection/preparation/Screen pause/home/reentry and actual ChapterScene with 45 controller turn+advance frames per chapter. Shared storage uses isolated memory. Native availability/Canvas ready/presentation/audio are stubbed; Modal and Skia are translated host boundaries. Browser renderer is single; UI timing is authored 30 Hz capture timing, not native FPS.",
+      "duration": 19,
+      "frames": 570,
+      "sequence": [
+        "perception-gallery-v1",
+        "uncanny-vault-v1",
+        "shadow-theatre-v1",
+        "shadow-theatre-v1"
+      ],
+      "events": [
+        {
+          "time": 0,
+          "type": "stage-select",
+          "next": "perception-gallery-v1"
+        },
+        {
+          "time": 1,
+          "type": "actual-App-button",
+          "testID": "select-perception-gallery-v1"
+        },
+        {
+          "time": 1,
+          "type": "preparation",
+          "chapterId": "perception-gallery-v1"
+        },
+        {
+          "time": 1.8,
+          "type": "actual-App-button",
+          "label": "展示室へ入る"
+        },
+        {
+          "time": 1.8,
+          "type": "validated-entry-boundary",
+          "chapterId": "perception-gallery-v1",
+          "session": 12,
+          "source": "Actual App/Screen callback with stub native ready",
+          "reentry": false
+        },
+        {
+          "time": 3.3,
+          "type": "actual-App-button",
+          "testID": "pause-control"
+        },
+        {
+          "time": 3.3,
+          "type": "paused",
+          "chapterId": "perception-gallery-v1"
+        },
+        {
+          "time": 4.1,
+          "type": "actual-App-button",
+          "label": "ホームへ戻る"
+        },
+        {
+          "time": 4.1,
+          "type": "retired-on-return",
+          "chapterId": "perception-gallery-v1",
+          "session": 12
+        },
+        {
+          "time": 4.5,
+          "type": "stage-select",
+          "next": "uncanny-vault-v1"
+        },
+        {
+          "time": 5.5,
+          "type": "actual-App-button",
+          "testID": "select-uncanny-vault-v1"
+        },
+        {
+          "time": 5.5,
+          "type": "preparation",
+          "chapterId": "uncanny-vault-v1"
+        },
+        {
+          "time": 6.3,
+          "type": "actual-App-button",
+          "label": "収蔵庫へ入る"
+        },
+        {
+          "time": 6.3,
+          "type": "validated-entry-boundary",
+          "chapterId": "uncanny-vault-v1",
+          "session": 20,
+          "source": "Actual App/Screen callback with stub native ready",
+          "reentry": false
+        },
+        {
+          "time": 7.8,
+          "type": "actual-App-button",
+          "testID": "pause-control"
+        },
+        {
+          "time": 7.8,
+          "type": "paused",
+          "chapterId": "uncanny-vault-v1"
+        },
+        {
+          "time": 8.6,
+          "type": "actual-App-button",
+          "label": "ホームへ戻る"
+        },
+        {
+          "time": 8.6,
+          "type": "retired-on-return",
+          "chapterId": "uncanny-vault-v1",
+          "session": 20
+        },
+        {
+          "time": 9,
+          "type": "stage-select",
+          "next": "shadow-theatre-v1"
+        },
+        {
+          "time": 10,
+          "type": "actual-App-button",
+          "testID": "select-shadow-theatre-v1"
+        },
+        {
+          "time": 10,
+          "type": "preparation",
+          "chapterId": "shadow-theatre-v1"
+        },
+        {
+          "time": 10.8,
+          "type": "actual-App-button",
+          "label": "映写室へ入る"
+        },
+        {
+          "time": 10.8,
+          "type": "validated-entry-boundary",
+          "chapterId": "shadow-theatre-v1",
+          "session": 23,
+          "source": "Actual App/Screen callback with stub native ready",
+          "reentry": false
+        },
+        {
+          "time": 12.3,
+          "type": "actual-App-button",
+          "testID": "pause-control"
+        },
+        {
+          "time": 12.3,
+          "type": "paused",
+          "chapterId": "shadow-theatre-v1"
+        },
+        {
+          "time": 13.1,
+          "type": "actual-App-button",
+          "label": "ホームへ戻る"
+        },
+        {
+          "time": 13.1,
+          "type": "retired-on-return",
+          "chapterId": "shadow-theatre-v1",
+          "session": 23
+        },
+        {
+          "time": 13.5,
+          "type": "stage-select",
+          "next": "shadow-theatre-v1"
+        },
+        {
+          "time": 14.5,
+          "type": "actual-App-button",
+          "testID": "select-shadow-theatre-v1"
+        },
+        {
+          "time": 14.5,
+          "type": "preparation",
+          "chapterId": "shadow-theatre-v1"
+        },
+        {
+          "time": 15.3,
+          "type": "actual-App-button",
+          "label": "映写室へ入る"
+        },
+        {
+          "time": 15.3,
+          "type": "validated-entry-boundary",
+          "chapterId": "shadow-theatre-v1",
+          "session": 24,
+          "source": "Actual App/Screen callback with stub native ready",
+          "reentry": true
+        },
+        {
+          "time": 16.8,
+          "type": "actual-App-button",
+          "testID": "pause-control"
+        },
+        {
+          "time": 16.8,
+          "type": "paused",
+          "chapterId": "shadow-theatre-v1"
+        },
+        {
+          "time": 17.6,
+          "type": "actual-App-button",
+          "label": "ホームへ戻る"
+        },
+        {
+          "time": 17.6,
+          "type": "retired-on-return",
+          "chapterId": "shadow-theatre-v1",
+          "session": 24
+        }
+      ],
+      "owners": [
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 12,
+          "mounted": true,
+          "unmounted": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 20,
+          "mounted": true,
+          "unmounted": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 23,
+          "mounted": true,
+          "unmounted": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 24,
+          "mounted": true,
+          "unmounted": true
+        }
+      ],
+      "maxActiveCanvasBoundaries": 1,
+      "activeCanvasBoundariesAfterUnmount": 0,
+      "writeCount": 17,
+      "id": "chapter-reentry",
+      "webgl": {
+        "maxCalls": 92,
+        "maxTriangles": 6170,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "errors": []
+      },
+      "encodingFramesPerSecond": 30
+    }
+  ],
+  "reviewedFrames": [
+    {
+      "clip": "light",
+      "seconds": 0,
+      "file": "light-000000.png",
+      "sha256": "2733092de937be4cb07022c9c16ba5e777ee13979115eab863fd41028a66f12f",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "light",
+      "seconds": 2,
+      "file": "light-002000.png",
+      "sha256": "59c78cc199061df926cb4a1f90722b966a227b98a26d300d501789b4de7bcd62",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "light",
+      "seconds": 6,
+      "file": "light-006000.png",
+      "sha256": "1052f23b1c169f8384ea6f830cee6cb1883ba43de475ae3c6d2196fe093244a2",
+      "actuallyOpened": true,
+      "retainedImage": "review/light-006000.png"
+    },
+    {
+      "clip": "light",
+      "seconds": 9,
+      "file": "light-009000.png",
+      "sha256": "a903614e06b074c835347da816af1906c3dbec2824e7deb374499f6f5b94d74b",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "light",
+      "seconds": 13.5,
+      "file": "light-013500.png",
+      "sha256": "7eb2704301343262f48c30c9ee3d87045ff96fb943a1536a36f8147c563dbf02",
+      "actuallyOpened": true,
+      "retainedImage": "review/light-013500.png"
+    },
+    {
+      "clip": "light",
+      "seconds": 14.5,
+      "file": "light-014500.png",
+      "sha256": "de1216af9d6a6adf6cf445cbc54542405dbc2cb922cb6275b7f1fea7a1f9e189",
+      "actuallyOpened": true,
+      "retainedImage": "review/light-014500.png"
+    },
+    {
+      "clip": "light",
+      "seconds": 16,
+      "file": "light-016000.png",
+      "sha256": "f0b9bbfd67d37d756926ed7367f4e083d638e0ff791e7f544e801f93a646609b",
+      "actuallyOpened": true,
+      "retainedImage": "review/light-016000.png"
+    },
+    {
+      "clip": "light",
+      "seconds": 19.8,
+      "file": "light-019800.png",
+      "sha256": "2d8b7bd1391dc635e81cff2d580715d81ce048665809f5121b5c67b25bd1c53e",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "maintenance",
+      "seconds": 0,
+      "file": "maintenance-000000.png",
+      "sha256": "f6df0dd9f0022e82c73d3334d69dbe96fc0ebc8e8c0e4dd33a1bc0750769bd64",
+      "actuallyOpened": true,
+      "retainedImage": "review/maintenance-000000.png"
+    },
+    {
+      "clip": "maintenance",
+      "seconds": 0.95,
+      "file": "maintenance-000950.png",
+      "sha256": "e1448b2c1a0fe1b6b7aeedfba8a515e1fcdc36e29e0e743e396e26f032d78aee",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "maintenance",
+      "seconds": 1.05,
+      "file": "maintenance-001050.png",
+      "sha256": "fa97cc5a5fc1c06d37e194a7c3c3c8a3f1c63768edb74667417b3c7e90b9a616",
+      "actuallyOpened": true,
+      "retainedImage": "review/maintenance-001050.png"
+    },
+    {
+      "clip": "maintenance",
+      "seconds": 2,
+      "file": "maintenance-002000.png",
+      "sha256": "5492feb25669812484eaa660820efa19e8ce2fea02a2120af07f70f6c38df612",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "maintenance",
+      "seconds": 3.9,
+      "file": "maintenance-003900.png",
+      "sha256": "981f5b6c900c891f87debf9a0d9fa0d429a5e2cad606e2a7a33877e4f534d4ca",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector",
+      "seconds": 0,
+      "file": "projector-000000.png",
+      "sha256": "621e967e4830b2b07da9972ab6843170ef0caf5863129eb80f2983e34b3743ea",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector",
+      "seconds": 0.5,
+      "file": "projector-000500.png",
+      "sha256": "a29b851af5e5276955db04d74b7ea729006b1ba24a18d44004e7885a83a9f7fa",
+      "actuallyOpened": true,
+      "retainedImage": "review/projector-000500.png"
+    },
+    {
+      "clip": "projector",
+      "seconds": 1,
+      "file": "projector-001000.png",
+      "sha256": "77f7739fef115e536c4231eb4c27a7e8fb4c6383f6a5970932ad881eee0f4f33",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector",
+      "seconds": 2.2,
+      "file": "projector-002200.png",
+      "sha256": "08330ef398781307f9352d79b38c5256590859bd8046fe3e012f4b8f7cfddee0",
+      "actuallyOpened": true,
+      "retainedImage": "review/projector-002200.png"
+    },
+    {
+      "clip": "projector",
+      "seconds": 3.5,
+      "file": "projector-003500.png",
+      "sha256": "6339a9cbd72972afb375de93c85c0fef5a05da6747c6408b08701736058ca7f9",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector",
+      "seconds": 5.5,
+      "file": "projector-005500.png",
+      "sha256": "da4d7fc0e77baccf4be633cc1650abed1259e66b17369a0c5f9d5749f23a5a1f",
+      "actuallyOpened": true,
+      "retainedImage": "review/projector-005500.png"
+    },
+    {
+      "clip": "projector",
+      "seconds": 6.5,
+      "file": "projector-006500.png",
+      "sha256": "faa807215654ec6225cadd1095ad6ff0816434e378e15a23f31737b0f35bf194",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector",
+      "seconds": 7.9,
+      "file": "projector-007900.png",
+      "sha256": "4398d2f9db4384eee26c514a714e6620e168b791527805767ec5c8d9cc7e4fe8",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector-control",
+      "seconds": 0,
+      "file": "projector-control-000000.png",
+      "sha256": "d7be304d98200e2c0e0c980995dcb2b7cc87120c9129a09f56694243e39370d3",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector-control",
+      "seconds": 2.2,
+      "file": "projector-control-002200.png",
+      "sha256": "8f91ef16b87ad3ebbdcfeb5039b166099b6ee7844ea8f8ca5c76cd9cb8990b77",
+      "actuallyOpened": true,
+      "retainedImage": "review/projector-control-002200.png"
+    },
+    {
+      "clip": "projector-control",
+      "seconds": 5.5,
+      "file": "projector-control-005500.png",
+      "sha256": "51e545dd914e52ef0a5737f4486e232722a469bc6f99c19123e3f1ab4b41c725",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "projector-control",
+      "seconds": 7.9,
+      "file": "projector-control-007900.png",
+      "sha256": "7e7c3a57a58bbdf995a83905b1896858531371fc422ae30deed8c825ad4d9e9d",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 0,
+      "file": "chapter-reentry-000000.png",
+      "sha256": "b79b66b99d3d49bcd1f0c51617206ad5ace41fdd2e450d11e757ce36adcf74c1",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 1.2,
+      "file": "chapter-reentry-001200.png",
+      "sha256": "2693f9533822eea107a6d9228ae2cd4b341601beae25197627238d841622814d",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 2.6,
+      "file": "chapter-reentry-002600.png",
+      "sha256": "73080cf05a926aea3fbb7546d6a694370fea31b70e8da8ded716fc2328169f95",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 3.5,
+      "file": "chapter-reentry-003500.png",
+      "sha256": "e42ca1ec4a5e3ef25efe8d0907eff2858740127da7d703b148b6cb262750869b",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 6.9,
+      "file": "chapter-reentry-006900.png",
+      "sha256": "fd445e875ca9989e98a808d2e27cafaf466730afd9908dc2b6d4a8208b5d6e32",
+      "actuallyOpened": true,
+      "retainedImage": "review/chapter-reentry-006900.png"
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 10.2,
+      "file": "chapter-reentry-010200.png",
+      "sha256": "965c211442fb177e99f5392bac5d9a5a0dae15c1613e49a643ca78e0bc61ea80",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 11.5,
+      "file": "chapter-reentry-011500.png",
+      "sha256": "81ba54e794da2e9ccc5e8ebe7c10e55a480e4b34da1c21343173f9fbc5e3dbc4",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 15.4,
+      "file": "chapter-reentry-015400.png",
+      "sha256": "2c137cca1901e261e195fb9d6ea783d4cfa0c681377922ec3e235508e84741b8",
+      "actuallyOpened": true,
+      "retainedImage": "review/chapter-reentry-015400.png"
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 16.5,
+      "file": "chapter-reentry-016500.png",
+      "sha256": "2454ac48eafcb0b98156144deb9b8cab204e692351ea954afc36c661b62fb0db",
+      "actuallyOpened": true
+    },
+    {
+      "clip": "chapter-reentry",
+      "seconds": 18.5,
+      "file": "chapter-reentry-018500.png",
+      "sha256": "764c1a48afac1a74fdc6518fdae046d5731c3f2a0a6c1cbcf35bd3ea5aff6624",
+      "actuallyOpened": true
+    }
+  ]
+}

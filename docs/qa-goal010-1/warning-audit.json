@@ -1,0 +1,809 @@
+{
+  "scope": "Baseline resource source is fixed bafd563 archive; final resource source is frozen Part B source. These upload probes do not execute a native app startup. No runtime warning suppression or altered GL arguments.",
+  "runs": {
+    "baseline": {
+      "method": "Actual app resource constructors, serialized DataTextures and installed browser WebGLRenderer; one pixelStorei instance wrapper forwards every call unchanged and is restored. Not native EXGL.",
+      "packages": {
+        "three": "0.185.1",
+        "@react-three/fiber": "9.7.0",
+        "expo": "57.0.20",
+        "expo-gl": "57.0.2"
+      },
+      "inventory": [
+        {
+          "name": "legacy-palette",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "dataSha256": "c4995e3c17234d3e0e33f7fddcf44c91d4bc9db24a4b6dfa7efef84d3e9aa3d9",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "emblem-0",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "dataSha256": "73e96bd30e4aa56e3b336c7b43c140648d71f40fbbdd4edfd9c97cf802de1210",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "emblem-1",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "dataSha256": "c2b7d391334f50172e691164bf613f20b362a94d5f1a8dc9222a82fba64e0d03",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "gallery-shadow-color",
+          "width": 512,
+          "height": 384,
+          "bytes": 786432,
+          "dataSha256": "e88a0d341f7db7335af7d01d3859d262ed9a58151588da435e011d1965837489",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "gallery-shadow-neutral",
+          "width": 512,
+          "height": 384,
+          "bytes": 786432,
+          "dataSha256": "dccbcea88fd1901e8546cd06e43fb0c2ae62912e7430eda789d823f60b10fd08",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "chromatic-color",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "dataSha256": "8e62acdf512dbe108033c7876072a27f80f6bdf3d19865e282b27c8d90ca65a8",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "chromatic-neutral",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "dataSha256": "9547ff19cde4eacedecef1d781ff2554ec2790f06dc1c0221a6b1be4f18eb1e3",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "perceptual-hybrid",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "dataSha256": "fdc8288c04e5d415bb23716d7898e4e83e99612bc82cac25209e1ebe246a67d2",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": true,
+          "updateRanges": 0
+        }
+      ],
+      "parameters": [
+        {
+          "pname": 37440,
+          "name": "UNPACK_FLIP_Y_WEBGL",
+          "value": false,
+          "supportedByInstalledEXGLPixelStorei": true
+        },
+        {
+          "pname": 37441,
+          "name": "UNPACK_PREMULTIPLY_ALPHA_WEBGL",
+          "value": false,
+          "supportedByInstalledEXGLPixelStorei": false
+        },
+        {
+          "pname": 37443,
+          "name": "UNPACK_COLORSPACE_CONVERSION_WEBGL",
+          "value": 0,
+          "supportedByInstalledEXGLPixelStorei": false
+        },
+        {
+          "pname": 3317,
+          "name": "UNPACK_ALIGNMENT",
+          "value": 1,
+          "supportedByInstalledEXGLPixelStorei": true
+        }
+      ],
+      "traceSummary": {
+        "first": {
+          "geometries": 8,
+          "textures": 8,
+          "calls": 8,
+          "triangles": 16
+        },
+        "after": {
+          "geometries": 0,
+          "textures": 0
+        },
+        "glError": 0,
+        "textures": 8,
+        "restored": true,
+        "renderer": "WebKit WebGL",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "dependencies": [
+        {
+          "file": "node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js",
+          "sha256": "03eaa88f852acb59e563e4b5599f511e0c5f1008a83967afbf742775bc1a9106",
+          "references": [
+            {
+              "line": 5,
+              "code": "var events = require('../../dist/events-b1bdeb1a.cjs.dev.js');"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js",
+          "sha256": "9b4b2e2b2f5900ad458c85ea8f674e008a6e736c1c96a66e639d943cb5a13e6e",
+          "references": [
+            {
+              "line": 973,
+              "code": "const createStore = (invalidate, advance) => {"
+            },
+            {
+              "line": 1041,
+              "code": "clock: new THREE__namespace.Clock(),"
+            },
+            {
+              "line": 1115,
+              "code": "// if frameloop === \"never\" clock.elapsedTime is updated using advance(timestamp)"
+            },
+            {
+              "line": 1116,
+              "code": "clock.stop();"
+            },
+            {
+              "line": 1117,
+              "code": "clock.elapsedTime = 0;"
+            },
+            {
+              "line": 1119,
+              "code": "clock.start();"
+            },
+            {
+              "line": 1120,
+              "code": "clock.elapsedTime = 0;"
+            },
+            {
+              "line": 16179,
+              "code": "let delta = state.clock.getDelta();"
+            },
+            {
+              "line": 16183,
+              "code": "delta = timestamp - state.clock.elapsedTime;"
+            },
+            {
+              "line": 16184,
+              "code": "state.clock.oldTime = state.clock.elapsedTime;"
+            },
+            {
+              "line": 16185,
+              "code": "state.clock.elapsedTime = timestamp;"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/three/src/core/Clock.js",
+          "sha256": "3face6f02cfaf83e89ec8d2f4ca1718eb3228dc2517cf71118e981ba9009434b",
+          "references": [
+            {
+              "line": 6,
+              "code": "* @deprecated since r183."
+            },
+            {
+              "line": 13,
+              "code": "* @deprecated since 183."
+            },
+            {
+              "line": 61,
+              "code": "warn( 'Clock: This module has been deprecated. Please use THREE.Timer instead.' ); // @deprecated, r183"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/three/src/renderers/webgl/WebGLState.js",
+          "sha256": "fd6adb6c01d75a148ef6ebc8ea948a38acc1a48d3cfdbbb1d12dbde668092431",
+          "references": [
+            {
+              "line": 1118,
+              "code": "if ( parameters[ name ] !== undefined ) {"
+            },
+            {
+              "line": 1120,
+              "code": "return parameters[ name ];"
+            },
+            {
+              "line": 1130,
+              "code": "function pixelStorei( name, value ) {"
+            },
+            {
+              "line": 1132,
+              "code": "if ( parameters[ name ] !== value ) {"
+            },
+            {
+              "line": 1134,
+              "code": "gl.pixelStorei( name, value );"
+            },
+            {
+              "line": 1135,
+              "code": "parameters[ name ] = value;"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/three/src/renderers/webgl/WebGLTextures.js",
+          "sha256": "241557c9b4a4cbbc76f4328329f6a26db2f27162e327ac2bb9eb4f851744184a",
+          "references": [
+            {
+              "line": 867,
+              "code": "state.pixelStorei( _gl.UNPACK_ROW_LENGTH, image.width );"
+            },
+            {
+              "line": 883,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_PIXELS, x );"
+            },
+            {
+              "line": 884,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_ROWS, y );"
+            },
+            {
+              "line": 892,
+              "code": "state.pixelStorei( _gl.UNPACK_ROW_LENGTH, currentUnpackRowLen );"
+            },
+            {
+              "line": 893,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_PIXELS, currentUnpackSkipPixels );"
+            },
+            {
+              "line": 894,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_ROWS, currentUnpackSkipRows );"
+            },
+            {
+              "line": 926,
+              "code": "state.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, texture.flipY );"
+            },
+            {
+              "line": 927,
+              "code": "state.pixelStorei( _gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha );"
+            },
+            {
+              "line": 928,
+              "code": "state.pixelStorei( _gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion );"
+            },
+            {
+              "line": 932,
+              "code": "state.pixelStorei( _gl.UNPACK_ALIGNMENT, texture.unpackAlignment );"
+            },
+            {
+              "line": 1426,
+              "code": "state.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, texture.flipY );"
+            },
+            {
+              "line": 1427,
+              "code": "state.pixelStorei( _gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha );"
+            },
+            {
+              "line": 1428,
+              "code": "state.pixelStorei( _gl.UNPACK_ALIGNMENT, texture.unpackAlignment );"
+            },
+            {
+              "line": 1429,
+              "code": "state.pixelStorei( _gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion );"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/expo-gl/common/EXWebGLMethods.cpp",
+          "sha256": "8455568588444b678daeddc77b6171f723bb0046fb8901bd4099422dd31cfa4a",
+          "references": [
+            {
+              "line": 123,
+              "code": "case GL_UNPACK_FLIP_Y_WEBGL:"
+            },
+            {
+              "line": 125,
+              "code": "case GL_UNPACK_PREMULTIPLY_ALPHA_WEBGL:"
+            },
+            {
+              "line": 126,
+              "code": "case GL_UNPACK_COLORSPACE_CONVERSION_WEBGL:"
+            },
+            {
+              "line": 233,
+              "code": "NATIVE_METHOD(pixelStorei) {"
+            },
+            {
+              "line": 237,
+              "code": "case GL_UNPACK_FLIP_Y_WEBGL: {"
+            },
+            {
+              "line": 241,
+              "code": "case GL_UNPACK_ALIGNMENT: {"
+            },
+            {
+              "line": 250,
+              "code": "\"EXGL: gl.pixelStorei() doesn't support this parameter yet!\")});"
+            }
+          ]
+        }
+      ],
+      "conclusions": [
+        "R3F native entry imports an events module whose root store constructs Three.Clock. Production/ESM use the same design. Separate production scan found no direct app Clock/pixelStorei call.",
+        "R3F uses Clock start/stop/getDelta and mutable elapsedTime/oldTime. Timer is not a drop-in substitution.",
+        "Browser upload arguments matched against installed EXGL unsupported cases are candidate explanations, not captured native warning parameters.",
+        "Audited textures use opaque RGBA, explicit sRGB, false flipY and false premultiplyAlpha. Several sources explicitly reverse rows. Browser output does not prove native orientation/color.",
+        "No evidence links warnings to dark corridors. No dependency, GL argument, app warning handler or app runtime is changed."
+      ],
+      "nativeUnverified": [
+        "Exact original native warning arguments",
+        "Native warning count/order and owner IDs",
+        "iPhone orientation/alpha/color",
+        "Native pause/resume delta and presentation"
+      ],
+      "references": [
+        "https://metrobundler.dev/docs/configuration/#requirecycleignorepatterns",
+        "https://nodejs.org/api/modules.html#cycles",
+        "https://threejs.org/docs/pages/Clock.html",
+        "https://threejs.org/docs/pages/Timer.html",
+        "https://docs.expo.dev/versions/latest/sdk/gl-view/",
+        "https://docs.expo.dev/develop/development-builds/use-development-builds/",
+        "https://docs.expo.dev/more/expo-cli/"
+      ]
+    },
+    "final": {
+      "method": "Actual app resource constructors, serialized DataTextures and installed browser WebGLRenderer; one pixelStorei instance wrapper forwards every call unchanged and is restored. Not native EXGL.",
+      "packages": {
+        "three": "0.185.1",
+        "@react-three/fiber": "9.7.0",
+        "expo": "57.0.20",
+        "expo-gl": "57.0.2"
+      },
+      "inventory": [
+        {
+          "name": "legacy-palette",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "dataSha256": "c4995e3c17234d3e0e33f7fddcf44c91d4bc9db24a4b6dfa7efef84d3e9aa3d9",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "emblem-0",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "dataSha256": "73e96bd30e4aa56e3b336c7b43c140648d71f40fbbdd4edfd9c97cf802de1210",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "emblem-1",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "dataSha256": "c2b7d391334f50172e691164bf613f20b362a94d5f1a8dc9222a82fba64e0d03",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "gallery-shadow-color",
+          "width": 512,
+          "height": 384,
+          "bytes": 786432,
+          "dataSha256": "e88a0d341f7db7335af7d01d3859d262ed9a58151588da435e011d1965837489",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "gallery-shadow-neutral",
+          "width": 512,
+          "height": 384,
+          "bytes": 786432,
+          "dataSha256": "dccbcea88fd1901e8546cd06e43fb0c2ae62912e7430eda789d823f60b10fd08",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "chromatic-color",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "dataSha256": "8e62acdf512dbe108033c7876072a27f80f6bdf3d19865e282b27c8d90ca65a8",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "chromatic-neutral",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "dataSha256": "9547ff19cde4eacedecef1d781ff2554ec2790f06dc1c0221a6b1be4f18eb1e3",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": false,
+          "updateRanges": 0
+        },
+        {
+          "name": "perceptual-hybrid",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "dataSha256": "fdc8288c04e5d415bb23716d7898e4e83e99612bc82cac25209e1ebe246a67d2",
+          "minAlpha": 255,
+          "maxAlpha": 255,
+          "colorSpace": "srgb",
+          "flipY": false,
+          "premultiplyAlpha": false,
+          "unpackAlignment": 1,
+          "generateMipmaps": true,
+          "updateRanges": 0
+        }
+      ],
+      "parameters": [
+        {
+          "pname": 37440,
+          "name": "UNPACK_FLIP_Y_WEBGL",
+          "value": false,
+          "supportedByInstalledEXGLPixelStorei": true
+        },
+        {
+          "pname": 37441,
+          "name": "UNPACK_PREMULTIPLY_ALPHA_WEBGL",
+          "value": false,
+          "supportedByInstalledEXGLPixelStorei": false
+        },
+        {
+          "pname": 37443,
+          "name": "UNPACK_COLORSPACE_CONVERSION_WEBGL",
+          "value": 0,
+          "supportedByInstalledEXGLPixelStorei": false
+        },
+        {
+          "pname": 3317,
+          "name": "UNPACK_ALIGNMENT",
+          "value": 1,
+          "supportedByInstalledEXGLPixelStorei": true
+        }
+      ],
+      "traceSummary": {
+        "first": {
+          "geometries": 8,
+          "textures": 8,
+          "calls": 8,
+          "triangles": 16
+        },
+        "after": {
+          "geometries": 0,
+          "textures": 0
+        },
+        "glError": 0,
+        "textures": 8,
+        "restored": true,
+        "renderer": "WebKit WebGL",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "dependencies": [
+        {
+          "file": "node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js",
+          "sha256": "03eaa88f852acb59e563e4b5599f511e0c5f1008a83967afbf742775bc1a9106",
+          "references": [
+            {
+              "line": 5,
+              "code": "var events = require('../../dist/events-b1bdeb1a.cjs.dev.js');"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js",
+          "sha256": "9b4b2e2b2f5900ad458c85ea8f674e008a6e736c1c96a66e639d943cb5a13e6e",
+          "references": [
+            {
+              "line": 973,
+              "code": "const createStore = (invalidate, advance) => {"
+            },
+            {
+              "line": 1041,
+              "code": "clock: new THREE__namespace.Clock(),"
+            },
+            {
+              "line": 1115,
+              "code": "// if frameloop === \"never\" clock.elapsedTime is updated using advance(timestamp)"
+            },
+            {
+              "line": 1116,
+              "code": "clock.stop();"
+            },
+            {
+              "line": 1117,
+              "code": "clock.elapsedTime = 0;"
+            },
+            {
+              "line": 1119,
+              "code": "clock.start();"
+            },
+            {
+              "line": 1120,
+              "code": "clock.elapsedTime = 0;"
+            },
+            {
+              "line": 16179,
+              "code": "let delta = state.clock.getDelta();"
+            },
+            {
+              "line": 16183,
+              "code": "delta = timestamp - state.clock.elapsedTime;"
+            },
+            {
+              "line": 16184,
+              "code": "state.clock.oldTime = state.clock.elapsedTime;"
+            },
+            {
+              "line": 16185,
+              "code": "state.clock.elapsedTime = timestamp;"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/three/src/core/Clock.js",
+          "sha256": "3face6f02cfaf83e89ec8d2f4ca1718eb3228dc2517cf71118e981ba9009434b",
+          "references": [
+            {
+              "line": 6,
+              "code": "* @deprecated since r183."
+            },
+            {
+              "line": 13,
+              "code": "* @deprecated since 183."
+            },
+            {
+              "line": 61,
+              "code": "warn( 'Clock: This module has been deprecated. Please use THREE.Timer instead.' ); // @deprecated, r183"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/three/src/renderers/webgl/WebGLState.js",
+          "sha256": "fd6adb6c01d75a148ef6ebc8ea948a38acc1a48d3cfdbbb1d12dbde668092431",
+          "references": [
+            {
+              "line": 1118,
+              "code": "if ( parameters[ name ] !== undefined ) {"
+            },
+            {
+              "line": 1120,
+              "code": "return parameters[ name ];"
+            },
+            {
+              "line": 1130,
+              "code": "function pixelStorei( name, value ) {"
+            },
+            {
+              "line": 1132,
+              "code": "if ( parameters[ name ] !== value ) {"
+            },
+            {
+              "line": 1134,
+              "code": "gl.pixelStorei( name, value );"
+            },
+            {
+              "line": 1135,
+              "code": "parameters[ name ] = value;"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/three/src/renderers/webgl/WebGLTextures.js",
+          "sha256": "241557c9b4a4cbbc76f4328329f6a26db2f27162e327ac2bb9eb4f851744184a",
+          "references": [
+            {
+              "line": 867,
+              "code": "state.pixelStorei( _gl.UNPACK_ROW_LENGTH, image.width );"
+            },
+            {
+              "line": 883,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_PIXELS, x );"
+            },
+            {
+              "line": 884,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_ROWS, y );"
+            },
+            {
+              "line": 892,
+              "code": "state.pixelStorei( _gl.UNPACK_ROW_LENGTH, currentUnpackRowLen );"
+            },
+            {
+              "line": 893,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_PIXELS, currentUnpackSkipPixels );"
+            },
+            {
+              "line": 894,
+              "code": "state.pixelStorei( _gl.UNPACK_SKIP_ROWS, currentUnpackSkipRows );"
+            },
+            {
+              "line": 926,
+              "code": "state.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, texture.flipY );"
+            },
+            {
+              "line": 927,
+              "code": "state.pixelStorei( _gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha );"
+            },
+            {
+              "line": 928,
+              "code": "state.pixelStorei( _gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion );"
+            },
+            {
+              "line": 932,
+              "code": "state.pixelStorei( _gl.UNPACK_ALIGNMENT, texture.unpackAlignment );"
+            },
+            {
+              "line": 1426,
+              "code": "state.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, texture.flipY );"
+            },
+            {
+              "line": 1427,
+              "code": "state.pixelStorei( _gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha );"
+            },
+            {
+              "line": 1428,
+              "code": "state.pixelStorei( _gl.UNPACK_ALIGNMENT, texture.unpackAlignment );"
+            },
+            {
+              "line": 1429,
+              "code": "state.pixelStorei( _gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion );"
+            }
+          ]
+        },
+        {
+          "file": "node_modules/expo-gl/common/EXWebGLMethods.cpp",
+          "sha256": "8455568588444b678daeddc77b6171f723bb0046fb8901bd4099422dd31cfa4a",
+          "references": [
+            {
+              "line": 123,
+              "code": "case GL_UNPACK_FLIP_Y_WEBGL:"
+            },
+            {
+              "line": 125,
+              "code": "case GL_UNPACK_PREMULTIPLY_ALPHA_WEBGL:"
+            },
+            {
+              "line": 126,
+              "code": "case GL_UNPACK_COLORSPACE_CONVERSION_WEBGL:"
+            },
+            {
+              "line": 233,
+              "code": "NATIVE_METHOD(pixelStorei) {"
+            },
+            {
+              "line": 237,
+              "code": "case GL_UNPACK_FLIP_Y_WEBGL: {"
+            },
+            {
+              "line": 241,
+              "code": "case GL_UNPACK_ALIGNMENT: {"
+            },
+            {
+              "line": 250,
+              "code": "\"EXGL: gl.pixelStorei() doesn't support this parameter yet!\")});"
+            }
+          ]
+        }
+      ],
+      "conclusions": [
+        "R3F native entry imports an events module whose root store constructs Three.Clock. Production/ESM use the same design. Separate production scan found no direct app Clock/pixelStorei call.",
+        "R3F uses Clock start/stop/getDelta and mutable elapsedTime/oldTime. Timer is not a drop-in substitution.",
+        "Browser upload arguments matched against installed EXGL unsupported cases are candidate explanations, not captured native warning parameters.",
+        "Audited textures use opaque RGBA, explicit sRGB, false flipY and false premultiplyAlpha. Several sources explicitly reverse rows. Browser output does not prove native orientation/color.",
+        "No evidence links warnings to dark corridors. No dependency, GL argument, app warning handler or app runtime is changed."
+      ],
+      "nativeUnverified": [
+        "Exact original native warning arguments",
+        "Native warning count/order and owner IDs",
+        "iPhone orientation/alpha/color",
+        "Native pause/resume delta and presentation"
+      ],
+      "references": [
+        "https://metrobundler.dev/docs/configuration/#requirecycleignorepatterns",
+        "https://nodejs.org/api/modules.html#cycles",
+        "https://threejs.org/docs/pages/Clock.html",
+        "https://threejs.org/docs/pages/Timer.html",
+        "https://docs.expo.dev/versions/latest/sdk/gl-view/",
+        "https://docs.expo.dev/develop/development-builds/use-development-builds/",
+        "https://docs.expo.dev/more/expo-cli/"
+      ]
+    }
+  }
+}

@@ -12,7 +12,7 @@ export function initialTheatreProgress(seed=THEATRE_SEED):TheatreProgress {
 const samePlace=(a:PlayerPose,b:PlayerPose)=>Math.hypot(a.position.x-b.position.x,a.position.z-b.position.z)<1e-6;
 export function initialTheatreTransient(saved:TheatreProgress,sessionId:string,pose=THEATRE_SPAWN):TheatreTransient {
   const checkpointId:TheatreCheckpointId = saved.completed?'exit':saved.light.accepted&&samePlace(pose,THEATRE_CHECKPOINTS.booth)?'booth':saved.light.accepted&&samePlace(pose,THEATRE_CHECKPOINTS.projector)?'projector':'entry';
-  return { sessionId,lastSeq:0,lastNowMs:0,mode:'explore',rail:saved.light.rail,activeDrag:null,actor:initialTheatreActor(saved),lastSafePose:THEATRE_CHECKPOINTS[checkpointId],checkpointId,
+  return { sessionId,lastSeq:0,lastNowMs:0,mode:'explore',rail:saved.light.rail,lightDragCompleted:false,activeDrag:null,actor:initialTheatreActor(saved),lastSafePose:THEATRE_CHECKPOINTS[checkpointId],checkpointId,
     lightGateOpen:Number(saved.light.accepted),curtainOpenness:Number(!saved.curtainAccepted),curtainSeconds:0,projectorSeconds:0,projectorCooldown:0,projectorPulseSeconds:0,projectorArmed:false,projectorCrankTravel:0,projectorAngle:0,noiseSequence:0,noiseDistance:0 };
 }
 export function theatreSafeArea(runtime:ChapterRuntime):TheatreCheckpointId|undefined {
@@ -63,13 +63,13 @@ export function applyTheatreCommand(runtime:ChapterRuntime,command:TheatreComman
     const sequence=v.noiseSequence+1;
     v={...v,activeDrag:null,projectorArmed:false,projectorCrankTravel:0,projectorSeconds:THEATRE_PROJECTOR.duration,projectorCooldown:THEATRE_PROJECTOR.duration+THEATRE_PROJECTOR.cooldown,projectorPulseSeconds:THEATRE_PROJECTOR.pulseInterval,noiseSequence:sequence,
       projectorNoise:{sequence,position:{...THEATRE_PROJECTOR.position},strength:THEATRE_PROJECTOR.strength,kind:'projector'}};
-    p={...p,story:{...p.story,projectorUsed:true}};stopInput=true;message='映写機が回り始めた。音はここから響く。';
+    p={...p,story:{...p.story,projectorUsed:true}};stopInput=true;message='映写機が動き始めた。音はここから響く。';
   };
   if(a.type==='enter-light') {
     if(v.mode!=='explore'||context.targetId!=='theatre-light'||p.curtainAccepted)return reject(consumed);
     v={...v,mode:'light',activeDrag:null};p={...p,discoveries:{...p.discoveries,shadow:true}};stopInput=true;
   } else if(a.type==='enter-projector') {
-    if(v.mode!=='explore'||v.activeDrag||context.targetId!=='theatre-projector'||!p.light.accepted||v.projectorCooldown>0)return reject(consumed);
+    if(v.mode!=='explore'||v.projectorArmed||v.activeDrag||context.targetId!=='theatre-projector'||!p.light.accepted||v.projectorCooldown>0)return reject(consumed);
     v={...v,projectorArmed:true,projectorCrankTravel:0};stopInput=true;
   } else if(a.type==='leave'||a.type==='cancel') {
     return {runtime:cancelTheatreManipulation(consumed,a.type==='leave'),accepted:true,stopInput:a.type==='leave',message};
@@ -114,7 +114,7 @@ export function applyTheatreCommand(runtime:ChapterRuntime,command:TheatreComman
   } else if(a.type==='drag-end') {
     const d=v.activeDrag;if(!d||d.pointerId!==a.pointerId)return reject(consumed);
     if(!a.inside)return {runtime:cancelTheatreManipulation(consumed),accepted:true,stopInput:false,message};
-    if(d.kind==='light'){p={...p,light:{...p.light,rail:v.rail}};v={...v,activeDrag:null};}
+    if(d.kind==='light'){p={...p,light:{...p.light,rail:v.rail}};v={...v,activeDrag:null,lightDragCompleted:v.lightDragCompleted||Math.abs(v.rail-d.startValue)>1e-9};}
     else {if(context.targetId!=='theatre-projector')return reject(consumed);if(d.crankTravel>=THEATRE_PROJECTOR.minimumTravel)startProjector();else {v={...v,activeDrag:null};message='もう少し取っ手を回すと動きます。';}}
   }
   return {runtime:{...consumed,theatre:v,progress:{...runtime.progress,theatre:p,exitDoorOpen:p.light.accepted,cleared:p.completed}},accepted:true,stopInput,message};

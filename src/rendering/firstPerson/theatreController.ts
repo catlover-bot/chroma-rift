@@ -3,7 +3,8 @@ import { lightHandlePoint } from '../../domain/theatre/lightGate';
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { advanceTheatreActor } from '../../domain/theatre/actor';
 import { THEATRE_METAL_FLOORS, THEATRE_PROJECTOR } from '../../domain/theatre/definition';
-import { applyTheatreCommand } from '../../domain/theatre/state';
+import { applyTheatreCommand, canLowerTheatreCurtain, theatreSafeArea } from '../../domain/theatre/state';
+import { theatreProjectorStatus } from '../../domain/theatre/deviceStatus';
 import type { TheatreAction, TheatreCommand, TheatreNoise } from '../../domain/theatre/types';
 import { acquisitionResult, fixtureAcquisition, fixtureScreenBounds, fixturePointInWorld, pointOnFixture, type PanelPoint } from './manipulationProjection';
 import { controllerCanInteract, syncCamera, worldForController } from './controllerContext';
@@ -22,8 +23,19 @@ export function theatreDeviceAcquisition(controller: RuntimeController, device: 
     const cue=evaluateInteraction(world,controller.runtime.pose,controller.runtime.progress,controller.matrices);
     if(cue.kind!=='ready'||cue.target.id!==id)return acquisitionResult(id,'busy','装置の取っ手に中央の照準を向けよう。');
   }
-  if(device==='projector'&&(controller.runtime.theatre?.projectorCooldown??0)>0)return acquisitionResult(id,'busy','映写機が止まると、もう一度回せます。');
+  if(device==='light'&&controller.runtime.progress.theatre?.curtainAccepted)return acquisitionResult(id,'busy','防火幕は下がっています。奥の出口へ。');
+  if(device==='projector'&&(!controller.runtime.progress.theatre?.light.accepted||(controller.runtime.theatre?.projectorCooldown??0)>0))return acquisitionResult(id,'busy',theatreProjectorStatus(controller.runtime).message);
   return result;
+}
+/** Curtain availability uses the same booth/actor-clear selector as its
+ * command. Geometry and the live camera still decide whether it can be reached. */
+export function theatreCurtainAcquisition(controller: RuntimeController) {
+  const id='theatre-curtain';
+  if(!controllerCanInteract(controller))return acquisitionResult(id,'busy');
+  const cue=evaluateInteraction(worldForController(controller),controller.runtime.pose,controller.runtime.progress,controller.matrices);
+  if(cue.kind!=='ready'||cue.target.id!==id)return acquisitionResult(id,'busy',cue.reason??'防火幕の取っ手が見える位置へ。');
+  if(!canLowerTheatreCurtain(controller.runtime))return acquisitionResult(id,'busy',theatreSafeArea(controller.runtime)==='booth'?'幕の下が空くのを待とう。':'制御室の内側で、幕の取っ手に向き合おう。');
+  return acquisitionResult(id,'ready');
 }
 export function theatreDeviceScreenBounds(controller:RuntimeController) {
   const live=controller.runtime.theatre,viewport=controller.viewport;

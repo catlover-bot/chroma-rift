@@ -1,0 +1,102 @@
+{
+  "source": {
+    "basename": "ScreenRecording_09-09-2026 23-18-24_1.mp4",
+    "bytes": 98842411,
+    "sha256": "ab6adeb92180bacffd674e5fd1a1b78753130d22d007d92241603def9807e39e",
+    "durationSeconds": 358.630114,
+    "streams": [
+      {
+        "codec_name": "hevc",
+        "codec_type": "video",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "sample_rate": "44100",
+        "channels": 2
+      }
+    ]
+  },
+  "reviewMethod": "17 timeordered decoded still frames actually opened with view_image; not continuous real-time video playback",
+  "audioListened": false,
+  "nativeDeviceOperatedByAgent": false,
+  "observations": [
+    {
+      "seconds": 10,
+      "observed": "Stage list visibly contains 03 影の映写室 and separate はじまりの章."
+    },
+    {
+      "seconds": 40,
+      "observed": "Old chapter key puzzle shown with objective 欠けた鍵を探す; not theatre prerequisite evidence."
+    },
+    {
+      "seconds": 88,
+      "observed": "Dark loading view with central activity indicator; one sample cannot determine loading duration."
+    },
+    {
+      "seconds": 112,
+      "observed": "Lamp manipulation: two small outlined windows, silhouette, caption 右の窓に影 / 左の窓に光, dim 灯りを固定する."
+    },
+    {
+      "seconds": 128,
+      "observed": "Exploration viewpoint shows the silhouette and two outlined windows with crosses underneath; board partly clipped at left."
+    },
+    {
+      "seconds": 137,
+      "observed": "Lamp manipulation caption says both windows lit; fixed button appears dim in this sampled frame; touch release/semantic state cannot be read from this single frame."
+    },
+    {
+      "seconds": 143,
+      "observed": "Objective has advanced to the control room curtain, yet lamp acquisition guidance and 灯りを動かす remain visible."
+    },
+    {
+      "seconds": 165,
+      "observed": "Actor body and limbs visible near bright perspective exhibit; side-window prompt shown."
+    },
+    {
+      "seconds": 183,
+      "observed": "Downward view of floor and wall edges, close dark tones; no claim the player is lost or geometry absent."
+    },
+    {
+      "seconds": 203,
+      "observed": "Projector manipulation view: lever, reel and caution that surroundings keep moving; no explicit active/cooldown readout in sample."
+    },
+    {
+      "seconds": 225,
+      "observed": "Dark wall and shelf-edge view, with こちらに気づいた。棚の陰へ。 caption; actor not visible in this sample."
+    },
+    {
+      "seconds": 257,
+      "observed": "Perspective exhibit shown obliquely, one dark prop visible; perceptual illusion not established by screenshot."
+    },
+    {
+      "seconds": 276,
+      "observed": "Close perspective exhibit view with partial prop and room inspection action; transient instruction says approach visible device."
+    },
+    {
+      "seconds": 312,
+      "observed": "Maintenance-open status 保守通路は開いています。 coexists with bright 保守通路を開く button."
+    },
+    {
+      "seconds": 318,
+      "observed": "Projector manipulation view again; reel and handle orientation differ from 203s, but no audible/noise/AI inference."
+    },
+    {
+      "seconds": 338,
+      "observed": "Objective says 防火幕は閉じた。奥のサービス出口まで歩く; sampled geometry largely wall/handle."
+    },
+    {
+      "seconds": 345,
+      "observed": "Theatre result page says 影の映写室から脱出 and lists discoveries and replay/home controls."
+    }
+  ],
+  "limitations": [
+    "No inference of player intent, being lost, fear or perceptual illusion.",
+    "No actual application FPS claim from encoded stream nominal/average frame rates.",
+    "No proof of projector noise reaching AI or sound being audible.",
+    "No evidence linking Clock/EXGL warning to dark surfaces.",
+    "Original video and extracted frames remain ignored .expo artifacts, not Git assets."
+  ]
+}

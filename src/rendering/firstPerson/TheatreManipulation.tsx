@@ -1,9 +1,10 @@
 import { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, Text, View, type GestureResponderEvent, type NativeTouchEvent } from 'react-native';
-import { evaluateLight } from '../../domain/theatre/lightGate';
+import { theatreLightStatus, theatreProjectorStatus } from '../../domain/theatre/deviceStatus';
 import type { TheatreAction } from '../../domain/theatre/types';
 import type { RuntimeController } from './controllerTypes';
-import { theatreAction, theatreDeviceScreenBounds, theatrePointer } from './theatreController';
+import { controllerCanInteract } from './controllerContext';
+import { theatreAction, theatreDeviceAcquisition, theatreDeviceScreenBounds, theatrePointer } from './theatreController';
 import { SceneActionButton } from './SceneActionButton';
 import { observeReleaseBarrier, requireAllPointersReleased, targetChangedTouches } from './touchInput';
 
@@ -57,8 +58,9 @@ export function TheatreTouchLayer({ controller, enabled, onChange, width, height
 }
 export function TheatreDeviceHeading({ controller }: { controller: RuntimeController }) {
   const light=controller.runtime.theatre?.mode==='light';
+  const fixed=controller.runtime.progress.theatre?.light.accepted;
   return <View pointerEvents="none" style={styles.heading} testID="theatre-device-heading">
-    <Text style={styles.caption}>{light?'灯りを動かし、2つの受光窓に光を届ける':'取っ手を回して、映写機を動かす'}</Text>
+    <Text style={styles.caption}>{light?fixed?'灯りと影の観察（任意）':'2つの窓に光を届ける':'取っ手を回す'}</Text>
   </View>;
 }
 function Button({label,disabled,onPress,sessionKey}:{label:string;disabled:boolean;onPress:()=>void;sessionKey:string}) {
@@ -72,12 +74,16 @@ export function TheatreDeviceControls({controller,enabled,onChange,simple,reader
   const owner=useMemo(()=>lifetime(enabled,sessionKey+':'+mode),[enabled,sessionKey,mode]);
   useLayoutEffect(()=>{owner.activate();return()=>owner.dispose();},[owner]);
   if(!live||!saved||mode==='explore')return null;
-  const light=mode==='light',dragging=!!live.activeDrag, available=enabled&&!!controller.matrices&&!controller.retired;
-  const optical=evaluateLight(live.rail),status=light?optical.windows.map(w=>(w.id==='left'?'左':'右')+'の窓に'+(w.lit?'光':'影')).join(' ／ '):'映写機の操作中も、周囲は動いています。';
-  const run=(action:TheatreAction)=>{if(!available||!owner.current())return;theatreAction(controller,action,reader);onChange();};
+  const light=mode==='light',dragging=!!live.activeDrag, active=enabled&&controllerCanInteract(controller), available=active&&theatreDeviceAcquisition(controller,mode).kind==='ready';
+  const optical=theatreLightStatus(controller.runtime),projector=theatreProjectorStatus(controller.runtime);
+  const status=light?`光が届いた窓 ${optical.count}/2`:projector.message;
+  const run=(action:TheatreAction)=>{if(!enabled||!owner.current()||!controllerCanInteract(controller)||action.type!=='leave'&&theatreDeviceAcquisition(controller,mode).kind!=='ready')return;theatreAction(controller,action,reader);onChange();};
   return <View style={styles.controls} testID="theatre-device-controls">
     <Text accessibilityLiveRegion="polite" style={styles.caption} testID="theatre-device-status">{status}</Text>
-    {light&&saved.light.accepted?<Text style={styles.caption}>灯りを固定した。開いた戸から映写室へ</Text>:null}
+    {light?<View style={styles.windows} testID="theatre-window-statuses">{optical.windows.map(window=>
+      <Text key={window.id} testID={`theatre-window-${window.id}-status`} accessibilityLabel={window.label+'：'+window.state} style={styles.windowState}>{window.number}：{window.state}</Text>)}</View>:null}
+    {light&&optical.showDragCue&&!simple&&!reader?<Text testID="theatre-light-drag-cue" style={styles.caption}>取っ手をレール沿いにドラッグ</Text>:null}
+    {light?<Text testID="theatre-light-instruction" style={styles.caption}>{optical.instruction}</Text>:null}
     {light&&(simple||reader)&&!saved.light.accepted?<View>
       <View accessible accessibilityRole="adjustable" accessibilityLabel="灯りのレール位置" accessibilityState={{disabled:!available||dragging}}
         accessibilityValue={{min:-1,max:1,now:live.rail,text:status}} accessibilityActions={[{name:'decrement',label:'手前へ'},{name:'increment',label:'奥へ'}]}
@@ -89,16 +95,18 @@ export function TheatreDeviceControls({controller,enabled,onChange,simple,reader
     </View>:null}
     {!light&&(simple||reader)?<Button label="取っ手を1/4回す" disabled={!available||dragging||live.projectorCooldown>0} sessionKey={sessionKey} onPress={()=>run({type:'crank-step',delta:Math.PI/2})}/>:null}
     <View style={styles.row}>
-      {light&&!saved.light.accepted?<Button label="灯りを固定する" disabled={!available||dragging||!optical.canLock} sessionKey={sessionKey} onPress={()=>run({type:'commit-light'})}/>:null}
-      <Button label="探索へ戻る" disabled={!available} sessionKey={sessionKey} onPress={()=>run({type:'leave'})}/>
+      {light&&!saved.light.accepted?<Button label={optical.commitLabel} disabled={!available||!optical.canCommit} sessionKey={sessionKey} onPress={()=>run({type:'commit-light'})}/>:null}
+      <Button label={light&&saved.light.accepted?'観察を終える':'探索へ戻る'} disabled={!active} sessionKey={sessionKey} onPress={()=>run({type:'leave'})}/>
     </View>
   </View>;
 }
 const styles=StyleSheet.create({
   heading:{padding:8,gap:3,borderRadius:10,backgroundColor:'#20252DE8'},
   controls:{padding:8,gap:6,borderRadius:10,backgroundColor:'#20252DE8'},
-  caption:{color:'#E8DFC6',fontSize:14,textAlign:'center'},
+  caption:{color:'#E8DFC6',fontSize:14,textAlign:'center',flexShrink:1},
   row:{flexDirection:'row',flexWrap:'wrap',gap:6,alignItems:'center'},
-  button:{minHeight:48,minWidth:48,flexGrow:1,paddingHorizontal:9,paddingVertical:8,borderWidth:1,borderColor:'#ABA795',borderRadius:10,backgroundColor:'#343D44',alignItems:'center',justifyContent:'center'},
+  windows:{flexDirection:'row',flexWrap:'wrap',gap:16,justifyContent:'center'},
+  windowState:{color:'#E8DFC6',fontSize:16,fontWeight:'600',textAlign:'center'},
+  button:{minHeight:48,minWidth:48,maxWidth:'100%',flexGrow:1,flexShrink:1,paddingHorizontal:9,paddingVertical:8,borderWidth:1,borderColor:'#ABA795',borderRadius:10,backgroundColor:'#343D44',alignItems:'center',justifyContent:'center'},
   disabled:{opacity:.5},semantic:{minHeight:44,justifyContent:'center',padding:6},
 });
