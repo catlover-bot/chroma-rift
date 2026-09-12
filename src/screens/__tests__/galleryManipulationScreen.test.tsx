@@ -177,7 +177,7 @@ it('lights the emergency switch and inspects the exit through actual scene actio
   const original = screenProps('shadow', { checkpoint: createCheckpoint(createGalleryRuntime()) });
   const view = await render(<FirstPersonScreen {...original} />);
   const controller = scene().controller;
-  expect(view.getByTestId('current-objective')).toHaveTextContent('出口を探す');
+  expect(view.getByTestId('current-objective')).toHaveTextContent('非常灯を点け、職員通路を探す');
   expect(worldForController(controller).interactables.some(target => target.id.startsWith('emblem-') || target.id === 'key')).toBe(false);
   await aimTarget(view, 'gallery-light');
   await fireEvent.press(view.getByRole('button', { name: '非常灯を点ける' }));

@@ -8,9 +8,9 @@ import type { SceneResources } from './resources';
 
 /** Presentation only. The same simulation owns root, eyes and planted feet in
  * both chapters; no render-frame clocks, root motion or extra renderer. */
-export function GalleryActor({ runtime, resources, reducedMotion: _reducedMotion, actorSource, name = 'gallery-exhibit-actor', onFrameError }: {
+export function GalleryActor({ runtime, resources, reducedMotion: _reducedMotion, actorSource, name = 'gallery-exhibit-actor', onFrameError, framePriority = 0 }: {
   runtime: RefObject<ChapterRuntime>; resources: SceneResources; reducedMotion: boolean;
-  actorSource?: () => { motion: ActorMotionState; visible: boolean } | undefined; name?: string; onFrameError?: ((error: unknown) => void) | undefined;
+  actorSource?: () => { motion: ActorMotionState; visible: boolean } | undefined; name?: string; onFrameError?: ((error: unknown) => void) | undefined; framePriority?: number;
 }) {
   const body = useRef<THREE.Group>(null), chest = useRef<THREE.Group>(null), head = useRef<THREE.Group>(null);
   const leftArm = useRef<THREE.Group>(null), rightArm = useRef<THREE.Group>(null);
@@ -47,7 +47,7 @@ export function GalleryActor({ runtime, resources, reducedMotion: _reducedMotion
         const joint = bones.current[side + '-knee']; if (joint) joint.position.set(knee.x, knee.y, knee.z);
       }
     } catch (error) { if (onFrameError) onFrameError(error); else throw error; }
-  });
+  }, framePriority);
   const actor = source(), motion = actor?.motion;
   return <group ref={body} name={name} visible={!!actor?.visible} position={motion ? [motion.position.x, motion.position.y, motion.position.z] : [0, 0, 9]} rotation={[0, motion?.yaw ?? 0, 0]} dispose={null}>
     <group ref={chest} name="actor-delayed-chest" position={[0, 1.23, 0]}>

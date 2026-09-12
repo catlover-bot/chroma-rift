@@ -19,6 +19,7 @@ export type FirstPersonDiagnostics = {
   rnLayout: Measurement<DimensionsRecord>; drawingBuffer: Measurement<DimensionsRecord>; pixelRatio: Measurement<number>;
   contextCreates: number; rendererCreates: number; rendererOwnership: 'unknown' | 'live' | 'teardown-only' | 'closed';
   sceneCommitted: boolean; frameCallbacks: number; simulationTicks: number; renderCalls: number; renderReturns: number; presentationReturns: number; sceneSampleRenderReturn: number;
+  offscreenPasses: number; frameOffscreenPasses: number; offscreenTargetSize: Measurement<[number, number]>;
   camera: Measurement<{ position: [number, number, number]; yaw: number; pitch: number; aspect: number; near: number; far: number; matricesFinite: boolean; valid: boolean; layers: number }>;
   pose: { insideSolid: Measurement<boolean>; supportedFloor: Measurement<boolean>; safe: Measurement<boolean> };
   scene: { children: number; meshes: number; visibleLayerMeshes: number; frustumCandidateMeshes: number; materials: number; geometries: number; textures: number };
@@ -42,7 +43,8 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
     revision: DIAGNOSTIC_REVISION, session: ++nextSession, sceneMode, stage: 'initializing', open: false,
     nativeGL: 'unknown', appActive: 'unknown', paused: false, rnLayout: 'unknown', drawingBuffer: 'unknown', pixelRatio: 'unknown',
     contextCreates: 0, rendererCreates: 0, rendererOwnership: 'unknown', sceneCommitted: false,
-    frameCallbacks: 0, simulationTicks: 0, renderCalls: 0, renderReturns: 0, presentationReturns: 0, sceneSampleRenderReturn: 0, camera: 'unknown',
+    frameCallbacks: 0, simulationTicks: 0, renderCalls: 0, renderReturns: 0, presentationReturns: 0, sceneSampleRenderReturn: 0,
+    offscreenPasses: 0, frameOffscreenPasses: 0, offscreenTargetSize: 'unknown', camera: 'unknown',
     pose: { insideSolid: 'unknown', supportedFloor: 'unknown', safe: 'unknown' },
     scene: { children: 0, meshes: 0, visibleLayerMeshes: 0, frustumCandidateMeshes: 0, materials: 0, geometries: 0, textures: 0 },
     lastFrame: { drawCalls: 'unknown', triangles: 'unknown', geometries: 'unknown', textures: 'unknown', samplePoint: 'not-sampled' },
@@ -91,7 +93,7 @@ export function updateStageKitDiagnostics(record: FirstPersonDiagnostics, contro
     unavailableReason:snapshot.acquisition?.kind==='ready'?null:snapshot.acquisition?.message??snapshot.cue.reason??null,
     objective:snapshot.objective,lastCommand:controller.lastCommand,actor:actor?.phase??null,lastSeen:actor?.lastSeen??null,lastHeard:runtime.theatre?.actor.lastHeard??runtime.vault?.actor.lastHeard??null,
     noiseSource:runtime.theatre?.environmentNoise?.position??runtime.theatre?.projectorNoise?.position??null,
-    renderPasses:record.renderReturns>0?1:0,totalDrawCalls:record.lastFrame.drawCalls,
+    renderPasses:record.renderReturns>0?1+record.frameOffscreenPasses:0,totalDrawCalls:record.lastFrame.drawCalls,
     ownedResources:{geometries:record.scene.geometries,materials:record.scene.materials,textures:record.scene.textures}};
 }
 export function updateDiagnosticEnvironment(record: FirstPersonDiagnostics, value: Partial<Pick<FirstPersonDiagnostics, 'sceneMode' | 'appActive' | 'paused' | 'nativeGL'>>): void { Object.assign(record, value); }

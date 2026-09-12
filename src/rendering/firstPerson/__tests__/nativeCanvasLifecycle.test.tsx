@@ -22,6 +22,7 @@ import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../../types/
 import { ChapterScene } from '../ChapterScene';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../FirstPersonCanvas';
 import { createSceneResources } from '../resources';
+import { MIRROR_TARGET_SIZE } from '../planarMirror';
 import { commandController, prepareControllerNotebook, setControllerNotebookPreview, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
 
 // Keep installed native Canvas, Provider, reconciler, applyProps and useFrame.
@@ -37,25 +38,33 @@ const resourceFactory = jest.mocked(createSceneResources);
 const deviceContext = { drawingBufferWidth: 390, drawingBufferHeight: 740, endFrameEXP: jest.fn() };
 function fakeRenderer() {
   const viewport = new THREE.Vector4(0, 0, 390, 740);
-  const info = { render: { calls: 0, triangles: 0 }, memory: { geometries: 4, textures: 1 } };
+  const scissor = new THREE.Vector4(0, 0, 390, 740);
+  let renderTarget: THREE.WebGLRenderTarget | null = null;
+  let scissorTest = false;
+  const info = { render: { calls: 0, triangles: 0 }, memory: { geometries: 4, textures: 1 }, reset: jest.fn(() => { info.render.calls = 0; info.render.triangles = 0; }) };
   // Contract substitute only: update genuine scene matrices as Three.render
   // would, then report synthetic submission counters. This executes no GPU.
   const draw = jest.fn((scene: THREE.Scene, camera: THREE.Camera) => {
     scene.updateMatrixWorld(true);
     camera.updateMatrixWorld(true);
-    info.render.calls = 3;
-    info.render.triangles = 36;
+    info.render.calls += 3;
+    info.render.triangles += 36;
   });
   return {
     render: draw, draw, setPixelRatio: jest.fn(), setSize: jest.fn((width: number, height: number) => { viewport.set(0, 0, width, height); }), setClearColor: jest.fn(),
     getContext: () => deviceContext, dispose: jest.fn(), forceContextLoss: jest.fn(),
     getViewport: jest.fn((target: THREE.Vector4) => target.copy(viewport)),
-    getScissor: (target: THREE.Vector4) => target.copy(viewport), getScissorTest: () => false,
-    getPixelRatio: () => 1, getRenderTarget: () => null,
+    getScissor: (target: THREE.Vector4) => target.copy(scissor), getScissorTest: () => scissorTest,
+    setViewport: jest.fn((value: THREE.Vector4 | number, y?: number, width?: number, height?: number) => { if(typeof value==='number')viewport.set(value,y!,width!,height!);else viewport.copy(value); }),
+    setScissor: jest.fn((value: THREE.Vector4 | number, y?: number, width?: number, height?: number) => { if(typeof value==='number')scissor.set(value,y!,width!,height!);else scissor.copy(value); }),
+    setScissorTest: jest.fn((value: boolean) => { scissorTest = value; }),
+    setRenderTarget: jest.fn((value: THREE.WebGLRenderTarget | null) => { renderTarget = value; }),
+    getPixelRatio: () => 1, getRenderTarget: () => renderTarget,
+    autoClear: true, clear: jest.fn(), state: { buffers: { depth: { setMask: jest.fn() } } },
     debug: { checkShaderErrors: true, onShaderError: null as THREE.WebGLRenderer['debug']['onShaderError'] },
     renderLists: { dispose: jest.fn() }, shadowMap: { enabled: false, type: 0 },
     info,
-    xr: { isPresenting: false, addEventListener: jest.fn(), removeEventListener: jest.fn() },
+    xr: { enabled: false, isPresenting: false, addEventListener: jest.fn(), removeEventListener: jest.fn() },
     outputColorSpace: '', toneMapping: 0,
   };
 }
@@ -101,6 +110,55 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     jest.restoreAllMocks();
     jest.useRealTimers();
+  });
+
+  it('renders the mirror offscreen before one native presentation and releases its target on exit', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -2.45, y: 1.6, z: 11.3 }, yaw: Math.PI / 2, pitch: 0 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      const native = rendererRoot(renderer).store.getState();
+      const surface = native.scene.getObjectByName('planar-mirror') as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+      expect(surface).toBeDefined();
+      const disposed = jest.fn();
+      surface.material.addEventListener('dispose', disposed);
+      await submitFrame(renderer);
+      expect(renderer.draw).toHaveBeenCalledTimes(2);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics).toMatchObject({ stage: 'ready', simulationTicks: 0, renderCalls: 1,
+        presentationReturns: 1, offscreenPasses: 1, frameOffscreenPasses: 1, offscreenTargetSize: [MIRROR_TARGET_SIZE, MIRROR_TARGET_SIZE] });
+      expect(renderer.info.render.calls).toBe(6);
+      expect(renderer.getRenderTarget()).toBeNull();
+      expect(surface.visible).toBe(true);
+      await submitFrame(renderer, 2);
+      expect(controller.diagnostics.simulationTicks).toBe(1);
+      expect(renderer.draw).toHaveBeenCalledTimes(4);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(2);
+      expect(controller.diagnostics.offscreenPasses).toBe(2);
+      await view.unmount();
+      expect(disposed).toHaveBeenCalledTimes(1);
+    } finally { if (_roots.size) await view.unmount(); }
+  });
+
+  it('fails the mirror frame without presenting a stale main pass after offscreen draw failure', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -2.45, y: 1.6, z: 11.3 }, yaw: Math.PI / 2, pitch: 0 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      expect(current.onReady).toHaveBeenCalledTimes(1);
+      renderer.draw.mockImplementationOnce(() => { throw new Error('Mirror target draw failed'); });
+      await submitFrame(renderer, 2);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics.stage).toBe('failed');
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      expect(renderer.getRenderTarget()).toBeNull();
+      expect(rendererRoot(renderer).store.getState().scene.getObjectByName('planar-mirror')?.visible).toBe(true);
+    } finally { await view.unmount(); }
   });
 
   it.each([VAULT_CHAPTER_ID, THEATRE_CHAPTER_ID])('mounts %s ten times with one renderer per entry and releases every nested scene resource', async chapterId => {

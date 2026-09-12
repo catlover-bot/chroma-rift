@@ -17,6 +17,7 @@ export function SettingsScreen({
   onDeveloperLab,
   onLegacyMaze,
   onLegacyJourney,
+  onLegacyStages,
   onFirstPersonLab,
   currentChapterName,
   onResetChapter, controls, onControlsChange, backLabel = 'ホームへ戻る',
@@ -33,6 +34,7 @@ export function SettingsScreen({
   onDeveloperLab?: () => void;
   onLegacyMaze?: () => void;
   onLegacyJourney?: () => void;
+  onLegacyStages?: () => void;
   onFirstPersonLab?: () => void;
   currentChapterName?: string;
   onResetChapter?: () => void;
@@ -132,7 +134,7 @@ export function SettingsScreen({
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '簡易・詳細調整、設定、旧スコア、旧章と展示室の進行、音の設定、収蔵庫と映写室の進行、ステージ履歴を端末から削除します。', [
+          Alert.alert('保存データをリセット', '第一章の本編進行、簡易・詳細調整、設定、旧スコア、各ステージの記録、音の設定、発見履歴を端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])
@@ -145,6 +147,7 @@ export function SettingsScreen({
       {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
       {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}
       {onLegacyJourney ? <ActionButton label="旧2.5D迷宮（開発用）" onPress={onLegacyJourney} /> : null}
+      {onLegacyStages ? <ActionButton label="旧ステージ一覧（開発用）" onPress={onLegacyStages} /> : null}
       {onLegacyMaze ? <ActionButton label="旧レール検証（開発用）" onPress={onLegacyMaze} /> : null}
     </Screen>
   );

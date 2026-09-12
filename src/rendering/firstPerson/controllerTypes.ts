@@ -21,6 +21,7 @@ export type RuntimeController = {
   audioSequence: number;
   pendingFootstepDistance: number;
   pendingActorFootstepDistance: number;
+  pendingStageSounds: { x: number; y: number; z: number }[];
   pendingActorPlants: ActorFootPlant[];
   pendingActorEvents: (GalleryActorEvent | VaultActorEvent)[];
   pendingExitImpact: boolean;

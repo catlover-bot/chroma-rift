@@ -10,6 +10,10 @@ import type { PaletteId } from '../domain/emblem/color';
 
 export type ScreenName =
   | 'welcome'
+  | 'campaign'
+  | 'campaignEnding'
+  | 'campaignReplayResult'
+  | 'legacyStages'
   | 'calibrationInstructions'
   | 'calibration'
   | 'calibrationResult'

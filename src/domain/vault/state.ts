@@ -115,7 +115,7 @@ export function applyVaultCommand(runtime: ChapterRuntime, command: VaultCommand
       if (puzzle === 'length') p = { ...p, length: { ...p.length, solved: correct, attempts: Math.min(999, p.length.attempts + 1) } };
       else p = { ...p, rod: { ...p.rod, solved: correct, attempts: Math.min(999, p.rod.attempts + 1) } };
       v = { ...v, feedback: { puzzle, correct, sequence: command.seq, remainingSeconds: .9 } };
-      message = correct ? puzzle === 'length' ? '留め金が収まり、格子が開いた。' : '針をロックした。搬出口へ。' :
+      message = correct ? puzzle === 'length' ? '留め金が収まり、格子が開いた。' : '針をロックした。館内搬送路へ。' :
         puzzle === 'length' ? 'まだ収まらない。棒の長さを調整しよう。' : 'まだ鉛直と違う。下げ振りで確かめられます。';
     }
   }

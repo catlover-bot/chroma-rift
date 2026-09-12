@@ -10,6 +10,7 @@ import { VaultDeviceHeading, VaultDeviceControls, VaultTouchLayer } from '../ren
 import { vaultAction, vaultPanelTarget, vaultDeviceScreenBounds, canCloseVaultExitController } from '../rendering/firstPerson/vaultController';
 import { chapterCompletionSummary } from '../app/chapterSummary';
 import { stageDefinition } from '../domain/stageKit/definitions';
+import { stageModule } from '../domain/stageKit/modules';
 import { canCloseGalleryExit, galleryPowerCount } from '../domain/gallery';
 import * as Clipboard from 'expo-clipboard';
 import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
@@ -24,10 +25,11 @@ import { playSelectionHaptic } from '../platform/haptics';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
 import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
-import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
+import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, beginStageHoldController, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, endStageHoldController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
 import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
 import { controlLayout } from '../rendering/firstPerson/controlLayout';
 import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
+import { StageHoldButton } from '../rendering/firstPerson/StageHoldButton';
 import { GalleryDeviceControls, GalleryTouchLayer } from '../rendering/firstPerson/GalleryManipulation';
 import { galleryAction, galleryPanelTarget, galleryDeviceScreenBounds } from '../rendering/firstPerson/galleryController';
 import { TouchControls } from '../rendering/firstPerson/TouchControls';
@@ -467,12 +469,28 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   </View> : null;
   const canCloseExit = vault ? canCloseVaultExitController(controller) : gallery && canCloseGalleryExit(controller.runtime);
   const closeExit = () => { if (blocked || !mounted.current || failed.current) return; if (vault) vaultAction(controller, { type: 'close-exit' }); else galleryAction(controller, { type: 'close-exit' }); publish(controllerSnapshot(controller)); };
+  const hold = stageModule(snapshot.runtime.chapterId)?.hold;
+  const stageHoldTarget = hold?.activeTarget(snapshot.runtime) ?? (snapshot.target && hold?.targets.includes(snapshot.target.id) ? snapshot.target.id : undefined);
+  const holding = !!stageHoldTarget && hold?.activeTarget(snapshot.runtime) === stageHoldTarget;
+  const holdAction = stageHoldTarget ? <StageHoldButton sessionKey={controlSessionKey} label={holding ? '保持中。もう一度押すと放す' : actionLabel}
+    holding={holding} disabled={blocked || interactionBlocked} testID="interact" style={({ pressed }) => [styles.gameButton, blocked && styles.disabled, pressed && styles.pressed]}
+    onBegin={pointerId => {
+      if (!mounted.current || failed.current || blocked) return false;
+      const accepted = beginStageHoldController(controller, stageHoldTarget, pointerId);
+      publish(controllerSnapshot(controller));
+      if (!accepted) setNotice(controller.feedbackMessage || '装置が見える位置へ近づこう。');
+      return accepted;
+    }}
+    onEnd={pointerId => {
+      endStageHoldController(controller, stageHoldTarget, pointerId);
+      if (mounted.current && !failed.current) publish(controllerSnapshot(controller));
+    }}><Text pointerEvents="none" style={styles.buttonText}>{holding ? '指を離して止める' : actionLabel}</Text></StageHoldButton> : null;
   const actions = <View style={styles.actions}>
     {structureNote ? <GameButton sessionKey={controlSessionKey} label="構造をメモで比べる" onPress={openStructureNotes} disabled={blocked} /> : null}
     {compareAvailable ? <GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} /> : null}
     {canCloseExit ? <GameButton sessionKey={controlSessionKey} label="扉を閉める" disabled={blocked || !controller.matrices} onPress={closeExit} /> : null}
     {hasActorChapter && Object.values(progress.theatre?.discoveries ?? progress.vault?.discoveries ?? progress.gallery?.discoveries ?? {}).some(Boolean) ? <GameButton sessionKey={controlSessionKey} label="発見メモ" disabled={blocked} onPress={openNotes} /> : null}
-    <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || interactionBlocked || !snapshot.target} testID="interact" />
+    {holdAction ?? <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || interactionBlocked || !snapshot.target} testID="interact" />}
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
     <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
@@ -500,7 +518,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
           {contextLabel && contextLabel !== projectorReadout ? <Text style={styles.contextText}>{contextLabel}</Text> : null}
           {projectorReadout ? <Text testID="theatre-projector-status" accessibilityLiveRegion="polite" style={styles.contextText}>{projectorReadout}</Text> : null}
         </View> : null}
-        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}><GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : interactionBlocked || !snapshot.target)} testID="interact" /></View>
+        <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}>{holdAction ?? <GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : interactionBlocked || !snapshot.target)} testID="interact" />}</View>
         {compareAvailable ? <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} testID="compare-colors" /></View> : null}
         {!compareAvailable && structureNote ? <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label="構造をメモで比べる" onPress={openStructureNotes} disabled={blocked} /></View> : null}
         {intro && !snapshot.tutorial.moved ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.movement.left, width: layout.movement.width, top: layout.movement.top }]}><Text style={styles.tutorialText}>{moveSide}側をドラッグして歩く</Text></View> : null}

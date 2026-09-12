@@ -1,5 +1,7 @@
 import { createStageJournalStorage, STAGE_JOURNAL_KEY } from './stageJournalStorage';
 import { createModuleStageStorage } from './moduleStageStorage';
+import { CHAPTER_ONE_BACKUP_KEY, CHAPTER_ONE_STORAGE_KEY, createChapterOneStorage } from './chapterOneStorage';
+import type { ChapterOneSession } from '../domain/campaign/session';
 import { stageModule } from '../domain/stageKit/modules';
 import type { StageId } from '../app/stages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -183,6 +185,21 @@ function validateJournalCheckpoint(value: unknown): CheckpointState | undefined 
 }
 const stageJournal = createStageJournalStorage({ enqueue: serializeMutation, epoch: () => progressEpoch, current: isFirstPersonSessionCurrent, validate: validateJournalCheckpoint });
 const moduleStageStorage = createModuleStageStorage({ enqueue: serializeMutation, epoch: () => progressEpoch, current: isFirstPersonSessionCurrent, preserve: (checkpoint,lease)=>stageJournal.preserveUnlocked(checkpoint,lease) });
+/** Existing standalone codecs still own their own monotonic rules. Campaign
+ * persistence reuses them when the current area has not changed. */
+function campaignCheckpointProgresses(previous: CheckpointState, next: CheckpointState): boolean {
+  if (previous.chapterId !== next.chapterId) return false;
+  if (next.chapterId === 'perception-gallery-v1') return galleryDoesNotRewind(previous, next);
+  if (next.chapterId === 'uncanny-vault-v1') return vaultDoesNotRewind(previous, next);
+  if (next.chapterId === 'shadow-theatre-v1') return theatreDoesNotRewind(previous, next);
+  return stageModule(next.chapterId)?.canReplaceCheckpoint?.(previous, next) ?? false;
+}
+const chapterOneStorage = createChapterOneStorage({ enqueue: serializeMutation, epoch: () => progressEpoch, current: isFirstPersonSessionCurrent,
+  checkpointProgresses: campaignCheckpointProgresses });
+export const loadChapterOneStorage = () => chapterOneStorage.load();
+export const saveChapterOneSession = (session: ChapterOneSession, lease: number) => chapterOneStorage.save(session, lease);
+export const adoptLegacyChapterOne = (session: ChapterOneSession, lease: number) => chapterOneStorage.adoptLegacy(session, lease);
+export const restartChapterOne = (session: ChapterOneSession, lease: number) => chapterOneStorage.startNew(session, lease);
 export const loadModuleStageStorage = (id: string) => moduleStageStorage.load(id);
 export const saveModuleStageCheckpoint = (checkpoint: CheckpointState, lease: number) => moduleStageStorage.save(checkpoint, lease);
 export const resetModuleStage = (id: string, checkpoint: CheckpointState) => moduleStageStorage.reset(id, checkpoint, ++progressEpoch);
@@ -387,7 +404,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   const applicationReset = resetApplicationStorage();
   const firstPersonReset = serializeMutation(async () => {
     try {
-      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY,...moduleStageStorage.keys()]);
+      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY, CHAPTER_ONE_STORAGE_KEY, CHAPTER_ONE_BACKUP_KEY,...moduleStageStorage.keys()]);
       return true;
     } catch {
       return false;
@@ -397,6 +414,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   const succeeded = applicationRemoved && chapterRemoved;
   stageJournal.resetCache(succeeded);
   moduleStageStorage.resetCache(succeeded);
+  chapterOneStorage.resetCache(succeeded);
   latestCheckpoint = undefined;
   pendingCheckpointBackup = undefined;
   latestGalleryCheckpoint = undefined;

@@ -30,7 +30,8 @@ export function galleryPanelTarget(controller: RuntimeController, puzzle: Galler
   return galleryDeviceAcquisition(controller, puzzle).kind === 'ready'
     ? worldForController(controller).interactables.find(t => t.id === puzzle + '-panel') : undefined;
 }
-export function galleryCommand(controller: RuntimeController, action: GalleryAction, nowMs = performance.now()): GalleryCommand {
+export function galleryCommand(controller: RuntimeController, action: GalleryAction,
+  nowMs = Math.max(controller.runtime.gallery?.lastNowMs ?? 0, performance.now())): GalleryCommand {
   return { sessionId: String(controller.runtime.session), seq: ++controller.commandSequence, nowMs, action };
 }
 export function dispatchGalleryController(controller: RuntimeController, command: GalleryCommand, accessible = false): boolean {

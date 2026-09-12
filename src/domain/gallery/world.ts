@@ -46,13 +46,13 @@ export function getGalleryWorld(runtime: Pick<ChapterRuntime, 'progress' | 'door
   const exit = box('exit-door', 3, 5, 22.94, 23.06, 'door', gp.finalDoorClosed ? 0 : 3.3, gp.finalDoorClosed ? 3.2 : 6.5);
   const targets: InteractableDefinition[] = [
     panelTarget('gallery-light', '非常灯のスイッチ', GALLERY_LIGHT_FIXTURE),
-    panelTarget('gallery-exit-panel', '出口の電源盤', GALLERY_EXIT_PANEL_FIXTURE),
+    panelTarget('gallery-exit-panel', '職員通路の電源盤', GALLERY_EXIT_PANEL_FIXTURE),
     panelTarget('chromatic-exhibit', '展示番号13', GALLERY_CHROMATIC_FIXTURE),
     panelTarget('shadow-panel', '影の見本', GALLERY_SHADOW_FIXTURE), panelTarget('contour-panel', '描かれていない形', GALLERY_CONTOUR_FIXTURE),
     panelTarget('wiring-panel', '隠れた配線', GALLERY_WIRING_FIXTURE),
     panelTarget('mask-exhibit', '見返す仮面', GALLERY_MASK_FIXTURE), panelTarget('mask-window', '側面の検査窓', { ...GALLERY_MASK_WINDOW_FIXTURE, center: { ...GALLERY_MASK_WINDOW_FIXTURE.center, y: GALLERY_MASK_WINDOW_FIXTURE.center.y + (gp.maskWindowOpen ? 1.6 : 0) } }),
     panelTarget('hybrid-exhibit', '閉館の掲示', GALLERY_HYBRID_FIXTURE),
-    panelTarget('exit', '非常扉', GALLERY_FINAL_DOOR_FIXTURE),
+    panelTarget('exit', '収蔵庫への防火扉', GALLERY_FINAL_DOOR_FIXTURE),
   ];
   for (const [puzzle, fixture] of [['shadow', GALLERY_SHADOW_FIXTURE], ['contour', GALLERY_CONTOUR_FIXTURE]] as const) {
     if (gp[puzzle].solved && !gp.powerTaken[puzzle]) targets.push({ id: (puzzle + '-power') as InteractableId, label: '予備電源', center: { x: fixture.center.x, y: .72, z: fixture.center.z + .27 }, radius: .22, maxDistance: 5.3 });

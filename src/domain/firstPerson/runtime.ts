@@ -86,7 +86,9 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
   if (runtime.paused || runtime.progress.cleared) return runtime;
   const candidate = evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices, runtime.alignment);
   if (candidate.kind !== 'ready' || candidate.target.id !== expectedId) return runtime;
-  const stageInteraction=stageModule(runtime.chapterId)?.interact;
+  const module = stageModule(runtime.chapterId);
+  if (module?.interactResult) return module.interactResult(runtime, expectedId).runtime;
+  const stageInteraction=module?.interact;
   if(stageInteraction)return stageInteraction(runtime,expectedId);
   const progress = runtime.progress;
   if (progress.gallery && runtime.gallery && matrices) {

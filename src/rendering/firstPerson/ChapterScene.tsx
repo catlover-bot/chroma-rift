@@ -5,6 +5,7 @@ import { TheatreScene } from './TheatreScene';
 import { VaultScene } from './VaultScene';
 import { GalleryScene } from './GalleryScene';
 import { STAGE_SCENE_BINDINGS } from './stageSceneBindings';
+import type { StageRenderOffscreen } from './stageSceneBindings';
 import { stageDefinition } from '../../domain/stageKit/definitions';
 import { useFrame } from '@react-three/fiber/native';
 import { useMemo, useRef, type RefObject } from 'react';
@@ -125,12 +126,13 @@ function LegacyChapterScene({ world, runtime, progress, resources, assist, reduc
   );
 }
 
-export function ChapterScene(props: Parameters<typeof LegacyChapterScene>[0]) {
+export function ChapterScene(props: Parameters<typeof LegacyChapterScene>[0] & { renderOffscreen?: StageRenderOffscreen }) {
   const stage=stageDefinition(props.world.chapterId);
   if(stage&&!props.lab&&stage.renderKind==='simple'){
     const Binding=STAGE_SCENE_BINDINGS[stage.id];
     if(!Binding)throw new Error(`Missing scene binding: ${stage.id}`);
-    return <Binding world={props.world} resources={props.resources}/>;
+    return <Binding world={props.world} resources={props.resources} runtime={props.runtime}
+      renderOffscreen={props.renderOffscreen} onFrameError={props.onFrameError}/>;
   }
   if (props.progress.theatre && !props.lab) return <TheatreScene {...props} />;
   if (props.progress.vault && !props.lab) return <VaultScene {...props} />;

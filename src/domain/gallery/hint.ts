@@ -6,8 +6,8 @@ export function galleryHint(runtime: ChapterRuntime): { text: string; target?: V
   const g = runtime.progress.gallery;
   if (!g) return { text: '' };
   const stage = Math.max(1, runtime.progress.hintStage) - 1;
-  if (g.powerConnected) return { text: ['サービス通路を進んで非常扉へ。', '曲がり角の先には、棚の陰に退ける場所がある。', '安全を確かめて非常扉を開き、その先へ歩こう。'][stage]!, target: GALLERY_FINAL_DOOR_FIXTURE.center };
-  if (galleryPowerCount(g) === 2) return { text: '出口の盤に予備電源を二つ接続しよう。', target: GALLERY_EXIT_PANEL_FIXTURE.center };
+  if (g.powerConnected) return { text: ['職員通路を進んで収蔵庫の防火扉へ。', '曲がり角の先には、棚の陰に退ける場所がある。', '安全を確かめて防火扉を開き、その先へ歩こう。'][stage]!, target: GALLERY_FINAL_DOOR_FIXTURE.center };
+  if (galleryPowerCount(g) === 2) return { text: '職員通路の電源盤に予備電源を二つ接続しよう。', target: GALLERY_EXIT_PANEL_FIXTURE.center };
   const nearestC = Math.hypot(runtime.pose.position.x - GALLERY_CONTOUR_FIXTURE.center.x, runtime.pose.position.z - GALLERY_CONTOUR_FIXTURE.center.z) < Math.hypot(runtime.pose.position.x - GALLERY_SHADOW_FIXTURE.center.x, runtime.pose.position.z - GALLERY_SHADOW_FIXTURE.center.z);
   const puzzle = !g.powerTaken.contour && (g.powerTaken.shadow || runtime.gallery?.mode === 'contour' || nearestC) ? 'contour' : 'shadow';
   const device = galleryDeviceStatus(runtime, puzzle)!;

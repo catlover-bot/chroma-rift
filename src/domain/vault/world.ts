@@ -20,7 +20,7 @@ function lengthGrille(openness: number): CollisionVolume[] {
     ...[-.8, -.4, 0, .4, .8].map((x, i) => gate('vault-length-grille-bar-' + i, x, 5, .05, openness))];
 }
 const targets = [target('vault-length', '伸びて見える留め金', VAULT_LENGTH_FIXTURE), target('vault-rod', '傾いた額縁の針', VAULT_ROD_FIXTURE),
-  target('vault-cafe', '収蔵庫の目地', VAULT_CAFE_FIXTURE), target('vault-partition', '通路の仕切り', VAULT_PARTITION_FIXTURE), target('vault-exit', '搬出口の取っ手', VAULT_EXIT_FIXTURE)];
+  target('vault-cafe', '収蔵庫の目地', VAULT_CAFE_FIXTURE), target('vault-partition', '通路の仕切り', VAULT_PARTITION_FIXTURE), target('vault-exit', '映写室への防火扉の取っ手', VAULT_EXIT_FIXTURE)];
 const emptyPanels: WorldGeometry['colorPanels'] = [], emptyFragments: WorldGeometry['keyFragments'] = [];
 const unusedFrame = { center: { x: 0, y: 0, z: 0 }, width: 0, height: 0, outline: [] };
 /** The accepted closure is saved immediately. The same 0.25 s gate travel owns

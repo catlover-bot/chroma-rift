@@ -193,6 +193,16 @@ describe('gallery logical touch points and actual Three camera (presentation con
     expect(c.pendingFootstepDistance).toBe(0);
     detach(); expect(dispose).toHaveBeenCalledTimes(1); expect(c.audio).toBeUndefined();
   });
+  it('keeps generated gallery timestamps monotonic when the host clock moves backward', () => {
+    const { c } = setup();
+    const last = performance.now() + 500;
+    c.runtime.gallery!.lastNowMs = last;
+    const packet = galleryCommand(c, { type: 'enter', puzzle: 'shadow' });
+    expect(packet.nowMs).toBe(last);
+    expect(dispatchGalleryController(c, packet)).toBe(true);
+    const stale = galleryCommand(c, { type: 'leave' }, last - 1);
+    expect(dispatchGalleryController(c, stale)).toBe(false);
+  });
   it('projects wiring handles, preserves cover-only comparison, restores external drops and commits the displayed line exactly once', () => {
     const { c, pointer, width, height } = setup('wiring', 320, 568);
     expect(galleryAction(c, { type: 'enter', puzzle: 'wiring' })).toBe(true);

@@ -1,4 +1,5 @@
-import type { ChapterRuntime, CheckpointState, InteractableId, Vec3, WorldGeometry } from '../firstPerson/types';
+import type { CameraMatrices, ChapterRuntime, CheckpointState, InteractableId, Vec3, WorldGeometry } from '../firstPerson/types';
+import type { ActorFootPlant } from '../actorMotion';
 import type { InputPolicy } from './actionInstance';
 import { THEATRE_BELLS } from '../theatre/environment';
 import { STAGE_DEFINITIONS, type StageId } from './definitions';
@@ -22,6 +23,8 @@ import { galleryHint } from '../gallery/hint';
 import { createGalleryCheckpoint, restoreGalleryCheckpoint } from '../gallery/checkpoint';
 import type { GalleryCommand } from '../gallery/types';
 import { stageBinding as stageKitProbe } from '../stages/stage-kit-probe/binding';
+import { stageBinding as mirrorCorridor } from '../stages/mirror-corridor-v1/binding';
+import { stageBinding as departureControl } from '../stages/departure-control-v1/binding';
 
 export type StagePresentation = { objective: string; hint: { text: string; target?: Vec3 } };
 export type StageModule<C, R> = Readonly<{
@@ -38,6 +41,27 @@ export type StageModule<C, R> = Readonly<{
   renderKind: 'theatre' | 'vault' | 'gallery' | 'simple';
   inputPolicy(runtime: ChapterRuntime): InputPolicy;
   interact?(runtime: ChapterRuntime, targetId: InteractableId): ChapterRuntime;
+  /** Stages with physical command feedback can return the exact accepted or
+   * rejected wording through the same controller acquisition path. */
+  interactResult?(runtime: ChapterRuntime, targetId: InteractableId): { runtime: ChapterRuntime; message: string };
+  /** Pointer-held mechanisms remain module-owned. The host owns the pointer,
+   * and invokes release on lift or cancel without inventing a tap toggle. */
+  hold?: Readonly<{
+    targets: readonly InteractableId[];
+    activeTarget(runtime: ChapterRuntime): InteractableId | undefined;
+    start(runtime: ChapterRuntime, targetId: InteractableId): ChapterRuntime;
+    release(runtime: ChapterRuntime, targetId: InteractableId): ChapterRuntime;
+  }>;
+  cancel?(runtime: ChapterRuntime): ChapterRuntime;
+  /** Optional embodied actor; the common frame owner invokes this after the
+   * module's puzzle update, only when danger is advancing. */
+  actor?: Readonly<{
+    usesGalleryBody: boolean;
+    advance(runtime: ChapterRuntime, dt: number, context: { intensity: 'standard' | 'subdued'; matrices?: CameraMatrices; movedDistance: number }): {
+      runtime: ChapterRuntime; caught: boolean; movedDistance: number; footPlants: ActorFootPlant[];
+      events: ('noticed' | 'windup' | 'caught')[]; soundSources: Vec3[];
+    };
+  }>;
 }>;
 const explorePolicy: InputPolicy = { move: true, look: true, pointer: 'none', dangerAdvances: true, end: 'release' };
 const safeAdjustmentPolicy: InputPolicy = { move: false, look: false, pointer: 'exclusive', dangerAdvances: false, end: 'explicit' };
@@ -70,7 +94,8 @@ const gallery: StageModule<GalleryCommand, ReturnType<typeof applyGalleryCommand
 };
 
 /** Explicit imports are intentional: a new stage has one composition point. */
-export const STAGE_MODULES = { 'shadow-theatre-v1': theatre, 'uncanny-vault-v1': vault, 'perception-gallery-v1': gallery, 'stage-kit-probe': stageKitProbe } as const;
+export const STAGE_MODULES = { 'shadow-theatre-v1': theatre, 'uncanny-vault-v1': vault, 'perception-gallery-v1': gallery,
+  'stage-kit-probe': stageKitProbe, 'mirror-corridor-v1': mirrorCorridor, 'departure-control-v1': departureControl } as const;
 export type ModuleStageId = keyof typeof STAGE_MODULES;
 export function stageModule(id: unknown): (typeof STAGE_MODULES)[ModuleStageId] | undefined {
   return typeof id === 'string' && Object.prototype.hasOwnProperty.call(STAGE_MODULES, id) ? STAGE_MODULES[id as ModuleStageId] : undefined;

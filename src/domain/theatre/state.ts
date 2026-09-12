@@ -105,7 +105,7 @@ export function applyTheatreCommand(runtime:ChapterRuntime,command:TheatreComman
   } else if(a.type==='lower-curtain') {
     if(v.mode!=='explore'||v.activeDrag||context.targetId!=='theatre-curtain'||!canLowerTheatreCurtain(runtime))return reject(consumed);
     p={...p,curtainAccepted:true};v={...v,curtainSeconds:THEATRE_CURTAIN.duration,curtainOpenness:1,actor:{...v.actor,phase:'resolved'},checkpointId:'booth',lastSafePose:THEATRE_CHECKPOINTS.booth};stopInput=true;
-    message='防火幕を下ろした。幕が止まったら、奥のサービス出口へ。';
+    message='防火幕を下ろした。幕が止まったら、点検回廊へ。';
   } else if(a.type==='activate-instance') {
     if(v.mode!=='explore'||v.activeDrag||!p.light.accepted)return reject(consumed);
     const bell=THEATRE_BELLS.find(item=>item.instanceId===a.instanceId);

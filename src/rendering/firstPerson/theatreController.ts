@@ -26,7 +26,7 @@ export function theatreDeviceAcquisition(controller: RuntimeController, device: 
     const cue=evaluateInteraction(world,controller.runtime.pose,controller.runtime.progress,controller.matrices);
     if(cue.kind!=='ready'||cue.target.id!==id)return acquisitionResult(id,'busy','装置の取っ手に中央の照準を向けよう。');
   }
-  if(device==='light'&&controller.runtime.progress.theatre?.curtainAccepted)return acquisitionResult(id,'busy','防火幕は下がっています。奥の出口へ。');
+  if(device==='light'&&controller.runtime.progress.theatre?.curtainAccepted)return acquisitionResult(id,'busy','防火幕は下がっています。点検回廊へ。');
   if(device==='projector'&&(!controller.runtime.progress.theatre?.light.accepted||(controller.runtime.theatre?.projectorCooldown??0)>0))return acquisitionResult(id,'busy',theatreProjectorStatus(controller.runtime).message);
   return result;
 }

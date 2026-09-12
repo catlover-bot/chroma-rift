@@ -8,6 +8,11 @@ import { createTheatreRuntime, createTheatreCheckpoint } from './src/domain/thea
 import { createVaultRuntime } from './src/domain/vault/runtime';
 import { createVaultCheckpoint } from './src/domain/vault/checkpoint';
 import { chapterCompletionSummary } from './src/app/chapterSummary';
+import { APP_VERSION } from './src/app/version';
+import { CHAPTER_ONE, campaignArea, nextCampaignArea, type CampaignAreaId } from './src/domain/campaign/definition';
+import { createCampaignAreaEntry, createCampaignReplayEntry } from './src/domain/campaign/areaEntry';
+import { proposeLegacyCampaignImport, type LegacyImportProposal } from './src/domain/campaign/migration';
+import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, type ChapterOneSession } from './src/domain/campaign/session';
 import { STAGE_DEFINITIONS, type PlayableStageId } from './src/domain/stageKit/definitions';
 import { stageModule } from './src/domain/stageKit/modules';
 import { createCheckpoint, createInitialRuntime, type CheckpointState } from './src/domain/firstPerson';
@@ -25,6 +30,8 @@ import { QuickSetupScreen } from './src/screens/QuickSetupScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
 import { StageResultScreen } from './src/screens/StageResultScreen';
 import { StageSelectScreen } from './src/screens/StageSelectScreen';
+import { ChapterOneHomeScreen } from './src/screens/ChapterOneHomeScreen';
+import { ChapterOneEndingScreen } from './src/screens/ChapterOneEndingScreen';
 import { emptyJournal, mergeStageHistory, resumableStage, STAGES, type StageCardState, type StageId } from './src/app/stages';
 import {
   createDefaultApplication,
@@ -37,14 +44,20 @@ import {
   loadTheatreStorage, resetTheatreChapter, saveTheatreCheckpoint,
   loadVaultStorage, resetVaultChapter, saveVaultCheckpoint, loadStageJournal, recordStageHistory, recordStageEntry,
   loadModuleStageStorage, resetModuleStage, saveModuleStageCheckpoint,
+  loadChapterOneStorage, saveChapterOneSession, adoptLegacyChapterOne, restartChapterOne,
   saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from './src/storage/firstPersonStorage';
+import { loadLegacyCampaignRaw } from './src/storage/chapterOneLegacy';
 import { UI_COLORS } from './src/theme/ui';
+import { ActionButton, Screen } from './src/components/Layout';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT_LAB_PARAMETERS, type FirstPersonControls, type FirstPersonOnboarding, type PersistedApplication } from './src/types/application';
 
 const simpleVisible=(STAGE_DEFINITIONS as readonly {id:string;playerVisible:boolean;renderKind:string}[])
   .filter(stage=>stage.playerVisible&&stage.renderKind==='simple').map(stage=>({id:stage.id as PlayableStageId}));
 type SimpleRun={checkpoint:CheckpointState;started:boolean;hasSave:boolean;needsCommit:boolean;blocked:boolean;message?:string|undefined};
+type CampaignIntent = 'new' | 'continue' | 'import';
+type CampaignRun = { areaId: CampaignAreaId; checkpoint: CheckpointState; lease: number; token: number; replay: boolean };
+type PendingCampaignTransition = { candidate: ChapterOneSession; lease: number; token: number; status: 'saving' | 'failed' };
 function initialSimpleRuns():Record<string,SimpleRun>{
   return Object.fromEntries(simpleVisible.map(stage=>{
     const module=stageModule(stage.id)!;
@@ -57,7 +70,7 @@ export default function App() {
   const [journal, setJournal] = useState(emptyJournal);
   const [journalMessage, setJournalMessage] = useState<string | undefined>();
   const [legacyBlocked, setLegacyBlocked] = useState(false);
-  const [settingsReturn, setSettingsReturn] = useState<'welcome' | 'playInstructions'>('welcome');
+  const [settingsReturn, setSettingsReturn] = useState<'welcome' | 'playInstructions' | 'legacyStages'>('welcome');
   const [replayPending, setReplayPending] = useState(false);
   const [storageWritable, setStorageWritable] = useState(false);
   const [storageMessage, setStorageMessage] = useState<string | undefined>();
@@ -89,6 +102,23 @@ export default function App() {
   const [completedAtEntry, setCompletedAtEntry] = useState(false);
   const [onboarding, setOnboarding] = useState<FirstPersonOnboarding>({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
   const [onboardingWritable, setOnboardingWritable] = useState(false);
+  const [campaign, setCampaign] = useState<ChapterOneSession | undefined>();
+  const campaignRef = useRef<ChapterOneSession | undefined>(undefined);
+  const [campaignLoading, setCampaignLoading] = useState(true);
+  const [campaignBlocked, setCampaignBlocked] = useState<string | undefined>();
+  const [campaignMessage, setCampaignMessage] = useState<string | undefined>();
+  const [campaignMigration, setCampaignMigration] = useState<LegacyImportProposal | undefined>();
+  const [campaignIntent, setCampaignIntent] = useState<CampaignIntent | undefined>();
+  const [campaignAreas, setCampaignAreas] = useState(false);
+  const [campaignRun, setCampaignRun] = useState<CampaignRun | undefined>();
+  const campaignRunToken = useRef(0);
+  const campaignActive = useRef(false);
+  const campaignCleared = useRef<CheckpointState | undefined>(undefined);
+  const [campaignTransition, setCampaignTransition] = useState<PendingCampaignTransition | undefined>();
+  const campaignTransitionRef = useRef<PendingCampaignTransition | undefined>(undefined);
+  const [campaignSessionOnly, setCampaignSessionOnly] = useState(false);
+  const campaignSessionOnlyRef = useRef(false);
+  const campaignSaveTail = useRef<Promise<void>>(Promise.resolve());
 
   useEffect(() => {
     let active = true;
@@ -100,7 +130,17 @@ export default function App() {
       } catch {
         // The in-app setting remains available if the platform preference cannot be read.
       }
-      const [loaded, chapter, gallery, vault, theatre, history, simple] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage(), loadVaultStorage(), loadTheatreStorage(), loadStageJournal(),Promise.all(simpleVisible.map(stage=>loadModuleStageStorage(stage.id)))]);
+      const [loaded, chapter, gallery, vault, theatre, history, simple, chapterOne] = await Promise.all([
+        loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage(), loadVaultStorage(),
+        loadTheatreStorage(), loadStageJournal(), Promise.all(simpleVisible.map(stage=>loadModuleStageStorage(stage.id))),
+        loadChapterOneStorage(),
+      ]);
+      let migration: LegacyImportProposal | undefined, migrationError: string | undefined;
+      if (chapterOne.status === 'empty') {
+        try {
+          migration = proposeLegacyCampaignImport(await loadLegacyCampaignRaw(), `legacy-${Date.now()}`, APP_VERSION);
+        } catch { migrationError = '以前の記録を確認できませんでした。原文を保持しています。'; }
+      }
       if (!active) return;
       setChapterLease(hydrationLease);
       const known = [...[chapter, gallery, vault, theatre],...simple].filter(item => item.hasCheckpoint && item.checkpointWritable).map(item => item.checkpoint);
@@ -131,6 +171,13 @@ export default function App() {
       setVaultBlocked(!vault.checkpointWritable);
       setVaultMessage(vault.message);
       setFirstPersonMessage(chapter.message);
+      const loadedCampaign = chapterOne.status === 'loaded' ? chapterOne.session : undefined;
+      campaignRef.current = loadedCampaign;
+      setCampaign(loadedCampaign);
+      setCampaignLoading(false);
+      setCampaignBlocked(chapterOne.status === 'blocked' ? chapterOne.message : undefined);
+      setCampaignMessage(migrationError);
+      setCampaignMigration(migration);
       setStorageWritable(loaded.status !== 'blocked');
       setStorageMessage(loaded.message);
       dispatch({ type: 'HYDRATE', persisted: loaded.application, systemReducedMotion });
@@ -158,7 +205,132 @@ export default function App() {
     return () => subscription.remove();
   }, [state.settings]);
 
-  const navigateHome = () => { selectionRevision.current += 1; setReplayPending(false); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); };
+  const navigateHome = () => {
+    selectionRevision.current += 1;
+    campaignActive.current = false;
+    campaignRunToken.current += 1;
+    setCampaignRun(undefined);
+    setCampaignIntent(undefined);
+    setReplayPending(false);
+    dispatch({ type: 'NAVIGATE', screen: 'welcome' });
+  };
+  const queueCampaignSave = (session: ChapterOneSession, lease: number) => {
+    const operation = saveChapterOneSession(session, lease);
+    campaignSaveTail.current = operation.then(() => undefined, () => undefined);
+    return operation;
+  };
+  const prepareCampaign = (intent: CampaignIntent) => {
+    setCampaignIntent(intent);
+    setCampaignAreas(false);
+    const target = intent === 'continue' ? campaignRef.current : intent === 'import' && campaignMigration?.status === 'ready' ? campaignMigration.session : undefined;
+    // PLAY owns the existing three-question setup. The campaign's actual area
+    // is passed to its instructions and Stage Kit host separately.
+    dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1', sessionId: `chapter-one-${Date.now()}` });
+    if (target?.campaignCompleted) dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' });
+  };
+  const confirmNewCampaign = () => {
+    const begin = () => prepareCampaign('new');
+    if (!campaignRef.current && !campaignBlocked && (!campaignMigration || campaignMigration.status === 'none')) { begin(); return; }
+    Alert.alert('第一章を最初から', '現在の第一章の進行を新しい周回に置き換えます。旧ステージの原文と設定は保持します。', [
+      { text: 'キャンセル', style: 'cancel' }, { text: '最初から始める', style: 'destructive', onPress: begin },
+    ]);
+  };
+  const enterCampaignRun = (session: ChapterOneSession, lease: number, replay = false, checkpoint = session.checkpoint) => {
+    campaignCleared.current = undefined;
+    campaignActive.current = true;
+    const token = ++campaignRunToken.current;
+    setCampaignRun({ areaId: session.currentArea, checkpoint, lease, token, replay });
+    dispatch({ type: 'NAVIGATE', screen: 'campaign' });
+  };
+  const beginCampaignIntent = async () => {
+    const intent = campaignIntent;
+    if (!intent || resetInFlight.current) return;
+    resetInFlight.current = true;
+    setResetting(true);
+    await campaignSaveTail.current;
+    const lease = beginFirstPersonSession();
+    const previous = campaignRef.current;
+    const candidate = intent === 'new'
+      ? createChapterOneSession(`chapter-one-${Date.now()}`, APP_VERSION, (previous?.resetGeneration ?? -1) + 1)
+      : intent === 'import' && campaignMigration?.status === 'ready' ? campaignMigration.session : previous;
+    const saved = !!candidate && (intent === 'new' ? await restartChapterOne(candidate, lease)
+      : intent === 'import' ? await adoptLegacyChapterOne(candidate, lease) : true);
+    if (!candidate || !saved || !isFirstPersonSessionCurrent(lease)) {
+      setCampaignMessage('第一章の記録を準備できませんでした。原文は保持しています。もう一度お試しください。');
+      setResetting(false); resetInFlight.current = false; return;
+    }
+    campaignRef.current = candidate;
+    setCampaign(candidate);
+    setCampaignIntent(undefined);
+    setCampaignMigration(undefined);
+    setCampaignBlocked(undefined);
+    setCampaignMessage(undefined);
+    campaignSessionOnlyRef.current = false;
+    setCampaignSessionOnly(false);
+    setResetting(false); resetInFlight.current = false;
+    if (candidate.campaignCompleted) dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' });
+    else enterCampaignRun(candidate, lease);
+  };
+  const startCampaignReplay = async (areaId: CampaignAreaId) => {
+    if (resetInFlight.current) return;
+    const area = campaignArea(areaId);
+    const legacyReached = !!area && (((area.stageId === 'perception-gallery-v1' || area.stageId === 'uncanny-vault-v1' || area.stageId === 'shadow-theatre-v1') && journal.history[area.stageId]?.everCleared) ||
+      (areaId === 'chapter-1-area-01' && hasGallerySave) ||
+      (areaId === 'chapter-1-area-02' && hasVaultSave) ||
+      (areaId === 'chapter-1-area-03' && theatreState.hasSave));
+    const entry = createCampaignReplayEntry(areaId, campaignRef.current, legacyReached);
+    if (!entry) { setCampaignMessage('このエリアの練習入口を開けませんでした。'); return; }
+    await campaignSaveTail.current;
+    const lease = beginFirstPersonSession();
+    campaignCleared.current = undefined;
+    campaignActive.current = true;
+    const token = ++campaignRunToken.current;
+    setCampaignMessage(undefined);
+    setCampaignRun({ areaId, checkpoint: entry, lease, token, replay: true });
+    dispatch({ type: 'NAVIGATE', screen: 'campaign' });
+  };
+  const applyCampaignTransition = (candidate: ChapterOneSession, token: number, saved: boolean) => {
+    campaignRef.current = candidate;
+    setCampaign(candidate);
+    campaignTransitionRef.current = undefined;
+    setCampaignTransition(undefined);
+    campaignCleared.current = undefined;
+    if (!saved) { campaignSessionOnlyRef.current = true; setCampaignSessionOnly(true); }
+    else setCampaignMessage(undefined);
+    if (!campaignActive.current || campaignRunToken.current !== token) return;
+    if (candidate.campaignCompleted) {
+      campaignActive.current = false;
+      campaignRunToken.current += 1;
+      setCampaignRun(undefined);
+      dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' });
+      return;
+    }
+    const lease = beginFirstPersonSession();
+    enterCampaignRun(candidate, lease);
+  };
+  const commitCampaignTransition = async (pending: PendingCampaignTransition) => {
+    if (campaignTransitionRef.current?.token !== pending.token) return;
+    const saving = { ...pending, status: 'saving' as const };
+    campaignTransitionRef.current = saving;
+    setCampaignTransition(saving);
+    await campaignSaveTail.current;
+    const saved = await queueCampaignSave(pending.candidate, pending.lease);
+    if (campaignTransitionRef.current?.token !== pending.token) return;
+    if (saved) applyCampaignTransition(pending.candidate, pending.token, true);
+    else {
+      const failed = { ...pending, status: 'failed' as const };
+      campaignTransitionRef.current = failed;
+      setCampaignTransition(failed);
+      setCampaignMessage('エリアの移動を保存できませんでした。再試行するか、この起動中だけ続けられます。');
+    }
+  };
+  const replayableCampaignAreas = CHAPTER_ONE.areas.filter(area =>
+    campaign?.currentArea === area.id || campaign?.completedAreas.includes(area.id) ||
+    ((area.stageId === 'perception-gallery-v1' || area.stageId === 'uncanny-vault-v1' || area.stageId === 'shadow-theatre-v1') && !!journal.history[area.stageId]?.everCleared) ||
+    (area.id === 'chapter-1-area-01' && hasGallerySave) ||
+    (area.id === 'chapter-1-area-02' && hasVaultSave) ||
+    (area.id === 'chapter-1-area-03' && theatreState.hasSave),
+  ).map(area => area.id);
   const selectStage = (id: StageId, replay = false) => {
     const selectionLease = chapterLease, revision = ++selectionRevision.current;
     const choose = () => { if (!isFirstPersonSessionCurrent(selectionLease) || selectionRevision.current !== revision) return; setReplayPending(replay); dispatch({ type: 'PLAY', chapterId: id, sessionId: String(Date.now()) }); };
@@ -291,6 +463,11 @@ export default function App() {
       // Reset does not depend on the platform preference being available.
     }
     setStorageWritable(true);
+    campaignActive.current = false; campaignRunToken.current += 1;
+    campaignRef.current = undefined; setCampaign(undefined); setCampaignLoading(false);
+    setCampaignBlocked(undefined); setCampaignMessage(undefined); setCampaignMigration(undefined);
+    setCampaignRun(undefined); campaignTransitionRef.current = undefined; setCampaignTransition(undefined);
+    campaignSessionOnlyRef.current = false; setCampaignSessionOnly(false);
     setJournal(emptyJournal()); setJournalMessage(undefined); setReplayPending(false); setLegacyBlocked(false);
     setStorageMessage(undefined);
     setFirstPersonMessage(undefined);
@@ -328,7 +505,81 @@ export default function App() {
       />
     );
   } else if (state.screen === 'playInstructions') {
-    screen = <PlayInstructionsScreen chapterId={state.selectedChapterId} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void beginChapter()} onSettings={() => { setSettingsReturn('playInstructions'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} onBack={navigateHome} />;
+    const intentSession = campaignIntent === 'continue' ? campaign : campaignIntent === 'import' && campaignMigration?.status === 'ready' ? campaignMigration.session : undefined;
+    const area = intentSession ? campaignArea(intentSession.currentArea) : CHAPTER_ONE.areas[0];
+    screen = <PlayInstructionsScreen chapterId={campaignIntent ? (area ?? CHAPTER_ONE.areas[0]).stageId : state.selectedChapterId} campaignMode={!!campaignIntent} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void (campaignIntent ? beginCampaignIntent() : beginChapter())} onSettings={() => { setSettingsReturn('playInstructions'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} onBack={navigateHome} />;
+  } else if (state.screen === 'campaignEnding' && campaign?.campaignCompleted) {
+    screen = <ChapterOneEndingScreen onHome={navigateHome} onAreas={() => { setCampaignAreas(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }} />;
+  } else if (state.screen === 'campaignReplayResult' && campaignRun?.replay) {
+    const area = campaignArea(campaignRun.areaId);
+    screen = <Screen><Text style={styles.replayTitle}>{area?.title}を振り返った</Text>
+      <Text style={styles.replayBody}>練習の結果は第一章の現在位置を変えません。</Text>
+      <ActionButton label="エリア一覧へ" variant="primary" onPress={() => { setCampaignAreas(true); navigateHome(); }} />
+    </Screen>;
+  } else if (state.screen === 'campaign' && campaignRun) {
+    const run = campaignRun, area = campaignArea(run.areaId);
+    const current = () => campaignActive.current && campaignRunToken.current === run.token &&
+      isFirstPersonSessionCurrent(run.lease) && !campaignTransitionRef.current;
+    screen = !area ? <Screen><Text style={styles.replayBody}>エリアを読み込めませんでした。</Text><ActionButton label="ホームへ戻る" onPress={navigateHome}/></Screen> :
+      <NativeFirstPersonGate
+        key={`campaign-${run.areaId}-${run.token}`} scene="chapter" chapterId={area.stageId}
+        checkpoint={run.checkpoint} settings={state.settings} controls={controls} onboarding={onboarding}
+        preferredColor={state.activeSetupSource === 'quick' ? state.quickSetupResult?.provisionalColor ?? 'neutral' : state.calibrationProfile?.preferredForegroundColor ?? state.quickSetupResult?.provisionalColor ?? 'neutral'}
+        onSettingsChange={settings => { if (current()) dispatch({ type: 'UPDATE_SETTINGS', settings }); }}
+        onControlsChange={next => {
+          if (!current()) return;
+          setControls(next);
+          void saveFirstPersonControls(next, run.lease).then(saved => {
+            if (!saved && current()) setCampaignMessage('操作設定を保存できませんでした。この起動中は変更した設定で遊べます。');
+          });
+        }}
+        onOnboardingChange={next => {
+          if (!current()) return;
+          setOnboarding(previous => ({ schemaVersion: 1,
+            controlChoiceAcknowledged: previous.controlChoiceAcknowledged || next.controlChoiceAcknowledged,
+            tutorialCompleted: previous.tutorialCompleted || next.tutorialCompleted }));
+          if (onboardingWritable) void saveFirstPersonOnboarding(next, run.lease);
+        }}
+        onCheckpoint={checkpoint => {
+          if (!current() || checkpoint.chapterId !== area.stageId) return;
+          if (checkpoint.progress.cleared) { campaignCleared.current = checkpoint; return; }
+          if (run.replay) return;
+          const previous = campaignRef.current;
+          if (!previous) return;
+          const update = recordCampaignCheckpoint(previous, run.areaId, checkpoint);
+          if (!update.accepted) { setCampaignMessage('エリアの進行を確認できませんでした。現在の記録を保持しています。'); return; }
+          if (!update.changed) return;
+          campaignRef.current = update.session;
+          setCampaign(update.session);
+          if (campaignSessionOnlyRef.current) return;
+          void queueCampaignSave(update.session, run.lease).then(saved => {
+            if (!current()) return;
+            setCampaignMessage(saved ? undefined : '進行を保存できませんでした。この起動中は続けられます。');
+          });
+        }}
+        onComplete={summary => {
+          if (!current() || summary.chapterId !== area.stageId || !campaignCleared.current) return;
+          if (run.replay) {
+            campaignActive.current = false;
+            campaignRunToken.current += 1;
+            dispatch({ type: 'NAVIGATE', screen: 'campaignReplayResult' });
+            return;
+          }
+          const previous = campaignRef.current, cleared = campaignCleared.current;
+          if (!previous) return;
+          const next = nextCampaignArea(run.areaId);
+          const entry = next ? createCampaignAreaEntry(next.id, previous, cleared) : undefined;
+          const transition = completeCampaignArea(previous, run.areaId, cleared, entry);
+          if (!transition.accepted) { setCampaignMessage('次のエリアへの経路を確認できませんでした。現在の記録を保持しています。'); return; }
+          if (campaignSessionOnlyRef.current) { applyCampaignTransition(transition.session, run.token, false); return; }
+          const pending: PendingCampaignTransition = { candidate: transition.session, lease: run.lease, token: run.token, status: 'saving' };
+          campaignTransitionRef.current = pending;
+          setCampaignTransition(pending);
+          void commitCampaignTransition(pending);
+        }}
+        onRestart={() => { if (!current()) return; if (run.replay) void startCampaignReplay(run.areaId); else { navigateHome(); confirmNewCampaign(); } }}
+        onExit={() => { if (current()) navigateHome(); }}
+      />;
   } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
     screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onNextChapter={nextChapter} onReplay={confirmReplay} onHome={navigateHome} onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }} />;
   } else if (state.screen === 'firstPerson' || state.screen === 'galleryNotes' || (state.screen === 'firstPersonLab' && __DEV__)) {
@@ -434,14 +685,15 @@ export default function App() {
         onQuickSetup={() => dispatch({ type: 'START_QUICK_SETUP', sessionId: String(Date.now()) })}
         onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })}
         onReset={() => void reset()}
-        currentChapterName={STAGES.find(stage=>stage.id===state.selectedChapterId)?.title??'帰り道のない入口'}
-        onResetChapter={() => void restartChapter()}
+        currentChapterName={campaignIntent || settingsReturn === 'welcome' ? '第一章「最後の退館者」' : STAGES.find(stage=>stage.id===state.selectedChapterId)?.title??'帰り道のない入口'}
+        onResetChapter={() => { if (campaignIntent || settingsReturn === 'welcome') prepareCampaign('new'); else void restartChapter(); }}
         onBack={() => dispatch({ type: 'NAVIGATE', screen: settingsReturn })}
-        backLabel={settingsReturn === 'playInstructions' ? '入場前の準備へ戻る' : 'ホームへ戻る'}
+        backLabel={settingsReturn === 'playInstructions' ? '入場前の準備へ戻る' : settingsReturn === 'legacyStages' ? '旧ステージ一覧へ戻る' : 'ホームへ戻る'}
         {...(__DEV__ ? {
           onDeveloperLab: () => dispatch({ type: 'NAVIGATE', screen: 'developerLab' }),
           onLegacyMaze: () => dispatch({ type: 'NAVIGATE', screen: 'microMaze' }),
           onLegacyJourney: () => dispatch({ type: 'BEGIN_LEGACY_JOURNEY' }),
+          onLegacyStages: () => dispatch({ type: 'NAVIGATE', screen: 'legacyStages' }),
           onFirstPersonLab: () => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'firstPersonLab' }); },
         } : {})}
       />
@@ -463,7 +715,7 @@ export default function App() {
     screen = <MicroMazeScreen {...(state.calibrationProfile ? { profile: state.calibrationProfile } : {})} settings={state.settings} onComplete={(score) => dispatch({ type: 'FINISH_MAZE', score })} onExit={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
   } else if (state.screen === 'stageResult' && state.latestMazeScore && __DEV__) {
     screen = <StageResultScreen score={state.latestMazeScore} bestScore={state.bestMazeScore} {...(state.calibrationProfile ? { profile: state.calibrationProfile } : {})} settings={state.settings} onRetry={() => dispatch({ type: 'NAVIGATE', screen: 'microMaze' })} onHome={navigateHome} />;
-  } else {
+  } else if (state.screen === 'legacyStages' && __DEV__) {
     const entries = [
       { id: 'perception-gallery-v1' as const, checkpoint: galleryCheckpoint, saved: hasGallerySave || galleryStarted, blocked: galleryBlocked },
       { id: 'uncanny-vault-v1' as const, checkpoint: vaultCheckpoint, saved: hasVaultSave || vaultStarted, blocked: vaultBlocked },
@@ -475,7 +727,20 @@ export default function App() {
       current: entry.blocked ? 'blocked' : entry.checkpoint.progress.cleared ? 'cleared' : entry.saved ? 'exploring' : 'new',
       history: journal.history[entry.id] ?? { everCleared: false, discoveries: [] } }));
     const lastResume = resumableStage(journal, cards);
-    screen = <StageSelectScreen cards={cards} {...(lastResume ? { lastResume } : {})} onSelect={selectStage} onSettings={() => { setSettingsReturn('welcome'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} />;
+    screen = <StageSelectScreen cards={cards} {...(lastResume ? { lastResume } : {})} onSelect={selectStage} onSettings={() => { setSettingsReturn('legacyStages'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} />;
+  } else {
+    screen = <ChapterOneHomeScreen
+      session={campaign} migration={campaignMigration} loading={campaignLoading} blocked={campaignBlocked}
+      message={campaignMessage} replayable={replayableCampaignAreas} showAreas={campaignAreas}
+      onContinue={() => { if (campaign?.campaignCompleted) dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' }); else prepareCampaign('continue'); }}
+      onNew={confirmNewCampaign}
+      onImport={() => { if (campaignMigration?.status === 'ready') prepareCampaign('import'); }}
+      onAreas={() => setCampaignAreas(true)} onHome={() => setCampaignAreas(false)}
+      onReplay={areaId => { void startCampaignReplay(areaId); }}
+      onEnding={() => { if (campaign?.campaignCompleted) dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' }); }}
+      onSettings={() => { setSettingsReturn('welcome'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }}
+      {...(__DEV__ ? { onLegacyStages: () => dispatch({ type: 'NAVIGATE', screen: 'legacyStages' }) } : {})}
+    />;
   }
 
   return (
@@ -488,6 +753,15 @@ export default function App() {
         {vaultMessage ? <Text accessibilityRole="alert" style={styles.notice}>{vaultMessage}</Text> : null}
         {galleryMessage ? <Text accessibilityRole="alert" style={styles.notice}>{galleryMessage}</Text> : null}
         {firstPersonMessage ? <Text accessibilityRole="alert" style={styles.notice}>{firstPersonMessage}</Text> : null}
+        {campaignSessionOnly ? <Text accessibilityRole="alert" style={styles.notice}>この起動中だけ進行しています。終了すると最後に保存できた地点へ戻ります。</Text> : null}
+        {campaignTransition ? <View style={styles.campaignOverlay} accessibilityViewIsModal>
+          <Text style={styles.replayTitle}>{campaignTransition.status === 'saving' ? '次のエリアを保存しています…' : 'エリアの移動を保存できませんでした'}</Text>
+          {campaignTransition.status === 'saving' ? <ActivityIndicator color={UI_COLORS.text}/> : <>
+            <Text style={styles.replayBody}>再試行するか、この起動中だけ次へ進めます。</Text>
+            <ActionButton label="保存を再試行" variant="primary" onPress={() => { const pending = campaignTransitionRef.current; if (pending) void commitCampaignTransition(pending); }}/>
+            <ActionButton label="この起動中だけ続ける" onPress={() => { const pending = campaignTransitionRef.current; if (pending) applyCampaignTransition(pending.candidate, pending.token, false); }}/>
+          </>}
+        </View> : null}
       </View>
     </SafeAreaProvider>
   );
@@ -497,4 +771,8 @@ const styles = StyleSheet.create({
   application: { flex: 1, backgroundColor: UI_COLORS.background },
   loading: { alignItems: 'center', backgroundColor: UI_COLORS.background, flex: 1, justifyContent: 'center' },
   notice: { backgroundColor: UI_COLORS.panel, color: UI_COLORS.text, fontSize: 14, padding: 12 },
+  replayTitle: { color: UI_COLORS.text, fontSize: 23, fontWeight: '700', marginBottom: 16 },
+  replayBody: { color: UI_COLORS.textMuted, fontSize: 16, lineHeight: 25, marginBottom: 20 },
+  campaignOverlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 10, backgroundColor: UI_COLORS.background,
+    justifyContent: 'center', padding: 26, gap: 14 },
 });

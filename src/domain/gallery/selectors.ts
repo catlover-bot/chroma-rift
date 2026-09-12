@@ -34,7 +34,7 @@ export function galleryDeviceStatus(runtime: ChapterRuntime, selected?: GalleryD
   const sameAngles = live.contourAngles.every((angle, id) => angularDifference(angle, saved.contour.angles[id]!) < 1e-10);
   const ready = puzzle === 'shadow' ? count === 2 : count === 3 && sameAngles;
   const incorrect = live.lastDeviceResult?.puzzle === puzzle && !live.lastDeviceResult.correct;
-  const instruction = taken ? '予備電源を取りました。出口の盤へ戻ろう。' : solved ? '下の引き出しが開いた。電源を取ろう。' :
+  const instruction = taken ? '予備電源を取りました。職員通路の電源盤へ戻ろう。' : solved ? '下の引き出しが開いた。電源を取ろう。' :
     puzzle === 'shadow' ? incorrect ? '明るさが違う。どちらかを入れ替えよう。' : count === 0 ? '見本を1枚、下の枠へドラッグ' : count === 1 ? 'もう1枚を、隣の枠へ' : '同じ灰色か確かめて「比べる」' :
       live.activeDrag ? '指を離して、円盤の向きを確定' : count === 3 ? '3枚が中心を向いた。「引き出しを開く」' : count === 0 ? '黒い円盤のふちをドラッグして回す' : 'あと' + (3 - count) + '枚の向きを合わせる';
   return { puzzle, count, total: puzzle === 'shadow' ? 2 : 3, solved, powerTaken: taken,
@@ -44,7 +44,7 @@ export function galleryDeviceStatus(runtime: ChapterRuntime, selected?: GalleryD
 }
 export function galleryObjective(runtime: ChapterRuntime): string {
   const p = runtime.progress, g = p.gallery!;
-  if (p.cleared) return (g.completedFromV1 || g.completedFromV2) ? '以前の展示室のクリア記録を保持しています。' : '閉館後の展示室から脱出した。';
+  if (p.cleared) return (g.completedFromV1 || g.completedFromV2) ? '以前の展示室のクリア記録を保持しています。' : '職員通路を確保した。次は収蔵庫へ。';
   const device = galleryDeviceStatus(runtime);
   if (device) return device.objective;
   if (g.powerConnected && !g.wiring.solved) return '隠れた配線を一本につなぐ';
@@ -52,9 +52,9 @@ export function galleryObjective(runtime: ChapterRuntime): string {
   if (g.wiring.solved && isGalleryExitThreshold(runtime.pose)) return '入ってきた扉の取っ手を見て、閉める';
   if (g.wiring.solved) return '棚の陰を使い、奥の扉へ';
   const count = galleryPowerCount(g);
-  if (count === 2) return '出口の盤へ、予備電源を2つ接続する';
+  if (count === 2) return '職員通路の電源盤へ、予備電源を2つ接続する';
   if (count === 1 || g.exitInspected) return '予備電源を探す ' + count + '/2';
-  return '出口を探す';
+  return '非常灯を点け、職員通路を探す';
 }
 
 export function isGalleryExitThreshold(pose: PlayerPose): boolean {

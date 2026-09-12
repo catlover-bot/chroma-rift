@@ -15,6 +15,7 @@ import { createNativeSceneSession, type NativeSceneSession } from './nativeScene
 import { PROOF_CAMERA, ProofScene } from './ProofScene';
 import { createSceneResources } from './resources';
 import { stageDefinition } from '../../domain/stageKit/definitions';
+import { stageModule } from '../../domain/stageKit/modules';
 import { DEFAULT_EMBLEM_APPEARANCE } from './emblemSurface';
 import { stopController } from './runtimeController';
 import { worldForController } from './controllerContext';
@@ -44,7 +45,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   const proof = props.sceneMode === 'proof' && __DEV__;
   const lifecycle = useMemo(() => createCanvasLifecycle(controller, onError), [controller, onError]);
   const session = useMemo(() => createNativeSceneSession(controller, lifecycle, proof, onReady), [controller, lifecycle, proof, onReady]);
-  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre || stageDefinition(controller.runtime.chapterId)?.renderKind==='simple' ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery || !!controller.runtime.vault || !!controller.runtime.theatre, !!controller.runtime.vault, !!controller.runtime.theatre), [controller, proof, props.quality]);
+  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre || stageDefinition(controller.runtime.chapterId)?.renderKind==='simple' ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery || !!controller.runtime.vault || !!controller.runtime.theatre || !!stageModule(controller.runtime.chapterId)?.actor?.usesGalleryBody, !!controller.runtime.vault, !!controller.runtime.theatre), [controller, proof, props.quality]);
   const runtime = useMemo(() => ({ get current() { return controller.runtime; } }), [controller]);
   const world = useMemo(() => worldForController({ ...controller, runtime: snapshot.runtime }), [controller, snapshot.runtime]);
   const remainingStartup = useRef(props.startupTimeoutMs ?? 12000);
@@ -90,7 +91,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
         <FrameDriver onSnapshot={props.onSnapshot} lifecycle={lifecycle} session={session} />
         {proof ? <ProofScene /> : controller.notebookPreview && resources?.galleryResources ? <NotebookMaskScene resources={resources} /> : <ChapterScene world={world} runtime={runtime} progress={snapshot.runtime.progress} resources={resources!}
           assist={props.assist} reducedMotion={props.reducedMotion} lowQuality={props.quality === 'low'} lab={controller.lab}
-          onFrameError={session.sceneError} />}
+          onFrameError={session.sceneError} renderOffscreen={session.renderOffscreen} />}
       </Canvas>
     </CanvasFailureBoundary>
   </View>;

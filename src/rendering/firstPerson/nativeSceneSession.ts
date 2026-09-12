@@ -32,6 +32,8 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
   let previousTutorial: RuntimeController['tutorial'] | undefined;
   let adapterCanvas: object | undefined;
   let checkPresentation = false;
+  let rawDraw: ((scene: THREE.Scene, camera: THREE.Camera) => void) | undefined;
+  let offscreenRenderer: THREE.WebGLRenderer | undefined;
   const fail = (error: unknown, phase: Parameters<CanvasLifecycle['fail']>[1]) => {
     // Do not retain an automatic puzzle transition from a frame that failed.
     if (previousRuntime) { controller.runtime = previousRuntime; previousRuntime = undefined; }
@@ -39,6 +41,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
     pendingPublish = undefined;
     controller.pendingExitImpact = false; controller.pendingProjectorPulse = false; controller.pendingTheatreCues=[];
     controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
+    controller.pendingStageSounds = [];
     controller.audio?.setActive(false);
     lifecycle.fail(error, phase);
   };
@@ -62,6 +65,11 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
       cleanupShader?.();
       cleanupShader = installShaderDiagnostics(renderer, diagnostics, (error) => fail(error, 'shader'));
       const draw = renderer.render.bind(renderer);
+      rawDraw = draw;
+      offscreenRenderer = renderer;
+      // One frame can contain the mirror pass and the native main pass.
+      // Reset once before both so renderer.info reports their total cost.
+      renderer.info.autoReset = false;
       // Native Canvas adds its presentation wrapper after this draw observer.
       renderer.render = (scene, camera) => {
         if (!lifecycle.isCurrentRenderer(renderer)) return;
@@ -97,6 +105,14 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
   };
   return {
     factory,
+    renderOffscreen(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera, width: number, height: number) {
+      if (renderer !== offscreenRenderer || !rawDraw || !lifecycle.isCurrentRenderer(renderer) || diagnostics.paused || diagnostics.appActive === false)
+        throw new Error('Offscreen render has no live native Canvas owner');
+      rawDraw(scene, camera);
+      diagnostics.offscreenPasses += 1;
+      diagnostics.frameOffscreenPasses += 1;
+      diagnostics.offscreenTargetSize = [width, height];
+    },
     close() { cleanupShader?.(); lifecycle.close(); },
     sceneError(error: unknown) { fail(error, 'scene frame'); },
     step(state: RootState, delta: number, publish: (snapshot: RuntimeSnapshot) => void) {
@@ -107,6 +123,8 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
       }
       if (diagnostics.paused) return;
       diagnostics.frameCallbacks += 1;
+      diagnostics.frameOffscreenPasses = 0;
+      if (typeof state.gl.info?.reset === 'function') state.gl.info.reset();
       lastDelta = delta;
       try {
         sync(state);

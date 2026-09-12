@@ -2,8 +2,8 @@ import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen } from '../compon
 import type { FirstPersonControls, HorrorIntensity } from '../types/application';
 import { stageDefinition } from '../domain/stageKit/definitions';
 
-export function PlayInstructionsScreen({ controls, onStart, onBack, onSettings, chapterId, horrorIntensity = 'standard', onHorrorChange }: {
-  controls: FirstPersonControls; reducedMotion: boolean; chapterId?: string; onStart: () => void; onBack: () => void; onSettings?: () => void;
+export function PlayInstructionsScreen({ controls, onStart, onBack, onSettings, chapterId, campaignMode = false, horrorIntensity = 'standard', onHorrorChange }: {
+  controls: FirstPersonControls; reducedMotion: boolean; chapterId?: string; campaignMode?: boolean; onStart: () => void; onBack: () => void; onSettings?: () => void;
   horrorIntensity?: HorrorIntensity; onHorrorChange?: (value: HorrorIntensity) => void;
 }) {
   const theatre = chapterId === 'shadow-theatre-v1';
@@ -17,7 +17,7 @@ export function PlayInstructionsScreen({ controls, onStart, onBack, onSettings, 
       <Panel>
         <Body>{controls.movementMode === 'simple' ? '歩く・向くボタンで、少しずつ進もう。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回そう。' : '左側をドラッグして歩き、右側をドラッグして見回そう。'}</Body>
       </Panel>
-      <Body>{theatre ? '灯りを動かして受光窓に光を届けよう。防火幕の先に出口があります。' : vault ? 'まず下の棒の長さを見本に合わせ、固定しよう。棚の奥に搬出口があります。' : gallery ? 'まず出口を探そう。大きな非常灯スイッチは、近づいて押せます。' : simple ? simple.teaser : '壁の紋章に近づいて調べよう。'}</Body>
+      <Body>{campaignMode ? theatre ? '灯りを受光窓へ届け、防火幕を下ろして点検回廊へ進む。' : vault ? '留め金を確かめ、館内搬送路から映写室へ進む。' : gallery ? '非常灯を点け、収蔵庫へ続く職員通路を探す。' : simple ? simple.teaser : '館内の次の区画へ進む。' : theatre ? '灯りを動かして受光窓に光を届けよう。防火幕の先に出口があります。' : vault ? 'まず下の棒の長さを見本に合わせ、固定しよう。棚の奥に搬出口があります。' : gallery ? 'まず出口を探そう。大きな非常灯スイッチは、近づいて押せます。' : simple ? simple.teaser : '壁の紋章に近づいて調べよう。'}</Body>
       {gallery || vault || theatre ? <Panel>
         <Body>展示体の気配と巡回があります。控えめでは追尾と接触によるやり直しがありません。</Body>
         {onHorrorChange ? <ChoiceRow>

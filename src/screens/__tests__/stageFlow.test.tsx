@@ -29,9 +29,15 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonC
   return React.createElement(require('react-native').View, { testID: 'native-stage-canvas' });
 }) }));
 const scene = () => jest.mocked(FirstPersonCanvas).mock.calls.at(-1)![0];
+async function legacyControl(view: Awaited<ReturnType<typeof render>>, testId: string) {
+  if (!view.queryByTestId(testId))
+    await fireEvent.press(await view.findByRole('button', { name: '旧ステージ一覧（開発用）' }));
+  return view.findByTestId(testId);
+}
 const readJournal = async () => JSON.parse((await AsyncStorage.getItem(STAGE_JOURNAL_KEY)) ?? '{"recentEntries":[],"history":{}}');
 async function home(view: Awaited<ReturnType<typeof render>>) {
   await fireEvent.press(view.getByTestId('pause-control')); await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+  await fireEvent.press(await view.findByRole('button', { name: '旧ステージ一覧（開発用）' }));
 }
 beforeEach(async () => {
   await resetAllApplicationStorage(); jest.clearAllMocks(); mockReady = true;
@@ -48,20 +54,20 @@ it('does not invent a most recent old save, then records only validated entries 
   await AsyncStorage.setItem(GALLERY_CHECKPOINT_KEY, JSON.stringify(createCheckpoint(createGalleryRuntime())));
   await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, JSON.stringify(vaultCheckpoint('length')));
   const view = await render(<App />);
-  await view.findByTestId('select-uncanny-vault-v1');
+  await legacyControl(view, 'select-uncanny-vault-v1');
   expect(view.queryByTestId('resume-last-stage')).toBeNull();
   expect((await readJournal()).recentEntries).toEqual([]);
-  await fireEvent.press(view.getByTestId('select-uncanny-vault-v1'));
+  await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
   expect((await readJournal()).recentEntries).toEqual([]);
   await fireEvent.press(view.getByText('ホームへ戻る'));
   expect((await readJournal()).recentEntries).toEqual([]);
-  await fireEvent.press(view.getByTestId('select-uncanny-vault-v1'));
+  await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
   await fireEvent.press(view.getByText('収蔵庫へ入る'));
   await waitFor(async () => expect((await readJournal()).recentEntries).toEqual(['uncanny-vault-v1']));
   const old = scene();
   await home(view);
   expect(view.getByText('前回の続き：測れない収蔵庫')).toBeTruthy();
-  await fireEvent.press(view.getByTestId('select-perception-gallery-v1')); await fireEvent.press(view.getByText('展示室へ入る'));
+  await fireEvent.press(await legacyControl(view, 'select-perception-gallery-v1')); await fireEvent.press(view.getByText('展示室へ入る'));
   await waitFor(async () => expect((await readJournal()).recentEntries).toEqual(['perception-gallery-v1', 'uncanny-vault-v1']));
   await act(() => old.onReady());
   expect((await readJournal()).recentEntries[0]).toBe('perception-gallery-v1');
@@ -72,16 +78,16 @@ it('does not invent a most recent old save, then records only validated entries 
 
 it('does not record missing-native, failed-ready, or protected-save trial as a resumable entry', async () => {
   jest.mocked(requireOptionalNativeModule).mockReturnValue(null);
-  const view = await render(<App />); await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1'));
+  const view = await render(<App />); await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
   await fireEvent.press(view.getByText('収蔵庫へ入る')); await view.findByText('3D対応の開発版が必要です');
   expect((await readJournal()).recentEntries).toEqual([]); await view.unmount();
   jest.mocked(requireOptionalNativeModule).mockReturnValue({} as ReturnType<typeof requireOptionalNativeModule>);
   mockReady = false;
-  const notReady = await render(<App />); await fireEvent.press(await notReady.findByTestId('select-uncanny-vault-v1'));
+  const notReady = await render(<App />); await fireEvent.press(await legacyControl(notReady, 'select-uncanny-vault-v1'));
   await fireEvent.press(notReady.getByText('収蔵庫へ入る')); await notReady.findByTestId('native-stage-canvas');
   expect((await readJournal()).recentEntries).toEqual([]); await notReady.unmount();
   const raw = '{"schemaVersion":99,"future":"untouched"}'; await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, raw); mockReady = true;
-  const trial = await render(<App />); await fireEvent.press(await trial.findByTestId('select-uncanny-vault-v1'));
+  const trial = await render(<App />); await fireEvent.press(await legacyControl(trial, 'select-uncanny-vault-v1'));
   await fireEvent.press(trial.getByText('収蔵庫へ入る')); await trial.findByTestId('native-stage-canvas');
   expect((await readJournal()).recentEntries).toEqual([]); expect(await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY)).toBe(raw);
 });
@@ -91,14 +97,14 @@ it('requires replay confirmation, preserves history and other saves, and does no
   const raw = JSON.stringify(old), gallery = JSON.stringify(createCheckpoint(createGalleryRuntime()));
   await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, raw); await AsyncStorage.setItem(GALLERY_CHECKPOINT_KEY, gallery);
   const alert = jest.spyOn(Alert, 'alert'), view = await render(<App />);
-  await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1'));
+  await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
   expect(alert.mock.calls.at(-1)?.[1]).toContain('過去の脱出・発見');
   expect(view.queryByText('収蔵庫へ入る')).toBeNull(); expect(await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY)).toBe(raw);
-  await fireEvent.press(view.getByTestId('review-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
+  await fireEvent.press(await legacyControl(view, 'review-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
   expect(view.queryByTestId('native-stage-canvas')).toBeNull();
   expect((await readJournal()).recentEntries).toEqual([]);
   await fireEvent(view.getByRole('button', { name: 'ホームへ戻る' }), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
-  await fireEvent.press(view.getByTestId('select-uncanny-vault-v1'));
+  await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
   await act(() => alert.mock.calls.at(-1)?.[2]?.find(button => button.text === 'もう一度遊ぶ')?.onPress?.());
   expect(await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY)).toBe(raw);
   await fireEvent.press(view.getByText('収蔵庫へ入る')); await view.findByTestId('native-stage-canvas');
@@ -108,7 +114,7 @@ it('requires replay confirmation, preserves history and other saves, and does no
 });
 
 it('changes shared input preferences before entry and returns to preparation without changing progress or calibration', async () => {
-  const view = await render(<App />); await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1'));
+  const view = await render(<App />); await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
   const before = await AsyncStorage.getItem(APPLICATION_STORAGE_KEY);
   await fireEvent.press(view.getByText('怖さ・音・見え方・操作の設定'));
   await fireEvent.press(view.getByText('左手で見回す'));
@@ -126,7 +132,7 @@ it('links a preserved vault result to the independent theatre without repeating 
   const raw = JSON.stringify(vaultCheckpoint('clear'));
   await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, raw);
   const view = await render(<App />);
-  await fireEvent.press(await view.findByTestId('review-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
+  await fireEvent.press(await legacyControl(view, 'review-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
   const next = view.getByRole('button', { name: '次の章へ：影の映写室' });
   await fireEvent.press(next);
   expect(view.queryByText('映写室へ入る')).toBeNull();
@@ -145,7 +151,7 @@ it('links a preserved vault result to the independent theatre without repeating 
 it('rejects an old validated-entry callback after returning home and a canceled replay confirmation', async () => {
   mockReady = false;
   const gate = jest.spyOn(gateModule, 'NativeFirstPersonGate'), view = await render(<App />);
-  await fireEvent.press(await view.findByTestId('select-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
+  await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1')); await fireEvent.press(view.getByText('収蔵庫へ入る'));
   await view.findByTestId('native-stage-canvas'); const oldEntry = gate.mock.calls.at(-1)![0].onValidatedEntry!;
   await home(view);
   await act(() => oldEntry(vaultCheckpoint()));
@@ -153,7 +159,7 @@ it('rejects an old validated-entry callback after returning home and a canceled 
   await view.unmount();
   await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, JSON.stringify(vaultCheckpoint('clear')));
   const alert = jest.spyOn(Alert, 'alert'), cleared = await render(<App />);
-  await fireEvent.press(await cleared.findByTestId('select-uncanny-vault-v1'));
+  await fireEvent.press(await legacyControl(cleared, 'select-uncanny-vault-v1'));
   const buttons = alert.mock.calls.at(-1)![2]!, accept = buttons.find(button => button.text === 'もう一度遊ぶ')!.onPress!;
   await act(() => buttons.find(button => button.text === 'キャンセル')!.onPress?.());
   await act(() => accept());

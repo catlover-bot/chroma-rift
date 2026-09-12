@@ -47,7 +47,8 @@ it('makes current-chapter and full-data reset scope explicit before either actio
   alert.mock.calls.at(-1)?.[2]?.find(button => button.text === 'この章だけリセット')?.onPress?.();
   expect(current).toHaveBeenCalledTimes(1);
   await fireEvent.press(view.getByText('保存データをリセット'));
-  expect(alert.mock.calls.at(-1)?.[1]).toContain('旧章と展示室の進行、音の設定');
+  expect(alert.mock.calls.at(-1)?.[1]).toContain('第一章の本編進行');
+  expect(alert.mock.calls.at(-1)?.[1]).toContain('各ステージの記録、音の設定、発見履歴');
   alert.mockRestore();
 });
 

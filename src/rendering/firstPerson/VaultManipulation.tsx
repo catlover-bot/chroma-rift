@@ -57,7 +57,7 @@ export function VaultTouchLayer({ controller, enabled, onChange, width, height, 
 }
 export function VaultDeviceHeading({ puzzle }: { puzzle: VaultDevice }) {
   return <View pointerEvents="none" style={styles.heading} testID="vault-device-heading">
-    <Text style={styles.caption} testID="vault-device-objective">{puzzle === 'length' ? '固定して格子を開く' : '針をロックして、搬出口を開く'}</Text>
+    <Text style={styles.caption} testID="vault-device-objective">{puzzle === 'length' ? '固定して格子を開く' : '針をロックして、館内搬送路を開く'}</Text>
     <Text style={styles.caption}>{puzzle === 'length' ? '下の棒を見本と同じ長さに' : '傾いた枠の中で、針を鉛直にする'}</Text>
   </View>;
 }
@@ -78,7 +78,7 @@ export function VaultDeviceControls({ controller, enabled, onChange, simple, rea
   const run = (action: VaultAction) => { if (!available || !owner.current()) return; vaultAction(controller, action, reader); onChange(); };
   const delta = length ? .02 : Math.PI / 90, value = length ? live.length : live.angle;
   const aided = length ? saved.aids.finsHidden || saved.aids.lengthGuide : saved.aids.frameHidden || saved.aids.plumb;
-  const status = puzzle.solved ? length ? '格子が開いた。探索へ戻ろう' : '搬出口へ進もう' : dragging ? '指を離すと位置が決まります' :
+  const status = puzzle.solved ? length ? '格子が開いた。探索へ戻ろう' : '館内搬送路へ進もう' : dragging ? '指を離すと位置が決まります' :
     puzzle.attempts ? length ? '長さを調整して、もう一度固定' : '針を調整して、もう一度ロック' : length ? '長さを合わせて固定' : '鉛直に合わせてロック';
   return <View style={styles.controls} testID="vault-device-controls">
     <Text accessibilityLiveRegion="polite" style={styles.caption} testID="vault-device-status">{status}</Text>

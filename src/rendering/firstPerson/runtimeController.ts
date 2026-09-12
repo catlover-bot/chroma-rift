@@ -28,7 +28,7 @@ import { createTutorial, recordTutorialGuide, recordTutorialMotion } from '../..
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { interactionCue } from '../../domain/firstPerson/interactionCue';
 import type { CheckpointState, HintStage, InteractableDefinition, InteractableId } from '../../domain/firstPerson/types';
-import { clearTouchInput, requireAllPointersReleased, consumeLook, createTouchInput } from './touchInput';
+import { clearTouchInput, requireAllPointersReleased, consumeLook, createTouchInput, endPointer, validPointer, type PointerId } from './touchInput';
 import { createFirstPersonDiagnostics } from './diagnostics';
 
 export type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
@@ -38,7 +38,7 @@ export { soundForControllerTransition } from './controllerTransitionAudio';
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorPlants: [], pendingActorEvents: [], pendingExitImpact: false, pendingProjectorPulse: false, pendingTheatreCues: [], retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingStageSounds: [], pendingActorPlants: [], pendingActorEvents: [], pendingExitImpact: false, pendingProjectorPulse: false, pendingTheatreCues: [], retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -48,23 +48,29 @@ export function recordFrameStats(controller: RuntimeController, delta: number, i
   controller.metrics.geometries = info.memory.geometries;
   controller.metrics.textures = info.memory.textures;
 }
-export function stopController(controller: RuntimeController): void {
+export function stopController(controller: RuntimeController, preserveStageEvents = false): void {
   clearTouchInput(controller.input);
-  controller.runtime = cancelTheatreManipulation(cancelVaultManipulation(cancelGalleryManipulation(controller.runtime)));
+  const cancelled = cancelTheatreManipulation(cancelVaultManipulation(cancelGalleryManipulation(controller.runtime)));
+  controller.runtime = preserveStageEvents ? cancelled : stageModule(cancelled.chapterId)?.cancel?.(cancelled) ?? cancelled;
   controller.simpleStep = 0;
   controller.pendingFootstepDistance = 0;
   controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
+  if (!preserveStageEvents) controller.pendingStageSounds = [];
   controller.pendingExitImpact = false; controller.pendingProjectorPulse = false; controller.pendingTheatreCues = [];
 }
 export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 'turn'; yaw: number; pitch: number } | { type: 'step'; forward: number } | { type: 'hint'; stage: HintStage } | { type: 'sensitivity'; value: number; vertical?: number } | { type: 'verticalSensitivity'; value: number };
 /** Explicit commands are the only UI mutation boundary of the simulation store.
  * React holds immutable event snapshots; this small store advances independently. */
 export function commandController(controller: RuntimeController, action: ControllerAction): void {
+  // A movement/turn packet cannot turn a held lever into a movement shortcut.
+  const held = stageModule(controller.runtime.chapterId)?.hold?.activeTarget(controller.runtime);
+  if (held && ((action.type === 'step' && !stageInputPolicy(controller.runtime).move) ||
+    (action.type === 'turn' && !stageInputPolicy(controller.runtime).look))) return;
   // Ordinary steering does not cancel an accepted curtain's pending impact.
   // Pause, background, menus and failed presentation still discard it.
   const preserveCurtainImpact = (action.type === 'step' || action.type === 'turn') && !controller.runtime.paused &&
     !!controller.runtime.progress.theatre?.curtainAccepted && controller.pendingExitImpact;
-  stopController(controller);
+  stopController(controller, action.type === 'step' || action.type === 'turn');
   if (preserveCurtainImpact) controller.pendingExitImpact = true;
   if (controller.retired) return;
   switch (action.type) {
@@ -183,6 +189,21 @@ export function advanceController(controller: RuntimeController, delta: number, 
       syncCamera(controller, camera);
     }
   }
+  const moduleActor = stageModule(controller.runtime.chapterId)?.actor;
+  if (moduleActor && controllerCanInteract(controller)) {
+    const movedDistance = Math.hypot(controller.runtime.pose.position.x - before.position.x, controller.runtime.pose.position.z - before.position.z);
+    const actor = moduleActor.advance(controller.runtime, dt, { intensity: controller.horrorIntensity, matrices, movedDistance });
+    controller.runtime = actor.runtime;
+    controller.pendingActorFootstepDistance += actor.movedDistance;
+    controller.pendingActorPlants.push(...actor.footPlants);
+    controller.pendingActorEvents = [...controller.pendingActorEvents, ...actor.events].slice(-4);
+    controller.pendingStageSounds.push(...actor.soundSources);
+    if (actor.caught) {
+      requireAllPointersReleased(controller.input); clearTouchInput(controller.input);
+      controller.simpleStep = 0; controller.pendingFootstepDistance = 0;
+      syncCamera(controller, camera);
+    }
+  }
 }
 export function controllerSnapshot(controller: RuntimeController): RuntimeSnapshot {
   const cue = interactionCue(worldForController(controller), controller.runtime.pose, controller.matrices, controller.lab ? undefined : controller.runtime.progress, controller.runtime.alignment);
@@ -256,10 +277,46 @@ export function interactController(controller: RuntimeController, expectedId: In
   if (controller.lab) {
     if (expectedId !== 'guide' || previous.progress.sealA) return false;
     controller.runtime = { ...previous, progress: { ...previous.progress, guideExamined: true, sealA: true } };
-  } else controller.runtime = interact(previous, expectedId, controller.matrices);
+  } else {
+    const moduleResult = stageModule(previous.chapterId)?.interactResult?.(previous, expectedId);
+    if (moduleResult) { controller.runtime = moduleResult.runtime; controller.feedbackMessage = moduleResult.message; }
+    else controller.runtime = interact(previous, expectedId, controller.matrices);
+  }
   if (controller.runtime !== previous && expectedId === 'guide') recordTutorialGuide(controller.tutorial);
   if (controller.runtime !== previous) soundForControllerTransition(controller, previous);
   return controller.runtime !== previous;
+}
+
+/** A held stage action uses the same current-pose acquisition as ordinary
+ * interaction. The initiating contact joins the release barrier so lifting it
+ * cannot become a movement/look gesture. */
+export function beginStageHoldController(controller: RuntimeController, expectedId: InteractableId, pointerId?: PointerId): boolean {
+  controller.feedbackMessage = '';
+  const hold = stageModule(controller.runtime.chapterId)?.hold;
+  if (!hold || !hold.targets.includes(expectedId) || !controllerCanInteract(controller) || controller.input.releaseBarrier.length) return false;
+  const cue = interactionCue(worldForController(controller), controller.runtime.pose, controller.matrices, controller.runtime.progress, controller.runtime.alignment);
+  if (cue.kind !== 'ready' || cue.target.id !== expectedId) {
+    controller.feedbackMessage = cue.reason ?? '装置が見える位置へ近づこう。';
+    return false;
+  }
+  const next = hold.start(controller.runtime, expectedId);
+  if (next === controller.runtime || hold.activeTarget(next) !== expectedId) return false;
+  controller.runtime = next;
+  requireAllPointersReleased(controller.input);
+  if (pointerId !== undefined && validPointer(pointerId) && !controller.input.releaseBarrier.includes(pointerId)) controller.input.releaseBarrier.push(pointerId);
+  controller.feedbackMessage = 'レバーを保持する。';
+  return true;
+}
+
+export function endStageHoldController(controller: RuntimeController, expectedId: InteractableId, pointerId?: PointerId): boolean {
+  if (pointerId !== undefined && validPointer(pointerId)) endPointer(controller.input, pointerId);
+  const hold = stageModule(controller.runtime.chapterId)?.hold;
+  if (!hold || hold.activeTarget(controller.runtime) !== expectedId || controller.retired) return false;
+  const next = hold.release(controller.runtime, expectedId);
+  if (next === controller.runtime) return false;
+  controller.runtime = next;
+  controller.feedbackMessage = '歯止めが残った。';
+  return true;
 }
 
 export function retireController(controller: RuntimeController): void {
@@ -376,8 +433,9 @@ export function setControllerScreenReader(controller: RuntimeController, enabled
  * speculative simulation frame. Sources/players belong to the scene owner. */
 export function flushControllerAudioFrame(controller: RuntimeController): void {
   const distance = controller.pendingFootstepDistance, actorPlants = controller.pendingActorPlants, actorEvents = controller.pendingActorEvents;
+  const stageSounds = controller.pendingStageSounds;
   controller.pendingActorPlants = [];
-  controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
+  controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = []; controller.pendingStageSounds = [];
   if (controller.pendingProjectorPulse) {
     controller.pendingProjectorPulse = false;
     if (controllerCanInteract(controller) && controller.runtime.theatre?.projectorSeconds) controller.pendingTheatreCues.push(projectorCue());
@@ -392,7 +450,8 @@ export function flushControllerAudioFrame(controller: RuntimeController): void {
     }
   }
   if (!controllerCanInteract(controller)) return;
-  const messages = { reveal: '隔壁の奥で頭が動いた。格子の先では棚を使おう。', noticed: 'こちらに気づいた。棚の陰へ。', windup: '肩を引いた。横へ避けよう。', 'final-warning': '搬出口の方へ足音。通路の仕切りで視線を切れる。', foreshadow: '格子の奥に、展示体が立っている。', absence: '奥で足音。', crossing: '格子の向こうを、展示体が横切る。', warning: '通路に何かいる。棚の陰でやり過ごそう。', caught: '最後の安全な場所へ戻された。' };
+  for (const position of stageSounds) controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'interaction', position });
+  const messages = { reveal: '隔壁の奥で頭が動いた。格子の先では棚を使おう。', noticed: 'こちらに気づいた。棚の陰へ。', windup: '肩を引いた。横へ避けよう。', 'final-warning': '館内搬送路の方へ足音。通路の仕切りで視線を切れる。', foreshadow: '格子の奥に、展示体が立っている。', absence: '奥で足音。', crossing: '格子の向こうを、展示体が横切る。', warning: '通路に何かいる。棚の陰でやり過ごそう。', caught: '最後の安全な場所へ戻された。' };
   if (actorEvents.includes('warning') && controller.audio) {
     const owner = controller.audio, session = controller.runtime.session;
     owner.playIllusion(String(session), controller.horrorIntensity, () => {
@@ -403,7 +462,7 @@ export function flushControllerAudioFrame(controller: RuntimeController): void {
   }
   if (actorEvents.length) controller.actorNotice = { sequence: (controller.actorNotice?.sequence ?? 0) + 1, text: actorEvents.map(event => controller.runtime.theatre && event === 'crossing' ? '通路の向こうを、展示体が横切った。' : messages[event]).join(' ') };
   controller.audio?.setListenerPosition(controller.runtime.pose.position);
-  if (controller.runtime.gallery?.mode === 'explore' || controller.runtime.vault?.mode === 'explore' || controller.runtime.theatre?.mode === 'explore') {
+  if (controller.runtime.gallery?.mode === 'explore' || controller.runtime.vault?.mode === 'explore' || controller.runtime.theatre?.mode === 'explore' || stageModule(controller.runtime.chapterId)?.actor) {
     for (const plant of actorPlants) controller.audio?.event({ sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'actor-plant', position: plant.position });
   }
   if (distance > 0) controller.audio?.movement(distance, String(controller.runtime.session));

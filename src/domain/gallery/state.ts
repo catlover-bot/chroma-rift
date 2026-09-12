@@ -52,7 +52,7 @@ export function applyGalleryCommand(runtime: ChapterRuntime, command: GalleryCom
   if (action.type === 'light-on') {
     if (context.targetId !== 'gallery-light') return reject('wrong-target');
     if (saved.emergencyLit) return reject('already-complete');
-    patch({ emergencyLit: true }); return accept([{ type: 'light-on', sequence: command.seq }, { type: 'message', text: '非常灯が点いた。左右の部屋と出口の盤が見える。' }]);
+    patch({ emergencyLit: true }); return accept([{ type: 'light-on', sequence: command.seq }, { type: 'message', text: '非常灯が点いた。左右の部屋と職員通路の電源盤が見える。' }]);
   }
   if (action.type === 'inspect-exit' || action.type === 'connect-power') {
     if (context.targetId !== 'gallery-exit-panel') return reject('wrong-target');
@@ -85,7 +85,7 @@ export function applyGalleryCommand(runtime: ChapterRuntime, command: GalleryCom
     if (live.activeDrag || !saved[puzzle].solved) return reject('blocked');
     if (saved.powerTaken[puzzle]) return reject('already-complete');
     patch({ powerTaken: { ...saved.powerTaken, [puzzle]: true } });
-    return accept([{ type: 'power-taken', puzzle, sequence: command.seq }, { type: 'message', text: '予備電源を取った。' + (galleryPowerCount(next.progress.gallery!) === 2 ? '出口の盤へ戻ろう。' : 'もう一つを探そう。') }]);
+    return accept([{ type: 'power-taken', puzzle, sequence: command.seq }, { type: 'message', text: '予備電源を取った。' + (galleryPowerCount(next.progress.gallery!) === 2 ? '職員通路の電源盤へ戻ろう。' : 'もう一つを探そう。') }]);
   }
   if (action.type === 'chromatic-compare') {
     if (context.targetId !== 'chromatic-exhibit') return reject('wrong-target');
