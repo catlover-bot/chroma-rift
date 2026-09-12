@@ -11,7 +11,7 @@ import { vaultCheckpoint } from '../../storage/testFixtures/vault';
 import { theatreCheckpoint } from '../../storage/testFixtures/theatre';
 import { chapterCompletionSummary } from '../../app/chapterSummary';
 import { CHAPTER_ONE } from '../../domain/campaign/definition';
-import { CHAPTER_ONE_COPY } from '../../domain/campaign/story';
+import { CHAPTER_ONE_BEATS, CHAPTER_ONE_COPY } from '../../domain/campaign/story';
 import { recordGalleryDiscovery } from '../../domain/gallery';
 import { attachNaturalRun, playNaturalArea } from '../../../test-support/naturalChapterRoute';
 import { createCheckpoint } from '../../domain/firstPerson';
@@ -72,6 +72,7 @@ test.each([
     campaignCompleted: boolean; canvasOwners: number }[] = [];
   const reentries: { area: string; visit: number; revision: number; canvasOwners: number }[] = [];
   const coldTransitions: { from: string; to: string; revision: number; canvasOwners: number }[] = [];
+  const transitionStories: { from: string; beat: string; canvasOwners: number }[] = [];
   const reverseReplays: { area: string; stageId: string; canvasOwnersAfterExit: number }[] = [];
   let entryCount = 1;
   let coldRestores = 0;
@@ -157,6 +158,18 @@ test.each([
       completedAreas: saved.completedAreas, campaignCompleted: saved.campaignCompleted,
       canvasOwners: mockCanvasOwners.active });
     expect(mockCanvasOwners.peak).toBeLessThanOrEqual(1);
+    if (index < CHAPTER_ONE.areas.length - 1) {
+      const pending = CHAPTER_ONE_BEATS.filter(beat => beat.area === area.id &&
+        saved.storyFired.includes(beat.id) && !saved.storyPresented.includes(beat.id));
+      for (const beat of pending) {
+        expect(await view.findByText(beat.text)).toBeTruthy();
+        expect(latest!.chapterId).toBe(area.stageId);
+        await fireEvent.press(view.getByRole('button', { name: '点検を続ける' }));
+        await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
+          .toContain(beat.id));
+        transitionStories.push({ from: area.id, beat: beat.id, canvasOwners: mockCanvasOwners.active });
+      }
+    }
     if (cold && index < CHAPTER_ONE.areas.length - 1) {
       const rawBeforeCold = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
       await view.unmount();
@@ -234,7 +247,7 @@ test.each([
     fs.mkdirSync(directory, { recursive: true });
     fs.writeFileSync(path.join(directory, `app-natural-route-${caseName}.json`), JSON.stringify({
       boundary: 'Jest React Native App and screen host, actual mounted controllers, collision, campaign codec and AsyncStorage mock; Canvas GL-ready boundary and audio are mocked; no native video or device',
-      intensity, order, runId, trace, reentries, coldTransitions, reverseReplays,
+      intensity, order, runId, trace, reentries, coldTransitions, transitionStories, reverseReplays,
       entryCount, coldRestores, canvasPeak: mockCanvasOwners.peak,
       canvasAfterUnmount: mockCanvasOwners.active,
       coldEndingAvailable: true,
@@ -387,8 +400,9 @@ test('verified area-03 through area-05 host callbacks survive a cold exit before
     expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!)).toMatchObject({
       currentArea: 'chapter-1-area-05', keyLocation: 'carried', campaignCompleted: false,
     });
-    expect(latest!.chapterId).toBe('departure-control-v1');
   });
+  expect(await view.findByText(CHAPTER_ONE_COPY.faceClue)).toBeTruthy();
+  expect(latest!.chapterId).toBe('mirror-corridor-v1');
   await view.unmount();
   view = await render(<App/>);
   expect(await view.findByText(/エリア 05 \/ 05/)).toBeTruthy();
@@ -478,6 +492,60 @@ test('a failed area handoff keeps the old scene until an explicit save retry suc
     expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).currentArea).toBe('chapter-1-area-04');
     expect(latest!.chapterId).toBe('mirror-corridor-v1');
   });
+});
+
+test.each(['retry', 'session-only'] as const)('an area story acknowledgement waits for %s before the next Canvas enters', async choice => {
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App/>);
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  await act(() => latest!.onValidatedEntry?.(latest!.checkpoint!));
+  await fireEvent.press(await view.findByRole('button', { name: '点検を続ける' }));
+  const gate = latest!;
+  const run = attachNaturalRun(mockLatestCanvas.current!.controller);
+  let cleared: CheckpointState | undefined;
+  await act(() => { cleared = playNaturalArea(run, 0, ['shadow', 'contour']); });
+  const originalWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
+  let rejectAcknowledgement = true;
+  jest.mocked(AsyncStorage.setItem).mockImplementation((key, raw) =>
+    key === CHAPTER_ONE_STORAGE_KEY && JSON.parse(raw).storyPresented.includes('emergency-circuit') && rejectAcknowledgement
+      ? Promise.reject(new Error('storage full')) : originalWrite(key, raw));
+  await act(() => {
+    gate.onCheckpoint(cleared!);
+    gate.onComplete(chapterCompletionSummary('perception-gallery-v1', cleared!.progress));
+  });
+  expect(await view.findByText('非常回路が戻った。収蔵庫の職員通路へ進む。')).toBeTruthy();
+  expect(latest!.chapterId).toBe('perception-gallery-v1');
+  expect(mockCanvasOwners.active).toBe(1);
+  const before = (await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!;
+  expect(JSON.parse(before)).toMatchObject({ currentArea: 'chapter-1-area-02', storyPresented: ['closing-interrupted'] });
+  const acknowledge = view.getByRole('button', { name: '点検を続ける' });
+  await fireEvent.press(acknowledge);
+  expect(await view.findByText('エリアの移動を保存できませんでした')).toBeTruthy();
+  expect(latest!.chapterId).toBe('perception-gallery-v1');
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(before);
+  const writesAfterFailure = jest.mocked(AsyncStorage.setItem).mock.calls.length;
+  await fireEvent.press(acknowledge);
+  expect(jest.mocked(AsyncStorage.setItem).mock.calls.length).toBe(writesAfterFailure);
+  if (choice === 'retry') {
+    rejectAcknowledgement = false;
+    await fireEvent.press(view.getByRole('button', { name: '保存を再試行' }));
+    await waitFor(async () => {
+      expect(latest!.chapterId).toBe('uncanny-vault-v1');
+      expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
+        .toContain('emergency-circuit');
+    });
+  } else {
+    await fireEvent.press(view.getByRole('button', { name: 'この起動中だけ続ける' }));
+    await waitFor(() => expect(latest!.chapterId).toBe('uncanny-vault-v1'));
+    expect(view.getByText(/この起動中だけ進行しています/)).toBeTruthy();
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(before);
+  }
+  expect(mockCanvasOwners.peak).toBe(1);
 });
 
 test.each(['retry', 'session-only'] as const)('a failed checkpoint save pauses play and allows %s without claiming it was saved', async choice => {

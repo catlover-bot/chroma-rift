@@ -59,8 +59,16 @@ const simpleVisible=(STAGE_DEFINITIONS as readonly {id:string;playerVisible:bool
 type SimpleRun={checkpoint:CheckpointState;started:boolean;hasSave:boolean;needsCommit:boolean;blocked:boolean;message?:string|undefined};
 type CampaignIntent = 'new' | 'continue' | 'import';
 type CampaignRun = { areaId: CampaignAreaId; checkpoint: CheckpointState; lease: number; token: number; replay: boolean };
-type PendingCampaignTransition = { candidate: ChapterOneSession; lease: number; token: number; status: 'saving' | 'failed' };
+type PendingCampaignTransition = { candidate: ChapterOneSession; fromArea: CampaignAreaId; lease: number; token: number;
+  status: 'saving' | 'failed' | 'story'; sessionOnly?: boolean };
 type PendingCampaignCheckpointSave = { lease: number; runId: string; status: 'saving' | 'failed' };
+function nextTransitionStory(pending: PendingCampaignTransition) {
+  // The final answer and departure are presented by the ending screen after
+  // the outdoor completion has already been committed.
+  if (pending.fromArea === 'chapter-1-area-05') return undefined;
+  return CHAPTER_ONE_BEATS.find(beat => beat.area === pending.fromArea &&
+    pending.candidate.storyFired.includes(beat.id) && !pending.candidate.storyPresented.includes(beat.id));
+}
 function initialSimpleRuns():Record<string,SimpleRun>{
   return Object.fromEntries(simpleVisible.map(stage=>{
     const module=stageModule(stage.id)!;
@@ -356,20 +364,46 @@ export default function App() {
     const lease = beginFirstPersonSession();
     enterCampaignRun(candidate, lease);
   };
-  const commitCampaignTransition = async (pending: PendingCampaignTransition) => {
+  const presentOrApplyCampaignTransition = (pending: PendingCampaignTransition, saved: boolean) => {
     if (campaignTransitionRef.current?.token !== pending.token) return;
+    if (nextTransitionStory(pending)) {
+      const showing = { ...pending, status: 'story' as const, sessionOnly: !saved || !!pending.sessionOnly };
+      campaignTransitionRef.current = showing;
+      setCampaignTransition(showing);
+      return;
+    }
+    applyCampaignTransition(pending.candidate, pending.token, saved);
+  };
+  const commitCampaignTransition = async (pending: PendingCampaignTransition) => {
+    const active = campaignTransitionRef.current;
+    if (active?.token !== pending.token || active.status !== pending.status || active.candidate !== pending.candidate) return;
     const saving = { ...pending, status: 'saving' as const };
     campaignTransitionRef.current = saving;
     setCampaignTransition(saving);
     await campaignSaveTail.current;
     const saved = await queueCampaignSave(pending.candidate, pending.lease);
-    if (campaignTransitionRef.current?.token !== pending.token) return;
-    if (saved) applyCampaignTransition(pending.candidate, pending.token, true);
+    if (campaignTransitionRef.current?.token !== pending.token || campaignTransitionRef.current.candidate !== pending.candidate ||
+      campaignTransitionRef.current.status !== 'saving') return;
+    if (saved) presentOrApplyCampaignTransition(pending, true);
     else {
       const failed = { ...pending, status: 'failed' as const };
       campaignTransitionRef.current = failed;
       setCampaignTransition(failed);
       setCampaignMessage('エリアの移動を保存できませんでした。再試行するか、この起動中だけ続けられます。');
+    }
+  };
+  const acknowledgeTransitionStory = (pending: PendingCampaignTransition) => {
+    if (pending.status !== 'story' || campaignTransitionRef.current?.token !== pending.token ||
+      campaignTransitionRef.current.status !== 'story' || campaignTransitionRef.current.candidate !== pending.candidate) return;
+    const beat = nextTransitionStory(pending);
+    if (!beat) return;
+    const next = { ...pending, candidate: recordCampaignBeatPresented(pending.candidate, beat.id) };
+    if (pending.sessionOnly) presentOrApplyCampaignTransition(next, false);
+    else {
+      const saving = { ...next, status: 'saving' as const };
+      campaignTransitionRef.current = saving;
+      setCampaignTransition(saving);
+      void commitCampaignTransition(saving);
     }
   };
   const replayableCampaignAreas = CHAPTER_ONE.areas.filter(area =>
@@ -590,7 +624,7 @@ export default function App() {
     screen = !area ? <Screen><Text style={styles.replayBody}>エリアを読み込めませんでした。</Text><ActionButton label="ホームへ戻る" onPress={navigateHome}/></Screen> :
       <NativeFirstPersonGate
         key={`campaign-${run.areaId}-${run.token}`} scene="chapter" chapterId={area.stageId}
-        pauseForCampaignSave={!!campaignCheckpointSave}
+        pauseForCampaignSave={!!campaignCheckpointSave || !!campaignTransition}
         storyBeat={!run.replay ? CHAPTER_ONE_BEATS.find(beat => campaign?.storyFired.includes(beat.id) && !campaign.storyPresented.includes(beat.id)) : undefined}
         onStoryPresented={beat => {
           if (!current() || run.replay) return;
@@ -672,9 +706,13 @@ export default function App() {
           const entry = next ? createCampaignAreaEntry(next.id, previous, cleared) : undefined;
           const transition = completeCampaignArea(previous, run.areaId, cleared, entry);
           if (!transition.accepted) { setCampaignMessage('次のエリアへの経路を確認できませんでした。現在の記録を保持しています。'); return; }
-          if (campaignSessionOnlyRef.current) { applyCampaignTransition(transition.session, run.token, false); return; }
-          const pending: PendingCampaignTransition = { candidate: transition.session, lease: run.lease, token: run.token, status: 'saving' };
+          const pending: PendingCampaignTransition = { candidate: transition.session, fromArea: run.areaId,
+            lease: run.lease, token: run.token, status: 'saving' };
           campaignTransitionRef.current = pending;
+          if (campaignSessionOnlyRef.current) {
+            presentOrApplyCampaignTransition({ ...pending, sessionOnly: true }, false);
+            return;
+          }
           setCampaignTransition(pending);
           void commitCampaignTransition(pending);
         }}
@@ -859,11 +897,23 @@ export default function App() {
         {firstPersonMessage ? <Text accessibilityRole="alert" style={styles.notice}>{firstPersonMessage}</Text> : null}
         {campaignSessionOnly ? <Text accessibilityRole="alert" style={styles.notice}>この起動中だけ進行しています。終了すると最後に保存できた地点へ戻ります。</Text> : null}
         {campaignTransition ? <View style={styles.campaignOverlay} accessibilityViewIsModal>
-          <Text style={styles.replayTitle}>{campaignTransition.status === 'saving' ? '次のエリアを保存しています…' : 'エリアの移動を保存できませんでした'}</Text>
-          {campaignTransition.status === 'saving' ? <ActivityIndicator color={UI_COLORS.text}/> : <>
+          <Text style={styles.replayTitle}>{campaignTransition.status === 'saving' ? '次のエリアを保存しています…' :
+            campaignTransition.status === 'story' ? '点検記録' : 'エリアの移動を保存できませんでした'}</Text>
+          {campaignTransition.status === 'saving' ? <ActivityIndicator color={UI_COLORS.text}/> :
+            campaignTransition.status === 'story' ? <>
+              <Text style={styles.replayBody}>{nextTransitionStory(campaignTransition)?.text}</Text>
+              <Text style={styles.replayBody}>{nextTransitionStory(campaignTransition)?.response}</Text>
+              <ActionButton label="点検を続ける" variant="primary" onPress={() => acknowledgeTransitionStory(campaignTransition)}/>
+            </> : <>
             <Text style={styles.replayBody}>再試行するか、この起動中だけ次へ進めます。</Text>
             <ActionButton label="保存を再試行" variant="primary" onPress={() => { const pending = campaignTransitionRef.current; if (pending) void commitCampaignTransition(pending); }}/>
-            <ActionButton label="この起動中だけ続ける" onPress={() => { const pending = campaignTransitionRef.current; if (pending) applyCampaignTransition(pending.candidate, pending.token, false); }}/>
+            <ActionButton label="この起動中だけ続ける" onPress={() => {
+              const pending = campaignTransitionRef.current;
+              if (pending) {
+                campaignSessionOnlyRef.current = true; setCampaignSessionOnly(true);
+                presentOrApplyCampaignTransition({ ...pending, sessionOnly: true }, false);
+              }
+            }}/>
           </>}
         </View> : campaignCheckpointSave ? <View style={styles.campaignOverlay} accessibilityViewIsModal>
           <Text style={styles.replayTitle}>{campaignCheckpointSave.status === 'saving' ? '進行を保存しています…' : '進行を保存できませんでした'}</Text>

@@ -5,11 +5,11 @@
     "shadow",
     "contour"
   ],
-  "runId": "chapter-one-1789248159319",
+  "runId": "chapter-one-1789251440866",
   "trace": [
     {
       "area": "chapter-1-area-01",
-      "runId": "chapter-one-1789248159319",
+      "runId": "chapter-one-1789251440866",
       "revision": 3,
       "completedAreas": [
         "chapter-1-area-01"
@@ -19,7 +19,7 @@
     },
     {
       "area": "chapter-1-area-02",
-      "runId": "chapter-one-1789248159319",
+      "runId": "chapter-one-1789251440866",
       "revision": 5,
       "completedAreas": [
         "chapter-1-area-01",
@@ -30,7 +30,7 @@
     },
     {
       "area": "chapter-1-area-03",
-      "runId": "chapter-one-1789248159319",
+      "runId": "chapter-one-1789251440866",
       "revision": 7,
       "completedAreas": [
         "chapter-1-area-01",
@@ -42,7 +42,7 @@
     },
     {
       "area": "chapter-1-area-04",
-      "runId": "chapter-one-1789248159319",
+      "runId": "chapter-one-1789251440866",
       "revision": 8,
       "completedAreas": [
         "chapter-1-area-01",
@@ -55,7 +55,7 @@
     },
     {
       "area": "chapter-1-area-05",
-      "runId": "chapter-one-1789248159319",
+      "runId": "chapter-one-1789251440866",
       "revision": 13,
       "completedAreas": [
         "chapter-1-area-01",
@@ -70,6 +70,23 @@
   ],
   "reentries": [],
   "coldTransitions": [],
+  "transitionStories": [
+    {
+      "from": "chapter-1-area-01",
+      "beat": "emergency-circuit",
+      "canvasOwners": 1
+    },
+    {
+      "from": "chapter-1-area-02",
+      "beat": "containment-procedure",
+      "canvasOwners": 1
+    },
+    {
+      "from": "chapter-1-area-04",
+      "beat": "isolation-key",
+      "canvasOwners": 1
+    }
+  ],
   "reverseReplays": [],
   "entryCount": 1,
   "coldRestores": 0,
