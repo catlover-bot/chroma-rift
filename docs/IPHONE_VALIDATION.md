@@ -2,6 +2,8 @@
 
 **以下は実施待ち。** Goal 013はexpo 57.0.22とnative Expoモジュールの推奨パッチ、1.0.0、preview/production設定を変更した。従来のDevelopment BuildやMetroでのJS更新を、新しい配布バイナリの確認と扱わない。EAS Build、Apple認証、TestFlightアップロードはこのローカル作業では行っていない。[公開ゲート](RELEASE-CHAPTER-1.md)を先に読む。
 
+[JestのApp経路ログ](qa-goal013/app-natural-route-standard-cold.json) には、4回のエリア遷移後cold restore、10回の再入場、05→01逆順replayを記録した。これはnative Canvas・実AsyncStorage・音ownerを使わないため、以下の端末手順はすべて未実施のまま。
+
 1. 端末の既存CHROMA RIFTを消さず、旧セーブのキー・章・設定・発見を記録する。同じ `com.hirotakam.chromarift` のpreviewで上書きした後、旧原文を保持した移行候補と継続を確認する。遠隔EAS buildNumberと配布済み番号を照合してからビルドする。
 2. Metroを停止し、previewまたはTestFlightの**端末バイナリ**を機内モードで新規起動する。初回の仮面、ハイブリッド画像、音、04の鏡、05の表示がネットワーク待ちで欠けないことを確認する。端末モデル、iOS版、build番号、commit、文字サイズ、明るさ、音量、怖さを記録する。
 3. 第一章を新規に開始し、01非常回路→02管理経路→03防火幕→04隔離キーと鏡越しの巻き上げ→05誘導・全身収容・隔離・停止・職員出口・屋外まで、同じrunIdで通す。途中の物語文は実際の操作可能/一時停止状態で読め、閉じた直後に古い指入力や音が再生されないか確認する。

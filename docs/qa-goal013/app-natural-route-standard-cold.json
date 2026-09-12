@@ -1,0 +1,191 @@
+{
+  "boundary": "Jest React Native App and screen host, actual mounted controllers, collision, campaign codec and AsyncStorage mock; Canvas GL-ready boundary and audio are mocked; no native video or device",
+  "intensity": "standard",
+  "order": [
+    "shadow",
+    "contour"
+  ],
+  "runId": "chapter-one-1789247362702",
+  "trace": [
+    {
+      "area": "chapter-1-area-01",
+      "runId": "chapter-one-1789247362702",
+      "revision": 3,
+      "completedAreas": [
+        "chapter-1-area-01"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-02",
+      "runId": "chapter-one-1789247362702",
+      "revision": 5,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-03",
+      "runId": "chapter-one-1789247362702",
+      "revision": 7,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-04",
+      "runId": "chapter-one-1789247362702",
+      "revision": 8,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03",
+        "chapter-1-area-04"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-05",
+      "runId": "chapter-one-1789247362702",
+      "revision": 12,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03",
+        "chapter-1-area-04",
+        "chapter-1-area-05"
+      ],
+      "campaignCompleted": true,
+      "canvasOwners": 0
+    }
+  ],
+  "reentries": [
+    {
+      "area": "chapter-1-area-01",
+      "visit": 1,
+      "revision": 2,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-01",
+      "visit": 2,
+      "revision": 2,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-02",
+      "visit": 1,
+      "revision": 4,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-02",
+      "visit": 2,
+      "revision": 4,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-03",
+      "visit": 1,
+      "revision": 6,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-03",
+      "visit": 2,
+      "revision": 6,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-04",
+      "visit": 1,
+      "revision": 7,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-04",
+      "visit": 2,
+      "revision": 7,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-05",
+      "visit": 1,
+      "revision": 9,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-05",
+      "visit": 2,
+      "revision": 9,
+      "canvasOwners": 1
+    }
+  ],
+  "coldTransitions": [
+    {
+      "from": "chapter-1-area-01",
+      "to": "chapter-1-area-02",
+      "revision": 4,
+      "canvasOwners": 1
+    },
+    {
+      "from": "chapter-1-area-02",
+      "to": "chapter-1-area-03",
+      "revision": 6,
+      "canvasOwners": 1
+    },
+    {
+      "from": "chapter-1-area-03",
+      "to": "chapter-1-area-04",
+      "revision": 7,
+      "canvasOwners": 1
+    },
+    {
+      "from": "chapter-1-area-04",
+      "to": "chapter-1-area-05",
+      "revision": 9,
+      "canvasOwners": 1
+    }
+  ],
+  "reverseReplays": [
+    {
+      "area": "chapter-1-area-05",
+      "stageId": "departure-control-v1",
+      "canvasOwnersAfterExit": 0
+    },
+    {
+      "area": "chapter-1-area-04",
+      "stageId": "mirror-corridor-v1",
+      "canvasOwnersAfterExit": 0
+    },
+    {
+      "area": "chapter-1-area-03",
+      "stageId": "shadow-theatre-v1",
+      "canvasOwnersAfterExit": 0
+    },
+    {
+      "area": "chapter-1-area-02",
+      "stageId": "uncanny-vault-v1",
+      "canvasOwnersAfterExit": 0
+    },
+    {
+      "area": "chapter-1-area-01",
+      "stageId": "perception-gallery-v1",
+      "canvasOwnersAfterExit": 0
+    }
+  ],
+  "entryCount": 20,
+  "coldRestores": 4,
+  "canvasPeak": 1,
+  "canvasAfterUnmount": 0,
+  "coldEndingAvailable": true
+}

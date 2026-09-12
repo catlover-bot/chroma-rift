@@ -97,7 +97,7 @@ test('registered final-area controller follows a real bell, latch, stop and outd
   expect(parseChapterOneSession(completed.session)).toBeDefined();
 });
 
-test('final-area equipment and outdoor threshold are reachable by continuous collision-checked walking', () => {
+test('final-area equipment remains reachable after an early closure refusal and manual reopening', () => {
   const module = stageModule('departure-control-v1')!;
   const fresh = module.checkpoint(module.create());
   const carried = module.restore({ ...fresh, stageData: carriedKeyEntry() })?.checkpoint;
@@ -131,8 +131,35 @@ test('final-area equipment and outdoor threshold are reachable by continuous col
 
   walkTo(9); press('departure-key');
   walkTo(10); press('departure-procedure');
+  walkTo(12); turn(Math.PI / 2, -.16);
+  expect(controllerSnapshot(controller).target?.id).toBe('departure-door');
+  expect(interactController(controller, 'departure-door')).toBe(false);
+  expect(state(controller)).toMatchObject({ doorProgress: 0, isolated: false, stopped: false });
   walkTo(11); press('departure-bell');
   let frames = 0;
+  while (!(actorFullyContained(state(controller).actor.motion.position) &&
+    doorSweepClear(state(controller).actor.motion.position)) && frames < 780) {
+    advanceController(controller, 1 / 60, view);
+    frames += 1;
+  }
+  expect(frames).toBeLessThan(780);
+  walkTo(12); press('departure-door');
+  advanceController(controller, 1 / 60, view);
+  expect(state(controller).doorProgress).toBeGreaterThan(0);
+  press('departure-reopen');
+  expect(state(controller)).toMatchObject({ doorMode: 'opening', isolated: false, stopped: false });
+  for (let frame = 0; frame < 90 && state(controller).doorProgress > 0; frame += 1)
+    advanceController(controller, 1 / 60, view);
+  expect(state(controller)).toMatchObject({ doorMode: 'idle', doorProgress: 0, isolated: false, stopped: false });
+  expect(module.restore(createCheckpoint(controller.runtime))?.checkpoint.stageData).toMatchObject({
+    keyInstalled: true, procedureRead: true, isolated: false, stopped: false,
+  });
+  walkTo(11);
+  for (let frame = 0; frame < 390 && state(controller).bellCooldown > 0; frame += 1)
+    advanceController(controller, 1 / 60, view);
+  expect(state(controller).bellCooldown).toBe(0);
+  press('departure-bell');
+  frames = 0;
   while (!(actorFullyContained(state(controller).actor.motion.position) &&
     doorSweepClear(state(controller).actor.motion.position)) && frames < 780) {
     advanceController(controller, 1 / 60, view);

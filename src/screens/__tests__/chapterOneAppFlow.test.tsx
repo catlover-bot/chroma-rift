@@ -56,17 +56,25 @@ beforeEach(async () => {
   jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(false);
 });
 afterEach(() => jest.restoreAllMocks());
+const campaignEntryLabel = (index: number) => ['展示室へ入る', '収蔵庫へ入る', '映写室へ入る'][index]
+  ?? `${CHAPTER_ONE.areas[index]!.title}へ入る`;
 
 test.each([
-  ['standard', ['shadow', 'contour']],
-  ['subdued', ['contour', 'shadow']],
-] as const)('one fresh %s App session advances all five mounted controllers in %j order and persists the outdoor ending', async (intensity, order) => {
+  ['standard', 'standard', ['shadow', 'contour'], false],
+  ['subdued', 'subdued', ['contour', 'shadow'], false],
+  ['standard-cold', 'standard', ['shadow', 'contour'], true],
+] as const)('one fresh %s campaign advances all five mounted controllers and persists the outdoor ending', async (caseName, intensity, order, cold) => {
   const trace: { area: string; runId: string; revision: number; completedAreas: string[];
     campaignCompleted: boolean; canvasOwners: number }[] = [];
+  const reentries: { area: string; visit: number; revision: number; canvasOwners: number }[] = [];
+  const coldTransitions: { from: string; to: string; revision: number; canvasOwners: number }[] = [];
+  const reverseReplays: { area: string; stageId: string; canvasOwnersAfterExit: number }[] = [];
+  let entryCount = 1;
+  let coldRestores = 0;
   const Gate = gateModule.NativeFirstPersonGate;
   let latest: FirstPersonScreenProps | undefined;
   jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
-  const view = await render(<App/>);
+  let view = await render(<App/>);
   if (intensity === 'subdued') {
     await fireEvent.press(await view.findByRole('button', { name: '設定' }));
     await fireEvent.press(view.getByRole('button', { name: '控えめな怖さ' }));
@@ -90,6 +98,32 @@ test.each([
       await fireEvent.press(resume);
     }
     await waitFor(() => expect(mockLatestCanvas.current?.controller.runtime.chapterId).toBe(area.stageId));
+    if (cold) for (let visit = 0; visit < 2; visit++) {
+      const oldGate = latest!;
+      await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+      await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+      expect(mockCanvasOwners.active).toBe(0);
+      const rawBeforeStale = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+      await act(() => oldGate.onCheckpoint(oldGate.checkpoint!));
+      expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(rawBeforeStale);
+      await fireEvent.press(view.getByRole('button', { name: '続きから' }));
+      await fireEvent.press(view.getByText(campaignEntryLabel(index)));
+      for (let i = 0; i < 4; i++) {
+        const resume = view.queryByRole('button', { name: '探索へ戻る' }) ?? view.queryByRole('button', { name: '点検を続ける' });
+        if (!resume) break;
+        await fireEvent.press(resume);
+      }
+      await view.findByTestId('campaign-native-canvas');
+      entryCount++;
+      expect(mockCanvasOwners.active).toBe(1);
+      expect(mockCanvasOwners.peak).toBe(1);
+      expect(latest!.chapterId).toBe(area.stageId);
+      const savedAtReentry = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+      expect(savedAtReentry.runId).toBe(runId);
+      expect(savedAtReentry.currentArea).toBe(area.id);
+      reentries.push({ area: area.id, visit: visit + 1, revision: savedAtReentry.revision,
+        canvasOwners: mockCanvasOwners.active });
+    }
     const gate = latest!;
     const run = attachNaturalRun(mockLatestCanvas.current!.controller);
     expect(run.controller.horrorIntensity).toBe(intensity);
@@ -119,26 +153,81 @@ test.each([
       completedAreas: saved.completedAreas, campaignCompleted: saved.campaignCompleted,
       canvasOwners: mockCanvasOwners.active });
     expect(mockCanvasOwners.peak).toBeLessThanOrEqual(1);
+    if (cold && index < CHAPTER_ONE.areas.length - 1) {
+      const rawBeforeCold = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+      await view.unmount();
+      expect(mockCanvasOwners.active).toBe(0);
+      view = await render(<App/>);
+      const next = CHAPTER_ONE.areas[index + 1]!;
+      expect(await view.findByText(new RegExp(`エリア ${next.number} / 05`))).toBeTruthy();
+      expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(rawBeforeCold);
+      await fireEvent.press(view.getByRole('button', { name: '続きから' }));
+      await fireEvent.press(view.getByText(campaignEntryLabel(index + 1)));
+      for (let i = 0; i < 4; i++) {
+        const resume = view.queryByRole('button', { name: '探索へ戻る' }) ?? view.queryByRole('button', { name: '点検を続ける' });
+        if (!resume) break;
+        await fireEvent.press(resume);
+      }
+      await view.findByTestId('campaign-native-canvas');
+      entryCount++;
+      coldRestores++;
+      expect(latest!.chapterId).toBe(next.stageId);
+      expect(mockCanvasOwners.active).toBe(1);
+      expect(mockCanvasOwners.peak).toBe(1);
+      const savedAtCold = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+      expect(savedAtCold.runId).toBe(runId);
+      expect(savedAtCold.currentArea).toBe(next.id);
+      const rawBeforeStale = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+      await act(() => gate.onCheckpoint(gate.checkpoint!));
+      expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(rawBeforeStale);
+      coldTransitions.push({ from: area.id, to: next.id, revision: savedAtCold.revision,
+        canvasOwners: mockCanvasOwners.active });
+    }
   }
+  if (cold) { expect(entryCount).toBe(15); expect(coldRestores).toBe(4);
+    expect(reentries).toHaveLength(10); expect(coldTransitions).toHaveLength(4); }
   expect(await view.findByText('第一章「最後の退館者」 完')).toBeTruthy();
   await view.unmount();
   expect(mockCanvasOwners.active).toBe(0);
   const resumed = await render(<App/>);
   expect(await resumed.findByRole('button', { name: 'エンディングを見る' })).toBeTruthy();
+  if (cold) for (let index = CHAPTER_ONE.areas.length - 1; index >= 0; index--) {
+    const area = CHAPTER_ONE.areas[index]!;
+    const savedBeforeReplay = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+    const replayLabel = `${area.title}を振り返る`;
+    if (!resumed.queryByRole('button', { name: replayLabel }))
+      await fireEvent.press(resumed.getByRole('button', { name: 'エリアを振り返る' }));
+    await fireEvent.press(resumed.getByRole('button', { name: replayLabel }));
+    await resumed.findByTestId('campaign-native-canvas');
+    entryCount++;
+    expect(latest!.chapterId).toBe(area.stageId);
+    expect(latest!.checkpoint?.progress.cleared).toBe(false);
+    expect(mockCanvasOwners.active).toBe(1);
+    expect(mockCanvasOwners.peak).toBe(1);
+    await fireEvent.press(resumed.getByRole('button', { name: '一時停止' }));
+    await fireEvent.press(resumed.getByRole('button', { name: 'ホームへ戻る' }));
+    expect(mockCanvasOwners.active).toBe(0);
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(savedBeforeReplay);
+    reverseReplays.push({ area: area.id, stageId: area.stageId, canvasOwnersAfterExit: mockCanvasOwners.active });
+  }
+  if (cold) { expect(entryCount).toBe(20); expect(reverseReplays).toHaveLength(5); }
+  await resumed.unmount();
+  expect(mockCanvasOwners.active).toBe(0);
   if (process.env.CHROMA_QA_TRACE_DIR) {
     const fs = require('node:fs') as { mkdirSync(path: string, options: { recursive: boolean }): void;
       writeFileSync(path: string, data: string): void };
     const path = require('node:path') as { resolve(path: string): string; join(...parts: string[]): string };
     const directory = path.resolve(process.env.CHROMA_QA_TRACE_DIR);
     fs.mkdirSync(directory, { recursive: true });
-    fs.writeFileSync(path.join(directory, `app-natural-route-${intensity}.json`), JSON.stringify({
+    fs.writeFileSync(path.join(directory, `app-natural-route-${caseName}.json`), JSON.stringify({
       boundary: 'Jest React Native App and screen host, actual mounted controllers, collision, campaign codec and AsyncStorage mock; Canvas GL-ready boundary and audio are mocked; no native video or device',
-      intensity, order, runId, trace, canvasPeak: mockCanvasOwners.peak,
+      intensity, order, runId, trace, reentries, coldTransitions, reverseReplays,
+      entryCount, coldRestores, canvasPeak: mockCanvasOwners.peak,
       canvasAfterUnmount: mockCanvasOwners.active,
       coldEndingAvailable: true,
     }, null, 2) + '\n');
   }
-}, 30_000);
+}, 60_000);
 
 test('product home starts one campaign envelope and resumes the same first area', async () => {
   const Gate = gateModule.NativeFirstPersonGate;
