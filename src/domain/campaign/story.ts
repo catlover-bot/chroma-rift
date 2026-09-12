@@ -5,6 +5,7 @@ export const CHAPTER_ONE_COPY = {
   attendance01: DEPARTURE_COPY.attendance01,
   attendance00: DEPARTURE_COPY.attendance00,
   openingThought: '残っている職員は、私ひとりのはずだ。',
+  attendanceIdentified: 'もう一つの反応は巡回体だった。隔離と停止を確認した。',
   faceClue: '顔と顔の間にも、輪郭がある。',
   containmentInstruction: DEPARTURE_COPY.containmentInstruction,
   isolationFirst: DEPARTURE_COPY.isolationFirst,
@@ -19,7 +20,7 @@ export const CHAPTER_ONE_BEATS = [
   { id: 'noise-route', area: 'chapter-1-area-03', trigger: 'theatre-noise-observed', learns: '館の設備音へ巡回体が反応する', text: '物音を調べる動きは、閉館設備の設計どおりだ。', response: '受鈴器と巡回体の調査', resume: 'observation-not-inferred-from-migration', payoff: 'containment-bell' },
   { id: 'isolation-key', area: 'chapter-1-area-04', trigger: 'key-explicitly-taken', learns: '図地の中央に隔離キーがある', text: CHAPTER_ONE_COPY.faceClue, response: '中央の部品だけが取れる', resume: 'key-owner-is-saved', payoff: 'key-installed' },
   { id: 'containment-bell', area: 'chapter-1-area-05', trigger: 'instruction-read', learns: '誘導と閉扉の順序', text: CHAPTER_ONE_COPY.containmentInstruction, response: '収容区画の受鈴器', resume: 'instruction-may-be-reread', payoff: 'actor-contained' },
-  { id: 'attendance-identified', area: 'chapter-1-area-05', trigger: 'control-stopped-after-isolation', learns: '02のもう一つは巡回体だった', text: 'もう一つの反応は巡回体だった。隔離と停止を確認した。', response: CHAPTER_ONE_COPY.attendance01, resume: 'stopped-state-is-irreversible', payoff: 'outdoor-exit' },
+  { id: 'attendance-identified', area: 'chapter-1-area-05', trigger: 'control-stopped-after-isolation', learns: '02のもう一つは巡回体だった', text: CHAPTER_ONE_COPY.attendanceIdentified, response: CHAPTER_ONE_COPY.attendance01, resume: 'stopped-state-is-irreversible', payoff: 'outdoor-exit' },
   { id: 'outdoor-exit', area: 'chapter-1-area-05', trigger: 'outdoor-threshold-crossed', learns: '主人公も退館し閉館記録が完了', text: CHAPTER_ONE_COPY.recordComplete, response: CHAPTER_ONE_COPY.attendance00, resume: 'ending-can-replay-without-restarting-actor', payoff: 'chapter-ended' },
 ] as const;
 

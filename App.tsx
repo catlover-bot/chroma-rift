@@ -535,8 +535,10 @@ export default function App() {
     screen = <ChapterOneEndingScreen onHome={navigateHome}
       onShown={() => {
         const previous = campaignRef.current;
-        if (previous?.campaignCompleted && !previous.storyPresented.includes('outdoor-exit'))
-          applyCampaignStory(recordCampaignBeatPresented(previous, 'outdoor-exit'), beginFirstPersonSession());
+        if (previous?.campaignCompleted && (!previous.storyPresented.includes('attendance-identified') ||
+          !previous.storyPresented.includes('outdoor-exit')))
+          applyCampaignStory(recordCampaignBeatPresented(
+            recordCampaignBeatPresented(previous, 'attendance-identified'), 'outdoor-exit'), beginFirstPersonSession());
       }}
       onAreas={() => { setCampaignDiscoveries(false); setCampaignAreas(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }}
       onDiscoveries={() => { setCampaignAreas(false); setCampaignDiscoveries(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }} />;

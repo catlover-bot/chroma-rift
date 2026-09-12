@@ -16,6 +16,8 @@
 
 その後、Node/Jestのcampaign domain hostで新規sessionから5つの実controllerを順に操作する連続試験を追加した。標準はB→C、控えめはC→Bで成功し、隔離キーの引継ぎ、05停止checkpointの保存、屋外完了、各遷移後のJSON codec再parseを同一runIdで確認した。経路とrevisionは `docs/qa-goal013/natural-route-*.json` に記録した。さらに同じ経路をJestのApp hostへ接続し、各画面にマウントされたcontrollerの操作結果を同一App起動で画面leaseから保存した。標準/控えめの両方で5エリア完了、Canvas mock peak 1・終了後0、App再起動後のエンディング入口を確認した。実AsyncStorage、native Canvas/音、動画ではない。Appログは `docs/qa-goal013/app-natural-route-*.json`。
 
+停止後のbeatを読む前に屋外退館した場合、巡回体の正体の提示記録だけが未了で残る経路を修正した。エンディングに台帳の確定文と在館反応01→00を表示し、両beatの提示記録を保存する。App試験で表示・保存・cold再開を確認した。
+
 標準B→CのApp経路に、各エリア後の4回のcold restore、各エリア2回のホーム再入場、完走後の05→01逆順replayを追加した。計20回のCanvas mock入場を通じてpeak owner 1・退出後0、同じrunId、次エリアの安全入口、旧画面callbackの拒否、逆順replay後に本編セーブ原文が変わらないことを検査した。ログは `docs/qa-goal013/app-natural-route-standard-cold.json`。実GPU/音ownerと端末保存の検査ではない。
 
 01〜03の変更前後動的QAでは、Goal 012のゲームソースと現ソースに同じseed・camera・入力を渡した。01は実App入口こそ旧Stage Selectと製品ホームで違うが、入室後の30旋回frame→実HUD非常灯操作→60無入力frameを比較した。seed73、camera行列90 frame、最終pose、非常灯の受理が一致し、Goal 013の目的文と新しい点検記録overlayの表示差を確認した。QA用Three hostは点灯後のprops更新で再構築している。02の長さ調整と03の灯り調整は、各timelineと独立Software WebGL動画がbyte一致した。左右同時の比較動画、SHA-256、ソース基準と観察限界は `docs/qa-goal013/area01-before-after.json` と `area02-03-before-after.json` に記録した。各経路は一操作に限る。エリア全体の実機見え方は未確認。

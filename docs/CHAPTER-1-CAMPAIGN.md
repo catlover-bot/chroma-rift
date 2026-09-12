@@ -10,4 +10,4 @@
 
 「発見の記録」はStage codecが検証した明示観察bitから作り、旧Stage Journalにある観察済み項目と一方向に合流する。旧クリア済みだけでは項目を増やさない。replay中の観察は現在エリア・鍵・最終措置・story beatを変えず、campaignの発見履歴だけを保存する。保存済みcheckpointより古いcallbackは本編のメモリ状態を巻き戻す前に拒否する。04の鏡像そのものは明示観察bitがまだ無いため発見済みとは扱わない。
 
-この文書は進行中の接続記録である。04控えめの実鏡像・保持・退避、05標準の収容・停止・屋外の単独経路はSoftware WebGL動画で確認した。01から屋外までの実controllerによる自然操作は、標準B→Cと控えめC→BでAppのマウント済みcontrollerにも接続した。JestのCanvas/AsyncStorageモックでは4回のエリア遷移後cold restore、10回の再入場、完走後の05→01逆順replayも通過した。native Canvas・音・実端末保存を伴うApp通しプレイ、物語beatと発見記録の製品表示、実機確認は残っている。`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。第二章を追加する時は別のCampaignDefinitionとstage群を登録し、第一章の保存schemaや結末を再定義しない。
+この文書は進行中の接続記録である。04控えめの実鏡像・保持・退避、05標準の収容・停止・屋外の単独経路はSoftware WebGL動画で確認した。01から屋外までの実controllerによる自然操作は、標準B→Cと控えめC→BでAppのマウント済みcontrollerにも接続した。JestのCanvas/AsyncStorageモックでは4回のエリア遷移後cold restore、10回の再入場、完走後の05→01逆順replayも通過した。native Canvas・音・実端末保存を伴うApp通しプレイ、物語beatと発見記録の実機表示確認は残っている。`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。第二章を追加する時は別のCampaignDefinitionとstage群を登録し、第一章の保存schemaや結末を再定義しない。

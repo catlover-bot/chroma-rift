@@ -13,10 +13,10 @@ export function ChapterOneEndingScreen({ onHome, onAreas, onDiscoveries, onShown
   return <Screen>
     <Text style={styles.brand}>CHROMA RIFT</Text>
     <View style={styles.rule}/>
-    <Text style={styles.attendance}>{CHAPTER_ONE_COPY.attendance00}</Text>
-    <Text style={styles.answer}>在館反応 00。閉館処理は、今度こそ終わった。</Text>
+    <Text style={styles.attendance}>{CHAPTER_ONE_COPY.attendance01} → {CHAPTER_ONE_COPY.attendance00}</Text>
+    <Text style={styles.answer}>{CHAPTER_ONE_COPY.attendanceIdentified}</Text>
     <Text style={styles.complete} accessibilityRole="header">第一章「{CHAPTER_ONE.title}」 完</Text>
-    <Text style={styles.note}>退館記録：最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。</Text>
+    <Text style={styles.note}>{CHAPTER_ONE_COPY.recordComplete}。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。</Text>
     <View style={styles.rule}/>
     <Text style={styles.credit}>素材クレジット</Text>
     <Text style={styles.credit}>{MATERIAL_CREDITS[0].title}：Wael Tsar / cmglee（CC BY 4.0）</Text>
