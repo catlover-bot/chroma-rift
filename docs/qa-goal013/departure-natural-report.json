@@ -161,6 +161,10 @@
       }
     }
   ],
+  "visualClearance": {
+    "minimumReceiverBottom": 2.792,
+    "actorBodyHeight": 2.24
+  },
   "final": {
     "pose": {
       "position": {
@@ -191,7 +195,7 @@
         "travelledDistance": 5.712353172615884,
         "accumulator": 0,
         "headYaw": -0.052422411670496334,
-        "headPitch": -0.3141592653589793,
+        "headPitch": 0.3141592653589793,
         "chestYaw": -0.052713299879162186,
         "chestLean": 0.0008893264682754166,
         "pelvisShift": 0.0023841452473940773,
@@ -269,7 +273,7 @@
       },
       "lastHeard": {
         "x": 2.45,
-        "y": 1.7,
+        "y": 2.9,
         "z": 18.1
       }
     }
@@ -346,7 +350,7 @@
     "src/domain/stages/departure-control-v1/binding.ts": "ae6e0fdba7ac6a6354f28d4cd3d8d727088ed82630b7ec25bf5300bfbfec574b",
     "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
     "src/domain/stages/departure-control-v1/actor.ts": "0f82eae40ea9c8131e5851920b21927723bb58a5c56f38ead36cb5231b6ab4d4",
-    "src/domain/stages/departure-control-v1/definition.ts": "28e6a1630706d200aaa70eef643850e737dd36565ce06345509e3a8123713730",
+    "src/domain/stages/departure-control-v1/definition.ts": "21986bfe6f05afaa45844961343d77d0eec8feb420365ea0cdddd51c8b8466fc",
     "src/domain/stages/departure-control-v1/checkpoint.ts": "a73d8e9634174fef4c4a923182f7c5cf51dcb2b520550c7afee8d6a72af73b8c",
     "src/domain/stages/departure-control-v1/session.ts": "d459a3dd9e9e58e03df8cafc4b8f07bb8a9c24eb2d36502aef7b66f291f64652",
     "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
@@ -382,16 +386,16 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/departure-control-v1/scene.tsx": "b89e1cddc6b4159bcdd91e1af52a9bdfc0c7a0e14099662afa108bc2da4332ee",
+    "src/domain/stages/departure-control-v1/scene.tsx": "dc0da0d63a7409e0a1fd625f42fc24d403cac2396cd449134569674bc5ab3a7d",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-natural/departure-natural.mp4",
-    "bytes": 108463,
-    "sha256": "d418d2150f98534d57de3d5a8a109b18c6302821ab4b40facac72f6d94eb4266",
+    "bytes": 105352,
+    "sha256": "f87d82c51730b897e33708651a42d1f87cd90b03d700e1d43b4eeaaff1b7f6f8",
     "fps": 10,
     "durationSeconds": 18.2
   },
   "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. First bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "898112b03fc5429eb3ad8cf4e45d98a11103473d6bf926c0d39b984ebedc67f8"
+  "toolHash": "33fbb0daed52de93e343d16084bb575c8d70897f4ea5377c829de13ed2ffaf5f"
 }

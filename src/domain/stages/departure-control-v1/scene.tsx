@@ -8,6 +8,8 @@ import type { SceneResources } from '../../../rendering/firstPerson/resources';
 import { BELL_RECEIVER, CONTAINMENT_DOOR_Z, STAFF_DOOR_Z, stageWorld } from './definition';
 import { isStageSession } from './session';
 
+const RECEIVER_RADIUS = .24, RECEIVER_HEIGHT = .16;
+
 /** Uses the same Canvas and actor body as the earlier areas. The remote bell,
  * observation window, two physical doors and short outdoor threshold remain
  * in the authored world rather than a separate completion overlay. */
@@ -25,7 +27,10 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
       if (containmentDoor.current) containmentDoor.current.position.y = 3.5 * (1 - raw.doorProgress) + 1.75;
       if (staffDoor.current) staffDoor.current.position.y = (raw.staffDoorOpened ? 3.6 : 0) + 1.75;
       if (key.current) key.current.visible = raw.keyAvailable && !raw.keyInstalled;
-      if (receiver.current) receiver.current.scale.setScalar(raw.bellCooldown > 5.5 ? 1.35 : 1);
+      if (receiver.current) {
+        const pulse = raw.bellCooldown > 5.5 ? 1.35 : 1;
+        receiver.current.scale.set(RECEIVER_RADIUS * pulse, RECEIVER_HEIGHT * pulse, RECEIVER_RADIUS * pulse);
+      }
       if (attendance2.current) attendance2.current.visible = !raw.stopped;
       if (attendance1.current) attendance1.current.visible = raw.stopped && !raw.cleared;
       if (attendance0.current) attendance0.current.visible = raw.cleared;
@@ -62,7 +67,7 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     <mesh name="installed-key" ref={key} geometry={resources.box} material={resources.neutral}
       position={[-4.7,1.55,9]} scale={[.12,.35,.09]}/>
     <mesh name="containment-bell-receiver" ref={receiver} geometry={resources.cylinder} material={resources.neutral}
-      position={[BELL_RECEIVER.x,BELL_RECEIVER.y,BELL_RECEIVER.z]} scale={[.24,.16,.24]}/>
+      position={[BELL_RECEIVER.x,BELL_RECEIVER.y,BELL_RECEIVER.z]} scale={[RECEIVER_RADIUS,RECEIVER_HEIGHT,RECEIVER_RADIUS]}/>
     <mesh name="enclosure-floor-light" geometry={resources.box} material={resources.neutral}
       position={[2.45,.07,18.1]} scale={[2.7,.045,.14]}/>
     <group name="attendance-display" position={[-4.74,2.35,10.6]} rotation={[0,Math.PI/2,0]}>

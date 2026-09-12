@@ -18,6 +18,8 @@
 
 `metro/withReleaseComposition.js` はproductionのiOS/Android解決時に開発用画面とprobe実装を空の境界へ差し替える。公開用のStageカード台帳は旧試作を除き、旧IDのjournal parseと移行元の保存は維持する。`node scripts/check-release-export.cjs <export-directory> ios|android` で実exportのsource map、5エリアID、同梱assetを検査した。最終コードの再exportではiOSが1504 source/10 JS asset、Androidが1503 source/10 JS assetで、開発用6画面、probe source/ID、test-supportは含まれない。アイコンとsplashはJS asset一覧ではなくconfig pluginのネイティブ資産として指定した。これは実端末の表示・音・オフライン起動を証明しない。第二章のruntime/scene/saveはまだ提供しない。
 
+05の受鈴器表示修正後も、source map付きiOS/Android exportを各々再実行し、上記と同じ1,504/1,503 source・各10 JS asset、5エリア、開発用画面/probe除外を確認した。Software WebGLの観察窓動画では巡回体の身体が受鈴器に隠れなくなったが、previewバイナリの実機表示は未確認。
+
 ## 依存・スクリプト・権限
 
 ローカルのExpo CLIで `expo install --check` が7件の同SDK推奨パッチ差を示したので、SDK 57のまま `expo install --fix` を行い、expo 57.0.22、expo-asset 57.0.17、expo-audio 57.0.5、expo-clipboard 57.0.2、expo-dev-client 57.0.19、expo-file-system 57.0.7、expo-haptics 57.0.3に合わせた。`expo install --check` はその後「Dependencies are up to date」。Expo Doctorは21/21成功。Three/R3F/RNのメジャー更新、`npm audit fix --force`、lockfile削除は行っていない。

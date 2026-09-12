@@ -16,6 +16,8 @@ const { StageScene } = require('../src/domain/stages/departure-control-v1/scene.
 const { stageModule } = require('../src/domain/stageKit/modules.ts');
 const { carriedKeyEntry, isStageSession } = require('../src/domain/stages/departure-control-v1/session.ts');
 const { actorFullyContained, doorSweepClear, BELL_RECEIVER } = require('../src/domain/stages/departure-control-v1/definition.ts');
+const { ACTOR_MODEL_BOUNDS } = require('../src/domain/actorMotion/envelope.ts');
+const observationTarget = { ...BELL_RECEIVER, y: 1.6 };
 
 async function extract() {
   const module = stageModule('departure-control-v1');
@@ -32,6 +34,9 @@ async function extract() {
     runtime, resources, onFrameError: error => { throw error; } }), THREE);
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#09090C'); scene.add(camera);
   mounted.objects.forEach(object => scene.add(object));
+  const receiverMesh = scene.getObjectByName('containment-bell-receiver');
+  if (!receiverMesh) throw Error('Containment bell receiver is missing from the scene');
+  let minimumReceiverBottom = Infinity;
   const callbacks = bridge.callbacks.splice(0), frames = [], events = [];
   const state = () => { const value = controller.runtime.stageSession?.value;
     if (!isStageSession(value)) throw Error('Departure session lost'); return value; };
@@ -45,6 +50,10 @@ async function extract() {
   }; tick.count = 0;
   const capture = () => {
     scene.updateMatrixWorld(true);
+    const receiverBottom = receiverMesh.position.y - receiverMesh.scale.y / 2;
+    minimumReceiverBottom = Math.min(minimumReceiverBottom, receiverBottom);
+    if (receiverBottom <= ACTOR_MODEL_BOUNDS.height)
+      throw Error(`Bell receiver obscures the actor body envelope: ${receiverBottom}`);
     const objects = [];
     scene.traverse(object => objects.push({ uuid: object.uuid, matrix: object.matrix.toArray(), visible: object.visible }));
     frames.push({ objects, event: events.at(-1)?.label ?? '退館制御室',
@@ -95,7 +104,7 @@ async function extract() {
     capture();
   }
   walkTo(11); press('departure-bell', '収容区画の呼び鈴');
-  lookAt(BELL_RECEIVER);
+  lookAt(observationTarget);
   const awaitContainment = label => {
     let wait = 0;
     while (!(actorFullyContained(state().actor.motion.position) && doorSweepClear(state().actor.motion.position)) && wait < 780) {
@@ -113,14 +122,14 @@ async function extract() {
     if (state().doorProgress <= 0) throw Error('Closing door did not start moving');
     press('departure-reopen', '閉鎖途中の扉を手動で開け直す');
     if (state().doorMode !== 'opening') throw Error('Manual reopening did not begin');
-    lookAt(BELL_RECEIVER);
+    lookAt(observationTarget);
     for (let frame = 0; frame < 90 && state().doorProgress > 0; frame += 1) tick();
     if (state().doorProgress !== 0 || state().isolated) throw Error('Reopened door did not reach a safe state');
     events.push({ at: tick.count / 60, id: 'door-reopened', label: '開け直した扉から巡回体が戻るのを待つ',
       actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
     capture();
     walkTo(11);
-    lookAt(BELL_RECEIVER);
+    lookAt(observationTarget);
     let leftContainment = 0;
     while ((actorFullyContained(state().actor.motion.position) || state().actor.motion.position.z >= 14.5) && leftContainment < 1800) {
       tick(); leftContainment += 1;
@@ -134,7 +143,7 @@ async function extract() {
     const beforeBellPhase = state().actor.phase;
     if (beforeBellPhase === 'investigate') throw Error('Actor was still investigating the first bell');
     press('departure-bell', 'もう一度、収容区画へ誘導する');
-    lookAt(BELL_RECEIVER);
+    lookAt(observationTarget);
     tick();
     if (state().actor.phase !== 'investigate') throw Error(`Second bell did not start a new investigation from ${beforeBellPhase}`);
     events.push({ at: tick.count / 60, id: 'actor-reinvestigates', label: '二度目の鈴へ巡回体が反応',
@@ -159,6 +168,7 @@ async function extract() {
   fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
   await mounted.unmount(); resources.dispose(); bridge.verify();
   return { mode: recovery ? 'recovery' : 'natural', frames: frames.length, simulationSeconds: tick.count / 60, events,
+    visualClearance: { minimumReceiverBottom, actorBodyHeight: ACTOR_MODEL_BOUNDS.height },
     final: { pose: controller.runtime.pose, cleared: controller.runtime.progress.cleared, actor: state().actor },
     sourceHashes: Object.fromEntries(bridge.hashes) };
 }
