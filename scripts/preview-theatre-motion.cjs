@@ -16,7 +16,7 @@ const React=require('react'),R=require('react-test-renderer'),THREE=require('thr
 const RC=fromSource('src/rendering/firstPerson/runtimeController.ts'),TC=fromSource('src/rendering/firstPerson/theatreController.ts'),D=fromSource('src/domain/theatre/definition.ts'),L=fromSource('src/domain/theatre/lightGate.ts'),Defaults=fromSource('src/types/application.ts');
 const {MOVE_SPEED}=fromSource('src/domain/firstPerson/index.ts'),AI=fromSource('src/domain/theatre/actor.ts'),{endPointer,beginStick}=fromSource('src/rendering/firstPerson/touchInput.ts'),Ames=fromSource('src/domain/theatre/perspectiveExhibit.ts');
 const Motion=fromSource('src/domain/actorMotion/index.ts');
-const Env=fromSource('src/domain/theatre/environment.ts');
+const environmentPath=path.join(source,'src/domain/theatre/environment.ts'),Env=fs.existsSync(environmentPath)?fromSource('src/domain/theatre/environment.ts'):undefined;
 const {TheatreScene}=fromSource('src/rendering/firstPerson/TheatreScene.tsx'),{createSceneResources}=fromSource('src/rendering/firstPerson/resources.ts');
 const deviceStatusPath=path.join(source,'src/domain/theatre/deviceStatus.ts'),Status=fs.existsSync(deviceStatusPath)?fromSource('src/domain/theatre/deviceStatus.ts'):undefined;
 context.bindController=true;const {FirstPersonScreen}=fromSource('src/screens/FirstPersonScreen.tsx');

@@ -4,7 +4,10 @@ The MP4 files here were made from the actual `FirstPersonScreen` button tree, `r
 
 | File | Length | What was exercised | Limit |
 | --- | ---: | --- | --- |
-| `light-operation.mp4` | 20 s | Real light handle drag, wrong release, explicit failed lock, correct release and accepted lock | No pre-migration video; pre/post numeric preservation is covered by domain tests only. |
+| `light-operation.mp4` | 20 s | Real light handle drag, wrong release, explicit failed lock, correct release and accepted lock | The before and after source revisions independently produced this same MP4 hash. |
+| `light-before-after.mp4` | 20 s | Side-by-side output from baseline `5c04d98` and Stage Kit `478b376`, using the same Screen/controller/scene input sequence | The two single videos and full timeline are byte-identical; labels and layout are added only to this comparison copy. |
+| `vault-length-operation.mp4` | 8.17 s | Real Screen/controller/scene clasp drag, wrong release/commit, correct release/commit | The before and after source revisions independently produced this same MP4 hash. |
+| `vault-length-before-after.mp4` | 8.17 s | Side-by-side baseline and Stage Kit clasp operation | The 28 numeric differences in the full timeline are at most `1.12e-16`, confined to transient drag samples; saved values and discrete outcomes match. |
 | `bell-a.mp4` | 9 s | Bell A button, receiver at `(2.8, 2.68, 10.1)`, actor investigates that receiver | Actor is placed at a declared patrol comparison pose after route preparation. |
 | `bell-b.mp4` | 9 s | Bell B button, receiver at `(-2.8, 2.68, 16.1)`, actor first hears it then can pursue when direct sight wins | Same controlled setup rule; not a natural full route. |
 | `shutter.mp4` | 6 s | South handle, visible lowering, closed collider and recorded `lastSeen` at `(-3.4, 1.6, 10.88)` | No filmed far-side reopening or full detour. Controller tests verify both handles, LOS and collision. |
@@ -16,10 +19,12 @@ The separate `preview-chapter-reentry.cjs` run uses actual App selection, prepar
 
 `route-matrix.json` records eight additional extraction-only controller/scene runs: no optional device, bell only, shutter only and both, each under standard and subdued intensity. All eight reached the actual exit walk once with the expected optional commands. These runs did not render browser frames or test a human escape response. Reproduce one with `--scenario=route-optional --optional-devices=shutter --intensity=standard --extract-only` and the two Japanese button labels shown below.
 
-Local extraction and full-resolution frame data live in `.expo/goal012/` and can be removed with `rm -rf .expo/goal012`; this command is for generated QA output only, not checkpoints or source. Seven short MP4 files in this folder are the retained bounded artifacts. To reproduce a theatre clip, run the matching scenario with current UI labels, for example:
+Local extraction and full-resolution frame data live in `.expo/goal012/` and can be removed with `rm -rf .expo/goal012`; this command is for generated QA output only, not checkpoints or source. Ten short MP4 files in this folder are the retained bounded artifacts. To reproduce a theatre clip, run the matching scenario with current UI labels, for example:
 
 ```sh
 node scripts/preview-theatre-motion.cjs --scenario=bell-a --capture-fps=10 --commit-label='灯りを固定して扉を開く' --solved-leave-label='観察を終える' --out=.expo/goal012/bell-a
 ```
+
+The before/after comparison uses the clean original checkout at `5c04d98` and a separate Stage Kit worktree whose game source matches `478b376`. Run `preview-theatre-motion.cjs --scenario=light --capture-fps=10` once with `--source=<baseline checkout>` and once with the default current source, setting a different `--out` directory each time. Run `preview-vault-chapter.cjs --length-only` twice, first with `--source=<baseline checkout>` and then with the default current source, setting distinct `--stage` and `--output` directories. Use `--extract-only` to obtain timelines without WebGL capture. Both extractors verify their loaded source hashes before finishing. `scripts/verify-goal012-before-after.cjs --help` lists the comparison inputs; it checks the baseline revision, identical Stage Kit game source, clean game source, entire timelines, video hashes and an explicit `1e-12` upper bound for last-bit vault drag rounding. Its retained output is `before-after-evidence.json`. The two labeled comparison videos were made from the independently rendered single videos with FFmpeg `pad`, `drawtext` and `hstack`; their output SHA-256 hashes are in that JSON file. Frames at 9 s (light) and 5 s (vault) were visually inspected; continuous human viewing of these two new composites was not performed.
 
 The 390×844 browser HUD is not native Yoga. Inspect real iPhone display, VoiceOver, fear response, audio and heat with the steps in `docs/IPHONE_VALIDATION.md` before treating them as verified.

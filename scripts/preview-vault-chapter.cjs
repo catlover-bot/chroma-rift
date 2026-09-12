@@ -6,22 +6,24 @@
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process');
 const { installSourceBridge, mountThree, openBrowser, sha256, delay } = require('./lib/three-scene-qa.cjs');
 const { installNativeHudBridge, browserStyles, browserHelpers } = require('./lib/native-hud-qa.cjs');
-const root = path.resolve(__dirname, '..'), stage = path.join(root, '.expo/goal009/vault-chapter'), output = path.join(root, 'docs/qa-goal009/chapter');
-const bridge = installSourceBridge(root), context = { width: 390, height: 844, fontScale: 1, bindController: false };
-for (const filename of [__filename, path.join(__dirname, 'lib/three-scene-qa.cjs'), path.join(__dirname, 'lib/native-hud-qa.cjs')]) bridge.hashes.set(path.relative(root, filename), sha256(fs.readFileSync(filename)));
+const option = name => process.argv.find(arg => arg.startsWith('--' + name + '='))?.slice(name.length + 3);
+const root = path.resolve(__dirname, '..'), source = path.resolve(option('source') || root), stage = path.resolve(option('stage') || path.join(root, '.expo/goal009/vault-chapter')), output = path.resolve(option('output') || path.join(root, 'docs/qa-goal009/chapter'));
+const fromSource = relative => require(path.join(source, relative));
+const bridge = installSourceBridge(source), context = { width: 390, height: 844, fontScale: 1, bindController: false };
+for (const filename of [__filename, path.join(__dirname, 'lib/three-scene-qa.cjs'), path.join(__dirname, 'lib/native-hud-qa.cjs')]) bridge.hashes.set(path.relative(source, filename), sha256(fs.readFileSync(filename)));
 const hudBridge = installNativeHudBridge(context), React = require('react'), THREE = require('three');
-const RC = require('../src/rendering/firstPerson/runtimeController.ts');
-const VC = require('../src/rendering/firstPerson/vaultController.ts');
-const Projection = require('../src/rendering/firstPerson/manipulationProjection.ts');
-const FP = require('../src/domain/firstPerson/index.ts');
-const Motion = require('../src/domain/actorMotion/index.ts');
-const D = require('../src/domain/vault/definition.ts'), Specs = require('../src/domain/vault/specs.ts');
-const { VaultScene } = require('../src/rendering/firstPerson/VaultScene.tsx');
-const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
-const Defaults = require('../src/types/application.ts');
+const RC = fromSource('src/rendering/firstPerson/runtimeController.ts');
+const VC = fromSource('src/rendering/firstPerson/vaultController.ts');
+const Projection = fromSource('src/rendering/firstPerson/manipulationProjection.ts');
+const FP = fromSource('src/domain/firstPerson/index.ts');
+const Motion = fromSource('src/domain/actorMotion/index.ts');
+const D = fromSource('src/domain/vault/definition.ts'), Specs = fromSource('src/domain/vault/specs.ts');
+const { VaultScene } = fromSource('src/rendering/firstPerson/VaultScene.tsx');
+const { createSceneResources } = fromSource('src/rendering/firstPerson/resources.ts');
+const Defaults = fromSource('src/types/application.ts');
 context.bindController = true;
-const { FirstPersonScreen } = require('../src/screens/FirstPersonScreen.tsx');
-const { FirstPersonResultScreen } = require('../src/screens/FirstPersonResultScreen.tsx');
+const { FirstPersonScreen } = fromSource('src/screens/FirstPersonScreen.tsx');
+const { FirstPersonResultScreen } = fromSource('src/screens/FirstPersonResultScreen.tsx');
 const R = require('react-test-renderer');
 const writeJSON = (filename, value) => fs.writeFileSync(filename, JSON.stringify(value, null, 2) + '\n');
 const fps = 30, dt = 1 / 60;
@@ -246,6 +248,14 @@ async function route(lane) {
   return run.finish();
 }
 
+async function lengthOnly() {
+  const run = await session('length-only');
+  await run.record();
+  await run.wait(.6, 'entry');
+  await run.solve('length');
+  return run.finish();
+}
+
 async function layouts() {
   const reports = [];
   for (const [width, height, scale] of [[320, 568, 1], [320, 568, 2], [390, 844, 1.5], [390, 844, 2], [430, 932, 1], [430, 932, 2]]) for (const puzzle of ['length', 'rod']) {
@@ -340,10 +350,11 @@ async function capture(reports) {
 async function main() {
   fs.mkdirSync(stage, { recursive: true }); fs.mkdirSync(output, { recursive: true });
   const reports = [];
-  for (const lane of process.argv.includes('--west-only') ? ['west'] : ['west', 'east', 'search']) {
+  if (process.argv.includes('--length-only')) reports.push(await lengthOnly());
+  for (const lane of process.argv.includes('--length-only') ? [] : process.argv.includes('--west-only') ? ['west'] : ['west', 'east', 'search']) {
     const report = await route(lane); reports.push(report); console.log(JSON.stringify({ id: report.id, frames: report.frameCount, phases: report.phases, summary: report.summary, completionCount: report.completionCount }));
   }
-  if (!process.argv.includes('--west-only')) {
+  if (!process.argv.includes('--west-only') && !process.argv.includes('--length-only')) {
     reports.push(await peek(), await dodge(), ...await layouts());
     for (const r of reports.slice(3)) console.log(JSON.stringify({ id: r.id, frames: r.frameCount, phases: r.phases, summary: r.summary }));
   }
