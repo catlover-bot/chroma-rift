@@ -1,7 +1,7 @@
-# 鏡越しの回廊
+# 鏡越しの回廊（第一章エリア04）
 
-This is a registered but hidden area-04 work in progress. `playerVisible:false` is intentional. It is not a finished campaign area or a player stage card.
+This stage is reachable through the chapter-one campaign after area 03. `playerVisible:false` excludes it from the old standalone Stage Select cards; the campaign has its own area catalog.
 
-Run its local test with `npx jest --runInBand --runTestsByPath src/domain/stages/mirror-corridor-v1/stage.test.ts`.
+The player takes the central isolation key, practices a safe hold, raises a three-tooth grate while watching the same patrolling body in a planar mirror, and walks to the control-room handoff. The controller owns the held pointer and release barrier; the stage codec retains settled teeth and recovers an interrupted hold. The live actor uses physical sight and noise, with a safe pose after capture. The mirror renders an offscreen reflection before the main native frame only while visible; the same actor mesh appears in direct space and in the reflection.
 
-The current domain implements an explicit central key, safe practice, three retained ratchet teeth, a world gate and a cold checkpoint. A fixed original two-profile shape is drawn in the scene. It does **not** yet implement a real reflection pass, a live patrolling actor, domain noise, actual press-and-hold input/release, safe capture recovery or an integrated campaign route. The dark pane is marked unfinished in code and cannot be accepted as the required mirror. Finish those behaviors and real controller/scene QA before exposing this stage or marking content complete. The static Stage Kit definition, module and render binding are already registered for validation.
+Run `npm run test -- --runTestsByPath src/domain/stages/mirror-corridor-v1/stage.test.ts src/domain/stages/mirror-corridor-v1/actor.test.ts src/rendering/firstPerson/__tests__/mirrorCorridorHoldController.test.ts src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx`. The chapter route and Software WebGL evidence are recorded in `docs/qa-goal013/README.md`. Native iPhone appearance, audio and performance remain unverified.

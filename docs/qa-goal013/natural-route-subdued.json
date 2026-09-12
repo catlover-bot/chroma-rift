@@ -1,0 +1,95 @@
+{
+  "boundary": "Jest/Node real stage controllers, collision, campaign codec and JSON cold parse; no App UI, AsyncStorage, native Canvas, audio device or video",
+  "intensity": "subdued",
+  "order": [
+    "contour",
+    "shadow"
+  ],
+  "runId": "natural-route-subdued",
+  "trace": [
+    {
+      "area": "chapter-1-area-01",
+      "stage": "perception-gallery-v1",
+      "runId": "natural-route-subdued",
+      "revision": 1,
+      "exitPose": {
+        "x": 4,
+        "y": 1.6,
+        "z": 24.6
+      },
+      "nextArea": "chapter-1-area-02",
+      "keyLocation": "unfound",
+      "campaignCompleted": false
+    },
+    {
+      "area": "chapter-1-area-02",
+      "stage": "uncanny-vault-v1",
+      "runId": "natural-route-subdued",
+      "revision": 2,
+      "exitPose": {
+        "x": 3,
+        "y": 1.6,
+        "z": 29
+      },
+      "nextArea": "chapter-1-area-03",
+      "keyLocation": "unfound",
+      "campaignCompleted": false
+    },
+    {
+      "area": "chapter-1-area-03",
+      "stage": "shadow-theatre-v1",
+      "runId": "natural-route-subdued",
+      "revision": 3,
+      "exitPose": {
+        "x": 0,
+        "y": 1.6,
+        "z": 23.6
+      },
+      "nextArea": "chapter-1-area-04",
+      "keyLocation": "unfound",
+      "campaignCompleted": false
+    },
+    {
+      "area": "chapter-1-area-04",
+      "stage": "mirror-corridor-v1",
+      "runId": "natural-route-subdued",
+      "revision": 4,
+      "exitPose": {
+        "x": 0,
+        "y": 1.6,
+        "z": 22.5
+      },
+      "nextArea": "chapter-1-area-05",
+      "keyLocation": "carried",
+      "campaignCompleted": false
+    },
+    {
+      "area": "chapter-1-area-05",
+      "stage": "departure-control-v1",
+      "runId": "natural-route-subdued",
+      "revision": 6,
+      "exitPose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 23
+      },
+      "nextArea": "chapter-1-area-05",
+      "keyLocation": "installed",
+      "campaignCompleted": true
+    }
+  ],
+  "completedAreas": [
+    "chapter-1-area-01",
+    "chapter-1-area-02",
+    "chapter-1-area-03",
+    "chapter-1-area-04",
+    "chapter-1-area-05"
+  ],
+  "finale": {
+    "contained": true,
+    "isolated": true,
+    "stopped": true,
+    "outdoorExited": true
+  },
+  "finalRevision": 6
+}

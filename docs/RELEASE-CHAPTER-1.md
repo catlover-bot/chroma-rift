@@ -1,6 +1,6 @@
 # 第一章の公開準備と未完了ゲート
 
-この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、108スイート/1,103テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
+この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,105テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成
 
@@ -38,7 +38,7 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 
 ## オーナーと実機の残件
 
-- 第一章01→05の自然なApp連続操作、標準/控えめ両方の製品経路と録画が未完了。04控えめと05標準の単独成功経路は実controller/sceneのSoftware WebGL動画で確認したが、実HUD・音・native Canvas、04の標準追跡/失敗復帰、05の誤閉鎖復旧は未確認。`docs/qa-goal013/README.md`に証拠と範囲を記録した。
+- 第一章01→05の実controllerとcampaign domain hostの連続経路は標準B→C/控えめC→Bで通過した。一方、自然な**App画面・保存・Canvas owner**の連続操作と録画は未完了。04控えめと05標準の単独成功経路は実controller/sceneのSoftware WebGL動画で確認したが、実HUD・音・native Canvas、04の標準追跡/失敗復帰、05の誤閉鎖復旧は未確認。`docs/qa-goal013/README.md`に証拠と範囲を記録した。
 - iPhone preview/TestFlightの機内モード、10〜15分連続、無音、VoiceOver、文字拡大、片手/両手、safe area、温度、frame time、鏡pass資源、10回以上の再入場を未実施。結果は `docs/IPHONE_VALIDATION.md` の第一章節へ記入する。
 - 正式なプライバシーポリシーURLとサポート連絡先はオーナー未提供。架空URLは設定やストア情報へ入れない。App Store説明・スクリーンショット・年齢レーティングの申告と審査承認も未実施。
 - アイコンと起動画面の実機表示、実機の同梱asset、公開用metadataを確認するまでストア提出しない。
