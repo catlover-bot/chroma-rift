@@ -10,6 +10,10 @@ import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import { vaultCheckpoint } from '../../storage/testFixtures/vault';
 import { theatreCheckpoint } from '../../storage/testFixtures/theatre';
 import { chapterCompletionSummary } from '../../app/chapterSummary';
+import { CHAPTER_ONE } from '../../domain/campaign/definition';
+import { attachNaturalRun, playNaturalArea } from '../../../test-support/naturalChapterRoute';
+import { createCheckpoint } from '../../domain/firstPerson';
+import type { CheckpointState } from '../../domain/firstPerson/types';
 import { EXIT } from '../../domain/stages/mirror-corridor-v1/definition';
 import { OUTDOOR } from '../../domain/stages/departure-control-v1/definition';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../domain/stages/mirror-corridor-v1/checkpoint';
@@ -19,13 +23,21 @@ import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPe
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
 import * as gateModule from '../NativeFirstPersonGate';
 
+const mockLatestCanvas: { current: FirstPersonCanvasProps | undefined } = { current: undefined };
+const mockCanvasOwners = { active: 0, peak: 0 };
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 jest.mock('expo', () => ({ ...jest.requireActual('expo'), requireOptionalNativeModule: jest.fn(() => ({})) }));
 jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => {
   const React = require('react');
   const { View } = require('react-native');
   return { FirstPersonCanvas: (props: FirstPersonCanvasProps) => {
+    mockLatestCanvas.current = props;
     const initialReady = React.useRef(props.onReady);
+    React.useEffect(() => {
+      mockCanvasOwners.active += 1;
+      mockCanvasOwners.peak = Math.max(mockCanvasOwners.peak, mockCanvasOwners.active);
+      return () => { mockCanvasOwners.active -= 1; };
+    }, [props.controller]);
     React.useEffect(() => {
       Object.assign(props.controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true });
       initialReady.current();
@@ -35,12 +47,98 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => {
 });
 
 beforeEach(async () => {
+  mockLatestCanvas.current = undefined;
+  mockCanvasOwners.active = 0;
+  mockCanvasOwners.peak = 0;
   await resetAllApplicationStorage();
   jest.mocked(requireOptionalNativeModule).mockReturnValue({} as ReturnType<typeof requireOptionalNativeModule>);
   jest.spyOn(AccessibilityInfo, 'isReduceMotionEnabled').mockResolvedValue(false);
   jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(false);
 });
 afterEach(() => jest.restoreAllMocks());
+
+test.each([
+  ['standard', ['shadow', 'contour']],
+  ['subdued', ['contour', 'shadow']],
+] as const)('one fresh %s App session advances all five mounted controllers in %j order and persists the outdoor ending', async (intensity, order) => {
+  const trace: { area: string; runId: string; revision: number; completedAreas: string[];
+    campaignCompleted: boolean; canvasOwners: number }[] = [];
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App/>);
+  if (intensity === 'subdued') {
+    await fireEvent.press(await view.findByRole('button', { name: '設定' }));
+    await fireEvent.press(view.getByRole('button', { name: '控えめな怖さ' }));
+    await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+  }
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  await act(() => latest!.onValidatedEntry?.(latest!.checkpoint!));
+  await fireEvent.press(await view.findByRole('button', { name: '点検を続ける' }));
+  const first = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+  const runId = first.runId;
+  expect(first.currentArea).toBe('chapter-1-area-01');
+  for (let index = 0; index < CHAPTER_ONE.areas.length; index++) {
+    const area = CHAPTER_ONE.areas[index]!;
+    await waitFor(() => expect(latest?.chapterId).toBe(area.stageId));
+    for (let i = 0; i < 4; i++) {
+      const resume = view.queryByRole('button', { name: '探索へ戻る' }) ?? view.queryByRole('button', { name: '点検を続ける' });
+      if (!resume) break;
+      await fireEvent.press(resume);
+    }
+    await waitFor(() => expect(mockLatestCanvas.current?.controller.runtime.chapterId).toBe(area.stageId));
+    const gate = latest!;
+    const run = attachNaturalRun(mockLatestCanvas.current!.controller);
+    expect(run.controller.horrorIntensity).toBe(intensity);
+    let stopped: CheckpointState | undefined;
+    let cleared: CheckpointState | undefined;
+    await act(() => { cleared = playNaturalArea(run, index, order, () => { stopped = createCheckpoint(run.controller.runtime); }); });
+    expect(cleared?.progress.cleared).toBe(true);
+    if (stopped) {
+      expect(stopped.stageData).toMatchObject({ keyInstalled: true, isolated: true, stopped: true, cleared: false });
+      await act(() => gate.onCheckpoint(stopped!));
+    }
+    // The mock Canvas has no native frame callback. Deliver the checkpoint
+    // produced by this mounted controller through the screen's real host lease.
+    await act(() => {
+      gate.onCheckpoint(cleared!);
+      gate.onComplete(chapterCompletionSummary(area.stageId, cleared!.progress));
+    });
+    await waitFor(async () => {
+      const saved = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+      expect(saved.runId).toBe(runId);
+      expect(saved.completedAreas).toEqual(CHAPTER_ONE.areas.slice(0, index + 1).map(item => item.id));
+      expect(saved.campaignCompleted).toBe(index === 4);
+      if (index < 4) expect(saved.currentArea).toBe(CHAPTER_ONE.areas[index + 1]!.id);
+    });
+    const saved = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+    trace.push({ area: area.id, runId: saved.runId, revision: saved.revision,
+      completedAreas: saved.completedAreas, campaignCompleted: saved.campaignCompleted,
+      canvasOwners: mockCanvasOwners.active });
+    expect(mockCanvasOwners.peak).toBeLessThanOrEqual(1);
+  }
+  expect(await view.findByText('第一章「最後の退館者」 完')).toBeTruthy();
+  await view.unmount();
+  expect(mockCanvasOwners.active).toBe(0);
+  const resumed = await render(<App/>);
+  expect(await resumed.findByRole('button', { name: 'エンディングを見る' })).toBeTruthy();
+  if (process.env.CHROMA_QA_TRACE_DIR) {
+    const fs = require('node:fs') as { mkdirSync(path: string, options: { recursive: boolean }): void;
+      writeFileSync(path: string, data: string): void };
+    const path = require('node:path') as { resolve(path: string): string; join(...parts: string[]): string };
+    const directory = path.resolve(process.env.CHROMA_QA_TRACE_DIR);
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(path.join(directory, `app-natural-route-${intensity}.json`), JSON.stringify({
+      boundary: 'Jest React Native App and screen host, actual mounted controllers, collision, campaign codec and AsyncStorage mock; Canvas GL-ready boundary and audio are mocked; no native video or device',
+      intensity, order, runId, trace, canvasPeak: mockCanvasOwners.peak,
+      canvasAfterUnmount: mockCanvasOwners.active,
+      coldEndingAvailable: true,
+    }, null, 2) + '\n');
+  }
+}, 30_000);
 
 test('product home starts one campaign envelope and resumes the same first area', async () => {
   const Gate = gateModule.NativeFirstPersonGate;

@@ -1,0 +1,74 @@
+{
+  "boundary": "Jest React Native App and screen host, actual mounted controllers, collision, campaign codec and AsyncStorage mock; Canvas GL-ready boundary and audio are mocked; no native video or device",
+  "intensity": "standard",
+  "order": [
+    "shadow",
+    "contour"
+  ],
+  "runId": "chapter-one-1789244939530",
+  "trace": [
+    {
+      "area": "chapter-1-area-01",
+      "runId": "chapter-one-1789244939530",
+      "revision": 3,
+      "completedAreas": [
+        "chapter-1-area-01"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-02",
+      "runId": "chapter-one-1789244939530",
+      "revision": 5,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-03",
+      "runId": "chapter-one-1789244939530",
+      "revision": 7,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-04",
+      "runId": "chapter-one-1789244939530",
+      "revision": 8,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03",
+        "chapter-1-area-04"
+      ],
+      "campaignCompleted": false,
+      "canvasOwners": 1
+    },
+    {
+      "area": "chapter-1-area-05",
+      "runId": "chapter-one-1789244939530",
+      "revision": 12,
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03",
+        "chapter-1-area-04",
+        "chapter-1-area-05"
+      ],
+      "campaignCompleted": true,
+      "canvasOwners": 0
+    }
+  ],
+  "canvasPeak": 1,
+  "canvasAfterUnmount": 0,
+  "coldEndingAvailable": true
+}

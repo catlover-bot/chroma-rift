@@ -17,7 +17,7 @@ const bundlePath = path.join(root, entry.bundle);
 const mapPath = `${bundlePath}.map`;
 const bundle = fs.readFileSync(bundlePath, 'utf8');
 const sources = JSON.parse(fs.readFileSync(mapPath, 'utf8')).sources;
-const forbidden = /(?:^|\/)(?:DeveloperLabScreen|StageSelectScreen|MicroMazeScreen|IllusionMazeScreen|JourneyResultScreen|FirstPersonResultScreen)\.[jt]sx?$|\/stage-kit-probe\//;
+const forbidden = /(?:^|\/)(?:DeveloperLabScreen|StageSelectScreen|MicroMazeScreen|IllusionMazeScreen|JourneyResultScreen|FirstPersonResultScreen)\.[jt]sx?$|\/stage-kit-probe\/|\/test-support\//;
 const included = sources.filter(source => forbidden.test(source));
 if (included.length) fail(`development source packaged: ${included.join(', ')}`);
 if (bundle.includes('stage-kit-probe')) fail('probe ID packaged in release bundle');

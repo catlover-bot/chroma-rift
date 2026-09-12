@@ -14,6 +14,7 @@ web-build/
 # Build uses the compiled app and its imported assets, not QA material.
 docs/
 scripts/
+test-support/
 **/__tests__/
 src/storage/testFixtures/
 assets/perceptual/source/
