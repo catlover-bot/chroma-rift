@@ -12,7 +12,7 @@ type SceneBinding = (props: { world: WorldGeometry; resources: SceneResources; r
   renderOffscreen?: StageRenderOffscreen | undefined; onFrameError?: ((error: unknown) => void) | undefined }) => React.JSX.Element;
 /** Static render composition. Scenes borrow the existing Canvas and resources. */
 export const STAGE_SCENE_BINDINGS: Partial<Record<StageId, SceneBinding>> = {
-  'stage-kit-probe': StageKitProbeScene,
+  ...(typeof __DEV__ === 'undefined' || __DEV__ ? { 'stage-kit-probe': StageKitProbeScene } : {}),
   'mirror-corridor-v1': MirrorCorridorScene,
   'departure-control-v1': DepartureControlScene,
 };

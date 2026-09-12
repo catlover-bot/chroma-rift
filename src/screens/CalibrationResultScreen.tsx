@@ -13,11 +13,13 @@ export function CalibrationResultScreen({
   onMaze,
   onRecalibrate,
   onHome,
+  primaryLabel = '迷路を試す',
 }: {
   profile: CalibrationProfile;
   onMaze: () => void;
   onRecalibrate: () => void;
   onHome: () => void;
+  primaryLabel?: string;
 }) {
   return (
     <Screen>
@@ -38,7 +40,7 @@ export function CalibrationResultScreen({
         <Stat label="背景による反転" value={profile.backgroundReversalObserved ? '観察された' : '観察されなかった'} />
         <Stat label="補助表示" value={profile.depthAssistDefault ? '推奨' : '任意'} />
       </Panel>
-      <ActionButton label="迷路を試す" onPress={onMaze} variant="primary" />
+      <ActionButton label={primaryLabel} onPress={onMaze} variant="primary" />
       <ActionButton label="もう一度調整する" onPress={onRecalibrate} />
       <ActionButton label="ホームへ戻る" onPress={onHome} />
     </Screen>

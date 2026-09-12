@@ -1,12 +1,16 @@
 import type { CheckpointState } from '../domain/firstPerson/types';
-import { STAGE_DEFINITIONS, type PlayableStageDefinition, type PlayableStageId as StageId } from '../domain/stageKit/definitions';
+import { STAGE_DEFINITIONS, type PlayableStageDefinition, type PlayableStageId as StageId, type StageDefinition } from '../domain/stageKit/definitions';
 export type { PlayableStageId as StageId } from '../domain/stageKit/definitions';
-const playable=STAGE_DEFINITIONS.filter((stage):stage is PlayableStageDefinition=>stage.playerVisible);
+const isPlayableStage=(stage:StageDefinition):stage is PlayableStageDefinition=>stage.playerVisible===true;
+const playable=Array.from(STAGE_DEFINITIONS).filter(isPlayableStage);
 export const STAGE_IDS: readonly StageId[] = playable.map(stage => stage.id);
 export type StageHistory = { everCleared: boolean; discoveries: string[] };
 export type StageJournal = { schemaVersion: 1; recentEntries: StageId[]; history: Partial<Record<StageId, StageHistory>> };
 export type StageCardState = { id: StageId; current: 'new' | 'exploring' | 'cleared' | 'blocked'; history: StageHistory };
-export const STAGES: readonly { id: StageId; number?: string; title: string; teaser: string }[] = playable;
+// Keep legacy IDs parseable for old journals, but omit the prototype from the
+// production-facing card catalog. The old save remains an import source.
+export const STAGES: readonly { id: StageId; number?: string; title: string; teaser: string }[] =
+  playable.filter(stage => typeof __DEV__ === 'undefined' || __DEV__ || stage.id !== 'returnless-entrance');
 const discoveryIds = new Map<StageId, readonly string[]>(playable.map(stage => [stage.id, stage.discoveries]));
 const discoveriesFor = (id: StageId): readonly string[] => discoveryIds.get(id) ?? [];
 export const isStageId = (value: unknown): value is StageId => typeof value === 'string' && STAGE_IDS.includes(value as StageId);

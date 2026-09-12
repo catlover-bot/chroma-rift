@@ -95,7 +95,8 @@ const gallery: StageModule<GalleryCommand, ReturnType<typeof applyGalleryCommand
 
 /** Explicit imports are intentional: a new stage has one composition point. */
 export const STAGE_MODULES = { 'shadow-theatre-v1': theatre, 'uncanny-vault-v1': vault, 'perception-gallery-v1': gallery,
-  'stage-kit-probe': stageKitProbe, 'mirror-corridor-v1': mirrorCorridor, 'departure-control-v1': departureControl } as const;
+  ...(typeof __DEV__ === 'undefined' || __DEV__ ? { 'stage-kit-probe': stageKitProbe } : {}),
+  'mirror-corridor-v1': mirrorCorridor, 'departure-control-v1': departureControl } as const;
 export type ModuleStageId = keyof typeof STAGE_MODULES;
 export function stageModule(id: unknown): (typeof STAGE_MODULES)[ModuleStageId] | undefined {
   return typeof id === 'string' && Object.prototype.hasOwnProperty.call(STAGE_MODULES, id) ? STAGE_MODULES[id as ModuleStageId] : undefined;

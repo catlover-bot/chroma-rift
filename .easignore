@@ -1,0 +1,24 @@
+node_modules/
+.expo/
+dist/
+coverage/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+ios/
+android/
+web-build/
+
+# Build uses the compiled app and its imported assets, not QA material.
+docs/
+scripts/
+**/__tests__/
+src/storage/testFixtures/
+assets/perceptual/source/
+assets/perceptual/hybrid-source-low.png
+assets/perceptual/hybrid-source-high.png
+assets/perceptual/manifest.json
+assets/audio/analysis.json
+assets/audio/perceptual-analysis.json

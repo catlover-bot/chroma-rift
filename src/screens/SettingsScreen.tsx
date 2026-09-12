@@ -6,6 +6,7 @@ import { getGalleryAudioAvailability, normalizeAudioPreferences } from '../audio
 import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
 import type { AppSettings, EffectStrength, FirstPersonControls } from '../types/application';
 import { PALETTE_IDS, PALETTE_LABELS } from '../domain/emblem/color';
+import { APP_VERSION } from '../app/version';
 
 export function SettingsScreen({
   settings,
@@ -39,7 +40,8 @@ export function SettingsScreen({
   currentChapterName?: string;
   onResetChapter?: () => void;
 }) {
-  const [credits, setCredits] = useState(false);
+  const [information, setInformation] = useState<'about' | 'credits' | 'privacy' | 'support'>();
+  const toggleInformation = (section: typeof information) => setInformation(current => current === section ? undefined : section);
   const audio = normalizeAudioPreferences(settings.audio);
   const audioAvailability = getGalleryAudioAvailability();
   const set = <Key extends keyof AppSettings>(key: Key, value: AppSettings[Key]) =>
@@ -141,8 +143,25 @@ export function SettingsScreen({
         }
         variant="danger"
       />
-      <ActionButton label={credits ? "クレジットを閉じる" : "出典と素材クレジット"} onPress={() => setCredits(!credits)} />
-      {credits ? <MaterialCredits /> : null}
+      <SectionTitle>アプリ情報</SectionTitle>
+      <ActionButton label="このアプリについて" onPress={() => toggleInformation('about')} />
+      {information === 'about' ? <Panel>
+        <Body>CHROMA RIFT　バージョン {APP_VERSION}</Body>
+        <Body>第一章「最後の退館者」は、閉館後の館内を5つのエリアで進み、巡回体を隔離して屋外へ出る物語です。</Body>
+        <Body muted>第二章は今後のアップデートで追加予定です。</Body>
+      </Panel> : null}
+      <ActionButton label="出典と素材クレジット" onPress={() => toggleInformation('credits')} />
+      {information === 'credits' ? <MaterialCredits /> : null}
+      <ActionButton label="プライバシー" onPress={() => toggleInformation('privacy')} />
+      {information === 'privacy' ? <Panel>
+        <Body>プレイの進行、観察履歴、設定、表示の調整結果を端末内に保存します。この画面の「保存データをリセット」から削除できます。</Body>
+        <Body>本編の操作にアカウント登録、位置情報、カメラ、マイクは使いません。</Body>
+      </Panel> : null}
+      <ActionButton label="サポート" onPress={() => toggleInformation('support')} />
+      {information === 'support' ? <Panel>
+        <Body>3Dの表示に失敗したときは、章の画面から「表示を再試行」を選べます。保存に失敗したときは画面の案内に従って再試行してください。</Body>
+        <Body muted>問い合わせ先は公開前に確定して案内します。</Body>
+      </Panel> : null}
       <ActionButton label={backLabel} onPress={onBack} />
       {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
       {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}

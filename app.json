@@ -3,7 +3,8 @@
     "name": "CHROMA RIFT",
     "slug": "chroma-rift",
     "scheme": "chromarift",
-    "version": "0.1.0",
+    "version": "1.0.0",
+    "icon": "./assets/branding/icon.png",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "ios": {
@@ -26,6 +27,14 @@
           "recordAudioAndroid": false,
           "enableBackgroundRecording": false,
           "enableBackgroundPlayback": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#09090C",
+          "image": "./assets/branding/splash-icon.png",
+          "imageWidth": 200
         }
       ]
     ]

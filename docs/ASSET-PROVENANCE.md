@@ -48,3 +48,7 @@ node scripts/preview-gallery.cjs --capture
 - 配線、ハイブリッドの顔/CLOSED/棚線の原画・Gaussian LP/HP合成、展示体の胴体/外装/四肢、cloth/door-impact/12秒Shepard風音は本作の手続き生成。生成スクリプトと中間対照を同梱する。Bach/北岡/IllusionVQAの掲載画像・音声は使用しない。
 - 旧4 WAVは変更せず、新3 WAVを既存expo-audioの固定10player poolへ追加。長さ/RMS/peak/DCと再現性を検査し、実聴未確認を維持。
 - QAはsource geometryを実WebGLで描いた画像、offline生成2D、実component由来のHUD合成を区別し、iPhoneの実表示と扱わない。AI画像生成は利用していない。
+
+## Goal 013 の公開用図形
+
+- `assets/branding/icon.png` と `assets/branding/splash-icon.png` は `scripts/generate-brand-assets.cjs` の自作ベクター輪郭をChromium Canvasで1024角PNGへ描いた。外部図版、商標、生成AI画像は使用していない。前者は不透明な暗色背景、後者は透過背景。実際のiPhoneホーム画面と起動画面は未確認。

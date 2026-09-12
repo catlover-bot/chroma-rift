@@ -644,9 +644,9 @@ export default function App() {
         onRestart={() => { if (!current()) return; if (run.replay) void startCampaignReplay(run.areaId); else { navigateHome(); confirmNewCampaign(); } }}
         onExit={() => { if (current()) navigateHome(); }}
       />;
-  } else if (state.screen === 'firstPersonResult' && state.firstPersonSummary) {
+  } else if (__DEV__ && state.screen === 'firstPersonResult' && state.firstPersonSummary) {
     screen = <FirstPersonResultScreen summary={state.firstPersonSummary} onNewGallery={() => dispatch({ type: 'PLAY', chapterId: 'perception-gallery-v1' })} onNextChapter={nextChapter} onReplay={confirmReplay} onHome={navigateHome} onNotes={() => { setChapterLease(beginFirstPersonSession()); dispatch({ type: 'NAVIGATE', screen: 'galleryNotes' }); }} />;
-  } else if (state.screen === 'firstPerson' || state.screen === 'galleryNotes' || (state.screen === 'firstPersonLab' && __DEV__)) {
+  } else if (__DEV__ && (state.screen === 'firstPerson' || state.screen === 'galleryNotes' || state.screen === 'firstPersonLab')) {
     const lab = state.screen === 'firstPersonLab', reviewOnly = state.screen === 'galleryNotes';
     // Every callback captures this mounted run's lease; an old save/completion cannot adopt a new run.
     const lease = chapterLease;
@@ -719,7 +719,7 @@ export default function App() {
         onExit={() => { if (!isFirstPersonSessionCurrent(lease)) return; if (reviewOnly) dispatch({ type: 'NAVIGATE', screen: state.firstPersonSummary ? 'firstPersonResult' : 'firstPerson' }); else navigateHome(); }}
       />
     );
-  } else if (state.screen === 'illusionMaze') {
+  } else if (__DEV__ && state.screen === 'illusionMaze') {
     screen = (
       <IllusionMazeScreen
         key={`${state.journeyRun}-${state.stageIndex}`}
@@ -731,14 +731,14 @@ export default function App() {
         onExit={navigateHome}
       />
     );
-  } else if (state.screen === 'journeyResult') {
+  } else if (__DEV__ && state.screen === 'journeyResult') {
     screen = <JourneyResultScreen summaries={state.journeySummaries} onReplay={() => dispatch({ type: 'BEGIN_LEGACY_JOURNEY' })} onHome={navigateHome} />;
   } else if (state.screen === 'calibrationInstructions') {
     screen = <CalibrationInstructionsScreen onStart={beginCalibration} onBack={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
   } else if (state.screen === 'calibration' && state.calibrationSession) {
     screen = <CalibrationScreen session={state.calibrationSession} onResponse={(response) => dispatch({ type: 'ADD_CALIBRATION_RESPONSE', response })} onExit={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })} />;
   } else if (state.screen === 'calibrationResult' && state.calibrationProfile) {
-    screen = <CalibrationResultScreen profile={state.calibrationProfile} onMaze={() => dispatch({ type: 'PLAY' })} onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })} onHome={navigateHome} />;
+    screen = <CalibrationResultScreen profile={state.calibrationProfile} onMaze={() => __DEV__ ? dispatch({ type: 'PLAY' }) : navigateHome()} primaryLabel={__DEV__ ? '迷路を試す' : '第一章のホームへ'} onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })} onHome={navigateHome} />;
   } else if (state.screen === 'settings') {
     screen = (
       <SettingsScreen
