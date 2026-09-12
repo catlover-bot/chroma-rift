@@ -40,5 +40,5 @@
     "durationSeconds": 20,
     "inspectedFrameSeconds": 9
   },
-  "area01": "No new same-route before/after video was captured for Goal 013."
+  "area01": "See area01-before-after.json and area01-light-before-after.mp4 for the separate entrance/light comparison."
 }

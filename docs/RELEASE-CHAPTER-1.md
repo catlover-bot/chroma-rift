@@ -39,7 +39,7 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 ## オーナーと実機の残件
 
 - 第一章01→05の実controllerとcampaign domain host、およびマウント済みcontrollerを動かすApp/AsyncStorageモックの連続経路は、標準B→C/控えめC→Bで通過した。Canvas mockのpeak ownerは1、エンディング後0で、App cold restart後もエンディング入口が残る。**native Canvas・実音声を伴うApp操作の連続動画**は未完了。04控えめと05標準の単独成功経路は実controller/sceneのSoftware WebGL動画で確認したが、実HUD・音・native Canvas、04の標準追跡/失敗復帰、05の誤閉鎖復旧は未確認。`docs/qa-goal013/README.md`に証拠と範囲を記録した。
-- 01〜03の変更前後は02の長さ調整と03の灯り調整を同条件のSoftware WebGL動画で比較し、各装置の一操作に差がないことを確認した。01の変更前後動画と各エリア全体の実機比較は未完了。
+- 01〜03の変更前後は同条件のSoftware WebGL動画で各エリアの短い操作を比較した。01は目的文と点灯後の点検記録の差があり、非常灯の受理とcameraは一致。02の長さ調整と03の灯り調整は観測経路のtimeline・独立動画がbyte一致。各エリア全体の実機比較は未完了。
 - iPhone preview/TestFlightの機内モード、10〜15分連続、無音、VoiceOver、文字拡大、片手/両手、safe area、温度、frame time、鏡pass資源、10回以上の再入場を未実施。結果は `docs/IPHONE_VALIDATION.md` の第一章節へ記入する。
 - 正式なプライバシーポリシーURLとサポート連絡先はオーナー未提供。架空URLは設定やストア情報へ入れない。App Store説明・スクリーンショット・年齢レーティングの申告と審査承認も未実施。
 - アイコンと起動画面の実機表示、実機の同梱asset、公開用metadataを確認するまでストア提出しない。

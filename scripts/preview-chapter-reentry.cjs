@@ -6,6 +6,7 @@
 // are explicit QA boundaries. No native device or user storage is accessed.
 const fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..'),opt=n=>process.argv.find(a=>a.startsWith('--'+n+'='))?.slice(n.length+3),source=path.resolve(opt('source')||root),out=path.resolve(opt('out')||path.join(root,'.expo/goal010-1/chapter-reentry'));
+const galleryOnly=process.argv.includes('--gallery-only');
 fs.mkdirSync(out,{recursive:true});
 const{installSourceBridge,mountThree,openBrowser,delay,sha256}=require('./lib/three-scene-qa.cjs'),{installNativeHudBridge,browserStyles,browserHelpers}=require('./lib/native-hud-qa.cjs');
 const bridge=installSourceBridge(source),context={width:390,height:844,fontScale:1.5},native=installNativeHudBridge(context),React=require('react'),R=require('react-test-renderer'),THREE=require('three');
@@ -40,7 +41,7 @@ async function extract(){
  await Store.resetAllApplicationStorage();memory.clear();const app=AS.createDefaultApplication();app.quickSetupResult=skipQuickSetup('2026-09-10T00:00:00Z');app.settings={...app.settings,haptics:false,audio:{...app.settings.audio,enabled:false}};
  await storage.setItem(AS.APPLICATION_STORAGE_KEY,JSON.stringify(app));await storage.setItem(Store.FIRST_PERSON_ONBOARDING_KEY,JSON.stringify({...Defaults.DEFAULT_FIRST_PERSON_ONBOARDING,tutorialCompleted:true,controlChoiceAcknowledged:true}));
  let hud=await native.mount(App,{});await settle();
- const frames=[],hudTrees=[],hudMap=new Map(),events=[];let live,stage='stage-select',previous=new Map();
+ const frames=[],hudTrees=[],hudMap=new Map(),events=[];let live,stage='stage-select',previous=new Map(),galleryState;
  function event(type,detail={}){events.push({time:frames.length/30,type,...detail});}
  function record(focusId){
   const updates=[];if(live)live.scene.traverse(o=>{const v={matrix:o.matrix.toArray(),visible:o.visible,material:!Array.isArray(o.material)?o.material?.uuid:undefined},key=JSON.stringify(v);if(previous.get(o.uuid)!==key){previous.set(o.uuid,key);updates.push([o.uuid,v]);}});
@@ -51,29 +52,44 @@ async function extract(){
  async function pressID(id){const b=hud.tree.root.findAll(n=>n.type==='Pressable'&&n.props.testID===id)[0];if(!b||b.props.disabled)throw Error('Missing enabled App button '+id);await R.act(async()=>b.props.onPress());await settle();event('actual-App-button',{testID:id});}
  async function press(label){const b=hud.tree.root.findAll(n=>n.type==='Pressable'&&n.props.accessibilityLabel===label)[0];if(!b||b.props.disabled)throw Error('Missing enabled App button '+label);await R.act(async()=>b.props.onPress());await settle();event('actual-App-button',{label});}
  async function destroyScene(){if(!live)return;await live.mount.unmount();live.resources.dispose();live=undefined;previous=new Map();}
- const sequence=[['perception-gallery-v1','展示室へ入る'],['uncanny-vault-v1','収蔵庫へ入る'],['shadow-theatre-v1','映写室へ入る'],['shadow-theatre-v1','映写室へ入る']];
+ const sequence=galleryOnly?[['perception-gallery-v1','展示室へ入る']]:[['perception-gallery-v1','展示室へ入る'],['uncanny-vault-v1','収蔵庫へ入る'],['shadow-theatre-v1','映写室へ入る'],['shadow-theatre-v1','映写室へ入る']];
  if(probeVisible)sequence.push(['stage-kit-probe','Stage Kit 確認室へ入る'],['stage-kit-probe','Stage Kit 確認室へ入る']);
  if(process.argv.includes('--stress-ten'))sequence.push(...Array.from({length:10},()=>['shadow-theatre-v1','映写室へ入る']));
  for(let index=0;index<sequence.length;index++){
-  const[id,entryLabel]=sequence[index];stage='stage-select';event('stage-select',{next:id});await hold(1,'select-'+id);
-  await pressID('select-'+id);stage='preparation';event('preparation',{chapterId:id});await hold(.8);
-  await press(entryLabel);const c=context.controller;if(c.runtime.chapterId!==id)throw Error('Entered wrong chapter');if(c.retired)throw Error('Entered retired controller');await hud.update();
-  const resources=createSceneResources(false,null,true,id==='uncanny-vault-v1',id==='shadow-theatre-v1'),runtime={current:c.runtime},scene=new THREE.Scene(),camera=context.camera;scene.background=new THREE.Color('#171a1b');scene.add(camera);
-  const mount=await mountThree(React.createElement(ChapterScene,{world:RC.worldForController(c),runtime,progress:c.runtime.progress,resources,assist:false,reducedMotion:false,lowQuality:false,lab:false,onFrameError:e=>{throw e;}}),THREE);mount.objects.forEach(o=>scene.add(o));const callbacks=bridge.callbacks.splice(0);callbacks.forEach(fn=>fn({},0));scene.updateMatrixWorld(true);
-  const sceneId='entry-'+index;fs.writeFileSync(path.join(out,sceneId+'.json'),JSON.stringify(scene.toJSON()));live={id:sceneId,scene,camera,resources,mount};previous=new Map();stage='live-chapter';event('validated-entry-boundary',{chapterId:id,session:c.runtime.session,source:'Actual App/Screen callback with stub native ready',reentry:index===3||index===5});
+  const[id,entryLabel]=sequence[index];stage='stage-select';event('stage-select',{next:id});if(!galleryOnly)await hold(1,'select-'+id);
+  if(galleryOnly&&fs.existsSync(path.join(source,'src/domain/campaign/definition.ts'))){await press('第一章をはじめる');if(hud.tree.root.findAll(n=>n.type==='Pressable'&&n.props.accessibilityLabel==='あとで調整して遊ぶ').length)await press('あとで調整して遊ぶ');}
+  else await pressID('select-'+id);
+  stage='preparation';event('preparation',{chapterId:id});if(!galleryOnly)await hold(.8);
+  if(galleryOnly&&!fs.existsSync(path.join(source,'src/domain/campaign/definition.ts'))){const random=Math.random;Math.random=()=>73/0x100000000;try{await press(entryLabel);}finally{Math.random=random;}}
+  else await press(entryLabel);
+  const c=context.controller;if(c.runtime.chapterId!==id)throw Error('Entered wrong chapter');if(c.retired)throw Error('Entered retired controller');await hud.update();
+  if(galleryOnly&&hud.tree.root.findAll(n=>n.type==='Pressable'&&n.props.accessibilityLabel==='点検を続ける').length)await press('点検を続ける');
+  let resources=createSceneResources(false,null,true,id==='uncanny-vault-v1',id==='shadow-theatre-v1'),runtime={current:c.runtime},scene=new THREE.Scene();const camera=context.camera;scene.background=new THREE.Color('#171a1b');scene.add(camera);
+  let mount=await mountThree(React.createElement(ChapterScene,{world:RC.worldForController(c),runtime,progress:c.runtime.progress,resources,assist:false,reducedMotion:false,lowQuality:false,lab:false,onFrameError:e=>{throw e;}}),THREE);mount.objects.forEach(o=>scene.add(o));let callbacks=bridge.callbacks.splice(0);callbacks.forEach(fn=>fn({},0));scene.updateMatrixWorld(true);
+  let sceneId='entry-'+index;fs.writeFileSync(path.join(out,sceneId+'.json'),JSON.stringify(scene.toJSON()));live={id:sceneId,scene,camera,resources,mount};previous=new Map();stage='live-chapter';event('validated-entry-boundary',{chapterId:id,session:c.runtime.session,source:'Actual App/Screen callback with stub native ready',reentry:index===3||index===5});
   if(id==='stage-kit-probe'){
    if(index===4){for(let i=0;i<8;i++){c.input.forward=1;RC.advanceController(c,1/60,camera);}c.input.forward=0;RC.syncCamera(c,camera);if(!RC.interactController(c,'stage-kit-probe-device'))throw Error('Probe device rejected in App route');context.snapshotCallback(RC.controllerSnapshot(c));await hud.update();await settle();event('probe-device-saved',{activated:c.runtime.stageSession?.value?.activated});}
    else {if(!c.runtime.stageSession?.value?.activated)throw Error('Probe did not cold-load activated door');event('probe-cold-reentry',{activated:true,door:RC.worldForController(c).solids.find(s=>s.id==='door')?.min.y});}
   }
-  for(let frame=0;frame<45;frame++){RC.commandController(c,{type:'turn',yaw:.18/45,pitch:0});RC.advanceController(c,1/30,camera);runtime.current=c.runtime;callbacks.forEach(fn=>fn({},1/30));scene.updateMatrixWorld(true);await hud.update();record();}
+  for(let frame=0;frame<(galleryOnly?90:45);frame++){
+   if(galleryOnly&&frame===30){const f=from('src/domain/gallery/definition.ts').GALLERY_LIGHT_FIXTURE.center,p=c.runtime.pose,dx=f.x-p.position.x,dz=f.z-p.position.z,want=Math.atan2(-dx,-dz);RC.commandController(c,{type:'turn',yaw:Math.atan2(Math.sin(want-p.yaw),Math.cos(want-p.yaw)),pitch:Math.atan2(f.y-p.position.y,Math.hypot(dx,dz))-p.pitch});RC.syncCamera(c,camera);await hud.update();await pressID('interact');event('gallery-light-interact',{lit:c.runtime.progress.gallery?.emergencyLit});if(!c.runtime.progress.gallery?.emergencyLit)throw Error('Gallery light did not turn on');
+    // The test renderer does not reconcile R3F props; rebuild its Three host
+    // at the accepted checkpoint so the visible emergency light is refreshed.
+    await mount.unmount();resources.dispose();resources=createSceneResources(false,null,true,false,false);scene=new THREE.Scene();scene.background=new THREE.Color('#171a1b');scene.add(camera);
+    mount=await mountThree(React.createElement(ChapterScene,{world:RC.worldForController(c),runtime,progress:c.runtime.progress,resources,assist:false,reducedMotion:false,lowQuality:false,lab:false,onFrameError:e=>{throw e;}}),THREE);
+    mount.objects.forEach(o=>scene.add(o));callbacks=bridge.callbacks.splice(0);callbacks.forEach(fn=>fn({},0));scene.updateMatrixWorld(true);sceneId='light-'+index;
+    fs.writeFileSync(path.join(out,sceneId+'.json'),JSON.stringify(scene.toJSON()));live={id:sceneId,scene,camera,resources,mount};previous=new Map();}
+   if(!galleryOnly||frame<30)RC.commandController(c,{type:'turn',yaw:.18/45,pitch:0});RC.advanceController(c,1/30,camera);runtime.current=c.runtime;callbacks.forEach(fn=>fn({},1/30));scene.updateMatrixWorld(true);await hud.update();record();
+  }
+  if(galleryOnly){galleryState={seed:c.runtime.progress.gallery?.shadow.seed,finalPose:c.runtime.pose,emergencyLit:c.runtime.progress.gallery?.emergencyLit,cleared:c.runtime.progress.cleared};await destroyScene();continue;}
   await pressID('pause-control');stage='pause';event('paused',{chapterId:id});await hold(.8);
   await press('ホームへ戻る');await destroyScene();if(!c.retired)throw Error('Leaving chapter did not retire controller');stage='returned-stage-select';event('retired-on-return',{chapterId:id,session:c.runtime.session});await hold(.4,'select-'+id);
   if(probeVisible&&index===4){await hud.unmount();hud=await native.mount(App,{});await settle();event('probe-App-cold-remount',{checkpointKeyPresent:memory.has('chroma-rift.dev.stage-kit-probe.v1')});}
  }
- await hold(1,'select-shadow-theatre-v1');await hud.unmount();bridge.verify();
+ if(!galleryOnly)await hold(1,'select-shadow-theatre-v1');await hud.unmount();bridge.verify();
  if(activeOwners!==0||maxActiveOwners!==1||owners.length!==sequence.length||owners.some(o=>!o.unmounted))throw Error('App Canvas boundary ownership mismatch');
  const finalApp=JSON.parse(await storage.getItem(AS.APPLICATION_STORAGE_KEY));
- const report={method:'Actual App selection/preparation/Screen pause/home/reentry and actual ChapterScene with 45 controller turn+advance frames per chapter. Shared storage uses isolated memory. Native availability/Canvas ready/presentation/audio are stubbed; Modal and Skia are translated host boundaries. Browser renderer is single; UI timing is authored 30 Hz capture timing, not native FPS.',duration:frames.length/30,frames:frames.length,sequence:sequence.map(x=>x[0]),events,owners,maxActiveCanvasBoundaries:maxActiveOwners,activeCanvasBoundariesAfterUnmount:activeOwners,storageKeys:[...memory.keys()],writeCount:writes.length,storedApplication:finalApp,sourceHashes:Object.fromEntries(bridge.hashes),toolHash:sha256(fs.readFileSync(__filename))};
+ const report={method:galleryOnly?'Area 01: actual App entry, FirstPersonScreen and ChapterScene; 30 controller turn/advance frames, actual HUD emergency-light interact at frame 30, then 60 neutral-input frames at 30 Hz. App entry differs by version but capture starts after entry. The test renderer does not reconcile R3F props, so the Three host is rebuilt after the accepted light command; this models the visible light refresh, not native resource ownership. Isolated memory storage; native Canvas/ready/audio stubbed; browser Software WebGL and translated HUD CSS, not native Yoga or FPS.':'Actual App selection/preparation/Screen pause/home/reentry and actual ChapterScene with 45 controller turn+advance frames per chapter. Shared storage uses isolated memory. Native availability/Canvas ready/presentation/audio are stubbed; Modal and Skia are translated host boundaries. Browser renderer is single; UI timing is authored 30 Hz capture timing, not native FPS.',duration:frames.length/30,frames:frames.length,sequence:sequence.map(x=>x[0]),events,galleryState,owners,maxActiveCanvasBoundaries:maxActiveOwners,activeCanvasBoundariesAfterUnmount:activeOwners,storageKeys:[...memory.keys()],writeCount:writes.length,storedApplication:finalApp,sourceHashes:Object.fromEntries(bridge.hashes),toolHash:sha256(fs.readFileSync(__filename))};
  fs.writeFileSync(path.join(out,'animation.json'),JSON.stringify({hudTrees,frames}));fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');return report;
 }
 async function capture(report){

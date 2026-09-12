@@ -12,7 +12,7 @@
 
 動画SHA-256 `b2b8e1bcdc843f47b5832f1768ad01c10de057b67c786e786030c10b3ec16a20`。接触シート `4ec06e5777fd6d0c1a2764710459525f39106bf622f61c574e18df0800885e49`。PNG抽出と接触シートを開いて観察窓内の身体・屋外床を確認したが、MP4の連続視聴は未実施。端末での見え方、恐怖、聴こえ方をここから推定しない。
 
-Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF](../GOAL-012-EXTENSION-PROOF.md) を参照。今回の変更前後は [02の長さ調整](area02-length-before-after.mp4) と [03の灯り調整](area03-light-before-after.mp4) を左右同時に収録し、[入力・source・hashと限界](area02-03-before-after.json) に固定した。左はGoal 012のゲームソース、右はGoal 013。同じscript、seed、camera、入力を各ソースへ独立に通した結果、それぞれのtimelineと独立動画がbyte一致した。これはその**装置操作一つずつ**でゲーム動作と絵が変わらなかった証拠であり、エリア全体や館内向け文言の全表示を確認するものではない。02は8.17秒、03は20秒。並列動画の抽出フレームを開いたが、MP4の連続視聴はしていない。01のGoal 013変更前後動画はまだ収録していない。旧素材と新素材を混ぜた編集動画は単一実行の証拠にしない。
+Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF](../GOAL-012-EXTENSION-PROOF.md) を参照。今回の変更前後は [01の入室・非常灯](area01-light-before-after.mp4)、[02の長さ調整](area02-length-before-after.mp4)、[03の灯り調整](area03-light-before-after.mp4) を左右同時に収録し、[01の入力・hash・限界](area01-before-after.json) と [02/03の入力・hash・限界](area02-03-before-after.json) に固定した。左はGoal 012のゲームソース、右はGoal 013。01は入室後の90 frame、seed 73、全frameのcamera行列が一致し、両方で実HUDから非常灯操作が受理された。Goal 013では冒頭の目的文が職員通路に変わり、点灯後に新しい点検記録が出るため、映像と提示動作は異なる。QA用Three hostは点灯後にpropsを更新するため再構築した。02/03は同じscript、seed、camera、入力を各ソースへ独立に通した結果、それぞれのtimelineと独立動画がbyte一致した。これは各**装置操作一つずつ**の証拠であり、各エリア全体を確認するものではない。01は3秒、02は8.17秒、03は20秒。各並列動画の抽出フレームを開いたが、MP4の連続視聴はしていない。旧素材と新素材を混ぜた編集動画は単一実行の証拠にしない。
 
 必要な録画/ログの順序:
 

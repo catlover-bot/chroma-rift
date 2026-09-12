@@ -1,0 +1,44 @@
+{
+  "baseline": {
+    "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012-completion",
+    "head": "2285ebd8a252a266cd99fa3b50a1db9ce0705d07",
+    "gameSourceMatches": "478b376ea9a954974ad2f08ab5f09d929bd35f06",
+    "verification": "git diff --exit-code 478b376..2285ebd -- App.tsx src assets app.json package.json package-lock.json metro.config.js"
+  },
+  "current": {
+    "branch": "feat/goal-013-chapter-one-product"
+  },
+  "command": "node scripts/preview-chapter-reentry.cjs --gallery-only --source=<source worktree> --out=<separate output directory>",
+  "baselineDependencyResolution": "NODE_PATH=/home/mhirotaka/workspace/chroma-rift-goal012/node_modules",
+  "capture": {
+    "area": "chapter-1-area-01",
+    "left": "Goal 012 Stage Select entry, then gallery",
+    "right": "Goal 013 product home entry, then gallery",
+    "boundary": "Both captures start after entry. In both, 30 controller turn/advance frames, actual HUD emergency-light interact at frame 30, then 60 neutral-input frames. The baseline's fresh-run Math.random is constrained only during entry to select gallery seed 73, matching the product campaign. The React test renderer's Three host is rebuilt after the light command to refresh props. Native Canvas, GL-ready, audio and device storage are stubbed; Software WebGL and CSS-translated HUD are used. This is one entrance/light operation, not the full area.",
+    "fps": 30,
+    "frames": 90,
+    "durationSeconds": 3,
+    "width": 780,
+    "height": 844,
+    "seedBoth": 73,
+    "maxCameraMatrixDifference": 0,
+    "finalPoseBoth": {
+      "position": { "x": 0, "y": 1.6, "z": 2 },
+      "yaw": 2.9533711482850222,
+      "pitch": -0.012993165153019187
+    },
+    "emergencyLitBoth": true,
+    "peakCanvasMockOwnersBoth": 1,
+    "geometriesAfterBrowserDisposeBoth": 0,
+    "texturesAfterBrowserDisposeBoth": 0,
+    "observedDifference": "Goal 013 changes the initial objective from searching for an exit to seeking the staff route and presents a new inspection record after the emergency light. Both accept the same light interaction and retain the same camera/pose. The new story overlay changes the visible and paused presentation; no claim is made that every later gallery mechanic is unchanged.",
+    "comparisonVideo": "area01-light-before-after.mp4",
+    "comparisonSha256": "521604e549098b4222402035975258938510b047e0b1d21175a3d85b5d3d7224",
+    "independentVideoSha256": {
+      "baseline": "3f2c6ec567588667a033489875fef01a93e21e6044cfb93654fe73834f8fa78a",
+      "current": "2519846af6a90dd5dafe0cbfd3eb6405161c5623fc93dcfe56753d42c2a6a10c"
+    },
+    "inspectedFrameSeconds": [0.5, 1.5],
+    "continuousVideoReview": false
+  }
+}
