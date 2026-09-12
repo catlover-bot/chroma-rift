@@ -64,6 +64,29 @@ function appendBeat(fired: readonly ChapterOneBeatId[], beat: ChapterOneBeatId):
   return fired.includes(beat) ? fired : [...fired, beat];
 }
 
+/** Entry is reported only after the native scene has presented a safe frame. */
+export function recordCampaignSafeEntry(session: ChapterOneSession, areaId: CampaignAreaId): ChapterOneSession {
+  if (session.campaignCompleted || session.currentArea !== areaId || areaId !== 'chapter-1-area-01' ||
+    session.migrationSource !== 'fresh' || session.storyFired.includes('closing-interrupted')) return session;
+  return { ...session, revision: session.revision + 1,
+    storyFired: appendBeat(session.storyFired, 'closing-interrupted') };
+}
+
+/** Presentation is a separate acknowledgement; imported progress cannot set it. */
+export function recordCampaignBeatPresented(session: ChapterOneSession, beat: ChapterOneBeatId): ChapterOneSession {
+  if (!session.storyFired.includes(beat) || session.storyPresented.includes(beat)) return session;
+  return { ...session, revision: session.revision + 1,
+    storyPresented: [...session.storyPresented, beat] };
+}
+
+/** A theatre actor actually investigated an equipment sound in the live scene. */
+export function recordCampaignNoiseObservation(session: ChapterOneSession, areaId: CampaignAreaId): ChapterOneSession {
+  if (session.campaignCompleted || session.currentArea !== areaId || areaId !== 'chapter-1-area-03' ||
+    !session.checkpoint.progress.theatre?.light.accepted || session.storyFired.includes('noise-route')) return session;
+  return { ...session, revision: session.revision + 1,
+    storyFired: appendBeat(session.storyFired, 'noise-route') };
+}
+
 /** Only the active area's validated codec can update the campaign envelope.
  * A cleared area is committed with its next safe entry by completeCampaignArea. */
 export function recordCampaignCheckpoint(session: ChapterOneSession, areaId: CampaignAreaId,
@@ -78,6 +101,14 @@ export function recordCampaignCheckpoint(session: ChapterOneSession, areaId: Cam
   let storyFired = session.storyFired;
   let finale = session.finale;
   const discoveryHistory = mergeCampaignDiscoveries(session.discoveryHistory, areaId, checkpoint);
+  if (areaId === 'chapter-1-area-01' && checkpoint.progress.gallery?.emergencyLit)
+    storyFired = appendBeat(storyFired, 'emergency-circuit');
+  if (areaId === 'chapter-1-area-02') {
+    const vault = checkpoint.progress.vault;
+    if (vault?.discoveries.cafe && vault.story.revealPresented)
+      storyFired = appendBeat(storyFired, 'exhibit-versus-patrol');
+    if (vault?.rod.solved) storyFired = appendBeat(storyFired, 'containment-procedure');
+  }
   if (areaId === 'chapter-1-area-04') {
     const data = parseMirrorCheckpoint(checkpoint.stageData);
     if (!data) return { accepted: false, session, reason: 'unverified-checkpoint' };
@@ -89,6 +120,7 @@ export function recordCampaignCheckpoint(session: ChapterOneSession, areaId: Cam
     if (!data || !data.keyAvailable && !data.keyInstalled) return { accepted: false, session, reason: 'unverified-checkpoint' };
     keyLocation = data.keyInstalled ? 'installed' : 'carried';
     finale = { contained: data.isolated, isolated: data.isolated, stopped: data.stopped, outdoorExited: false };
+    if (data.procedureRead) storyFired = appendBeat(storyFired, 'containment-bell');
     if (data.stopped) storyFired = appendBeat(storyFired, 'attendance-identified');
   }
   if (session.keyLocation === 'installed' && keyLocation !== 'installed' ||
@@ -123,7 +155,21 @@ export function completeCampaignArea(session: ChapterOneSession, areaId: Campaig
   const cleared = verifiedAreaCheckpoint(areaId, clearedValue);
   if (!cleared) return { accepted: false, session, reason: 'unverified-checkpoint' };
   if (!cleared.progress.cleared) return { accepted: false, session, reason: 'not-cleared' };
+  // A live run has already reported its safe entry or an intermediate device
+  // checkpoint. At revision zero the stage codec owns acceptance; imported or
+  // test-built entry envelopes can have a seed independent of a cleared fixture.
+  if (session.revision > 0 && !campaignCheckpointProgresses(session.checkpoint, cleared))
+    return { accepted: false, session, reason: 'unverified-checkpoint' };
   const discoveryHistory = mergeCampaignDiscoveries(session.discoveryHistory, areaId, cleared);
+  let storyFired = session.storyFired;
+  if (areaId === 'chapter-1-area-01' && cleared.progress.gallery?.emergencyLit)
+    storyFired = appendBeat(storyFired, 'emergency-circuit');
+  if (areaId === 'chapter-1-area-02') {
+    const vault = cleared.progress.vault;
+    if (vault?.discoveries.cafe && vault.story.revealPresented)
+      storyFired = appendBeat(storyFired, 'exhibit-versus-patrol');
+    if (vault?.rod.solved) storyFired = appendBeat(storyFired, 'containment-procedure');
+  }
   const next = nextCampaignArea(areaId);
   if (!next) {
     const data = areaId === 'chapter-1-area-05' ? parseDepartureCheckpoint(cleared.stageData) : undefined;
@@ -133,7 +179,7 @@ export function completeCampaignArea(session: ChapterOneSession, areaId: Campaig
       revision: session.revision + 1, checkpoint: cleared, discoveryHistory,
       completedAreas: [...session.completedAreas, areaId], campaignCompleted: true,
       finale: { contained: true, isolated: true, stopped: true, outdoorExited: true },
-      storyFired: appendBeat(appendBeat(session.storyFired, 'attendance-identified'), 'outdoor-exit') } };
+      storyFired: appendBeat(appendBeat(appendBeat(storyFired, 'containment-bell'), 'attendance-identified'), 'outdoor-exit') } };
   }
   if (!next.routable) return { accepted: false, session, reason: 'next-area-unavailable' };
   const entry = verifiedAreaCheckpoint(next.id, nextEntryValue);
@@ -142,6 +188,6 @@ export function completeCampaignArea(session: ChapterOneSession, areaId: Campaig
     ...session, revision: session.revision + 1, currentArea: next.id, discoveryHistory,
     completedAreas: [...session.completedAreas, areaId], checkpoint: entry,
     keyLocation: areaId === 'chapter-1-area-04' ? 'carried' : session.keyLocation,
-    storyFired: areaId === 'chapter-1-area-04' ? appendBeat(session.storyFired, 'isolation-key') : session.storyFired,
+    storyFired: areaId === 'chapter-1-area-04' ? appendBeat(storyFired, 'isolation-key') : storyFired,
   } };
 }

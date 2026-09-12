@@ -37,6 +37,7 @@ import type { PreferredColor } from '../rendering/IllusionPalette';
 import { UI_COLORS } from '../theme/ui';
 import { DEFAULT_FIRST_PERSON_ONBOARDING, type FirstPersonOnboarding, type AppSettings, type FirstPersonChapterSummary, type FirstPersonControls } from '../types/application';
 import { effectiveControlMode, simpleGuideAimInstruction } from './firstPersonControlMode';
+import { chapterOneBeat, type ChapterOneBeatId } from '../domain/campaign/story';
 
 export type FirstPersonScreenProps = {
   settings: AppSettings;
@@ -52,6 +53,9 @@ export type FirstPersonScreenProps = {
   onCheckpoint: (checkpoint: CheckpointState) => void;
   onValidatedEntry?: (checkpoint: CheckpointState) => void;
   onComplete: (summary: FirstPersonChapterSummary) => void;
+  storyBeat?: ReturnType<typeof chapterOneBeat>;
+  onStoryPresented?: (beat: ChapterOneBeatId) => void;
+  onCampaignNoiseObserved?: () => void;
   onRestart: () => void;
   onExit: () => void;
   scene?: 'chapter' | 'lab';
@@ -75,7 +79,7 @@ export function FirstPersonScreen(props: FirstPersonScreenProps) {
   return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors} onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
 }
 
-function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
+function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
   startCheckpoint: CheckpointState | undefined; attempt: number; renderMode: RecoveryScene; neutralColors: boolean;
   onColorChange: (neutral: boolean) => void;
   onSessionChange: (checkpoint: CheckpointState, mode: RecoveryScene, retry: boolean) => void;
@@ -87,6 +91,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const [menu, setMenu] = useState<'pause' | 'hints' | 'settings'>('pause');
   const [reader, setReader] = useState(false);
   const [notice, setNotice] = useState('');
+  const [visibleStoryBeat, setVisibleStoryBeat] = useState<ChapterOneBeatId>();
   const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
   const [notebookSelection, setNotebookSelection] = useState<'mask' | 'hybrid'>();
@@ -106,6 +111,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const lastAnnounced = useRef('');
   const lastGalleryHaptic = useRef(-1);
   const lastActorNotice = useRef(-1);
+  const theatreNoiseReported = useRef(false);
   const tutorialSaved = useRef(onboarding.tutorialCompleted);
   const onboardingRef = useRef(onboarding);
   useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
@@ -179,11 +185,20 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       lastProgress.current = progress;
       if (scene === 'chapter') onCheckpoint(createCheckpoint(next.runtime));
     }
+    const theatreLive = next.runtime.theatre;
+    if (!theatreNoiseReported.current && theatreLive?.actor.phase === 'investigate') {
+      const equipmentNoise = [theatreLive.environmentNoise, theatreLive.projectorNoise]
+        .find(noise => noise && (noise.kind === 'bell' || noise.kind === 'projector') &&
+          noise.sequence === theatreLive.actor.lastNoiseSequence && theatreLive.actor.lastHeard &&
+          Math.hypot(theatreLive.actor.lastHeard.x - noise.position.x,
+            theatreLive.actor.lastHeard.z - noise.position.z) < .01);
+      if (equipmentNoise) { theatreNoiseReported.current = true; onCampaignNoiseObserved?.(); }
+    }
     if (!reviewOnly && scene === 'chapter' && next.runtime.progress.cleared && (!next.runtime.gallery || next.runtime.gallery.exitClosureSeconds <= 0) && (!next.runtime.vault || next.runtime.vault.exitClosureSeconds <= 0) && !completed.current) {
       completed.current = true;
       onComplete(chapterCompletionSummary(chapterId, controller.runtime.progress));
     }
-  }, [chapterId, controller, onCheckpoint, onComplete, onOnboardingChange, renderMode, reviewOnly, scene, settings.reducedMotion]);
+  }, [chapterId, controller, onCampaignNoiseObserved, onCheckpoint, onComplete, onOnboardingChange, renderMode, reviewOnly, scene, settings.reducedMotion]);
   const pause = useCallback(() => {
     if (!mounted.current || failed.current) return;
     if (controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre) prepareControllerNotebook(controller);
@@ -220,6 +235,19 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     stopController(controller);
     commandController(controller, { type: 'resume' });
     publish(controllerSnapshot(controller));
+  };
+  useEffect(() => {
+    if (!storyBeat || visibleStoryBeat || !ready || !appActive || paused || notesOpen || showDiagnostics || error ||
+      failed.current || renderMode !== 'chapter' || scene !== 'chapter' || snapshot.runtime.progress.cleared) return;
+    setVisibleStoryBeat(storyBeat.id);
+    if (storyBeat.id !== 'closing-interrupted') pause();
+  }, [appActive, error, notesOpen, pause, paused, ready, renderMode, scene, showDiagnostics, snapshot.runtime.progress.cleared, storyBeat?.id, visibleStoryBeat]);
+  const acknowledgeStory = () => {
+    if (!visibleStoryBeat) return;
+    const acknowledged = visibleStoryBeat;
+    setVisibleStoryBeat(undefined);
+    onStoryPresented?.(acknowledged);
+    if (acknowledged !== 'closing-interrupted') resume();
   };
   const fail = useCallback((message: string) => {
     if (!mounted.current || failed.current) return;
@@ -539,7 +567,20 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     {!independentChapter && simple && compact && renderMode === 'chapter' ? <ScrollView style={styles.compactControls} contentContainerStyle={styles.compactContent} testID="compact-first-person-controls" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
       <Text style={styles.target}>{targetLabel} ／ 向き：{snapshot.direction}</Text>{manipulating ? deviceControls : <>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
     </ScrollView> : null}
-    <Modal visible={paused && !showDiagnostics && !notesOpen} transparent animationType="none" onRequestClose={resume}>
+    {visibleStoryBeat === 'closing-interrupted' && chapterOneBeat(visibleStoryBeat) ? <View style={styles.openingStory} testID="campaign-opening-beat">
+      <Text style={styles.storyResponse}>{chapterOneBeat(visibleStoryBeat)!.response}</Text>
+      <Text style={styles.storyText}>{chapterOneBeat(visibleStoryBeat)!.text}</Text>
+      <ActionButton label="点検を続ける" onPress={acknowledgeStory} />
+    </View> : null}
+    <Modal visible={!!visibleStoryBeat && visibleStoryBeat !== 'closing-interrupted'} transparent animationType="none" onRequestClose={acknowledgeStory}>
+      <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
+        <Heading>点検記録</Heading>
+        <Body>{chapterOneBeat(visibleStoryBeat)?.text}</Body>
+        <Body muted>{chapterOneBeat(visibleStoryBeat)?.response}</Body>
+        <ActionButton label="探索へ戻る" onPress={acknowledgeStory} variant="primary" />
+      </View></View>
+    </Modal>
+    <Modal visible={paused && !showDiagnostics && !notesOpen && !visibleStoryBeat} transparent animationType="none" onRequestClose={resume}>
       <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
         <Heading>{menu === 'pause' ? 'ひと休み' : menu === 'hints' ? 'ヒント' : '操作と快適設定'}</Heading>
         <ScrollView contentContainerStyle={styles.menuContent}>
@@ -650,6 +691,9 @@ const styles = StyleSheet.create({
   pauseBar: { width: 4, height: 18, backgroundColor: '#F0EFE5', borderRadius: 1 },
   notice: { position: 'absolute', left: 16, right: 16, alignItems: 'center' },
   noticeText: { color: '#F4F1DF', backgroundColor: '#142421DC', borderRadius: 8, padding: 8, fontSize: 15, textAlign: 'center' },
+  openingStory: { position: 'absolute', left: 16, right: 16, top: 110, padding: 12, gap: 5, borderRadius: 12, borderWidth: 1, borderColor: '#819A89', backgroundColor: '#152822F0' },
+  storyResponse: { color: '#B5D2BD', fontSize: 14, fontWeight: '700' },
+  storyText: { color: '#F4F1DF', fontSize: 16, lineHeight: 23 },
   context: { position: 'absolute', left: 16, right: 16, alignItems: 'center' },
   contextText: { color: '#F4F1DF', backgroundColor: '#142421BA', borderRadius: 8, padding: 6, fontSize: 14, textAlign: 'center' },
   tutorial: { position: 'absolute', padding: 8, alignItems: 'center' },

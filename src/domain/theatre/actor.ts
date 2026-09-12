@@ -101,8 +101,10 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
   if(actor.phase!=='crossing'){
     const interruptible=['idle','listen','patrol','investigate','search','return'].includes(actor.phase);
     if(!quiet&&!safe&&sees&&actor.recognition>=1&&actor.startupGrace<=0&&interruptible){actor=phase(actor,'notice');events.push('noticed');}
-    else if(!quiet&&!sees&&heard&&interruptible)actor=phase(actor,'investigate');
-    if(quiet)actor=phase(actor,'patrol');
+    else if(!sees&&heard&&interruptible)actor=phase(actor,'investigate');
+    // The subdued setting keeps the visible response to a receiver sound,
+    // while removing recognition, pursuit and contact with the player.
+    if(quiet&&actor.phase!=='investigate')actor=phase(actor,'patrol');
     if(actor.phase==='idle'||actor.phase==='listen'&&actor.phaseTime>=.85)actor=phase(actor,'patrol');
     if(actor.phase==='notice'&&actor.phaseTime>=THEATRE_AI.noticeSeconds)actor=phase(actor,sees&&!safe?'pursue':'search');
     if(actor.phase==='pursue'){
@@ -116,12 +118,13 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
     if(actor.phase==='attack'&&actor.phaseTime>=THEATRE_AI.attackSeconds)actor={...phase(actor,'recover'),contactCooldown:THEATRE_AI.recoverSeconds,attackCommitted:false};
     if(actor.phase==='recover'&&actor.phaseTime>=THEATRE_AI.recoverSeconds)actor={...phase(actor,'search'),searchOrigin:actor.lastSeen?copy(actor.lastSeen):copy(actor.motion.position),searchIndex:0};
     if(actor.phase==='search'&&actor.searchDwellSeconds>=THEATRE_AI.searchSeconds)actor={...phase(actor,'return'),routeIndex:nearest(actor)};
-    if(actor.phase==='investigate'&&actor.lastHeard&&(distance(actor.motion.position,actor.lastHeard)<.25||actor.phaseTime>=5))actor={...phase(actor,'search'),searchOrigin:copy(actor.lastHeard),searchIndex:0};
+    if(actor.phase==='investigate'&&actor.lastHeard&&(distance(actor.motion.position,actor.lastHeard)<.25||actor.phaseTime>=(quiet ? .4 : 5)))
+      actor=quiet ? phase(actor,'patrol') : {...phase(actor,'search'),searchOrigin:copy(actor.lastHeard),searchIndex:0};
     if(actor.phase==='return'&&actor.phaseTime>=THEATRE_AI.returnPause&&distance(actor.motion.position,THEATRE_PATROL[actor.routeIndex]!)<.1)actor=phase(actor,'patrol');
     if(actor.phase==='patrol'){
       if(distance(actor.motion.position,THEATRE_PATROL[actor.routeIndex]!)<.12)actor={...actor,routeIndex:(actor.routeIndex+1)%THEATRE_PATROL.length};
       destination=THEATRE_PATROL[actor.routeIndex];speed=THEATRE_AI.patrolSpeed;
-    } else if(actor.phase==='investigate'){destination=actor.lastHeard;lookTarget=actor.lastHeard;speed=THEATRE_AI.investigateSpeed;}
+    } else if(actor.phase==='investigate'){destination=quiet ? undefined : actor.lastHeard;lookTarget=actor.lastHeard;speed=quiet ? 0 : THEATRE_AI.investigateSpeed;}
     else if(actor.phase==='notice'||actor.phase==='windup')lookTarget=actor.lastSeen;
     else if(actor.phase==='pursue'){destination=actor.lastSeen;lookTarget=actor.lastSeen;speed=THEATRE_AI.pursueSpeed;}
     else if(actor.phase==='attack'){destination=actor.attackTarget;lookTarget=actor.attackTarget;speed=THEATRE_AI.pursueSpeed;}

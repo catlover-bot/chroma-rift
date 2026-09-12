@@ -43,6 +43,9 @@ beforeEach(async () => {
 afterEach(() => jest.restoreAllMocks());
 
 test('product home starts one campaign envelope and resumes the same first area', async () => {
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
   const view = await render(<App />);
   expect(await view.findByText('最後の退館者')).toBeTruthy();
   expect(view.getByText('今後のアップデートで追加予定')).toBeTruthy();
@@ -51,6 +54,11 @@ test('product home starts one campaign envelope and resumes the same first area'
   await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
   await fireEvent.press(view.getByText('展示室へ入る'));
   await view.findByTestId('campaign-native-canvas');
+  await act(() => latest!.onValidatedEntry?.(latest!.checkpoint!));
+  expect(await view.findByText('残っている職員は、私ひとりのはずだ。')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: '点検を続ける' }));
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!))
+    .toMatchObject({ storyFired: ['closing-interrupted'], storyPresented: ['closing-interrupted'] }));
   const first = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
   expect(first).toMatchObject({ currentArea: 'chapter-1-area-01', completedAreas: [], campaignCompleted: false });
   expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBeNull();
@@ -186,7 +194,11 @@ test('verified area-03 through area-05 host callbacks commit each handoff before
   expect(await view.findByText(/エリア 05 \/ 05/)).toBeTruthy();
   await fireEvent.press(view.getByRole('button', { name: '続きから' }));
   await fireEvent.press(view.getByText('退館制御室へ入る'));
+  expect(await view.findByText('顔と顔の間にも、輪郭がある。')).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: '探索へ戻る' }));
   await view.findByTestId('campaign-native-canvas');
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
+    .toContain('isolation-key'));
   const controlGate = latest!;
   expect(controlGate.checkpoint!.stageData).toMatchObject({keyAvailable:true,keyInstalled:false});
   const beforeStale = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);

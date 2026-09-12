@@ -74,4 +74,14 @@ describe('theatre reuses actual eye, body, sound and grounded locomotion',()=>{
     let r=active();const seen=new Set<string>();for(let i=0;i<8*60;i++){const out=advanceTheatreActor(r,1/60,{intensity:'subdued'});r=out.runtime;seen.add(r.theatre!.actor.phase);expect(out.caught).toBe(false);}
     expect(r.theatre!.actor.visible).toBe(true);expect(r.theatre!.actor.motion.travelledDistance).toBeGreaterThan(1);expect([...seen].some(p=>['notice','pursue','windup','attack'].includes(p))).toBe(false);
   });
+  test('subdued still visibly investigates an equipment sound without recognizing the player',()=>{
+    const r=active(),noise={sequence:2,position:{...THEATRE_PROJECTOR.position},strength:THEATRE_PROJECTOR.strength,kind:'projector' as const};
+    const heard=advanceTheatreActor(r,1/60,{intensity:'subdued',noise});
+    expect(heard.runtime.theatre!.actor.phase).toBe('investigate');
+    expect(heard.runtime.theatre!.actor.lastHeard).toEqual(noise.position);
+    expect(heard.runtime.theatre!.actor.lastSeen).toBeUndefined();
+    expect(heard.caught).toBe(false);
+    const following=advanceTheatreActor(heard.runtime,1/60,{intensity:'subdued'});
+    expect(following.runtime.theatre!.actor.phase).toBe('investigate');
+  });
 });

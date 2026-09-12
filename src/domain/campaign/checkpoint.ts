@@ -29,6 +29,12 @@ export function parseChapterOneSession(value: unknown): ChapterOneSession | unde
     typeof value.finale.stopped !== 'boolean' || typeof value.finale.outdoorExited !== 'boolean' ||
     typeof value.campaignCompleted !== 'boolean') return;
   const index = CHAPTER_ONE.areas.findIndex(area => area.id === value.currentArea);
+  if (storyFired.some(beat => {
+    const definition = CHAPTER_ONE_BEATS.find(item => item.id === beat);
+    return !definition || CHAPTER_ONE.areas.findIndex(area => area.id === definition.area) > index;
+  }) || storyFired.includes('outdoor-exit') !== value.campaignCompleted ||
+    storyFired.includes('attendance-identified') && !value.finale.stopped ||
+    storyFired.includes('isolation-key') && value.keyLocation === 'unfound') return;
   const discoveryHistory: CampaignDiscoveryHistory = {};
   for (const [id, entries] of Object.entries(value.discoveryHistory)) {
     const area = campaignArea(id), allowed = area && stageDefinition(area.stageId)?.discoveries;

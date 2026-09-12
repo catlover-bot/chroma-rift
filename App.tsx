@@ -12,7 +12,8 @@ import { APP_VERSION } from './src/app/version';
 import { CHAPTER_ONE, campaignArea, nextCampaignArea, type CampaignAreaId } from './src/domain/campaign/definition';
 import { createCampaignAreaEntry, createCampaignReplayEntry } from './src/domain/campaign/areaEntry';
 import { proposeLegacyCampaignImport, type LegacyImportProposal } from './src/domain/campaign/migration';
-import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, recordCampaignReplayDiscoveries, type ChapterOneSession } from './src/domain/campaign/session';
+import { completeCampaignArea, createChapterOneSession, recordCampaignBeatPresented, recordCampaignCheckpoint, recordCampaignNoiseObservation, recordCampaignReplayDiscoveries, recordCampaignSafeEntry, type ChapterOneSession } from './src/domain/campaign/session';
+import { CHAPTER_ONE_BEATS } from './src/domain/campaign/story';
 import type { CampaignDiscoveryHistory } from './src/domain/campaign/discoveries';
 import { STAGE_DEFINITIONS, type PlayableStageId } from './src/domain/stageKit/definitions';
 import { stageModule } from './src/domain/stageKit/modules';
@@ -220,6 +221,16 @@ export default function App() {
     const operation = saveChapterOneSession(session, lease);
     campaignSaveTail.current = operation.then(() => undefined, () => undefined);
     return operation;
+  };
+  const applyCampaignStory = (candidate: ChapterOneSession, lease: number) => {
+    if (candidate === campaignRef.current) return;
+    campaignRef.current = candidate;
+    setCampaign(candidate);
+    if (campaignSessionOnlyRef.current) return;
+    void queueCampaignSave(candidate, lease).then(saved => {
+      if (isFirstPersonSessionCurrent(lease) && !saved)
+        setCampaignMessage('物語の記録を保存できませんでした。この起動中は保持しています。');
+    });
   };
   const prepareCampaign = (intent: CampaignIntent) => {
     setCampaignIntent(intent);
@@ -522,6 +533,11 @@ export default function App() {
     screen = <PlayInstructionsScreen chapterId={campaignIntent ? (area ?? CHAPTER_ONE.areas[0]).stageId : state.selectedChapterId} campaignMode={!!campaignIntent} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void (campaignIntent ? beginCampaignIntent() : beginChapter())} onSettings={() => { setSettingsReturn('playInstructions'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} onBack={navigateHome} />;
   } else if (state.screen === 'campaignEnding' && campaign?.campaignCompleted) {
     screen = <ChapterOneEndingScreen onHome={navigateHome}
+      onShown={() => {
+        const previous = campaignRef.current;
+        if (previous?.campaignCompleted && !previous.storyPresented.includes('outdoor-exit'))
+          applyCampaignStory(recordCampaignBeatPresented(previous, 'outdoor-exit'), beginFirstPersonSession());
+      }}
       onAreas={() => { setCampaignDiscoveries(false); setCampaignAreas(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }}
       onDiscoveries={() => { setCampaignAreas(false); setCampaignDiscoveries(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }} />;
   } else if (state.screen === 'campaignReplayResult' && campaignRun?.replay) {
@@ -537,6 +553,17 @@ export default function App() {
     screen = !area ? <Screen><Text style={styles.replayBody}>エリアを読み込めませんでした。</Text><ActionButton label="ホームへ戻る" onPress={navigateHome}/></Screen> :
       <NativeFirstPersonGate
         key={`campaign-${run.areaId}-${run.token}`} scene="chapter" chapterId={area.stageId}
+        storyBeat={!run.replay ? CHAPTER_ONE_BEATS.find(beat => campaign?.storyFired.includes(beat.id) && !campaign.storyPresented.includes(beat.id)) : undefined}
+        onStoryPresented={beat => {
+          if (!current() || run.replay) return;
+          const previous = campaignRef.current;
+          if (previous) applyCampaignStory(recordCampaignBeatPresented(previous, beat), run.lease);
+        }}
+        onCampaignNoiseObserved={() => {
+          if (!current() || run.replay) return;
+          const previous = campaignRef.current;
+          if (previous) applyCampaignStory(recordCampaignNoiseObservation(previous, run.areaId), run.lease);
+        }}
         checkpoint={run.checkpoint} settings={state.settings} controls={controls} onboarding={onboarding}
         preferredColor={state.activeSetupSource === 'quick' ? state.quickSetupResult?.provisionalColor ?? 'neutral' : state.calibrationProfile?.preferredForegroundColor ?? state.quickSetupResult?.provisionalColor ?? 'neutral'}
         onSettingsChange={settings => { if (current()) dispatch({ type: 'UPDATE_SETTINGS', settings }); }}
@@ -553,6 +580,11 @@ export default function App() {
             controlChoiceAcknowledged: previous.controlChoiceAcknowledged || next.controlChoiceAcknowledged,
             tutorialCompleted: previous.tutorialCompleted || next.tutorialCompleted }));
           if (onboardingWritable) void saveFirstPersonOnboarding(next, run.lease);
+        }}
+        onValidatedEntry={() => {
+          if (!current() || run.replay) return;
+          const previous = campaignRef.current;
+          if (previous) applyCampaignStory(recordCampaignSafeEntry(previous, run.areaId), run.lease);
         }}
         onCheckpoint={checkpoint => {
           if (!current() || checkpoint.chapterId !== area.stageId) return;

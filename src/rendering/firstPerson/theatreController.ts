@@ -59,7 +59,8 @@ export function theatreDeviceScreenBounds(controller:RuntimeController) {
   const bounds=target&&fixtureScreenBounds(target,controller.matrices,viewport.width,viewport.height);
   return bounds?{left:Math.max(0,bounds.left-22),right:Math.min(viewport.width,bounds.right+22),top:Math.max(0,bounds.top-22),bottom:Math.min(viewport.height,bounds.bottom+22)}:undefined;
 }
-export function theatreCommand(controller:RuntimeController,action:TheatreAction,nowMs=performance.now()):TheatreCommand {
+export function theatreCommand(controller:RuntimeController,action:TheatreAction,
+  nowMs=Math.max(controller.runtime.theatre?.lastNowMs??0,performance.now())):TheatreCommand {
   return {sessionId:String(controller.runtime.session),seq:++controller.commandSequence,nowMs,action};
 }
 export function dispatchTheatreController(controller:RuntimeController,command:TheatreCommand,accessible=false):boolean {

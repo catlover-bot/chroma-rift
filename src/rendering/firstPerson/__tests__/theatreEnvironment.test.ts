@@ -6,7 +6,15 @@ import { THEATRE_BELLS, THEATRE_SHUTTER } from '../../../domain/theatre/environm
 import { theatreActorEdgeOpen } from '../../../domain/theatre/actor';
 import { theatreCheckpoint } from '../../../storage/testFixtures/theatre';
 import { advanceController, commandController, createController, interactController, syncCamera, worldForController } from '../runtimeController';
-import { theatreEnvironmentAcquisition } from '../theatreController';
+import { theatreCommand, theatreEnvironmentAcquisition } from '../theatreController';
+
+test('generated theatre command time cannot fall behind the last accepted device command',()=>{
+  const controller=createController(theatreCheckpoint('light'),false,true);
+  const acceptedTime=performance.now()+10000;
+  controller.runtime={...controller.runtime,theatre:{...controller.runtime.theatre!,lastNowMs:acceptedTime}};
+  expect(theatreCommand(controller,{type:'leave'}).nowMs).toBe(acceptedTime);
+  expect(theatreCommand(controller,{type:'leave'},1).nowMs).toBe(1);
+});
 
 function setup(position: Vec3, target: Vec3, actorPosition: Vec3) {
   const controller=createController(theatreCheckpoint('light'),false,true),camera=new THREE.PerspectiveCamera(65,390/844,.08,60);

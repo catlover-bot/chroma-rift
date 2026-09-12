@@ -1,5 +1,5 @@
 import { CHAPTER_ONE, CHAPTER_TWO, campaignArea } from '../definition';
-import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, recordCampaignReplayDiscoveries, verifiedAreaCheckpoint } from '../session';
+import { completeCampaignArea, createChapterOneSession, recordCampaignBeatPresented, recordCampaignCheckpoint, recordCampaignNoiseObservation, recordCampaignReplayDiscoveries, recordCampaignSafeEntry, verifiedAreaCheckpoint } from '../session';
 import { observedCampaignDiscoveries } from '../discoveries';
 import { createCampaignAreaEntry } from '../areaEntry';
 import { migrateGalleryV1Checkpoint } from '../../gallery/checkpoint';
@@ -59,12 +59,58 @@ test('campaign codec rejects future versions, forged progress and unseen story p
   expect(parseChapterOneSession({ ...fresh, currentArea: 'chapter-1-area-05' })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, completedAreas: ['chapter-1-area-01'] })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, storyPresented: ['closing-interrupted'] })).toBeUndefined();
+  expect(parseChapterOneSession({ ...fresh, storyFired: ['outdoor-exit'] })).toBeUndefined();
+  expect(parseChapterOneSession({ ...fresh, storyFired: ['isolation-key'] })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, discoveryHistory: { 'chapter-1-area-01': ['unknown-exhibit'] } })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, discoveryHistory: { 'chapter-1-area-04': ['figure'] } })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, finale: { contained: true, isolated: true, stopped: true, outdoorExited: true }, campaignCompleted: true })).toBeUndefined();
   const restored = parseChapterOneSession(fresh)!;
   restored.checkpoint.pose.position.x = 9;
   expect(fresh.checkpoint.pose.position.x).not.toBe(9);
+});
+
+test('a real safe entry fires the opening, while only acknowledgement records presentation', () => {
+  const fresh = createChapterOneSession('story-entry', '0.1.0');
+  expect(recordCampaignBeatPresented(fresh, 'closing-interrupted')).toBe(fresh);
+  const entered = recordCampaignSafeEntry(fresh, fresh.currentArea);
+  expect(entered.storyFired).toEqual(['closing-interrupted']);
+  expect(entered.storyPresented).toEqual([]);
+  expect(recordCampaignSafeEntry(entered, entered.currentArea)).toBe(entered);
+  const shown = recordCampaignBeatPresented(entered, 'closing-interrupted');
+  expect(shown.storyPresented).toEqual(['closing-interrupted']);
+  expect(recordCampaignBeatPresented(shown, 'closing-interrupted')).toBe(shown);
+  expect(parseChapterOneSession(shown)).toBeDefined();
+  expect(recordCampaignSafeEntry({ ...fresh, migrationSource: 'legacy-prefix' }, fresh.currentArea)).toMatchObject({ storyFired: [] });
+});
+
+test('confirmed area progress fires mandatory beats, while practice and unobserved theatre noise do not', () => {
+  let session = createChapterOneSession('story-progress', '0.1.0');
+  const galleryClear = migrateGalleryV1Checkpoint(originalV1('cleared'))!.checkpoint;
+  const gallery = completeCampaignArea(session, session.currentArea, galleryClear, createCampaignAreaEntry('chapter-1-area-02'));
+  expect(gallery.accepted).toBe(true);
+  if (!gallery.accepted) return;
+  session = gallery.session;
+  expect(session.storyFired).toContain('emergency-circuit');
+  const rod = recordCampaignCheckpoint(session, session.currentArea, vaultCheckpoint('rod'));
+  expect(rod.accepted).toBe(true);
+  if (!rod.accepted) return;
+  session = rod.session;
+  expect(session.storyFired).toContain('containment-procedure');
+  expect(session.storyFired).not.toContain('exhibit-versus-patrol');
+  const vault = completeCampaignArea(session, session.currentArea, vaultCheckpoint('clear'), createCampaignAreaEntry('chapter-1-area-03'));
+  expect(vault.accepted).toBe(true);
+  if (!vault.accepted) return;
+  session = vault.session;
+  expect(recordCampaignNoiseObservation(session, 'chapter-1-area-02')).toBe(session);
+  expect(session.storyFired).not.toContain('noise-route');
+  const light = recordCampaignCheckpoint(session, session.currentArea, theatreCheckpoint('light'));
+  expect(light.accepted).toBe(true);
+  if (!light.accepted) return;
+  const observed = recordCampaignNoiseObservation(light.session, light.session.currentArea);
+  expect(observed.storyFired).toContain('noise-route');
+  expect(observed.storyPresented).toEqual([]);
+  expect(recordCampaignNoiseObservation(observed, observed.currentArea)).toBe(observed);
+  expect(parseChapterOneSession(observed)).toBeDefined();
 });
 
 test('observed discoveries form a one-way union while practice leaves the campaign route intact', () => {
