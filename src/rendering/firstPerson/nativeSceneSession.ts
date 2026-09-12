@@ -40,6 +40,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
     if (previousTutorial) { controller.tutorial = previousTutorial; previousTutorial = undefined; }
     pendingPublish = undefined;
     controller.pendingExitImpact = false; controller.pendingProjectorPulse = false; controller.pendingTheatreCues=[];
+    controller.equipmentInvestigationSequence = undefined;
     controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
     controller.pendingStageSounds = [];
     controller.audio?.setActive(false);

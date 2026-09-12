@@ -186,14 +186,12 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       lastProgress.current = progress;
       if (scene === 'chapter') onCheckpoint(createCheckpoint(next.runtime));
     }
-    const theatreLive = next.runtime.theatre;
-    if (!theatreNoiseReported.current && theatreLive?.actor.phase === 'investigate') {
-      const equipmentNoise = [theatreLive.environmentNoise, theatreLive.projectorNoise]
-        .find(noise => noise && (noise.kind === 'bell' || noise.kind === 'projector') &&
-          noise.sequence === theatreLive.actor.lastNoiseSequence && theatreLive.actor.lastHeard &&
-          Math.hypot(theatreLive.actor.lastHeard.x - noise.position.x,
-            theatreLive.actor.lastHeard.z - noise.position.z) < .01);
-      if (equipmentNoise) { theatreNoiseReported.current = true; onCampaignNoiseObserved?.(); }
+    // The actor consumes its one-frame noise before the native frame is
+    // presented. Use the response recorded by that actor step, not the cleared
+    // source slot in the published runtime.
+    if (!theatreNoiseReported.current && next.equipmentInvestigationSequence !== undefined) {
+      theatreNoiseReported.current = true;
+      onCampaignNoiseObserved?.();
     }
     if (!reviewOnly && scene === 'chapter' && next.runtime.progress.cleared && (!next.runtime.gallery || next.runtime.gallery.exitClosureSeconds <= 0) && (!next.runtime.vault || next.runtime.vault.exitClosureSeconds <= 0) && !completed.current) {
       completed.current = true;

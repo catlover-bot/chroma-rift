@@ -1,9 +1,11 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { AccessibilityInfo, AppState, Dimensions } from 'react-native';
 import { PerspectiveCamera } from 'three';
+import { createActorMotion } from '../../domain/actorMotion';
 import { projectWithCamera } from '../../domain/firstPerson/alignment';
 import { VERTICAL_FOV } from '../../domain/firstPerson';
 import { evaluateLight, lightHandlePoint, THEATRE_CURTAIN, THEATRE_PROJECTOR } from '../../domain/theatre';
+import { THEATRE_BELLS } from '../../domain/theatre/environment';
 import { theatreCheckpoint } from '../../storage/testFixtures/theatre';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, controllerSnapshot, syncCamera, worldForController } from '../../rendering/firstPerson/runtimeController';
@@ -55,6 +57,33 @@ beforeEach(async () => {
   await act(() => Dimensions.set({ window: { ...size, scale: 3, fontScale: 1 }, screen: { ...size, scale: 3, fontScale: 1 } }));
 });
 afterEach(async () => { jest.restoreAllMocks(); await act(() => Dimensions.set(originalDimensions)); });
+
+it('reports an equipment investigation after the actor consumes its one-frame bell noise', async () => {
+  const observed = jest.fn();
+  const view = await render(<FirstPersonScreen {...props(theatreCheckpoint('light'), { onCampaignNoiseObserved: observed })} />);
+  const bell = THEATRE_BELLS[0]!;
+  const c = scene().controller;
+  c.runtime = { ...c.runtime,
+    pose: { ...c.runtime.pose, position: { x: bell.fixture.center.x + bell.fixture.normal.x * .65, y: 1.6, z: bell.fixture.center.z } },
+    progress: { ...c.runtime.progress, theatre: { ...c.runtime.progress.theatre!,
+      story: { ...c.runtime.progress.theatre!.story, crossingStarted: true } } },
+    theatre: { ...c.runtime.theatre!, actor: { ...c.runtime.theatre!.actor, phase: 'patrol',
+      motion: createActorMotion({ x: bell.receiver.x, y: 0, z: bell.receiver.z - .7 }, 0) } } };
+  await aim(view, bell.instanceId);
+  expect(view.getByTestId('interact')).toBeEnabled();
+  await fireEvent.press(view.getByTestId('interact'));
+  expect(c.runtime.theatre!.environmentNoise?.position).toEqual(bell.receiver);
+  expect(observed).not.toHaveBeenCalled();
+  await act(() => {
+    advanceController(c, 1 / 60, camera());
+    scene().onSnapshot(controllerSnapshot(c));
+  });
+  expect(c.runtime.theatre!.environmentNoise).toBeUndefined();
+  expect(c.runtime.theatre!.actor.phase).toBe('investigate');
+  expect(observed).toHaveBeenCalledTimes(1);
+  await act(() => scene().onSnapshot(controllerSnapshot(c)));
+  expect(observed).toHaveBeenCalledTimes(1);
+});
 
 it('uses actual projected light-handle drag, keeps release separate from lock, and saves only committed state', async () => {
   const p = props(), view = await render(<FirstPersonScreen {...p} />); await enter(view);

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { AccessibilityInfo, Alert } from 'react-native';
 import { requireOptionalNativeModule } from 'expo';
+import { PerspectiveCamera } from 'three';
 
 import App from '../../../App';
 import { CHAPTER_ONE_BACKUP_KEY, CHAPTER_ONE_STORAGE_KEY } from '../../storage/chapterOneStorage';
@@ -10,9 +11,11 @@ import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import { vaultCheckpoint } from '../../storage/testFixtures/vault';
 import { theatreCheckpoint } from '../../storage/testFixtures/theatre';
 import { chapterCompletionSummary } from '../../app/chapterSummary';
+import { createActorMotion } from '../../domain/actorMotion';
 import { CHAPTER_ONE } from '../../domain/campaign/definition';
 import { CHAPTER_ONE_BEATS, CHAPTER_ONE_COPY } from '../../domain/campaign/story';
 import { recordGalleryDiscovery } from '../../domain/gallery';
+import { THEATRE_BELLS } from '../../domain/theatre/environment';
 import { attachNaturalRun, playNaturalArea } from '../../../test-support/naturalChapterRoute';
 import { createCheckpoint } from '../../domain/firstPerson';
 import type { CheckpointState } from '../../domain/firstPerson/types';
@@ -22,6 +25,7 @@ import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../domain/stag
 import { parseStageCheckpoint as parseDepartureCheckpoint } from '../../domain/stages/departure-control-v1/checkpoint';
 import { recordCampaignReplayDiscoveries } from '../../domain/campaign/session';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
+import { advanceController, controllerSnapshot, interactController, syncCamera } from '../../rendering/firstPerson/runtimeController';
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
 import * as gateModule from '../NativeFirstPersonGate';
 import * as endingModule from '../ChapterOneEndingScreen';
@@ -337,6 +341,52 @@ test('old cleared gallery proposes an indoor area-02 entry without changing old 
     currentArea: 'chapter-1-area-02', completedAreas: ['chapter-1-area-01'], migrationSource: 'legacy-prefix',
   }));
   expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(raw);
+});
+
+test('a mounted area-03 actor investigation fires and presents its equipment-noise story once', async () => {
+  await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, JSON.stringify(originalV1('cleared')));
+  await AsyncStorage.setItem('chroma-rift.uncanny-vault.v1', JSON.stringify(vaultCheckpoint('clear')));
+  await AsyncStorage.setItem('chroma-rift.shadow-theatre.v1', JSON.stringify(theatreCheckpoint('light')));
+  const view = await render(<App />);
+  await fireEvent.press(await view.findByRole('button', { name: '記録を引き継ぐ' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('映写室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  const canvas = mockLatestCanvas.current!;
+  const controller = canvas.controller;
+  const bell = THEATRE_BELLS[0]!;
+  const position = { x: bell.fixture.center.x + bell.fixture.normal.x * .65,
+    y: 1.6, z: bell.fixture.center.z };
+  const dx = bell.fixture.center.x - position.x, dz = bell.fixture.center.z - position.z;
+  controller.runtime = { ...controller.runtime,
+    pose: { position, yaw: Math.atan2(-dx, -dz),
+      pitch: Math.atan2(bell.fixture.center.y - position.y, Math.hypot(dx, dz)) },
+    progress: { ...controller.runtime.progress, theatre: { ...controller.runtime.progress.theatre!,
+      story: { ...controller.runtime.progress.theatre!.story, crossingStarted: true } } },
+    theatre: { ...controller.runtime.theatre!, actor: { ...controller.runtime.theatre!.actor, phase: 'patrol',
+      motion: createActorMotion({ x: bell.receiver.x, y: 0, z: bell.receiver.z - .7 }, 0) } } };
+  const camera = new PerspectiveCamera(65, 390 / 844, .08, 60);
+  syncCamera(controller, camera);
+  expect(interactController(controller, bell.instanceId)).toBe(true);
+  expect(controller.runtime.theatre!.environmentNoise?.position).toEqual(bell.receiver);
+  expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyFired).not.toContain('noise-route');
+  await act(() => {
+    advanceController(controller, 1 / 60, camera);
+    canvas.onSnapshot(controllerSnapshot(controller));
+  });
+  expect(controller.runtime.theatre!.environmentNoise).toBeUndefined();
+  expect(controller.runtime.theatre!.actor.phase).toBe('investigate');
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyFired)
+    .toContain('noise-route'));
+  expect(await view.findByText(CHAPTER_ONE_BEATS.find(beat => beat.id === 'noise-route')!.text)).toBeTruthy();
+  await fireEvent.press(view.getByRole('button', { name: '探索へ戻る' }));
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
+    .toContain('noise-route'));
+  await act(() => canvas.onSnapshot(controllerSnapshot(controller)));
+  const saved = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+  expect(saved.storyFired.filter((beat: string) => beat === 'noise-route')).toHaveLength(1);
+  expect(saved.storyPresented.filter((beat: string) => beat === 'noise-route')).toHaveLength(1);
+  await view.unmount();
 });
 
 test('unknown campaign raw requires explicit new-game choice and receives exact backup', async () => {

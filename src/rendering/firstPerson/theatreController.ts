@@ -147,6 +147,7 @@ export function advanceTheatreControllerActor(controller:RuntimeController,dt:nu
   controller.runtime={...controller.runtime,theatre:{...live,noiseDistance:cumulative%.65,noiseSequence:noise?.sequence??live.noiseSequence}};
   const actor=advanceTheatreActor(controller.runtime,dt,{intensity:controller.horrorIntensity,matrices:controller.matrices!,...(noise?{noise}:{})});
   controller.runtime=actor.runtime;controller.pendingActorPlants.push(...actor.footPlants);
+  if(actor.equipmentInvestigationSequence!==undefined)controller.equipmentInvestigationSequence=actor.equipmentInvestigationSequence;
   controller.pendingActorEvents=[...controller.pendingActorEvents,...actor.events].slice(-4);
   if(actor.caught){requireAllPointersReleased(controller.input);clearTouchInput(controller.input);controller.simpleStep=0;controller.pendingFootstepDistance=0;syncCamera(controller,camera);}
 }

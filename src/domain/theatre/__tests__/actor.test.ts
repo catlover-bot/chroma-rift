@@ -40,18 +40,19 @@ describe('theatre reuses actual eye, body, sound and grounded locomotion',()=>{
     const r=active(),noise={sequence:2,position:{...THEATRE_PROJECTOR.position},strength:THEATRE_PROJECTOR.strength,kind:'projector' as const};
     expect(theatreActorCanSeePlayer(r)).toBe(false);expect(theatreNoiseAudibility(r.theatre!.actor,noise,getTheatreWorld(r))).toBeGreaterThan(THEATRE_AI.noiseThreshold);
     expect(theatreNoiseAudibility(r.theatre!.actor,{...noise,position:{x:-5.37,y:1.3,z:12}},getTheatreWorld(r))).toBeLessThan(THEATRE_AI.noiseThreshold);
-    const before=JSON.stringify(r),out=advanceTheatreActor(r,1/60,{intensity:'standard',noise});expect(out.runtime.theatre!.actor.phase).toBe('investigate');expect(out.runtime.theatre!.actor.lastHeard).toEqual(noise.position);expect(out.runtime.theatre!.actor.lastSeen).toBeUndefined();expect(JSON.stringify(r)).toBe(before);
+    const before=JSON.stringify(r),out=advanceTheatreActor(r,1/60,{intensity:'standard',noise});expect(out.runtime.theatre!.actor.phase).toBe('investigate');expect(out.runtime.theatre!.actor.lastHeard).toEqual(noise.position);expect(out.runtime.theatre!.actor.lastSeen).toBeUndefined();expect(out.equipmentInvestigationSequence).toBe(2);expect(JSON.stringify(r)).toBe(before);
     const replay=advanceTheatreActor(out.runtime,1/60,{intensity:'standard',noise:{...noise,position:r.pose.position}});expect(replay.runtime.theatre!.actor.lastHeard).toEqual(noise.position);
   });
   test('legitimate visual contact beats a decoy instead of forcing a blind turn',()=>{
     let r=active();r={...r,pose:{position:{x:-2.6,y:1.6,z:12.5},yaw:0,pitch:0},theatre:{...r.theatre!,actor:{...r.theatre!.actor,recognition:1}}};expect(theatreActorCanSeePlayer(r)).toBe(true);
     const out=advanceTheatreActor(r,1/60,{intensity:'standard',noise:{sequence:1,position:{...THEATRE_PROJECTOR.position},strength:1.12,kind:'projector'}});
-    expect(out.runtime.theatre!.actor.phase).toBe('notice');expect(out.runtime.theatre!.actor.lastSeen).toEqual(r.pose.position);expect(out.events).toContain('noticed');
+    expect(out.runtime.theatre!.actor.phase).toBe('notice');expect(out.runtime.theatre!.actor.lastSeen).toEqual(r.pose.position);expect(out.events).toContain('noticed');expect(out.equipmentInvestigationSequence).toBeUndefined();
   });
   test('fast hidden footsteps can be heard while the same quiet step cannot',()=>{
     const r=active(),noise={sequence:1,position:{x:-2.6,y:.08,z:16},strength:.8,kind:'footstep' as const};
     expect(theatreNoiseAudibility(r.theatre!.actor,noise,getTheatreWorld(r))).toBeGreaterThan(THEATRE_AI.noiseThreshold);
     expect(theatreNoiseAudibility(r.theatre!.actor,{...noise,strength:.1},getTheatreWorld(r))).toBeLessThan(THEATRE_AI.noiseThreshold);
+    expect(advanceTheatreActor(r,1/60,{intensity:'standard',noise}).equipmentInvestigationSequence).toBeUndefined();
   });
   test('windup commits a fixed observed attack point, then recovers instead of homing during the lunge',()=>{
     let r=active({x:2.55,y:0,z:16.25},Math.PI);r={...r,pose:{position:{x:2.55,y:1.6,z:17.35},yaw:0,pitch:0},theatre:{...r.theatre!,actor:{...r.theatre!.actor,phase:'windup',phaseTime:THEATRE_AI.windupSeconds-.01,lastSeen:{x:2.55,y:1.6,z:17.35}}}};
@@ -80,6 +81,7 @@ describe('theatre reuses actual eye, body, sound and grounded locomotion',()=>{
     expect(heard.runtime.theatre!.actor.phase).toBe('investigate');
     expect(heard.runtime.theatre!.actor.lastHeard).toEqual(noise.position);
     expect(heard.runtime.theatre!.actor.lastSeen).toBeUndefined();
+    expect(heard.equipmentInvestigationSequence).toBe(2);
     expect(heard.caught).toBe(false);
     const following=advanceTheatreActor(heard.runtime,1/60,{intensity:'subdued'});
     expect(following.runtime.theatre!.actor.phase).toBe('investigate');

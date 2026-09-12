@@ -28,6 +28,7 @@ export type RuntimeController = {
   pendingProjectorPulse: boolean;
   pendingTheatreCues: TheatreCue[];
   actorNotice?: { sequence: number; text: string };
+  equipmentInvestigationSequence?: number | undefined;
   retired: boolean;
   screenReader: boolean;
   commandSequence: number;
@@ -46,4 +47,4 @@ export type RuntimeController = {
   diagnostics: FirstPersonDiagnostics;
   metrics: { frames: number; elapsed: number; drawCalls: number; geometries: number; textures: number };
 };
-export type RuntimeSnapshot = { acquisition?: DeviceAcquisition; actorNotice?: { sequence: number; text: string }; runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };
+export type RuntimeSnapshot = { acquisition?: DeviceAcquisition; actorNotice?: { sequence: number; text: string }; equipmentInvestigationSequence?: number; runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };

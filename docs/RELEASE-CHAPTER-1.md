@@ -1,6 +1,6 @@
 # 第一章の公開準備と未完了ゲート
 
-この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,115テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
+この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,117テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成
 
@@ -16,7 +16,7 @@
 
 製品ホームは第一章の5エリア、新規/続き/旧記録移行/到達済みエリアの振り返り、発見の記録、設定、第一章エンディング、第二章の予告のみを案内する。旧Stage Select、probe、旧迷宮、開発者ラボ、描画診断は`__DEV__`条件の経路。`.easignore` は `.gitignore` を引き継ぎ、docs、scripts、test-support、テスト、旧fixture、原STL、生成元/解析だけのassetをEASのアップロードから除外する。本編でimportする仮面JSON、ハイブリッド画像、WAVは残す。Expoの静的import/require資産はproduction binaryへ同梱されるが、これは実バイナリの機内モード確認を代替しない。 [EAS ignore](https://docs.expo.dev/build-reference/easignore/)、[Expo assets](https://docs.expo.dev/develop/user-interface/assets/)。
 
-`metro/withReleaseComposition.js` はproductionのiOS/Android解決時に開発用画面とprobe実装を空の境界へ差し替える。公開用のStageカード台帳は旧試作を除き、旧IDのjournal parseと移行元の保存は維持する。`node scripts/check-release-export.cjs <export-directory> ios|android` で実exportのsource map、5エリアID、同梱assetを検査した。最終コードのiOSは1575 source/10 JS asset、Androidは1574 source/10 JS assetで、開発用6画面、probe source/ID、test-supportは含まれない。アイコンとsplashはJS asset一覧ではなくconfig pluginのネイティブ資産として指定した。これは実端末の表示・音・オフライン起動を証明しない。第二章のruntime/scene/saveはまだ提供しない。
+`metro/withReleaseComposition.js` はproductionのiOS/Android解決時に開発用画面とprobe実装を空の境界へ差し替える。公開用のStageカード台帳は旧試作を除き、旧IDのjournal parseと移行元の保存は維持する。`node scripts/check-release-export.cjs <export-directory> ios|android` で実exportのsource map、5エリアID、同梱assetを検査した。設備音beat修正後の再exportではiOSが1504 source/10 JS asset、Androidが1503 source/10 JS assetで、開発用6画面、probe source/ID、test-supportは含まれない。アイコンとsplashはJS asset一覧ではなくconfig pluginのネイティブ資産として指定した。これは実端末の表示・音・オフライン起動を証明しない。第二章のruntime/scene/saveはまだ提供しない。
 
 ## 依存・スクリプト・権限
 

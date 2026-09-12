@@ -10,7 +10,7 @@ import { getTheatreWorld } from './world';
  * Only the authored route, initial crossing and projector evidence are new. */
 export const THEATRE_AI=Object.freeze({...VAULT_AI,crossingSpeed:.72,crossingGrace:1.6});
 export type TheatreActorEvent='crossing'|'noticed'|'windup'|'caught';
-export type TheatreActorStep={runtime:ChapterRuntime;caught:boolean;movedDistance:number;footPlants:ActorFootPlant[];events:TheatreActorEvent[]};
+export type TheatreActorStep={runtime:ChapterRuntime;caught:boolean;movedDistance:number;footPlants:ActorFootPlant[];events:TheatreActorEvent[];equipmentInvestigationSequence?:number};
 const distance=(a:Vec3,b:Vec3)=>Math.hypot(a.x-b.x,a.z-b.z);
 const copy=(p:Vec3):Vec3=>({...p});
 export function initialTheatreActor(progress:TheatreProgress):TheatreActor {
@@ -85,11 +85,11 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
   const sees=theatreActorCanSeePlayer(next),safe=protectedPlayer(next),player=runtime.pose.position,quiet=options.intensity==='subdued';
   if(sees)actor={...actor,lastSeen:copy(player),recognition:Math.min(1,actor.recognition+elapsed/THEATRE_AI.recognitionSeconds)};
   else actor={...actor,recognition:Math.max(0,actor.recognition-elapsed/.7)};
-  let heard=false;
+  let heard=false,heardNoise:TheatreNoise|undefined,equipmentInvestigationSequence:number|undefined;
   const noises=[live.projectorNoise,live.environmentNoise,options.noise].filter((n):n is TheatreNoise=>!!n).sort((a,b)=>a.sequence-b.sequence);
   for(const noise of noises)if(Number.isSafeInteger(noise.sequence)&&noise.sequence>=0&&noise.sequence>actor.lastNoiseSequence){
     actor={...actor,lastNoiseSequence:noise.sequence};
-    if(theatreNoiseAudibility(actor,noise,world)>=THEATRE_AI.noiseThreshold){actor={...actor,lastHeard:copy(noise.position)};heard=true;}
+    if(theatreNoiseAudibility(actor,noise,world)>=THEATRE_AI.noiseThreshold){actor={...actor,lastHeard:copy(noise.position)};heard=true;heardNoise=noise;}
   }
   let destination:Vec3|undefined,lookTarget:Vec3|undefined,speed=0;
   if(actor.phase==='crossing'){
@@ -101,7 +101,10 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
   if(actor.phase!=='crossing'){
     const interruptible=['idle','listen','patrol','investigate','search','return'].includes(actor.phase);
     if(!quiet&&!safe&&sees&&actor.recognition>=1&&actor.startupGrace<=0&&interruptible){actor=phase(actor,'notice');events.push('noticed');}
-    else if(!sees&&heard&&interruptible)actor=phase(actor,'investigate');
+    else if(!sees&&heard&&interruptible){
+      actor=phase(actor,'investigate');
+      if(heardNoise?.kind==='bell'||heardNoise?.kind==='projector')equipmentInvestigationSequence=heardNoise.sequence;
+    }
     // The subdued setting keeps the visible response to a receiver sound,
     // while removing recognition, pursuit and contact with the player.
     if(quiet&&actor.phase!=='investigate')actor=phase(actor,'patrol');
@@ -150,5 +153,6 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
     actor={...phase(actor,'recover'),attackHit:true,attackCommitted:false,startupGrace:THEATRE_AI.coldGrace,contactCooldown:THEATRE_AI.coldGrace,recognition:0,routeIndex:nearest(actor)};
     next={...next,pose:{...live.lastSafePose,position:copy(live.lastSafePose.position)},theatre:{...next.theatre!,actor}};events.push('caught');return{runtime:next,caught:true,movedDistance:motion.movedDistance,footPlants:motion.footPlants,events};
   }
-  return{runtime:next,caught:false,movedDistance:motion.movedDistance,footPlants:motion.footPlants,events};
+  return{runtime:next,caught:false,movedDistance:motion.movedDistance,footPlants:motion.footPlants,events,
+    ...(equipmentInvestigationSequence===undefined?{}:{equipmentInvestigationSequence})};
 }

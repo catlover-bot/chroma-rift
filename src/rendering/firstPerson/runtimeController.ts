@@ -57,6 +57,7 @@ export function stopController(controller: RuntimeController, preserveStageEvent
   controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
   if (!preserveStageEvents) controller.pendingStageSounds = [];
   controller.pendingExitImpact = false; controller.pendingProjectorPulse = false; controller.pendingTheatreCues = [];
+  controller.equipmentInvestigationSequence = undefined;
 }
 export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 'turn'; yaw: number; pitch: number } | { type: 'step'; forward: number } | { type: 'hint'; stage: HintStage } | { type: 'sensitivity'; value: number; vertical?: number } | { type: 'verticalSensitivity'; value: number };
 /** Explicit commands are the only UI mutation boundary of the simulation store.
@@ -229,8 +230,10 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
     ...lightStatus!.windows.map(w => w.lit)].join(':') : '';
   const module=stageModule(controller.runtime.chapterId);
   const simpleKey=controller.runtime.stageSession&&module?.renderKind==='simple'?JSON.stringify(module.checkpoint(controller.runtime).stageData):'';
-  const key = `${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${vaultKey}|${theatreKey}|${simpleKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
-  return { ...(acquisition ? { acquisition } : {}), ...(controller.actorNotice ? { actorNotice: controller.actorNotice } : {}), runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
+  const key = `${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${controller.actorNotice?.sequence ?? 0}|${controller.equipmentInvestigationSequence ?? ''}|${galleryKey}|${vaultKey}|${theatreKey}|${simpleKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
+  return { ...(acquisition ? { acquisition } : {}), ...(controller.actorNotice ? { actorNotice: controller.actorNotice } : {}),
+    ...(controller.equipmentInvestigationSequence===undefined?{}:{equipmentInvestigationSequence:controller.equipmentInvestigationSequence}),
+    runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
   controller.feedbackMessage = '';
