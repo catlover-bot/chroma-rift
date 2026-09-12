@@ -1,14 +1,42 @@
 import * as THREE from 'three';
 
 import { createCheckpoint } from '../../../domain/firstPerson';
-import { WINCH_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
+import { MIRROR_CENTER, WINCH_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
 import { parseStageCheckpoint } from '../../../domain/stages/mirror-corridor-v1/checkpoint';
 import { isStageSession } from '../../../domain/stages/mirror-corridor-v1/session';
+import { observedCampaignDiscoveries } from '../../../domain/campaign/discoveries';
 import { stageModule } from '../../../domain/stageKit/modules';
 import { beginStageHoldController, commandController, advanceController, controllerSnapshot, createController, endStageHoldController, interactController, syncCamera } from '../runtimeController';
 import { endPointer } from '../touchInput';
 
 const camera = () => new THREE.PerspectiveCamera(65, 390 / 844, .08, 60);
+
+test('looking at the physical mirror and pressing inspect records only that explicit observation', () => {
+  const module = stageModule('mirror-corridor-v1')!;
+  const fresh = module.checkpoint(module.create());
+  const data = parseStageCheckpoint(fresh.stageData)!;
+  const entry = module.restore({ ...fresh, stageData: { ...data, keyTaken: true, practiced: true, pose: WINCH_SAFE } })?.checkpoint;
+  expect(entry).toBeDefined();
+  if (!entry) return;
+  const controller = createController(entry, false, true, 'mirror-corridor-v1'), view = camera();
+  Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true,
+    sceneMode: 'chapter', paused: false, open: false });
+  controller.horrorIntensity = 'subdued';
+  const pose = controller.runtime.pose;
+  const dx = MIRROR_CENTER.x - pose.position.x, dz = MIRROR_CENTER.z - pose.position.z;
+  const yaw = Math.atan2(-dx, -dz), pitch = Math.atan2(MIRROR_CENTER.y - pose.position.y, Math.hypot(dx, dz));
+  commandController(controller, { type: 'turn', yaw: yaw - pose.yaw, pitch: pitch - pose.pitch });
+  syncCamera(controller, view);
+  expect(controllerSnapshot(controller).target?.id).toBe('mirror-corridor-mirror');
+  expect(observedCampaignDiscoveries('chapter-1-area-04', createCheckpoint(controller.runtime))).not.toContain('mirror');
+  expect(interactController(controller, 'mirror-corridor-mirror')).toBe(true);
+  const observed = createCheckpoint(controller.runtime);
+  expect(parseStageCheckpoint(observed.stageData)?.mirrorInspected).toBe(true);
+  expect(observedCampaignDiscoveries('chapter-1-area-04', observed)).toContain('mirror');
+  expect(createController(observed, false, true, 'mirror-corridor-v1').runtime.stageSession?.value)
+    .toMatchObject({ mirrorInspected: true });
+  expect(module.canReplaceCheckpoint?.(observed, entry)).toBe(false);
+});
 
 test('mirror winch uses current ray, held pointer barrier, frame time, and settled checkpoint through pause', () => {
   const controller = createController(undefined, false, true, 'mirror-corridor-v1');

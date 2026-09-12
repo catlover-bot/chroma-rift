@@ -131,6 +131,31 @@ test('observed discoveries form a one-way union while practice leaves the campai
     .toMatchObject({ accepted: false, reason: 'wrong-area' });
 });
 
+test('area 04 replay adds an explicitly inspected mirror without changing the live campaign', () => {
+  let session = createChapterOneSession('mirror-replay-discovery', '1.0.0');
+  const cleared = [migrateGalleryV1Checkpoint(originalV1('cleared'))!.checkpoint,
+    vaultCheckpoint('clear'), theatreCheckpoint('completed')];
+  for (let index = 0; index < cleared.length; index += 1) {
+    const transition = completeCampaignArea(session, session.currentArea, cleared[index],
+      createCampaignAreaEntry(CHAPTER_ONE.areas[index + 1]!.id));
+    expect(transition.accepted).toBe(true);
+    if (!transition.accepted) return;
+    session = transition.session;
+  }
+  const data = parseMirrorCheckpoint(session.checkpoint.stageData)!;
+  expect(observedCampaignDiscoveries(session.currentArea, session.checkpoint)).not.toContain('mirror');
+  const observed = { ...session.checkpoint, stageData: { ...data, mirrorInspected: true } };
+  const practice = recordCampaignReplayDiscoveries(session, session.currentArea, observed);
+  expect(practice).toMatchObject({ accepted: true, changed: true });
+  if (!practice.accepted) return;
+  expect(practice.session).toMatchObject({ currentArea: session.currentArea, checkpoint: session.checkpoint,
+    keyLocation: session.keyLocation, storyFired: session.storyFired, storyPresented: session.storyPresented,
+    campaignCompleted: false, discoveryHistory: { 'chapter-1-area-04': ['mirror'] } });
+  expect(parseChapterOneSession(practice.session)).toBeDefined();
+  expect(recordCampaignReplayDiscoveries(practice.session, session.currentArea, observed))
+    .toMatchObject({ accepted: true, changed: false });
+});
+
 test('the five area boundaries stay indoor until a verified stopped and outdoor finale', () => {
   let session = createChapterOneSession('five-areas', '0.1.0');
   const cleared = [migrateGalleryV1Checkpoint(originalV1('cleared'))!.checkpoint,

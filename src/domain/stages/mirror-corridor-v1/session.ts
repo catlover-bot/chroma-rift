@@ -5,7 +5,7 @@ import { parseStageCheckpoint, type StageCheckpoint } from './checkpoint';
 import { createMirrorActor, isMirrorActor, type MirrorActor, type MirrorNoise } from './actor';
 
 export type StageSession = { stageId: typeof STAGE_ID; sessionId: string; lastSeq: number; pose: PlayerPose;
-  figureInspected: boolean; keyTaken: boolean; practiced: boolean; ratchets: number;
+  figureInspected: boolean; mirrorInspected: boolean; keyTaken: boolean; practiced: boolean; ratchets: number;
   holding: 'practice' | 'winch' | null; holdSeconds: number; cleared: boolean;
   actor: MirrorActor; noiseSequence: number; noise?: MirrorNoise | undefined; footstepDistance: number };
 export type StageCommand = { sessionId: string; seq: number; targetId: TargetId; type: 'inspect' | 'take-key' | 'start-hold' | 'release-hold' | 'exit' };
@@ -14,7 +14,8 @@ const record = (value: unknown): value is Record<string, unknown> => typeof valu
 export function isStageSession(value: unknown): value is StageSession {
   if (!record(value) || value.stageId !== STAGE_ID || typeof value.sessionId !== 'string' ||
     !Number.isSafeInteger(value.lastSeq) || Number(value.lastSeq) < 0 || !record(value.pose) || !record(value.pose.position) ||
-    typeof value.figureInspected !== 'boolean' || typeof value.keyTaken !== 'boolean' || typeof value.practiced !== 'boolean' ||
+    typeof value.figureInspected !== 'boolean' || typeof value.mirrorInspected !== 'boolean' ||
+    typeof value.keyTaken !== 'boolean' || typeof value.practiced !== 'boolean' ||
     !Number.isSafeInteger(value.ratchets) || Number(value.ratchets) < 0 || Number(value.ratchets) > RATCHET_COUNT ||
     value.holding !== null && value.holding !== 'practice' && value.holding !== 'winch' ||
     typeof value.holdSeconds !== 'number' || !Number.isFinite(value.holdSeconds) || value.holdSeconds < 0 || value.holdSeconds > RATCHET_SECONDS ||
@@ -33,7 +34,8 @@ export function createStageSession(sessionId: string, raw?: unknown): StageSessi
   if (raw !== undefined && !checkpoint) throw new RangeError('Unsupported mirror corridor checkpoint');
   const pose = checkpoint?.pose ?? SPAWN;
   return { stageId: STAGE_ID, sessionId, lastSeq: 0, pose: { ...pose, position: { ...pose.position } },
-    figureInspected: checkpoint?.figureInspected ?? false, keyTaken: checkpoint?.keyTaken ?? false,
+    figureInspected: checkpoint?.figureInspected ?? false, mirrorInspected: checkpoint?.mirrorInspected ?? false,
+    keyTaken: checkpoint?.keyTaken ?? false,
     practiced: checkpoint?.practiced ?? false, ratchets: checkpoint?.ratchets ?? 0,
     holding: null, holdSeconds: 0, cleared: checkpoint?.cleared ?? false,
     actor: createMirrorActor(), noiseSequence: 0, footstepDistance: 0 };
@@ -77,6 +79,8 @@ export function commandStage(session: StageSession, command: StageCommand): Comm
     return { session: consumed, accepted: false, reason: 'tooFar' };
   if (command.type === 'inspect' && command.targetId === 'mirror-corridor-figure')
     return { session: { ...consumed, figureInspected: true }, accepted: true, reason: 'ready' };
+  if (command.type === 'inspect' && command.targetId === 'mirror-corridor-mirror')
+    return { session: { ...consumed, mirrorInspected: true }, accepted: true, reason: 'ready' };
   if (command.type === 'take-key' && command.targetId === 'mirror-corridor-key' && !session.keyTaken)
     return { session: { ...consumed, keyTaken: true }, accepted: true, reason: 'ready' };
   if (command.type === 'start-hold' && !session.holding && command.targetId === 'mirror-corridor-practice' && !session.practiced)
@@ -93,7 +97,7 @@ export function commandStage(session: StageSession, command: StageCommand): Comm
 export function checkpointStage(session: StageSession): StageCheckpoint {
   const pose = session.cleared ? EXIT : session.ratchets === RATCHET_COUNT && session.pose.position.z > 17.5
     ? POST_GATE : session.practiced || session.ratchets > 0 ? WINCH_SAFE : session.keyTaken ? KEY_SAFE : SPAWN;
-  return { schemaVersion: 1, stageId: STAGE_ID, figureInspected: session.figureInspected,
+  return { schemaVersion: 1, stageId: STAGE_ID, figureInspected: session.figureInspected, mirrorInspected: session.mirrorInspected,
     keyTaken: session.keyTaken, practiced: session.practiced, ratchets: session.ratchets,
     cleared: session.cleared, pose: { ...pose, position: { ...pose.position } } };
 }

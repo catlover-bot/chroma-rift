@@ -13,6 +13,15 @@ test('a figure is optional to inspect; taking its actual center key is explicit'
   expect(commandStage(key.session, { sessionId: 'first', seq: 1, targetId: 'mirror-corridor-key', type: 'take-key' }).reason).toBe('stale');
 });
 
+test('an older mirror checkpoint stays valid without inventing an observation', () => {
+  const fresh = checkpointStage(createStageSession('legacy'));
+  const { mirrorInspected: omitted, ...older } = fresh;
+  expect(omitted).toBe(false);
+  expect(parseStageCheckpoint(older)).toMatchObject({ mirrorInspected: false });
+  expect(createStageSession('restored', older).mirrorInspected).toBe(false);
+  expect(parseStageCheckpoint({ ...older, mirrorInspected: 'true' })).toBeUndefined();
+});
+
 test('practice is safe; unfinished winch fraction resets while three settled teeth survive cold restore', () => {
   let session = createStageSession('ratchet');
   session = { ...session, pose: { position: { x: -2, y: 1.6, z: 11.3 }, yaw: Math.PI, pitch: 0 } };

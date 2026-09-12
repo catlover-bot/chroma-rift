@@ -21,7 +21,8 @@ function command(runtime:ChapterRuntime,packet:StageCommand,context:{rendererRea
   const live=session(runtime);
   if(!live||runtime.paused||!context.rendererReady||!context.foreground||context.targetId!==packet.targetId)return {runtime,accepted:false,stopInput:false,message:''};
   const result=commandStage({...live,pose:runtime.pose},packet);
-  const message = result.accepted ? packet.type === 'inspect' ? '顔と顔の間にも、輪郭がある。' : packet.type === 'take-key' ? '隔離キーを取った。' : packet.type === 'start-hold' ? 'レバーを保持する。' : packet.type === 'release-hold' ? '歯止めが残った。' : '制御室への前室へ進む。'
+  const message = result.accepted ? packet.type === 'inspect' ? packet.targetId === 'mirror-corridor-mirror'
+    ? '鏡には背後の通路が映る。' : '顔と顔の間にも、輪郭がある。' : packet.type === 'take-key' ? '隔離キーを取った。' : packet.type === 'start-hold' ? 'レバーを保持する。' : packet.type === 'release-hold' ? '歯止めが残った。' : '制御室への前室へ進む。'
     : result.reason === 'tooFar' ? '近づいてから操作する。' : result.reason === 'prerequisiteMissing' ? '隔離キーと練習を確認する。' : '';
   return {runtime:{...runtime,progress:{...runtime.progress,cleared:result.session.cleared},stageSession:{stageId:STAGE_ID,value:result.session}},accepted:result.accepted,stopInput:false,message};
 }
@@ -37,7 +38,7 @@ export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
     const target=stageWorld(live.ratchets,live.keyTaken,live.practiced,live.holding).interactables.find(item=>item.id===targetId);
     if(!target)return runtime;
     if(target.id==='mirror-corridor-practice'||target.id==='mirror-corridor-winch')return runtime;
-    const type:StageCommand['type']=target.id==='mirror-corridor-figure'?'inspect':target.id==='mirror-corridor-key'?'take-key':'exit';
+    const type:StageCommand['type']=target.id==='mirror-corridor-figure'||target.id==='mirror-corridor-mirror'?'inspect':target.id==='mirror-corridor-key'?'take-key':'exit';
     const packet:StageCommand={sessionId:live.sessionId,seq:live.lastSeq+1,targetId:target.id as TargetId,type};
     const result=command(runtime,packet,{rendererReady:true,foreground:true,targetId:target.id});
     return result.accepted?result.runtime:runtime;
@@ -84,7 +85,7 @@ export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
   },
   canReplaceCheckpoint:(previous,next)=>{
     const old=parseStageCheckpoint(previous.stageData),fresh=parseStageCheckpoint(next.stageData);
-    return !!old&&!!fresh&&(!old.figureInspected||fresh.figureInspected)&&(!old.keyTaken||fresh.keyTaken)&&
+    return !!old&&!!fresh&&(!old.figureInspected||fresh.figureInspected)&&(!old.mirrorInspected||fresh.mirrorInspected)&&(!old.keyTaken||fresh.keyTaken)&&
       (!old.practiced||fresh.practiced)&&fresh.ratchets>=old.ratchets&&(!old.cleared||fresh.cleared);
   },
   renderKind:'simple',inputPolicy:runtime=>session(runtime)?.holding==='winch'

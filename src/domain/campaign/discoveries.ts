@@ -18,7 +18,7 @@ export function observedCampaignDiscoveries(areaId: CampaignAreaId, checkpoint: 
   else if (areaId === 'chapter-1-area-03') bits = checkpoint.progress.theatre?.discoveries ?? {};
   else if (areaId === 'chapter-1-area-04') {
     const data = parseMirrorCheckpoint(checkpoint.stageData);
-    if (data) bits = { figure: data.figureInspected, ratchet: data.ratchets > 0 };
+    if (data) bits = { figure: data.figureInspected, mirror: data.mirrorInspected, ratchet: data.ratchets > 0 };
   } else {
     const data = parseDepartureCheckpoint(checkpoint.stageData);
     if (data) bits = { containment: data.isolated, attendance: data.stopped };

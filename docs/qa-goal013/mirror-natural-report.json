@@ -1,5 +1,5 @@
 {
-  "frames": 301,
+  "frames": 303,
   "simulationSeconds": 27.583333333333332,
   "events": [
     {
@@ -63,6 +63,22 @@
         "x": 0.09845201350050405,
         "y": 0,
         "z": 15.647511436780663
+      },
+      "ratchets": 0
+    },
+    {
+      "id": "mirror-corridor-mirror",
+      "label": "実鏡面を調べ、背後の通路を確認",
+      "at": 7.55,
+      "pose": {
+        "x": -1.4333333333333333,
+        "y": 1.6,
+        "z": 10.865833333333308
+      },
+      "actor": {
+        "x": -0.684748332724309,
+        "y": 0,
+        "z": 15.609357271876585
       },
       "ratchets": 0
     },
@@ -173,18 +189,19 @@
       "yaw": -3.141592653589793,
       "pitch": -0.06
     },
+    "mirrorInspected": true,
     "ratchets": 3,
     "cleared": true
   },
   "sourceHashes": {
-    "src/rendering/firstPerson/runtimeController.ts": "b76d36a50fa0481cf1b7e7b8d430c4ffadff5ab001a2bc7fe9180ef9de02531f",
+    "src/rendering/firstPerson/runtimeController.ts": "a86a6e6c34025361d809124e97f460498ea0ea8c9bad2fbee4565c59fd7d165b",
     "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
     "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
     "src/domain/firstPerson/chapter.ts": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2",
     "src/domain/stageKit/modules.ts": "063b1c2cfe480b4c64fc162b4653aaa33621880e2917def091693e317b41e6fa",
     "src/domain/theatre/environment.ts": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246",
     "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
-    "src/domain/stageKit/definitions.ts": "480d755637db35de91886f4ac240e444324f04e8195adf18affcd9b8ea25f49c",
+    "src/domain/stageKit/definitions.ts": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495",
     "src/domain/theatre/runtime.ts": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f",
     "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
     "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
@@ -196,7 +213,7 @@
     "src/domain/theatre/state.ts": "e3af183ca8bf7e28704ddf1c125388a582759f99c68b5989690daa5e0ed0e8c9",
     "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
     "src/domain/stageKit/linearDrag.ts": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c",
-    "src/domain/theatre/actor.ts": "212f8b5838dda534d7049c85014dc723a99e9caf30994a87f95c7a5f64933eca",
+    "src/domain/theatre/actor.ts": "ae7e8395d27309e82512239704f896ecdc040b271c9b7c98d33fb3eda0aaf995",
     "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
     "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
     "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
@@ -240,22 +257,22 @@
     "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
     "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
     "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
-    "src/domain/stages/mirror-corridor-v1/binding.ts": "9ea1535f6a721550e5686e5f0971ab5bb028de74e94ee537fb22f20020a72dab",
-    "src/domain/stages/mirror-corridor-v1/definition.ts": "9905419be315c60984364dc07bf6799df9b9dbc2daa6a43966e479af175d5d0b",
-    "src/domain/stages/mirror-corridor-v1/session.ts": "e2638576c3c8c04a7eeafc3cdaad848024735e8f4fe58dad50bf85faf5925285",
-    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "f7e3b65c05aa8a6e7a7404c32ef8ab5bbfababb77f2d3cab7a483261f8bca2d9",
+    "src/domain/stages/mirror-corridor-v1/binding.ts": "919d197ce00dfcff11a263b553928a66fc70d4ce9615232de75e680d1ea07960",
+    "src/domain/stages/mirror-corridor-v1/definition.ts": "11a792634b9c0d124a6ce74630284b607e77aaaf45b368c3ceeadc899b95ede3",
+    "src/domain/stages/mirror-corridor-v1/session.ts": "1e6546b658a27843c9eb64a751607aa9ee2cfc6de5d40afd1f42ade6884fbf72",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
     "src/domain/stages/mirror-corridor-v1/actor.ts": "b8fc6cfc197e98b908450b7addd0967f4141dbadb339a2095395fc9f19d9feda",
     "src/domain/stages/departure-control-v1/binding.ts": "ae6e0fdba7ac6a6354f28d4cd3d8d727088ed82630b7ec25bf5300bfbfec574b",
     "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
     "src/domain/stages/departure-control-v1/actor.ts": "0f82eae40ea9c8131e5851920b21927723bb58a5c56f38ead36cb5231b6ab4d4",
-    "src/domain/stages/departure-control-v1/definition.ts": "28e6a1630706d200aaa70eef643850e737dd36565ce06345509e3a8123713730",
+    "src/domain/stages/departure-control-v1/definition.ts": "21986bfe6f05afaa45844961343d77d0eec8feb420365ea0cdddd51c8b8466fc",
     "src/domain/stages/departure-control-v1/checkpoint.ts": "a73d8e9634174fef4c4a923182f7c5cf51dcb2b520550c7afee8d6a72af73b8c",
     "src/domain/stages/departure-control-v1/session.ts": "d459a3dd9e9e58e03df8cafc4b8f07bb8a9c24eb2d36502aef7b66f291f64652",
     "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
     "src/rendering/firstPerson/labRuntime.ts": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
     "src/rendering/firstPerson/controllerTransitionAudio.ts": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a",
     "src/domain/theatre/cues.ts": "16b589ad3380f3dc3f3d01a106957deef6943a9a67c3d4a5efee6acb850dcc34",
-    "src/rendering/firstPerson/theatreController.ts": "2046d1bad71de594665596934056d8fdd5894ae84d2152e685c15b94946b7eab",
+    "src/rendering/firstPerson/theatreController.ts": "19ed5d6e1f8558c06c285c71575f307b8d75161544d453a6de2ce42258708d30",
     "src/rendering/firstPerson/manipulationProjection.ts": "3f2331d17bc37b2eaa2bb08f8489fae826ad956d79f376662579fe2d7ce6d593",
     "src/rendering/firstPerson/touchInput.ts": "f9dd110fbd42fa30234c94e6b110b74f1ff162dfacd6634790d6293f51d63162",
     "src/rendering/firstPerson/vaultController.ts": "2861e61847110c0c09173c7f64dc7d97e4fc5f70f4101f9e4807f0c054c4add6",
@@ -284,16 +301,16 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/mirror-corridor-v1/scene.tsx": "3031e254ce30a53fa23e39d258f1abedaf5ad170b6239fc0f856767b7555a6dc",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "a938f0c2a17746d6997726b0a51f2a20550a4025af8a4c70ab5b332caa455df4",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-natural/mirror-natural.mp4",
-    "bytes": 212685,
-    "sha256": "a09530cac44776a3cf4da3d006460d99e512a58dcbf4f2ff061f2d5c5110913f",
+    "bytes": 220813,
+    "sha256": "f68f97fb77a3e372a25fd7b9016381dc9b82e272e79f49a2abca12c62fc0a8d1",
     "fps": 10
   },
   "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity.",
-  "toolHash": "c2c99903fc802523f70277a13b3db4c85d45256389e460dc8ba9dcdf9818ac15"
+  "toolHash": "b7cf931792b394c125c30cf7adc478afc228b74ac1806fb6b9ab0e1037a584d0"
 }

@@ -6,7 +6,7 @@ import type { ChapterRuntime, WorldGeometry } from '../../firstPerson/types';
 import { createPlanarMirror, type OffscreenDraw } from '../../../rendering/firstPerson/planarMirror';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
 import type { SceneResources } from '../../../rendering/firstPerson/resources';
-import { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, grateY } from './definition';
+import { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, MIRROR_YAW, grateY } from './definition';
 import { isStageSession } from './session';
 
 /** Original symmetric profile. The pale central void is left by the same two
@@ -64,7 +64,7 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       <mesh name="right-profile" geometry={shape} material={faceMaterial} scale={[-1,1,1]}/>
     </group>
     <mesh name="isolation-key" ref={key} geometry={resources.box} material={resources.neutral} position={[KEY_CENTER.x,KEY_CENTER.y,KEY_CENTER.z-.1]} scale={[.16,.42,.08]}/>
-    <group position={[MIRROR_CENTER.x,MIRROR_CENTER.y,MIRROR_CENTER.z]} rotation={[0,1.32,0]}>
+    <group position={[MIRROR_CENTER.x,MIRROR_CENTER.y,MIRROR_CENTER.z]} rotation={[0,MIRROR_YAW,0]}>
       <mesh name="planar-mirror" ref={mirrorMesh} geometry={resources.plane} material={mirror.material} scale={[1.2,1.2,1]}/>
       <mesh name="mirror-frame-top" geometry={resources.box} material={resources.trim} position={[0,.65,0]} scale={[1.3,.08,.1]}/>
       <mesh name="mirror-frame-bottom" geometry={resources.box} material={resources.trim} position={[0,-.65,0]} scale={[1.3,.08,.1]}/>
@@ -74,6 +74,6 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
     <mesh name="mirror-landmark" geometry={resources.box} material={resources.neutral} position={[1.05,1.5,14.25]} scale={[.22,.22,.22]}/>
     <GalleryActor name="mirror-corridor-actor" runtime={runtime} resources={resources} reducedMotion={false} framePriority={-.4}
       actorSource={()=>{const raw=runtime.current.stageSession?.value;return isStageSession(raw)?raw.actor:undefined;}} onFrameError={onFrameError}/>
-    {world.interactables.filter(t=>t.id!=='mirror-corridor-figure'&&t.id!=='mirror-corridor-key').map(t=><mesh key={t.id} geometry={resources.box} material={resources.device} position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.25,.12]}/>)}
+    {world.interactables.filter(t=>t.id!=='mirror-corridor-figure'&&t.id!=='mirror-corridor-key'&&t.id!=='mirror-corridor-mirror').map(t=><mesh key={t.id} geometry={resources.box} material={resources.device} position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.25,.12]}/>)}
   </group>;
 }

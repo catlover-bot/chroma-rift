@@ -12,6 +12,7 @@ const RC = require('../src/rendering/firstPerson/runtimeController.ts');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
 const { StageScene } = require('../src/domain/stages/mirror-corridor-v1/scene.tsx');
 const { isStageSession } = require('../src/domain/stages/mirror-corridor-v1/session.ts');
+const { MIRROR_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
 
 async function extract() {
   const controller = RC.createController(undefined, false, true, 'mirror-corridor-v1');
@@ -101,7 +102,14 @@ async function extract() {
   for (let i = 0; i < 40; i += 1) tick();
   if (!state().practiced || !RC.endStageHoldController(controller, 'mirror-corridor-practice', 3)) throw Error('Practice did not settle');
   event('practice-release', '練習終了');
-  walkZ(10.9); aimWinch();
+  walkZ(10.9);
+  const mirrorDx = MIRROR_CENTER.x - controller.runtime.pose.position.x;
+  const mirrorDz = MIRROR_CENTER.z - controller.runtime.pose.position.z;
+  press('mirror-corridor-mirror', '実鏡面を調べ、背後の通路を確認',
+    Math.atan2(-mirrorDx, -mirrorDz),
+    Math.atan2(MIRROR_CENTER.y - controller.runtime.pose.position.y, Math.hypot(mirrorDx, mirrorDz)));
+  if (!state().mirrorInspected) throw Error('Mirror inspection was not recorded');
+  aimWinch();
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
     !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 4)) throw Error('Winch hold rejected');
   event('winch-one', '鏡を見ながら一段目を巻き上げる');
@@ -126,7 +134,8 @@ async function extract() {
   fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
   await mounted.unmount(); resources.dispose(); bridge.verify();
   return { frames: frames.length, simulationSeconds: simulationFrames / 60, events,
-    final: { pose: controller.runtime.pose, ratchets: state().ratchets, cleared: controller.runtime.progress.cleared },
+    final: { pose: controller.runtime.pose, mirrorInspected: state().mirrorInspected,
+      ratchets: state().ratchets, cleared: controller.runtime.progress.cleared },
     sourceHashes: Object.fromEntries(bridge.hashes) };
 }
 
