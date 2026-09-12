@@ -32,6 +32,8 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 
 03の任意 `noise-route` には実際の表示欠落があった。AIが設備音を聞いて調査に入った更新で一時noise slotを消すため、後で画面がそのslotを探しても見つからなかった。AI stepで「直接視認しておらず、聞こえた設備音を調査する」という結果だけを一時controllerへ渡し、native frameの提示後にsnapshotからAppへ通知する。pause・GL失敗時は未提示の結果を破棄する。Jestでは実ベル操作→実AI更新→消費済みnoise slot→画面callback→Appの発火・表示・提示bit保存を確認した。足音と直接視認中の囮は発火しない。これは配置した03途中状態でのApp host試験で、自然な01→05通しプレイ、native frame、実音・端末表示の証拠ではない。
 
+製品の設定画面で第一章の再開始を選ぶ確認文は、現行campaignの進行・発見・物語提示bitが新周回の入場時に置き換わること、旧ステージ原文と他章・設定が残ることを明記した。確認ボタンは入場準備へ進む段階とし、押しただけでは保存原文が変わらないことをApp hostで検査した。旧単独ステージの確認文とは別の説明を渡す。
+
 05では点検手順を読んだことがcheckpointに残っても、確認文の提示前に屋外を越える速い経路がある。完了envelopeの保存は遅らせず、未提示の `containment-bell` をエンディングの点検手順欄に一度表示し、正体・屋外の二beatとともに提示bitを保存する。App hostの標準・控えめ自然経路と、結末表示前にunmountするcold試験で文面・保存・再表示時の非反復を確認した。native画面での表示順は未確認。
 
-最終ローカル自動検査：設備音beat修正後の `npm run check` はlint・型検査・109スイート/1,117テスト・iOS production exportを通過した。lintは途中で一度配列型の表記警告を出したが、表記を修正して警告0を確認した。追加のsource map付きiOS/Android production exportでも5エリアとJS asset各10点を確認し、開発用6画面/probe/QA用経路は含まれない。実行時循環はiOS/Android/neutralとも222 production modules・682 runtime edges・0 SCC/0 errors。Stage Kit定義検査も今回通過した。依存変更前から通過している `expo install --check` とDoctor 21/21は今回再実行していない。`automatedChecksPassed=true` とし、上記の未実施を理由に `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+最終ローカル自動検査：再開始の確認文修正後の `npm run check` はlint・型検査・109スイート/1,118テスト・iOS production exportを通過した。lintは途中で一度配列型の表記警告を出したが、表記を修正して警告0を確認した。最終コードのsource map付きiOS/Android production exportでも5エリアとJS asset各10点を確認し、開発用6画面/probe/QA用経路は含まれない。実行時循環はiOS/Android/neutralとも222 production modules・682 runtime edges・0 SCC/0 errors。Stage Kit定義検査も今回通過した。依存変更前から通過している `expo install --check` とDoctor 21/21は今回再実行していない。`automatedChecksPassed=true` とし、上記の未実施を理由に `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

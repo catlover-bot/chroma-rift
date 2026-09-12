@@ -290,6 +290,28 @@ test('product home starts one campaign envelope and resumes the same first area'
   expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).runId).toBe(first.runId);
 });
 
+test('first-chapter reset warning describes the record that will be replaced at entry', async () => {
+  const alert = jest.spyOn(Alert, 'alert');
+  const view = await render(<App />);
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  const before = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+  await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+  await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+  await fireEvent.press(view.getByRole('button', { name: '設定' }));
+  await fireEvent.press(view.getByRole('button', { name: '第一章「最後の退館者」だけを最初から' }));
+  const confirmation = alert.mock.calls.at(-1)!;
+  expect(confirmation[1]).toContain('進行・発見・物語の提示記録を置き換えます');
+  expect(confirmation[1]).toContain('旧ステージの原文');
+  expect(confirmation[1]).not.toContain('過去の脱出・発見');
+  await act(() => confirmation[2]?.find(button => button.text === '入場の準備へ')?.onPress?.());
+  expect(await view.findByRole('button', { name: '展示室へ入る' })).toBeTruthy();
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(before);
+  await view.unmount();
+});
+
 test('the discovery record shows observed notes and replay unions notes without moving the campaign', async () => {
   const Gate = gateModule.NativeFirstPersonGate;
   let latest: FirstPersonScreenProps | undefined;

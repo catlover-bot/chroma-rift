@@ -21,7 +21,7 @@ export function SettingsScreen({
   onLegacyStages,
   onFirstPersonLab,
   currentChapterName,
-  onResetChapter, controls, onControlsChange, backLabel = 'ホームへ戻る',
+  onResetChapter, resetChapterPrompt, controls, onControlsChange, backLabel = 'ホームへ戻る',
 }: {
   controls?: FirstPersonControls;
   onControlsChange?: (controls: FirstPersonControls) => void;
@@ -39,6 +39,7 @@ export function SettingsScreen({
   onFirstPersonLab?: () => void;
   currentChapterName?: string;
   onResetChapter?: () => void;
+  resetChapterPrompt?: { body: string; confirmLabel: string } | undefined;
 }) {
   const [information, setInformation] = useState<'about' | 'credits' | 'privacy' | 'support'>();
   const toggleInformation = (section: typeof information) => setInformation(current => current === section ? undefined : section);
@@ -130,8 +131,8 @@ export function SettingsScreen({
       <ActionButton label="詳しく調整する" onPress={onRecalibrate} />
       <Body muted>調整は表示のための目安です。見え方を診断するものではありません。</Body>
       {onResetChapter ? <ActionButton label={`${currentChapterName ?? '現在の章'}だけを最初から`}
-        onPress={() => Alert.alert('この章だけを最初から', `${currentChapterName ?? '現在の章'}の今回の進行をリセットします。過去の脱出・発見と、他の章、表示と音の設定、調整結果は残ります。`, [
-          { text: 'キャンセル', style: 'cancel' }, { text: 'この章だけリセット', style: 'destructive', onPress: onResetChapter },
+        onPress={() => Alert.alert('この章だけを最初から', resetChapterPrompt?.body ?? `${currentChapterName ?? '現在の章'}の今回の進行をリセットします。過去のクリア履歴・発見記録と、他の章、表示と音の設定、調整結果は残ります。`, [
+          { text: 'キャンセル', style: 'cancel' }, { text: resetChapterPrompt?.confirmLabel ?? 'この章だけリセット', style: 'destructive', onPress: onResetChapter },
         ])} variant="danger" /> : null}
       <ActionButton
         label="保存データをリセット"

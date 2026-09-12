@@ -828,6 +828,10 @@ export default function App() {
         onReset={() => void reset()}
         currentChapterName={campaignIntent || settingsReturn === 'welcome' ? '第一章「最後の退館者」' : STAGES.find(stage=>stage.id===state.selectedChapterId)?.title??'帰り道のない入口'}
         onResetChapter={() => { if (campaignIntent || settingsReturn === 'welcome') prepareCampaign('new'); else void restartChapter(); }}
+        resetChapterPrompt={campaignIntent || settingsReturn === 'welcome' ? {
+          body: '第一章を最初から始める準備へ進みます。新しい周回で入場すると、第一章の現在の進行・発見・物語の提示記録を置き換えます。旧ステージの原文、他の章、表示と音の設定、調整結果は残ります。',
+          confirmLabel: '入場の準備へ',
+        } : undefined}
         onBack={() => dispatch({ type: 'NAVIGATE', screen: settingsReturn })}
         backLabel={settingsReturn === 'playInstructions' ? '入場前の準備へ戻る' : settingsReturn === 'legacyStages' ? '旧ステージ一覧へ戻る' : 'ホームへ戻る'}
         {...(__DEV__ ? {
