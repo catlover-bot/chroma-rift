@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ActionButton, Screen } from '../components/Layout';
 import { CHAPTER_ONE } from '../domain/campaign/definition';
@@ -6,13 +6,17 @@ import { CHAPTER_ONE_COPY } from '../domain/campaign/story';
 import { MATERIAL_CREDITS } from '../content/illusionNotes';
 import { UI_COLORS } from '../theme/ui';
 
-export function ChapterOneEndingScreen({ onHome, onAreas, onDiscoveries, onShown }: { onHome: () => void; onAreas: () => void; onDiscoveries: () => void; onShown?: () => void }) {
+export function ChapterOneEndingScreen({ onHome, onAreas, onDiscoveries, onShown, showProcedure = false }: {
+  onHome: () => void; onAreas: () => void; onDiscoveries: () => void; onShown?: () => void; showProcedure?: boolean }) {
   const onShownRef = useRef(onShown);
+  const [procedureAtMount] = useState(showProcedure);
   useEffect(() => { onShownRef.current = onShown; }, [onShown]);
   useEffect(() => { onShownRef.current?.(); }, []);
   return <Screen>
     <Text style={styles.brand}>CHROMA RIFT</Text>
     <View style={styles.rule}/>
+    {procedureAtMount ? <View><Text style={styles.credit}>点検手順</Text>
+      <Text style={styles.note}>{CHAPTER_ONE_COPY.containmentInstruction}</Text></View> : null}
     <Text style={styles.attendance}>{CHAPTER_ONE_COPY.attendance01} → {CHAPTER_ONE_COPY.attendance00}</Text>
     <Text style={styles.answer}>{CHAPTER_ONE_COPY.attendanceIdentified}</Text>
     <Text style={styles.complete} accessibilityRole="header">第一章「{CHAPTER_ONE.title}」 完</Text>

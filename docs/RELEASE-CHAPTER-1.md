@@ -44,6 +44,8 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 - 01〜03の変更前後は同条件のSoftware WebGL動画で各エリアの短い操作を比較した。01は目的文と点灯後の点検記録の差があり、非常灯の受理とcameraは一致。02の長さ調整と03の灯り調整は観測経路のtimeline・独立動画がbyte一致。各エリア全体の実機比較は未完了。
 - App hostでエリア境界の未提示短文を次Canvas起動前に表示・保存する経路を追加した。完了envelope保存後に提示bitの書込が失敗しても、旧Canvasを維持して再試行/起動中のみ継続を選べる。境界表示中のcold終了は次エリアの安全入口で未提示文を再表示する。JestのCanvas/AsyncStorageモックによる確認で、native表示と実端末の永続性は未確認。
 
+- 05完了保存後に未提示の収容手順がある場合は、エンディングで一度示してから提示bitを保存する。結末表示前のcold終了と再閲覧の非反復をJest App hostで確認した。実機表示と実AsyncStorageは未確認。
+
 - iPhone preview/TestFlightの機内モード、10〜15分連続、無音、VoiceOver、文字拡大、片手/両手、safe area、温度、frame time、鏡pass資源、10回以上の再入場を未実施。結果は `docs/IPHONE_VALIDATION.md` の第一章節へ記入する。
 - 正式なプライバシーポリシーURLとサポート連絡先はオーナー未提供。架空URLは設定やストア情報へ入れない。App Store説明・スクリーンショット・年齢レーティングの申告と審査承認も未実施。
 - アイコンと起動画面の実機表示、実機の同梱asset、公開用metadataを確認するまでストア提出しない。

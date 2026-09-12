@@ -204,10 +204,11 @@ test.each([
   if (cold) { expect(entryCount).toBe(15); expect(coldRestores).toBe(4);
     expect(reentries).toHaveLength(10); expect(coldTransitions).toHaveLength(4); }
   expect(await view.findByText('第一章「最後の退館者」 完')).toBeTruthy();
+  expect(view.getByText(CHAPTER_ONE_COPY.containmentInstruction)).toBeTruthy();
   expect(view.getByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
   expect(view.getByText(`${CHAPTER_ONE_COPY.attendance01} → ${CHAPTER_ONE_COPY.attendance00}`)).toBeTruthy();
   await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
-    .toEqual(expect.arrayContaining(['attendance-identified', 'outdoor-exit'])));
+    .toEqual(expect.arrayContaining(['containment-bell', 'attendance-identified', 'outdoor-exit'])));
   await view.unmount();
   expect(mockCanvasOwners.active).toBe(0);
   const resumed = await render(<App/>);
@@ -215,6 +216,7 @@ test.each([
   const completedRaw = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
   await fireEvent.press(resumed.getByRole('button', { name: 'エンディングを見る' }));
   expect(await resumed.findByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
+  expect(resumed.queryByText(CHAPTER_ONE_COPY.containmentInstruction)).toBeNull();
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(completedRaw);
   await fireEvent.press(resumed.getByRole('button', { name: 'ホームへ戻る' }));
   if (cold) for (let index = CHAPTER_ONE.areas.length - 1; index >= 0; index--) {
@@ -447,9 +449,10 @@ test('verified area-03 through area-05 host callbacks survive a cold exit before
   expect(await resumed.findByRole('button', { name: 'エンディングを見る' })).toBeTruthy();
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(completedRaw);
   await fireEvent.press(resumed.getByRole('button', { name: 'エンディングを見る' }));
+  expect(await resumed.findByText(CHAPTER_ONE_COPY.containmentInstruction)).toBeTruthy();
   expect(await resumed.findByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
   await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
-    .toEqual(expect.arrayContaining(['attendance-identified', 'outdoor-exit'])));
+    .toEqual(expect.arrayContaining(['containment-bell', 'attendance-identified', 'outdoor-exit'])));
   expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!)).toMatchObject({
     runId: completed.runId, completedAreas: completed.completedAreas, campaignCompleted: true,
     finale: completed.finale,

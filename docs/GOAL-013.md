@@ -30,4 +30,6 @@
 
 App hostのエリア境界では、完了envelopeを先に保存した後、そのエリアで発火して未提示の短文を旧Canvasの停止中に順に提示し、確認bitを保存してから次のCanvasを起動する。標準・控えめの自然操作ログでは01の非常回路、02の収容手順、04の隔離キーが各境界で表示され、Canvas mock ownerは1を超えなかった。提示bitの書込失敗は旧Canvasを保ったまま再試行または起動中のみ継続でき、保存済み完了envelopeを上書きしない。境界表示前にcold終了した場合は次エリアの安全入口で未提示文を出す。03の任意観測や05の手順を含む全beatの自然経路・実機視認はなお未確認。
 
+05では点検手順を読んだことがcheckpointに残っても、確認文の提示前に屋外を越える速い経路がある。完了envelopeの保存は遅らせず、未提示の `containment-bell` をエンディングの点検手順欄に一度表示し、正体・屋外の二beatとともに提示bitを保存する。App hostの標準・控えめ自然経路と、結末表示前にunmountするcold試験で文面・保存・再表示時の非反復を確認した。native画面での表示順は未確認。
+
 最終ローカル自動検査：`npm run check` はlint・型検査・109スイート/1,115テスト・iOS production exportを通過した。lintは途中で一度配列型の表記警告を出したが、表記を修正して警告0を確認した。追加のsource map付きiOS/Android production exportでも5エリアとJS asset各10点を確認し、開発用6画面/probe/QA用経路は含まれない。実行時循環はiOS/Android/neutralとも222 production modules・682 runtime edges・0 SCC/0 errors。Stage Kit定義検査、`expo install --check`、Doctor 21/21も通過。`automatedChecksPassed=true` とし、上記の未実施を理由に `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

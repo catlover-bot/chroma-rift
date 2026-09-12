@@ -601,13 +601,15 @@ export default function App() {
     const area = intentSession ? campaignArea(intentSession.currentArea) : CHAPTER_ONE.areas[0];
     screen = <PlayInstructionsScreen chapterId={campaignIntent ? (area ?? CHAPTER_ONE.areas[0]).stageId : state.selectedChapterId} campaignMode={!!campaignIntent} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void (campaignIntent ? beginCampaignIntent() : beginChapter())} onSettings={() => { setSettingsReturn('playInstructions'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} onBack={navigateHome} />;
   } else if (state.screen === 'campaignEnding' && campaign?.campaignCompleted) {
-    screen = <ChapterOneEndingScreen onHome={navigateHome}
+    const showProcedure = campaign.storyFired.includes('containment-bell') && !campaign.storyPresented.includes('containment-bell');
+    screen = <ChapterOneEndingScreen onHome={navigateHome} showProcedure={showProcedure}
       onShown={() => {
         const previous = campaignRef.current;
-        if (previous?.campaignCompleted && (!previous.storyPresented.includes('attendance-identified') ||
-          !previous.storyPresented.includes('outdoor-exit')))
-          applyCampaignStory(recordCampaignBeatPresented(
-            recordCampaignBeatPresented(previous, 'attendance-identified'), 'outdoor-exit'), beginFirstPersonSession());
+        if (previous?.campaignCompleted) {
+          const withProcedure = showProcedure ? recordCampaignBeatPresented(previous, 'containment-bell') : previous;
+          const shown = recordCampaignBeatPresented(recordCampaignBeatPresented(withProcedure, 'attendance-identified'), 'outdoor-exit');
+          if (shown !== previous) applyCampaignStory(shown, beginFirstPersonSession());
+        }
       }}
       onAreas={() => { setCampaignDiscoveries(false); setCampaignAreas(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }}
       onDiscoveries={() => { setCampaignAreas(false); setCampaignDiscoveries(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }} />;
