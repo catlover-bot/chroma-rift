@@ -1,0 +1,44 @@
+{
+  "baseline": {
+    "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012-completion",
+    "head": "2285ebd8a252a266cd99fa3b50a1db9ce0705d07",
+    "gameSourceMatches": "478b376ea9a954974ad2f08ab5f09d929bd35f06",
+    "verification": "git diff --exit-code 478b376..2285ebd -- App.tsx src assets app.json package.json package-lock.json metro.config.js"
+  },
+  "current": {
+    "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
+    "branch": "feat/goal-013-chapter-one-product"
+  },
+  "boundary": "Same scripted screen/controller/scene input, camera and timeline in Node; native readiness/audio mocked, rendering by Chromium Software WebGL. The two videos compare one device operation each, not the full area or campaign. The two extracted frames were opened; the complete MP4s were not continuously watched.",
+  "leftVideo": "Goal 012 game source",
+  "rightVideo": "Goal 013 game source",
+  "area02Length": {
+    "timelineSha256Both": "66304fc456380af30ca709691f45892a568d3b363848568020fe4ac57",
+    "timelineByteIdentical": true,
+    "independentVideoSha256Both": "d00f31c18054fd2acfda0a88e64f05ca7744e1de3e0bc272fd3bd680b0f0b038",
+    "videoByteIdentical": true,
+    "comparisonVideo": "area02-length-before-after.mp4",
+    "comparisonSha256": "5d5e1dcc41d792a44890a32e29e8a28638be284b7d00798733bbf01c0ef2b813",
+    "width": 780,
+    "height": 844,
+    "fps": 30,
+    "frames": 245,
+    "durationSeconds": 8.166667,
+    "inspectedFrameSeconds": 5
+  },
+  "area03Light": {
+    "timelineSha256Both": "e648b68e89cb510634e898a13d2aeffb9b133f854dcbf7c8e6e61cd94653df9b",
+    "timelineByteIdentical": true,
+    "independentVideoSha256Both": "2296eac967848a56f62190df620db7e9216f7df077f484347ad42c12c5b75dce",
+    "videoByteIdentical": true,
+    "comparisonVideo": "area03-light-before-after.mp4",
+    "comparisonSha256": "028193062214caa6b0121442e24bf84a6b3e2df513b153dbfa9a345f491df8fb",
+    "width": 780,
+    "height": 844,
+    "fps": 10,
+    "frames": 200,
+    "durationSeconds": 20,
+    "inspectedFrameSeconds": 9
+  },
+  "area01": "No new same-route before/after video was captured for Goal 013."
+}
