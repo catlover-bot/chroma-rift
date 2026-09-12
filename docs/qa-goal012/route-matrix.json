@@ -1,0 +1,513 @@
+{
+  "method": "Actual FirstPersonScreen commands, controller advances and TheatreScene extraction. No native rendering or browser capture in this 8-case matrix.",
+  "toolSha256": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
+  "sourceHashes": {
+    "src/rendering/firstPerson/runtimeController.ts": "527f757b7d3728e6d33faf72341b91f823a8044ab4470f21ab623810a32054b4",
+    "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
+    "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+    "src/domain/firstPerson/chapter.ts": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2",
+    "src/domain/stageKit/modules.ts": "f7864bc3bb7ec17365dc4fb02c41e8af70ad4fb5b73369f3bb0b96f8e2adacf6",
+    "src/domain/theatre/environment.ts": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246",
+    "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
+    "src/domain/stageKit/definitions.ts": "5edda100893b8ee2e616fd7ebe11a8b742b0bcacd7fba4502a9f87530e5e7657",
+    "src/domain/theatre/runtime.ts": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f",
+    "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+    "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+    "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+    "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+    "src/domain/theatre/definition.ts": "920eaa717f54e146aeb5d99d8b246550adc57a26020cc0b44aa8c217efdc265f",
+    "src/domain/theatre/lightGate.ts": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+    "src/domain/theatre/projection.ts": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+    "src/domain/theatre/state.ts": "ac970c323ebee71ca47b1ade5c46ae3908ea93bed4971eaf725b1d53b6ed3262",
+    "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+    "src/domain/stageKit/linearDrag.ts": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c",
+    "src/domain/theatre/actor.ts": "129b7ee0e00932ae1ad4ff6dd5eff82807ec1f6e5c396c99789bf9e489a3a868",
+    "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+    "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+    "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+    "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+    "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+    "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+    "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+    "src/domain/vault/actorPolicy.ts": "c2aa94afef48d5792a7e90106bcd6cc3db5f928a256ca45225cfc7957a868643",
+    "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+    "src/domain/theatre/world.ts": "a6b3214575a433c162de21c677d665d96011ce5f35830f5f2fd42b1f5eb9c491",
+    "src/domain/theatre/deviceStatus.ts": "05a2b6a762bab8719ccb525357b02fb49884bdffcb9c532af0e5193a2a5da352",
+    "src/domain/theatre/selectors.ts": "8b2cdf251b03b269087a8e598258ca083044084643938c26dedf0e1da6c09fb8",
+    "src/domain/theatre/checkpoint.ts": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e",
+    "src/domain/vault/runtime.ts": "5e0b7f0977ad4ccb8b56d9c451ccb538f0e52464d1c1f9092bbe306e740a84a8",
+    "src/domain/vault/definition.ts": "32a724fdde872d5d843a271012cd954f05957939564711e53d5efe186902dbb1",
+    "src/domain/vault/state.ts": "cda22287286d833f21eaa66f02a32ef7d62c6cfe43ff6e675d32da8a6c1b306c",
+    "src/domain/vault/specs.ts": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+    "src/domain/vault/actor.ts": "f0d02a549d8f29087d87934f6d0362eefb464a700422cd20862663a0b1ea9b1e",
+    "src/domain/vault/world.ts": "52d9a20c1a7b5533d6125b345deacbac3a6856d1af6d7652ea6cec31433782b9",
+    "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+    "src/domain/vault/selectors.ts": "884991687478d324bf672eeec7de3a09da60433997806fc2dd906df7e96673de",
+    "src/domain/vault/checkpoint.ts": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+    "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+    "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+    "src/domain/gallery/state.ts": "24fdbad7265b6464ddd690e39cb705d205bd521fb5a881efbb3371c4aae61056",
+    "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+    "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+    "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+    "src/domain/gallery/world.ts": "dc2c76bcd59a7e866cbe98a8c91efed203479aee964cbfef31947102a702122b",
+    "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+    "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+    "src/domain/gallery/selectors.ts": "ebd3c3940c83e44add274a158ebdf1e70714ac5b91c2fd6b2490ba173ecb9794",
+    "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+    "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+    "src/domain/gallery/hint.ts": "51f85efe7acc16b8828d57db22dd158c22d74e675545dc95525bdeae784d6b59",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+    "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+    "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+    "src/domain/stages/stage-kit-probe/binding.ts": "55604d78388632272df8a9d8fd5840c4541392642c90bae592dd70dcbeffb7a5",
+    "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
+    "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
+    "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+    "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+    "src/rendering/firstPerson/labRuntime.ts": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+    "src/rendering/firstPerson/controllerTransitionAudio.ts": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a",
+    "src/domain/theatre/cues.ts": "16b589ad3380f3dc3f3d01a106957deef6943a9a67c3d4a5efee6acb850dcc34",
+    "src/rendering/firstPerson/theatreController.ts": "6aea05f6f7c234b2b69aff24d3f54ca46eb0e18af645229d12870cc5bbca10af",
+    "src/rendering/firstPerson/manipulationProjection.ts": "3f2331d17bc37b2eaa2bb08f8489fae826ad956d79f376662579fe2d7ce6d593",
+    "src/rendering/firstPerson/touchInput.ts": "f9dd110fbd42fa30234c94e6b110b74f1ff162dfacd6634790d6293f51d63162",
+    "src/rendering/firstPerson/vaultController.ts": "2861e61847110c0c09173c7f64dc7d97e4fc5f70f4101f9e4807f0c054c4add6",
+    "src/rendering/firstPerson/notebookCamera.ts": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+    "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+    "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+    "src/rendering/firstPerson/galleryController.ts": "cb6313f6af43297f1fa16cfbcc4498fe22120b89269930f72287725ebe84f42a",
+    "src/domain/firstPerson/runtime.ts": "950c1be2a009a920e8d7716bfc6faa4f6c1b080c3e8c5a743e74e94ce0468058",
+    "src/domain/firstPerson/tutorial.ts": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+    "src/domain/firstPerson/interactionCue.ts": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+    "src/rendering/firstPerson/diagnostics.ts": "c6968e78cea7f65b6dec76c1cff3a96b5f961028deb7988df7961f303c25580a",
+    "src/types/application.ts": "ee88df75634c6bcf1199ada4228f07f6444ece57656ab193052f4fae0e60e4c8",
+    "src/domain/calibration/types.ts": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+    "src/domain/firstPerson/index.ts": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+    "src/domain/firstPerson/types.ts": "7432c910570822fde4c33854e51c1d1a37cefe5c4cee4071e41c54dcbc971d05",
+    "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499",
+    "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+    "src/rendering/firstPerson/TheatreScene.tsx": "8c979b2109098898b8d0da745b7af01aa4b6129fe652f52a9ec0913543f1e748",
+    "src/rendering/firstPerson/GalleryActor.tsx": "a08461149e3ce302c9105da7f42285fae77e14067a82b903d9a9134c0495faeb",
+    "src/rendering/firstPerson/segmentTransform.ts": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+    "src/rendering/firstPerson/resources.ts": "9e6752e852b763083073fff47dd1d4f9657a8b021c9517ec7da440fd35ca51d6",
+    "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
+    "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+    "src/rendering/firstPerson/galleryResources.ts": "ab3aa0da294bf5a8f7f18c83cd3c860e7db665961367040ecda94ba87254ac31",
+    "src/rendering/firstPerson/exhibitSculpture.ts": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+    "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+    "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+    "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+    "src/domain/illusion/levels.ts": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+    "src/domain/illusion/projection.ts": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+    "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+    "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+    "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+    "src/screens/FirstPersonScreen.tsx": "9ff9f8f9658ff8039fa1867dac6d2d5a95bcb8f229c412a38fac3e9f4aaf4126",
+    "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+    "src/components/Layout.tsx": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+    "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+    "src/content/illusionNotes.ts": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+    "src/content/illusionComparisons.ts": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+    "src/screens/TheatreNotebook.tsx": "bd0e7bc84e4c30789c264c889b2181fd2e958a77a29ef903860ea97684b9ff29",
+    "src/content/theatreComparisons.ts": "8b598de2efd3557c73f6bffd93357c9346527191993849222ddc980102e09680",
+    "src/rendering/firstPerson/TheatreManipulation.tsx": "f1000f0bdf7bc7de27c9bde320a144dea220dcfb6494a9b7f785d3a507a81069",
+    "src/rendering/firstPerson/SceneActionButton.tsx": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+    "src/screens/VaultNotebook.tsx": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+    "src/content/vaultNotes.ts": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+    "src/content/vaultComparisons.ts": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+    "src/rendering/firstPerson/VaultManipulation.tsx": "2b819653a4d9e30c17877a2998dfa5f0e70ff7893250b621953164a4e7f5fc63",
+    "src/app/chapterSummary.ts": "8939e0e948814e38cdbac53eca5d98a86a6490297989402c6483d98749220905",
+    "src/platform/haptics.ts": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+    "src/rendering/firstPerson/controlLayout.ts": "df46342ccf2c1ac896d0d4a2c2336c5ca178cb3d7c845af0438c4094555a0b44",
+    "src/rendering/firstPerson/GalleryManipulation.tsx": "513d863674af50bb64c414d4915675e30a3306c2c8ccd039dad7a2cc22ced366",
+    "src/rendering/firstPerson/TouchControls.tsx": "8bdd151a74dedebde2204edb0a8f37c092640b2125e5d828366895727e5d3e46",
+    "src/rendering/firstPerson/touchAdapter.ts": "b56b588fa4d70c070c58160466b441c9c04e9994fb9a03b05ddac537e1bd27d4",
+    "src/screens/firstPersonControlMode.ts": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1"
+  },
+  "routes": [
+    {
+      "intensity": "standard",
+      "devices": "none",
+      "durationSeconds": 18.833333333333332,
+      "simulationSeconds": 18.816666666666666,
+      "frames": 565,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": false,
+      "shutterClosed": false,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": -2.5937564809603804,
+          "y": 0,
+          "z": 10.155479857417932
+        },
+        "yaw": 3.1236123660067334,
+        "lastHeard": {
+          "x": 2.8275446461910616,
+          "y": 0.08,
+          "z": 7.299999996458412
+        },
+        "headYaw": -0.0001400917612919272,
+        "chestYaw": 0.00015079644737436837,
+        "plantSequence": 31
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "standard",
+          "devices": "none"
+        },
+        {
+          "time": 15.816666666666666,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "standard",
+      "devices": "bell",
+      "durationSeconds": 18.833333333333332,
+      "simulationSeconds": 18.816666666666666,
+      "frames": 565,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": true,
+      "shutterClosed": false,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": -2.5937564809603804,
+          "y": 0,
+          "z": 10.155479857417932
+        },
+        "yaw": 3.1236123660067334,
+        "lastHeard": {
+          "x": 2.8275446461910616,
+          "y": 0.08,
+          "z": 7.299999996458412
+        },
+        "headYaw": -0.0001400917612919272,
+        "chestYaw": 0.00015079644737436837,
+        "plantSequence": 31
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "standard",
+          "devices": "bell"
+        },
+        {
+          "time": 3,
+          "type": "optional-bell-used",
+          "receiver": {
+            "x": 2.8,
+            "y": 2.68,
+            "z": 10.1
+          }
+        },
+        {
+          "time": 15.816666666666666,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "standard",
+      "devices": "shutter",
+      "durationSeconds": 23.366666666666667,
+      "simulationSeconds": 23.35,
+      "frames": 701,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": false,
+      "shutterClosed": true,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": 1.7979243638701645,
+          "y": 0,
+          "z": 6.562248458390221
+        },
+        "yaw": -1.558423051310755,
+        "lastHeard": {
+          "x": 1.5408333333333346,
+          "y": 0.08,
+          "z": 7.3
+        },
+        "headYaw": -1.0122909661567112,
+        "chestYaw": -0.41887902047863906,
+        "plantSequence": 43
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "standard",
+          "devices": "shutter"
+        },
+        {
+          "time": 5.883333333333334,
+          "type": "optional-shutter-closed",
+          "closed": true,
+          "progress": 1
+        },
+        {
+          "time": 20.35,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "standard",
+      "devices": "both",
+      "durationSeconds": 23.366666666666667,
+      "simulationSeconds": 23.35,
+      "frames": 701,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": true,
+      "shutterClosed": true,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": 1.7979243638701645,
+          "y": 0,
+          "z": 6.562248458390221
+        },
+        "yaw": -1.558423051310755,
+        "lastHeard": {
+          "x": 1.5408333333333346,
+          "y": 0.08,
+          "z": 7.3
+        },
+        "headYaw": -1.0122909661567112,
+        "chestYaw": -0.41887902047863906,
+        "plantSequence": 43
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "standard",
+          "devices": "both"
+        },
+        {
+          "time": 3,
+          "type": "optional-bell-used",
+          "receiver": {
+            "x": 2.8,
+            "y": 2.68,
+            "z": 10.1
+          }
+        },
+        {
+          "time": 5.883333333333334,
+          "type": "optional-shutter-closed",
+          "closed": true,
+          "progress": 1
+        },
+        {
+          "time": 20.35,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "subdued",
+      "devices": "none",
+      "durationSeconds": 18.833333333333332,
+      "simulationSeconds": 18.816666666666666,
+      "frames": 565,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": false,
+      "shutterClosed": false,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": -2.5911226207340325,
+          "y": 0,
+          "z": 10.206768099507437
+        },
+        "yaw": 3.111467727763686,
+        "lastHeard": {
+          "x": 2.8275446461910616,
+          "y": 0.08,
+          "z": 7.299999996458412
+        },
+        "headYaw": -0.00014009176129237128,
+        "chestYaw": 0.0001507964473730361,
+        "plantSequence": 31
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "subdued",
+          "devices": "none"
+        },
+        {
+          "time": 15.816666666666666,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "subdued",
+      "devices": "bell",
+      "durationSeconds": 18.833333333333332,
+      "simulationSeconds": 18.816666666666666,
+      "frames": 565,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": true,
+      "shutterClosed": false,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": -2.5911226207340325,
+          "y": 0,
+          "z": 10.206768099507437
+        },
+        "yaw": 3.111467727763686,
+        "lastHeard": {
+          "x": 2.8275446461910616,
+          "y": 0.08,
+          "z": 7.299999996458412
+        },
+        "headYaw": -0.00014009176129237128,
+        "chestYaw": 0.0001507964473730361,
+        "plantSequence": 31
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "subdued",
+          "devices": "bell"
+        },
+        {
+          "time": 3,
+          "type": "optional-bell-used",
+          "receiver": {
+            "x": 2.8,
+            "y": 2.68,
+            "z": 10.1
+          }
+        },
+        {
+          "time": 15.816666666666666,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "subdued",
+      "devices": "shutter",
+      "durationSeconds": 23.366666666666667,
+      "simulationSeconds": 23.35,
+      "frames": 701,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": false,
+      "shutterClosed": true,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": -2.5978222894094896,
+          "y": 0,
+          "z": 8.865903703269439
+        },
+        "yaw": 0.0010804201288241843,
+        "lastHeard": {
+          "x": 1.5408333333333346,
+          "y": 0.08,
+          "z": 7.3
+        },
+        "headYaw": -0.0001400917612934121,
+        "chestYaw": 0.0001507964473723046,
+        "plantSequence": 42
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "subdued",
+          "devices": "shutter"
+        },
+        {
+          "time": 5.883333333333334,
+          "type": "optional-shutter-closed",
+          "closed": true,
+          "progress": 1
+        },
+        {
+          "time": 20.35,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    },
+    {
+      "intensity": "subdued",
+      "devices": "both",
+      "durationSeconds": 23.366666666666667,
+      "simulationSeconds": 23.35,
+      "frames": 701,
+      "completed": true,
+      "completionCallbacks": 1,
+      "bellUsed": true,
+      "shutterClosed": true,
+      "actorFinal": {
+        "phase": "resolved",
+        "position": {
+          "x": -2.5978222894094896,
+          "y": 0,
+          "z": 8.865903703269439
+        },
+        "yaw": 0.0010804201288241843,
+        "lastHeard": {
+          "x": 1.5408333333333346,
+          "y": 0.08,
+          "z": 7.3
+        },
+        "headYaw": -0.0001400917612934121,
+        "chestYaw": 0.0001507964473723046,
+        "plantSequence": 42
+      },
+      "events": [
+        {
+          "time": 0,
+          "type": "optional-route-start",
+          "intensity": "subdued",
+          "devices": "both"
+        },
+        {
+          "time": 3,
+          "type": "optional-bell-used",
+          "receiver": {
+            "x": 2.8,
+            "y": 2.68,
+            "z": 10.1
+          }
+        },
+        {
+          "time": 5.883333333333334,
+          "type": "optional-shutter-closed",
+          "closed": true,
+          "progress": 1
+        },
+        {
+          "time": 20.35,
+          "type": "actual-exit-walk-completed"
+        }
+      ]
+    }
+  ]
+}

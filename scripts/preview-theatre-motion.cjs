@@ -8,6 +8,8 @@ const option=name=>process.argv.find(a=>a.startsWith('--'+name+'='))?.slice(name
 const root=path.resolve(__dirname,'..'),source=path.resolve(option('source')||root),scenario=option('scenario')||'light',out=path.resolve(option('out')||path.join(root,'.expo/goal010',scenario==='light'?'light-motion':'motion-'+scenario));
 const fromSource=relative=>require(path.join(source,relative)),commitLabel=option('commit-label')||'灯りを固定する',solvedLeaveLabel=option('solved-leave-label')||'探索へ戻る';
 if(!['light','route-east','route-inspect','route-optional','projector','projector-control','capture-retry','curtain-portrait','maintenance','bell-a','bell-b','shutter'].includes(scenario))throw Error('Unknown scenario');
+const optionalDevices=option('optional-devices')||'both',routeIntensity=option('intensity')||'subdued';
+if(scenario==='route-optional'&&(!['none','bell','shutter','both'].includes(optionalDevices)||!['standard','subdued'].includes(routeIntensity)))throw Error('Invalid optional route variant');
 fs.mkdirSync(out,{recursive:true});
 const bridge=installSourceBridge(source),context={width:390,height:844,fontScale:1.5,bindController:false},native=installNativeHudBridge(context);
 const React=require('react'),R=require('react-test-renderer'),THREE=require('three');
@@ -93,10 +95,11 @@ async function extract(){
   if(scenario.startsWith('projector')||scenario==='curtain-portrait'||scenario==='maintenance'||scenario==='bell-a'||scenario==='bell-b'||scenario==='shutter'||scenario==='route-optional')capturing=false;
   await solve();await pathWalk([[2,-2],[2,3],[2,4.6]]);
   if(scenario==='route-optional'){
-   RC.setControllerHorrorIntensity(c,'subdued');capturing=true;events.length=0;samples.length=0;ticks=0;segment='optional-bell';event('optional-route-start',{intensity:'subdued'});
-   await pathWalk([[0,5.2],[-2.7,5.9],[-3.45,7.3]]);await interact('theatre-bell-a',Env.THEATRE_BELLS[0].fixture);event('optional-bell-used',{receiver:c.runtime.theatre.environmentNoise?.position});
-   await pathWalk([[-3.4,10.9]]);segment='optional-shutter';await interact('theatre-shutter-south',Env.THEATRE_SHUTTER.handles[0]);await wait(1.2);event('optional-shutter-closed',{closed:c.runtime.theatre.environment.shutter.closed,progress:c.runtime.theatre.environment.shutter.progress});
-   segment='optional-detour';await pathWalk([[-3.4,7.3],[-2,7.3],[0,7.3],[2.9,7.3],[2.9,11],[2.55,16.7]]);await finish();
+   RC.setControllerHorrorIntensity(c,routeIntensity);capturing=true;events.length=0;samples.length=0;ticks=0;segment='optional-approach';event('optional-route-start',{intensity:routeIntensity,devices:optionalDevices});
+   await pathWalk([[0,5.2],[-2.7,5.9],[-3.45,7.3]]);
+   if(optionalDevices==='bell'||optionalDevices==='both'){segment='optional-bell';await interact('theatre-bell-a',Env.THEATRE_BELLS[0].fixture);event('optional-bell-used',{receiver:c.runtime.theatre.environmentNoise?.position});}
+   if(optionalDevices==='shutter'||optionalDevices==='both'){await pathWalk([[-3.4,10.9]]);segment='optional-shutter';await interact('theatre-shutter-south',Env.THEATRE_SHUTTER.handles[0]);await wait(1.2);event('optional-shutter-closed',{closed:c.runtime.theatre.environment.shutter.closed,progress:c.runtime.theatre.environment.shutter.progress});}
+   segment='optional-detour';await pathWalk([...(optionalDevices==='shutter'||optionalDevices==='both'?[[-3.4,7.3]]:[]),[-2,7.3],[0,7.3],[2.9,7.3],[2.9,11],[2.55,16.7]]);await finish();
   }
   if(scenario==='bell-a'||scenario==='bell-b'){
    const bell=Env.THEATRE_BELLS[scenario==='bell-a'?0:1];

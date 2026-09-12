@@ -7,6 +7,7 @@
       "bytes": 147764,
       "durationSeconds": 20,
       "simulatedFrames": 600,
+      "toolHash": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
       "webgl": {
         "maxCalls": 99,
         "maxTriangles": 3254,
@@ -236,6 +237,7 @@
       "bytes": 28487,
       "durationSeconds": 9,
       "simulatedFrames": 270,
+      "toolHash": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
       "webgl": {
         "maxCalls": 21,
         "maxTriangles": 1556,
@@ -503,6 +505,7 @@
       "bytes": 40186,
       "durationSeconds": 9,
       "simulatedFrames": 270,
+      "toolHash": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
       "webgl": {
         "maxCalls": 121,
         "maxTriangles": 6504,
@@ -803,6 +806,7 @@
       "bytes": 34311,
       "durationSeconds": 6,
       "simulatedFrames": 180,
+      "toolHash": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
       "webgl": {
         "maxCalls": 35,
         "maxTriangles": 1848,
@@ -1044,6 +1048,7 @@
       "bytes": 219072,
       "durationSeconds": 20.033333333333335,
       "simulatedFrames": 601,
+      "toolHash": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
       "webgl": {
         "maxCalls": 97,
         "maxTriangles": 5266,
@@ -1295,6 +1300,7 @@
       "bytes": 277103,
       "durationSeconds": 23.366666666666667,
       "simulatedFrames": 701,
+      "toolHash": "f86feec51dbc66515c5b2961f5e12ad1908d41a17cf5a42e0a98020626db34d4",
       "webgl": {
         "maxCalls": 51,
         "maxTriangles": 2174,
@@ -1436,7 +1442,8 @@
         {
           "time": 0,
           "type": "optional-route-start",
-          "intensity": "subdued"
+          "intensity": "subdued",
+          "devices": "both"
         },
         {
           "time": 0,
@@ -2374,5 +2381,12 @@
       "src/rendering/firstPerson/touchAdapter.ts": "b56b588fa4d70c070c58160466b441c9c04e9994fb9a03b05ddac537e1bd27d4",
       "src/screens/firstPersonControlMode.ts": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1"
     }
+  },
+  "routeMatrix": {
+    "file": "route-matrix.json",
+    "sha256": "c8526b86c0ccb03b192f417cf07ed81c6a7fdf185a1d359dd2085cdf0985f9a7",
+    "variants": 8,
+    "completed": 8,
+    "scope": "Actual controller/scene extraction only; no browser capture"
   }
 }
