@@ -9,7 +9,7 @@ import { THEATRE_CHAPTER_ID,THEATRE_CHECKPOINTS,THEATRE_CURTAIN_FIXTURE,THEATRE_
 import { lightHandlePoint } from '../../../domain/theatre/lightGate';
 import { beginStick,endPointer } from '../touchInput';
 import { createCanvasLifecycle } from '../canvasLifecycle';
-import { theatreAction,theatreDeviceAcquisition,theatrePointer } from '../theatreController';
+import { theatreAction,theatreCurtainAcquisition,theatreDeviceAcquisition,theatrePointer } from '../theatreController';
 import { advanceController,commandController,createController,interactController,syncCamera,worldForController,type RuntimeController } from '../runtimeController';
 const WIDTH=390,HEIGHT=844;
 function setup(intensity:'standard'|'subdued',muted:boolean,checkpoint?:CheckpointState) {
@@ -41,6 +41,14 @@ function walk(c:RuntimeController,camera:THREE.PerspectiveCamera,x:number,z:numb
 }
 function wait(c:RuntimeController,camera:THREE.PerspectiveCamera,seconds:number,phases:Set<string>) {
   c.input.forward=0;const p=c.runtime.pose;for(let i=0;i<seconds*60;i++){advanceController(c,1/60,camera);track(c,phases);expect(c.runtime.pose).toEqual(p);}
+}
+function lowerCurtainWhenClear(c:RuntimeController,camera:THREE.PerspectiveCamera,phases:Set<string>) {
+  lookAt(c,camera,THEATRE_CURTAIN_FIXTURE.center);
+  // The moving actor can briefly occupy the curtain sweep. Wait for the same
+  // acquisition used by the button, then issue the real controller command.
+  for(let frame=0;frame<12*60&&theatreCurtainAcquisition(c).kind!=='ready';frame++)wait(c,camera,1/60,phases);
+  expect(theatreCurtainAcquisition(c).kind).toBe('ready');
+  expect(interactController(c,'theatre-curtain')).toBe(true);
 }
 function point(c:RuntimeController,kind:'light'|'projector',x:number,y:number) {
   const f=kind==='light'?THEATRE_LIGHT_FIXTURE:THEATRE_PROJECTOR_FIXTURE,n=f.normal,r=f.right,u={x:n.y*r.z-n.z*r.y,y:n.z*r.x-n.x*r.z,z:n.x*r.y-n.y*r.x};
@@ -83,7 +91,7 @@ describe('theatre full routes through shared controller and actual world',()=>{
     expect(c.runtime.theatre!.actor.phase).toBe('investigate');expect(c.runtime.theatre!.actor.lastHeard).toEqual(THEATRE_PROJECTOR.position);expect(c.runtime.pose).toEqual(before.pose);
     wait(c,camera,3.5,phases);
     for(const[x,z]of[[-4.55,14.38],[-4.55,14.75],[-2.6,14.75],[0,14.75],[2.55,16.7],[0,17.4],[0,19.6],[0,21.3]])walk(c,camera,x!,z!,phases);
-    expect(phases.has('projector-investigation')).toBe(true);lookAt(c,camera,THEATRE_CURTAIN_FIXTURE.center);expect(interactController(c,'theatre-curtain')).toBe(true);wait(c,camera,1.1,phases);walk(c,camera,0,23.6,phases);expect(c.runtime.progress.cleared).toBe(true);run.lifecycle.close();
+    expect(phases.has('projector-investigation')).toBe(true);lowerCurtainWhenClear(c,camera,phases);wait(c,camera,1.1,phases);walk(c,camera,0,23.6,phases);expect(c.runtime.progress.cleared).toBe(true);run.lifecycle.close();
   });
   it('an actual telegraphed capture preserves puzzle progress, requires finger release, and permits an east-lane retry',()=>{
     const run=setup('standard',false),{controller:c,camera}=run,phases=new Set<string>();solve(c,camera);
@@ -96,7 +104,7 @@ describe('theatre full routes through shared controller and actual world',()=>{
     expect(caught).toBe(true);expect([...phases]).toEqual(expect.arrayContaining(['notice','pursue','windup','attack','recover']));expect(c.runtime.pose).toEqual(THEATRE_CHECKPOINTS.entry);expect(JSON.stringify(c.runtime.progress.theatre!.light)).toBe(saved);expect(c.runtime.theatre!.actor.startupGrace).toBeGreaterThan(2.9);
     expect(c.input.releaseBarrier).toContain(77);const yaw=c.runtime.pose.yaw;commandController(c,{type:'turn',yaw:.2,pitch:0});expect(c.runtime.pose.yaw).toBe(yaw);endPointer(c.input,77);
     for(const[x,z]of[[2,-2],[2,3],[2,4.6],[2.9,5.5],[2.9,7.6],[2.55,13.8],[2.55,16.7],[0,17.4],[0,19.6],[0,21.3]])walk(c,camera,x!,z!,phases);
-    lookAt(c,camera,THEATRE_CURTAIN_FIXTURE.center);expect(interactController(c,'theatre-curtain')).toBe(true);wait(c,camera,1.1,phases);walk(c,camera,0,23.6,phases);expect(c.runtime.progress.cleared).toBe(true);run.lifecycle.close();
+    lowerCurtainWhenClear(c,camera,phases);wait(c,camera,1.1,phases);walk(c,camera,0,23.6,phases);expect(c.runtime.progress.cleared).toBe(true);run.lifecycle.close();
   });
   it.each([
     [false,false,'standard',false,false], [true,true,'standard',false,false], [true,false,'standard',true,false],
@@ -122,7 +130,7 @@ describe('theatre full routes through shared controller and actual world',()=>{
     }
     for(const[x,z]of[[0,17.4],[0,19.6],[0,21.3]])walk(c,camera,x!,z!,phases);
     expect(c.runtime.progress.cleared).toBe(false);expect(c.runtime.theatre!.checkpointId).toBe('booth');expect(interactController(c,'theatre-curtain')).toBe(false);
-    lookAt(c,camera,THEATRE_CURTAIN_FIXTURE.center);expect(interactController(c,'theatre-curtain')).toBe(true);expect(c.runtime.progress.theatre!.curtainAccepted).toBe(true);expect(c.runtime.progress.cleared).toBe(false);expect(c.runtime.progress.theatre!.passageSealed).toBe(false);
+    lowerCurtainWhenClear(c,camera,phases);expect(c.runtime.progress.theatre!.curtainAccepted).toBe(true);expect(c.runtime.progress.cleared).toBe(false);expect(c.runtime.progress.theatre!.passageSealed).toBe(false);
     const closing=restoreTheatreCheckpoint(createCheckpoint(c.runtime))!.checkpoint,coldClosing=createController(closing);expect(coldClosing.runtime.progress.cleared).toBe(false);expect(worldForController(coldClosing).solids.find(s=>s.id==='theatre-fire-curtain')!.min.y).toBe(0);
     wait(c,camera,1.1,phases);expect(c.runtime.progress.theatre!.passageSealed).toBe(true);expect(c.runtime.progress.cleared).toBe(false);walk(c,camera,0,23.6,phases);
     expect(c.runtime.progress).toMatchObject({sealA:false,sealB:false,variant:'entrance',cleared:true});expect(c.runtime.progress.theatre!.discoveries.depth).toBe(inspect);expect(c.runtime.progress.theatre!.bypassOpen).toBe(inspect);expect(c.runtime.progress.theatre!.story.projectorUsed).toBe(decoy);
