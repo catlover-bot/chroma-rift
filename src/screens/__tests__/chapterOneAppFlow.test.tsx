@@ -12,6 +12,7 @@ import { theatreCheckpoint } from '../../storage/testFixtures/theatre';
 import { chapterCompletionSummary } from '../../app/chapterSummary';
 import { CHAPTER_ONE } from '../../domain/campaign/definition';
 import { CHAPTER_ONE_COPY } from '../../domain/campaign/story';
+import { recordGalleryDiscovery } from '../../domain/gallery';
 import { attachNaturalRun, playNaturalArea } from '../../../test-support/naturalChapterRoute';
 import { createCheckpoint } from '../../domain/firstPerson';
 import type { CheckpointState } from '../../domain/firstPerson/types';
@@ -47,6 +48,7 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => {
     return React.createElement(View, { testID: 'campaign-native-canvas' });
   } };
 });
+const originalAsyncStorageWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
 
 beforeEach(async () => {
   mockLatestCanvas.current = undefined;
@@ -57,7 +59,7 @@ beforeEach(async () => {
   jest.spyOn(AccessibilityInfo, 'isReduceMotionEnabled').mockResolvedValue(false);
   jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValue(false);
 });
-afterEach(() => jest.restoreAllMocks());
+afterEach(() => { jest.mocked(AsyncStorage.setItem).mockImplementation(originalAsyncStorageWrite); jest.restoreAllMocks(); });
 const campaignEntryLabel = (index: number) => ['展示室へ入る', '収蔵庫へ入る', '映写室へ入る'][index]
   ?? `${CHAPTER_ONE.areas[index]!.title}へ入る`;
 
@@ -476,4 +478,106 @@ test('a failed area handoff keeps the old scene until an explicit save retry suc
     expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).currentArea).toBe('chapter-1-area-04');
     expect(latest!.chapterId).toBe('mirror-corridor-v1');
   });
+});
+
+test.each(['retry', 'session-only'] as const)('a failed checkpoint save pauses play and allows %s without claiming it was saved', async choice => {
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App/>);
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  const controller = mockLatestCanvas.current!.controller;
+  const originalRaw = (await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!;
+  const originalWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
+  let rejectCampaignWrite = true;
+  jest.mocked(AsyncStorage.setItem).mockImplementation((key, raw) =>
+    key === CHAPTER_ONE_STORAGE_KEY && rejectCampaignWrite ? Promise.reject(new Error('storage full')) : originalWrite(key, raw));
+  controller.runtime = recordGalleryDiscovery(controller.runtime, 'chromatic');
+  await act(() => latest!.onCheckpoint(createCheckpoint(controller.runtime)));
+  expect(await view.findByText('進行を保存できませんでした')).toBeTruthy();
+  await waitFor(() => expect(controller.runtime.paused).toBe(true));
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(originalRaw);
+  if (choice === 'retry') {
+    await fireEvent.press(view.getByRole('button', { name: '保存を再試行' }));
+    expect(await view.findByText('進行を保存できませんでした')).toBeTruthy();
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(originalRaw);
+    rejectCampaignWrite = false;
+    await fireEvent.press(view.getByRole('button', { name: '保存を再試行' }));
+    await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).discoveryHistory)
+      .toEqual({ 'chapter-1-area-01': ['chromatic'] }));
+    expect(view.queryByText('進行を保存できませんでした')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '再開する' }));
+    expect(controller.runtime.paused).toBe(false);
+  } else {
+    await fireEvent.press(view.getByRole('button', { name: 'この起動中だけ続ける' }));
+    expect(view.getByText(/この起動中だけ進行しています/)).toBeTruthy();
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(originalRaw);
+    await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+    await fireEvent.press(view.getByRole('button', { name: '発見の記録' }));
+    expect(view.getByText('・色の奥行き')).toBeTruthy();
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(originalRaw);
+  }
+  jest.mocked(AsyncStorage.setItem).mockImplementation(originalWrite);
+});
+
+test('a checkpoint write failure still reaches the home screen after the playing view exits', async () => {
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App/>);
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  const controller = mockLatestCanvas.current!.controller;
+  const originalRaw = (await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!;
+  const originalWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
+  let rejectCampaignWrite = true;
+  jest.mocked(AsyncStorage.setItem).mockImplementation((key, raw) =>
+    key === CHAPTER_ONE_STORAGE_KEY && rejectCampaignWrite ? Promise.reject(new Error('storage full')) : originalWrite(key, raw));
+  controller.runtime = recordGalleryDiscovery(controller.runtime, 'chromatic');
+  await act(() => {
+    latest!.onCheckpoint(createCheckpoint(controller.runtime));
+    latest!.onExit();
+  });
+  expect(await view.findByText('進行を保存できませんでした')).toBeTruthy();
+  expect(mockCanvasOwners.active).toBe(0);
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(originalRaw);
+  rejectCampaignWrite = false;
+  await fireEvent.press(view.getByRole('button', { name: '保存を再試行' }));
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).discoveryHistory)
+    .toEqual({ 'chapter-1-area-01': ['chromatic'] }));
+  expect(view.getByText('最後の退館者')).toBeTruthy();
+  jest.mocked(AsyncStorage.setItem).mockImplementation(originalWrite);
+});
+
+test('an unacknowledged opening beat survives a failed presentation write and an explicit retry', async () => {
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App/>);
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  await act(() => latest!.onValidatedEntry?.(latest!.checkpoint!));
+  expect(await view.findByText(CHAPTER_ONE_COPY.openingThought)).toBeTruthy();
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyFired)
+    .toContain('closing-interrupted'));
+  const originalWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
+  let rejectCampaignWrite = true;
+  jest.mocked(AsyncStorage.setItem).mockImplementation((key, raw) =>
+    key === CHAPTER_ONE_STORAGE_KEY && rejectCampaignWrite ? Promise.reject(new Error('storage full')) : originalWrite(key, raw));
+  await fireEvent.press(view.getByRole('button', { name: '点検を続ける' }));
+  expect(await view.findByText('進行を保存できませんでした')).toBeTruthy();
+  expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented).not.toContain('closing-interrupted');
+  rejectCampaignWrite = false;
+  await fireEvent.press(view.getByRole('button', { name: '保存を再試行' }));
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
+    .toContain('closing-interrupted'));
+  expect(view.queryByText('進行を保存できませんでした')).toBeNull();
+  jest.mocked(AsyncStorage.setItem).mockImplementation(originalWrite);
 });

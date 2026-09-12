@@ -18,6 +18,8 @@
 
 その後、Node/Jestのcampaign domain hostで新規sessionから5つの実controllerを順に操作する連続試験を追加した。標準はB→C、控えめはC→Bで成功し、隔離キーの引継ぎ、05停止checkpointの保存、屋外完了、各遷移後のJSON codec再parseを同一runIdで確認した。経路とrevisionは `docs/qa-goal013/natural-route-*.json` に記録した。さらに同じ経路をJestのApp hostへ接続し、各画面にマウントされたcontrollerの操作結果を同一App起動で画面leaseから保存した。標準/控えめの両方で5エリア完了、Canvas mock peak 1・終了後0、App再起動後のエンディング入口を確認した。実AsyncStorage、native Canvas/音、動画ではない。Appログは `docs/qa-goal013/app-natural-route-*.json`。
 
+途中checkpointと物語提示の書込失敗時に、Appがゲームを一時停止し、再試行と起動中のみ継続を明示する導線を追加した。JestのAsyncStorageモックで再試行失敗の反復、成功後の保存・再開、起動中だけの記録と元raw保持を確認した。書込を依頼した直後にホームへ退出しても、同じleaseの失敗通知と再試行をホームで受け取れるようにした。JestではCanvas owner 0・元raw保持・再試行後の保存を確認した。端末での実容量不足やnative Modalの重なりは未確認。
+
 05完了のenvelopeを保存した直後、エンディング画面の提示callbackを試験で抑えてAppをunmountし、cold起動で本編完了とエンディング入口が残ることを確認した。再表示時に未提示の正体・屋外beatを記録し、runId・完了エリア・最終措置が不変である。JestのAsyncStorageモックと検証済み05 checkpointを用いたhost試験であり、端末の強制終了試験ではない。
 
 停止後のbeatを読む前に屋外退館した場合、巡回体の正体の提示記録だけが未了で残る経路を修正した。エンディングに台帳の確定文と在館反応01→00を表示し、両beatの提示記録を保存する。App試験で表示・保存・cold再開を確認した。
@@ -26,4 +28,4 @@
 
 01〜03の変更前後動的QAでは、Goal 012のゲームソースと現ソースに同じseed・camera・入力を渡した。01は実App入口こそ旧Stage Selectと製品ホームで違うが、入室後の30旋回frame→実HUD非常灯操作→60無入力frameを比較した。seed73、camera行列90 frame、最終pose、非常灯の受理が一致し、Goal 013の目的文と新しい点検記録overlayの表示差を確認した。QA用Three hostは点灯後のprops更新で再構築している。02の長さ調整と03の灯り調整は、各timelineと独立Software WebGL動画がbyte一致した。左右同時の比較動画、SHA-256、ソース基準と観察限界は `docs/qa-goal013/area01-before-after.json` と `area02-03-before-after.json` に記録した。各経路は一操作に限る。エリア全体の実機見え方は未確認。
 
-最終ローカル自動検査：`npm run check` はlint・型検査・109スイート/1,109テスト・iOS production exportを通過した。lintは途中で一度配列型の表記警告を出したが、表記を修正して警告0を確認した。追加のsource map付きiOS/Android production exportでも5エリアとJS asset各10点を確認し、開発用6画面/probe/QA用経路は含まれない。実行時循環はiOS/Android/neutralとも222 production modules・682 runtime edges・0 SCC/0 errors。Stage Kit定義検査、`expo install --check`、Doctor 21/21も通過。`automatedChecksPassed=true` とし、上記の未実施を理由に `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+最終ローカル自動検査：`npm run check` はlint・型検査・109スイート/1,113テスト・iOS production exportを通過した。lintは途中で一度配列型の表記警告を出したが、表記を修正して警告0を確認した。追加のsource map付きiOS/Android production exportでも5エリアとJS asset各10点を確認し、開発用6画面/probe/QA用経路は含まれない。実行時循環はiOS/Android/neutralとも222 production modules・682 runtime edges・0 SCC/0 errors。Stage Kit定義検査、`expo install --check`、Doctor 21/21も通過。`automatedChecksPassed=true` とし、上記の未実施を理由に `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

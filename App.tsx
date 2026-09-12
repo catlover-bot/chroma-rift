@@ -60,6 +60,7 @@ type SimpleRun={checkpoint:CheckpointState;started:boolean;hasSave:boolean;needs
 type CampaignIntent = 'new' | 'continue' | 'import';
 type CampaignRun = { areaId: CampaignAreaId; checkpoint: CheckpointState; lease: number; token: number; replay: boolean };
 type PendingCampaignTransition = { candidate: ChapterOneSession; lease: number; token: number; status: 'saving' | 'failed' };
+type PendingCampaignCheckpointSave = { lease: number; runId: string; status: 'saving' | 'failed' };
 function initialSimpleRuns():Record<string,SimpleRun>{
   return Object.fromEntries(simpleVisible.map(stage=>{
     const module=stageModule(stage.id)!;
@@ -119,6 +120,8 @@ export default function App() {
   const campaignCleared = useRef<CheckpointState | undefined>(undefined);
   const [campaignTransition, setCampaignTransition] = useState<PendingCampaignTransition | undefined>();
   const campaignTransitionRef = useRef<PendingCampaignTransition | undefined>(undefined);
+  const [campaignCheckpointSave, setCampaignCheckpointSave] = useState<PendingCampaignCheckpointSave | undefined>();
+  const campaignCheckpointSaveRef = useRef<PendingCampaignCheckpointSave | undefined>(undefined);
   const [campaignSessionOnly, setCampaignSessionOnly] = useState(false);
   const campaignSessionOnlyRef = useRef(false);
   const campaignSaveTail = useRef<Promise<void>>(Promise.resolve());
@@ -222,15 +225,44 @@ export default function App() {
     campaignSaveTail.current = operation.then(() => undefined, () => undefined);
     return operation;
   };
+  const showCampaignCheckpointSave = (pending: PendingCampaignCheckpointSave | undefined) => {
+    campaignCheckpointSaveRef.current = pending;
+    setCampaignCheckpointSave(pending);
+  };
+  const recordCampaignSaveResult = (saved: boolean, candidate: ChapterOneSession, lease: number) => {
+    if (!isFirstPersonSessionCurrent(lease)) return;
+    if (saved) {
+      if (campaignCheckpointSaveRef.current?.runId === candidate.runId)
+        showCampaignCheckpointSave(undefined);
+      setCampaignMessage(undefined);
+    } else if (!campaignSessionOnlyRef.current) {
+      showCampaignCheckpointSave({ lease, runId: candidate.runId, status: 'failed' });
+      setCampaignMessage('進行を保存できませんでした。再試行するか、この起動中だけ続けられます。');
+    }
+  };
+  const retryCampaignCheckpointSave = async (pending: PendingCampaignCheckpointSave) => {
+    if (campaignCheckpointSaveRef.current?.runId !== pending.runId ||
+      !isFirstPersonSessionCurrent(pending.lease)) return;
+    showCampaignCheckpointSave({ ...pending, status: 'saving' });
+    await campaignSaveTail.current;
+    if (campaignCheckpointSaveRef.current?.runId !== pending.runId) return;
+    const latest = campaignRef.current;
+    if (!latest || latest.runId !== pending.runId) return;
+    const saved = await queueCampaignSave(latest, pending.lease);
+    if (campaignCheckpointSaveRef.current?.runId !== pending.runId ||
+      !isFirstPersonSessionCurrent(pending.lease)) return;
+    if (saved) { showCampaignCheckpointSave(undefined); setCampaignMessage(undefined); }
+    else {
+      showCampaignCheckpointSave({ ...pending, status: 'failed' });
+      setCampaignMessage('進行を保存できませんでした。再試行するか、この起動中だけ続けられます。');
+    }
+  };
   const applyCampaignStory = (candidate: ChapterOneSession, lease: number) => {
     if (candidate === campaignRef.current) return;
     campaignRef.current = candidate;
     setCampaign(candidate);
     if (campaignSessionOnlyRef.current) return;
-    void queueCampaignSave(candidate, lease).then(saved => {
-      if (isFirstPersonSessionCurrent(lease) && !saved)
-        setCampaignMessage('物語の記録を保存できませんでした。この起動中は保持しています。');
-    });
+    void queueCampaignSave(candidate, lease).then(saved => recordCampaignSaveResult(saved, candidate, lease));
   };
   const prepareCampaign = (intent: CampaignIntent) => {
     setCampaignIntent(intent);
@@ -276,6 +308,7 @@ export default function App() {
     campaignRef.current = candidate;
     setCampaign(candidate);
     setCampaignIntent(undefined);
+    showCampaignCheckpointSave(undefined);
     setCampaignMigration(undefined);
     setCampaignBlocked(undefined);
     setCampaignMessage(undefined);
@@ -306,6 +339,7 @@ export default function App() {
   const applyCampaignTransition = (candidate: ChapterOneSession, token: number, saved: boolean) => {
     campaignRef.current = candidate;
     setCampaign(candidate);
+    showCampaignCheckpointSave(undefined);
     campaignTransitionRef.current = undefined;
     setCampaignTransition(undefined);
     campaignCleared.current = undefined;
@@ -489,6 +523,7 @@ export default function App() {
     campaignRef.current = undefined; setCampaign(undefined); setCampaignLoading(false);
     setCampaignBlocked(undefined); setCampaignMessage(undefined); setCampaignMigration(undefined);
     setCampaignRun(undefined); campaignTransitionRef.current = undefined; setCampaignTransition(undefined);
+    showCampaignCheckpointSave(undefined);
     setCampaignDiscoveries(false); setCampaignAreas(false);
     campaignSessionOnlyRef.current = false; setCampaignSessionOnly(false);
     setJournal(emptyJournal()); setJournalMessage(undefined); setReplayPending(false); setLegacyBlocked(false);
@@ -555,6 +590,7 @@ export default function App() {
     screen = !area ? <Screen><Text style={styles.replayBody}>エリアを読み込めませんでした。</Text><ActionButton label="ホームへ戻る" onPress={navigateHome}/></Screen> :
       <NativeFirstPersonGate
         key={`campaign-${run.areaId}-${run.token}`} scene="chapter" chapterId={area.stageId}
+        pauseForCampaignSave={!!campaignCheckpointSave}
         storyBeat={!run.replay ? CHAPTER_ONE_BEATS.find(beat => campaign?.storyFired.includes(beat.id) && !campaign.storyPresented.includes(beat.id)) : undefined}
         onStoryPresented={beat => {
           if (!current() || run.replay) return;
@@ -598,7 +634,7 @@ export default function App() {
                 campaignRef.current = update.session;
                 setCampaign(update.session);
                 if (!campaignSessionOnlyRef.current) void queueCampaignSave(update.session, run.lease).then(saved => {
-                  if (current() && !saved) setCampaignMessage('発見の記録を保存できませんでした。この起動中は保持しています。');
+                  recordCampaignSaveResult(saved, update.session, run.lease);
                 });
               }
             } else if (area.stageId === 'perception-gallery-v1' || area.stageId === 'uncanny-vault-v1' || area.stageId === 'shadow-theatre-v1') {
@@ -619,8 +655,7 @@ export default function App() {
           setCampaign(update.session);
           if (campaignSessionOnlyRef.current) return;
           void queueCampaignSave(update.session, run.lease).then(saved => {
-            if (!current()) return;
-            setCampaignMessage(saved ? undefined : '進行を保存できませんでした。この起動中は続けられます。');
+            recordCampaignSaveResult(saved, update.session, run.lease);
           });
         }}
         onComplete={summary => {
@@ -829,6 +864,16 @@ export default function App() {
             <Text style={styles.replayBody}>再試行するか、この起動中だけ次へ進めます。</Text>
             <ActionButton label="保存を再試行" variant="primary" onPress={() => { const pending = campaignTransitionRef.current; if (pending) void commitCampaignTransition(pending); }}/>
             <ActionButton label="この起動中だけ続ける" onPress={() => { const pending = campaignTransitionRef.current; if (pending) applyCampaignTransition(pending.candidate, pending.token, false); }}/>
+          </>}
+        </View> : campaignCheckpointSave ? <View style={styles.campaignOverlay} accessibilityViewIsModal>
+          <Text style={styles.replayTitle}>{campaignCheckpointSave.status === 'saving' ? '進行を保存しています…' : '進行を保存できませんでした'}</Text>
+          {campaignCheckpointSave.status === 'saving' ? <ActivityIndicator color={UI_COLORS.text}/> : <>
+            <Text style={styles.replayBody}>現在の進行はこの起動中に保持しています。保存を再試行できます。</Text>
+            <ActionButton label="保存を再試行" variant="primary" onPress={() => void retryCampaignCheckpointSave(campaignCheckpointSave)}/>
+            <ActionButton label="この起動中だけ続ける" onPress={() => {
+              campaignSessionOnlyRef.current = true; setCampaignSessionOnly(true);
+              showCampaignCheckpointSave(undefined); setCampaignMessage(undefined);
+            }}/>
           </>}
         </View> : null}
       </View>

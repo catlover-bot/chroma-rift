@@ -2,6 +2,8 @@
 
 **以下は実施待ち。** Goal 013はexpo 57.0.22とnative Expoモジュールの推奨パッチ、1.0.0、preview/production設定を変更した。従来のDevelopment BuildやMetroでのJS更新を、新しい配布バイナリの確認と扱わない。EAS Build、Apple認証、TestFlightアップロードはこのローカル作業では行っていない。[公開ゲート](RELEASE-CHAPTER-1.md)を先に読む。
 
+保存失敗の端末確認では、通常checkpointと物語提示で再試行/起動中のみの選択肢、危険停止、実保存と画面表示の一致を確認する。端末のデータを意図的に壊さず、再現可能な条件でのみ行う。
+
 [JestのApp経路ログ](qa-goal013/app-natural-route-standard-cold.json) には、4回のエリア遷移後cold restore、10回の再入場、05→01逆順replayを記録した。これはnative Canvas・実AsyncStorage・音ownerを使わないため、以下の端末手順はすべて未実施のまま。
 
 1. 端末の既存CHROMA RIFTを消さず、旧セーブのキー・章・設定・発見を記録する。同じ `com.hirotakam.chromarift` のpreviewで上書きした後、旧原文を保持した移行候補と継続を確認する。遠隔EAS buildNumberと配布済み番号を照合してからビルドする。

@@ -56,6 +56,7 @@ export type FirstPersonScreenProps = {
   storyBeat?: ReturnType<typeof chapterOneBeat>;
   onStoryPresented?: (beat: ChapterOneBeatId) => void;
   onCampaignNoiseObserved?: () => void;
+  pauseForCampaignSave?: boolean;
   onRestart: () => void;
   onExit: () => void;
   scene?: 'chapter' | 'lab';
@@ -79,7 +80,7 @@ export function FirstPersonScreen(props: FirstPersonScreenProps) {
   return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors} onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
 }
 
-function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
+function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, pauseForCampaignSave = false, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
   startCheckpoint: CheckpointState | undefined; attempt: number; renderMode: RecoveryScene; neutralColors: boolean;
   onColorChange: (neutral: boolean) => void;
   onSessionChange: (checkpoint: CheckpointState, mode: RecoveryScene, retry: boolean) => void;
@@ -207,6 +208,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     publish(controllerSnapshot(controller));
     if (scene === 'chapter' && renderMode === 'chapter') onCheckpoint(createCheckpoint(controller.runtime));
   }, [controller, onCheckpoint, publish, renderMode, scene]);
+  useEffect(() => {
+    if (pauseForCampaignSave && !controller.runtime.paused) pause();
+  }, [controller, pause, pauseForCampaignSave]);
   const notebookPreview = useCallback((preview: NotebookPreview) => {
     if (!mounted.current || failed.current) return;
     if (setControllerNotebookPreview(controller, preview)) setSnapshot(controllerSnapshot(controller));
@@ -432,7 +436,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       if (mounted.current) setCopyStatus('診断をコピーしました。外部へ送信していません。');
     } catch { if (mounted.current) setCopyStatus('コピーできませんでした。診断はこの画面で確認できます。'); }
   };
-  const diagnostics = __DEV__ ? <Modal visible={showDiagnostics} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
+  const diagnostics = __DEV__ ? <Modal visible={showDiagnostics && !pauseForCampaignSave} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
     <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
       <Heading>描画の診断</Heading>
       <ScrollView contentContainerStyle={styles.menuContent}>
@@ -572,7 +576,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       <Text style={styles.storyText}>{chapterOneBeat(visibleStoryBeat)!.text}</Text>
       <ActionButton label="点検を続ける" onPress={acknowledgeStory} />
     </View> : null}
-    <Modal visible={!!visibleStoryBeat && visibleStoryBeat !== 'closing-interrupted'} transparent animationType="none" onRequestClose={acknowledgeStory}>
+    <Modal visible={!!visibleStoryBeat && visibleStoryBeat !== 'closing-interrupted' && !pauseForCampaignSave} transparent animationType="none" onRequestClose={acknowledgeStory}>
       <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
         <Heading>点検記録</Heading>
         <Body>{chapterOneBeat(visibleStoryBeat)?.text}</Body>
@@ -580,7 +584,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
         <ActionButton label="探索へ戻る" onPress={acknowledgeStory} variant="primary" />
       </View></View>
     </Modal>
-    <Modal visible={paused && !showDiagnostics && !notesOpen && !visibleStoryBeat} transparent animationType="none" onRequestClose={resume}>
+    <Modal visible={paused && !showDiagnostics && !notesOpen && !visibleStoryBeat && !pauseForCampaignSave} transparent animationType="none" onRequestClose={resume}>
       <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
         <Heading>{menu === 'pause' ? 'ひと休み' : menu === 'hints' ? 'ヒント' : '操作と快適設定'}</Heading>
         <ScrollView contentContainerStyle={styles.menuContent}>
@@ -644,7 +648,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
         </ScrollView>
       </View></View>
     </Modal>
-    <Modal visible={notesOpen} transparent animationType="none" onRequestClose={closeNotes}>
+    <Modal visible={notesOpen && !pauseForCampaignSave} transparent animationType="none" onRequestClose={closeNotes}>
       {notesOpen && progress.theatre ? <TheatreNotebook progress={progress.theatre} completed={progress.cleared} onClose={closeNotes} /> : null}
       {notesOpen && progress.vault ? <VaultNotebook progress={progress.vault} completed={progress.cleared} onClose={closeNotes} {...(vaultComparisons ? { comparisons: vaultComparisons } : {})} onComparisonsChange={setVaultComparisons} /> : null}
       {notesOpen && progress.gallery ? <DiscoveryNotebook {...(notebookSelection ? { initialSelection: notebookSelection } : {})} comparisons={notebookComparisons} onComparisonsChange={setNotebookComparisons} progress={progress.gallery} completed={progress.cleared} settings={settings} onSettingsChange={onSettingsChange}
