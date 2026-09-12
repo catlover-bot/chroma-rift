@@ -13,7 +13,9 @@ export const FIGURE_CENTER = { x: 0, y: 1.95, z: 0.4 } as const;
 export const KEY_CENTER = { x: 0, y: 1.35, z: 0.43 } as const;
 export const PRACTICE_CENTER = { x: -2.45, y: 1.4, z: 7.5 } as const;
 export const WINCH_CENTER = { x: -2.45, y: 1.4, z: 11.3 } as const;
-export const MIRROR_CENTER = { x: 2.65, y: 1.7, z: 11.4 } as const;
+// Beside the winch, in the same forward view while its hold pointer owns look.
+// The east-facing plane reflects the north corridor behind that work surface.
+export const MIRROR_CENTER = { x: -2.65, y: 1.9, z: 11.4 } as const;
 export const GATE_Z = 17.2;
 export const RATCHET_SECONDS = 2;
 export const RATCHET_COUNT = 3;

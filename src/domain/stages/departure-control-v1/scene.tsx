@@ -49,11 +49,11 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
   </group>;
   return <group name="departure-control-v1" dispose={null}>
     <ambientLight intensity={1.05}/><directionalLight intensity={.8} position={[-2,4,6]}/>
-    {world.floors.map(f => <mesh key={f.id} geometry={resources.box} material={resources.floor}
+    {world.floors.map(f => <mesh key={f.id} geometry={resources.box} material={f.id === 'outdoor-paving' ? resources.quiet : resources.floor}
       position={[(f.minX+f.maxX)/2,-.1,(f.minZ+f.maxZ)/2]} scale={[f.maxX-f.minX,.2,f.maxZ-f.minZ]}/>)}
     {world.solids.filter(s => s.id !== 'departure-actor-body').map(s => <mesh name={s.id} key={s.id}
       {...(s.id === 'containment-door' ? { ref: containmentDoor } : s.id === 'staff-door' ? { ref: staffDoor } : {})}
-      geometry={resources.box} material={s.id === 'control-bay-window' ? glass : s.kind === 'door' ? resources.door : resources.wall}
+      geometry={resources.box} material={s.opaque === false ? glass : s.kind === 'door' ? resources.door : resources.wall}
       position={[(s.min.x+s.max.x)/2,(s.min.y+s.max.y)/2,(s.min.z+s.max.z)/2]}
       scale={[s.max.x-s.min.x,s.max.y-s.min.y,s.max.z-s.min.z]}/>)}
     {world.interactables.map(t => <mesh key={t.id} name={t.id}
@@ -73,6 +73,16 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     </group>
     <mesh name="outdoor-threshold" geometry={resources.box} material={resources.neutral}
       position={[-3.75,.02,22.15]} scale={[2,.04,.18]}/>
+    <mesh name="outdoor-walkway" geometry={resources.box} material={resources.trim}
+      position={[-3.75,.015,24.05]} scale={[1.55,.03,3.6]}/>
+    <mesh name="courtyard-planter-left" geometry={resources.box} material={resources.wall}
+      position={[-1.25,.3,24.7]} scale={[1.8,.6,.8]}/>
+    <mesh name="courtyard-planter-right" geometry={resources.box} material={resources.wall}
+      position={[2.8,.3,24.7]} scale={[1.8,.6,.8]}/>
+    <mesh name="courtyard-lamp-post" geometry={resources.cylinder} material={resources.trim}
+      position={[1.1,1.65,25.3]} scale={[.07,1.65,.07]}/>
+    <mesh name="courtyard-lamp" geometry={resources.box} material={resources.neutral}
+      position={[1.1,3.3,25.3]} scale={[.42,.18,.42]}/>
     <mesh name="containment-door-marker" geometry={resources.box} material={resources.trim}
       position={[2.55,3.45,CONTAINMENT_DOOR_Z]} scale={[3.7,.12,.2]}/>
     <mesh name="staff-exit-marker" geometry={resources.box} material={resources.trim}

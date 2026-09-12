@@ -241,7 +241,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       failed.current || renderMode !== 'chapter' || scene !== 'chapter' || snapshot.runtime.progress.cleared) return;
     setVisibleStoryBeat(storyBeat.id);
     if (storyBeat.id !== 'closing-interrupted') pause();
-  }, [appActive, error, notesOpen, pause, paused, ready, renderMode, scene, showDiagnostics, snapshot.runtime.progress.cleared, storyBeat?.id, visibleStoryBeat]);
+  }, [appActive, error, notesOpen, pause, paused, ready, renderMode, scene, showDiagnostics, snapshot.runtime.progress.cleared, storyBeat, visibleStoryBeat]);
   const acknowledgeStory = () => {
     if (!visibleStoryBeat) return;
     const acknowledged = visibleStoryBeat;

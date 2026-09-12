@@ -27,10 +27,13 @@ export function stageWorld(doorProgress = 0, staffDoorOpened = false, actorPosit
   const containmentBottom = 3.5 * (1 - closed);
   const staffBottom = staffDoorOpened ? 3.6 : 0;
   return { chapterId: STAGE_ID, variant: 'entrance',
-    floors: [{ id: 'control-floor', minX: -5, maxX: 5, minZ: -3, maxZ: 24 }],
+    floors: [{ id: 'control-floor', minX: -5, maxX: 5, minZ: -3, maxZ: 22.2 },
+      { id: 'outdoor-paving', minX: -5, maxX: 5, minZ: 22.2, maxZ: 26 }],
     solids: [
-      wall('outer-west', -5.15, -5, -3, 24), wall('outer-east', 5, 5.15, -3, 24),
-      wall('outer-south', -5, 5, -3.15, -3), wall('outer-north', -5, 5, 24, 24.15),
+      wall('outer-west', -5.15, -5, -3, 22.25), wall('outer-east', 5, 5.15, -3, 22.25),
+      wall('outer-south', -5, 5, -3.15, -3),
+      wall('building-front-west', -5, -4.2, 22.1, 22.25),
+      wall('building-front-east', -3.2, 5, 22.1, 22.25),
       // Two routes around the central baffle reunite before containment.
       wall('route-baffle', -.27, .27, 3.1, 8.2),
       wall('control-bay-south-west', -5, -4.1, 8, 8.18),
@@ -40,9 +43,12 @@ export function stageWorld(doorProgress = 0, staffDoorOpened = false, actorPosit
       wall('control-bay-north-east', -3.24, -2.35, 13.9, 14.08),
       { id: 'staff-door', min: { x: -4.16, y: staffBottom, z: 13.9 },
         max: { x: -3.24, y: staffBottom + 3.5, z: 14.08 }, kind: 'door', opaque: true },
-      wall('containment-west-approach', -2.35, .8, CONTAINMENT_DOOR_Z, 15.18),
+      // Fixed observation panes remain solid for bodies. Their non-opaque
+      // world flag also lets the actor and player see through the same glass.
+      wall('containment-observation-approach', -2.35, .8, CONTAINMENT_DOOR_Z, 15.18, false),
       wall('containment-east-approach', 4.3, 5, CONTAINMENT_DOOR_Z, 15.18),
-      wall('containment-west', .62, .8, 15.18, 20.5), wall('containment-east', 4.3, 4.48, 15.18, 20.5),
+      wall('containment-observation-window', .62, .8, 15.18, 20.5, false),
+      wall('containment-east', 4.3, 4.48, 15.18, 20.5),
       wall('containment-north', .62, 4.48, 20.3, 20.5),
       { id: 'containment-door', min: { x: .8, y: containmentBottom, z: CONTAINMENT_DOOR_Z },
         max: { x: 4.3, y: containmentBottom + 3.5, z: 15.18 }, kind: 'door', opaque: true },

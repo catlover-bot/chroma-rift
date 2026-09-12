@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property -- R3F Three.js intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
-import { DoubleSide, MeshBasicMaterial, Shape, ShapeGeometry, type Mesh } from 'three';
+import { DoubleSide, Frustum, Matrix4, MeshBasicMaterial, Shape, ShapeGeometry, type Mesh } from 'three';
 import type { ChapterRuntime, WorldGeometry } from '../../firstPerson/types';
 import { createPlanarMirror, type OffscreenDraw } from '../../../rendering/firstPerson/planarMirror';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
@@ -27,6 +27,7 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
   renderOffscreen?:OffscreenDraw|undefined;onFrameError?:((error:unknown)=>void)|undefined}){
   const gate=useRef<Mesh>(null),key=useRef<Mesh>(null),mirrorMesh=useRef<Mesh>(null);
   const mirror=useMemo(()=>createPlanarMirror(),[]);
+  const mirrorFrustum=useMemo(()=>new Frustum(),[]),projectionView=useMemo(()=>new Matrix4(),[]);
   const shape=useMemo(()=>profileGeometry(),[]),faceMaterial=useMemo(()=>new MeshBasicMaterial({color:'#bebfb4',side:DoubleSide}),[]);
   useEffect(()=>()=>{shape.dispose();faceMaterial.dispose();mirror.dispose();},[shape,faceMaterial,mirror]);
   useFrame(()=>{
@@ -38,6 +39,12 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
   useFrame(state=>{
     if(!mirrorMesh.current)return;
     try {
+      // Skip an offscreen mirror entirely. The first visible frame draws a new
+      // reflection before the main pass, so it never presents stale danger.
+      state.camera.updateMatrixWorld(true);
+      mirrorMesh.current.updateWorldMatrix(true,false);
+      mirrorFrustum.setFromProjectionMatrix(projectionView.multiplyMatrices(state.camera.projectionMatrix,state.camera.matrixWorldInverse));
+      if(!mirrorFrustum.intersectsObject(mirrorMesh.current))return;
       if(!renderOffscreen)throw new Error('Mirror scene has no offscreen native Canvas draw');
       mirror.render(state.gl,state.scene,state.camera as import('three').PerspectiveCamera,mirrorMesh.current,renderOffscreen);
     } catch(error) {
@@ -57,12 +64,12 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       <mesh name="right-profile" geometry={shape} material={faceMaterial} scale={[-1,1,1]}/>
     </group>
     <mesh name="isolation-key" ref={key} geometry={resources.box} material={resources.neutral} position={[KEY_CENTER.x,KEY_CENTER.y,KEY_CENTER.z-.1]} scale={[.16,.42,.08]}/>
-    <group position={[MIRROR_CENTER.x,MIRROR_CENTER.y,MIRROR_CENTER.z]} rotation={[0,-Math.PI/3,0]}>
-      <mesh name="planar-mirror" ref={mirrorMesh} geometry={resources.plane} material={mirror.material} scale={[1.7,2,1]}/>
-      <mesh name="mirror-frame-top" geometry={resources.box} material={resources.trim} position={[0,1.06,0]} scale={[1.85,.11,.12]}/>
-      <mesh name="mirror-frame-bottom" geometry={resources.box} material={resources.trim} position={[0,-1.06,0]} scale={[1.85,.11,.12]}/>
-      <mesh name="mirror-frame-left" geometry={resources.box} material={resources.trim} position={[-.91,0,0]} scale={[.11,2.1,.12]}/>
-      <mesh name="mirror-frame-right" geometry={resources.box} material={resources.trim} position={[.91,0,0]} scale={[.11,2.1,.12]}/>
+    <group position={[MIRROR_CENTER.x,MIRROR_CENTER.y,MIRROR_CENTER.z]} rotation={[0,1.32,0]}>
+      <mesh name="planar-mirror" ref={mirrorMesh} geometry={resources.plane} material={mirror.material} scale={[1.2,1.2,1]}/>
+      <mesh name="mirror-frame-top" geometry={resources.box} material={resources.trim} position={[0,.65,0]} scale={[1.3,.08,.1]}/>
+      <mesh name="mirror-frame-bottom" geometry={resources.box} material={resources.trim} position={[0,-.65,0]} scale={[1.3,.08,.1]}/>
+      <mesh name="mirror-frame-left" geometry={resources.box} material={resources.trim} position={[-.65,0,0]} scale={[.08,1.3,.1]}/>
+      <mesh name="mirror-frame-right" geometry={resources.box} material={resources.trim} position={[.65,0,0]} scale={[.08,1.3,.1]}/>
     </group>
     <mesh name="mirror-landmark" geometry={resources.box} material={resources.neutral} position={[1.05,1.5,14.25]} scale={[.22,.22,.22]}/>
     <GalleryActor name="mirror-corridor-actor" runtime={runtime} resources={resources} reducedMotion={false} framePriority={-.4}

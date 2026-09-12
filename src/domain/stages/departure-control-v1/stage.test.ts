@@ -1,4 +1,4 @@
-import { isSafePose } from '../../firstPerson/geometry';
+import { isSafePose, segmentOccluded } from '../../firstPerson/geometry';
 import { vaultActorEdgeOpen } from '../../vault/actorPolicy';
 import { actorFullyContained, BELL_RECEIVER, CONTROL_SAFE, doorSweepClear, stageWorld } from './definition';
 import { carriedKeyEntry, advanceStage, checkpointStage, commandStage, createStageSession } from './session';
@@ -13,6 +13,14 @@ test('control bay, both patrol lanes, and independent staff route have physical 
   expect(vaultActorEdgeOpen({ x: 2.4, y: 0, z: 14 }, { x: 2.4, y: 0, z: 17 }, stageWorld(1))).toBe(false);
   expect(vaultActorEdgeOpen({ x: -3.7, y: 0, z: 13.2 }, { x: -3.7, y: 0, z: 16 }, stageWorld(1, false))).toBe(false);
   expect(vaultActorEdgeOpen({ x: -3.7, y: 0, z: 13.2 }, { x: -3.7, y: 0, z: 16 }, stageWorld(1, true))).toBe(true);
+});
+
+test('control-bay glass exposes the contained body while outdoor completion lies beyond the facade', () => {
+  const world = stageWorld(0, true);
+  expect(segmentOccluded({ x: -3.75, y: 1.6, z: 12 }, { x: 2.36, y: 1.6, z: 16.5 }, world)).toBe(false);
+  expect(isSafePose({ position: { x: .7, y: 1.6, z: 16.5 }, yaw: Math.PI, pitch: 0 }, world)).toBe(false);
+  expect(isSafePose({ position: { x: -3.75, y: 1.6, z: 22.45 }, yaw: Math.PI, pitch: 0 }, world)).toBe(true);
+  expect(world.floors.some(floor => floor.id === 'outdoor-paving' && floor.minZ < 22.45)).toBe(true);
 });
 
 test('only a carried key enables the control sequence; one accepted bell has one remote noise source', () => {

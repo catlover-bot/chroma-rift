@@ -1,0 +1,16 @@
+{
+  "maxMainCalls": 49,
+  "maxOffscreenCalls": 42,
+  "maxTriangles": 3548,
+  "reflectedFrames": 132,
+  "targetSize": [
+    384,
+    384
+  ],
+  "disposed": {
+    "geometries": 0,
+    "textures": 0,
+    "renderers": 1
+  },
+  "errors": []
+}

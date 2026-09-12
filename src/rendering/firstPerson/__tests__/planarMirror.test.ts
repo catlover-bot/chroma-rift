@@ -26,13 +26,13 @@ function rendererStub() {
 test.each([false, true])('planar reflection restores target, viewport, scissor and mirror on draw failure=%s', fails => {
   const mirror = createPlanarMirror(256);
   const surface = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mirror.material);
-  surface.position.set(2.65, 1.7, 11.4);
-  surface.rotation.y = -Math.PI / 3;
+  surface.position.set(-2.65, 1.9, 11.4);
+  surface.rotation.y = 1.32;
   const scene = new THREE.Scene();
   scene.add(surface);
   const camera = new THREE.PerspectiveCamera(65, 390 / 740, .08, 60);
-  camera.position.set(-2.45, 1.6, 11.3);
-  camera.rotation.set(0, Math.PI / 2, 0, 'YXZ');
+  camera.position.set(-1.433, 1.6, 10.866);
+  camera.rotation.set(-.16, 1.9744, 0, 'YXZ');
   camera.updateMatrixWorld(true);
   const stub = rendererStub();
   const before = stub.current();

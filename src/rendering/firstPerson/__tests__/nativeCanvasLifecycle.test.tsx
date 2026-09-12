@@ -114,7 +114,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
 
   it('renders the mirror offscreen before one native presentation and releases its target on exit', async () => {
     const controller = createController(undefined, false, true, 'mirror-corridor-v1');
-    controller.runtime.pose = { position: { x: -2.45, y: 1.6, z: 11.3 }, yaw: Math.PI / 2, pitch: 0 };
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
     const view = await render(<FirstPersonCanvas {...current} />);
     try {
@@ -142,9 +142,27 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     } finally { if (_roots.size) await view.unmount(); }
   });
 
+  it('skips a hidden mirror and refreshes it on the first visible native frame', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { ...controller.runtime.pose, yaw: 0 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      expect(renderer.draw).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics.offscreenPasses).toBe(0);
+      controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+      await submitFrame(renderer, 2);
+      expect(renderer.draw).toHaveBeenCalledTimes(3);
+      expect(controller.diagnostics.offscreenPasses).toBe(1);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(2);
+    } finally { await view.unmount(); }
+  });
+
   it('fails the mirror frame without presenting a stale main pass after offscreen draw failure', async () => {
     const controller = createController(undefined, false, true, 'mirror-corridor-v1');
-    controller.runtime.pose = { position: { x: -2.45, y: 1.6, z: 11.3 }, yaw: Math.PI / 2, pitch: 0 };
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
     const view = await render(<FirstPersonCanvas {...current} />);
     try {

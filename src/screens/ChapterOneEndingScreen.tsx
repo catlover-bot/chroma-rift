@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ActionButton, Screen } from '../components/Layout';
 import { CHAPTER_ONE } from '../domain/campaign/definition';
@@ -7,7 +7,9 @@ import { MATERIAL_CREDITS } from '../content/illusionNotes';
 import { UI_COLORS } from '../theme/ui';
 
 export function ChapterOneEndingScreen({ onHome, onAreas, onDiscoveries, onShown }: { onHome: () => void; onAreas: () => void; onDiscoveries: () => void; onShown?: () => void }) {
-  useEffect(() => { onShown?.(); }, []);
+  const onShownRef = useRef(onShown);
+  useEffect(() => { onShownRef.current = onShown; }, [onShown]);
+  useEffect(() => { onShownRef.current?.(); }, []);
   return <Screen>
     <Text style={styles.brand}>CHROMA RIFT</Text>
     <View style={styles.rule}/>

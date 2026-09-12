@@ -1,0 +1,10 @@
+{
+  "maxCalls": 44,
+  "maxTriangles": 3534,
+  "disposed": {
+    "geometries": 0,
+    "textures": 0,
+    "renderers": 1
+  },
+  "errors": []
+}

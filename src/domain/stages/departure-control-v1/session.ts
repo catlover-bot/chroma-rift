@@ -118,7 +118,7 @@ export function commandStage(session: StageSession, command: StageCommand): Comm
   if (command.type === 'open-staff-door' && command.targetId === 'departure-staff-door')
     return session.stopped && !session.staffDoorOpened ? accept({ staffDoorOpened: true }) : refuse('prerequisiteMissing', consumed);
   if (command.type === 'outdoor-exit' && command.targetId === 'departure-outdoor')
-    return session.stopped && session.staffDoorOpened && session.pose.position.z >= 21.2
+    return session.stopped && session.staffDoorOpened && session.pose.position.z >= 22.35
       ? accept({ cleared: true, pose: { ...OUTDOOR, position: { ...OUTDOOR.position } } }) : refuse('prerequisiteMissing', consumed);
   return refuse('wrong-target', consumed);
 }
