@@ -14,7 +14,7 @@
 
 04標準では、鍵と練習をcodecで検証した途中入口から衝突付きの実controller操作で保持中に捕捉され、保持指の解放barrier、鍵・歯止め保持、safe pose、cold復元後の格子通過・出口を確認した。これは全章経路・動画ではない。
 
-04単独では実controllerの歩行・照準・鍵取得・保持三段・途中退避・物理格子通過を行った。保持中の実カメラで鏡内の巡回体を見られない配置だったため、鏡を巻上機の傍に移し、画面外では反射passを省いて最初の可視frameで更新するようにした。05単独では、鍵を持った有効入口から実controllerの旋回・歩行で装置を順に操作し、ベルによる全身収容、観察窓からの確認、隔離、停止、屋外床への歩行と退館まで通した。初回Software WebGL動画で身体が壁に隠れる問題が見つかり、衝突を保つ観察窓と屋外の建物境界・床を追加した。さらに同じ実controllerの衝突付き歩行経路で、早すぎる閉扉の拒否→ベル誘導→閉鎖途中の手動開け直し→再誘導→隔離・停止・屋外まで通し、開け直し状態のcodec復元も検査した。この復旧経路は動画ではない。両動画と環境/計測は `docs/qa-goal013/README.md`。04と05は別実行であり、05の入口は04の鍵をcodecで構築した。native preview、実音・実HUDを伴う01→05連続プレイは引き続き未確認。
+04単独では実controllerの歩行・照準・鍵取得・保持三段・途中退避・物理格子通過を行った。保持中の実カメラで鏡内の巡回体を見られない配置だったため、鏡を巻上機の傍に移し、画面外では反射passを省いて最初の可視frameで更新するようにした。05単独では、鍵を持った有効入口から実controllerの旋回・歩行で装置を順に操作し、ベルによる全身収容、観察窓からの確認、隔離、停止、屋外床への歩行と退館まで通した。初回Software WebGL動画で身体が壁に隠れる問題が見つかり、衝突を保つ観察窓と屋外の建物境界・床を追加した。さらに同じ実controllerの衝突付き歩行経路で、早すぎる閉扉の拒否→ベル誘導→閉鎖途中の手動開け直し→再誘導→隔離・停止・屋外まで通し、開け直し状態のcodec復元も検査した。この復旧経路も単独のSoftware WebGL動画へ収録した。動画と環境/計測は `docs/qa-goal013/README.md`。04と05は別実行であり、05の入口は04の鍵をcodecで構築した。native preview、実音・実HUDを伴う01→05連続プレイは引き続き未確認。
 
 その後、Node/Jestのcampaign domain hostで新規sessionから5つの実controllerを順に操作する連続試験を追加した。標準はB→C、控えめはC→Bで成功し、隔離キーの引継ぎ、05停止checkpointの保存、屋外完了、各遷移後のJSON codec再parseを同一runIdで確認した。経路とrevisionは `docs/qa-goal013/natural-route-*.json` に記録した。さらに同じ経路をJestのApp hostへ接続し、各画面にマウントされたcontrollerの操作結果を同一App起動で画面leaseから保存した。標準/控えめの両方で5エリア完了、Canvas mock peak 1・終了後0、App再起動後のエンディング入口を確認した。実AsyncStorage、native Canvas/音、動画ではない。Appログは `docs/qa-goal013/app-natural-route-*.json`。
 
@@ -37,3 +37,5 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 05では点検手順を読んだことがcheckpointに残っても、確認文の提示前に屋外を越える速い経路がある。完了envelopeの保存は遅らせず、未提示の `containment-bell` をエンディングの点検手順欄に一度表示し、正体・屋外の二beatとともに提示bitを保存する。App hostの標準・控えめ自然経路と、結末表示前にunmountするcold試験で文面・保存・再表示時の非反復を確認した。native画面での表示順は未確認。
 
 最終ローカル自動検査：再開始の確認文修正後の `npm run check` はlint・型検査・109スイート/1,118テスト・iOS production exportを通過した。lintは途中で一度配列型の表記警告を出したが、表記を修正して警告0を確認した。最終コードのsource map付きiOS/Android production exportでも5エリアとJS asset各10点を確認し、開発用6画面/probe/QA用経路は含まれない。実行時循環はiOS/Android/neutralとも222 production modules・682 runtime edges・0 SCC/0 errors。Stage Kit定義検査も今回通過した。依存変更前から通過している `expo install --check` とDoctor 21/21は今回再実行していない。`automatedChecksPassed=true` とし、上記の未実施を理由に `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
+05復旧の動画QAを追加した。前倒し閉扉の実command拒否、扉が動き始めてからの手動開け直し、巡回体が収容区画から外側通路へ戻ること、`return` phaseから二度目の鈴で `investigate` へ移ること、再収容・再閉鎖・停止・屋外完了を同じ実controller/StageSceneの一実行で確認した。390×844、10fps、365枚、動画36.5秒、simulation30.02秒。自然成功経路も同じ更新後のscriptで182枚・18.2秒として再収録した。両方のSoftware WebGLで最大46 draw calls/3,578 triangles、終了時geometries/textures 0、browser errors 0。接触シートと抽出PNGは開いて確認したが、MP4の連続視聴・実音・native Canvas/製品HUD・iPhoneの操作/知覚/FPS/発熱は未確認。QA scriptと記録以外に製品コードを変更していないため、先の全Jest・exportの合格範囲は変わらない。個別の成果物・hashは `docs/qa-goal013/README.md`。

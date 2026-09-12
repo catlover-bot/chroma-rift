@@ -5,7 +5,9 @@
 // The native Canvas, HUD, audio and chapter-01→04 handoff are outside this QA.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/departure-natural');
+const recovery = process.argv.includes('--recovery');
+if (process.argv.slice(2).some(argument => argument !== '--recovery')) throw Error('usage: node scripts/qa-departure-natural.cjs [--recovery]');
+const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013', recovery ? 'departure-recovery' : 'departure-natural');
 fs.mkdirSync(out, { recursive: true });
 const bridge = installSourceBridge(root), React = require('react'), THREE = require('three');
 const RC = require('../src/rendering/firstPerson/runtimeController.ts');
@@ -13,7 +15,7 @@ const { createSceneResources } = require('../src/rendering/firstPerson/resources
 const { StageScene } = require('../src/domain/stages/departure-control-v1/scene.tsx');
 const { stageModule } = require('../src/domain/stageKit/modules.ts');
 const { carriedKeyEntry, isStageSession } = require('../src/domain/stages/departure-control-v1/session.ts');
-const { actorFullyContained, doorSweepClear } = require('../src/domain/stages/departure-control-v1/definition.ts');
+const { actorFullyContained, doorSweepClear, BELL_RECEIVER } = require('../src/domain/stages/departure-control-v1/definition.ts');
 
 async function extract() {
   const module = stageModule('departure-control-v1');
@@ -73,24 +75,75 @@ async function extract() {
     runtime.current = controller.runtime;
     callbacks.forEach(callback => callback({}, 0)); capture();
   };
+  const lookAt = target => {
+    const player = controller.runtime.pose.position;
+    turn(Math.atan2(-(target.x - player.x), -(target.z - player.z)),
+      Math.atan2((target.y ?? 1.6) - player.y, Math.hypot(target.x - player.x, target.z - player.z)));
+  };
+  const lookAtActor = () => lookAt(state().actor.motion.position);
   callbacks.forEach(callback => callback({}, 0)); scene.updateMatrixWorld(true);
   fs.writeFileSync(path.join(out, 'scene.json'), JSON.stringify(scene.toJSON())); capture();
   walkTo(9); press('departure-key', '隔離キーを差す');
   walkTo(10); press('departure-procedure', '点検手順を読む');
-  walkTo(11); press('departure-bell', '収容区画の呼び鈴');
-  let wait = 0;
-  while (!(actorFullyContained(state().actor.motion.position) && doorSweepClear(state().actor.motion.position)) && wait < 780) {
-    tick(); wait += 1;
+  if (recovery) {
+    walkTo(12); turn(Math.PI / 2, -.16);
+    if (RC.controllerSnapshot(controller).target?.id !== 'departure-door' ||
+      RC.interactController(controller, 'departure-door') || state().doorProgress !== 0)
+      throw Error('Early closure was not safely refused');
+    events.push({ at: tick.count / 60, id: 'early-door-refused', label: '全身収容前の閉扉は拒否',
+      feedback: controller.feedbackMessage, actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
+    capture();
   }
-  if (wait === 780) throw Error('Actor never entered the physical containment space');
-  events.push({ at: tick.count / 60, id: 'observe-containment', label: '観察窓で巡回体の全身を確認',
-    actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
-  const lookAtActor = () => {
-    const actor = state().actor.motion.position, player = controller.runtime.pose.position;
-    turn(Math.atan2(-(actor.x - player.x), -(actor.z - player.z)), -.05);
+  walkTo(11); press('departure-bell', '収容区画の呼び鈴');
+  lookAt(BELL_RECEIVER);
+  const awaitContainment = label => {
+    let wait = 0;
+    while (!(actorFullyContained(state().actor.motion.position) && doorSweepClear(state().actor.motion.position)) && wait < 780) {
+      tick(); wait += 1;
+    }
+    if (wait === 780) throw Error('Actor never entered the physical containment space');
+    events.push({ at: tick.count / 60, id: 'observe-containment', label,
+      actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
   };
+  awaitContainment('観察窓で巡回体の全身を確認');
   lookAtActor(); for (let i = 0; i < 30; i += 1) tick();
   walkTo(12); press('departure-door', '全身収容後に隔離扉を閉じる');
+  if (recovery) {
+    tick();
+    if (state().doorProgress <= 0) throw Error('Closing door did not start moving');
+    press('departure-reopen', '閉鎖途中の扉を手動で開け直す');
+    if (state().doorMode !== 'opening') throw Error('Manual reopening did not begin');
+    lookAt(BELL_RECEIVER);
+    for (let frame = 0; frame < 90 && state().doorProgress > 0; frame += 1) tick();
+    if (state().doorProgress !== 0 || state().isolated) throw Error('Reopened door did not reach a safe state');
+    events.push({ at: tick.count / 60, id: 'door-reopened', label: '開け直した扉から巡回体が戻るのを待つ',
+      actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
+    capture();
+    walkTo(11);
+    lookAt(BELL_RECEIVER);
+    let leftContainment = 0;
+    while ((actorFullyContained(state().actor.motion.position) || state().actor.motion.position.z >= 14.5) && leftContainment < 1800) {
+      tick(); leftContainment += 1;
+    }
+    if (leftContainment === 1800) throw Error('Actor did not return to the outer corridor after reopening');
+    events.push({ at: tick.count / 60, id: 'actor-left-containment', label: '開け直した区画から外側通路へ戻る',
+      actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
+    capture();
+    for (let frame = 0; frame < 390 && state().bellCooldown > 0; frame += 1) tick();
+    if (state().bellCooldown > 0) throw Error('Bell did not cool down');
+    const beforeBellPhase = state().actor.phase;
+    if (beforeBellPhase === 'investigate') throw Error('Actor was still investigating the first bell');
+    press('departure-bell', 'もう一度、収容区画へ誘導する');
+    lookAt(BELL_RECEIVER);
+    tick();
+    if (state().actor.phase !== 'investigate') throw Error(`Second bell did not start a new investigation from ${beforeBellPhase}`);
+    events.push({ at: tick.count / 60, id: 'actor-reinvestigates', label: '二度目の鈴へ巡回体が反応',
+      beforePhase: beforeBellPhase, actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
+    capture();
+    awaitContainment('再誘導した巡回体の全身を確認');
+    lookAtActor(); for (let i = 0; i < 20; i += 1) tick();
+    walkTo(12); press('departure-door', '開け直した隔離扉を閉じる');
+  }
   events.push({ at: tick.count / 60, id: 'watch-latch', label: '観察窓から隔離扉の閉鎖を確認',
     actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
   lookAtActor();
@@ -105,7 +158,7 @@ async function extract() {
   if (!controller.runtime.progress.cleared || !state().stopped) throw Error('Natural outdoor route did not complete');
   fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
   await mounted.unmount(); resources.dispose(); bridge.verify();
-  return { frames: frames.length, simulationSeconds: tick.count / 60, events,
+  return { mode: recovery ? 'recovery' : 'natural', frames: frames.length, simulationSeconds: tick.count / 60, events,
     final: { pose: controller.runtime.pose, cleared: controller.runtime.progress.cleared, actor: state().actor },
     sourceHashes: Object.fromEntries(bridge.hashes) };
 }
@@ -152,16 +205,17 @@ async function render(report) {
     fs.writeFileSync(path.join(out, 'webgl.json'), JSON.stringify(metrics, null, 2) + '\n');
     if (disposed.geometries || disposed.textures || browser.errors.length) throw Error('WebGL disposal/error gate failed');
   } finally { await browser.close(); }
-  const file = path.join(out, 'departure-natural.mp4');
+  const file = path.join(out, recovery ? 'departure-recovery.mp4' : 'departure-natural.mp4');
   cp.execFileSync('ffmpeg', ['-nostdin', '-hide_banner', '-loglevel', 'error', '-y', '-framerate', '10',
     '-i', path.join(directory, '%05d.png'), '-c:v', 'libx264', '-crf', '21', '-pix_fmt', 'yuv420p', file]);
-  report.video = { file, bytes: fs.statSync(file).size, sha256: sha256(fs.readFileSync(file)), fps: 10 };
+  report.video = { file, bytes: fs.statSync(file).size, sha256: sha256(fs.readFileSync(file)), fps: 10,
+    durationSeconds: report.frames / 10 };
 }
 
 async function main() {
   const report = await extract();
   await render(report);
-  report.boundary = 'Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.';
+  report.boundary = `Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. ${recovery ? 'Early closure refusal, manual reopening, second bell and final outdoor exit.' : 'First bell and final outdoor exit.'} Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.`;
   report.toolHash = sha256(fs.readFileSync(__filename));
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ frames: report.frames, duration: report.simulationSeconds, video: report.video }));

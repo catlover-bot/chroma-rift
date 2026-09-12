@@ -1,7 +1,7 @@
 {
-  "mode": "natural",
-  "frames": 182,
-  "simulationSeconds": 13.516666666666667,
+  "mode": "recovery",
+  "frames": 365,
+  "simulationSeconds": 30.016666666666666,
   "events": [
     {
       "at": 0.43333333333333335,
@@ -36,45 +36,61 @@
       }
     },
     {
-      "at": 1.3,
+      "at": 1.7666666666666666,
+      "id": "early-door-refused",
+      "label": "全身収容前の閉扉は拒否",
+      "feedback": "巡回体の全身が収容区画に入るのを待つ。",
+      "actor": {
+        "x": 2.15,
+        "y": 0,
+        "z": 12.23739727543117
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.934999999999967
+      }
+    },
+    {
+      "at": 2.183333333333333,
       "id": "departure-bell",
       "label": "収容区画の呼び鈴",
       "feedback": "収容区画の受鈴器が鳴った。",
       "actor": {
         "x": 2.15,
         "y": 0,
-        "z": 12.397766509328745
+        "z": 12.034717683460277
       },
       "pose": {
         "x": -3.75,
         "y": 1.6,
-        "z": 10.93166666666665
+        "z": 11.039166666666649
       }
     },
     {
-      "at": 5.683333333333334,
+      "at": 7.333333333333333,
       "id": "observe-containment",
       "label": "観察窓で巡回体の全身を確認",
       "actor": {
-        "x": 2.3238502405682824,
+        "x": 2.3319488966626563,
         "y": 0,
-        "z": 15.702215389761461
+        "z": 15.71328910159988
       },
       "pose": {
         "x": -3.75,
         "y": 1.6,
-        "z": 10.93166666666665
+        "z": 11.039166666666649
       }
     },
     {
-      "at": 6.65,
+      "at": 8.25,
       "id": "departure-door",
       "label": "全身収容後に隔離扉を閉じる",
       "feedback": "隔離扉を閉じる。全身が区画内にいる。",
       "actor": {
-        "x": 2.374637266061646,
+        "x": 2.377233552141048,
         "y": 0,
-        "z": 16.667546981960793
+        "z": 16.628836501878627
       },
       "pose": {
         "x": -3.75,
@@ -83,13 +99,122 @@
       }
     },
     {
-      "at": 6.65,
+      "at": 8.266666666666667,
+      "id": "departure-reopen",
+      "label": "閉鎖途中の扉を手動で開け直す",
+      "feedback": "隔離扉を開け直す。",
+      "actor": {
+        "x": 2.378056909513382,
+        "y": 0,
+        "z": 16.64548281824733
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.934999999999967
+      }
+    },
+    {
+      "at": 8.283333333333333,
+      "id": "door-reopened",
+      "label": "開け直した扉から巡回体が戻るのを待つ",
+      "actor": {
+        "x": 2.378880266885716,
+        "y": 0,
+        "z": 16.662129134616034
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.934999999999967
+      }
+    },
+    {
+      "at": 19.866666666666667,
+      "id": "actor-left-containment",
+      "label": "開け直した区画から外側通路へ戻る",
+      "actor": {
+        "x": 1.7117979235041947,
+        "y": 0,
+        "z": 14.493787040019422
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.039166666666649
+      }
+    },
+    {
+      "at": 19.866666666666667,
+      "id": "departure-bell",
+      "label": "もう一度、収容区画へ誘導する",
+      "feedback": "収容区画の受鈴器が鳴った。",
+      "actor": {
+        "x": 1.7117979235041947,
+        "y": 0,
+        "z": 14.493787040019422
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.039166666666649
+      }
+    },
+    {
+      "at": 19.883333333333333,
+      "id": "actor-reinvestigates",
+      "label": "二度目の鈴へ巡回体が反応",
+      "beforePhase": "return",
+      "actor": {
+        "x": 1.7140289781372617,
+        "y": 0,
+        "z": 14.5046860314858
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.039166666666649
+      }
+    },
+    {
+      "at": 22.4,
+      "id": "observe-containment",
+      "label": "再誘導した巡回体の全身を確認",
+      "actor": {
+        "x": 1.9599766562546874,
+        "y": 0,
+        "z": 15.706172362321434
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.039166666666649
+      }
+    },
+    {
+      "at": 23.15,
+      "id": "departure-door",
+      "label": "開け直した隔離扉を閉じる",
+      "feedback": "隔離扉を閉じる。全身が区画内にいる。",
+      "actor": {
+        "x": 2.110384833762824,
+        "y": 0,
+        "z": 16.440935831955176
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 11.934999999999967
+      }
+    },
+    {
+      "at": 23.15,
       "id": "watch-latch",
       "label": "観察窓から隔離扉の閉鎖を確認",
       "actor": {
-        "x": 2.374637266061646,
+        "x": 2.110384833762824,
         "y": 0,
-        "z": 16.667546981960793
+        "z": 16.440935831955176
       },
       "pose": {
         "x": -3.75,
@@ -98,7 +223,7 @@
       }
     },
     {
-      "at": 8.616666666666667,
+      "at": 25.116666666666667,
       "id": "departure-stop",
       "label": "閉館制御を停止",
       "feedback": "巡回体が止まった。在館反応 01。職員出口へ進む。",
@@ -114,7 +239,7 @@
       }
     },
     {
-      "at": 8.616666666666667,
+      "at": 25.116666666666667,
       "id": "watch-stopped",
       "label": "停止した巡回体を観察",
       "actor": {
@@ -129,7 +254,7 @@
       }
     },
     {
-      "at": 9.116666666666667,
+      "at": 25.616666666666667,
       "id": "departure-staff-door",
       "label": "職員出口を開ける",
       "feedback": "職員出口が開いた。屋外へ進む。",
@@ -145,7 +270,7 @@
       }
     },
     {
-      "at": 13.516666666666667,
+      "at": 30.016666666666666,
       "id": "departure-outdoor",
       "label": "屋外へ出る",
       "feedback": "在館反応 00。閉館処理 完了。",
@@ -179,47 +304,47 @@
           "y": 0,
           "z": 18.1
         },
-        "yaw": -3.089170241919297,
-        "desiredHeading": -3.0890301501580035,
-        "angularVelocity": -0.03619114736938825,
+        "yaw": -2.939819329470048,
+        "desiredHeading": -2.939679237708748,
+        "angularVelocity": -0.0361911473685356,
         "velocity": {
           "x": 0,
           "y": 0,
           "z": 0
         },
         "speed": 0,
-        "travelledDistance": 5.712353172615884,
+        "travelledDistance": 14.214251244527643,
         "accumulator": 0,
-        "headYaw": -0.052422411670496334,
+        "headYaw": -0.201773324119745,
         "headPitch": -0.3141592653589793,
-        "chestYaw": -0.052713299879162186,
-        "chestLean": 0.0008893264682754166,
-        "pelvisShift": 0.0023841452473940773,
-        "turnAge": 7.308333333333486,
+        "chestYaw": -0.2020642123284104,
+        "chestLean": 0.005425133206708626,
+        "pelvisShift": -0.002724197819468806,
+        "turnAge": 5.241666666666717,
         "launchAge": 0,
         "movingIntent": false,
         "gait": "investigate",
-        "gaitTime": 7.308333333333486,
+        "gaitTime": 5.241666666666717,
         "feet": [
           {
             "name": "left",
             "position": {
-              "x": 2.5548541524476436,
+              "x": 2.546051507093156,
               "y": 0,
-              "z": 18.094467666452
+              "z": 18.045547780457273
             },
             "anchor": {
-              "x": 2.5548541524476436,
+              "x": 2.546051507093156,
               "y": 0,
-              "z": 18.094467666452
+              "z": 18.045547780457273
             },
             "from": {
-              "x": 2.5509322256873337,
+              "x": 2.4324097729758973,
               "y": 0,
-              "z": 18.01953610192339
+              "z": 17.490393158956206
             },
-            "yaw": -3.088879353710631,
-            "fromYaw": -3.088879353710632,
+            "yaw": -2.939528441261078,
+            "fromYaw": -2.9395284412610816,
             "stance": true,
             "swingTime": 0,
             "swingDuration": 0.28
@@ -227,30 +352,30 @@
           {
             "name": "right",
             "position": {
-              "x": 2.3521364538292886,
+              "x": 2.3471299378991604,
               "y": 0,
-              "z": 18.23879165511624
+              "z": 18.121041633096542
             },
             "anchor": {
-              "x": 2.3521364538292886,
+              "x": 2.3471299378991604,
               "y": 0,
-              "z": 18.23879165511624
+              "z": 18.121041633096542
             },
             "from": {
-              "x": 2.326295926644812,
+              "x": 2.2834571558975894,
               "y": 0,
-              "z": 17.74762925668969
+              "z": 17.810092888699565
             },
-            "yaw": -3.089180946605474,
-            "fromYaw": -3.0891809466053775,
+            "yaw": -2.939830034156187,
+            "fromYaw": -2.939830034155826,
             "stance": true,
             "swingTime": 0,
             "swingDuration": 0.28
           }
         ],
         "swingFoot": null,
-        "nextFoot": 1,
-        "plantSequence": 27
+        "nextFoot": 0,
+        "plantSequence": 66
       },
       "visible": true,
       "phase": "stopped",
@@ -258,14 +383,14 @@
       "recognition": 0,
       "startupGrace": 0,
       "contactCooldown": 0,
-      "routeIndex": 1,
-      "lastNoiseSequence": 8,
-      "searchSeconds": 0,
+      "routeIndex": 0,
+      "lastNoiseSequence": 14,
+      "searchSeconds": 4.216666666666657,
       "intensity": "standard",
       "lastSeen": {
         "x": -3.75,
         "y": 1.6,
-        "z": 10.93166666666665
+        "z": 10.824166666666653
       },
       "lastHeard": {
         "x": 2.45,
@@ -386,12 +511,12 @@
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
-    "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-natural/departure-natural.mp4",
-    "bytes": 108463,
-    "sha256": "d418d2150f98534d57de3d5a8a109b18c6302821ab4b40facac72f6d94eb4266",
+    "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-recovery/departure-recovery.mp4",
+    "bytes": 213420,
+    "sha256": "404f4bc6c6b4a4632ec6819d3ee448ab399ad52c7f6add0233893f409e2ef428",
     "fps": 10,
-    "durationSeconds": 18.2
+    "durationSeconds": 36.5
   },
-  "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. First bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
+  "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. Early closure refusal, manual reopening, second bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
   "toolHash": "898112b03fc5429eb3ad8cf4e45d98a11103473d6bf926c0d39b984ebedc67f8"
 }
