@@ -7,12 +7,14 @@ const {installNativeHudBridge,browserStyles,browserHelpers}=require('./lib/nativ
 const option=name=>process.argv.find(a=>a.startsWith('--'+name+'='))?.slice(name.length+3);
 const root=path.resolve(__dirname,'..'),source=path.resolve(option('source')||root),scenario=option('scenario')||'light',out=path.resolve(option('out')||path.join(root,'.expo/goal010',scenario==='light'?'light-motion':'motion-'+scenario));
 const fromSource=relative=>require(path.join(source,relative)),commitLabel=option('commit-label')||'灯りを固定する',solvedLeaveLabel=option('solved-leave-label')||'探索へ戻る';
-if(!['light','route-east','route-inspect','projector','projector-control','capture-retry','curtain-portrait','maintenance'].includes(scenario))throw Error('Unknown scenario');
+if(!['light','route-east','route-inspect','route-optional','projector','projector-control','capture-retry','curtain-portrait','maintenance','bell-a','bell-b','shutter'].includes(scenario))throw Error('Unknown scenario');
 fs.mkdirSync(out,{recursive:true});
 const bridge=installSourceBridge(source),context={width:390,height:844,fontScale:1.5,bindController:false},native=installNativeHudBridge(context);
 const React=require('react'),R=require('react-test-renderer'),THREE=require('three');
 const RC=fromSource('src/rendering/firstPerson/runtimeController.ts'),TC=fromSource('src/rendering/firstPerson/theatreController.ts'),D=fromSource('src/domain/theatre/definition.ts'),L=fromSource('src/domain/theatre/lightGate.ts'),Defaults=fromSource('src/types/application.ts');
 const {MOVE_SPEED}=fromSource('src/domain/firstPerson/index.ts'),AI=fromSource('src/domain/theatre/actor.ts'),{endPointer,beginStick}=fromSource('src/rendering/firstPerson/touchInput.ts'),Ames=fromSource('src/domain/theatre/perspectiveExhibit.ts');
+const Motion=fromSource('src/domain/actorMotion/index.ts');
+const Env=fromSource('src/domain/theatre/environment.ts');
 const {TheatreScene}=fromSource('src/rendering/firstPerson/TheatreScene.tsx'),{createSceneResources}=fromSource('src/rendering/firstPerson/resources.ts');
 const deviceStatusPath=path.join(source,'src/domain/theatre/deviceStatus.ts'),Status=fs.existsSync(deviceStatusPath)?fromSource('src/domain/theatre/deviceStatus.ts'):undefined;
 context.bindController=true;const {FirstPersonScreen}=fromSource('src/screens/FirstPersonScreen.tsx');
@@ -88,8 +90,30 @@ async function extract(){
 
   await step();
  }else{
-  if(scenario.startsWith('projector')||scenario==='curtain-portrait'||scenario==='maintenance')capturing=false;
+  if(scenario.startsWith('projector')||scenario==='curtain-portrait'||scenario==='maintenance'||scenario==='bell-a'||scenario==='bell-b'||scenario==='shutter'||scenario==='route-optional')capturing=false;
   await solve();await pathWalk([[2,-2],[2,3],[2,4.6]]);
+  if(scenario==='route-optional'){
+   RC.setControllerHorrorIntensity(c,'subdued');capturing=true;events.length=0;samples.length=0;ticks=0;segment='optional-bell';event('optional-route-start',{intensity:'subdued'});
+   await pathWalk([[0,5.2],[-2.7,5.9],[-3.45,7.3]]);await interact('theatre-bell-a',Env.THEATRE_BELLS[0].fixture);event('optional-bell-used',{receiver:c.runtime.theatre.environmentNoise?.position});
+   await pathWalk([[-3.4,10.9]]);segment='optional-shutter';await interact('theatre-shutter-south',Env.THEATRE_SHUTTER.handles[0]);await wait(1.2);event('optional-shutter-closed',{closed:c.runtime.theatre.environment.shutter.closed,progress:c.runtime.theatre.environment.shutter.progress});
+   segment='optional-detour';await pathWalk([[-3.4,7.3],[-2,7.3],[0,7.3],[2.9,7.3],[2.9,11],[2.55,16.7]]);await finish();
+  }
+  if(scenario==='bell-a'||scenario==='bell-b'){
+   const bell=Env.THEATRE_BELLS[scenario==='bell-a'?0:1];
+   if(scenario==='bell-a')await pathWalk([[0,5.2],[-2.7,5.9],[-3.45,7.3]]);
+   else await pathWalk([[2.9,5.5],[2.9,7.6],[2.9,11],[3.45,14.6]]);
+   c.runtime={...c.runtime,theatre:{...c.runtime.theatre,actor:{...c.runtime.theatre.actor,phase:'patrol',motion:Motion.createActorMotion({x:bell.receiver.x,y:0,z:bell.receiver.z-.7},0),startupGrace:0,contactCooldown:0,lastSeen:undefined,lastHeard:undefined}}};runtime.current=c.runtime;
+   lookAt(bell.fixture.center);await hud.update();capturing=true;events.length=0;samples.length=0;ticks=0;segment=scenario;
+   event('controlled-actor-setup',{position:c.runtime.theatre.actor.motion.position,phase:'patrol'});event('bell-before',{instanceId:bell.instanceId,receiver:bell.receiver,actorPhase:c.runtime.theatre.actor.phase});await wait(1);
+   await interact(bell.instanceId,bell.fixture);event('bell-after',{noiseSource:c.runtime.theatre.environmentNoise?.position,actorPhase:c.runtime.theatre.actor.phase});await wait(8);
+  }
+  if(scenario==='shutter'){
+   await pathWalk([[0,5.2],[-2.7,5.9],[-3.4,7.3],[-3.4,10.9]]);
+   const handle=Env.THEATRE_SHUTTER.handles[0];lookAt(handle.center);await hud.update();capturing=true;events.length=0;samples.length=0;ticks=0;segment='shutter-south';
+   event('shutter-before',{closed:c.runtime.theatre.environment.shutter.closed});await wait(1);
+   await interact('theatre-shutter-south',handle);await wait(2);event('shutter-after',{closed:c.runtime.theatre.environment.shutter.closed,progress:c.runtime.theatre.environment.shutter.progress,actorLastSeen:c.runtime.theatre.actor.lastSeen});
+   await wait(3);
+  }
   if(scenario==='route-east'||scenario==='curtain-portrait'){await pathWalk([[2.9,5.5],[2.9,7.6],[2.55,13.8],[2.55,16.7]]);await finish();}
   if(scenario==='maintenance'){
    await pathWalk([[0,5.2],[-2.7,5.9],[-3.6,7]]);await interact('inspection',D.THEATRE_INSPECTION_FIXTURE);await wait(.5);await pathWalk([[-4.7,9.45],[-5.2,9.6]]);lookAt(D.THEATRE_BYPASS_FIXTURE.center);await hud.update();
@@ -138,13 +162,15 @@ window.finish=()=>{geos.forEach(g=>g.dispose());const ts=new Set();mats.forEach(
 }
 async function capture(report){
  viewer();const browser=await openBrowser(out),frames=path.join(out,'frames');fs.mkdirSync(frames,{recursive:true});let maxCalls=0,maxTriangles=0;
+ const captureFps=Number(option('capture-fps')||30);if(!Number.isInteger(captureFps)||captureFps<1||30%captureFps!==0)throw Error('capture-fps must divide 30');
+ const captureFrameCount=Math.ceil(report.frames/(30/captureFps));
  try{
   await browser.send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
   for(let i=0;i<100&&!await browser.evaluate('window.ready===true');i++)await delay(100);
-  const captureFrames=process.argv.includes('--sample-only')?[...new Set([0,Math.floor(report.frames*.1),Math.floor(report.frames*.25),Math.floor(report.frames*.5),Math.floor(report.frames*.75),report.frames-1])]:Array.from({length:report.frames},(_,i)=>i);for(const frame of captureFrames){const stats=await browser.evaluate('window.draw('+frame+')');maxCalls=Math.max(maxCalls,stats.calls);maxTriangles=Math.max(maxTriangles,stats.triangles);const shot=await browser.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(path.join(frames,String(frame).padStart(6,'0')+'.png'),Buffer.from(shot.data,'base64'));if(frame%150===0)console.log('captured '+frame+'/'+report.frames);}
+  const captureFrames=process.argv.includes('--sample-only')?[...new Set([0,Math.floor(report.frames*.1),Math.floor(report.frames*.25),Math.floor(report.frames*.5),Math.floor(report.frames*.75),report.frames-1])]:Array.from({length:Math.ceil(report.frames/(30/captureFps))},(_,i)=>i*(30/captureFps));for(const [index,frame] of captureFrames.entries()){const stats=await browser.evaluate('window.draw('+frame+')');maxCalls=Math.max(maxCalls,stats.calls);maxTriangles=Math.max(maxTriangles,stats.triangles);const shot=await browser.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(path.join(frames,String(process.argv.includes('--sample-only')?frame:index).padStart(6,'0')+'.png'),Buffer.from(shot.data,'base64'));if(index%50===0)console.log('captured '+index+'/'+captureFrames.length);}
   const disposed=await browser.evaluate('window.finish()');json('webgl.json',{maxCalls,maxTriangles,disposed,errors:browser.errors});if(disposed.geometries||disposed.textures||browser.errors.length)throw Error('WebGL cleanup gate failed');
  }finally{await browser.close();}
- if(process.argv.includes('--sample-only'))return;const file=path.join(out,scenario==='light'?'light-operation.mp4':scenario+'.mp4');cp.execFileSync('ffmpeg',['-nostdin','-hide_banner','-loglevel','error','-y','-framerate','30','-i',path.join(frames,'%06d.png'),'-frames:v',String(report.frames),'-c:v','libx264','-preset','medium','-crf','21','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['ignore','inherit','inherit']});
+ if(process.argv.includes('--sample-only'))return;const file=path.join(out,scenario==='light'?'light-operation.mp4':scenario+'.mp4');cp.execFileSync('ffmpeg',['-nostdin','-hide_banner','-loglevel','error','-y','-framerate',String(captureFps),'-i',path.join(frames,'%06d.png'),'-frames:v',String(captureFrameCount),'-c:v','libx264','-preset','medium','-crf','21','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['ignore','inherit','inherit']});
  const probe=JSON.parse(cp.execFileSync('ffprobe',['-v','error','-show_streams','-show_format','-of','json',file],{encoding:'utf8'}));json('video.json',{sha256:sha256(fs.readFileSync(file)),probe,duration:report.duration});bridge.verify();
 }
 async function main(){try{if(process.argv.includes('--capture-only'))for(const[file,hash]of Object.entries(JSON.parse(fs.readFileSync(path.join(out,'source-hashes.json'))))){if(sha256(fs.readFileSync(path.join(source,file)))!==hash)throw Error('Source changed since extraction: '+file);}const report=process.argv.includes('--capture-only')?JSON.parse(fs.readFileSync(path.join(out,'timeline.json'))):await extract();restoreTimers();if(!process.argv.includes('--extract-only'))await capture(report);console.log(JSON.stringify({duration:report.duration,frames:report.frames,out}));}finally{restoreTimers();}}

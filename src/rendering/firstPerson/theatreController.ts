@@ -3,7 +3,10 @@ import { lightHandlePoint } from '../../domain/theatre/lightGate';
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { advanceTheatreActor } from '../../domain/theatre/actor';
 import { THEATRE_METAL_FLOORS, THEATRE_PROJECTOR } from '../../domain/theatre/definition';
-import { applyTheatreCommand, canLowerTheatreCurtain, theatreSafeArea } from '../../domain/theatre/state';
+import { canLowerTheatreCurtain, theatreSafeArea, theatreShutterAvailability } from '../../domain/theatre/state';
+import { THEATRE_BELLS } from '../../domain/theatre/environment';
+import { bellCue, shutterCue } from '../../domain/theatre/cues';
+import { STAGE_MODULES } from '../../domain/stageKit/modules';
 import { theatreProjectorStatus } from '../../domain/theatre/deviceStatus';
 import type { TheatreAction, TheatreCommand, TheatreNoise } from '../../domain/theatre/types';
 import { acquisitionResult, fixtureAcquisition, fixtureScreenBounds, fixturePointInWorld, pointOnFixture, type PanelPoint } from './manipulationProjection';
@@ -37,6 +40,18 @@ export function theatreCurtainAcquisition(controller: RuntimeController) {
   if(!canLowerTheatreCurtain(controller.runtime))return acquisitionResult(id,'busy',theatreSafeArea(controller.runtime)==='booth'?'幕の下が空くのを待とう。':'制御室の内側で、幕の取っ手に向き合おう。');
   return acquisitionResult(id,'ready');
 }
+export function theatreEnvironmentAcquisition(controller:RuntimeController,id:'theatre-bell-a'|'theatre-bell-b'|'theatre-shutter-south'|'theatre-shutter-north') {
+  if(!controllerCanInteract(controller))return acquisitionResult(id,'busy');
+  const cue=evaluateInteraction(worldForController(controller),controller.runtime.pose,controller.runtime.progress,controller.matrices);
+  if(cue.kind!=='ready'||cue.target.id!==id)return acquisitionResult(id,'busy',cue.reason??'装置の正面へ近づき、照準を合わせよう。');
+  const bell=THEATRE_BELLS.find(item=>item.instanceId===id),live=controller.runtime.theatre;
+  if(bell){
+    const cooldown=live?.environment.bells[bell.instanceId].cooldown??0;
+    return cooldown>0?acquisitionResult(id,'busy',`呼び鈴${bell.number}は戻るまで待とう。`):acquisitionResult(id,'ready');
+  }
+  const availability=theatreShutterAvailability(controller.runtime);
+  return availability==='ready'?acquisitionResult(id,'ready'):acquisitionResult(id,'busy',availability==='prerequisiteMissing'?'先に灯りを固定しよう。':'仕切りの下が空くまで待とう。');
+}
 export function theatreDeviceScreenBounds(controller:RuntimeController) {
   const live=controller.runtime.theatre,viewport=controller.viewport;
   if(!live||!viewport||live.mode!=='light'&&!live.projectorArmed)return;
@@ -54,15 +69,23 @@ export function dispatchTheatreController(controller:RuntimeController,command:T
   const world=worldForController(controller),cue=evaluateInteraction(world,controller.runtime.pose,controller.runtime.progress,controller.matrices);
   let target=cue.kind==='ready'?cue.target:undefined;
   const action=command.action;
+  const environmentAction=action.type==='activate-instance';
   const deviceAction=action.type==='enter-light'||action.type==='enter-projector'||(live.mode==='light'||live.projectorArmed)&&action.type!=='cancel'&&action.type!=='leave';
   if(deviceAction) {
     const device=action.type==='enter-projector'||live.projectorArmed?'projector':'light',result=theatreDeviceAcquisition(controller,device);
     const panel=result.kind==='ready'?world.interactables.find(t=>t.id===result.targetId):undefined;
     target=panel&&(accessible&&controller.screenReader||live.mode==='light'||live.projectorArmed||cue.kind==='ready'&&cue.target.id===panel.id)?panel:undefined;
   }
+  if(environmentAction){
+    const id=target?.id;
+    if(id==='theatre-bell-a'||id==='theatre-bell-b'||id==='theatre-shutter-south'||id==='theatre-shutter-north'){
+      if(theatreEnvironmentAcquisition(controller,id).kind!=='ready')target=undefined;
+    }else target=undefined;
+  }
   const previous=controller.runtime;
-  const result=applyTheatreCommand(previous,command,{rendererReady:controllerCanInteract(controller)&&(!deviceAction||!!target),foreground:controller.diagnostics.appActive!==false,targetId:target?.id??null});
+  const result=STAGE_MODULES['shadow-theatre-v1'].command(previous,command,{rendererReady:controllerCanInteract(controller)&&(!deviceAction&&!environmentAction||!!target),foreground:controller.diagnostics.appActive!==false,targetId:target?.id??null});
   controller.runtime=result.runtime;controller.feedbackMessage=result.message;
+  controller.lastCommand={type:action.type,accepted:result.accepted,reason:result.accepted?'accepted':result.message||'unavailable'};
   if(result.stopInput) {
     requireAllPointersReleased(controller.input);
     if(live.activeDrag&&!controller.input.releaseBarrier.includes(live.activeDrag.pointerId))controller.input.releaseBarrier.push(live.activeDrag.pointerId);
@@ -72,7 +95,15 @@ export function dispatchTheatreController(controller:RuntimeController,command:T
   }
   if(result.accepted&&['commit-light','open-inspection','open-bypass','lower-curtain'].includes(action.type))soundForControllerTransition(controller,previous);
   if(result.accepted&&!previous.theatre?.projectorSeconds&&controller.runtime.theatre!.projectorSeconds>0)controller.pendingProjectorPulse=true;
+  if(result.accepted&&environmentAction){
+    const bell=THEATRE_BELLS.find(item=>item.instanceId===action.instanceId);
+    controller.pendingTheatreCues.push(bell?bellCue(bell.instanceId):shutterCue(controller.runtime.theatre!.environment.shutter.closed));
+  }
   if(!result.accepted&&(action.type==='enter-light'||action.type==='enter-projector'))controller.feedbackMessage=theatreDeviceAcquisition(controller,action.type==='enter-light'?'light':'projector').message;
+  if(!result.accepted&&environmentAction&&previous.theatre){
+    const id=action.instanceId==='theatre-manual-shutter'?(target?.id==='theatre-shutter-north'?'theatre-shutter-north':'theatre-shutter-south'):action.instanceId;
+    controller.feedbackMessage=theatreEnvironmentAcquisition(controller,id).message;
+  }
   return result.accepted;
 }
 export function theatreAction(controller:RuntimeController,action:TheatreAction,accessible=false):boolean {

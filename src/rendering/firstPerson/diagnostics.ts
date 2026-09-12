@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 
 import { inspectPoseSafety, isSafePose } from '../../domain/firstPerson/geometry';
+import { stageDefinition } from '../../domain/stageKit/definitions';
+import { stageInputPolicy } from '../../domain/stageKit/modules';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
+import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
-export const DIAGNOSTIC_REVISION = 'goal-010-1-stage-boundaries-r1';
+export const DIAGNOSTIC_REVISION = 'goal-012-stage-kit-r1';
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
 export type DiagnosticStage = 'initializing' | 'context-created' | 'renderer-created' | 'scene-committed' | 'first-submitted' | 'ready' | 'failed' | 'closed';
 export type Measurement<T> = T | 'unknown' | 'unsupported';
@@ -26,6 +29,10 @@ export type FirstPersonDiagnostics = {
   lastError: DiagnosticError | null;
   effectiveControls: { mode: 'unknown' | 'standard' | 'simple'; reason: string };
   pixelEvidence: 'not-sampled' | 'proof-triangle-center-differs-from-clear' | 'proof-center-did-not-match-triangle' | 'unsupported';
+  stageKit?: { stageId: string; contentVersion: number | 'unknown'; session: number; revision: number;
+    selectedInstanceId: string | null; inputPolicy: ReturnType<typeof stageInputPolicy>; unavailableReason: string | null;
+    objective: string; lastCommand: RuntimeController['lastCommand']; actor: unknown; lastSeen: unknown; lastHeard: unknown;
+    noiseSource: unknown; renderPasses: number; totalDrawCalls: Measurement<number>; ownedResources: { geometries: number; materials: number; textures: number } };
 };
 export type DiagnosticSnapshot = FirstPersonDiagnostics;
 let nextSession = 0;
@@ -75,6 +82,18 @@ export function updateDiagnosticContext(record: FirstPersonDiagnostics, value: P
   Object.assign(record, value);
 }
 export function setDiagnosticsOpen(record: FirstPersonDiagnostics, open: boolean): void { record.open = open; }
+/** Collected only while the developer panel is open; never serialized into a save. */
+export function updateStageKitDiagnostics(record: FirstPersonDiagnostics, controller: RuntimeController, snapshot: RuntimeSnapshot): void {
+  const runtime=controller.runtime,definition=stageDefinition(runtime.chapterId);
+  const actor=runtime.theatre?.actor??runtime.vault?.actor??runtime.gallery?.actor;
+  record.stageKit={stageId:runtime.chapterId??'returnless-entrance',contentVersion:definition?.contentVersion??'unknown',session:runtime.session,
+    revision:controller.viewCommandRevision,selectedInstanceId:snapshot.target?.id??null,inputPolicy:stageInputPolicy(runtime),
+    unavailableReason:snapshot.acquisition?.kind==='ready'?null:snapshot.acquisition?.message??snapshot.cue.reason??null,
+    objective:snapshot.objective,lastCommand:controller.lastCommand,actor:actor?.phase??null,lastSeen:actor?.lastSeen??null,lastHeard:runtime.theatre?.actor.lastHeard??runtime.vault?.actor.lastHeard??null,
+    noiseSource:runtime.theatre?.environmentNoise?.position??runtime.theatre?.projectorNoise?.position??null,
+    renderPasses:record.renderReturns>0?1:0,totalDrawCalls:record.lastFrame.drawCalls,
+    ownedResources:{geometries:record.scene.geometries,materials:record.scene.materials,textures:record.scene.textures}};
+}
 export function updateDiagnosticEnvironment(record: FirstPersonDiagnostics, value: Partial<Pick<FirstPersonDiagnostics, 'sceneMode' | 'appActive' | 'paused' | 'nativeGL'>>): void { Object.assign(record, value); }
 export function recordCanvasLayout(record: FirstPersonDiagnostics, width: number, height: number): void {
   record.rnLayout = { width: Number.isFinite(width) ? width : 0, height: Number.isFinite(height) ? height : 0 };

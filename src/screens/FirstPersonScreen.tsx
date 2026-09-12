@@ -9,6 +9,7 @@ import { createVaultComparisons } from '../content/vaultComparisons';
 import { VaultDeviceHeading, VaultDeviceControls, VaultTouchLayer } from '../rendering/firstPerson/VaultManipulation';
 import { vaultAction, vaultPanelTarget, vaultDeviceScreenBounds, canCloseVaultExitController } from '../rendering/firstPerson/vaultController';
 import { chapterCompletionSummary } from '../app/chapterSummary';
+import { stageDefinition } from '../domain/stageKit/definitions';
 import { canCloseGalleryExit, galleryPowerCount } from '../domain/gallery';
 import * as Clipboard from 'expo-clipboard';
 import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
@@ -21,7 +22,7 @@ import { ActionButton, Body, ChoiceRow, Heading, SettingSwitch } from '../compon
 import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage, type InteractableId } from '../domain/firstPerson';
 import { playSelectionHaptic } from '../platform/haptics';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
-import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext } from '../rendering/firstPerson/diagnostics';
+import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
 import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
 import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
@@ -60,6 +61,7 @@ function GameButton({ label, onPress, disabled = false, testID, sessionKey }: { 
 type RecoveryScene = 'chapter' | 'proof' | 'raw-gl';
 const MAX_RENDER_RETRIES = 2;
 function checkpointIdentity(runtime: RuntimeSnapshot['runtime']): string {
+  if(runtime.stageSession)return JSON.stringify(createCheckpoint(runtime).stageData);
   const refuge = runtime.theatre?.lastSafePose ?? runtime.vault?.lastSafePose ?? runtime.gallery?.lastSafePose;
   return JSON.stringify(refuge ? { progress: runtime.progress, lastSafePose: refuge } : runtime.progress);
 }
@@ -120,8 +122,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const gallery = snapshot.runtime.gallery;
   const vault = snapshot.runtime.vault;
   const theatre = snapshot.runtime.theatre;
+  const simpleStage=!!snapshot.runtime.stageSession;
   const projectorStatus = theatre ? theatreProjectorStatus(snapshot.runtime) : undefined;
-  const independentChapter = !!gallery || !!vault || !!theatre;
+  const hasActorChapter=!!gallery||!!vault||!!theatre;
+  const independentChapter = hasActorChapter || simpleStage;
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
   const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
   const blocked = showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
@@ -243,7 +247,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     setDiagnosticsOpen(controller.diagnostics, showDiagnostics);
     if (showDiagnostics) stopController(controller);
     if (!showDiagnostics) return;
-    const refresh = () => setDiagnosticText(serializeDiagnostics(controller.diagnostics));
+    const refresh = () => { updateStageKitDiagnostics(controller.diagnostics,controller,controllerSnapshot(controller)); setDiagnosticText(serializeDiagnostics(controller.diagnostics)); };
     refresh();
     const timer = appActive ? setInterval(refresh, 500) : undefined;
     return () => { if (timer !== undefined) clearInterval(timer); setDiagnosticsOpen(controller.diagnostics, false); };
@@ -300,7 +304,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     publish(controllerSnapshot(controller));
     if (independentChapter) {
       const structure = snapshot.target.id === 'mask-exhibit' || snapshot.target.id === 'mask-window' ? '凹面の構造は、発見メモで正面と横から比べられます。' : snapshot.target.id === 'hybrid-exhibit' ? '発見メモで大きい成分と細部を比べられます。' : undefined;
-      setNotice(changed && structure ? structure : controller.feedbackMessage || freshCue.reason || '装置が見える位置へ近づこう。');
+      setNotice(changed ? structure||controller.feedbackMessage||'操作しました。' : controller.feedbackMessage || freshCue.reason || '装置が見える位置へ近づこう。');
       if (changed) void playSelectionHaptic(settings.haptics);
     } else if (snapshot.target.id.startsWith('emblem-')) {
       const description = reader && snapshot.target.id === 'emblem-panel' && controller.runtime.emblem.phase !== 'unexamined'
@@ -467,7 +471,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     {structureNote ? <GameButton sessionKey={controlSessionKey} label="構造をメモで比べる" onPress={openStructureNotes} disabled={blocked} /> : null}
     {compareAvailable ? <GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} /> : null}
     {canCloseExit ? <GameButton sessionKey={controlSessionKey} label="扉を閉める" disabled={blocked || !controller.matrices} onPress={closeExit} /> : null}
-    {independentChapter && Object.values(progress.theatre?.discoveries ?? progress.vault?.discoveries ?? progress.gallery!.discoveries).some(Boolean) ? <GameButton sessionKey={controlSessionKey} label="発見メモ" disabled={blocked} onPress={openNotes} /> : null}
+    {hasActorChapter && Object.values(progress.theatre?.discoveries ?? progress.vault?.discoveries ?? progress.gallery?.discoveries ?? {}).some(Boolean) ? <GameButton sessionKey={controlSessionKey} label="発見メモ" disabled={blocked} onPress={openNotes} /> : null}
     <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || interactionBlocked || !snapshot.target} testID="interact" />
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
@@ -540,18 +544,18 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
             <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>
             {__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}
-            <ActionButton label={theatre ? 'この映写室を最初から' : vault ? 'この収蔵庫を最初から' : chapterId === CHAPTER_ID ? 'この旧章を最初から' : 'この展示室を最初から'} onPress={restart} />
+            <ActionButton label={theatre ? 'この映写室を最初から' : vault ? 'この収蔵庫を最初から' : chapterId === CHAPTER_ID ? 'この旧章を最初から' : gallery ? 'この展示室を最初から' : `${stageDefinition(chapterId)?.title??'この章'}を最初から`} onPress={restart} />
             <ActionButton label="ホームへ戻る" onPress={leave} />
           </> : menu === 'hints' ? <>
-            <Body>ヒント {Math.max(1, snapshot.runtime.progress.hintStage)} / 3</Body>
+            <Body>{simpleStage?'ヒント':`ヒント ${Math.max(1, snapshot.runtime.progress.hintStage)} / 3`}</Body>
             <Body>{hint.text}</Body>
-            {snapshot.runtime.progress.hintStage < 3 ? <ActionButton label="次のヒント" onPress={nextHint} /> : !independentChapter && progress.sealA ? <ActionButton label="近くで視点を合わせる" onPress={aim} disabled={!ready} accessibilityHint="位置を移動せず、鍵の目印へ視線を合わせます" /> : null}
+            {!simpleStage&&snapshot.runtime.progress.hintStage < 3 ? <ActionButton label="次のヒント" onPress={nextHint} /> : !independentChapter && progress.sealA ? <ActionButton label="近くで視点を合わせる" onPress={aim} disabled={!ready} accessibilityHint="位置を移動せず、鍵の目印へ視線を合わせます" /> : null}
             {!independentChapter && !progress.sealA ? <SettingSwitch label="輪郭ガイド" description="切れていない線に静かな中立色の目印を重ねます。補助表示だけでは扉は開きません。" value={emblem.assist} onValueChange={toggleOutline} /> : null}
             {reader && !independentChapter && emblem.phase !== 'unexamined' ? <Body>{sealDescription(emblem.seed)}</Body> : null}
             <ActionButton label="探索へ戻る" onPress={resume} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </> : <>
-            {independentChapter ? <>
+            {hasActorChapter ? <>
               <Body>怖さ</Body>
               <Body muted>控えめは気配を残し、追尾と接触によるやり直しをなくします。謎と出口条件は同じです。</Body>
               <ChoiceRow>
@@ -570,7 +574,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
             <Body>上下の感度</Body><ChoiceRow>{[0.6, 1].map((value) => <ActionButton key={value} label={value === 1 ? '同じ' : '控えめ'} variant={(controls.verticalSensitivity ?? 1) === value ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, verticalSensitivity: value })} />)}</ChoiceRow>
             <SettingSwitch label="左手で見回す" description="歩く領域を右側、見回す領域を左側にします。" value={controls.handedness === 'left'} onValueChange={(value) => onControlsChange({ ...controls, handedness: value ? 'left' : 'right' })} />
             <SettingSwitch label="描画を軽くする" description="模様の解像度と装飾を減らします。謎の条件は同じです。" value={controls.quality === 'low'} onValueChange={(value) => onControlsChange({ ...controls, quality: value ? 'low' : 'standard' })} />
-            {!vault ? <><Body>{gallery ? '色の展示' : '紋章の色表示'}</Body><ChoiceRow>{PALETTE_IDS.map((palette) => <ActionButton key={palette} label={PALETTE_LABELS[palette]} variant={(settings.emblemPalette ?? 'baseline') === palette ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, emblemPalette: palette })} />)}</ChoiceRow>
+            {!vault&&!simpleStage ? <><Body>{gallery ? '色の展示' : '紋章の色表示'}</Body><ChoiceRow>{PALETTE_IDS.map((palette) => <ActionButton key={palette} label={PALETTE_LABELS[palette]} variant={(settings.emblemPalette ?? 'baseline') === palette ? 'primary' : 'secondary'} onPress={() => onSettingsChange({ ...settings, emblemPalette: palette })} />)}</ChoiceRow>
             <Body muted>表示名は、奥行きの感じ方の強さを表す順序ではありません。</Body></> : null}
             {!independentChapter ? <SettingSwitch label="輪郭ガイド" description="紋章の切れていない線を、中立色の目印で示します。" value={emblem.assist} onValueChange={toggleOutline} /> : null}
             <SettingSwitch label="補助表示" description="通行できる床の端を中立色で示します。" value={settings.depthAssist} onValueChange={(value) => onSettingsChange({ ...settings, depthAssist: value, depthAssistOverridden: true })} />

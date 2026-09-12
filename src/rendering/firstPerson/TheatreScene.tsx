@@ -8,6 +8,7 @@ import { LIGHT_RECEIVER, LIGHT_SPEC, LIGHT_WINDOWS, evaluateLight, lightSource, 
 import { AMES_PROPS } from '../../domain/theatre/perspectiveExhibit';
 import { THEATRE_WINDOW_LABELS } from '../../domain/theatre/deviceStatus';
 import { THEATRE_STATIC_SOLIDS, getTheatreWorld } from '../../domain/theatre/world';
+import { THEATRE_BELLS, THEATRE_SHUTTER } from '../../domain/theatre/environment';
 import { GalleryActor } from './GalleryActor';
 import { computeSegmentTransform } from './segmentTransform';
 import type { SceneResources } from './resources';
@@ -22,7 +23,7 @@ function Blocks({ blocks, resources, material, name }: { blocks:readonly Block[]
   useEffect(()=>()=>mesh.dispose(),[mesh]);
   return <primitive object={mesh} dispose={null} />;
 }
-const omitted = new Set(['theatre-light-rail-body','theatre-coat-stand','theatre-ames-exhibit-volume','theatre-receiver-body']);
+const omitted = new Set(['theatre-light-rail-body','theatre-coat-stand','theatre-ames-exhibit-volume','theatre-receiver-body','theatre-bell-a-receiver','theatre-bell-b-receiver']);
 const architecture:Block[] = THEATRE_STATIC_SOLIDS.filter(b=>!omitted.has(b.id)).map(b=>({
   position:[(b.min.x+b.max.x)/2,(b.min.y+b.max.y)/2,(b.min.z+b.max.z)/2], scale:[b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z],
 }));
@@ -74,6 +75,7 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
   world:WorldGeometry; runtime:RefObject<ChapterRuntime>; resources:SceneResources; reducedMotion:boolean; onFrameError?:((error:unknown)=>void)|undefined;
 }) {
   const t=resources.theatreResources!, movingLight=useRef<THREE.Group>(null), crank=useRef<THREE.Group>(null), flywheel=useRef<THREE.Group>(null), motorIndicator=useRef<THREE.Mesh>(null), latch=useRef<THREE.Mesh>(null);
+  const bellIndicators=useRef<Record<string,THREE.Mesh|null>>({});
   const doors=useRef<Record<string,THREE.Group|null>>({}), windows=useRef<Record<string,THREE.Group|null>>({});
   const gateDefinitions=useMemo(()=>world.solids.filter(s=>s.kind==='door'),[world]);
   useFrame((_,delta)=>{
@@ -88,6 +90,7 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
       if(crank.current)crank.current.rotation.z=live.projectorAngle;
       if(flywheel.current && !current.paused && live.projectorSeconds>0)flywheel.current.rotation.z+=Math.min(.05,Math.max(0,delta))*(reducedMotion?1.4:4);
       if(motorIndicator.current)motorIndicator.current.material=live.projectorSeconds>0?t.amber:t.dark;
+      for(const bell of THEATRE_BELLS){const indicator=bellIndicators.current[bell.instanceId];if(indicator)indicator.material=live.environment.bells[bell.instanceId].cooldown>0?t.amber:t.dark;}
     }catch(error){if(onFrameError)onFrameError(error);else throw error;}
   });
   const source=opticalWorldPoint(lightSource(runtime.current.theatre?.rail??0));
@@ -102,6 +105,25 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
     <Blocks name="theatre-cover-end-edges" blocks={coverEdges} resources={resources} material={t.trim}/>
     <Blocks name="theatre-paired-route-marks" blocks={routeMarks} resources={resources} material={t.trim}/>
     <Blocks name="theatre-distinct-passage-frames" blocks={passageFrames} resources={resources} material={t.trim}/>
+    {THEATRE_BELLS.map(bell=><group key={bell.instanceId} name={bell.instanceId}>
+      <group name={`${bell.instanceId}-panel`} position={[bell.fixture.center.x,bell.fixture.center.y,bell.fixture.center.z]} rotation={[0,Math.atan2(bell.fixture.normal.x,bell.fixture.normal.z),0]}>
+        <mesh geometry={resources.box} material={t.dark} scale={[.47,.53,.075]}/>
+        <mesh geometry={resources.ring} material={t.amber} position={[0,-.04,-.055]} scale={[.38,.38,1]}/>
+        {Array.from({length:bell.number},(_,i)=><mesh key={i} geometry={resources.box} material={t.label} position={[(i-(bell.number-1)/2)*.09,.16,-.055]} scale={[.035,.13,.012]}/>)}
+      </group>
+      <group name={`${bell.instanceId}-receiver`} position={[bell.receiver.x,bell.receiver.y,bell.receiver.z]}>
+        <mesh geometry={resources.box} material={t.metal} scale={[.24,.30,.20]}/>
+        <mesh ref={mesh=>{bellIndicators.current[bell.instanceId]=mesh;}} geometry={resources.box} material={t.dark} position={[0,.11,-.11]} scale={[.13,.06,.02]}/>
+        {Array.from({length:bell.number},(_,i)=><mesh key={i} geometry={resources.box} material={t.label} position={[(i-(bell.number-1)/2)*.09,-.04,-.11]} scale={[.035,.11,.02]}/>)}
+      </group>
+      <mesh name={`${bell.instanceId}-wire-up`} geometry={resources.box} material={t.trim} position={[bell.fixture.center.x,2.35,bell.fixture.center.z]} scale={[.025,1.55,.025]}/>
+      <mesh name={`${bell.instanceId}-wire-cross`} geometry={resources.box} material={t.trim} position={[(bell.fixture.center.x+bell.receiver.x)/2,3.15,bell.fixture.center.z]} scale={[Math.abs(bell.receiver.x-bell.fixture.center.x),.025,.025]}/>
+      <mesh name={`${bell.instanceId}-wire-down`} geometry={resources.box} material={t.trim} position={[bell.receiver.x,2.94,(bell.fixture.center.z+bell.receiver.z)/2]} scale={[.025,.025,Math.abs(bell.receiver.z-bell.fixture.center.z)]}/>
+    </group>)}
+    {THEATRE_SHUTTER.handles.map((handle,i)=><group key={i} name={`manual-shutter-handle-${i}`} position={[handle.center.x,handle.center.y,handle.center.z]}>
+      <mesh geometry={resources.box} material={t.dark} scale={[.54,.70,.08]}/>
+      <mesh geometry={resources.box} material={t.amber} position={[0,0,i===0?-.07:.07]} scale={[.34,.13,.13]}/>
+    </group>)}
     <group name="control-room-paired-bar-landmark" position={[0,2.10,24.465]}>
       <mesh geometry={resources.box} material={t.dark} scale={[.92,.72,.025]}/>
       {[-.18,.18].map(x=><mesh key={x} geometry={resources.box} material={t.label} position={[x,0,-.018]} scale={[.075,.42,.012]}/>)}

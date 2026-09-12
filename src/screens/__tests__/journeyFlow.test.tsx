@@ -5,6 +5,7 @@ import { requireOptionalNativeModule } from 'expo';
 import { PerspectiveCamera } from 'three';
 
 import { skipQuickSetup } from '../../domain/calibration/quickSetup';
+import { STAGE_DEFINITIONS } from '../../domain/stageKit/definitions';
 import { vaultCheckpoint } from '../../storage/testFixtures/vault';
 import { createVaultCheckpoint } from '../../domain/vault/checkpoint';
 import App from '../../../App';
@@ -511,7 +512,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(view.queryByText('補助表示')).toBeNull();
     expect(remove).toHaveBeenCalledTimes(2);
     // Full reset must remove the new chapter's independent save and recovery key too.
-    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY]);
+    expect(remove).toHaveBeenCalledWith([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY,
+      ...STAGE_DEFINITIONS.filter(stage=>stage.renderKind==='simple').flatMap(stage=>[stage.saveKey,`${stage.saveKey}.backup`])]);
     await act(() => finishDeletion?.());
     expect(await view.findByTestId('select-perception-gallery-v1')).toBeTruthy();
     await waitFor(async () => {

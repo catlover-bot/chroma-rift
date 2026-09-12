@@ -118,7 +118,7 @@ export type FirstPersonChapterSummary = {
   powerCount?: 0 | 1 | 2;
   deviceCount?: 1 | 2;
   serviceRouteFound?: boolean;
-  chapterVersion?: 1 | 2 | 3;
+  chapterVersion?: number;
   migratedCompletion?: boolean;
   discoveredMechanisms: string[];
 };

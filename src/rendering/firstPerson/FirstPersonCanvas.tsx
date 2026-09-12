@@ -14,6 +14,7 @@ import { recordCanvasLayout, updateDiagnosticEnvironment } from './diagnostics';
 import { createNativeSceneSession, type NativeSceneSession } from './nativeSceneSession';
 import { PROOF_CAMERA, ProofScene } from './ProofScene';
 import { createSceneResources } from './resources';
+import { stageDefinition } from '../../domain/stageKit/definitions';
 import { DEFAULT_EMBLEM_APPEARANCE } from './emblemSurface';
 import { stopController } from './runtimeController';
 import { worldForController } from './controllerContext';
@@ -43,7 +44,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   const proof = props.sceneMode === 'proof' && __DEV__;
   const lifecycle = useMemo(() => createCanvasLifecycle(controller, onError), [controller, onError]);
   const session = useMemo(() => createNativeSceneSession(controller, lifecycle, proof, onReady), [controller, lifecycle, proof, onReady]);
-  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery || !!controller.runtime.vault || !!controller.runtime.theatre, !!controller.runtime.vault, !!controller.runtime.theatre), [controller, proof, props.quality]);
+  const resources = useMemo(() => proof ? undefined : createSceneResources(props.quality === 'low', controller.lab || controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre || stageDefinition(controller.runtime.chapterId)?.renderKind==='simple' ? null : { ...DEFAULT_EMBLEM_APPEARANCE, seed: controller.runtime.emblem.seed }, !!controller.runtime.gallery || !!controller.runtime.vault || !!controller.runtime.theatre, !!controller.runtime.vault, !!controller.runtime.theatre), [controller, proof, props.quality]);
   const runtime = useMemo(() => ({ get current() { return controller.runtime; } }), [controller]);
   const world = useMemo(() => worldForController({ ...controller, runtime: snapshot.runtime }), [controller, snapshot.runtime]);
   const remainingStartup = useRef(props.startupTimeoutMs ?? 12000);

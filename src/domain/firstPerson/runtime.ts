@@ -1,17 +1,11 @@
 import { createBaseRuntime, initialProgress } from './baseRuntime';
-import { createGalleryRuntime } from '../gallery/runtime';
-import { createTheatreRuntime } from '../theatre/runtime';
-import { THEATRE_CHAPTER_ID } from '../theatre/definition';
-import { advanceTheatre, applyTheatreCommand, cancelTheatreManipulation } from '../theatre/state';
-import { theatreHint, theatreObjective } from '../theatre/selectors';
+import { stageModule, STAGE_MODULES } from '../stageKit/modules';
+import { cancelTheatreManipulation } from '../theatre/state';
+import { THEATRE_BELLS, THEATRE_SHUTTER } from '../theatre/environment';
 import type { TheatreAction } from '../theatre/types';
-import { createVaultRuntime } from '../vault/runtime';
-import { VAULT_CHAPTER_ID } from '../vault/definition';
-import { advanceVault, applyVaultCommand, cancelVaultManipulation } from '../vault/state';
-import { vaultHint, vaultObjective } from '../vault/selectors';
-import { advanceGallery, applyGalleryCommand, cancelGalleryManipulation } from '../gallery/state';
-import { GALLERY_CHAPTER_ID, GALLERY_SHADOW_FIXTURE, GALLERY_CONTOUR_FIXTURE, GALLERY_EXIT_PANEL_FIXTURE, GALLERY_FINAL_DOOR_FIXTURE } from '../gallery/definition';
-import { galleryDeviceStatus, galleryObjective, galleryPowerCount } from '../gallery/selectors';
+import { cancelVaultManipulation } from '../vault/state';
+import { applyGalleryCommand, cancelGalleryManipulation } from '../gallery/state';
+import { galleryPowerCount } from '../gallery/selectors';
 import type { GalleryAction } from '../gallery/types';
 import { checkpointSeal, reduceSeal, sealHint, type SealResult } from '../emblem/puzzle';
 import type { Glyph } from '../emblem/stimulus';
@@ -30,9 +24,9 @@ export { occlusionCertificate } from './occlusion';
 export { initialProgress, emblemCheckpointForProgress } from './baseRuntime';
 export function createInitialRuntime(checkpoint?: CheckpointState, session?: number, chapterId = CHAPTER.id): ChapterRuntime {
   const selectedChapter = checkpoint?.chapterId ?? chapterId;
-  if (selectedChapter === THEATRE_CHAPTER_ID) return createTheatreRuntime(checkpoint, session);
-  if (selectedChapter === VAULT_CHAPTER_ID) return createVaultRuntime(checkpoint, session);
-  if (selectedChapter === GALLERY_CHAPTER_ID) return createGalleryRuntime(checkpoint, session);
+  const module = stageModule(selectedChapter);
+  if (module) return module.create(checkpoint, session);
+  if (selectedChapter !== CHAPTER.id) throw new RangeError(`Unknown stage: ${selectedChapter}`);
   const progress = checkpoint ? { ...checkpoint.progress } : initialProgress();
   delete progress.gallery;
   return createBaseRuntime(selectedChapter, checkpoint?.pose ?? CHAPTER.spawn, progress, session);
@@ -74,14 +68,8 @@ export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, d
     doorBOpen: runtime.progress.sealB ? Math.min(1, runtime.doorBOpen + elapsed / 1.25) : 0,
     doorExitOpen: runtime.progress.gallery ? runtime.progress.gallery.finalDoorClosed ? 0 : 1 : runtime.progress.exitDoorOpen ? Math.min(1, runtime.doorExitOpen + elapsed / 1.25) : 0,
   };
-  if (runtime.progress.theatre) return { ...advanceTheatre(next, elapsed), alignment: false };
-  if (runtime.progress.vault) return { ...advanceVault(next, elapsed), alignment: false };
-  next = advanceGallery(next, elapsed);
-  if (runtime.progress.gallery) {
-    next.alignment = false;
-    // Reaching the final threshold never auto-clears; close-exit is explicit.
-    return next;
-  }
+  const module = stageModule(runtime.chapterId);
+  if (module) return { ...module.advance(next, elapsed), alignment: false };
   next.alignment = runtime.progress.sealB || (!!matrices && runtime.progress.sealA && evaluateKeyAlignment(pose, getWorld(next), matrices, runtime.alignment).aligned);
   if (canApplyReturnVariant(next)) next = { ...next, progress: { ...next.progress, variant: 'exit' } };
   if (next.progress.exitDoorOpen && next.progress.variant === 'exit' && next.pose.position.z >= 14.75) next = { ...next, progress: { ...next.progress, cleared: true } };
@@ -98,6 +86,8 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
   if (runtime.paused || runtime.progress.cleared) return runtime;
   const candidate = evaluateInteraction(getWorld(runtime), runtime.pose, runtime.progress, matrices, runtime.alignment);
   if (candidate.kind !== 'ready' || candidate.target.id !== expectedId) return runtime;
+  const stageInteraction=stageModule(runtime.chapterId)?.interact;
+  if(stageInteraction)return stageInteraction(runtime,expectedId);
   const progress = runtime.progress;
   if (progress.gallery && runtime.gallery && matrices) {
     const action: GalleryAction | undefined = expectedId === 'gallery-light' ? { type: 'light-on' } :
@@ -113,14 +103,21 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
       if (!runtime.theatre || !matrices) return runtime;
       const type: TheatreAction['type'] = expectedId === 'theatre-light' ? 'enter-light' : expectedId === 'theatre-inspection' ? 'open-inspection' : expectedId === 'theatre-ames-side' ? 'inspect-depth' : expectedId === 'theatre-bypass' ? 'open-bypass' : expectedId === 'theatre-projector' ? 'enter-projector' : 'lower-curtain';
       const action = { type } as TheatreAction;
-      return applyTheatreCommand(runtime, {sessionId:runtime.theatre.sessionId,seq:runtime.theatre.lastSeq+1,nowMs:runtime.theatre.lastNowMs+1,action}, {rendererReady:true,foreground:true,targetId:expectedId}).runtime;
+      return STAGE_MODULES['shadow-theatre-v1'].command(runtime, {sessionId:runtime.theatre.sessionId,seq:runtime.theatre.lastSeq+1,nowMs:runtime.theatre.lastNowMs+1,action}, {rendererReady:true,foreground:true,targetId:expectedId}).runtime;
+    }
+    case 'theatre-bell-a': case 'theatre-bell-b': case 'theatre-shutter-south': case 'theatre-shutter-north': {
+      if(!runtime.theatre||!matrices)return runtime;
+      const bell=THEATRE_BELLS.find(item=>item.instanceId===expectedId);
+      const action: TheatreAction={type:'activate-instance',instanceId:bell?.instanceId??THEATRE_SHUTTER.instanceId};
+      return STAGE_MODULES['shadow-theatre-v1'].command(runtime,{sessionId:runtime.theatre.sessionId,seq:runtime.theatre.lastSeq+1,nowMs:runtime.theatre.lastNowMs+1,action},
+        {rendererReady:true,foreground:true,targetId:expectedId}).runtime;
     }
     case 'vault-length': case 'vault-rod': case 'vault-cafe': case 'vault-partition': case 'vault-exit': {
       if (!runtime.vault || !matrices) return runtime;
       const action = expectedId === 'vault-length' || expectedId === 'vault-rod'
         ? { type: 'enter' as const, puzzle: expectedId === 'vault-length' ? 'length' as const : 'rod' as const }
         : { type: expectedId === 'vault-cafe' ? 'cafe-inspect' as const : expectedId === 'vault-partition' ? 'close-partition' as const : 'close-exit' as const };
-      return applyVaultCommand(runtime, { sessionId: runtime.vault.sessionId, seq: runtime.vault.lastSeq + 1, nowMs: runtime.vault.lastNowMs + 1, action },
+      return STAGE_MODULES['uncanny-vault-v1'].command(runtime, { sessionId: runtime.vault.sessionId, seq: runtime.vault.lastSeq + 1, nowMs: runtime.vault.lastNowMs + 1, action },
         { rendererReady: true, foreground: true, targetId: expectedId }).runtime;
     }
     case 'shadow-panel':
@@ -154,10 +151,12 @@ export function interact(runtime: ChapterRuntime, expectedId: InteractableId, ma
     case 'exit':
       return progress.exitDoorOpen || progress.variant !== 'exit' || !progress.sealA || !progress.sealB ? runtime : { ...runtime, progress: { ...progress, exitDoorOpen: true } };
   }
+  return runtime;
 }
 export function pauseRuntime(runtime: ChapterRuntime): ChapterRuntime {
   const stopped = cancelTheatreManipulation(cancelVaultManipulation(cancelGalleryManipulation(runtime, true), true), true);
-  return stopped.paused ? stopped : { ...stopped, paused: true, emblem: { ...stopped.emblem, paused: true } };
+  const quieted=stopped.theatre?.environmentNoise?{...stopped,theatre:{...stopped.theatre,environmentNoise:undefined}}:stopped;
+  return quieted.paused ? quieted : { ...quieted, paused: true, emblem: { ...quieted.emblem, paused: true } };
 }
 export function resumeRuntime(runtime: ChapterRuntime): ChapterRuntime { return runtime.paused ? { ...runtime, paused: false, emblem: { ...runtime.emblem, paused: false } } : runtime; }
 export function setHintStage(runtime: ChapterRuntime, stage: HintStage): ChapterRuntime {
@@ -171,20 +170,9 @@ export function setHintStage(runtime: ChapterRuntime, stage: HintStage): Chapter
 
 export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?: Vec3 } {
   const { progress } = runtime;
-  if (progress.theatre) return theatreHint(runtime);
-  if (progress.vault) return vaultHint(runtime);
+  const module=stageModule(runtime.chapterId);
+  if(module)return module.present(runtime).hint;
   const stage = Math.max(1, progress.hintStage) - 1;
-  if (progress.gallery) {
-    const g = progress.gallery;
-    if (g.powerConnected) return { text: ['サービス通路を進んで非常扉へ。', '曲がり角の先には、棚の陰に退ける場所がある。', '安全を確かめて非常扉を開き、その先へ歩こう。'][stage]!, target: GALLERY_FINAL_DOOR_FIXTURE.center };
-    if (galleryPowerCount(g) === 2) return { text: '出口の盤に予備電源を二つ接続しよう。', target: GALLERY_EXIT_PANEL_FIXTURE.center };
-    const nearestC = Math.hypot(runtime.pose.position.x - GALLERY_CONTOUR_FIXTURE.center.x, runtime.pose.position.z - GALLERY_CONTOUR_FIXTURE.center.z) < Math.hypot(runtime.pose.position.x - GALLERY_SHADOW_FIXTURE.center.x, runtime.pose.position.z - GALLERY_SHADOW_FIXTURE.center.z);
-    const puzzle = !g.powerTaken.contour && (g.powerTaken.shadow || runtime.gallery?.mode === 'contour' || nearestC) ? 'contour' : 'shadow';
-    const device = galleryDeviceStatus(runtime, puzzle)!;
-    if (device.canTakePower) return { text: '開いた引き出しから「電源を取る」を押そう。', target: puzzle === 'shadow' ? GALLERY_SHADOW_FIXTURE.center : GALLERY_CONTOUR_FIXTURE.center };
-    return puzzle === 'shadow' ? { text: ['左の部屋で、四角い見本を下の枠へ運ぼう。', '別々の二枚を、同じ中立の背景に並べよう。', '同じ灰色か確かめて「比べる」を押そう。背景をそろえる比較は任意です。'][stage]!, target: GALLERY_SHADOW_FIXTURE.center } :
-      { text: ['右の部屋で、黒い円盤のふちをなぞって回そう。', '三つの切れ目を、中央へ向けよう。', '3/3になったら指を離し「引き出しを開く」を押そう。輪郭ガイドは任意です。'][stage]!, target: GALLERY_CONTOUR_FIXTURE.center };
-  }
   if (!progress.sealA) return { text: sealHint(runtime.emblem), target: EMBLEM_FIXTURE.center };
   if (!progress.sealB) return { text: KEY_PUZZLE.hints[stage]!, target: OBSERVATION_POSE.position };
   if (progress.variant !== 'exit') return { text: '鍵の部屋の観察の輪へ戻ろう。帰り道の準備が整います。', target: OBSERVATION_POSE.position };
@@ -193,9 +181,8 @@ export function hintForRuntime(runtime: ChapterRuntime): { text: string; target?
 }
 export function objectiveForRuntime(runtime: ChapterRuntime): string {
   const p = runtime.progress;
-  if (p.theatre) return theatreObjective(runtime);
-  if (p.vault) return vaultObjective(runtime);
-  if (p.gallery) return galleryObjective(runtime);
+  const module=stageModule(runtime.chapterId);
+  if(module)return module.present(runtime).objective;
   if (p.cleared) return '帰り道のない入口から脱出した。';
   if (p.exitDoorOpen) return '開いた扉の外へ歩こう。';
   if (p.sealB) return '覚えのある入口へ戻ろう。';

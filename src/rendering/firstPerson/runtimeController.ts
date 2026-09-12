@@ -2,9 +2,12 @@ import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 import { controllerCanInteract, syncCamera, worldForController } from './controllerContext';
 import { soundForControllerTransition } from './controllerTransitionAudio';
 import { cancelTheatreManipulation } from '../../domain/theatre/state';
-import { THEATRE_CURTAIN_FIXTURE, THEATRE_PROJECTOR } from '../../domain/theatre/definition';
+import { THEATRE_CURTAIN_FIXTURE } from '../../domain/theatre/definition';
+import { THEATRE_BELLS, THEATRE_SHUTTER } from '../../domain/theatre/environment';
+import { stageInputPolicy, stageModule } from '../../domain/stageKit/modules';
+import { projectorCue } from '../../domain/theatre/cues';
 import { theatreLightStatus, theatreProjectorStatus } from '../../domain/theatre/deviceStatus';
-import { theatreAction, theatreDeviceAcquisition, theatreCurtainAcquisition, advanceTheatreControllerActor } from './theatreController';
+import { theatreAction, theatreDeviceAcquisition, theatreCurtainAcquisition, theatreEnvironmentAcquisition, advanceTheatreControllerActor } from './theatreController';
 import { advanceVaultActor } from '../../domain/vault/actor';
 import { cancelVaultManipulation } from '../../domain/vault/state';
 import { VAULT_EXIT_FIXTURE, VAULT_METAL_FLOORS } from '../../domain/vault/definition';
@@ -35,7 +38,7 @@ export { soundForControllerTransition } from './controllerTransitionAudio';
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
   if (lab) runtime.pose = { position: { x: 0, y: 1.6, z: 2.6 }, yaw: 0, pitch: 0 };
-  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorPlants: [], pendingActorEvents: [], pendingExitImpact: false, pendingProjectorPulse: false, retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
+  return { runtime, horrorIntensity: 'standard', audioSequence: 0, pendingFootstepDistance: 0, pendingActorFootstepDistance: 0, pendingActorPlants: [], pendingActorEvents: [], pendingExitImpact: false, pendingProjectorPulse: false, pendingTheatreCues: [], retired: false, screenReader: false, commandSequence: 0, lastReceivedSequence: -1, feedbackMessage: '', lastCompareMs: -Infinity, input: createTouchInput(), lab, sensitivity: 1, verticalSensitivity: 1, tutorial: createTutorial(runtime.pose, tutorialCompleted || lab, runtime.progress.guideExamined), simpleStep: 0, viewCommandRevision: 0, matrices: undefined, diagnostics: createFirstPersonDiagnostics(lab ? 'lab' : 'chapter'), metrics: { frames: 0, elapsed: 0, drawCalls: 0, geometries: 0, textures: 0 } };
 }
 export function recordFrameStats(controller: RuntimeController, delta: number, info: THREE.WebGLInfo): void {
   if (controller.runtime.paused || delta <= 0 || delta > 0.5 || !Number.isFinite(delta)) return;
@@ -51,7 +54,7 @@ export function stopController(controller: RuntimeController): void {
   controller.simpleStep = 0;
   controller.pendingFootstepDistance = 0;
   controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
-  controller.pendingExitImpact = false; controller.pendingProjectorPulse = false;
+  controller.pendingExitImpact = false; controller.pendingProjectorPulse = false; controller.pendingTheatreCues = [];
 }
 export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 'turn'; yaw: number; pitch: number } | { type: 'step'; forward: number } | { type: 'hint'; stage: HintStage } | { type: 'sensitivity'; value: number; vertical?: number } | { type: 'verticalSensitivity'; value: number };
 /** Explicit commands are the only UI mutation boundary of the simulation store.
@@ -88,9 +91,9 @@ export function commandController(controller: RuntimeController, action: Control
       controller.viewCommandRevision += 1;
       break;
     }
-    case 'step': if (!controller.input.releaseBarrier.length && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore') && (!controller.runtime.vault || controller.runtime.vault.mode === 'explore') && (!controller.runtime.theatre || controller.runtime.theatre.mode === 'explore' && !controller.runtime.theatre.projectorArmed) && !controller.runtime.paused) controller.simpleStep = action.forward; break;
+    case 'step': if (!controller.input.releaseBarrier.length && stageInputPolicy(controller.runtime).move && !controller.runtime.paused) controller.simpleStep = action.forward; break;
     case 'turn':
-      if (!controller.input.releaseBarrier.length && !controller.runtime.paused && (!controller.runtime.gallery || controller.runtime.gallery.mode === 'explore') && (!controller.runtime.vault || controller.runtime.vault.mode === 'explore') && (!controller.runtime.theatre || controller.runtime.theatre.mode === 'explore' && !controller.runtime.theatre.projectorArmed)) {
+      if (!controller.input.releaseBarrier.length && !controller.runtime.paused && stageInputPolicy(controller.runtime).look) {
         const before = controller.runtime.pose;
         controller.runtime = { ...controller.runtime, pose: adjustLook(before, action.yaw, action.pitch) };
         recordTutorialMotion(controller.tutorial, before, controller.runtime.pose, true);
@@ -117,13 +120,14 @@ export function advanceController(controller: RuntimeController, delta: number, 
     return;
   }
   if (controller.retired || controller.runtime.paused || controller.runtime.progress.cleared) { stopController(controller); return; }
-  if (controller.runtime.gallery && controller.runtime.gallery.mode !== 'explore' || controller.runtime.vault && controller.runtime.vault.mode !== 'explore' || controller.runtime.theatre?.mode === 'light') {
+  const inputPolicy=stageInputPolicy(controller.runtime);
+  if (!inputPolicy.move && !inputPolicy.dangerAdvances) {
     clearTouchInput(controller.input); controller.simpleStep = 0;
     const matrices = syncCamera(controller, camera);
     controller.runtime = evaluateRuntime(controller.runtime, controller.runtime.pose, delta, matrices);
     return;
   }
-  if (controller.runtime.theatre?.projectorArmed) { clearTouchInput(controller.input); controller.simpleStep = 0; }
+  if (!inputPolicy.move) { clearTouchInput(controller.input); controller.simpleStep = 0; }
   const before = controller.runtime.pose;
   const look = consumeLook(controller.input);
   const looked = adjustLook(controller.runtime.pose, -look.x * 0.003 * controller.sensitivity, -look.y * 0.003 * controller.sensitivity * controller.verticalSensitivity);
@@ -185,7 +189,7 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   const target = cue.kind === 'ready' || cue.kind === 'locked' ? cue.target : undefined;
   const candidate = cue.target?.id;
   const acquisition = candidate === 'vault-length' || candidate === 'vault-rod' ? vaultDeviceAcquisition(controller, candidate === 'vault-length' ? 'length' : 'rod')
-    : candidate === 'shadow-panel' || candidate === 'contour-panel' || candidate === 'wiring-panel' ? galleryDeviceAcquisition(controller, candidate === 'shadow-panel' ? 'shadow' : candidate === 'contour-panel' ? 'contour' : 'wiring') : candidate === 'theatre-light' || candidate === 'theatre-projector' ? theatreDeviceAcquisition(controller, candidate === 'theatre-light' ? 'light' : 'projector') : candidate === 'theatre-curtain' ? theatreCurtainAcquisition(controller) : undefined;
+    : candidate === 'shadow-panel' || candidate === 'contour-panel' || candidate === 'wiring-panel' ? galleryDeviceAcquisition(controller, candidate === 'shadow-panel' ? 'shadow' : candidate === 'contour-panel' ? 'contour' : 'wiring') : candidate === 'theatre-light' || candidate === 'theatre-projector' ? theatreDeviceAcquisition(controller, candidate === 'theatre-light' ? 'light' : 'projector') : candidate === 'theatre-curtain' ? theatreCurtainAcquisition(controller) : candidate === 'theatre-bell-a' || candidate === 'theatre-bell-b' || candidate === 'theatre-shutter-south' || candidate === 'theatre-shutter-north' ? theatreEnvironmentAcquisition(controller,candidate) : undefined;
   const tutorial = controller.tutorial.milestones;
   const directions = ['北', '北西', '西', '南西', '南', '南東', '東', '北東'];
   const direction = directions[(Math.round(controller.runtime.pose.yaw / (Math.PI / 4)) + 8) % 8]!;
@@ -202,7 +206,9 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
   const theatreKey = theatre ? [theatre.mode, theatre.projectorArmed, theatre.checkpointId, theatre.activeDrag?.pointerId ?? '', theatre.feedback?.sequence ?? 0,
     theatreProjectorStatus(controller.runtime).key, lightStatus!.released, lightStatus!.canCommit, lightStatus!.showDragCue,
     ...lightStatus!.windows.map(w => w.lit)].join(':') : '';
-  const key = `${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${vaultKey}|${theatreKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
+  const module=stageModule(controller.runtime.chapterId);
+  const simpleKey=controller.runtime.stageSession&&module?.renderKind==='simple'?JSON.stringify(module.checkpoint(controller.runtime).stageData):'';
+  const key = `${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${controller.actorNotice?.sequence ?? 0}|${galleryKey}|${vaultKey}|${theatreKey}|${simpleKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
   return { ...(acquisition ? { acquisition } : {}), ...(controller.actorNotice ? { actorNotice: controller.actorNotice } : {}), runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
 export function interactController(controller: RuntimeController, expectedId: InteractableId): boolean {
@@ -215,6 +221,9 @@ export function interactController(controller: RuntimeController, expectedId: In
     if (expectedId === 'theatre-ames-side') return theatreAction(controller, { type: 'inspect-depth' });
     if (expectedId === 'theatre-bypass') return theatreAction(controller, { type: 'open-bypass' });
     if (expectedId === 'theatre-curtain') return theatreAction(controller, { type: 'lower-curtain' });
+    const bell=THEATRE_BELLS.find(item=>item.instanceId===expectedId);
+    if(bell)return theatreAction(controller,{type:'activate-instance',instanceId:bell.instanceId});
+    if(expectedId==='theatre-shutter-south'||expectedId==='theatre-shutter-north')return theatreAction(controller,{type:'activate-instance',instanceId:THEATRE_SHUTTER.instanceId});
     return false;
   }
   if (controller.runtime.vault) {
@@ -371,9 +380,11 @@ export function flushControllerAudioFrame(controller: RuntimeController): void {
   controller.pendingFootstepDistance = 0; controller.pendingActorFootstepDistance = 0; controller.pendingActorPlants = []; controller.pendingActorEvents = [];
   if (controller.pendingProjectorPulse) {
     controller.pendingProjectorPulse = false;
-    if (controllerCanInteract(controller) && controller.runtime.theatre?.projectorSeconds) controller.audio?.event({
-      sessionId: String(controller.runtime.session), sequence: ++controller.audioSequence, type: 'interaction', position: THEATRE_PROJECTOR.position });
+    if (controllerCanInteract(controller) && controller.runtime.theatre?.projectorSeconds) controller.pendingTheatreCues.push(projectorCue());
   }
+  const theatreCues=controller.pendingTheatreCues;
+  controller.pendingTheatreCues=[];
+  if(controllerCanInteract(controller))for(const cue of theatreCues)controller.audio?.event({sessionId:String(controller.runtime.session),sequence:++controller.audioSequence,type:cue.audio,position:cue.source});
   if (controller.pendingExitImpact && (!controller.runtime.theatre || controller.runtime.progress.theatre?.passageSealed) && (!controller.runtime.vault || controller.runtime.vault.exitClosureSeconds <= 1.15)) {
     controller.pendingExitImpact = false;
     if (!controller.retired && !controller.runtime.paused && (controller.runtime.progress.gallery?.finalDoorClosed || controller.runtime.progress.vault?.finalDoorClosed || controller.runtime.progress.theatre?.passageSealed && controller.horrorIntensity === 'standard') && controller.diagnostics.stage === 'ready' && controller.diagnostics.appActive !== false) {

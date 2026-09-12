@@ -29,10 +29,10 @@ export function theatreActorCanSeePlayer(runtime:ChapterRuntime):boolean {
   return d<=THEATRE_AI.visionRange&&(d<1e-8||(eye.direction.x*dx+eye.direction.y*dy+eye.direction.z*dz)/d>=Math.cos(THEATRE_AI.visionHalfAngle))&&!segmentOccluded(eye.position,p,getTheatreWorld(runtime));
 }
 export function theatreNoiseAudibility(actor:TheatreActor,noise:TheatreNoise,world:WorldGeometry):number {
-  if(!['footstep','metal','projector'].includes(noise.kind))return 0;
+  if(!['footstep','metal','projector','bell'].includes(noise.kind))return 0;
   // Projector is mechanical evidence at its physical emitter. Reclassifying its
   // sound family leaves the exact shared distance/opaque attenuation unchanged.
-  return vaultNoiseAudibility({...actor,phase:'patrol'},{...noise,kind:noise.kind==='projector'?'metal':noise.kind},world);
+  return vaultNoiseAudibility({...actor,phase:'patrol'},{...noise,kind:noise.kind==='projector'||noise.kind==='bell'?'metal':noise.kind},world);
 }
 function protectedPlayer(runtime:ChapterRuntime) {
   const p=runtime.pose.position;
@@ -86,7 +86,7 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
   if(sees)actor={...actor,lastSeen:copy(player),recognition:Math.min(1,actor.recognition+elapsed/THEATRE_AI.recognitionSeconds)};
   else actor={...actor,recognition:Math.max(0,actor.recognition-elapsed/.7)};
   let heard=false;
-  const noises=[live.projectorNoise,options.noise].filter((n):n is TheatreNoise=>!!n).sort((a,b)=>a.sequence-b.sequence);
+  const noises=[live.projectorNoise,live.environmentNoise,options.noise].filter((n):n is TheatreNoise=>!!n).sort((a,b)=>a.sequence-b.sequence);
   for(const noise of noises)if(Number.isSafeInteger(noise.sequence)&&noise.sequence>=0&&noise.sequence>actor.lastNoiseSequence){
     actor={...actor,lastNoiseSequence:noise.sequence};
     if(theatreNoiseAudibility(actor,noise,world)>=THEATRE_AI.noiseThreshold){actor={...actor,lastHeard:copy(noise.position)};heard=true;}
@@ -141,7 +141,7 @@ export function advanceTheatreActor(runtime:ChapterRuntime,dt:number,options:{in
   const gait:ActorGait=actor.phase==='resolved'?'idle':actor.phase==='crossing'?'patrol':actor.phase;
   const motion=advanceActorMotion(actor.motion,{...(target?{target}:{}),...(lookTarget?{lookTarget}:{}),...(desiredHeading===undefined?{}:{desiredHeading}),maxSpeed:speed,gait},elapsed,
     (from,to)=>theatreActorEdgeOpen(from,to,world)&&(actor.phase==='attack'||distance(to,player)>=.71||distance(to,player)>distance(from,player)+1e-7));
-  actor={...actor,motion:motion.state};next={...next,theatre:{...live,actor,projectorNoise:undefined}};
+  actor={...actor,motion:motion.state};next={...next,theatre:{...live,actor,projectorNoise:undefined,environmentNoise:undefined}};
   if(!story.crossingPresented&&actor.phase==='crossing'&&presented(next,options.matrices)){story={...story,crossingPresented:true};next={...next,progress:{...next.progress,theatre:{...saved,story}}};}
   if(!quiet&&!safe&&actor.phase==='attack'&&actor.attackCommitted&&!actor.attackHit&&actor.startupGrace<=0&&actor.contactCooldown<=0&&distance(actor.motion.position,player)<=THEATRE_AI.contactDistance&&!segmentOccluded(actorMotionEye(actor.motion).position,player,getTheatreWorld(next))){
     actor={...phase(actor,'recover'),attackHit:true,attackCommitted:false,startupGrace:THEATRE_AI.coldGrace,contactCooldown:THEATRE_AI.coldGrace,recognition:0,routeIndex:nearest(actor)};

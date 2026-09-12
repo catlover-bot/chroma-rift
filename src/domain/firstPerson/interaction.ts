@@ -21,7 +21,9 @@ function actionLabel(target: InteractableDefinition, progress?: PuzzleState): st
     case 'theatre-ames-side':
     case 'theatre-bypass':
     case 'theatre-projector':
-    case 'theatre-curtain': return target.label;
+    case 'theatre-curtain':
+    case 'theatre-bell-a': case 'theatre-bell-b':
+    case 'theatre-shutter-south': case 'theatre-shutter-north': return target.label;
     case 'vault-length': return '留め金を調整';
     case 'vault-rod': return '針を調整';
     case 'vault-cafe': return '目地を比べる';
@@ -44,6 +46,7 @@ function actionLabel(target: InteractableDefinition, progress?: PuzzleState): st
     case 'floor-device': return '装置を動かす';
     case 'key': return '鍵を重ねる';
     case 'exit': return progress?.gallery ? '扉を閉める' : '扉を開く';
+    default: return target.label;
   }
 }
 
@@ -56,6 +59,7 @@ function lockedReason(target: InteractableDefinition, progress: PuzzleState | un
     case 'theatre-bypass': return progress.theatre?.bypassOpen ? '保守通路は開通済み。' : progress.theatre?.inspectionShutterOpen ? undefined : '側面の点検窓を開こう。';
     case 'theatre-projector': return progress.theatre?.light.accepted ? undefined : '先に灯りを固定しよう。';
     case 'theatre-curtain': return progress.theatre?.curtainAccepted ? progress.theatre.passageSealed ? '防火幕は閉鎖済み。奥のサービス出口へ。' : '防火幕を下ろしています。' : progress.theatre?.light.accepted ? undefined : '先に灯りを固定しよう。';
+    case 'theatre-bell-a': case 'theatre-bell-b': case 'theatre-shutter-south': case 'theatre-shutter-north': return progress.theatre?.light.accepted ? undefined : '先に灯りを固定しよう。';
     case 'vault-length': return progress.vault ? undefined : 'この装置はありません。';
     case 'vault-rod': return progress.vault?.length.solved ? undefined : '先に留め金を固定しよう。';
     case 'vault-cafe': return undefined;

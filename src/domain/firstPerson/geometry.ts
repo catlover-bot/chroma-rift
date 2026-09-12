@@ -27,7 +27,7 @@ export function circleIntersectsBox(position: Vec3, volume: CollisionVolume, rad
   const z = clamp(position.z, volume.min.z, volume.max.z);
   return (position.x - x) ** 2 + (position.z - z) ** 2 < radius ** 2 - 0.0000001;
 }
-function floorSupports(position: Vec3, world: WorldGeometry): boolean {
+function floorSupports(position: Vec3, world: WorldGeometry<string>): boolean {
   // Union of the same flat room rectangles that the renderer draws. Checking
   // the footprint, rather than only its center, keeps toes inside the chapter.
   for (let i = -1; i < 8; i += 1) {
@@ -39,7 +39,7 @@ function floorSupports(position: Vec3, world: WorldGeometry): boolean {
 }
 /** Bounded diagnostic inspection. Keep this out of the collision substep loop;
  * its named results explain an unsafe pose without changing it or saved data. */
-export function inspectPoseSafety(pose: PlayerPose, world: WorldGeometry) {
+export function inspectPoseSafety(pose: PlayerPose, world: WorldGeometry<string>) {
   const finite = [pose.position.x, pose.position.y, pose.position.z, pose.yaw, pose.pitch].every(Number.isFinite);
   return {
     finite,
@@ -49,14 +49,14 @@ export function inspectPoseSafety(pose: PlayerPose, world: WorldGeometry) {
     intersectingSolidIds: finite ? world.solids.filter((volume) => circleIntersectsBox(pose.position, volume)).map((volume) => volume.id) : [],
   };
 }
-export function isSafePose(pose: PlayerPose, world: WorldGeometry): boolean {
+export function isSafePose(pose: PlayerPose, world: WorldGeometry<string>): boolean {
   const { position, yaw, pitch } = pose;
   if (![position.x, position.y, position.z, yaw, pitch].every(Number.isFinite) || Math.abs(position.y - EYE_HEIGHT) > 0.001 || Math.abs(pitch) > MAX_PITCH) return false;
   return floorSupports(position, world) && !world.solids.some((volume) => circleIntersectsBox(position, volume));
 }
 /** Already-shaped pad input skips a second dead zone; discrete/domain callers
  * retain the established raw-input curve. Both paths clamp diagonal speed. */
-export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number, world: WorldGeometry, analogInput = false): PlayerPose {
+export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number, world: WorldGeometry<string>, analogInput = false): PlayerPose {
   if (!Number.isFinite(dt) || dt <= 0 || !isSafePose(pose, world)) return pose;
   const finite = Number.isFinite(input.strafe) && Number.isFinite(input.forward);
   const length = Math.max(1, Math.hypot(input.strafe, input.forward));
@@ -107,7 +107,7 @@ export function raySphereDistance(origin: Vec3, direction: Vec3, center: Vec3, r
   const far = -along + Math.sqrt(discriminant);
   return near >= 0 ? near : far >= 0 ? 0 : undefined;
 }
-export function segmentOccluded(origin: Vec3, target: Vec3, world: WorldGeometry, ignoreId?: string): boolean {
+export function segmentOccluded(origin: Vec3, target: Vec3, world: WorldGeometry<string>, ignoreId?: string): boolean {
   const difference = { x: target.x - origin.x, y: target.y - origin.y, z: target.z - origin.z };
   const length = Math.hypot(difference.x, difference.y, difference.z);
   if (length < 0.00001) return false;
@@ -122,7 +122,7 @@ export function segmentOccluded(origin: Vec3, target: Vec3, world: WorldGeometry
 /** Any occlusion along a whole line fragment, not only its end points. The
  * camera and line form a triangle; clip it against each opaque box. A remaining
  * polygon certifies that some ray towards the visible line meets the wall. */
-export function shapeSegmentOccluded(origin: Vec3, start: Vec3, end: Vec3, world: WorldGeometry): boolean {
+export function shapeSegmentOccluded(origin: Vec3, start: Vec3, end: Vec3, world: WorldGeometry<string>): boolean {
   return world.solids.some((volume) => {
     if (!volume.opaque) return false;
     let polygon = [origin, start, end];

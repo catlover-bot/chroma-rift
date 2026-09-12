@@ -9,6 +9,7 @@ import type { interactionCue } from '../../domain/firstPerson/interactionCue';
 import type { FirstPersonInput } from './touchInput';
 import type { FirstPersonDiagnostics } from './diagnostics';
 import type { NotebookMaskPreview } from './notebookCamera';
+import type { TheatreCue } from '../../domain/theatre/cues';
 
 /** Controller state contracts have no runtime imports or initialization. */
 export type RuntimeController = {
@@ -24,12 +25,14 @@ export type RuntimeController = {
   pendingActorEvents: (GalleryActorEvent | VaultActorEvent)[];
   pendingExitImpact: boolean;
   pendingProjectorPulse: boolean;
+  pendingTheatreCues: TheatreCue[];
   actorNotice?: { sequence: number; text: string };
   retired: boolean;
   screenReader: boolean;
   commandSequence: number;
   lastReceivedSequence: number;
   feedbackMessage: string;
+  lastCommand?: { type: string; accepted: boolean; reason: string };
   lastCompareMs: number;
   input: FirstPersonInput;
   lab: boolean;

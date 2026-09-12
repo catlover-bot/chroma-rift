@@ -1,6 +1,4 @@
-import { getTheatreWorld } from '../theatre/world';
-import { getVaultWorld } from '../vault/world';
-import { getGalleryWorld } from '../gallery/world';
+import { stageModule } from '../stageKit/modules';
 import { EMBLEM_FIXTURE, EMBLEM_FIXTURE_SOLIDS, EMBLEM_SWITCHES } from './emblemFixture';
 import { boundaryWalls, box } from './boundaryWalls';
 import { FLOOR_PUZZLE, FRAME_CENTER, KEY_FRAGMENTS, KEY_FRAME, KEY_PUZZLE, ROOMS } from './legacyDefinition';
@@ -23,10 +21,9 @@ const layouts = {
 } as const;
 const staticWalls = { entrance: [...boundaryWalls(layouts.entrance), ...FIXED_WALLS], exit: [...boundaryWalls(layouts.exit), ...FIXED_WALLS] };
 
-export function getWorld(runtime: Pick<ChapterRuntime, 'progress' | 'doorAOpen' | 'doorBOpen' | 'doorExitOpen' | 'alignment' | 'gallery' | 'vault' | 'theatre'>): WorldGeometry {
-  if (runtime.progress.theatre) return getTheatreWorld(runtime);
-  if (runtime.progress.vault) return getVaultWorld(runtime);
-  if (runtime.progress.gallery) return getGalleryWorld(runtime);
+export function getWorld(runtime: ChapterRuntime): WorldGeometry {
+  const module = stageModule(runtime.chapterId);
+  if (module) return module.world(runtime);
   const { progress } = runtime;
   const solids = [...staticWalls[progress.variant],
     box(FLOOR_PUZZLE.success.opensDoor, -1, 1, -8.12, -7.92, 'door', runtime.doorAOpen * 3.3, 3.2 + runtime.doorAOpen * 3.3),

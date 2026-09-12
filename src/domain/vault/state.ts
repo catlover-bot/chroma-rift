@@ -1,9 +1,11 @@
 import { clamp } from '../firstPerson/geometry';
+import { beginLinearDrag, previewLinearDrag, type LinearSpec } from '../stageKit/linearDrag';
 import type { ChapterRuntime, PlayerPose } from '../firstPerson/types';
 import { DEVICE_HANDLE_HIT_RADIUS, LENGTH_SPEC, ROD_SPEC, boundLength, lengthMatches, normalizeRodAngle, rodMatches, rodTargetAngle } from './specs';
 import { VAULT_CHECKPOINTS, VAULT_ROD_FIXTURE, VAULT_SEED, VAULT_SPAWN } from './definition';
 import type { VaultCommand, VaultProgress, VaultTransient } from './types';
 import { initialVaultActor } from './actor';
+const LENGTH_DRAG_SPEC: LinearSpec = { min: LENGTH_SPEC.minLength, max: LENGTH_SPEC.maxLength, handleRadius: DEVICE_HANDLE_HIT_RADIUS, axis: 'x', scale: 1, direction: 1 };
 export function initialVaultProgress(seed = VAULT_SEED): VaultProgress {
   return { schemaVersion: 1, specVersion: 1, seed: Number.isSafeInteger(seed) && seed >= 0 && seed <= 0xffffffff ? seed : VAULT_SEED,
     length: { length: LENGTH_SPEC.initialLength, solved: false, attempts: 0 }, rod: { angle: ROD_SPEC.initialAngle, solved: false, attempts: 0 },
@@ -89,12 +91,12 @@ export function applyVaultCommand(runtime: ChapterRuntime, command: VaultCommand
       if (live.activeDrag || !Number.isSafeInteger(a.pointerId) || !finitePoint(a.point)) return reject(consumed);
       const handle = puzzle === 'length' ? { x: LENGTH_SPEC.left + v.length, y: LENGTH_SPEC.sliderY } :
         { x: Math.sin(v.angle) * ROD_SPEC.length / 2, y: Math.cos(v.angle) * ROD_SPEC.length / 2 };
-      if (Math.hypot(a.point.x - handle.x, a.point.y - handle.y) > DEVICE_HANDLE_HIT_RADIUS && (puzzle === 'length' || Math.hypot(a.point.x + handle.x, a.point.y + handle.y) > DEVICE_HANDLE_HIT_RADIUS)) return reject(consumed);
+      if (puzzle === 'length' ? !beginLinearDrag(a.pointerId, a.point, handle, v.length, LENGTH_DRAG_SPEC) : Math.hypot(a.point.x - handle.x, a.point.y - handle.y) > DEVICE_HANDLE_HIT_RADIUS && Math.hypot(a.point.x + handle.x, a.point.y + handle.y) > DEVICE_HANDLE_HIT_RADIUS) return reject(consumed);
       v = { ...v, activeDrag: { puzzle, pointerId: a.pointerId, startValue: puzzle === 'length' ? v.length : v.angle, startPoint: { ...a.point }, lastPointerAngle: Math.atan2(a.point.x, a.point.y) } };
     } else if (a.type === 'drag-move') {
       const drag = live.activeDrag;
       if (!drag || drag.pointerId !== a.pointerId || !finitePoint(a.point)) return reject(consumed);
-      if (puzzle === 'length') v = { ...v, length: boundLength(drag.startValue + a.point.x - drag.startPoint.x) };
+      if (puzzle === 'length') v = { ...v, length: previewLinearDrag(drag, a.pointerId, a.point, LENGTH_DRAG_SPEC)! };
       else {
         if (Math.hypot(a.point.x, a.point.y) < .05) return reject(consumed);
         const current = Math.atan2(a.point.x, a.point.y), change = Math.atan2(Math.sin(current - drag.lastPointerAngle), Math.cos(current - drag.lastPointerAngle));

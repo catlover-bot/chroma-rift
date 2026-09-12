@@ -1,4 +1,5 @@
-import { applyGalleryCommand, canCloseGalleryExit, wiringHandleAt, resumeGalleryActor, createContourSpec, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowSlotAt, type GalleryAction, type GalleryCommand, type GalleryDevice } from '../../domain/gallery';
+import { canCloseGalleryExit, wiringHandleAt, resumeGalleryActor, createContourSpec, SAMPLE_IDS, SHADOW_HIT_SLOP, SHADOW_SAMPLE_SIZE, SHADOW_SLOT_POSITIONS, shadowSlotAt, type GalleryAction, type GalleryCommand, type GalleryDevice } from '../../domain/gallery';
+import { STAGE_MODULES } from '../../domain/stageKit/modules';
 import type { InteractableDefinition } from '../../domain/firstPerson/types';
 import { projectWithCamera } from '../../domain/firstPerson/alignment';
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
@@ -51,7 +52,7 @@ export function dispatchGalleryController(controller: RuntimeController, command
   }
   if (action.type === 'close-exit' && canCloseGalleryExit(controller.runtime)) target = worldForController(controller).interactables.find(t => t.id === 'exit');
   const previous = controller.runtime;
-  const result = applyGalleryCommand(previous, command, { rendererReady: controllerCanInteract(controller), foreground: controller.diagnostics.appActive !== false, targetId: target?.id ?? null });
+  const result = STAGE_MODULES['perception-gallery-v1'].command(previous, command, { rendererReady: controllerCanInteract(controller), foreground: controller.diagnostics.appActive !== false, targetId: target?.id ?? null });
   controller.runtime = result.accepted && action.type === 'leave' ? resumeGalleryActor(result.runtime) : result.runtime;
   controller.feedbackMessage = result.effects.filter(e => e.type === 'message').map(e => e.text).join(' ');
   if (result.effects.some(e => e.type === 'stop-input')) {

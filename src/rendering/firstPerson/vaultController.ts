@@ -1,6 +1,7 @@
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import type { InteractableDefinition } from '../../domain/firstPerson/types';
-import { applyVaultCommand, isVaultExitThreshold } from '../../domain/vault/state';
+import { isVaultExitThreshold } from '../../domain/vault/state';
+import { STAGE_MODULES } from '../../domain/stageKit/modules';
 import type { VaultAction, VaultCommand, VaultDevice } from '../../domain/vault/types';
 import { controllerCanInteract, worldForController } from './controllerContext';
 import { soundForControllerTransition } from './controllerTransitionAudio';
@@ -51,7 +52,7 @@ export function dispatchVaultController(controller: RuntimeController, command: 
     target = panel && (accessible && controller.screenReader || cue.kind === 'ready' && cue.target.id === panel.id) ? panel : undefined;
   }
   if (a.type === 'close-exit' && !canCloseVaultExitController(controller)) target = undefined;
-  const result = applyVaultCommand(previous, command, { rendererReady: controllerCanInteract(controller), foreground: controller.diagnostics.appActive !== false, targetId: target?.id ?? null });
+  const result = STAGE_MODULES['uncanny-vault-v1'].command(previous, command, { rendererReady: controllerCanInteract(controller), foreground: controller.diagnostics.appActive !== false, targetId: target?.id ?? null });
   controller.runtime = result.runtime; controller.feedbackMessage = result.message;
   if (result.stopInput) {
     requireAllPointersReleased(controller.input);

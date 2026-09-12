@@ -8,6 +8,8 @@ import { createTheatreRuntime, createTheatreCheckpoint } from './src/domain/thea
 import { createVaultRuntime } from './src/domain/vault/runtime';
 import { createVaultCheckpoint } from './src/domain/vault/checkpoint';
 import { chapterCompletionSummary } from './src/app/chapterSummary';
+import { STAGE_DEFINITIONS, type PlayableStageId } from './src/domain/stageKit/definitions';
+import { stageModule } from './src/domain/stageKit/modules';
 import { createCheckpoint, createInitialRuntime, type CheckpointState } from './src/domain/firstPerson';
 import { CalibrationInstructionsScreen } from './src/screens/CalibrationInstructionsScreen';
 import { CalibrationResultScreen } from './src/screens/CalibrationResultScreen';
@@ -34,10 +36,21 @@ import {
   resetAllApplicationStorage, resetFirstPersonChapter, loadGalleryStorage, resetGalleryChapter, saveGalleryCheckpoint,
   loadTheatreStorage, resetTheatreChapter, saveTheatreCheckpoint,
   loadVaultStorage, resetVaultChapter, saveVaultCheckpoint, loadStageJournal, recordStageHistory, recordStageEntry,
+  loadModuleStageStorage, resetModuleStage, saveModuleStageCheckpoint,
   saveFirstPersonCheckpoint, saveFirstPersonControls, saveFirstPersonOnboarding,
 } from './src/storage/firstPersonStorage';
 import { UI_COLORS } from './src/theme/ui';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT_LAB_PARAMETERS, type FirstPersonControls, type FirstPersonOnboarding, type PersistedApplication } from './src/types/application';
+
+const simpleVisible=(STAGE_DEFINITIONS as readonly {id:string;playerVisible:boolean;renderKind:string}[])
+  .filter(stage=>stage.playerVisible&&stage.renderKind==='simple').map(stage=>({id:stage.id as PlayableStageId}));
+type SimpleRun={checkpoint:CheckpointState;started:boolean;hasSave:boolean;needsCommit:boolean;blocked:boolean;message?:string|undefined};
+function initialSimpleRuns():Record<string,SimpleRun>{
+  return Object.fromEntries(simpleVisible.map(stage=>{
+    const module=stageModule(stage.id)!;
+    return [stage.id,{checkpoint:module.checkpoint(module.create()),started:false,hasSave:false,needsCommit:false,blocked:false}];
+  }));
+}
 
 export default function App() {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
@@ -57,6 +70,7 @@ export default function App() {
   const [galleryCheckpoint, setGalleryCheckpoint] = useState<CheckpointState>(() => createCheckpoint(createGalleryRuntime()));
   const [theatreCheckpoint, setTheatreCheckpoint] = useState<CheckpointState>(() => createTheatreCheckpoint(createTheatreRuntime()));
   const [theatreState, setTheatreState] = useState({ started: false, needsCommit: false, hasSave: false, blocked: false, message: undefined as string | undefined });
+  const [simpleRuns,setSimpleRuns]=useState<Record<string,SimpleRun>>(initialSimpleRuns);
   const [vaultCheckpoint, setVaultCheckpoint] = useState<CheckpointState>(() => createVaultCheckpoint(createVaultRuntime()));
   const [vaultStarted, setVaultStarted] = useState(false);
   const [vaultNeedsCommit, setVaultNeedsCommit] = useState(false);
@@ -86,10 +100,10 @@ export default function App() {
       } catch {
         // The in-app setting remains available if the platform preference cannot be read.
       }
-      const [loaded, chapter, gallery, vault, theatre, history] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage(), loadVaultStorage(), loadTheatreStorage(), loadStageJournal()]);
+      const [loaded, chapter, gallery, vault, theatre, history, simple] = await Promise.all([loadApplication(systemReducedMotion), loadFirstPersonStorage(), loadGalleryStorage(), loadVaultStorage(), loadTheatreStorage(), loadStageJournal(),Promise.all(simpleVisible.map(stage=>loadModuleStageStorage(stage.id)))]);
       if (!active) return;
       setChapterLease(hydrationLease);
-      const known = [chapter, gallery, vault, theatre].filter(item => item.hasCheckpoint && item.checkpointWritable).map(item => item.checkpoint);
+      const known = [...[chapter, gallery, vault, theatre],...simple].filter(item => item.hasCheckpoint && item.checkpointWritable).map(item => item.checkpoint);
       setJournal(mergeStageHistory(history.journal, known));
       setJournalMessage(history.message);
       if (history.writable) void recordStageHistory(known, hydrationLease).then(saved => {
@@ -109,6 +123,7 @@ export default function App() {
       setGalleryMessage(gallery.message);
       setTheatreCheckpoint(theatre.checkpoint);
       setTheatreState({ started: theatre.status !== 'empty', needsCommit: theatre.status === 'recovered', hasSave: theatre.hasCheckpoint, blocked: !theatre.checkpointWritable, message: theatre.message });
+      setSimpleRuns(Object.fromEntries(simpleVisible.map((stage,index)=>[stage.id,{checkpoint:simple[index]!.checkpoint,started:simple[index]!.status!=='empty',hasSave:simple[index]!.hasCheckpoint,needsCommit:simple[index]!.status==='recovered',blocked:!simple[index]!.checkpointWritable,message:simple[index]!.message}])));
       setVaultCheckpoint(vault.checkpoint);
       setHasVaultSave(vault.hasCheckpoint);
       setVaultStarted(vault.status !== 'empty');
@@ -153,18 +168,23 @@ export default function App() {
   };
   const beginCalibration = () =>
     dispatch({ type: 'START_CALIBRATION', seed: Date.now() >>> 0, startedAt: new Date().toISOString() });
-  const selectedCheckpoint = state.selectedChapterId === 'shadow-theatre-v1' ? theatreCheckpoint : state.selectedChapterId === 'uncanny-vault-v1' ? vaultCheckpoint : state.selectedChapterId === 'perception-gallery-v1' ? galleryCheckpoint : checkpoint;
+  const selectedCheckpoint = state.selectedChapterId === 'shadow-theatre-v1' ? theatreCheckpoint : state.selectedChapterId === 'uncanny-vault-v1' ? vaultCheckpoint : state.selectedChapterId === 'perception-gallery-v1' ? galleryCheckpoint : simpleRuns[state.selectedChapterId]?.checkpoint ?? checkpoint;
   const launchChapter = async (entry: CheckpointState, newRun: boolean, restart = false) => {
     const lease = beginFirstPersonSession();
     let next = entry;
     const vault = state.selectedChapterId === 'uncanny-vault-v1';
     const theatre = state.selectedChapterId === 'shadow-theatre-v1';
+    const simple=simpleRuns[state.selectedChapterId];
     if (newRun && theatre) {
       next = createTheatreCheckpoint(createTheatreRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000)));
       setTheatreState(previous => ({ ...previous, started: true })); setTheatreCheckpoint(next);
     } else if (newRun && vault) {
       next = createVaultCheckpoint(createVaultRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000)));
       setVaultStarted(true); setVaultCheckpoint(next);
+    } else if (newRun && simple) {
+      const module=stageModule(state.selectedChapterId)!;
+      next=module.checkpoint(module.create());
+      setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{...previous[state.selectedChapterId]!,checkpoint:next,started:true}}));
     } else if (newRun) {
       // A run chooses its stimulus once. Failed writes retain this in-memory
       // checkpoint too, so leaving, retrying or returning never rerolls it.
@@ -190,6 +210,11 @@ export default function App() {
       if (!isFirstPersonSessionCurrent(lease)) return;
       setTheatreState(previous => ({ ...previous, hasSave: saved, needsCommit: !saved, message: saved ? undefined : '映写室の進行を保存できませんでした。この起動中は同じ状態で続けられます。' }));
     }
+    if(simple&&(newRun||simple.needsCommit)){
+      const saved=await saveModuleStageCheckpoint(next,lease);
+      if(!isFirstPersonSessionCurrent(lease))return;
+      setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{...previous[state.selectedChapterId]!,checkpoint:next,hasSave:saved,needsCommit:!saved,message:saved?undefined:'章の進行を保存できませんでした。この起動中は同じ状態で続けられます。'}}));
+    }
     setCompletedAtEntry(!restart && next.progress.cleared);
     setChapterLease(lease);
     dispatch({ type: 'BEGIN_JOURNEY', chapterId: state.selectedChapterId });
@@ -199,7 +224,7 @@ export default function App() {
     if (resetInFlight.current) return;
     resetInFlight.current = true;
     setResetting(true);
-    await launchChapter(selectedCheckpoint, state.selectedChapterId === 'shadow-theatre-v1' ? !theatreState.started && !theatreState.blocked : state.selectedChapterId === 'uncanny-vault-v1' ? !vaultStarted && !vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' && !galleryStarted && !galleryBlocked);
+    await launchChapter(selectedCheckpoint, state.selectedChapterId === 'shadow-theatre-v1' ? !theatreState.started && !theatreState.blocked : state.selectedChapterId === 'uncanny-vault-v1' ? !vaultStarted && !vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' ? !galleryStarted && !galleryBlocked : !!simpleRuns[state.selectedChapterId]&&!simpleRuns[state.selectedChapterId]!.started&&!simpleRuns[state.selectedChapterId]!.blocked);
     resetInFlight.current = false;
     setResetting(false);
   };
@@ -210,8 +235,9 @@ export default function App() {
     const vault = state.selectedChapterId === 'uncanny-vault-v1';
     const gallery = state.selectedChapterId === 'perception-gallery-v1';
     const theatre = state.selectedChapterId === 'shadow-theatre-v1';
-    const next = theatre ? createTheatreCheckpoint(createTheatreRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : vault ? createVaultCheckpoint(createVaultRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : gallery ? createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : createCheckpoint(createInitialRuntime());
-    const removed = await (theatre ? resetTheatreChapter(next) : vault ? resetVaultChapter(next) : gallery ? resetGalleryChapter(next) : resetFirstPersonChapter());
+    const simple=!!simpleRuns[state.selectedChapterId];
+    const next = theatre ? createTheatreCheckpoint(createTheatreRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : vault ? createVaultCheckpoint(createVaultRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : gallery ? createCheckpoint(createGalleryRuntime(undefined, undefined, Math.floor(Math.random() * 0x100000000))) : simple ? stageModule(state.selectedChapterId)!.checkpoint(stageModule(state.selectedChapterId)!.create()) : createCheckpoint(createInitialRuntime());
+    const removed = await (theatre ? resetTheatreChapter(next) : vault ? resetVaultChapter(next) : gallery ? resetGalleryChapter(next) : simple ? resetModuleStage(state.selectedChapterId,next) : resetFirstPersonChapter());
     if (removed) {
       setReplayPending(false);
       setJournal(previous => mergeStageHistory(previous, [selectedCheckpoint]));
@@ -223,6 +249,8 @@ export default function App() {
       } else if (gallery) {
         setGalleryCheckpoint(next);
         setHasGallerySave(true); setGalleryStarted(true); setGalleryNeedsCommit(false); setGalleryBlocked(false); setGalleryMessage(undefined);
+      } else if(simple){
+        setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{checkpoint:next,started:true,hasSave:true,needsCommit:false,blocked:false}}));
       } else {
         setCheckpoint(next); setHasLegacySave(false);
         setFirstPersonMessage(undefined);
@@ -233,6 +261,7 @@ export default function App() {
       dispatch({ type: 'BEGIN_JOURNEY', chapterId: state.selectedChapterId });
     } else {
       if (theatre) setTheatreState(previous => ({ ...previous, message: '章をリセットできませんでした。保存データを保持しています。' }));
+      else if(simple)setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{...previous[state.selectedChapterId]!,message:'章をリセットできませんでした。保存データを保持しています。'}}));
       else (vault ? setVaultMessage : gallery ? setGalleryMessage : setFirstPersonMessage)('章をリセットできませんでした。保存データを保持しています。');
       navigateHome();
     }
@@ -271,6 +300,7 @@ export default function App() {
     setVaultCheckpoint(createVaultCheckpoint(createVaultRuntime()));
     setTheatreCheckpoint(createTheatreCheckpoint(createTheatreRuntime()));
     setTheatreState({ started: false, needsCommit: false, hasSave: false, blocked: false, message: undefined });
+    setSimpleRuns(initialSimpleRuns());
     setGalleryCheckpoint(createCheckpoint(createGalleryRuntime()));
     setControls({ ...DEFAULT_FIRST_PERSON_CONTROLS });
     setOnboarding({ ...DEFAULT_FIRST_PERSON_ONBOARDING });
@@ -340,7 +370,7 @@ export default function App() {
         onValidatedEntry={(entry) => {
           if (entryRoute.current?.screen !== 'firstPerson' || entryRoute.current.lease !== lease || entryRoute.current.chapterId !== entry.chapterId) return;
           if (lab || reviewOnly || !isFirstPersonSessionCurrent(lease) || entry.chapterId !== state.selectedChapterId || entry.progress.cleared) return;
-          const blocked = state.selectedChapterId === 'shadow-theatre-v1' ? theatreState.blocked : state.selectedChapterId === 'uncanny-vault-v1' ? vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' ? galleryBlocked : legacyBlocked;
+          const blocked = state.selectedChapterId === 'shadow-theatre-v1' ? theatreState.blocked : state.selectedChapterId === 'uncanny-vault-v1' ? vaultBlocked : state.selectedChapterId === 'perception-gallery-v1' ? galleryBlocked : simpleRuns[state.selectedChapterId]?.blocked??legacyBlocked;
           if (blocked) return; // A read-only trial cannot become a resumable run.
           if (entry.chapterId === 'returnless-entrance' && !hasLegacySave) {
             void saveFirstPersonCheckpoint(entry, lease).then(saved => { if (saved && isFirstPersonSessionCurrent(lease)) setHasLegacySave(true); });
@@ -353,15 +383,17 @@ export default function App() {
         onCheckpoint={(next) => {
           if (lab || reviewOnly || !isFirstPersonSessionCurrent(lease) || next.chapterId !== state.selectedChapterId) return;
           const theatre = state.selectedChapterId === 'shadow-theatre-v1', vault = state.selectedChapterId === 'uncanny-vault-v1', gallery = state.selectedChapterId === 'perception-gallery-v1';
-          if (theatre) setTheatreCheckpoint(next); else if (vault) setVaultCheckpoint(next); else if (gallery) setGalleryCheckpoint(next); else setCheckpoint(next);
-          if (!(theatre ? theatreState.blocked : vault ? vaultBlocked : gallery ? galleryBlocked : legacyBlocked)) {
+          const simple=!!simpleRuns[state.selectedChapterId];
+          if (theatre) setTheatreCheckpoint(next); else if (vault) setVaultCheckpoint(next); else if (gallery) setGalleryCheckpoint(next); else if(simple)setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{...previous[state.selectedChapterId]!,checkpoint:next}})); else setCheckpoint(next);
+          if (!(theatre ? theatreState.blocked : vault ? vaultBlocked : gallery ? galleryBlocked : simple ? simpleRuns[state.selectedChapterId]!.blocked : legacyBlocked)) {
             setJournal(previous => mergeStageHistory(previous, [next]));
             void recordStageHistory([next], lease).then(saved => { if (!saved && isFirstPersonSessionCurrent(lease)) setJournalMessage('発見や脱出の履歴を保存できませんでした。現在の進行は保持しています。'); });
           }
-          void (theatre ? saveTheatreCheckpoint(next, lease) : vault ? saveVaultCheckpoint(next, lease) : gallery ? saveGalleryCheckpoint(next, lease) : saveFirstPersonCheckpoint(next, lease)).then((saved) => {
+          void (theatre ? saveTheatreCheckpoint(next, lease) : vault ? saveVaultCheckpoint(next, lease) : gallery ? saveGalleryCheckpoint(next, lease) : simple ? saveModuleStageCheckpoint(next,lease) : saveFirstPersonCheckpoint(next, lease)).then((saved) => {
             if (!isFirstPersonSessionCurrent(lease)) return;
-            if (saved) { if (theatre) setTheatreState(previous => ({ ...previous, hasSave: true })); else if (vault) setHasVaultSave(true); else if (gallery) setHasGallerySave(true); else setHasLegacySave(true); }
+            if (saved) { if (theatre) setTheatreState(previous => ({ ...previous, hasSave: true })); else if (vault) setHasVaultSave(true); else if (gallery) setHasGallerySave(true); else if(simple)setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{...previous[state.selectedChapterId]!,hasSave:true}})); else setHasLegacySave(true); }
             else if (theatre) setTheatreState(previous => ({ ...previous, message: '章の進行を保存できませんでした。この起動中はそのまま遊べます。' }));
+            else if(simple)setSimpleRuns(previous=>({...previous,[state.selectedChapterId]:{...previous[state.selectedChapterId]!,message:'章の進行を保存できませんでした。この起動中はそのまま遊べます。'}}));
             else (vault ? setVaultMessage : gallery ? setGalleryMessage : setFirstPersonMessage)('章の進行を保存できませんでした。この起動中はそのまま遊べます。');
           });
         }}
@@ -402,7 +434,7 @@ export default function App() {
         onQuickSetup={() => dispatch({ type: 'START_QUICK_SETUP', sessionId: String(Date.now()) })}
         onRecalibrate={() => dispatch({ type: 'NAVIGATE', screen: 'calibrationInstructions' })}
         onReset={() => void reset()}
-        currentChapterName={state.selectedChapterId === 'shadow-theatre-v1' ? '影の映写室' : state.selectedChapterId === 'uncanny-vault-v1' ? '測れない収蔵庫' : state.selectedChapterId === 'perception-gallery-v1' ? '閉館後の展示室' : '帰り道のない入口'}
+        currentChapterName={STAGES.find(stage=>stage.id===state.selectedChapterId)?.title??'帰り道のない入口'}
         onResetChapter={() => void restartChapter()}
         onBack={() => dispatch({ type: 'NAVIGATE', screen: settingsReturn })}
         backLabel={settingsReturn === 'playInstructions' ? '入場前の準備へ戻る' : 'ホームへ戻る'}
@@ -437,6 +469,7 @@ export default function App() {
       { id: 'uncanny-vault-v1' as const, checkpoint: vaultCheckpoint, saved: hasVaultSave || vaultStarted, blocked: vaultBlocked },
       { id: 'shadow-theatre-v1' as const, checkpoint: theatreCheckpoint, saved: theatreState.hasSave || theatreState.started, blocked: theatreState.blocked },
       { id: 'returnless-entrance' as const, checkpoint, saved: hasLegacySave, blocked: legacyBlocked },
+      ...simpleVisible.map(stage=>({id:stage.id,checkpoint:simpleRuns[stage.id]?.checkpoint??stageModule(stage.id)!.checkpoint(stageModule(stage.id)!.create()),saved:!!simpleRuns[stage.id]?.hasSave||!!simpleRuns[stage.id]?.started,blocked:!!simpleRuns[stage.id]?.blocked})),
     ];
     const cards: StageCardState[] = entries.map(entry => ({ id: entry.id,
       current: entry.blocked ? 'blocked' : entry.checkpoint.progress.cleared ? 'cleared' : entry.saved ? 'exploring' : 'new',

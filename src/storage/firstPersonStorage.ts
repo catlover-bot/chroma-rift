@@ -1,4 +1,6 @@
 import { createStageJournalStorage, STAGE_JOURNAL_KEY } from './stageJournalStorage';
+import { createModuleStageStorage } from './moduleStageStorage';
+import { stageModule } from '../domain/stageKit/modules';
 import type { StageId } from '../app/stages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createTheatreRuntime, createTheatreCheckpoint, restoreTheatreCheckpoint } from '../domain/theatre';
@@ -176,10 +178,14 @@ function serializeMutation<T>(operation: () => Promise<T>): Promise<T> {
 function validateJournalCheckpoint(value: unknown): CheckpointState | undefined {
   if (!isRecord(value)) return;
   const restored = value.chapterId === 'shadow-theatre-v1' ? restoreTheatreCheckpoint(value) : value.chapterId === 'uncanny-vault-v1' ? restoreVaultCheckpoint(value) :
-    value.chapterId === 'perception-gallery-v1' ? restoreGalleryCheckpoint(value) : value.chapterId === CHAPTER_ID ? restoreCheckpoint(value) : undefined;
-  return restored && !restored.recovered && restored.emblemStatus === 'valid' ? restored.checkpoint : undefined;
+    value.chapterId === 'perception-gallery-v1' ? restoreGalleryCheckpoint(value) : value.chapterId === CHAPTER_ID ? restoreCheckpoint(value) : stageModule(value.chapterId)?.restore(value);
+  return restored && !restored.recovered && (!('emblemStatus' in restored) || restored.emblemStatus === 'valid') ? restored.checkpoint : undefined;
 }
 const stageJournal = createStageJournalStorage({ enqueue: serializeMutation, epoch: () => progressEpoch, current: isFirstPersonSessionCurrent, validate: validateJournalCheckpoint });
+const moduleStageStorage = createModuleStageStorage({ enqueue: serializeMutation, epoch: () => progressEpoch, current: isFirstPersonSessionCurrent, preserve: (checkpoint,lease)=>stageJournal.preserveUnlocked(checkpoint,lease) });
+export const loadModuleStageStorage = (id: string) => moduleStageStorage.load(id);
+export const saveModuleStageCheckpoint = (checkpoint: CheckpointState, lease: number) => moduleStageStorage.save(checkpoint, lease);
+export const resetModuleStage = (id: string, checkpoint: CheckpointState) => moduleStageStorage.reset(id, checkpoint, ++progressEpoch);
 export const loadStageJournal = () => stageJournal.load();
 export const recordStageHistory = (checkpoints: readonly CheckpointState[], lease: number) => stageJournal.record(checkpoints, lease);
 export const recordStageEntry = (checkpoint: CheckpointState, lease: number, id: StageId) => stageJournal.record([checkpoint], lease, id);
@@ -381,7 +387,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   const applicationReset = resetApplicationStorage();
   const firstPersonReset = serializeMutation(async () => {
     try {
-      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY]);
+      await AsyncStorage.multiRemove([FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY,...moduleStageStorage.keys()]);
       return true;
     } catch {
       return false;
@@ -390,6 +396,7 @@ export async function resetAllApplicationStorage(): Promise<boolean> {
   const [applicationRemoved, chapterRemoved] = await Promise.all([applicationReset, firstPersonReset]);
   const succeeded = applicationRemoved && chapterRemoved;
   stageJournal.resetCache(succeeded);
+  moduleStageStorage.resetCache(succeeded);
   latestCheckpoint = undefined;
   pendingCheckpointBackup = undefined;
   latestGalleryCheckpoint = undefined;

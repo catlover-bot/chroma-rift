@@ -1,0 +1,23 @@
+import { createStageSession, commandStage, stepStage, checkpointStage } from './session';
+import { parseStageCheckpoint } from './checkpoint';
+import { STAGE_ID, stageWorld } from './definition';
+test('dev probe: entry, device, physical door, exit, checkpoint and independent resume',()=>{
+  let session=createStageSession('first');
+  expect(session.stageId).toBe(STAGE_ID);
+  for(let i=0;i<45;i++)session=stepStage(session,{strafe:0,forward:1},1/60);
+  const activation=commandStage(session,{sessionId:'first',seq:1,targetId:'stage-kit-probe-device',type:'activate'});
+  expect(activation.accepted).toBe(true);session=activation.session;
+  expect(stageWorld(session.activated).solids.find(s=>s.id==='door')!.min.y).toBeGreaterThan(3);
+  for(let i=0;i<260;i++)session=stepStage(session,{strafe:0,forward:1},1/60);
+  expect(session.pose.position.z).toBeGreaterThan(5);
+  expect(session.cleared).toBe(false);
+  const exiting=commandStage(session,{sessionId:'first',seq:2,targetId:'stage-kit-probe-exit',type:'exit'});
+  expect(exiting.accepted).toBe(true);session=exiting.session;
+  const checkpoint=checkpointStage(session),restored=parseStageCheckpoint(checkpoint)!;
+  expect(restored).toBeDefined();
+  const one=createStageSession('one',restored),two=createStageSession('two',restored);
+  one.pose.position.z=4.5;
+  expect(two.pose.position.z).toBe(5.3);
+  expect(checkpoint.pose.position.z).toBe(5.3);
+  expect(parseStageCheckpoint({...checkpoint,schemaVersion:99})).toBeUndefined();
+});
