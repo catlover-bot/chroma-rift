@@ -1,0 +1,11 @@
+# 第一章 campaign 接続記録
+
+基準HEADは `478b376ea9a954974ad2f08ab5f09d929bd35f06`。作業worktreeは `/home/mhirotaka/workspace/chroma-rift-goal012`、ブランチは `feat/goal-013-chapter-one-product`。現行コードの旧入口と hidden probe は第一章のエリアではない。Goal 011の鏡廊の実装は基準HEADになかった。
+
+`src/domain/campaign/definition.ts` が製品上の順序を固定し、Stage Kitの `stageId` と表示上の `areaId` を分ける。01→gallery、02→vault、03→theatre、04→新規 `mirror-corridor-v1`、05→新規 `departure-control-v1`。既存3章の保存キーは変更しない。第二章は `planned` の文章だけで、stage IDを割り当てず、実行経路も持たない。
+
+`src/domain/campaign/session.ts` は登録済みStage Moduleのcodecを通ったcheckpointだけを受ける。エリア完了と次の安全入口は一つの新しいsession envelopeへ組み立てる。01〜04の `progress.cleared` は館内の境界通過であり、第一章完了ではない。04/05も `routable:true` として接続した。05のcodecは隔離・停止・屋外通過を別々に保持する。campaign純粋層は停止前と屋外到達前の全体完了を拒否し、検証済み05 checkpointでだけ `campaign-completed` を組み立てる。
+
+`App.tsx` の製品入口は第一章ホームに切り替わった。旧ステージ一覧とprobeは開発ビルド内の入口に限定する。新規開始、続き、旧記録の明示移行、独立replayをここから選べる。areaのクリアcheckpointと次の安全入口を一つのenvelopeへ保存し、成功後にCanvasを切り替える。保存失敗時は旧画面を保持し、再試行または明示した起動中だけの継続を選べる。hostのcallback検証では03→04→05→屋外、各区間のcold restoreと保存失敗を確認した。このテストはStage codecで作ったcheckpointを画面callbackへ渡したもので、01からの自然な操作による通しプレイではない。
+
+この文書は進行中の接続記録である。04/05の連続した実scene QA、01から屋外までの自然な通しプレイ、物語beatと発見記録の製品表示、実機確認は残っている。`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。第二章を追加する時は別のCampaignDefinitionとstage群を登録し、第一章の保存schemaや結末を再定義しない。
