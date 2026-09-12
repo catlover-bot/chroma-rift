@@ -23,6 +23,7 @@ import { recordCampaignReplayDiscoveries } from '../../domain/campaign/session';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
 import * as gateModule from '../NativeFirstPersonGate';
+import * as endingModule from '../ChapterOneEndingScreen';
 
 const mockLatestCanvas: { current: FirstPersonCanvasProps | undefined } = { current: undefined };
 const mockCanvasOwners = { active: 0, peak: 0 };
@@ -337,7 +338,7 @@ test('unknown campaign raw requires explicit new-game choice and receives exact 
   expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).currentArea).toBe('chapter-1-area-01');
 });
 
-test('verified area-03 through area-05 host callbacks commit each handoff before mounting the next scene', async () => {
+test('verified area-03 through area-05 host callbacks survive a cold exit before the ending is shown', async () => {
   await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, JSON.stringify(originalV1('cleared')));
   const oldVault = JSON.stringify(vaultCheckpoint('clear'));
   const oldTheatre = JSON.stringify(theatreCheckpoint('initial'));
@@ -410,6 +411,7 @@ test('verified area-03 through area-05 host callbacks commit each handoff before
   }));
   const outdoor = { ...stopped, pose: OUTDOOR, progress: { ...stopped.progress, cleared: true }, stageData: { ...stopped.stageData,
     staffDoorOpened: true, cleared: true, pose: OUTDOOR } };
+  const ending = jest.spyOn(endingModule, 'ChapterOneEndingScreen').mockImplementation(() => <></>);
   await act(() => {
     controlGate.onCheckpoint(outdoor);
     controlGate.onComplete(chapterCompletionSummary('departure-control-v1', { ...outdoor.progress, cleared: true }));
@@ -417,13 +419,25 @@ test('verified area-03 through area-05 host callbacks commit each handoff before
   await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!)).toMatchObject({
     campaignCompleted: true, finale: { contained:true, isolated:true, stopped:true, outdoorExited:true },
   }));
-  expect(await view.findByText('第一章「最後の退館者」 完')).toBeTruthy();
-  expect(view.getByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
-  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
-    .toEqual(expect.arrayContaining(['attendance-identified', 'outdoor-exit'])));
+  expect(ending).toHaveBeenCalled();
+  const completedRaw = (await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!;
+  const completed = JSON.parse(completedRaw);
+  expect(completed.storyFired).toEqual(expect.arrayContaining(['attendance-identified', 'outdoor-exit']));
+  expect(completed.storyPresented).not.toContain('attendance-identified');
+  expect(completed.storyPresented).not.toContain('outdoor-exit');
   await view.unmount();
+  ending.mockRestore();
   const resumed = await render(<App/>);
   expect(await resumed.findByRole('button', { name: 'エンディングを見る' })).toBeTruthy();
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(completedRaw);
+  await fireEvent.press(resumed.getByRole('button', { name: 'エンディングを見る' }));
+  expect(await resumed.findByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
+    .toEqual(expect.arrayContaining(['attendance-identified', 'outdoor-exit'])));
+  expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!)).toMatchObject({
+    runId: completed.runId, completedAreas: completed.completedAreas, campaignCompleted: true,
+    finale: completed.finale,
+  });
   expect(await AsyncStorage.getItem('chroma-rift.uncanny-vault.v1')).toBe(oldVault);
   expect(await AsyncStorage.getItem('chroma-rift.shadow-theatre.v1')).toBe(oldTheatre);
 });

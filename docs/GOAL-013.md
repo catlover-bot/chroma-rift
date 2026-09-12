@@ -18,6 +18,8 @@
 
 その後、Node/Jestのcampaign domain hostで新規sessionから5つの実controllerを順に操作する連続試験を追加した。標準はB→C、控えめはC→Bで成功し、隔離キーの引継ぎ、05停止checkpointの保存、屋外完了、各遷移後のJSON codec再parseを同一runIdで確認した。経路とrevisionは `docs/qa-goal013/natural-route-*.json` に記録した。さらに同じ経路をJestのApp hostへ接続し、各画面にマウントされたcontrollerの操作結果を同一App起動で画面leaseから保存した。標準/控えめの両方で5エリア完了、Canvas mock peak 1・終了後0、App再起動後のエンディング入口を確認した。実AsyncStorage、native Canvas/音、動画ではない。Appログは `docs/qa-goal013/app-natural-route-*.json`。
 
+05完了のenvelopeを保存した直後、エンディング画面の提示callbackを試験で抑えてAppをunmountし、cold起動で本編完了とエンディング入口が残ることを確認した。再表示時に未提示の正体・屋外beatを記録し、runId・完了エリア・最終措置が不変である。JestのAsyncStorageモックと検証済み05 checkpointを用いたhost試験であり、端末の強制終了試験ではない。
+
 停止後のbeatを読む前に屋外退館した場合、巡回体の正体の提示記録だけが未了で残る経路を修正した。エンディングに台帳の確定文と在館反応01→00を表示し、両beatの提示記録を保存する。App試験で表示・保存・cold再開を確認した。
 
 標準B→CのApp経路に、各エリア後の4回のcold restore、各エリア2回のホーム再入場、完走後の05→01逆順replayを追加した。計20回のCanvas mock入場を通じてpeak owner 1・退出後0、同じrunId、次エリアの安全入口、旧画面callbackの拒否、逆順replay後に本編セーブ原文が変わらないことを検査した。ログは `docs/qa-goal013/app-natural-route-standard-cold.json`。実GPU/音ownerと端末保存の検査ではない。
