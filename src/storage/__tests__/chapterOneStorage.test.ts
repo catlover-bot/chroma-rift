@@ -49,6 +49,19 @@ test('a higher revision cannot restore an older checkpoint in the same area', as
   expect(JSON.parse(h.values.get(CHAPTER_ONE_STORAGE_KEY)!).revision).toBe(1);
 });
 
+test('saved practice discoveries cannot be removed by a later revision', async () => {
+  const h = harness(), store = createChapterOneStorage(h.boundary, h.storage);
+  const fresh = createChapterOneSession('practice-history', '0.1.0');
+  expect(await store.save(fresh, 1)).toBe(true);
+  const discovered = { ...fresh, revision: 1,
+    discoveryHistory: { 'chapter-1-area-01': ['chromatic'] } };
+  expect(await store.save(discovered, 1)).toBe(true);
+  expect(await store.save({ ...fresh, revision: 2 }, 1)).toBe(false);
+  expect((await createChapterOneStorage(h.boundary, h.storage).load())).toMatchObject({
+    status: 'loaded', session: { discoveryHistory: { 'chapter-1-area-01': ['chromatic'] } },
+  });
+});
+
 test('unknown raw blocks autosave and explicit restart backs up its exact bytes', async () => {
   const h=harness(),store=createChapterOneStorage(h.boundary,h.storage),raw='{"schemaVersion":99,"unreadable":true}';
   h.values.set(CHAPTER_ONE_STORAGE_KEY,raw);

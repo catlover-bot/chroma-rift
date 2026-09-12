@@ -2,6 +2,8 @@ import type { CheckpointState } from '../firstPerson/types';
 import { stageModule } from '../stageKit/modules';
 import { CHAPTER_ONE, campaignArea, nextCampaignArea, type CampaignAreaId } from './definition';
 import type { ChapterOneBeatId } from './story';
+import { mergeCampaignDiscoveries, type CampaignDiscoveryHistory } from './discoveries';
+import { campaignCheckpointProgresses } from '../stageKit/checkpointProgression';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../stages/mirror-corridor-v1/checkpoint';
 import { parseStageCheckpoint as parseDepartureCheckpoint } from '../stages/departure-control-v1/checkpoint';
 
@@ -21,6 +23,7 @@ export type ChapterOneSession = Readonly<{
   keyLocation: 'unfound' | 'carried' | 'installed';
   storyFired: readonly ChapterOneBeatId[];
   storyPresented: readonly ChapterOneBeatId[];
+  discoveryHistory: CampaignDiscoveryHistory;
   finale: Readonly<{ contained: boolean; isolated: boolean; stopped: boolean; outdoorExited: boolean }>;
   campaignCompleted: boolean;
 }>;
@@ -52,7 +55,7 @@ export function createChapterOneSession(runId: string, appVersion: string, reset
   return { schemaVersion: 1, chapterId: CHAPTER_ONE.id, contentVersion: CHAPTER_ONE.contentVersion,
     appVersion, runId, resetGeneration, migrationSource: 'fresh', revision: 0,
     currentArea: first.id, completedAreas: [], checkpoint,
-    keyLocation: 'unfound', storyFired: [], storyPresented: [],
+    keyLocation: 'unfound', storyFired: [], storyPresented: [], discoveryHistory: {},
     finale: { contained: false, isolated: false, stopped: false, outdoorExited: false },
     campaignCompleted: false };
 }
@@ -69,9 +72,12 @@ export function recordCampaignCheckpoint(session: ChapterOneSession, areaId: Cam
   const checkpoint = verifiedAreaCheckpoint(areaId, value);
   if (!checkpoint) return { accepted: false, session, reason: 'unverified-checkpoint' };
   if (checkpoint.progress.cleared) return { accepted: false, session, reason: 'area-cleared' };
+  if (!campaignCheckpointProgresses(session.checkpoint, checkpoint))
+    return { accepted: false, session, reason: 'contradictory-progress' };
   let keyLocation = session.keyLocation;
   let storyFired = session.storyFired;
   let finale = session.finale;
+  const discoveryHistory = mergeCampaignDiscoveries(session.discoveryHistory, areaId, checkpoint);
   if (areaId === 'chapter-1-area-04') {
     const data = parseMirrorCheckpoint(checkpoint.stageData);
     if (!data) return { accepted: false, session, reason: 'unverified-checkpoint' };
@@ -89,9 +95,24 @@ export function recordCampaignCheckpoint(session: ChapterOneSession, areaId: Cam
     session.keyLocation === 'carried' && keyLocation === 'unfound' ||
     session.finale.stopped && !finale.stopped) return { accepted: false, session, reason: 'contradictory-progress' };
   const changed = JSON.stringify(checkpoint) !== JSON.stringify(session.checkpoint) || keyLocation !== session.keyLocation ||
-    JSON.stringify(finale) !== JSON.stringify(session.finale) || storyFired !== session.storyFired;
+    JSON.stringify(finale) !== JSON.stringify(session.finale) || storyFired !== session.storyFired ||
+    discoveryHistory !== session.discoveryHistory;
   return { accepted: true, changed, session: changed ? { ...session, revision: session.revision + 1,
-    checkpoint, keyLocation, storyFired, finale } : session };
+    checkpoint, keyLocation, storyFired, finale, discoveryHistory } : session };
+}
+
+/** Practice writes only observed-note union. The authoritative campaign area,
+ * safe checkpoint, key, finale, and story presentation remain untouched. */
+export function recordCampaignReplayDiscoveries(session: ChapterOneSession, areaId: CampaignAreaId,
+  value: unknown): CampaignCheckpointUpdate {
+  if (session.currentArea !== areaId && !session.completedAreas.includes(areaId))
+    return { accepted: false, session, reason: 'wrong-area' };
+  const checkpoint = verifiedAreaCheckpoint(areaId, value);
+  if (!checkpoint) return { accepted: false, session, reason: 'unverified-checkpoint' };
+  const discoveryHistory = mergeCampaignDiscoveries(session.discoveryHistory, areaId, checkpoint);
+  if (discoveryHistory === session.discoveryHistory) return { accepted: true, session, changed: false };
+  return { accepted: true, changed: true,
+    session: { ...session, revision: session.revision + 1, discoveryHistory } };
 }
 
 /** The completed area and the next safe entry are one new envelope. Callers
@@ -102,13 +123,14 @@ export function completeCampaignArea(session: ChapterOneSession, areaId: Campaig
   const cleared = verifiedAreaCheckpoint(areaId, clearedValue);
   if (!cleared) return { accepted: false, session, reason: 'unverified-checkpoint' };
   if (!cleared.progress.cleared) return { accepted: false, session, reason: 'not-cleared' };
+  const discoveryHistory = mergeCampaignDiscoveries(session.discoveryHistory, areaId, cleared);
   const next = nextCampaignArea(areaId);
   if (!next) {
     const data = areaId === 'chapter-1-area-05' ? parseDepartureCheckpoint(cleared.stageData) : undefined;
     if (!data || !data.keyInstalled || !data.isolated || !data.stopped || !data.staffDoorOpened || !data.cleared ||
       session.keyLocation !== 'installed') return { accepted: false, session, reason: 'finale-unverified' };
     return { accepted: true, kind: 'campaign-completed', session: { ...session,
-      revision: session.revision + 1, checkpoint: cleared,
+      revision: session.revision + 1, checkpoint: cleared, discoveryHistory,
       completedAreas: [...session.completedAreas, areaId], campaignCompleted: true,
       finale: { contained: true, isolated: true, stopped: true, outdoorExited: true },
       storyFired: appendBeat(appendBeat(session.storyFired, 'attendance-identified'), 'outdoor-exit') } };
@@ -117,7 +139,7 @@ export function completeCampaignArea(session: ChapterOneSession, areaId: Campaig
   const entry = verifiedAreaCheckpoint(next.id, nextEntryValue);
   if (!entry || entry.progress.cleared) return { accepted: false, session, reason: 'next-area-unavailable' };
   return { accepted: true, kind: 'area-completed', session: {
-    ...session, revision: session.revision + 1, currentArea: next.id,
+    ...session, revision: session.revision + 1, currentArea: next.id, discoveryHistory,
     completedAreas: [...session.completedAreas, areaId], checkpoint: entry,
     keyLocation: areaId === 'chapter-1-area-04' ? 'carried' : session.keyLocation,
     storyFired: areaId === 'chapter-1-area-04' ? appendBeat(session.storyFired, 'isolation-key') : session.storyFired,

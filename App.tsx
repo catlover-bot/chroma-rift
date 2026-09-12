@@ -12,7 +12,8 @@ import { APP_VERSION } from './src/app/version';
 import { CHAPTER_ONE, campaignArea, nextCampaignArea, type CampaignAreaId } from './src/domain/campaign/definition';
 import { createCampaignAreaEntry, createCampaignReplayEntry } from './src/domain/campaign/areaEntry';
 import { proposeLegacyCampaignImport, type LegacyImportProposal } from './src/domain/campaign/migration';
-import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, type ChapterOneSession } from './src/domain/campaign/session';
+import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, recordCampaignReplayDiscoveries, type ChapterOneSession } from './src/domain/campaign/session';
+import type { CampaignDiscoveryHistory } from './src/domain/campaign/discoveries';
 import { STAGE_DEFINITIONS, type PlayableStageId } from './src/domain/stageKit/definitions';
 import { stageModule } from './src/domain/stageKit/modules';
 import { createCheckpoint, createInitialRuntime, type CheckpointState } from './src/domain/firstPerson';
@@ -110,6 +111,7 @@ export default function App() {
   const [campaignMigration, setCampaignMigration] = useState<LegacyImportProposal | undefined>();
   const [campaignIntent, setCampaignIntent] = useState<CampaignIntent | undefined>();
   const [campaignAreas, setCampaignAreas] = useState(false);
+  const [campaignDiscoveries, setCampaignDiscoveries] = useState(false);
   const [campaignRun, setCampaignRun] = useState<CampaignRun | undefined>();
   const campaignRunToken = useRef(0);
   const campaignActive = useRef(false);
@@ -222,6 +224,7 @@ export default function App() {
   const prepareCampaign = (intent: CampaignIntent) => {
     setCampaignIntent(intent);
     setCampaignAreas(false);
+    setCampaignDiscoveries(false);
     const target = intent === 'continue' ? campaignRef.current : intent === 'import' && campaignMigration?.status === 'ready' ? campaignMigration.session : undefined;
     // PLAY owns the existing three-question setup. The campaign's actual area
     // is passed to its instructions and Stage Kit host separately.
@@ -331,6 +334,14 @@ export default function App() {
     (area.id === 'chapter-1-area-02' && hasVaultSave) ||
     (area.id === 'chapter-1-area-03' && theatreState.hasSave),
   ).map(area => area.id);
+  const observedDiscoveries = CHAPTER_ONE.areas.reduce<CampaignDiscoveryHistory>((history, area) => {
+    const current = campaign?.discoveryHistory[area.id] ?? [];
+    const legacy = area.stageId === 'perception-gallery-v1' || area.stageId === 'uncanny-vault-v1' || area.stageId === 'shadow-theatre-v1'
+      ? journal.history[area.stageId]?.discoveries ?? [] : [];
+    const union = [...new Set([...current, ...legacy])];
+    if (union.length) history[area.id] = union;
+    return history;
+  }, {});
   const selectStage = (id: StageId, replay = false) => {
     const selectionLease = chapterLease, revision = ++selectionRevision.current;
     const choose = () => { if (!isFirstPersonSessionCurrent(selectionLease) || selectionRevision.current !== revision) return; setReplayPending(replay); dispatch({ type: 'PLAY', chapterId: id, sessionId: String(Date.now()) }); };
@@ -467,6 +478,7 @@ export default function App() {
     campaignRef.current = undefined; setCampaign(undefined); setCampaignLoading(false);
     setCampaignBlocked(undefined); setCampaignMessage(undefined); setCampaignMigration(undefined);
     setCampaignRun(undefined); campaignTransitionRef.current = undefined; setCampaignTransition(undefined);
+    setCampaignDiscoveries(false); setCampaignAreas(false);
     campaignSessionOnlyRef.current = false; setCampaignSessionOnly(false);
     setJournal(emptyJournal()); setJournalMessage(undefined); setReplayPending(false); setLegacyBlocked(false);
     setStorageMessage(undefined);
@@ -509,7 +521,9 @@ export default function App() {
     const area = intentSession ? campaignArea(intentSession.currentArea) : CHAPTER_ONE.areas[0];
     screen = <PlayInstructionsScreen chapterId={campaignIntent ? (area ?? CHAPTER_ONE.areas[0]).stageId : state.selectedChapterId} campaignMode={!!campaignIntent} controls={controls} reducedMotion={state.settings.reducedMotion} horrorIntensity={state.settings.horrorIntensity ?? 'standard'} onHorrorChange={(horrorIntensity) => dispatch({ type: 'UPDATE_SETTINGS', settings: { ...state.settings, horrorIntensity } })} onStart={() => void (campaignIntent ? beginCampaignIntent() : beginChapter())} onSettings={() => { setSettingsReturn('playInstructions'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }} onBack={navigateHome} />;
   } else if (state.screen === 'campaignEnding' && campaign?.campaignCompleted) {
-    screen = <ChapterOneEndingScreen onHome={navigateHome} onAreas={() => { setCampaignAreas(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }} />;
+    screen = <ChapterOneEndingScreen onHome={navigateHome}
+      onAreas={() => { setCampaignDiscoveries(false); setCampaignAreas(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }}
+      onDiscoveries={() => { setCampaignAreas(false); setCampaignDiscoveries(true); dispatch({ type: 'NAVIGATE', screen: 'welcome' }); }} />;
   } else if (state.screen === 'campaignReplayResult' && campaignRun?.replay) {
     const area = campaignArea(campaignRun.areaId);
     screen = <Screen><Text style={styles.replayTitle}>{area?.title}を振り返った</Text>
@@ -542,8 +556,26 @@ export default function App() {
         }}
         onCheckpoint={checkpoint => {
           if (!current() || checkpoint.chapterId !== area.stageId) return;
+          if (run.replay) {
+            const previous = campaignRef.current;
+            const update = previous && recordCampaignReplayDiscoveries(previous, run.areaId, checkpoint);
+            if (update?.accepted) {
+              if (update.changed) {
+                campaignRef.current = update.session;
+                setCampaign(update.session);
+                if (!campaignSessionOnlyRef.current) void queueCampaignSave(update.session, run.lease).then(saved => {
+                  if (current() && !saved) setCampaignMessage('発見の記録を保存できませんでした。この起動中は保持しています。');
+                });
+              }
+            } else if (area.stageId === 'perception-gallery-v1' || area.stageId === 'uncanny-vault-v1' || area.stageId === 'shadow-theatre-v1') {
+              setJournal(previousJournal => mergeStageHistory(previousJournal, [checkpoint]));
+              void recordStageHistory([checkpoint], run.lease).then(saved => {
+                if (current() && !saved) setJournalMessage('発見の記録を保存できませんでした。');
+              });
+            }
+            return;
+          }
           if (checkpoint.progress.cleared) { campaignCleared.current = checkpoint; return; }
-          if (run.replay) return;
           const previous = campaignRef.current;
           if (!previous) return;
           const update = recordCampaignCheckpoint(previous, run.areaId, checkpoint);
@@ -732,10 +764,13 @@ export default function App() {
     screen = <ChapterOneHomeScreen
       session={campaign} migration={campaignMigration} loading={campaignLoading} blocked={campaignBlocked}
       message={campaignMessage} replayable={replayableCampaignAreas} showAreas={campaignAreas}
+      showDiscoveries={campaignDiscoveries} discoveries={observedDiscoveries}
       onContinue={() => { if (campaign?.campaignCompleted) dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' }); else prepareCampaign('continue'); }}
       onNew={confirmNewCampaign}
       onImport={() => { if (campaignMigration?.status === 'ready') prepareCampaign('import'); }}
-      onAreas={() => setCampaignAreas(true)} onHome={() => setCampaignAreas(false)}
+      onAreas={() => { setCampaignDiscoveries(false); setCampaignAreas(true); }}
+      onDiscoveries={() => { setCampaignAreas(false); setCampaignDiscoveries(true); }}
+      onHome={() => { setCampaignAreas(false); setCampaignDiscoveries(false); }}
       onReplay={areaId => { void startCampaignReplay(areaId); }}
       onEnding={() => { if (campaign?.campaignCompleted) dispatch({ type: 'NAVIGATE', screen: 'campaignEnding' }); }}
       onSettings={() => { setSettingsReturn('welcome'); dispatch({ type: 'NAVIGATE', screen: 'settings' }); }}

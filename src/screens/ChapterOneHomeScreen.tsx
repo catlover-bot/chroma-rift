@@ -4,7 +4,17 @@ import { ActionButton } from '../components/Layout';
 import { CHAPTER_ONE, CHAPTER_TWO, type CampaignAreaId } from '../domain/campaign/definition';
 import type { LegacyImportProposal } from '../domain/campaign/migration';
 import type { ChapterOneSession } from '../domain/campaign/session';
+import type { CampaignDiscoveryHistory } from '../domain/campaign/discoveries';
 import { UI_COLORS } from '../theme/ui';
+
+const DISCOVERY_TITLES: Readonly<Record<CampaignAreaId, Readonly<Record<string, string>>>> = {
+  'chapter-1-area-01': { chromatic: '色の奥行き', shadow: '明暗の対比', contour: '主観的輪郭',
+    mask: '凹面の仮面', wiring: '隠れた配線', hybrid: '近づくと変わる掲示', shepard: '音の錯覚' },
+  'chapter-1-area-02': { length: '長さの見え方', rod: '鉛直の見え方', cafe: '平行な目地' },
+  'chapter-1-area-03': { shadow: '影の大きさ', depth: '部屋の奥行き' },
+  'chapter-1-area-04': { figure: '顔と顔の間の輪郭', mirror: '背後を映す鏡', ratchet: '巻き上げた歯止め' },
+  'chapter-1-area-05': { containment: '収容区画の隔離', attendance: '在館反応の変化' },
+};
 
 type Props = {
   session?: ChapterOneSession | undefined;
@@ -14,10 +24,13 @@ type Props = {
   message?: string | undefined;
   replayable: readonly CampaignAreaId[];
   showAreas: boolean;
+  showDiscoveries: boolean;
+  discoveries: CampaignDiscoveryHistory;
   onContinue: () => void;
   onNew: () => void;
   onImport: () => void;
   onAreas: () => void;
+  onDiscoveries: () => void;
   onHome: () => void;
   onReplay: (areaId: CampaignAreaId) => void;
   onEnding: () => void;
@@ -35,7 +48,19 @@ export function ChapterOneHomeScreen(props: Props) {
       <View style={styles.rule}/>
       <Text style={styles.eyebrow}>第一章</Text>
       <Text style={styles.title} accessibilityRole="header">最後の退館者</Text>
-      {props.showAreas ? <>
+      {props.showDiscoveries ? <>
+        <Text style={styles.description}>実際に調べたり操作した記録。以前のクリア記録だけで未発見の項目は増えません。</Text>
+        {CHAPTER_ONE.areas.map(area => <View key={area.id} style={styles.areaRow}>
+          <Text style={styles.areaNumber}>{area.number}</Text>
+          <View style={styles.areaCopy}>
+            <Text style={styles.areaName}>{area.title}</Text>
+            {(props.discoveries[area.id] ?? []).length
+              ? (props.discoveries[area.id] ?? []).map(id => <Text key={id} style={styles.note}>・{DISCOVERY_TITLES[area.id][id] ?? '調べた展示'}</Text>)
+              : <Text style={styles.areaStatus}>まだ発見の記録はありません</Text>}
+          </View>
+        </View>)}
+        <ActionButton label="第一章のホームへ" onPress={props.onHome}/>
+      </> : props.showAreas ? <>
         <Text style={styles.description}>知覚展示館　館内経路</Text>
         {CHAPTER_ONE.areas.map(area => {
           const completed = !!props.session?.completedAreas.includes(area.id);
@@ -78,7 +103,7 @@ export function ChapterOneHomeScreen(props: Props) {
         </Text> : null}
         {props.session && !props.session.campaignCompleted ? <ActionButton label="第一章をはじめから" onPress={props.onNew}/> : null}
         <ActionButton label="エリアを振り返る" onPress={props.onAreas} disabled={props.loading}/>
-        <ActionButton label="発見の記録" onPress={props.onAreas} disabled={props.loading}/>
+        <ActionButton label="発見の記録" onPress={props.onDiscoveries} disabled={props.loading}/>
         <ActionButton label="設定" onPress={props.onSettings}/>
         {__DEV__ && props.onLegacyStages ? <ActionButton label="旧ステージ一覧（開発用）" onPress={props.onLegacyStages}/> : null}
       </>}

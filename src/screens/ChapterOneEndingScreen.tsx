@@ -5,7 +5,7 @@ import { CHAPTER_ONE_COPY } from '../domain/campaign/story';
 import { MATERIAL_CREDITS } from '../content/illusionNotes';
 import { UI_COLORS } from '../theme/ui';
 
-export function ChapterOneEndingScreen({ onHome, onAreas }: { onHome: () => void; onAreas: () => void }) {
+export function ChapterOneEndingScreen({ onHome, onAreas, onDiscoveries }: { onHome: () => void; onAreas: () => void; onDiscoveries: () => void }) {
   return <Screen>
     <Text style={styles.brand}>CHROMA RIFT</Text>
     <View style={styles.rule}/>
@@ -17,6 +17,7 @@ export function ChapterOneEndingScreen({ onHome, onAreas }: { onHome: () => void
     <Text style={styles.credit}>素材クレジット</Text>
     <Text style={styles.credit}>{MATERIAL_CREDITS[0].title}：Wael Tsar / cmglee（CC BY 4.0）</Text>
     <ActionButton label="エリアを振り返る" onPress={onAreas}/>
+    <ActionButton label="発見の記録" onPress={onDiscoveries}/>
     <ActionButton label="ホームへ戻る" variant="primary" onPress={onHome}/>
   </Screen>;
 }

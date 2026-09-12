@@ -1,5 +1,6 @@
 import { CHAPTER_ONE, CHAPTER_TWO, campaignArea } from '../definition';
-import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, verifiedAreaCheckpoint } from '../session';
+import { completeCampaignArea, createChapterOneSession, recordCampaignCheckpoint, recordCampaignReplayDiscoveries, verifiedAreaCheckpoint } from '../session';
+import { observedCampaignDiscoveries } from '../discoveries';
 import { createCampaignAreaEntry } from '../areaEntry';
 import { migrateGalleryV1Checkpoint } from '../../gallery/checkpoint';
 import { originalV1 } from '../../../storage/testFixtures/galleryV1';
@@ -58,10 +59,30 @@ test('campaign codec rejects future versions, forged progress and unseen story p
   expect(parseChapterOneSession({ ...fresh, currentArea: 'chapter-1-area-05' })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, completedAreas: ['chapter-1-area-01'] })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, storyPresented: ['closing-interrupted'] })).toBeUndefined();
+  expect(parseChapterOneSession({ ...fresh, discoveryHistory: { 'chapter-1-area-01': ['unknown-exhibit'] } })).toBeUndefined();
+  expect(parseChapterOneSession({ ...fresh, discoveryHistory: { 'chapter-1-area-04': ['figure'] } })).toBeUndefined();
   expect(parseChapterOneSession({ ...fresh, finale: { contained: true, isolated: true, stopped: true, outdoorExited: true }, campaignCompleted: true })).toBeUndefined();
   const restored = parseChapterOneSession(fresh)!;
   restored.checkpoint.pose.position.x = 9;
   expect(fresh.checkpoint.pose.position.x).not.toBe(9);
+});
+
+test('observed discoveries form a one-way union while practice leaves the campaign route intact', () => {
+  const fresh = createChapterOneSession('discovery-run', '0.1.0');
+  const gallery = fresh.checkpoint.progress.gallery!;
+  const observed = { ...fresh.checkpoint, progress: { ...fresh.checkpoint.progress,
+    gallery: { ...gallery, discoveries: { ...gallery.discoveries, chromatic: true } } } };
+  expect(observedCampaignDiscoveries(fresh.currentArea, observed)).toContain('chromatic');
+  const practice = recordCampaignReplayDiscoveries(fresh, fresh.currentArea, observed);
+  expect(practice).toMatchObject({ accepted: true, changed: true });
+  if (!practice.accepted) return;
+  expect(practice.session).toMatchObject({ currentArea: fresh.currentArea, checkpoint: fresh.checkpoint,
+    storyFired: [], storyPresented: [], discoveryHistory: { 'chapter-1-area-01': ['chromatic'] } });
+  expect(parseChapterOneSession(practice.session)).toBeDefined();
+  expect(recordCampaignReplayDiscoveries(practice.session, fresh.currentArea, fresh.checkpoint))
+    .toMatchObject({ accepted: true, changed: false });
+  expect(recordCampaignReplayDiscoveries(practice.session, 'chapter-1-area-04', observed))
+    .toMatchObject({ accepted: false, reason: 'wrong-area' });
 });
 
 test('the five area boundaries stay indoor until a verified stopped and outdoor finale', () => {

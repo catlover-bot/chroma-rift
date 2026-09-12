@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { parseChapterOneSession } from '../domain/campaign/checkpoint';
 import type { ChapterOneSession } from '../domain/campaign/session';
+import { CHAPTER_ONE } from '../domain/campaign/definition';
 
 export const CHAPTER_ONE_STORAGE_KEY = 'chroma-rift.campaign.chapter-1.v1';
 export const CHAPTER_ONE_BACKUP_KEY = 'chroma-rift.campaign.chapter-1.backup.v1';
@@ -27,6 +28,8 @@ function canReplace(before: ChapterOneSession, after: ChapterOneSession, boundar
     !containsAll(before.completedAreas, after.completedAreas) ||
     keyRank[after.keyLocation] < keyRank[before.keyLocation] ||
     !containsAll(before.storyFired, after.storyFired) || !containsAll(before.storyPresented, after.storyPresented) ||
+    CHAPTER_ONE.areas.some(area => !containsAll(before.discoveryHistory[area.id] ?? [],
+      after.discoveryHistory[area.id] ?? [])) ||
     before.campaignCompleted && !after.campaignCompleted ||
     before.currentArea === after.currentArea && !boundary.checkpointProgresses(before.checkpoint, after.checkpoint)) return false;
   // Area 05 deliberately permits reopening a mistaken isolation before the

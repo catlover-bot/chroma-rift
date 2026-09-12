@@ -8,4 +8,6 @@
 
 `App.tsx` の製品入口は第一章ホームに切り替わった。旧ステージ一覧とprobeは開発ビルド内の入口に限定する。新規開始、続き、旧記録の明示移行、独立replayをここから選べる。areaのクリアcheckpointと次の安全入口を一つのenvelopeへ保存し、成功後にCanvasを切り替える。保存失敗時は旧画面を保持し、再試行または明示した起動中だけの継続を選べる。hostのcallback検証では03→04→05→屋外、各区間のcold restoreと保存失敗を確認した。このテストはStage codecで作ったcheckpointを画面callbackへ渡したもので、01からの自然な操作による通しプレイではない。
 
+「発見の記録」はStage codecが検証した明示観察bitから作り、旧Stage Journalにある観察済み項目と一方向に合流する。旧クリア済みだけでは項目を増やさない。replay中の観察は現在エリア・鍵・最終措置・story beatを変えず、campaignの発見履歴だけを保存する。保存済みcheckpointより古いcallbackは本編のメモリ状態を巻き戻す前に拒否する。04の鏡像そのものは明示観察bitがまだ無いため発見済みとは扱わない。
+
 この文書は進行中の接続記録である。04/05の連続した実scene QA、01から屋外までの自然な通しプレイ、物語beatと発見記録の製品表示、実機確認は残っている。`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。第二章を追加する時は別のCampaignDefinitionとstage群を登録し、第一章の保存schemaや結末を再定義しない。

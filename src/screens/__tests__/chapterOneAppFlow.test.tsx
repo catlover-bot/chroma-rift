@@ -14,6 +14,7 @@ import { EXIT } from '../../domain/stages/mirror-corridor-v1/definition';
 import { OUTDOOR } from '../../domain/stages/departure-control-v1/definition';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../domain/stages/mirror-corridor-v1/checkpoint';
 import { parseStageCheckpoint as parseDepartureCheckpoint } from '../../domain/stages/departure-control-v1/checkpoint';
+import { recordCampaignReplayDiscoveries } from '../../domain/campaign/session';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
 import * as gateModule from '../NativeFirstPersonGate';
@@ -60,6 +61,44 @@ test('product home starts one campaign envelope and resumes the same first area'
   await fireEvent.press(view.getByText('展示室へ入る'));
   await view.findByTestId('campaign-native-canvas');
   expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).runId).toBe(first.runId);
+});
+
+test('the discovery record shows observed notes and replay unions notes without moving the campaign', async () => {
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App />);
+  await fireEvent.press(await view.findByRole('button', { name: '第一章をはじめる' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('展示室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  const first = latest!;
+  const gallery = first.checkpoint!.progress.gallery!;
+  const observed = { ...first.checkpoint!, progress: { ...first.checkpoint!.progress,
+    gallery: { ...gallery, discoveries: { ...gallery.discoveries, chromatic: true } } } };
+  await act(() => first.onCheckpoint(observed));
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).discoveryHistory)
+    .toEqual({ 'chapter-1-area-01': ['chromatic'] }));
+  await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
+  await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+  await fireEvent.press(view.getByRole('button', { name: '発見の記録' }));
+  expect(view.getByText('・色の奥行き')).toBeTruthy();
+  expect(view.queryByText('・明暗の対比')).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: '第一章のホームへ' }));
+  await fireEvent.press(view.getByRole('button', { name: 'エリアを振り返る' }));
+  await fireEvent.press(view.getByRole('button', { name: '閉館後の展示室を振り返る' }));
+  await view.findByTestId('campaign-native-canvas');
+  const replay = latest!;
+  expect(replay.checkpoint?.progress.gallery?.discoveries.chromatic).toBe(false);
+  const replayGallery = replay.checkpoint!.progress.gallery!;
+  const replayObserved = { ...replay.checkpoint!, progress: { ...replay.checkpoint!.progress,
+    gallery: { ...replayGallery, discoveries: { ...replayGallery.discoveries, shadow: true } } } };
+  expect(recordCampaignReplayDiscoveries(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!),
+    'chapter-1-area-01', replayObserved)).toMatchObject({ accepted: true, changed: true });
+  await act(() => replay.onCheckpoint(replayObserved));
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!))
+    .toMatchObject({ currentArea: 'chapter-1-area-01', checkpoint: observed,
+      discoveryHistory: { 'chapter-1-area-01': ['chromatic', 'shadow'] }, storyPresented: [] }));
 });
 
 test('old cleared gallery proposes an indoor area-02 entry without changing old bytes', async () => {
