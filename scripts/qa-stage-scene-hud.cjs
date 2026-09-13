@@ -9,6 +9,7 @@ const { installNativeHudBridge, browserStyles, browserHelpers } = require('./lib
 if (process.argv.length !== 2) throw Error('usage: node scripts/qa-stage-scene-hud.cjs');
 const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/stage-scene-hud');
 fs.mkdirSync(out, { recursive: true });
+const sizes = [[320, 568, 2], [390, 844, 1.5], [430, 932, 1]];
 const bridge = installSourceBridge(root), context = { width: 320, height: 568, fontScale: 2, bindController: false };
 const native = installNativeHudBridge(context), React = require('react'), THREE = require('three');
 const RC = require('../src/rendering/firstPerson/runtimeController.ts');
@@ -48,7 +49,8 @@ function action(tree) {
   if (tree.type === 'Pressable' && tree.testID === 'interact') return tree;
   return tree.children.map(action).find(Boolean);
 }
-async function extract(stageId) {
+async function extract(stageId, width, height, fontScale) {
+  Object.assign(context, { width, height, fontScale });
   const mirror = stageId === 'mirror-corridor-v1', controller = RC.createController(checkpoint(stageId), false, true, stageId);
   context.controller = controller; controller.viewport = { width: context.width, height: context.height };
   Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true,
@@ -71,14 +73,15 @@ async function extract(stageId) {
     preferredColor: 'neutral', onSettingsChange() {}, onControlsChange() {}, onCheckpoint() {},
     onComplete() {}, onRestart() {}, onExit() {} });
   const records = [];
-  const capture = async (id, expectedLabel) => {
+  const capture = async (name, expectedLabel) => {
+    const id = width === 320 ? name : `${name}-${width}`;
     await hud.update(); updateScene();
     const tree = hud.serialize(), button = action(tree);
     if (!button || button.disabled || button.label !== expectedLabel)
       throw Error(`${id}: expected enabled ${expectedLabel}, got ${button?.label} disabled=${button?.disabled}`);
     const file = `${id}-scene.json`;
     fs.writeFileSync(path.join(out, file), JSON.stringify(scene.toJSON()));
-    records.push({ id, stageId, file, tree, target: RC.controllerSnapshot(controller).target?.id,
+    records.push({ id, stageId, file, width, height, fontScale, tree, target: RC.controllerSnapshot(controller).target?.id,
       pose: controller.runtime.pose, action: button.label });
   };
   try {
@@ -120,7 +123,8 @@ async function render(records) {
     function dispose(){if(!current)return;const {scene,mirror}=current,gs=new Set(),ms=new Set(),ts=new Set();
       scene.traverse(o=>{if(o.geometry)gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){ms.add(m);for(const t of Object.values(m))if(t?.isTexture)ts.add(t);}if(o.isInstancedMesh)o.dispose();});
       mirror?.dispose();gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();current=null;}
-    window.draw=async record=>{dispose();const scene=await new THREE.ObjectLoader().parseAsync(await(await fetch(record.file)).json());
+    window.draw=async record=>{dispose();renderer.setSize(record.width,record.height);
+      const scene=await new THREE.ObjectLoader().parseAsync(await(await fetch(record.file)).json());
       const camera=scene.children.find(o=>o.isPerspectiveCamera),surface=scene.getObjectByName('planar-mirror');
       if(!camera)throw Error('QA scene camera missing');let mirror=null,reflected=false,offscreenCalls=0;
       if(surface){mirror=createPlanarMirror();surface.material.dispose();surface.material=mirror.material;
@@ -128,7 +132,7 @@ async function render(records) {
         surface.updateWorldMatrix(true,false);f.setFromProjectionMatrix(pv.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
         if(f.intersectsObject(surface)){reflected=mirror.render(renderer,scene,camera,surface,(r,s,c)=>r.render(s,c));
           offscreenCalls=reflected?renderer.info.render.calls:0;}}
-      root.replaceChildren(hudDOM(record.tree,2,renderer.domElement));scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);
+      root.replaceChildren(hudDOM(record.tree,record.fontScale,renderer.domElement));scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       renderer.render(scene,camera);await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
       current={scene,mirror};const hud=auditNavigationHUD(root);
       return{hud,reflected,offscreenCalls,mainCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,
@@ -137,18 +141,20 @@ async function render(records) {
     window.ready=true;</script>`);
   const browser = await openBrowser(out), results = [];
   try {
-    await browser.send('Emulation.setDeviceMetricsOverride', { width: 320, height: 568, deviceScaleFactor: 1, mobile: false });
     for (let i = 0; i < 100 && !await browser.evaluate('window.ready===true'); i += 1) {
       if (browser.errors.length) throw Error(JSON.stringify(browser.errors)); await delay(100);
     }
     for (const record of records) {
+      await browser.send('Emulation.setDeviceMetricsOverride', { width: record.width, height: record.height,
+        deviceScaleFactor: 1, mobile: false });
       const metrics = await browser.evaluate('window.draw(' + JSON.stringify(record) + ')');
       const image = Buffer.from((await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false })).data, 'base64');
       fs.writeFileSync(path.join(out, record.id + '.png'), image);
-      results.push({ id: record.id, target: record.target, action: record.action, pose: record.pose,
+      results.push({ id: record.id, width: record.width, height: record.height, fontScale: record.fontScale,
+        target: record.target, action: record.action, pose: record.pose,
         image: record.id + '.png', sha256: sha256(image), metrics });
       const a = metrics.hud.action;
-      if (!a || a.left < 0 || a.right > 320 || a.top < 0 || a.bottom > 568 || a.width < 44 || a.height < 44)
+      if (!a || a.left < 0 || a.right > record.width || a.top < 0 || a.bottom > record.height || a.width < 44 || a.height < 44)
         throw Error(record.id + ': action button is clipped or too small');
       if (!metrics.mainCalls || !metrics.triangles || record.stageId === 'mirror-corridor-v1' && !metrics.reflected)
         throw Error(record.id + ': scene or mirror pass did not render');
@@ -162,11 +168,14 @@ async function render(records) {
   } finally { await browser.close(); }
 }
 async function main() {
-  const records = [...await extract('mirror-corridor-v1'), ...await extract('departure-control-v1')];
+  const records = [];
+  for (const [width, height, fontScale] of sizes)
+    for (const stageId of ['mirror-corridor-v1', 'departure-control-v1'])
+      records.push(...await extract(stageId, width, height, fontScale));
   bridge.verify();
   const rendered = await render(records); bridge.verify();
-  const report = { boundary: 'Actual area-04/05 StageScene, FirstPersonScreen, controller and validated checkpoint at 320x568/fontScale 2; scene and HUD share each controller state. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.',
-    viewport: [320, 568], fontScale: 2, toolHash: sha256(fs.readFileSync(__filename)),
+  const report = { boundary: 'Actual area-04/05 StageScene, FirstPersonScreen, controller and validated checkpoint at three portrait sizes; scene and HUD share each controller state. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.',
+    sizes, toolHash: sha256(fs.readFileSync(__filename)),
     sourceHashes: Object.fromEntries(bridge.hashes), ...rendered };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ cases: rendered.results.length, disposed: rendered.disposed, out }));

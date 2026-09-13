@@ -1,6 +1,6 @@
 # Goal 013 作業記録
 
-04・05の最小画面で、実 `StageScene` と `FirstPersonScreen` を同一controller状態から描くSoftware WebGL/CSS QAを追加した。検証済みcheckpointから画面ボタンを押して04保持前/中、05キー/ベルの4枚を撮り、全画像を開いて操作面・照準・目的・pause・ボタンを確認した。320×568・fontScale 2で操作ボタンは44px以上かつ画面内、測定したHUD矩形の重なり0。04反射pass実行、描画後geometry/texture 0、browser error 0、146 source hashを [QA記録](qa-goal013/README.md) に残した。これは実sceneとHUDを同時に示す局所確認だが、native Canvas/Yoga・実指/音・iPhoneの見え方や鏡像視認性は未確認である。製品ソース・依存には変更がない。
+04・05の3画面サイズで、実 `StageScene` と `FirstPersonScreen` を同一controller状態から描くSoftware WebGL/CSS QAを行った。検証済みcheckpointから画面ボタンを押して04保持前/中、05キー/ベルを各サイズ4枚、計12枚撮り、すべて開いて操作面・照準・目的・pause・ボタンを確認した。320×568/fontScale 2、390×844/1.5、430×932/1で操作ボタンは44px以上かつ画面内、測定したHUD矩形の重なり0。04反射pass実行、描画後geometry/texture 0、browser error 0、146 source hashを [QA記録](qa-goal013/README.md) に残した。これは実sceneとHUDを同時に示す局所確認だが、native Canvas/Yoga・実指/音・iPhoneの見え方や鏡像視認性は未確認である。製品ソース・依存には変更がない。
 
 preview/productionのEAS profileに `developmentClient: false` を明示した。製品ソース最終変更後のiOS/Android公開用JS source mapに開発画面、probe、dev-client系JSが含まれないことを再確認し、`scripts/check-release-export.cjs` に混入時の失敗条件を追加した。対象exportはiOS 1,580・Android 1,579 source、各10 asset。ローカルprebuild設定では開発用ネイティブモジュールが自動リンク候補に残るため、実バイナリの開発メニュー等の不在は未確認。詳細は [公開準備手順](RELEASE-CHAPTER-1.md)。本編runtime/依存は変更しておらず、native previewと正式privacy/support URLのrelease blockerを維持する。
 

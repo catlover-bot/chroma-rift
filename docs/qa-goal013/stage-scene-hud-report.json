@@ -1,11 +1,23 @@
 {
-  "boundary": "Actual area-04/05 StageScene, FirstPersonScreen, controller and validated checkpoint at 320x568/fontScale 2; scene and HUD share each controller state. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.",
-  "viewport": [
-    320,
-    568
+  "boundary": "Actual area-04/05 StageScene, FirstPersonScreen, controller and validated checkpoint at three portrait sizes; scene and HUD share each controller state. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.",
+  "sizes": [
+    [
+      320,
+      568,
+      2
+    ],
+    [
+      390,
+      844,
+      1.5
+    ],
+    [
+      430,
+      932,
+      1
+    ]
   ],
-  "fontScale": 2,
-  "toolHash": "a41b33b15c814d683f311d8528785f93878fb0095a10bd9880874cb36d1baf27",
+  "toolHash": "12239255c2fd6f7b2c7d7c91a3ddcb7cd0e907c42f86779a928904784e76a14b",
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
     "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
@@ -157,6 +169,9 @@
   "results": [
     {
       "id": "mirror-winch-ready",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
       "target": "mirror-corridor-winch",
       "action": "巻き上げレバーを保持する",
       "pose": {
@@ -225,6 +240,9 @@
     },
     {
       "id": "mirror-winch-holding",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
       "target": "mirror-corridor-winch",
       "action": "保持中。もう一度押すと放す",
       "pose": {
@@ -293,6 +311,9 @@
     },
     {
       "id": "departure-key-ready",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
       "target": "departure-key",
       "action": "隔離キーを差す",
       "pose": {
@@ -361,6 +382,9 @@
     },
     {
       "id": "departure-bell-ready",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
       "target": "departure-bell",
       "action": "収容区画の呼び鈴を鳴らす",
       "pose": {
@@ -409,6 +433,574 @@
             "bottom": 556,
             "width": 142,
             "height": 104
+          },
+          "objectiveText": "巡回体を収容区画へ誘導する。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 20,
+        "triangles": 230,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "mirror-winch-ready-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "target": "mirror-corridor-winch",
+      "action": "巻き上げレバーを保持する",
+      "pose": {
+        "position": {
+          "x": -1.8,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 2.677945044588988,
+        "pitch": -0.13674541111863436
+      },
+      "image": "mirror-winch-ready-390.png",
+      "sha256": "71d0575e005a510313f1eadf3a6faf2d09bb942c66e0d9d9d078314e2f668d07",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 91,
+            "width": 310,
+            "height": 79
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "レバーを保持し、格子を巻き上げる。歯止め 0/3。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": true,
+        "offscreenCalls": 26,
+        "mainCalls": 19,
+        "triangles": 218,
+        "rtSize": 384,
+        "geometries": 2,
+        "textures": 1
+      }
+    },
+    {
+      "id": "mirror-winch-holding-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "target": "mirror-corridor-winch",
+      "action": "保持中。もう一度押すと放す",
+      "pose": {
+        "position": {
+          "x": -1.8,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 2.677945044588988,
+        "pitch": -0.13674541111863436
+      },
+      "image": "mirror-winch-holding-390.png",
+      "sha256": "a5a3ba26a90d1edb29d602eb6d818b085f3ebc7396c3cc6cf5736724323f9904",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 91,
+            "width": 310,
+            "height": 79
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "レバーを保持し、格子を巻き上げる。歯止め 0/3。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": true,
+        "offscreenCalls": 27,
+        "mainCalls": 21,
+        "triangles": 261,
+        "rtSize": 384,
+        "geometries": 3,
+        "textures": 1
+      }
+    },
+    {
+      "id": "departure-key-ready-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "target": "departure-key",
+      "action": "隔離キーを差す",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974492,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-key-ready-390.png",
+      "sha256": "2cb71cbdee0877d6dcadf93a3fc65999ab00cdfd71595c30eebe46834ca45395",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 59.5,
+            "width": 310,
+            "height": 47.5
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "隔離キーを制御盤へ差す。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 9,
+        "triangles": 98,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-bell-ready-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "target": "departure-bell",
+      "action": "収容区画の呼び鈴を鳴らす",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 2.356194490192344,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-bell-ready-390.png",
+      "sha256": "8b39404c420df6ded00f5ec8a8794b30928d82bf9dbdf710a1b9935204ae7166",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 91,
+            "width": 310,
+            "height": 79
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "巡回体を収容区画へ誘導する。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 20,
+        "triangles": 230,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "mirror-winch-ready-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "target": "mirror-corridor-winch",
+      "action": "巻き上げレバーを保持する",
+      "pose": {
+        "position": {
+          "x": -1.8,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 2.677945044588988,
+        "pitch": -0.13674541111863436
+      },
+      "image": "mirror-winch-ready-430.png",
+      "sha256": "8c5925da5c25ebfbb974a70b9ec70d6284f2200f51bd2d4bb9095bf066e435c4",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 70,
+            "width": 350,
+            "height": 58
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "レバーを保持し、格子を巻き上げる。歯止め 0/3。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": true,
+        "offscreenCalls": 26,
+        "mainCalls": 19,
+        "triangles": 218,
+        "rtSize": 384,
+        "geometries": 2,
+        "textures": 1
+      }
+    },
+    {
+      "id": "mirror-winch-holding-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "target": "mirror-corridor-winch",
+      "action": "保持中。もう一度押すと放す",
+      "pose": {
+        "position": {
+          "x": -1.8,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 2.677945044588988,
+        "pitch": -0.13674541111863436
+      },
+      "image": "mirror-winch-holding-430.png",
+      "sha256": "19bb6c1564f19308142f281db3e855996a5036ba256ad743ad5eecf23b2d3a8e",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 70,
+            "width": 350,
+            "height": 58
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "レバーを保持し、格子を巻き上げる。歯止め 0/3。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": true,
+        "offscreenCalls": 27,
+        "mainCalls": 21,
+        "triangles": 261,
+        "rtSize": 384,
+        "geometries": 3,
+        "textures": 1
+      }
+    },
+    {
+      "id": "departure-key-ready-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "target": "departure-key",
+      "action": "隔離キーを差す",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974492,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-key-ready-430.png",
+      "sha256": "ae22dd7865d44e0be9d8193f601f18dd80cc8eac35bf9e1cf007c045834cacca",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 49,
+            "width": 350,
+            "height": 37
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "隔離キーを制御盤へ差す。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 9,
+        "triangles": 98,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-bell-ready-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "target": "departure-bell",
+      "action": "収容区画の呼び鈴を鳴らす",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 2.356194490192344,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-bell-ready-430.png",
+      "sha256": "d717a2c728e652031d69ef8446d30c95ce3fd4611831796a6a2541ef7a4b72e5",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 49,
+            "width": 350,
+            "height": 37
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
           },
           "objectiveText": "巡回体を収容区画へ誘導する。",
           "pauseOverlapsObjective": false,
