@@ -20,7 +20,7 @@
 
 04の鏡像と実身体を同一simulation frameで並べたSoftware WebGLのQA動画を `docs/qa-goal013/mirror-identity.mp4` に追加した。右側は固定QA cameraであり、製品の一人称表示やiPhoneの反射確認ではない。native previewで鏡像・実体・操作を確認するゲートは未完了のまま。
 
-この文書は2026-09-13時点のローカル設定と確認範囲を記録する。05操作盤の実scene修正 `7ff4a83` 後、`automatedChecksPassed=true`（lint、型検査、110スイート/1,133テスト、iOS通常export、両OSの公開用source-map export、循環・定義検査、Doctor）。現行ソースのexportとQAの数値は [release-controls-source-checks.json](qa-goal013/release-controls-source-checks.json)、画像と動画は [QA記録](qa-goal013/README.md) に残した。全5エリアを一続きに実描画したApp操作の最終受入が未完了のため `contentComplete=false`。iPhoneで操作盤・鏡・画面と実指/実音を確認していないため `nativePreviewVerified=false`。正式privacy/support URLとストア申告も未完了なので `releaseReady=false` を維持する。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
+この文書は2026-09-13時点のローカル設定と確認範囲を記録する。05操作盤の実scene修正 `7ff4a83` 後、01/02の実scene/HUD静止画6枚も追加した。`automatedChecksPassed=true`（lint、型検査、110スイート/1,133テスト、iOS通常export、両OSの公開用source-map export、循環・定義検査、Doctor）。現行ソースのexportとQAの数値は [release-controls-source-checks.json](qa-goal013/release-controls-source-checks.json)、画像と動画は [QA記録](qa-goal013/README.md) に残した。全5エリアを一続きに実描画したApp操作の最終受入が未完了のため `contentComplete=false`。iPhoneで操作盤・鏡・画面と実指/実音を確認していないため `nativePreviewVerified=false`。正式privacy/support URLとストア申告も未完了なので `releaseReady=false` を維持する。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成
 
@@ -124,4 +124,4 @@ eas build --platform ios --profile production
 
 最終HUDの製品ソース以降はQAツールと文書だけが変わったことを確認し、同じ両OSのsource-map exportへ `check-release-export.cjs` を再適用した。iOS 1,580 source/10 asset、Android 1,579 source/10 assetで、5エリア同梱・開発画面/probe除外を両方とも通過した。`expo install --check` は推奨依存と一致、`npm ls --depth=0` はexit 0。現行lockfileへの `npm audit` と `npm audit --omit=dev` はともにmoderate 11、high/critical 0で、11件を解決済みとはしない。CLIが示す自動修正候補はExpo 46とsplash-screen 55へのメジャー変更を含むため適用していない。コマンド範囲・bundle hash・生のaudit JSONは [release-local-checks.json](qa-goal013/release-local-checks.json) に残した。署名済みバイナリ、実機のoffline起動、正式URL、ストア申告のゲートは変わらない。
 
-04/05を320×568/文字2倍、390×844/1.5倍、430×932/標準で確認し、同一controllerから実sceneと実HUDを描いた現行18静止画を開いた。操作面とボタンの同時配置、04保持中の鍵、05キー設置前後・手順・ベルの視界を画像で見た。全サイズで操作ボタンは44px以上・画面内、測定したHUDの重なりは0。計測と画像は [QA記録](qa-goal013/README.md) にある。ブラウザーへの翻訳であり、iPhoneのYoga/EXGL、実指、実音、鏡像の見え方や端末性能を確認したことにはならない。native previewと正式privacy/support URLの公開ゲートは維持する。
+04/05を320×568/文字2倍、390×844/1.5倍、430×932/標準で確認し、同一controllerから実sceneと実HUDを描いた現行24静止画を開いた。操作面とボタンの同時配置、01初期、02留め金、04保持中の鍵、05キー設置前後・手順・ベルの視界を画像で見た。全サイズで操作ボタンは44px以上・画面内、測定したHUDの重なりは0。計測と画像は [QA記録](qa-goal013/README.md) にある。ブラウザーへの翻訳であり、iPhoneのYoga/EXGL、実指、実音、鏡像の見え方や端末性能を確認したことにはならない。native previewと正式privacy/support URLの公開ゲートは維持する。

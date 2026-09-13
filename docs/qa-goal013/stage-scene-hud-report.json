@@ -1,5 +1,5 @@
 {
-  "boundary": "Actual area-04/05 StageScene, FirstPersonScreen, controller and validated checkpoint at three portrait sizes; scene and HUD share each controller state. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.",
+  "boundary": "Actual area-01 gallery entry, area-02 vault length target, area-04/05 StageScene, FirstPersonScreen and their controller at three portrait sizes; scene and HUD share each controller state. Area-04/05 use validated checkpoints; area-01/02 are fresh entries. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.",
   "sizes": [
     [
       320,
@@ -17,7 +17,7 @@
       1
     ]
   ],
-  "toolHash": "6b911a07df4b02760eff2640e9c776329ee24b4ad4e1fa55075c03d0927531b7",
+  "toolHash": "cbca14e01707b15198ef542ad2b36cb1a287228aee85824e2023f152c3d228a0",
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
     "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
@@ -130,10 +130,21 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+    "src/rendering/firstPerson/ChapterScene.tsx": "8e87f90bbbc8eabf1287454b092c29cd5c0be02e564a2e7e15af5ffade8e5b6e",
+    "src/rendering/firstPerson/PanelFixture.tsx": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+    "src/rendering/firstPerson/GlyphMark.tsx": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+    "src/rendering/firstPerson/TheatreScene.tsx": "fa7bfc02e74c7819d097725154c53e4532418fd647e2393805dd82ce219996c2",
+    "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72",
+    "src/rendering/firstPerson/segmentTransform.ts": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+    "src/rendering/firstPerson/VaultScene.tsx": "144e282c7276e8a264528ccd981dac6684abe2d75b6d2c228d094755c21ea902",
+    "src/rendering/firstPerson/VaultDevices.tsx": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+    "src/rendering/firstPerson/GalleryScene.tsx": "440b3d10f9ad5e910e03b55b05314772e6662b95cd967ec5afba13d0173e35d1",
+    "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+    "src/rendering/firstPerson/stageSceneBindings.tsx": "cd175512d63cc1c546659be3f7420073e988a3c6f3fef40c940aee08d19c38bc",
+    "src/domain/stages/stage-kit-probe/scene.tsx": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555",
     "src/domain/stages/mirror-corridor-v1/scene.tsx": "ce1800701d1126629afb9f4bac67b12a17425d7da97c7fc4e560ec0f14ae5aa6",
     "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
-    "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72",
     "src/domain/stages/departure-control-v1/scene.tsx": "9a8ee2d7bcc8aecf94bb865f56b663b684c87051c496609e32e0ea5500e06f74",
     "src/screens/FirstPersonScreen.tsx": "c8db7a73f7beeb2bac30c8266590fe890d92c544e7f3fa968601db19431fbbbe",
     "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
@@ -167,6 +178,155 @@
     "src/domain/campaign/discoveries.ts": "3f7e6eb88ce9e5eda5242cd1e668d67e40aef4cdc18e13b5aa56cf04d9a6e3a4"
   },
   "results": [
+    {
+      "id": "gallery-entry",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "action": "非常口を確認",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "image": "gallery-entry.png",
+      "sha256": "dbf9beb7d34362713669d39a388ec817a1633e52d803963db59842ba7c36a043",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 308,
+            "bottom": 112,
+            "width": 240,
+            "height": 100
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 244.234375,
+            "right": 154,
+            "bottom": 439.984375,
+            "width": 142,
+            "height": 195.75
+          },
+          "notice": null,
+          "action": {
+            "left": 166,
+            "top": 452,
+            "right": 308,
+            "bottom": 556,
+            "width": 142,
+            "height": 104
+          },
+          "objectiveText": "非常灯を点け、職員通路を探す",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 75,
+        "triangles": 6304,
+        "rtSize": null,
+        "geometries": 8,
+        "textures": 1
+      }
+    },
+    {
+      "id": "vault-length-ready",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "target": "vault-length",
+      "action": "留め金を調整",
+      "pose": {
+        "position": {
+          "x": -1.15,
+          "y": 1.6,
+          "z": -0.7
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "image": "vault-length-ready.png",
+      "sha256": "ad495f35adf1a4cec681b3168029b262c14879de0c4999ef442b079199eb0dca",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 308,
+            "bottom": 154,
+            "width": 240,
+            "height": 142
+          },
+          "context": {
+            "left": 166,
+            "top": 323.21875,
+            "right": 308,
+            "bottom": 436,
+            "width": 142,
+            "height": 112.78125
+          },
+          "movement": {
+            "left": 12,
+            "top": 244.234375,
+            "right": 154,
+            "bottom": 439.984375,
+            "width": 142,
+            "height": 195.75
+          },
+          "notice": null,
+          "action": {
+            "left": 166,
+            "top": 452,
+            "right": 308,
+            "bottom": 556,
+            "width": 142,
+            "height": 104
+          },
+          "objectiveText": "留め金を調整して、搬出通路を開ける",
+          "contextText": "伸びて見える留め金",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 89,
+        "triangles": 2198,
+        "rtSize": null,
+        "geometries": 5,
+        "textures": 1
+      }
+    },
     {
       "id": "mirror-winch-ready",
       "width": 320,
@@ -593,6 +753,155 @@
       }
     },
     {
+      "id": "gallery-entry-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "action": "非常口を確認",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "image": "gallery-entry-390.png",
+      "sha256": "a9769e7639aabc310b777e303ed95e0212ad008f1ea009d5edb81d2d97c446a0",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 91,
+            "width": 310,
+            "height": 79
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "非常灯を点け、職員通路を探す",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 75,
+        "triangles": 6304,
+        "rtSize": null,
+        "geometries": 8,
+        "textures": 1
+      }
+    },
+    {
+      "id": "vault-length-ready-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "target": "vault-length",
+      "action": "留め金を調整",
+      "pose": {
+        "position": {
+          "x": -1.15,
+          "y": 1.6,
+          "z": -0.7
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "image": "vault-length-ready-390.png",
+      "sha256": "7987b4e78370f580db7aa581d82b9c0c8e9678f448edd4793a3439b5cf2b5cff",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 91,
+            "width": 310,
+            "height": 79
+          },
+          "context": {
+            "left": 201,
+            "top": 669.625,
+            "right": 378,
+            "bottom": 732,
+            "width": 177,
+            "height": 62.375
+          },
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "留め金を調整して、搬出通路を開ける",
+          "contextText": "伸びて見える留め金",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 60,
+        "triangles": 1732,
+        "rtSize": null,
+        "geometries": 3,
+        "textures": 1
+      }
+    },
+    {
       "id": "mirror-winch-ready-390",
       "width": 390,
       "height": 844,
@@ -1015,6 +1324,155 @@
         "rtSize": null,
         "geometries": 4,
         "textures": 0
+      }
+    },
+    {
+      "id": "gallery-entry-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "action": "非常口を確認",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "image": "gallery-entry-430.png",
+      "sha256": "d09be79851e6ebabfe79df0c9cdfd485bcf5267041a34f91694d673a018aa10d",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 49,
+            "width": 350,
+            "height": 37
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "非常灯を点け、職員通路を探す",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 75,
+        "triangles": 6304,
+        "rtSize": null,
+        "geometries": 8,
+        "textures": 1
+      }
+    },
+    {
+      "id": "vault-length-ready-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "target": "vault-length",
+      "action": "留め金を調整",
+      "pose": {
+        "position": {
+          "x": -1.15,
+          "y": 1.6,
+          "z": -0.7
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "image": "vault-length-ready-430.png",
+      "sha256": "3edcfce9f693db67438e96c43e450704ed165e3587b8822273f658da682949cb",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 49,
+            "width": 350,
+            "height": 37
+          },
+          "context": {
+            "left": 221,
+            "top": 811.203125,
+            "right": 418,
+            "bottom": 840,
+            "width": 197,
+            "height": 28.796875
+          },
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "留め金を調整して、搬出通路を開ける",
+          "contextText": "伸びて見える留め金",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 60,
+        "triangles": 1732,
+        "rtSize": null,
+        "geometries": 3,
+        "textures": 1
       }
     },
     {

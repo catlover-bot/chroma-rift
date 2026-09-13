@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 /* global __dirname, __filename, Buffer */
-// Area 04/05 scene and FirstPersonScreen HUD from the same live controller.
+// Area 01/02/04/05 scene and FirstPersonScreen HUD from the same live controller.
 // Browser CSS/WebGL approximates the native presentation; it is not EXGL/Yoga.
 const fs = require('node:fs'), path = require('node:path'), ts = require('typescript');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
@@ -19,12 +19,14 @@ const { stageModule } = require('../src/domain/stageKit/modules.ts');
 const { parseStageCheckpoint } = require('../src/domain/stages/mirror-corridor-v1/checkpoint.ts');
 const { WINCH_SAFE, WINCH_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
 const { carriedKeyEntry } = require('../src/domain/stages/departure-control-v1/session.ts');
+const { ChapterScene } = require('../src/rendering/firstPerson/ChapterScene.tsx');
 const { StageScene: MirrorScene } = require('../src/domain/stages/mirror-corridor-v1/scene.tsx');
 const { StageScene: DepartureScene } = require('../src/domain/stages/departure-control-v1/scene.tsx');
 context.bindController = true;
 const { FirstPersonScreen } = require('../src/screens/FirstPersonScreen.tsx');
 
 function checkpoint(stageId) {
+  if (stageId === 'perception-gallery-v1' || stageId === 'uncanny-vault-v1') return undefined;
   const module = stageModule(stageId), fresh = module.checkpoint(module.create());
   const mirrorData = stageId === 'mirror-corridor-v1' ? parseStageCheckpoint(fresh.stageData) : undefined;
   if (stageId === 'mirror-corridor-v1' && !mirrorData) throw Error('Mirror checkpoint codec rejected fresh entry');
@@ -51,18 +53,24 @@ function action(tree) {
 }
 async function extract(stageId, width, height, fontScale) {
   Object.assign(context, { width, height, fontScale });
-  const mirror = stageId === 'mirror-corridor-v1', controller = RC.createController(checkpoint(stageId), false, true, stageId);
+  const mirror = stageId === 'mirror-corridor-v1', gallery = stageId === 'perception-gallery-v1',
+    vault = stageId === 'uncanny-vault-v1';
+  const controller = RC.createController(checkpoint(stageId), false, true, stageId);
   context.controller = controller; controller.viewport = { width: context.width, height: context.height };
   Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true,
     paused: false, open: false, sceneMode: 'chapter' });
   const camera = new THREE.PerspectiveCamera(65, context.width / context.height, .08, 60);
-  aim(controller, camera, mirror ? WINCH_CENTER : { x: -4.75, y: 1.4, z: 9 },
+  if (mirror || !gallery && !vault) aim(controller, camera, mirror ? WINCH_CENTER : { x: -4.75, y: 1.4, z: 9 },
     mirror ? 'mirror-corridor-winch' : 'departure-key');
-  const runtime = { current: controller.runtime }, resources = createSceneResources(false, null, true);
+  else RC.syncCamera(controller, camera);
+  const runtime = { current: controller.runtime }, resources = createSceneResources(false, null, true, vault);
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#09090c'); scene.add(camera);
-  const mounted = await mountThree(React.createElement(mirror ? MirrorScene : DepartureScene,
-    { world: RC.worldForController(controller), runtime, resources, renderOffscreen: () => {},
-      onFrameError: error => { throw error; } }), THREE);
+  const mounted = await mountThree(React.createElement(gallery || vault ? ChapterScene : mirror ? MirrorScene : DepartureScene,
+    gallery || vault ? { world: RC.worldForController(controller), progress: controller.runtime.progress,
+      runtime, resources, assist: false, reducedMotion: false, lowQuality: false, lab: false,
+      onFrameError: error => { throw error; } }
+      : { world: RC.worldForController(controller), runtime, resources, renderOffscreen: () => {},
+        onFrameError: error => { throw error; } }), THREE);
   mounted.objects.forEach(object => scene.add(object));
   const callbacks = bridge.callbacks.splice(0).filter(callback => !callback.toString().includes('mirror.render'));
   const updateScene = () => { runtime.current = controller.runtime; callbacks.forEach(callback => callback({}, 0)); scene.updateMatrixWorld(true); };
@@ -80,19 +88,25 @@ async function extract(stageId, width, height, fontScale) {
     preferredColor: 'neutral', onSettingsChange() {}, onControlsChange() {}, onCheckpoint() {},
     onComplete() {}, onRestart() {}, onExit() {} });
   const records = [];
-  const capture = async (name, expectedLabel) => {
+  const capture = async (name, expectedLabel, expectedDisabled = false) => {
     const id = width === 320 ? name : `${name}-${width}`;
     await hud.update(); updateScene();
     const tree = hud.serialize(), button = action(tree);
-    if (expectedLabel && (!button || button.disabled || button.label !== expectedLabel))
-      throw Error(`${id}: expected enabled ${expectedLabel}, got ${button?.label} disabled=${button?.disabled}`);
+    if (expectedLabel && (!button || button.disabled !== expectedDisabled || button.label !== expectedLabel))
+      throw Error(`${id}: expected ${expectedLabel} disabled=${expectedDisabled}, got ${button?.label} disabled=${button?.disabled}`);
     const file = `${id}-scene.json`;
     fs.writeFileSync(path.join(out, file), JSON.stringify(scene.toJSON()));
     records.push({ id, stageId, file, width, height, fontScale, tree, target: RC.controllerSnapshot(controller).target?.id,
       pose: controller.runtime.pose, action: button?.label ?? null });
   };
   try {
-    if (mirror) {
+    if (gallery) {
+      await capture('gallery-entry', '非常口を確認', true);
+    } else if (vault) {
+      if (RC.controllerSnapshot(controller).target?.id !== 'vault-length')
+        throw Error('Fresh vault controller did not target the length clasp');
+      await capture('vault-length-ready', '留め金を調整');
+    } else if (mirror) {
       await capture('mirror-winch-ready', '巻き上げレバーを保持する');
       await hud.pressTestID('interact');
       if (controller.runtime.stageSession?.value?.holding !== 'winch') throw Error('HUD hold was not accepted');
@@ -180,11 +194,11 @@ async function render(records) {
 async function main() {
   const records = [];
   for (const [width, height, fontScale] of sizes)
-    for (const stageId of ['mirror-corridor-v1', 'departure-control-v1'])
+    for (const stageId of ['perception-gallery-v1', 'uncanny-vault-v1', 'mirror-corridor-v1', 'departure-control-v1'])
       records.push(...await extract(stageId, width, height, fontScale));
   bridge.verify();
   const rendered = await render(records); bridge.verify();
-  const report = { boundary: 'Actual area-04/05 StageScene, FirstPersonScreen, controller and validated checkpoint at three portrait sizes; scene and HUD share each controller state. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.',
+  const report = { boundary: 'Actual area-01 gallery entry, area-02 vault length target, area-04/05 StageScene, FirstPersonScreen and their controller at three portrait sizes; scene and HUD share each controller state. Area-04/05 use validated checkpoints; area-01/02 are fresh entries. The runtime mirror target is recreated from planarMirror.ts after Three scene serialization. Browser Software WebGL/CSS translation, no native Canvas/EXGL/Yoga, actual finger, audio or iPhone visibility.',
     sizes, toolHash: sha256(fs.readFileSync(__filename)),
     sourceHashes: Object.fromEntries(bridge.hashes), ...rendered };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');

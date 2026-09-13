@@ -63,11 +63,19 @@
     "auditReference": "release-local-checks.json (same package-lock SHA-256; not rerun for this scene-only change)"
   },
   "qa": {
-    "stageSceneHudImages": 18,
-    "stageSceneHudSourceHashes": 146,
+    "stageSceneHudImages": 24,
+    "stageSceneHudSourceHashes": 157,
     "naturalVideoSha256": "ea1bba60caa4d2e3d0360b4dac53e91a2b45c7e816d956d558abb7641202986b",
     "recoveryVideoSha256": "64890651855ed9631c899ddb6d115f41a421aefb5de2a0567f69d7ece973abb1",
     "naturalSourceHashes": 112,
-    "recoverySourceHashes": 112
+    "recoverySourceHashes": 112,
+    "stageSceneHudReportSha256": "f13d6afe5ce7a5f39308086788528ba91caf52c6c1b2086b1419b5f64658f627",
+    "stageSceneHudStages": [
+      "perception-gallery-v1",
+      "uncanny-vault-v1",
+      "mirror-corridor-v1",
+      "departure-control-v1"
+    ],
+    "boundary": "Area-01 entry and area-02 length target added to scene/HUD QA; no product source changed after 7ff4a83."
   }
 }
