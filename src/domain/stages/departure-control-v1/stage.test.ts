@@ -1,6 +1,6 @@
 import { isSafePose, segmentOccluded } from '../../firstPerson/geometry';
 import { vaultActorEdgeOpen } from '../../vault/actorPolicy';
-import { actorFullyContained, BELL_RECEIVER, CONTROL_KEY_ENTRY, CONTROL_SAFE, doorSweepClear, stageWorld } from './definition';
+import { actorFullyContained, BELL_RECEIVER, CONTROL_KEY_ENTRY, CONTROL_SAFE, doorSweepClear, OUTDOOR, stageWorld } from './definition';
 import { carriedKeyEntry, advanceStage, checkpointStage, commandStage, createStageSession } from './session';
 import { parseStageCheckpoint } from './checkpoint';
 
@@ -80,4 +80,13 @@ test('whole-body and sweep checks govern closing; latch, stop and outdoor exit a
   expect(stop.session.actor.phase).toBe('stopped');
   expect(stop.session.cleared).toBe(false);
   expect(parseStageCheckpoint(checkpointStage(stop.session))).toBeDefined();
+  const staffSide = { ...stop.session, pose: { ...CONTROL_SAFE, position: { ...CONTROL_SAFE.position, z: 13.2 } } };
+  const opened = commandStage(staffSide, { sessionId: 'latch', seq: 7, targetId: 'departure-staff-door', type: 'open-staff-door' });
+  expect(opened.accepted).toBe(true);
+  const walkedOutside = { ...opened.session, pose: { ...CONTROL_SAFE, position: { ...CONTROL_SAFE.position, z: 22.45 } } };
+  const outdoor = commandStage(walkedOutside, { sessionId: 'latch', seq: 8, targetId: 'departure-outdoor', type: 'outdoor-exit' });
+  expect(outdoor.accepted).toBe(true);
+  expect(outdoor.session.pose).toEqual(walkedOutside.pose);
+  expect(outdoor.session.cleared).toBe(true);
+  expect(checkpointStage(outdoor.session).pose).toEqual(OUTDOOR);
 });

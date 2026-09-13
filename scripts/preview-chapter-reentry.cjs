@@ -107,7 +107,7 @@ async function extractChapterOne(){
  await storage.setItem(AS.APPLICATION_STORAGE_KEY,JSON.stringify(app));
  await storage.setItem(Store.FIRST_PERSON_ONBOARDING_KEY,JSON.stringify({...Defaults.DEFAULT_FIRST_PERSON_ONBOARDING,tutorialCompleted:true,controlChoiceAcknowledged:true}));
  const hud=await native.mount(App,{});await settle();
- const frames=[],hudTrees=[],hudMap=new Map(),events=[],route=[];
+ const frames=[],hudTrees=[],hudMap=new Map(),events=[],route=[],motionSamples=[],motionAreas=[];
  const event=(type,detail={})=>events.push({frame:frames.length,type,...detail});
  const press=async label=>{
   const button=hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel===label&&!node.props.disabled)[0];
@@ -157,11 +157,32 @@ async function extractChapterOne(){
   if(controller?.runtime.chapterId!==area.stageId)throw Error(`App did not mount ${area.stageId}`);
   if(activeOwners!==1||maxActiveOwners!==1)throw Error('App Canvas owner mismatch on entry');
   const run=attachNaturalRun(controller);context.camera=run.camera;
+  let simulationTicks=0,simulationSeconds=0;
+  const firstMotionSample=motionSamples.length;
+  const motionSample=phase=>{
+   const actor=controller.runtime.gallery?.actor??controller.runtime.vault?.actor??
+    controller.runtime.theatre?.actor??controller.runtime.stageSession?.value?.actor;
+   const position=actor?.motion?.position??actor?.position;
+   const snapshot=RC.controllerSnapshot(controller),pose=controller.runtime.pose;
+   motionSamples.push({area:area.id,stageId:area.stageId,ownerSession:controller.runtime.session,
+    tick:simulationTicks,simulationSeconds:Number(simulationSeconds.toFixed(6)),phase,
+    pose:{position:{...pose.position},yaw:pose.yaw,pitch:pose.pitch},
+    input:{forward:controller.input.forward,right:controller.input.right},
+    actor:actor?{phase:actor.phase,position:position?{...position}:null}:null,
+    target:snapshot.target?.id??null,objective:snapshot.objective,cleared:controller.runtime.progress.cleared});
+  };
+  motionSample('entry');
+  run.onAdvance=(_run,dt)=>{simulationTicks++;simulationSeconds+=dt;
+   if(simulationTicks%6===0)motionSample('simulation');};
   await visual(index,'entry',controller,run.camera);
   const gate=context.gateProps;if(gate?.chapterId!==area.stageId)throw Error('App gate missing '+area.stageId);
   let stopped;
   const cleared=playNaturalArea(run,index,['shadow','contour'],()=>{stopped=createCheckpoint(controller.runtime);});
   if(!cleared.progress.cleared)throw Error('Natural route did not clear '+area.stageId);
+  motionSample('cleared');
+  motionAreas.push({area:area.id,stageId:area.stageId,ownerSession:controller.runtime.session,
+   simulationTicks,simulationSeconds:Number(simulationSeconds.toFixed(6)),
+   sampleCount:motionSamples.length-firstMotionSample});
   await visual(index,'cleared',controller,run.camera);
   if(stopped)await R.act(async()=>gate.onCheckpoint(stopped));
   await R.act(async()=>{gate.onCheckpoint(cleared);gate.onComplete(chapterCompletionSummary(area.stageId,cleared.progress));});
@@ -188,9 +209,33 @@ async function extractChapterOne(){
   throw Error('App Canvas ownership mismatch after complete run');
  const final=JSON.parse(memory.get('chroma-rift.campaign.chapter-1.v1'));
  if(!final.campaignCompleted)throw Error('App did not persist campaign completion');
- const report={method:'One actual App host mount, five mounted FirstPersonScreen controllers, natural domain routes and serialized campaign transitions. Entry/cleared scene+HUD stills come from each mounted App controller but omit the intervening simulation frames; the ending is a separate App still. This is not a continuous video of play. The Three JSON snapshot omits the live planar-mirror render target; the separate mirror QA checks the reflection. AsyncStorage is isolated memory; native Canvas/ready/audio are stubbed and the React Three scene host does not reconcile props. Browser Software WebGL/CSS, not native Yoga/EXGL, touch, sound, perception or iPhone FPS.',
+ let maxStepMeters=0,maxActorStepMeters=0;
+ for(let index=1;index<motionSamples.length;index++){
+  const previous=motionSamples[index-1],current=motionSamples[index];
+  if(previous.area!==current.area)continue;
+  const dt=current.simulationSeconds-previous.simulationSeconds;
+  const distance=Math.hypot(...['x','y','z'].map(axis=>current.pose.position[axis]-previous.pose.position[axis]));
+  if(!Number.isFinite(dt)||dt<0||!Number.isFinite(distance)||distance>.25||current.tick<previous.tick)
+   throw Error(`Discontinuous App route motion in ${current.area} at tick ${current.tick}: ${distance}m / ${dt}s`);
+  maxStepMeters=Math.max(maxStepMeters,distance);
+  if(previous.actor?.position&&current.actor?.position){
+   const actorDistance=Math.hypot(...['x','y','z'].map(axis=>current.actor.position[axis]-previous.actor.position[axis]));
+   if(!Number.isFinite(actorDistance))throw Error('Non-finite App route actor motion in '+current.area);
+   maxActorStepMeters=Math.max(maxActorStepMeters,actorDistance);
+  }
+ }
+ const motionValidation={maxPlayerStepMeters:Number(maxStepMeters.toFixed(6)),
+  maxActorStepMeters:Number(maxActorStepMeters.toFixed(6)),playerStepLimitMeters:.25,
+  sameAreaTimeAndTickMonotonic:true,finitePoseAndActorSteps:true};
+ const motion={method:'One actual App host; samples from every sixth advanceController update of its five mounted controllers, plus each entry/clear. Commands between samples are not individually recorded here. Domain/pose/actor log, not rendered frames, native time or human input.',
+  runId,areas:motionAreas,validation:motionValidation,samples:motionSamples};
+ const motionFile=path.join(out,'motion-trace.json');fs.writeFileSync(motionFile,JSON.stringify(motion,null,2)+'\n');
+ const report={method:'One actual App host mount, five mounted FirstPersonScreen controllers, natural domain routes and serialized campaign transitions. Entry/cleared scene+HUD stills come from each mounted App controller; a separate 10Hz-style per-six-update motion log covers intervening domain simulation but not scene rendering. The ending is a separate App still. This is not a continuous video of play. The Three JSON snapshot omits the live planar-mirror render target; the separate mirror QA checks the reflection. AsyncStorage is isolated memory; native Canvas/ready/audio are stubbed and the React Three scene host does not reconcile props. Browser Software WebGL/CSS, not native Yoga/EXGL, touch, sound, perception or iPhone FPS.',
   frames:frames.length,duration:frames.length/30,sequence:route.map(item=>item.stageId),route,events,owners,
   maxActiveCanvasBoundaries:maxActiveOwners,activeCanvasBoundariesAfterUnmount:activeOwners,
+  motionTrace:{file:'motion-trace.json',sha256:sha256(fs.readFileSync(motionFile)),
+   areas:motionAreas.length,samples:motionSamples.length,ticks:motionAreas.reduce((sum,item)=>sum+item.simulationTicks,0),
+   validation:motionValidation},
   final:{currentArea:final.currentArea,completedAreas:final.completedAreas,campaignCompleted:final.campaignCompleted,
    revision:final.revision,storyFired:final.storyFired,storyPresented:final.storyPresented},
   storageKeys:[...memory.keys()],writeCount:writes.length,sourceHashes:Object.fromEntries(bridge.hashes),
