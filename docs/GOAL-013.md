@@ -1,6 +1,6 @@
 # Goal 013 作業記録
 
-01→05を一つの実App mountと5つの自然経路controllerで通した途中状態を、実 `ChapterScene` へ順番に再投入した[148秒・740 frameのQA動画](qa-goal013/chapter-one-app-scene-replay.mp4)を追加した。33回のscene再構築と圧縮した元runtime、5エリアの順序、04の鍵・巻上げ、05の隔離・停止・屋外の節目、WebGL資源とhashを[QA記録](qa-goal013/README.md)に残した。映像は同一App経路のサンプル状態を別レンダラーで再描画したもので、App/native Canvasの連続録画、製品HUD・実音・実指、04鏡面の反射passの証拠ではない。静止画11枚と1,474件のdomain動作ログも現行抽出ツールで再取得してhashを更新した。製品ソース・依存は変更していない。実機preview、正式URL、ストア申告の未完了ゲートは維持する。
+01→05を一つの実App mountと5つの自然経路controllerで通した途中状態を、実 `ChapterScene` へ順番に再投入した[148秒・740 frameのQA動画](qa-goal013/chapter-one-app-scene-replay.mp4)を追加した。33回のscene再構築と圧縮した元runtime、5エリアの順序、04の鍵・巻上げ、05の隔離・停止・屋外の節目、WebGL資源とhashを[QA記録](qa-goal013/README.md)に残した。04では実 `planarMirror.ts` を接続し、画面に入る47 frameの反射passで同じsceneの巡回体と鍵を映した。映像は同一App経路のサンプル状態を別レンダラーで再描画したもので、App/native Canvasの連続録画、製品HUD・実音・実指の証拠ではない。鏡への明示観察は別の04動画で確認した。静止画11枚と1,474件のdomain動作ログも現行抽出ツールで再取得してhashを更新した。製品ソース・依存は変更していない。実機preview、正式URL、ストア申告の未完了ゲートは維持する。
 
 第一章ホームの新規/引き継ぎ、進行中、完了、振り返り、発見記録を実componentで3画面サイズへ描いたところ、320幅/fontScale 2でエリア番号が2行に割れる欠陥を発見した。固定幅を最小幅へ変え、5つの番号が全15条件で1行、全ボタンがスクロールで48px以上見えることを[QA記録](qa-goal013/README.md)の12画像と測定で確認した。製品UI変更後の全回帰は110スイート/1,134テスト、lint、型検査、iOS通常exportに通過。両OSの公開用source-map exportもfirst-party各201 source本文一致、5エリア同梱・開発画面/probe除外、循環0を確認した。[公開用検査の数値とhash](qa-goal013/home-layout-release-checks.json)を保持した。native Yoga、VoiceOver、実機、正式URL/ストア申告のゲートは未確認のまま。
 

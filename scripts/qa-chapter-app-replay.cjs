@@ -4,7 +4,7 @@
 // One real App host route supplies sampled runtime states. Replaying those
 // states through ChapterScene gives intervening visual evidence, but does not
 // record the App's native Canvas, HUD, audio, or a human's continuous play.
-const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process');
+const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), ts = require('typescript');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
 if (process.argv.length !== 2) throw Error('usage: node scripts/qa-chapter-app-replay.cjs');
 const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/app-scene-replay');
@@ -127,7 +127,17 @@ async function extract() {
           sample.runtime.vault?.actor?.phase ?? sample.runtime.theatre?.actor?.phase ??
           sample.runtime.stageSession?.value?.actor?.phase ?? null });
       if (rebuilt) {
-        fs.writeFileSync(path.join(out, scenes.at(-1).file), JSON.stringify(scene.toJSON()));
+        const surface = sample.area === 'chapter-1-area-04' ? scene.getObjectByName('planar-mirror') : null;
+        if (sample.area === 'chapter-1-area-04' && !surface) throw Error('App mirror scene has no planar surface');
+        const nativeMaterial = surface?.material;
+        const transportMaterial = surface ? new THREE.MeshBasicMaterial({ color: '#394A4A' }) : null;
+        try {
+          if (surface) surface.material = transportMaterial;
+          fs.writeFileSync(path.join(out, scenes.at(-1).file), JSON.stringify(scene.toJSON()));
+        } finally {
+          if (surface) surface.material = nativeMaterial;
+          transportMaterial?.dispose();
+        }
         events.push({ frame: frames.length - 1, area: sample.area, tick: sample.tick,
           reason: 'static scene state changed' });
       }
@@ -141,15 +151,23 @@ async function extract() {
 async function capture(frameCount) {
   for (const file of ['three.module.js', 'three.core.js'])
     fs.copyFileSync(path.join(root, 'node_modules/three/build', file), path.join(out, file));
+  const mirrorPath = path.join(root, 'src/rendering/firstPerson/planarMirror.ts');
+  const transpiled = ts.transpileModule(fs.readFileSync(mirrorPath, 'utf8'), { fileName: mirrorPath,
+    compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
+  fs.writeFileSync(path.join(out, 'planarMirror.js'), transpiled.replace("from 'three'", "from './three.module.js'"));
   fs.writeFileSync(path.join(out, 'index.html'), '<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#080a0d}canvas{display:block}#caption{position:absolute;left:8px;right:8px;top:8px;padding:7px 9px;color:#f4f3e9;background:#081015c9;border:1px solid #8999a5;border-radius:5px;font:13px/1.4 sans-serif;white-space:pre-line}</style><div id="caption"></div><script type="module" src="./viewer.js"></script>');
   fs.writeFileSync(path.join(out, 'viewer.js'), `import * as THREE from './three.module.js';
+import {createPlanarMirror,MIRROR_TARGET_SIZE} from './planarMirror.js';
 const data=await(await fetch('./animation.json')).json();
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
 renderer.setPixelRatio(1);renderer.setSize(390,844);renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.NoToneMapping;document.body.prepend(renderer.domElement);
 const caption=document.getElementById('caption');
-let scene,sceneId,objects=new Map(),materials=new Map(),last=-1;
-function dispose(){if(!scene)return;const gs=new Set(),ms=new Set(),ts=new Set();scene.traverse(o=>{
+let scene,sceneId,objects=new Map(),materials=new Map(),last=-1,mirror,surface,transportMaterial;
+const frustum=new THREE.Frustum(),projectionView=new THREE.Matrix4();
+function dispose(){if(!scene)return;
+ if(mirror){surface.material=transportMaterial;mirror.dispose();mirror=undefined;surface=undefined;transportMaterial=undefined;}
+ const gs=new Set(),ms=new Set(),ts=new Set();scene.traverse(o=>{
  if(o.geometry)gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){
   ms.add(m);for(const t of Object.values(m))if(t?.isTexture)ts.add(t);}});
  gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();
@@ -158,23 +176,37 @@ window.draw=async index=>{if(index!==last+1)throw Error('Sequential App replay f
  const f=data.frames[index];if(f.scene!==sceneId){dispose();sceneId=f.scene;
   scene=await new THREE.ObjectLoader().parseAsync(await(await fetch(sceneId)).json());
   objects=new Map();materials=new Map();scene.traverse(o=>{objects.set(o.uuid,o);
-   for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.set(m.uuid,m);});}
+   for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.set(m.uuid,m);});
+  surface=scene.getObjectByName('planar-mirror');
+  if(surface){if(!scene.getObjectByName('mirror-corridor-actor'))throw Error('Mirror has no shared actor body');
+   transportMaterial=surface.material;mirror=createPlanarMirror();surface.material=mirror.material;}}
  for(const[id,v]of f.updates){const o=objects.get(id);if(!o)throw Error('Missing scene object '+id);
   o.matrix.fromArray(v.matrix);o.matrix.decompose(o.position,o.quaternion,o.scale);o.visible=v.visible;
   if(v.material)o.material=materials.get(v.material)||o.material;}
  scene.updateMatrixWorld(true);const camera=objects.get(f.camera);if(!camera)throw Error('Missing camera');
- renderer.render(scene,camera);const number=Number(f.area.slice(-2));
+ camera.updateMatrixWorld(true);const started=performance.now();let reflected=false,offscreenCalls=0,offscreenTriangles=0;
+ if(mirror){surface.updateWorldMatrix(true,false);
+  frustum.setFromProjectionMatrix(projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
+  if(frustum.intersectsObject(surface)){
+   reflected=mirror.render(renderer,scene,camera,surface,(r,s,c)=>r.render(s,c));
+   if(reflected){offscreenCalls=renderer.info.render.calls;
+    offscreenTriangles=renderer.info.render.triangles;}}}
+ renderer.render(scene,camera);const cpuSubmitMs=performance.now()-started,number=Number(f.area.slice(-2));
  caption.textContent='第一章 0'+number+' / 実App経路の状態を再描画（QA字幕）\\n'
   +'simulation '+f.seconds.toFixed(1)+'s / '+f.phase+' / 巡回体 '+(f.actor||'なし')+'\\n'
   +'native Canvas・HUD・音の録画ではありません';
  last=index;await new Promise(r=>requestAnimationFrame(r));
- return{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,
-  geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};};
+ return{calls:renderer.info.render.calls,offscreenCalls,offscreenTriangles,reflected,cpuSubmitMs,
+  triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,
+  textures:renderer.info.memory.textures,rtSize:MIRROR_TARGET_SIZE};};
 window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.memory.geometries,
  textures:renderer.info.memory.textures,renderers:1};};window.ready=true;`);
   const browser = await openBrowser(out), dir = path.join(out, 'frames');
   fs.mkdirSync(dir, { recursive: true });
-  let maxCalls = 0, maxTriangles = 0;
+  let maxCalls = 0, maxOffscreenCalls = 0, maxTotalCalls = 0;
+  let maxTriangles = 0, maxOffscreenTriangles = 0, maxTotalTriangles = 0;
+  const reflectedFrameIndices = [];
+  const cpuSamples = [];
   try {
     await browser.send('Emulation.setDeviceMetricsOverride', {
       width: 390, height: 844, deviceScaleFactor: 1, mobile: false });
@@ -186,14 +218,28 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
     for (let frame = 0; frame < frameCount; frame++) {
       const stats = await browser.evaluate(`window.draw(${frame})`);
       maxCalls = Math.max(maxCalls, stats.calls); maxTriangles = Math.max(maxTriangles, stats.triangles);
+      maxOffscreenCalls = Math.max(maxOffscreenCalls, stats.offscreenCalls);
+      maxOffscreenTriangles = Math.max(maxOffscreenTriangles, stats.offscreenTriangles);
+      maxTotalCalls = Math.max(maxTotalCalls, stats.calls + stats.offscreenCalls);
+      maxTotalTriangles = Math.max(maxTotalTriangles, stats.triangles + stats.offscreenTriangles);
+      if (stats.reflected) reflectedFrameIndices.push(frame);
+      cpuSamples.push(stats.cpuSubmitMs);
       const shot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
       fs.writeFileSync(path.join(dir, `${String(frame).padStart(6, '0')}.png`), Buffer.from(shot.data, 'base64'));
       if (frame % 100 === 0) console.log(`app replay capture ${frame}/${frameCount}`);
     }
     const disposed = await browser.evaluate('window.finish()');
-    const webgl = { maxCalls, maxTriangles, disposed, errors: browser.errors };
+    cpuSamples.sort((a, b) => a - b);
+    const percentile = fraction => Number(cpuSamples[Math.floor((cpuSamples.length - 1) * fraction)].toFixed(3));
+    const webgl = { maxCalls, maxOffscreenCalls, maxTotalCalls,
+      maxTriangles, maxOffscreenTriangles, maxTotalTriangles,
+      reflectedFrames: reflectedFrameIndices.length, reflectedFrameIndices,
+      mirrorTargetSize: [384, 384], cpuRenderSubmit: { samples: cpuSamples.length,
+        p50Ms: percentile(.5), p95Ms: percentile(.95), maxMs: percentile(1) },
+      cpuTimingScope: 'SwiftShader browser JS offscreen and main renderer.render submission; excludes screenshot/readback, RAF wait, native presentation and GPU completion',
+      disposed, errors: browser.errors };
     fs.writeFileSync(path.join(out, 'webgl.json'), JSON.stringify(webgl, null, 2) + '\n');
-    if (disposed.geometries || disposed.textures || browser.errors.length)
+    if (!reflectedFrameIndices.length || disposed.geometries || disposed.textures || browser.errors.length)
       throw Error('App replay browser resource/error gate failed');
   } finally { await browser.close(); }
   const video = path.join(out, 'chapter-one-app-scene-replay.mp4');
@@ -213,7 +259,7 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
 async function main() {
   const extracted = await extract(), captured = await capture(extracted.frames.length);
   bridge.verify();
-  const report = { method: 'One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The ObjectLoader replay omits the live planar-mirror render target, so area-04 mirror identity is covered by the separate mirror-natural QA. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.',
+  const report = { method: 'One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.',
     fps: FPS, frames: extracted.frames.length, duration: extracted.frames.length / FPS,
     sequence: CHAPTER_ONE.areas.map(area => ({ area: area.id, stageId: area.stageId,
       samples: extracted.frames.filter(frame => frame.area === area.id).length })),

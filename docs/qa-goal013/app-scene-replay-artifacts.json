@@ -1,9 +1,9 @@
 {
-  "method": "Retained sample archive, offline scene-replay video and contact sheet from one App-host route. FFprobe metadata and all video frames decoded locally. Native Canvas/HUD/audio and mirror render target are not recorded.",
+  "method": "Retained sample archive, offline scene-replay video and contact sheet from one App-host route. Actual planarMirror.ts performs the visible area-04 offscreen pass. FFprobe metadata and all video frames decoded locally. Native Canvas/HUD/audio are not recorded.",
   "video": {
     "file": "chapter-one-app-scene-replay.mp4",
-    "sha256": "889c9eeb089b3a183373da7bf4e1a4e6a3c3828e8f96ee5ff05ce7dd92e23f06",
-    "bytes": 776045,
+    "sha256": "d3406c556e804197caf13a634097fff051789a1ae5c128315701063562f8c110",
+    "bytes": 790440,
     "width": 390,
     "height": 844,
     "fps": 5,
@@ -13,17 +13,38 @@
   },
   "contact": {
     "file": "chapter-one-app-scene-replay-contact.png",
-    "sha256": "029ce9a30c1782b3084303336c60853eb032013921f4ba2db65ab1fdc1603014",
-    "bytes": 179057
+    "sha256": "01e657e2b3d627964fb49efb9664ba6f8af8654a8012411dad8f1ada9aaffff5",
+    "bytes": 185296
   },
   "reportFile": "app-scene-replay-report.json",
-  "reportSha256": "5b737383d110966c30dc72e6e9dec3553772979e49437534348b34b9bc2efb3d",
+  "reportSha256": "b5cd907d329bc3c6f2541771efe164bfc3e48f59040cacb07b55643808b4177f",
   "runtimeArchive": {
     "file": "app-scene-replay-runtimes.json.gz",
-    "sha256": "73ed83035c0cff8e8be452d4a24d2ea954ad956c92d19c3533a4458c62ba5d20",
-    "uncompressedSha256": "eca0146786ce37141b800b7ceb8ee945c61f92c63c5a7e53e71de7b8fda93c82",
-    "uncompressedBytes": 5241298,
+    "sha256": "4b0c01c5a0cdf4d9d648770d414223529f11341ce01453e9dbb7e524f07b0fb2",
+    "uncompressedSha256": "e59f6526d1604f7404bdbb6c7425427a64e737d421cc1e029dac1e07fa702596",
+    "uncompressedBytes": 5241178,
     "samples": 740
+  },
+  "mirror": {
+    "reflectedFrames": 47,
+    "maxOffscreenCalls": 49,
+    "maxTotalCalls": 138,
+    "targetSize": [
+      384,
+      384
+    ],
+    "reviewFrames": [
+      {
+        "frame": 615,
+        "file": "app-scene-replay-mirror-615.png",
+        "sha256": "6e37c8b7ab0db2962f34dca6b8a71f8305f8673fdf00eba15acdb96f6336ede6"
+      },
+      {
+        "frame": 625,
+        "file": "app-scene-replay-mirror-625.png",
+        "sha256": "2801a06d9d7a7728ea21d35f75af18f330fbeab11355b11063ce801ac0c9008c"
+      }
+    ]
   },
   "milestones": [
     {

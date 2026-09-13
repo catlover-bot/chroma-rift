@@ -1,5 +1,5 @@
 {
-  "method": "One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The ObjectLoader replay omits the live planar-mirror render target, so area-04 mirror identity is covered by the separate mirror-natural QA. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.",
+  "method": "One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.",
   "fps": 5,
   "frames": 740,
   "duration": 148,
@@ -591,7 +591,7 @@
     },
     "toolHash": "2142d1403845d8325927c38dfc5c3d14ddc151dbff466b70291b82ac464e8c0c"
   },
-  "runtimeSamplesSha256": "eca0146786ce37141b800b7ceb8ee945c61f92c63c5a7e53e71de7b8fda93c82",
+  "runtimeSamplesSha256": "e59f6526d1604f7404bdbb6c7425427a64e737d421cc1e029dac1e07fa702596",
   "sourceHashes": {
     "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
     "src/domain/firstPerson/chapter.ts": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2",
@@ -705,20 +705,85 @@
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534"
   },
-  "toolHash": "c9be43a4ef749204e2da81e8d669204098a0017b43d5b1a71964258b7df71be3",
+  "toolHash": "a445c08b9f8d51044de3bf7c4f0091adb96fd86dd246a09547100a8f96e88529",
   "video": {
     "file": "chapter-one-app-scene-replay.mp4",
-    "sha256": "889c9eeb089b3a183373da7bf4e1a4e6a3c3828e8f96ee5ff05ce7dd92e23f06",
-    "bytes": 776045
+    "sha256": "d3406c556e804197caf13a634097fff051789a1ae5c128315701063562f8c110",
+    "bytes": 790440
   },
   "contact": {
     "file": "chapter-one-app-scene-replay-contact.png",
-    "sha256": "029ce9a30c1782b3084303336c60853eb032013921f4ba2db65ab1fdc1603014",
-    "bytes": 179057
+    "sha256": "01e657e2b3d627964fb49efb9664ba6f8af8654a8012411dad8f1ada9aaffff5",
+    "bytes": 185296
   },
   "webgl": {
     "maxCalls": 138,
+    "maxOffscreenCalls": 49,
+    "maxTotalCalls": 138,
     "maxTriangles": 9866,
+    "maxOffscreenTriangles": 3593,
+    "maxTotalTriangles": 9866,
+    "reflectedFrames": 47,
+    "reflectedFrameIndices": [
+      574,
+      575,
+      576,
+      577,
+      578,
+      579,
+      580,
+      581,
+      582,
+      583,
+      596,
+      597,
+      598,
+      599,
+      600,
+      601,
+      602,
+      604,
+      605,
+      606,
+      607,
+      608,
+      609,
+      610,
+      611,
+      612,
+      613,
+      614,
+      615,
+      616,
+      617,
+      618,
+      619,
+      620,
+      621,
+      622,
+      623,
+      624,
+      625,
+      626,
+      627,
+      628,
+      629,
+      630,
+      631,
+      632,
+      633
+    ],
+    "mirrorTargetSize": [
+      384,
+      384
+    ],
+    "cpuRenderSubmit": {
+      "samples": 740,
+      "p50Ms": 0.4,
+      "p95Ms": 8.2,
+      "maxMs": 48
+    },
+    "cpuTimingScope": "SwiftShader browser JS offscreen and main renderer.render submission; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
     "disposed": {
       "geometries": 0,
       "textures": 0,
