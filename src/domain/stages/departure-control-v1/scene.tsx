@@ -59,10 +59,9 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     {(value === 0 || value === 2) && segment(0, -.27, true)}
     {value === 2 && segment(0, 0, true)}
     {value === 0 && segment(-.15, .14, false)}
-    {value === 0 && segment(.15, -.14, false)}
     {value === 0 || value === 1 || value === 2 ? segment(.15, .14, false) : null}
     {value === 0 || value === 1 ? segment(.15, -.14, false) : null}
-    {value === 2 && segment(-.15, -.14, false)}
+    {(value === 0 || value === 2) && segment(-.15, -.14, false)}
   </group>;
   return <group name="departure-control-v1" dispose={null}>
     <ambientLight intensity={1.05}/><directionalLight intensity={.8} position={[-2,4,6]}/>

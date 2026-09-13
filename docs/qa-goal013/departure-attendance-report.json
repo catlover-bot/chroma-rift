@@ -1,0 +1,74 @@
+{
+  "sourceHash": "9a92e9ca0cf808d223bbf7de7cff941ad98f33fd5bca2daea7cb51621584eac2",
+  "toolHash": "7be0cd187f004992b57275ed63aa8be6e787f746f9c0a87279debc6e42cb643d",
+  "sceneSha256": "b1380242cabc3a2ecfead6334bcda42817ce85dc3359f50e9c54e168ed13d665",
+  "animationSha256": "7389938e4866adc84cbb24293b2199f0294438b9b49fb5c47e87dbe3428a1fe1",
+  "controllerReportSha256": "94748697e225266be074dca6b62759a421c71606d82d624bec104ed4a9457720",
+  "chosen": [
+    {
+      "state": "02",
+      "frame": 0,
+      "event": "退館制御室",
+      "render": {
+        "calls": 21,
+        "triangles": 242
+      },
+      "imageSha256": "014d789750c46442c6673be1646e8c653c9c4096f41307921cc7bf33f2ec7cba"
+    },
+    {
+      "state": "01",
+      "frame": 131,
+      "event": "閉館制御を停止",
+      "render": {
+        "calls": 18,
+        "triangles": 206
+      },
+      "imageSha256": "b3cffd5938515913d236d5a15bd4c3410b0ef2f53c7230f4c807bc3d3e11a55a"
+    },
+    {
+      "state": "00",
+      "frame": 186,
+      "event": "屋外へ出る",
+      "render": {
+        "calls": 22,
+        "triangles": 254
+      },
+      "imageSha256": "f545c2c8ed518c9798354f56c4c5fc1bca57efce915ffc968f09d6edeac10a51"
+    }
+  ],
+  "digitSegments": [
+    [
+      "0.00,0.27",
+      "0.00,-0.27",
+      "-0.15,0.14",
+      "0.15,0.14",
+      "0.15,-0.14",
+      "-0.15,-0.14"
+    ],
+    [
+      "0.00,0.27",
+      "0.00,-0.27",
+      "0.00,0.00",
+      "0.15,0.14",
+      "-0.15,-0.14"
+    ],
+    [
+      "0.15,0.14",
+      "0.15,-0.14"
+    ],
+    [
+      "0.00,0.27",
+      "0.00,-0.27",
+      "-0.15,0.14",
+      "0.15,0.14",
+      "0.15,-0.14",
+      "-0.15,-0.14"
+    ]
+  ],
+  "disposed": {
+    "geometries": 0,
+    "textures": 0
+  },
+  "browserErrors": [],
+  "boundary": "Real area-05 StageScene and recorded controller states; fixed QA close-up camera in browser Software WebGL. No product camera, native Canvas, HUD, audio, or iPhone preview."
+}

@@ -40,6 +40,8 @@
 
 自然成功動画SHA-256 `f1329ef4ceddd7307c4f25bb5a067ef92221870f98d09b8ce8e402f6884deebe`。接触シート `d2824479df6e872093fd1ac5a8591c6d1aeed4787fdb79a5bef908e7dda5d05b`。接触シートとframe 00170/00186を開き、出口手前から屋外到達後まで空と歩道が連続することを確認した。MP4の連続視聴は未実施。
 
+05の入退館人数表示の `0` は、旧sceneで左下の線分がなく、右下が二重だった。線分を直し、自然成功経路の実controller記録と実 `StageScene` を再抽出した。[02](departure-attendance-02.png)は開始frame 0、[01](departure-attendance-01.png)は停止操作frame 131、[00](departure-attendance-00.png)は屋外完了frame 186である。[再現用script](../../scripts/qa-departure-attendance.cjs)は `node scripts/qa-departure-natural.cjs` の後に実行する。可視groupの切替順と各数字の線分座標を検査し、固定QA cameraで同じdisplayを近接描画する。[入力・画像hash・結果](departure-attendance-report.json)を残した。3画像を開き、02→01→00が欠けや二重線なしで読めることを確認した。自然成功・復旧の動画SHA-256は再収録後も同一で、各動画はplayer cameraからこの表示を直接見せていない。近接画像は製品camera/HUDやiPhoneでの視認性を証明しない。
+
 05単独の復旧記録： [36.9秒の動画](departure-recovery.mp4)、[1秒ごとの接触シート](departure-recovery-contact.png)、[巡回体が戻る場面](departure-recovery-returning.png)、[再誘導後の収容](departure-recovery-contained.png)、[扉の閉鎖](departure-recovery-latched.png)、[イベント・入力とsource hash](departure-recovery-report.json)、[WebGL計測](departure-recovery-webgl.json)。`node scripts/qa-departure-natural.cjs --recovery` は同じ有効な鍵入口・実controller/scene経路で、全身収容前の閉扉拒否、最初のベルによる収容、閉鎖途中の手動開け直し、巡回体が区画外の通路へ戻るまでの待機、二度目のベルからの再誘導、再閉鎖・停止・屋外退館を一実行で通した。最初の拒否は実commandから「巡回体の全身が収容区画に入るのを待つ。」を返し、扉進行率は0のまま。開け直し後も進行率0・隔離falseを検査した。巡回体が区画外の `z<14.5` に戻った時刻はsimulation 20.15秒で、直前phaseは `return`。次のベルで `investigate` へ移ったことを確認してから、全身収容を再判定した。位置・AI phase・solved bitの直接代入はない。
 
 復旧動画は390×844、10fps、369枚、simulation 30.32秒。最大49 draw calls/3,584 triangles、終了時geometries/textures 0、renderer 1、browser errors 0。動画SHA-256 `7400077a2c50c55f57952ee40c16d2e994b5efd997f0ced24b40bb018d0a1752`、接触シート `3eef7ca89b33b5e926a3c250a77f0e6ce46b0a79b5882d33ee99fe85d0b80fba`。接触シートとframe 00240/00290/00305の戻り・再収容・閉鎖、および最終frame 00368の屋外視界を開いた。MP4の連続視聴、製品HUD・実音・native Canvas、端末での見え方・怖さ・FPS・発熱は未実施。区画外へ戻った位置はイベントログで検査しており、接触シートだけで位置を証明したものではない。
@@ -56,8 +58,8 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 | --- | ---: | ---: | ---: |
 | 04 鏡廊・控えめ | 0.025 / 0.106 / 2.232 ms | 0.5 / 1.2 / 35.6 ms | 1,685 / 311 |
 | 04 鏡廊・標準捕捉復帰 | 0.032 / 0.128 / 1.585 ms | 0.4 / 0.8 / 37.1 ms | 1,409 / 251 |
-| 05 自然成功 | 0.050 / 0.174 / 2.022 ms | 0.4 / 0.8 / 31.6 ms | 837 / 187 |
-| 05 開け直し・再誘導 | 0.035 / 0.136 / 2.931 ms | 0.4 / 0.7 / 30.1 ms | 1,819 / 369 |
+| 05 自然成功 | 0.069 / 0.268 / 2.651 ms | 0.4 / 0.9 / 32.6 ms | 837 / 187 |
+| 05 開け直し・再誘導 | 0.043 / 0.162 / 4.311 ms | 0.4 / 0.7 / 26.8 ms | 1,819 / 369 |
 
 `nativeCanvasLifecycle.test.tsx` では04の実R3F/native Canvas境界を10回入退出し、毎回鏡の反射target・materialと固定横顔/鍵形のgeometry/materialが一度だけdisposeされ、R3F root数が開始値に戻り、rendererが一度解放され、旧controllerが停止することを確認した。GL context/rendererは試験用の代替なので、端末GPUの残存メモリや実EXGL解放を測ったものではない。
 
