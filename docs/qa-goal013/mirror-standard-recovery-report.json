@@ -1,21 +1,21 @@
 {
-  "mode": "subdued-natural",
-  "frames": 311,
-  "simulationSeconds": 28.083333333333332,
+  "mode": "standard-recovery",
+  "frames": 251,
+  "simulationSeconds": 23.483333333333334,
   "events": [
     {
-      "id": "mirror-corridor-figure",
-      "label": "向き合う横顔を観察",
-      "at": 0.6666666666666666,
+      "id": "validated-entry",
+      "label": "鍵と練習を引き継いだ安全地点",
+      "at": 0,
       "pose": {
-        "x": 1.755327078777874e-16,
+        "x": -1.8,
         "y": 1.6,
-        "z": -1.0666666666666675
+        "z": 10
       },
       "actor": {
-        "x": 1.113909832646815,
+        "x": 1.05,
         "y": 0,
-        "z": 14.455931682973066
+        "z": 14.25
       },
       "actorPhase": "patrol",
       "ratchets": 0,
@@ -23,113 +23,18 @@
       "holdSeconds": 0
     },
     {
-      "id": "mirror-corridor-key",
-      "label": "中央の隔離キーを取得",
-      "at": 0.6666666666666666,
+      "id": "first-hold",
+      "label": "標準：一段目を保持",
+      "at": 0.3333333333333333,
       "pose": {
-        "x": 1.755327078777874e-16,
+        "x": -2.4103551269715893,
         "y": 1.6,
-        "z": -1.0666666666666675
+        "z": 9.624396844940561
       },
       "actor": {
-        "x": 1.113909832646815,
+        "x": 1.0538037899241968,
         "y": 0,
-        "z": 14.455931682973066
-      },
-      "actorPhase": "patrol",
-      "ratchets": 0,
-      "holding": null,
-      "holdSeconds": 0
-    },
-    {
-      "id": "key-lifted",
-      "label": "中央の部品を取り出した",
-      "at": 1.0666666666666667,
-      "pose": {
-        "x": 1.755327078777874e-16,
-        "y": 1.6,
-        "z": -1.0666666666666675
-      },
-      "actor": {
-        "x": 1.1709419809331019,
-        "y": 0,
-        "z": 14.639701938562208
-      },
-      "actorPhase": "patrol",
-      "ratchets": 0,
-      "holding": null,
-      "holdSeconds": 0
-    },
-    {
-      "id": "practice",
-      "label": "安全な練習レバーを保持",
-      "at": 5.7,
-      "pose": {
-        "x": -1.4333333333333333,
-        "y": 1.6,
-        "z": 7.4616666666666855
-      },
-      "actor": {
-        "x": -0.18905775916184311,
-        "y": 0,
-        "z": 15.664308076614292
-      },
-      "actorPhase": "patrol",
-      "ratchets": 0,
-      "holding": "practice",
-      "holdSeconds": 0
-    },
-    {
-      "id": "practice-release",
-      "label": "練習終了",
-      "at": 6.366666666666666,
-      "pose": {
-        "x": -1.4333333333333333,
-        "y": 1.6,
-        "z": 7.4616666666666855
-      },
-      "actor": {
-        "x": -0.18905775916184311,
-        "y": 0,
-        "z": 15.664308076614292
-      },
-      "actorPhase": "patrol",
-      "ratchets": 0,
-      "holding": null,
-      "holdSeconds": 0
-    },
-    {
-      "id": "mirror-corridor-mirror",
-      "label": "実鏡面を調べ、背後の通路を確認",
-      "at": 7.95,
-      "pose": {
-        "x": -1.4333333333333333,
-        "y": 1.6,
-        "z": 10.865833333333308
-      },
-      "actor": {
-        "x": -0.7435698284986596,
-        "y": 0,
-        "z": 15.439533794203719
-      },
-      "actorPhase": "patrol",
-      "ratchets": 0,
-      "holding": null,
-      "holdSeconds": 0
-    },
-    {
-      "id": "winch-key-inserting",
-      "label": "隔離キーを差す",
-      "at": 7.95,
-      "pose": {
-        "x": -1.4333333333333333,
-        "y": 1.6,
-        "z": 10.865833333333308
-      },
-      "actor": {
-        "x": -0.7435698284986596,
-        "y": 0,
-        "z": 15.439533794203719
+        "z": 14.26225665642241
       },
       "actorPhase": "patrol",
       "ratchets": 0,
@@ -137,132 +42,189 @@
       "holdSeconds": 0
     },
     {
-      "id": "winch-one",
-      "label": "鏡を見ながら一段目を巻き上げる",
-      "at": 8.183333333333334,
+      "id": "first-release",
+      "label": "一段目を残して指を離す",
+      "at": 2.3333333333333335,
       "pose": {
-        "x": -1.4333333333333333,
+        "x": -2.4103551269715893,
         "y": 1.6,
-        "z": 10.865833333333308
+        "z": 9.624396844940561
       },
       "actor": {
-        "x": -0.7975233232343716,
+        "x": 0.39100667045156884,
         "y": 0,
-        "z": 15.283764717134128
+        "z": 13.701901312135892
       },
-      "actorPhase": "patrol",
-      "ratchets": 0,
-      "holding": "winch",
-      "holdSeconds": 0.2333333333333333
-    },
-    {
-      "id": "winch-key-returning",
-      "label": "隔離キーを戻す",
-      "at": 10.183333333333334,
-      "pose": {
-        "x": -1.4333333333333333,
-        "y": 1.6,
-        "z": 10.865833333333308
-      },
-      "actor": {
-        "x": -1.2688212009156994,
-        "y": 0,
-        "z": 13.923081117473151
-      },
-      "actorPhase": "patrol",
-      "ratchets": 1,
-      "holding": null,
-      "holdSeconds": 0
-    },
-    {
-      "id": "release-one",
-      "label": "一段目を残して離す",
-      "at": 10.416666666666666,
-      "pose": {
-        "x": -1.4333333333333333,
-        "y": 1.6,
-        "z": 10.865833333333308
-      },
-      "actor": {
-        "x": -1.32380619679202,
-        "y": 0,
-        "z": 13.764333994561378
-      },
-      "actorPhase": "patrol",
+      "actorPhase": "investigate",
       "ratchets": 1,
       "holding": null,
       "holdSeconds": 0
     },
     {
       "id": "retreat",
-      "label": "離れて巡回体を避ける",
-      "at": 11.5,
+      "label": "格子から離れて巡回体を避ける",
+      "at": 2.9166666666666665,
       "pose": {
-        "x": -1.4333333333333333,
+        "x": -1.8120264418398913,
         "y": 1.6,
-        "z": 8.536666666666681
+        "z": 8.522155123571633
       },
       "actor": {
-        "x": -1.3386802832728364,
+        "x": 0.25233966569682875,
         "y": 0,
-        "z": 13.482122206701321
+        "z": 13.584666648756043
       },
-      "actorPhase": "investigate",
+      "actorPhase": "notice",
       "ratchets": 1,
       "holding": null,
       "holdSeconds": 0
     },
     {
-      "id": "winch-rest",
-      "label": "残りの歯止めを巻き上げる",
-      "at": 13.083333333333334,
+      "id": "return-to-winch",
+      "label": "戻って巻き上げを再開する",
+      "at": 5.483333333333333,
       "pose": {
-        "x": -1.4333333333333333,
+        "x": -2.432596152571228,
         "y": 1.6,
-        "z": 10.865833333333308
+        "z": 9.570596512126079
       },
       "actor": {
-        "x": -1.3750471260909563,
+        "x": -1.4706840633154485,
         "y": 0,
-        "z": 11.977509885580638
+        "z": 9.96364937522814
       },
-      "actorPhase": "investigate",
+      "actorPhase": "windup",
+      "ratchets": 1,
+      "holding": null,
+      "holdSeconds": 0
+    },
+    {
+      "id": "actor-approaches",
+      "label": "巡回体が再び作業位置へ迫る",
+      "at": 8.05,
+      "pose": {
+        "x": -2.432596152571228,
+        "y": 1.6,
+        "z": 9.570596512126079
+      },
+      "actor": {
+        "x": -1.6723876484922084,
+        "y": 0,
+        "z": 9.791335983907645
+      },
+      "actorPhase": "windup",
+      "ratchets": 1,
+      "holding": null,
+      "holdSeconds": 0
+    },
+    {
+      "id": "second-hold",
+      "label": "残りを巻き上げる間に巡回体が近づく",
+      "at": 8.05,
+      "pose": {
+        "x": -2.432596152571228,
+        "y": 1.6,
+        "z": 9.570596512126079
+      },
+      "actor": {
+        "x": -1.6723876484922084,
+        "y": 0,
+        "z": 9.791335983907645
+      },
+      "actorPhase": "windup",
       "ratchets": 1,
       "holding": "winch",
       "holdSeconds": 0
     },
     {
-      "id": "grate-open",
-      "label": "格子が開いた",
-      "at": 17.083333333333332,
+      "id": "caught",
+      "label": "捕捉後、確定した歯止めと鍵を保って復帰",
+      "at": 11.983333333333333,
       "pose": {
-        "x": -1.4333333333333333,
+        "x": -1.8,
         "y": 1.6,
-        "z": 10.865833333333308
+        "z": 10
       },
       "actor": {
-        "x": -2.003845212593902,
+        "x": -1.7854537333454272,
         "y": 0,
-        "z": 11.288781373651371
+        "z": 9.758505322696928
       },
-      "actorPhase": "search",
+      "actorPhase": "recover",
+      "ratchets": 2,
+      "holding": null,
+      "holdSeconds": 0
+    },
+    {
+      "id": "cold-resume",
+      "label": "保存した歯止めから再開",
+      "at": 11.983333333333333,
+      "pose": {
+        "x": -1.8,
+        "y": 1.6,
+        "z": 10
+      },
+      "actor": {
+        "x": 1.05,
+        "y": 0,
+        "z": 14.25
+      },
+      "actorPhase": "patrol",
+      "ratchets": 2,
+      "holding": null,
+      "holdSeconds": 0
+    },
+    {
+      "id": "rework",
+      "label": "残りの歯止めを巻き上げ直す",
+      "at": 12.316666666666666,
+      "pose": {
+        "x": -2.4103551269715893,
+        "y": 1.6,
+        "z": 9.624396844940561
+      },
+      "actor": {
+        "x": 1.0538037899241968,
+        "y": 0,
+        "z": 14.26225665642241
+      },
+      "actorPhase": "patrol",
+      "ratchets": 2,
+      "holding": "winch",
+      "holdSeconds": 0
+    },
+    {
+      "id": "grate-open",
+      "label": "確定した歯止めを残して格子が開く",
+      "at": 14.316666666666666,
+      "pose": {
+        "x": -2.4103551269715893,
+        "y": 1.6,
+        "z": 9.624396844940561
+      },
+      "actor": {
+        "x": 0.39100667045156884,
+        "y": 0,
+        "z": 13.701901312135892
+      },
+      "actorPhase": "investigate",
       "ratchets": 3,
       "holding": null,
       "holdSeconds": 0
     },
     {
       "id": "exit",
-      "label": "制御室への前室に着く",
-      "at": 28.083333333333332,
+      "label": "標準：制御室への前室に着く",
+      "at": 23.483333333333334,
       "pose": {
-        "x": -0.03583333333332951,
+        "x": -0.007331026278222967,
         "y": 1.6,
-        "z": 21.93833333333312
+        "z": 22.449090095290114
       },
       "actor": {
-        "x": -0.6043007209607636,
+        "x": -0.07838596905905428,
         "y": 0,
-        "z": 13.028367019353848
+        "z": 12.394486728564173
       },
       "actorPhase": "search",
       "ratchets": 3,
@@ -271,22 +233,22 @@
     }
   ],
   "simulationCpu": {
-    "samples": 1685,
-    "p50Ms": 0.025,
-    "p95Ms": 0.106,
-    "maxMs": 2.232
+    "samples": 1409,
+    "p50Ms": 0.032,
+    "p95Ms": 0.128,
+    "maxMs": 1.585
   },
   "final": {
     "pose": {
       "position": {
-        "x": -0.03583333333332951,
+        "x": -0.007331026278222967,
         "y": 1.6,
-        "z": 21.93833333333312
+        "z": 22.449090095290114
       },
       "yaw": -3.141592653589793,
       "pitch": -0.06
     },
-    "mirrorInspected": true,
+    "mirrorInspected": false,
     "ratchets": 3,
     "cleared": true
   },
@@ -405,11 +367,11 @@
     "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499"
   },
   "video": {
-    "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-natural/mirror-natural.mp4",
-    "bytes": 286005,
-    "sha256": "fe8d06c7b884fdcae58cff15a2b0dae92792a07ea28d1c86f4ed96d0b426ed1f",
+    "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-standard-recovery/mirror-standard-recovery.mp4",
+    "bytes": 145764,
+    "sha256": "8cc0bf6e9d3f227094161733a81045ad7418cb6d4b81aa469bf7aa583d785cae",
     "fps": 10
   },
-  "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity from a fresh area entry.",
+  "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Standard intensity from a validated key/practice checkpoint; capture with unfinished winch progress, Stage-codec checkpoint restore, remaining ratchet and physical exit. The viewer retains one scene across controller restoration, so it does not prove a native Canvas remount.",
   "toolHash": "74b1bec80d4524ba2e14ac8e5aabd7a8a6c1449ff7604852bc958b838118d54c"
 }

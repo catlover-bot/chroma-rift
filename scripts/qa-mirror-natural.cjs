@@ -5,14 +5,21 @@
 // transpiled for a browser Software WebGL pass. Native EXGL remains untested.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), ts = require('typescript');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/mirror-natural');
+const standardRecovery = process.argv.includes('--standard-recovery');
+if (process.argv.slice(2).some(argument => argument !== '--standard-recovery'))
+  throw Error('usage: node scripts/qa-mirror-natural.cjs [--standard-recovery]');
+const name = standardRecovery ? 'mirror-standard-recovery' : 'mirror-natural';
+const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013', name);
 fs.mkdirSync(out, { recursive: true });
 const bridge = installSourceBridge(root), React = require('react'), THREE = require('three');
 const RC = require('../src/rendering/firstPerson/runtimeController.ts');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
 const { StageScene } = require('../src/domain/stages/mirror-corridor-v1/scene.tsx');
 const { isStageSession } = require('../src/domain/stages/mirror-corridor-v1/session.ts');
-const { KEY_CENTER, MIRROR_CENTER, WINCH_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
+const { createCheckpoint } = require('../src/domain/firstPerson/checkpoint.ts');
+const { parseStageCheckpoint } = require('../src/domain/stages/mirror-corridor-v1/checkpoint.ts');
+const { stageModule } = require('../src/domain/stageKit/modules.ts');
+const { KEY_CENTER, MIRROR_CENTER, WINCH_CENTER, WINCH_SAFE } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
 
 function timingSummary(samples) {
   if (!samples.length) throw Error('No CPU timing samples');
@@ -22,8 +29,19 @@ function timingSummary(samples) {
 }
 
 async function extract() {
-  const controller = RC.createController(undefined, false, true, 'mirror-corridor-v1');
-  controller.horrorIntensity = 'subdued';
+  const start = (() => {
+    if (!standardRecovery) return undefined;
+    const module = stageModule('mirror-corridor-v1');
+    const fresh = module.checkpoint(module.create());
+    const data = parseStageCheckpoint(fresh.stageData);
+    if (!data) throw Error('Fresh mirror stage checkpoint is invalid');
+    const carried = module.restore({ ...fresh, stageData: { ...data,
+      keyTaken: true, practiced: true, ratchets: 0, pose: WINCH_SAFE } })?.checkpoint;
+    if (!carried) throw Error('Valid standard winch checkpoint missing');
+    return carried;
+  })();
+  let controller = RC.createController(start, false, true, 'mirror-corridor-v1');
+  controller.horrorIntensity = standardRecovery ? 'standard' : 'subdued';
   Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true,
     sceneMode: 'chapter', paused: false, open: false });
   const camera = new THREE.PerspectiveCamera(65, 390 / 844, .08, 60);
@@ -35,6 +53,8 @@ async function extract() {
     runtime, resources, renderOffscreen: () => {}, onFrameError: error => { throw error; } }), THREE);
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#09090C'); scene.add(camera);
   mounted.objects.forEach(object => scene.add(object));
+  if (!scene.getObjectByName('control-vestibule-door') || scene.getObjectByName('mirror-corridor-exit'))
+    throw Error('Corridor exit must show the control vestibule without a floating device marker');
   const keyMesh = scene.getObjectByName('isolation-key');
   if (!keyMesh) throw Error('The figure-ground key is absent from area 04');
   const winchKey = scene.getObjectByName('winch-key');
@@ -65,7 +85,8 @@ async function extract() {
   };
   const event = (id, label) => { events.push({ id, label, at: simulationFrames / 60,
     pose: { ...controller.runtime.pose.position }, actor: { ...state().actor.motion.position },
-    ratchets: state().ratchets }); capture(); };
+    actorPhase: state().actor.phase, ratchets: state().ratchets,
+    holding: state().holding, holdSeconds: state().holdSeconds }); capture(); };
   const turn = (yaw, pitch = 0) => {
     RC.commandController(controller, { type: 'turn', yaw: yaw - controller.runtime.pose.yaw,
       pitch: pitch - controller.runtime.pose.pitch });
@@ -106,6 +127,89 @@ async function extract() {
   surface.material = transportMaterial;
   fs.writeFileSync(path.join(out, 'scene.json'), JSON.stringify(scene.toJSON()));
   surface.material = nativeMirrorMaterial; transportMaterial.dispose(); capture();
+  if (standardRecovery) {
+    event('validated-entry', '鍵と練習を引き継いだ安全地点');
+    const walkTo = (x, z) => {
+      for (let frame = 0; frame < 900; frame += 1) {
+        const pose = controller.runtime.pose;
+        if (Math.hypot(x - pose.position.x, z - pose.position.z) < .06) {
+          controller.input.forward = 0; return;
+        }
+        const yaw = Math.atan2(-(x - pose.position.x), -(z - pose.position.z));
+        RC.commandController(controller, { type: 'turn', yaw: yaw - pose.yaw, pitch: -pose.pitch });
+        controller.input.forward = 1; tick();
+      }
+      controller.input.forward = 0;
+      throw Error(`Recovery walk blocked before ${x},${z}`);
+    };
+    walkTo(-2.45, 9.6); aimWinch();
+    if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
+      !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 7)) throw Error('Standard first hold rejected');
+    event('first-hold', '標準：一段目を保持');
+    for (let frame = 0; frame < 120; frame += 1) tick();
+    if (state().ratchets !== 1 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 7))
+      throw Error('Standard first ratchet did not settle');
+    event('first-release', '一段目を残して指を離す');
+    walkTo(-1.8, 8.5); event('retreat', '格子から離れて巡回体を避ける');
+    for (let frame = 0; frame < 120; frame += 1) tick();
+    walkTo(-2.45, 9.6); event('return-to-winch', '戻って巻き上げを再開する');
+    let approach = 0, firstAttackRecovered = false;
+    while (!(firstAttackRecovered && state().actor.phase === 'windup') && approach < 1800) {
+      tick(); approach += 1;
+      if (state().actor.phase === 'recover') firstAttackRecovered = true;
+      if (controller.pendingActorEvents.includes('caught')) throw Error('Actor caught the player before the second hold');
+    }
+    if (approach === 1800) throw Error('Actor never telegraphed another attack at the resumed winch');
+    event('actor-approaches', '巡回体が再び作業位置へ迫る');
+    aimWinch();
+    if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
+      !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 8)) throw Error('Standard second hold rejected');
+    event('second-hold', '残りを巻き上げる間に巡回体が近づく');
+    let caught = false;
+    for (let frame = 0; frame < 900 && !caught; frame += 1) {
+      tick(); caught = controller.pendingActorEvents.includes('caught');
+    }
+    if (!caught || state().holding !== null || state().holdSeconds !== 0 ||
+      state().ratchets < 1 || state().ratchets >= 3 ||
+      !state().keyTaken || !state().practiced) throw Error('Capture did not preserve partial winch progress and key: ' +
+        JSON.stringify({ caught, holding: state().holding, ratchets: state().ratchets,
+          keyTaken: state().keyTaken, practiced: state().practiced, seconds: simulationFrames / 60,
+          events: events.map(({ id, at, actor, actorPhase }) => ({ id, at, actor, actorPhase })) }));
+    if (!controller.input.releaseBarrier.includes(8) ||
+      RC.endStageHoldController(controller, 'mirror-corridor-winch', 8) ||
+      controller.input.releaseBarrier.includes(8)) throw Error('Caught hold did not require a fresh pointer');
+    event('caught', '捕捉後、確定した歯止めと鍵を保って復帰');
+    const checkpoint = createCheckpoint(controller.runtime);
+    const verified = stageModule('mirror-corridor-v1').restore(checkpoint)?.checkpoint;
+    if (!verified) throw Error('Caught winch state could not be restored through the Stage codec');
+    const previousController = controller;
+    RC.retireController(previousController);
+    if (!previousController.retired) throw Error('Previous controller remained active during restore');
+    controller = RC.createController(verified, false, true, 'mirror-corridor-v1');
+    controller.horrorIntensity = 'standard';
+    Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true,
+      sceneMode: 'chapter', paused: false, open: false });
+    runtime.current = controller.runtime; RC.syncCamera(controller, camera);
+    callbacks.forEach(callback => callback({}, 0));
+    if (!state().keyTaken || !state().practiced || state().ratchets !== checkpoint.stageData.ratchets ||
+      state().holding !== null) throw Error('Cold winch restore lost key, settled teeth, or safe hold state');
+    event('cold-resume', '保存した歯止めから再開');
+    walkTo(-2.45, 9.6); aimWinch();
+    if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
+      !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 9)) throw Error('Recovered winch hold rejected');
+    event('rework', '残りの歯止めを巻き上げ直す');
+    const remainingFrames = 120 * (3 - state().ratchets);
+    for (let frame = 0; frame < remainingFrames; frame += 1) tick();
+    if (state().ratchets !== 3 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 9))
+      throw Error('Recovered winch did not open the physical grate');
+    event('grate-open', '確定した歯止めを残して格子が開く');
+    walkTo(-1.8, 8.5); walkTo(0, 8.5); walkTo(0, 22.5);
+    turn(Math.PI, -.06);
+    if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-exit' ||
+      !RC.interactController(controller, 'mirror-corridor-exit') || !controller.runtime.progress.cleared)
+      throw Error('Standard physical corridor exit failed after capture');
+    event('exit', '標準：制御室への前室に着く');
+  } else {
   walkZ(-1);
   press('mirror-corridor-figure', '向き合う横顔を観察', Math.PI, .1);
   press('mirror-corridor-key', '中央の隔離キーを取得', Math.PI, -.16);
@@ -163,9 +267,11 @@ async function extract() {
     !RC.interactController(controller, 'mirror-corridor-exit') || !controller.runtime.progress.cleared)
     throw Error('Physical corridor exit failed');
   event('exit', '制御室への前室に着く');
+  }
   fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
   await mounted.unmount(); resources.dispose(); bridge.verify();
-  return { frames: frames.length, simulationSeconds: simulationFrames / 60, events,
+  return { mode: standardRecovery ? 'standard-recovery' : 'subdued-natural',
+    frames: frames.length, simulationSeconds: simulationFrames / 60, events,
     simulationCpu: timingSummary(simulationCpuMs),
     final: { pose: controller.runtime.pose, mirrorInspected: state().mirrorInspected,
       ratchets: state().ratchets, cleared: controller.runtime.progress.cleared },
@@ -238,7 +344,7 @@ async function render(report) {
     if (!reflectedFrames || disposed.geometries || disposed.textures || browser.errors.length)
       throw Error('Mirror WebGL pass/disposal/error gate failed');
   } finally { await browser.close(); }
-  const file = path.join(out, 'mirror-natural.mp4');
+  const file = path.join(out, name + '.mp4');
   cp.execFileSync('ffmpeg', ['-nostdin', '-hide_banner', '-loglevel', 'error', '-y', '-framerate', '10',
     '-i', path.join(directory, '%05d.png'), '-c:v', 'libx264', '-crf', '21', '-pix_fmt', 'yuv420p', file]);
   report.video = { file, bytes: fs.statSync(file).size, sha256: sha256(fs.readFileSync(file)), fps: 10 };
@@ -246,7 +352,7 @@ async function render(report) {
 
 async function main() {
   const report = await extract(); await render(report);
-  report.boundary = 'Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity.';
+  report.boundary = `Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. ${standardRecovery ? 'Standard intensity from a validated key/practice checkpoint; capture with unfinished winch progress, Stage-codec checkpoint restore, remaining ratchet and physical exit. The viewer retains one scene across controller restoration, so it does not prove a native Canvas remount.' : 'Subdued intensity from a fresh area entry.'}`;
   report.toolHash = sha256(fs.readFileSync(__filename));
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ frames: report.frames, duration: report.simulationSeconds, video: report.video }));

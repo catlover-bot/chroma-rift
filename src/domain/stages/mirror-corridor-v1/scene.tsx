@@ -100,8 +100,17 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       <mesh name="mirror-frame-right" geometry={resources.box} material={resources.trim} position={[.65,0,0]} scale={[.08,1.3,.1]}/>
     </group>
     <mesh name="mirror-landmark" geometry={resources.box} material={resources.neutral} position={[1.05,1.5,14.25]} scale={[.22,.22,.22]}/>
+    <mesh name="control-vestibule-floor" geometry={resources.box} material={resources.floor} position={[0,-.1,27.75]} scale={[6,.2,7.5]}/>
+    <mesh name="control-vestibule-west" geometry={resources.box} material={resources.wall} position={[-3.08,1.75,27.75]} scale={[.16,3.5,7.5]}/>
+    <mesh name="control-vestibule-east" geometry={resources.box} material={resources.wall} position={[3.08,1.75,27.75]} scale={[.16,3.5,7.5]}/>
+    <mesh name="control-vestibule-ceiling" geometry={resources.box} material={resources.ceiling} position={[0,3.57,27.75]} scale={[6.2,.14,7.5]}/>
+    <mesh name="control-vestibule-end" geometry={resources.box} material={resources.wall} position={[0,1.75,31.5]} scale={[6,3.5,.16]}/>
+    <mesh name="control-vestibule-door" geometry={resources.box} material={resources.door} position={[0,1.6,31.38]} scale={[1.5,3.2,.05]}/>
+    <mesh name="control-vestibule-door-head" geometry={resources.box} material={resources.trim} position={[0,3.28,31.3]} scale={[1.72,.12,.12]}/>
+    <mesh name="control-vestibule-light" geometry={resources.box} material={resources.neutral} position={[0,3.35,27]} scale={[.75,.05,.6]}/>
+    <mesh name="control-vestibule-sign" geometry={resources.box} material={resources.device} position={[-2.1,2.2,31.35]} scale={[.8,.25,.035]}/>
     <GalleryActor name="mirror-corridor-actor" runtime={runtime} resources={resources} reducedMotion={false} framePriority={-.4}
       actorSource={()=>{const raw=runtime.current.stageSession?.value;return isStageSession(raw)?raw.actor:undefined;}} onFrameError={onFrameError}/>
-    {world.interactables.filter(t=>t.id!=='mirror-corridor-figure'&&t.id!=='mirror-corridor-key'&&t.id!=='mirror-corridor-mirror').map(t=><mesh key={t.id} geometry={resources.box} material={resources.device} position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.25,.12]}/>)}
+    {world.interactables.filter(t=>t.id!=='mirror-corridor-figure'&&t.id!=='mirror-corridor-key'&&t.id!=='mirror-corridor-mirror'&&t.id!=='mirror-corridor-exit').map(t=><mesh key={t.id} name={t.id} geometry={resources.box} material={resources.device} position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.25,.12]}/>)}
   </group>;
 }

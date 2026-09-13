@@ -40,7 +40,7 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 
 ## オーナーと実機の残件
 
-- 第一章01→05の実controllerとcampaign domain host、およびマウント済みcontrollerを動かすApp/AsyncStorageモックの連続経路は、標準B→C/控えめC→Bで通過した。Canvas mockのpeak ownerは1、エンディング後0で、App cold restart後もエンディング入口が残る。結末画面の提示前に終了した条件もJest hostで検査し、完了envelopeと後追いのbeat提示を分けて確認した。05停止beatを読み飛ばして屋外へ進む場合も、結末で巡回体の正体・01→00を台帳の文で示し、両beatの提示を保存する。**native Canvas・実音声を伴うApp操作の連続動画**は未完了。04控えめと05標準の単独成功経路は実controller/sceneのSoftware WebGL動画で確認した。05の早すぎる閉扉拒否と手動開け直し→再誘導→退館、04標準の保持中捕捉とcold復元後の出口は実controller試験で通過した。04の標準捕捉復帰は動画未収録。05の開け直し復旧はSoftware WebGL動画を収録したが、追跡の実機見え方、実HUD・音・native Canvasは未確認。`docs/qa-goal013/README.md`に証拠と範囲を記録した。
+- 第一章01→05の実controllerとcampaign domain host、およびマウント済みcontrollerを動かすApp/AsyncStorageモックの連続経路は、標準B→C/控えめC→Bで通過した。Canvas mockのpeak ownerは1、エンディング後0で、App cold restart後もエンディング入口が残る。結末画面の提示前に終了した条件もJest hostで検査し、完了envelopeと後追いのbeat提示を分けて確認した。05停止beatを読み飛ばして屋外へ進む場合も、結末で巡回体の正体・01→00を台帳の文で示し、両beatの提示を保存する。**native Canvas・実音声を伴うApp操作の連続動画**は未完了。04控えめと05標準の単独成功経路は実controller/sceneのSoftware WebGL動画で確認した。05の早すぎる閉扉拒否と手動開け直し→再誘導→退館、04標準の保持中捕捉とcold復元後の出口は実controller試験で通過した。04標準の未完成巻上げ中の捕捉、Stage codec復元、残り一段の再作業と出口もSoftware WebGL動画へ収録した。05の開け直し復旧はSoftware WebGL動画を収録したが、追跡の実機見え方、実HUD・音・native Canvasは未確認。`docs/qa-goal013/README.md`に証拠と範囲を記録した。
 - Appの途中checkpoint・物語提示・replay発見の保存失敗は再試行/起動中だけ継続の選択肢を出し、画面内controllerを停止する。モックの書込失敗を連続させた試験で、原文保持、再試行成功後の保存、起動中だけのメモリ上の発見を確認した。保存依頼直後にホームへ退出した失敗も同じleaseなら通知・再試行できる。実端末の容量不足とnative画面重なりは未確認。
 - 標準B→CのJest App経路では、4回のエリア遷移後cold restore、10回の同一エリア再入場、完走後の05→01逆順replayを加えた。Canvas mockは計20回の入場でpeak 1、退出・unmount後0。本編セーブとrunIdは保持された。実端末のGPU/音owner、AsyncStorage、熱・frame timeを証明しない。
 - 逆順replayの5エリアは、各マウント済みcontrollerを実操作で出口まで進め、codec有効な最終checkpointから練習結果画面へ到達した。新発見のない実行では本編envelope原文を変えず、結果画面のCanvas mock ownerは0。練習完了のnative Canvas/実音/端末保存は未確認。
@@ -65,6 +65,12 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 05の屋外出口は、Software WebGL録画で黒い背景と浮いた操作四角形になっていた。worldの退館操作を維持して実sceneへ空・遠景・歩道・灯具を追加し、自然成功と扉の開け直し復旧の両方で出口を歩いて完了する動画を取り直した。抽出画像とWebGL計測は `docs/qa-goal013/README.md`。実機の輝度、色、操作面の見つけやすさはiPhone previewで確認する。native preview、正式なプライバシーURLとサポート連絡先、ストア申告は引き続きrelease gateの残件。
 
 このscene変更後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。iOS/Androidのsource map付き公開用JSも再exportし、1,576/1,575 source・各10 assetで5エリア同梱、開発用画面/probe除外を検査した。両OSで現在存在するfirst-party source各197件がmap本文と一致し、Three source 1件・22参照のclass identityと実行時循環0を確認した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。実機previewと公式URLなしで公開判定へ進めない。
+
+04標準の捕捉復帰は、鍵・練習済みの検証済み入口から実controller/sceneのSoftware WebGL動画を追加した。一段目の保持・解放・退避・再保持中に巡回体が接触し、歯止め2/3と鍵を保って未完成時間だけ失った。Stage codec復元後に残り一段と出口まで実操作した。映像、時刻、WebGL計測、観察の限界は `docs/qa-goal013/README.md`。その後、04出口の製品sceneを修正した。ネイティブ設定は変えていない。iPhoneでのnative Canvas、指操作、鏡像、実音、恐怖・視認性は引き続き未確認。
+
+04格子後の出口も、旧Software WebGL映像では黒背景と浮いた汎用マーカーだった。次の館内区画として前室の床・壁・天井・扉・灯りをsceneへ加え、控えめ自然経路と標準捕捉復帰の両方で出口commandと視界を再確認した。iPhone previewではこの前室の明るさと操作の見つけやすさを05屋外と一緒に確認する。映像と検証範囲は `docs/qa-goal013/README.md`。
+
+このscene変更後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。iOS/Androidのsource map付き製品JSも再exportし、1,576/1,575 source・各10 asset、5エリア同梱・開発用画面/probe除外を確認した。両OSの存在するfirst-party各197 sourceは本文一致、04前室と05屋外のsceneも同梱。Three source 1件・22参照のclass identity、実行時循環0を確認した。04両動画のtool/video/112 source hash、全frameデコード、WebGL資源解放も通過。これらは署名済みpreviewバイナリや実機体験ではない。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 オーナーが上記を埋めた後のコマンド例（**この作業では実行しない**）:
 
