@@ -6,7 +6,7 @@ import { PerspectiveCamera } from 'three';
 
 import App from '../../../App';
 import { CHAPTER_ONE_BACKUP_KEY, CHAPTER_ONE_STORAGE_KEY } from '../../storage/chapterOneStorage';
-import { GALLERY_CHECKPOINT_KEY, GALLERY_V1_CHECKPOINT_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
+import { GALLERY_CHECKPOINT_KEY, GALLERY_V1_CHECKPOINT_KEY, STAGE_JOURNAL_KEY, VAULT_CHECKPOINT_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import { vaultCheckpoint } from '../../storage/testFixtures/vault';
 import { theatreCheckpoint } from '../../storage/testFixtures/theatre';
@@ -409,6 +409,39 @@ test('old cleared gallery proposes an indoor area-02 entry without changing old 
     currentArea: 'chapter-1-area-02', completedAreas: ['chapter-1-area-01'], migrationSource: 'legacy-prefix',
   }));
   expect(await AsyncStorage.getItem(GALLERY_V1_CHECKPOINT_KEY)).toBe(raw);
+});
+
+test('an out-of-order legacy vault record can be replayed to its exit without starting a campaign', async () => {
+  const oldVault = JSON.stringify(vaultCheckpoint('clear'));
+  await AsyncStorage.setItem(VAULT_CHECKPOINT_KEY, oldVault);
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  const view = await render(<App/>);
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBeNull();
+  await fireEvent.press(await view.findByRole('button', { name: 'エリアを振り返る' }));
+  expect(view.getAllByText('未到達')).toHaveLength(4);
+  await fireEvent.press(view.getByRole('button', { name: '測れない収蔵庫を振り返る' }));
+  await view.findByTestId('campaign-native-canvas');
+  expect(latest!.chapterId).toBe('uncanny-vault-v1');
+  const replay = latest!;
+  const run = attachNaturalRun(mockLatestCanvas.current!.controller);
+  let cleared: CheckpointState | undefined;
+  await act(() => { cleared = playNaturalArea(run, 1, ['shadow', 'contour']); });
+  expect(cleared?.progress.cleared).toBe(true);
+  await act(() => {
+    replay.onCheckpoint(cleared!);
+    replay.onComplete(chapterCompletionSummary('uncanny-vault-v1', cleared!.progress));
+  });
+  expect(await view.findByText('測れない収蔵庫を振り返った')).toBeTruthy();
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(STAGE_JOURNAL_KEY))!).history)
+    .toMatchObject({ 'uncanny-vault-v1': { everCleared: true } }));
+  expect(await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY)).toBe(oldVault);
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBeNull();
+  expect(mockCanvasOwners.active).toBe(0);
+  await fireEvent.press(view.getByRole('button', { name: 'エリア一覧へ' }));
+  expect(view.getAllByText('未到達')).toHaveLength(4);
+  expect(view.getByRole('button', { name: '測れない収蔵庫を振り返る' })).toBeTruthy();
 });
 
 test('a mounted area-03 actor investigation fires and presents its equipment-noise story once', async () => {

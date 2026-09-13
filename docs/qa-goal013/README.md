@@ -12,6 +12,8 @@
 
 練習エリアの完了handoffは、同じApp host試験の発見記録ケースで別に検査した。偽のclear bitはStage codecで拒否し、codec有効な完了fixtureをscreen callbackへ渡すと練習結果画面へ進む。最終checkpointにだけある発見bitは保存に加わり、本編のエリア・checkpoint・物語提示は保持される。結果画面へ移った旧callbackも拒否する。このケースはApp callbackとJestのCanvas/AsyncStorageモックの検査で、練習を実controllerや実端末で完走した記録ではない。
 
+旧収蔵庫だけの順不同セーブでは、本編の移行を選ばず、製品ホームから02の練習を開けた。マウント済みcontrollerを実操作で完走してscreenのhost callbackへ最終checkpointを渡すと、練習結果画面へ進む。旧収蔵庫rawはbyte一致、campaign keyは未生成、01・03・04・05は未到達のままだった。Stage journalの02クリア履歴も確認した。Canvas frame callbackとAsyncStorageはJestモック。
+
 保存失敗のApp host試験は `src/screens/__tests__/chapterOneAppFlow.test.tsx` で行う。campaign keyへのsetItemだけを拒否し、途中checkpointと冒頭beatの未保存を表示する。再試行が再度失敗しても元rawを保持し、成功時は最新envelopeを保存する。起動中だけ継続なら画面の発見記録は保持するがrawは変えない。書込直後にホームへ退出した場合もCanvas owner 0のまま失敗を表示し、再試行で最新envelopeを保存した。Canvas・AsyncStorageはJestモックであり、実端末の書込失敗・Modal重なりは未確認。
 
 更新したAppログの `transitionStories` は、01 `emergency-circuit`、02 `containment-procedure`、04 `isolation-key` を次エリアのCanvas起動前に表示したことを記録する。05の結末二beatはエンディング画面で提示する。04→05の保存後、隔離キーの文を読む前にunmountした試験では、cold起動後の05安全入口で未提示文が戻る。別のApp host試験は境界文の提示bit書込だけを失敗させ、旧Canvasの保持、元rawの保持、再試行成功または起動中のみの継続を検査した。いずれもCanvas・AsyncStorageのJestモックで、native画面重なりや端末の保存失敗は未確認。

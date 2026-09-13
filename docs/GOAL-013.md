@@ -57,3 +57,7 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 続けて、完走後の05→01逆順replayを入口確認だけで終えず、各エリアでマウント済みcontrollerの実旋回・衝突付き歩行・装置操作から最終checkpointを作り、screenのhost callbackへ渡した。5エリアすべてが練習結果画面へ到達。新発見のない各回は本編envelope原文を変えず、Canvas mock ownerは入場中最大1・結果画面で0だった。`docs/qa-goal013/app-natural-route-standard-cold.json` の `reverseReplays` に完走と発見追加数を記録した。Canvas frame callbackとAsyncStorageはJestモックで、nativeでの練習完走を証明しない。
 
 この試験拡張後の `npm run check` はlint・型検査・109スイート/1,121テスト・iOS通常exportを通過した。製品ソースは前回のsource map付きiOS/Android export以降変更していない。4つのrelease gateは従来の判定を維持する。
+
+旧記録が収蔵庫にだけある順不同ケースでも、campaignを作る前に製品ホームから02の練習を開始し、マウント済みcontrollerの実操作で出口まで到達、結果画面へ進むことをApp hostで検査した。旧収蔵庫のrawはbyte一致、campaign保存keyは未生成、ホームの残り4エリアは未到達のまま。旧記録の存在と本編の連続prefixを混同しない。ただしCanvas frame callbackとAsyncStorageはJestモックで、端末上の旧保存移行・練習完走を証明しない。
+
+この追加後の `npm run check` はlint・型検査・109スイート/1,122テスト・iOS通常exportを通過した。製品ソースと依存は変更していないため、前回のsource map付き製品export/循環/Doctorの測定対象は同じまま。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
