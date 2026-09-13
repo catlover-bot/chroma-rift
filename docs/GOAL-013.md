@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+04・05の最小画面で、実 `StageScene` と `FirstPersonScreen` を同一controller状態から描くSoftware WebGL/CSS QAを追加した。検証済みcheckpointから画面ボタンを押して04保持前/中、05キー/ベルの4枚を撮り、全画像を開いて操作面・照準・目的・pause・ボタンを確認した。320×568・fontScale 2で操作ボタンは44px以上かつ画面内、測定したHUD矩形の重なり0。04反射pass実行、描画後geometry/texture 0、browser error 0、146 source hashを [QA記録](qa-goal013/README.md) に残した。これは実sceneとHUDを同時に示す局所確認だが、native Canvas/Yoga・実指/音・iPhoneの見え方や鏡像視認性は未確認である。製品ソース・依存には変更がない。
+
 preview/productionのEAS profileに `developmentClient: false` を明示した。製品ソース最終変更後のiOS/Android公開用JS source mapに開発画面、probe、dev-client系JSが含まれないことを再確認し、`scripts/check-release-export.cjs` に混入時の失敗条件を追加した。対象exportはiOS 1,580・Android 1,579 source、各10 asset。ローカルprebuild設定では開発用ネイティブモジュールが自動リンク候補に残るため、実バイナリの開発メニュー等の不在は未確認。詳細は [公開準備手順](RELEASE-CHAPTER-1.md)。本編runtime/依存は変更しておらず、native previewと正式privacy/support URLのrelease blockerを維持する。
 
 公開情報の次の準備として、実際の第一章ホーム・設定・5エリア定義とAppleの現行項目を照合し、[App Store掲載・審査情報の下書き](CHAPTER-1-STORE-METADATA-DRAFT.md) を作成した。名前、サブタイトル、説明、キーワード、審査Notesの長さは各上限内。第二章をプレイ可能と書かず、未検証の「完全オフライン」主張を掲載文から除いた。スクリーンショットは配布候補iPhoneバイナリから撮る手順のみで、実素材は0枚。年齢質問票の根拠は整理したが数値は未確定。正式URL、オーナーの掲載承認、native preview、App Store申告は依然として未完了。
