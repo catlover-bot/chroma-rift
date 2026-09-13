@@ -69,3 +69,5 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 このscene変更後の `npm run check` はlint・型検査・109スイート/1,122テスト・iOS通常exportを通過した。定義検査2件、iOS/Android/neutralの222 production modules・682 runtime edges・0 SCC/0 errorsを確認。source map付き製品exportはiOS 1,575/Android 1,574 source、各10 JS assetで5エリアを含み、開発用画面とprobeを除外した。iOSのfirst-party source 196件とThree class同一性も一致。`automatedChecksPassed=true` を維持し、native preview、実HUD/音・知覚、正式な公開URLが未確認のため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` も維持する。
 
 動的QAの未記録項目だったCPU時間を、04の鏡pass込みの実controller/sceneと、05の自然成功・開け直し復旧の両経路へ追加した。Nodeのsimulation/callbackとSwiftShaderブラウザーのJS描画投入を別々に測り、p50/p95/max、サンプル数、測定に含まないscreenshot・RAF・native presentation/GPU完了を `docs/qa-goal013/README.md` と各reportに記録した。3動画のhashはbyte一致で、経路内容は変わらない。これをiPhoneのframe timeや発熱の証拠とはしない。
+
+04の資源所有を10回のnative Canvas再入場で追加検査した。実R3F reconcilerとsceneを使い、各入場で反射target、鏡material、横顔/鍵形geometryと鍵materialのdispose一回、renderer一回、R3F root数の復帰、旧controller停止を確認した。端末GLだけは試験代替なので、実GPUメモリとiPhoneの連続再入場は残件。追加後の `npm run check` はlint・型検査・109スイート/1,123テスト・iOS通常exportを通過した。製品ソースは先のiOS/Android source map付きexportから変えていない。

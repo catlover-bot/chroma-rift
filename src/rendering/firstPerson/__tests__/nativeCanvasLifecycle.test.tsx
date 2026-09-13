@@ -142,6 +142,36 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     } finally { if (_roots.size) await view.unmount(); }
   });
 
+  it('releases mirror target and figure-ground resources on ten native Canvas reentries (device GPU excluded)', async () => {
+    const rootsBefore = _roots.size;
+    for (let replay = 0; replay < 10; replay++) {
+      renderer = fakeRenderer();
+      const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+      controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+      const view = await render(<FirstPersonCanvas {...props()} controller={controller} snapshot={controllerSnapshot(controller)} />);
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      const scene = rendererRoot(renderer).store.getState().scene;
+      const surface = scene.getObjectByName('planar-mirror') as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+      const face = scene.getObjectByName('left-profile') as THREE.Mesh;
+      const key = scene.getObjectByName('isolation-key-silhouette') as THREE.Mesh<THREE.BufferGeometry, THREE.Material>;
+      const target = renderer.setRenderTarget.mock.calls.find(([value]) => value instanceof THREE.WebGLRenderTarget)?.[0];
+      expect(target).toBeInstanceOf(THREE.WebGLRenderTarget);
+      const counts = [surface.material, face.geometry, key.geometry, key.material, target].map(resource => {
+        const disposed = jest.fn();
+        resource!.addEventListener('dispose', disposed);
+        return disposed;
+      });
+      await view.unmount();
+      await act(async () => { await jest.advanceTimersByTimeAsync(600); });
+      expect(counts.every(disposed => disposed.mock.calls.length === 1)).toBe(true);
+      expect(renderer.dispose).toHaveBeenCalledTimes(1);
+      expect(_roots.size).toBe(rootsBefore);
+      expect(controller.runtime.paused).toBe(true);
+    }
+    expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(10);
+  }, 60000);
+
   it('skips a hidden mirror and refreshes it on the first visible native frame', async () => {
     const controller = createController(undefined, false, true, 'mirror-corridor-v1');
     controller.runtime.pose = { ...controller.runtime.pose, yaw: 0 };

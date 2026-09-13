@@ -52,6 +52,8 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 | 05 自然成功 | 0.065 / 0.253 / 1.852 ms | 0.4 / 0.9 / 27.6 ms | 811 / 182 |
 | 05 開け直し・再誘導 | 0.049 / 0.157 / 2.903 ms | 0.4 / 0.7 / 25.3 ms | 1,801 / 365 |
 
+`nativeCanvasLifecycle.test.tsx` では04の実R3F/native Canvas境界を10回入退出し、毎回鏡の反射target・materialと固定横顔/鍵形のgeometry/materialが一度だけdisposeされ、R3F root数が開始値に戻り、rendererが一度解放され、旧controllerが停止することを確認した。GL context/rendererは試験用の代替なので、端末GPUの残存メモリや実EXGL解放を測ったものではない。
+
 必要な録画/ログの順序:
 
 1. 標準と控えめで、B→C/C→Bの両順を含む新規01→05のApp経路を、native Canvasと実音声を使う端末で再実行・録画する。Jestのhandoffログと端末のrunId、保存revision、Canvas owner数を照合する。
