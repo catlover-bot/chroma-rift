@@ -60,6 +60,8 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 
 さらにnative R3F Canvas境界で、04未取得・取得済み、05持参中・設置済みの4つの検証済みcheckpointをcold起動し、最初のframeの鍵表示と05の設置座標を照合した。端末GLは試験代替。この追加後の全チェックは109スイート/1,124テスト、lint、型検査、通常iOS exportを通過した。製品ソースは前段のsource map付きexportから変わっていない。
 
+04巻上機への鍵の差し戻しを実sceneへ追加した後、実controller動画で初回・再使用と格子通過を確認した。iOS/Androidのsource map付き製品exportを取り直し、1,576/1,575 source・各10 asset、開発用画面/probe除外、first-party本文一致、Three class同一性、実行時循環0を確認した。`npm run check` は109スイート/1,124テスト、lint、型検査、通常iOS exportを通過。端末の鍵の大きさ・鏡像・実指の離し戻しは未確認。
+
 オーナーが上記を埋めた後のコマンド例（**この作業では実行しない**）:
 
 ```sh

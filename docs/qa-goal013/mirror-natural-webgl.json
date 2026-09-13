@@ -1,17 +1,17 @@
 {
   "maxMainCalls": 50,
-  "maxOffscreenCalls": 42,
+  "maxOffscreenCalls": 44,
   "maxTriangles": 3579,
-  "reflectedFrames": 134,
+  "reflectedFrames": 142,
   "targetSize": [
     384,
     384
   ],
   "cpuRenderSubmit": {
     "samples": 311,
-    "p50Ms": 0.5,
+    "p50Ms": 0.6,
     "p95Ms": 1.2,
-    "maxMs": 40.6
+    "maxMs": 40.2
   },
   "cpuTimingScope": "SwiftShader browser JS mirror and main renderer.render calls; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
   "disposed": {

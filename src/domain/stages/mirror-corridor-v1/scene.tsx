@@ -7,7 +7,7 @@ import { isolationKeyGeometry } from '../isolationKeyGeometry';
 import { createPlanarMirror, type OffscreenDraw } from '../../../rendering/firstPerson/planarMirror';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
 import type { SceneResources } from '../../../rendering/firstPerson/resources';
-import { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, MIRROR_YAW, grateY } from './definition';
+import { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, MIRROR_YAW, WINCH_CENTER, grateY } from './definition';
 import { isStageSession } from './session';
 
 /** Original symmetric profile. The pale central void is left by the same two
@@ -26,8 +26,9 @@ function profileGeometry() {
  * once in the scene and appears again optically through the reflection pass. */
 export function StageScene({world,resources,runtime,renderOffscreen,onFrameError}:{world:WorldGeometry<string>;resources:SceneResources;runtime:RefObject<ChapterRuntime>;
   renderOffscreen?:OffscreenDraw|undefined;onFrameError?:((error:unknown)=>void)|undefined}){
-  const gate=useRef<Mesh>(null),key=useRef<Group>(null),mirrorMesh=useRef<Mesh>(null);
+  const gate=useRef<Mesh>(null),key=useRef<Group>(null),winchKey=useRef<Group>(null),mirrorMesh=useRef<Mesh>(null);
   const keyVisual=useRef<{wasTaken:boolean|null;elapsed:number}>({wasTaken:null,elapsed:0});
+  const winchKeyVisual=useRef<{initialized:boolean;travel:number}>({initialized:false,travel:0});
   const mirror=useMemo(()=>createPlanarMirror(),[]);
   const mirrorFrustum=useMemo(()=>new Frustum(),[]),projectionView=useMemo(()=>new Matrix4(),[]);
   const shape=useMemo(()=>profileGeometry(),[]),faceMaterial=useMemo(()=>new MeshBasicMaterial({color:'#bebfb4',side:DoubleSide}),[]);
@@ -46,6 +47,14 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       key.current.visible=!raw.keyTaken||travel<1;
       key.current.position.set(KEY_CENTER.x,KEY_CENTER.y-.16*travel,KEY_CENTER.z-.1-.24*travel);
       key.current.rotation.z=-.25*travel;
+    }
+    if(winchKey.current){
+      const active=raw.keyTaken&&raw.holding==='winch',visual=winchKeyVisual.current;
+      if(!visual.initialized){visual.initialized=true;visual.travel=active?1:0;}
+      else if(!runtime.current.paused){const step=Math.max(0,Math.min(delta,.05))/.22;
+        visual.travel=Math.max(0,Math.min(1,visual.travel+(active?step:-step)));}
+      winchKey.current.visible=raw.keyTaken&&(active||visual.travel>0);
+      winchKey.current.position.x=WINCH_CENTER.x+.35-.3*visual.travel;
     }
   },-.5);
   useFrame(state=>{
@@ -78,6 +87,10 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
     <group name="isolation-key" ref={key} position={[KEY_CENTER.x,KEY_CENTER.y,KEY_CENTER.z-.1]}>
       <mesh name="isolation-key-silhouette" geometry={keyShape} material={keyMaterial}/>
       <mesh name="isolation-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
+    </group>
+    <group name="winch-key" ref={winchKey} visible={false} position={[WINCH_CENTER.x+.35,WINCH_CENTER.y+.12,WINCH_CENTER.z]} rotation={[0,Math.PI/2,0]}>
+      <mesh name="winch-key-silhouette" geometry={keyShape} material={keyMaterial}/>
+      <mesh name="winch-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
     </group>
     <group position={[MIRROR_CENTER.x,MIRROR_CENTER.y,MIRROR_CENTER.z]} rotation={[0,MIRROR_YAW,0]}>
       <mesh name="planar-mirror" ref={mirrorMesh} geometry={resources.plane} material={mirror.material} scale={[1.2,1.2,1]}/>

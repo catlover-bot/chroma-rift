@@ -307,7 +307,7 @@ export function beginStageHoldController(controller: RuntimeController, expected
   controller.runtime = next;
   requireAllPointersReleased(controller.input);
   if (pointerId !== undefined && validPointer(pointerId) && !controller.input.releaseBarrier.includes(pointerId)) controller.input.releaseBarrier.push(pointerId);
-  controller.feedbackMessage = 'レバーを保持する。';
+  controller.feedbackMessage = hold.message?.('start', expectedId) ?? 'レバーを保持する。';
   return true;
 }
 
@@ -318,7 +318,7 @@ export function endStageHoldController(controller: RuntimeController, expectedId
   const next = hold.release(controller.runtime, expectedId);
   if (next === controller.runtime) return false;
   controller.runtime = next;
-  controller.feedbackMessage = '歯止めが残った。';
+  controller.feedbackMessage = hold.message?.('release', expectedId) ?? '歯止めが残った。';
   return true;
 }
 

@@ -52,6 +52,7 @@ test('mirror winch uses current ray, held pointer barrier, frame time, and settl
   controller.input.stickPointer = 1;
   controller.input.lookPointer = 2;
   expect(beginStageHoldController(controller, 'mirror-corridor-winch', 3)).toBe(true);
+  expect(controller.feedbackMessage).toContain('隔離キーを差し');
   expect(controller.input.releaseBarrier).toEqual([1, 2, 3]);
   commandController(controller, { type: 'step', forward: 1 });
   expect(controller.runtime.stageSession?.value).toMatchObject({ holding: 'winch', ratchets: 0 });
@@ -62,6 +63,7 @@ test('mirror winch uses current ray, held pointer barrier, frame time, and settl
   expect(Math.cos(controller.runtime.pose.yaw)).toBeCloseTo(Math.cos(before.yaw));
   expect(controller.runtime.stageSession?.value).toMatchObject({ holding: 'winch', ratchets: 1, holdSeconds: 0 });
   expect(endStageHoldController(controller, 'mirror-corridor-winch', 3)).toBe(true);
+  expect(controller.feedbackMessage).toContain('隔離キーを戻した');
   expect(controller.input.releaseBarrier).toEqual([1, 2]);
   expect(createCheckpoint(controller.runtime).stageData).toMatchObject({ ratchets: 1 });
   endPointer(controller.input, 1);

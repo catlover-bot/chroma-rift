@@ -200,6 +200,8 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
         const key = rendererRoot(renderer).store.getState().scene.getObjectByName(entry.object) as THREE.Group;
         expect(key).toBeDefined();
         expect(key.visible).toBe(entry.visible);
+        if (entry.stageId === 'mirror-corridor-v1')
+          expect(rendererRoot(renderer).store.getState().scene.getObjectByName('winch-key')?.visible).toBe(false);
         if (entry.stageId === 'departure-control-v1' && entry.visible) expect(key.position.x).toBeCloseTo(-4.7);
       } finally { await view.unmount(); }
     }

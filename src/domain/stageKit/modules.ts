@@ -51,6 +51,7 @@ export type StageModule<C, R> = Readonly<{
     activeTarget(runtime: ChapterRuntime): InteractableId | undefined;
     start(runtime: ChapterRuntime, targetId: InteractableId): ChapterRuntime;
     release(runtime: ChapterRuntime, targetId: InteractableId): ChapterRuntime;
+    message?(action: 'start' | 'release', targetId: InteractableId): string;
   }>;
   cancel?(runtime: ChapterRuntime): ChapterRuntime;
   /** Optional embodied actor; the common frame owner invokes this after the

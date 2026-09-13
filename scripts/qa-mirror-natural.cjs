@@ -12,7 +12,7 @@ const RC = require('../src/rendering/firstPerson/runtimeController.ts');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
 const { StageScene } = require('../src/domain/stages/mirror-corridor-v1/scene.tsx');
 const { isStageSession } = require('../src/domain/stages/mirror-corridor-v1/session.ts');
-const { KEY_CENTER, MIRROR_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
+const { KEY_CENTER, MIRROR_CENTER, WINCH_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
 
 function timingSummary(samples) {
   if (!samples.length) throw Error('No CPU timing samples');
@@ -37,6 +37,8 @@ async function extract() {
   mounted.objects.forEach(object => scene.add(object));
   const keyMesh = scene.getObjectByName('isolation-key');
   if (!keyMesh) throw Error('The figure-ground key is absent from area 04');
+  const winchKey = scene.getObjectByName('winch-key');
+  if (!winchKey) throw Error('The reusable isolation key has no winch visual');
   const mirrorCallbacks = bridge.callbacks.filter(callback => callback.toString().includes('mirror.render'));
   if (mirrorCallbacks.length !== 1) throw Error(`Expected one mirror callback; found ${mirrorCallbacks.length}`);
   const callbacks = bridge.callbacks.filter(callback => !mirrorCallbacks.includes(callback));
@@ -98,6 +100,7 @@ async function extract() {
   const aimWinch = () => { const player = controller.runtime.pose.position;
     turn(Math.atan2(-(-2.45 - player.x), -(11.3 - player.z)), -.16); };
   callbacks.forEach(callback => callback({}, 0)); scene.updateMatrixWorld(true);
+  if (winchKey.visible) throw Error('The winch key appeared before it was inserted');
   const surface = scene.getObjectByName('planar-mirror');
   const nativeMirrorMaterial = surface.material, transportMaterial = new THREE.MeshBasicMaterial({ color: '#394A4A' });
   surface.material = transportMaterial;
@@ -128,20 +131,33 @@ async function extract() {
   aimWinch();
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
     !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 4)) throw Error('Winch hold rejected');
+  runtime.current = controller.runtime; callbacks.forEach(callback => callback({}, 0));
+  if (!winchKey.visible || winchKey.position.x <= WINCH_CENTER.x + .05) throw Error('Key did not begin moving into the winch');
+  event('winch-key-inserting', '隔離キーを差す');
+  for (let i = 0; i < 14; i += 1) tick();
+  if (Math.abs(winchKey.position.x - (WINCH_CENTER.x + .05)) > 1e-6) throw Error('Key did not seat in the winch');
   event('winch-one', '鏡を見ながら一段目を巻き上げる');
   for (let i = 0; i < 120; i += 1) tick();
   if (state().ratchets !== 1 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 4)) throw Error('First tooth did not settle');
+  runtime.current = controller.runtime; callbacks.forEach(callback => callback({}, 0));
+  if (!winchKey.visible) throw Error('Released key vanished before returning from the winch');
+  event('winch-key-returning', '隔離キーを戻す');
+  for (let i = 0; i < 14; i += 1) tick();
+  if (winchKey.visible || !state().keyTaken) throw Error('Winch key did not return to reusable carried state');
   event('release-one', '一段目を残して離す');
   walkZ(8.5); event('retreat', '離れて巡回体を避ける');
   for (let i = 0; i < 30; i += 1) tick();
   walkZ(10.9); aimWinch();
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
     !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 5)) throw Error('Second winch hold rejected');
+  runtime.current = controller.runtime; callbacks.forEach(callback => callback({}, 0));
+  if (!winchKey.visible) throw Error('Reusable key did not enter the winch again');
   event('winch-rest', '残りの歯止めを巻き上げる');
   for (let i = 0; i < 240; i += 1) tick();
   if (state().ratchets !== 3 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 5)) throw Error('Grate did not open');
   event('grate-open', '格子が開いた');
   walkZ(8.5); walkX(0); walkZ(22);
+  if (winchKey.visible || !state().keyTaken) throw Error('The isolation key was consumed after opening the grate');
   turn(Math.PI, -.06);
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-exit' ||
     !RC.interactController(controller, 'mirror-corridor-exit') || !controller.runtime.progress.cleared)

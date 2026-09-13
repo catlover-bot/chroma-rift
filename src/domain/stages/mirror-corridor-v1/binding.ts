@@ -11,6 +11,10 @@ function session(runtime:ChapterRuntime):StageSession|undefined {
   const entry=runtime.stageSession;
   return entry?.stageId===STAGE_ID&&isStageSession(entry.value)?entry.value:undefined;
 }
+function holdMessage(action:'start'|'release',targetId:InteractableId):string {
+  if(targetId==='mirror-corridor-winch')return action==='start'?'隔離キーを差し、レバーを保持する。':'隔離キーを戻した。確定した歯止めは残る。';
+  return action==='start'?'練習レバーを保持する。':'練習を終えた。';
+}
 function create(checkpoint?:CheckpointState,number?:number):ChapterRuntime {
   if(checkpoint&&checkpoint.chapterId!==STAGE_ID)throw new RangeError('Foreign stage checkpoint');
   const base=createBaseRuntime(STAGE_ID,SPAWN,initialProgress(),number);
@@ -22,7 +26,7 @@ function command(runtime:ChapterRuntime,packet:StageCommand,context:{rendererRea
   if(!live||runtime.paused||!context.rendererReady||!context.foreground||context.targetId!==packet.targetId)return {runtime,accepted:false,stopInput:false,message:''};
   const result=commandStage({...live,pose:runtime.pose},packet);
   const message = result.accepted ? packet.type === 'inspect' ? packet.targetId === 'mirror-corridor-mirror'
-    ? '鏡には背後の通路が映る。' : '顔と顔の間にも、輪郭がある。' : packet.type === 'take-key' ? '隔離キーを取った。' : packet.type === 'start-hold' ? 'レバーを保持する。' : packet.type === 'release-hold' ? '歯止めが残った。' : '制御室への前室へ進む。'
+    ? '鏡には背後の通路が映る。' : '顔と顔の間にも、輪郭がある。' : packet.type === 'take-key' ? '隔離キーを取った。' : packet.type === 'start-hold' ? holdMessage('start',packet.targetId) : packet.type === 'release-hold' ? holdMessage('release',packet.targetId) : '制御室への前室へ進む。'
     : result.reason === 'tooFar' ? '近づいてから操作する。' : result.reason === 'prerequisiteMissing' ? '隔離キーと練習を確認する。' : '';
   return {runtime:{...runtime,progress:{...runtime.progress,cleared:result.session.cleared},stageSession:{stageId:STAGE_ID,value:result.session}},accepted:result.accepted,stopInput:false,message};
 }
@@ -60,6 +64,7 @@ export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
       const result=command(runtime,packet,{rendererReady:true,foreground:true,targetId});
       return result.accepted?result.runtime:runtime;
     },
+    message:holdMessage,
   },
   cancel:runtime=>{
     const live=session(runtime);if(!live)return runtime;
