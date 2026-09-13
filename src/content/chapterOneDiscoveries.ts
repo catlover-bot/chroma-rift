@@ -1,4 +1,4 @@
-import type { CampaignAreaId } from '../domain/campaign/definition';
+import { CHAPTER_ONE, type CampaignAreaId } from '../domain/campaign/definition';
 import { CHAPTER_ONE_COPY } from '../domain/campaign/story';
 
 export const CHAPTER_ONE_DISCOVERY_TITLES: Readonly<Record<CampaignAreaId, Readonly<Record<string, string>>>> = {
@@ -11,6 +11,11 @@ export const CHAPTER_ONE_DISCOVERY_TITLES: Readonly<Record<CampaignAreaId, Reado
 };
 
 export type ChapterOneStageNoteArea = 'chapter-1-area-04' | 'chapter-1-area-05';
+const STAGE_NOTE_AREAS: readonly ChapterOneStageNoteArea[] = ['chapter-1-area-04', 'chapter-1-area-05'];
+export function chapterOneStageNoteArea(stageId: string): ChapterOneStageNoteArea | undefined {
+  const area = CHAPTER_ONE.areas.find(item => item.stageId === stageId);
+  return STAGE_NOTE_AREAS.find(id => id === area?.id);
+}
 export const CHAPTER_ONE_STAGE_NOTE_DETAILS: Readonly<Record<ChapterOneStageNoteArea, Readonly<Record<string, string>>>> = {
   'chapter-1-area-04': {
     figure: '同じ静止した境界を、向かい合う顔の輪郭にも中央の鍵形にも見られる。図地の見方が変わっても飾りは動かない。',

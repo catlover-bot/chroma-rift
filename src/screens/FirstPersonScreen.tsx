@@ -39,6 +39,7 @@ import { DEFAULT_FIRST_PERSON_ONBOARDING, type FirstPersonOnboarding, type AppSe
 import { effectiveControlMode, simpleGuideAimInstruction } from './firstPersonControlMode';
 import { chapterOneBeat, type ChapterOneBeatId } from '../domain/campaign/story';
 import { CampaignStageNotebook } from './CampaignStageNotebook';
+import { chapterOneStageNoteArea } from '../content/chapterOneDiscoveries';
 
 export type FirstPersonScreenProps = {
   settings: AppSettings;
@@ -135,8 +136,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const simpleStage=!!snapshot.runtime.stageSession;
   const projectorStatus = theatre ? theatreProjectorStatus(snapshot.runtime) : undefined;
   const hasActorChapter=!!gallery||!!vault||!!theatre;
-  const stageNotebookArea = chapterId === 'mirror-corridor-v1' ? 'chapter-1-area-04' : chapterId === 'departure-control-v1' ? 'chapter-1-area-05' : undefined;
-  const hasThreatChapter=hasActorChapter||!!stageNotebookArea;
+  const stageNotebookArea = chapterOneStageNoteArea(chapterId);
+  const hasThreatChapter=hasActorChapter||!!stageModule(chapterId)?.actor;
   const independentChapter = hasActorChapter || simpleStage;
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
   const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
@@ -603,7 +604,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
               <ActionButton label="ドラッグ操作を試す" onPress={() => { changeMode('standard'); resume(); }} />
               <ActionButton label="今の操作を使う" onPress={() => onOnboardingChange?.({ ...onboardingRef.current, controlChoiceAcknowledged: true })} />
             </View> : null}
-            {hasThreatChapter ? <ActionButton label="発見メモ" onPress={openNotes} disabled={!ready} /> : null}
+            {hasActorChapter || stageNotebookArea ? <ActionButton label="発見メモ" onPress={openNotes} disabled={!ready} /> : null}
             <ActionButton label="ヒント" onPress={() => openMenu('hints')} disabled={!ready || renderMode !== 'chapter'} />
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
             <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>

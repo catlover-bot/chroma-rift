@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+後続の接続整理では、04・05のメモ対象を第一章エリア台帳から引き、怖さ設定をStage Moduleのactor能力に合わせた。hidden probeのメモ/怖さボタンは出ない。更新後の全check、公開用iOS/Android exportとsource map、定義済み5エリア・開発画面/probe除外、first-party各199 sourceの本文一致、循環0を確認した。公開判定は引き続き `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。
+
 04・05の一時停止メニューから、観察済みbitだけを表示する発見メモを開けるようにした。04では図地反転と鏡の光学反射を区別し、05の在館反応01は隔離後の停止を観察した時だけ記録する。両エリアの巡回体に対して怖さ設定も一時停止中に切り替えられる。Jest画面試験4件、全110スイート/1,130テスト、lint、型検査、iOS通常export、Stage定義検査、runtime循環0、両OSの公開用source-map検査を通過。iOS/Androidのfirst-party source各199件はmap本文と一致し、5エリア同梱・開発画面/probe除外を確認した。実iPhoneでのVoiceOver・文字拡大・メモの重なりは未確認。正式なprivacy/support URLも未提供で、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 製品の設定から、公開ナビゲーションにない旧迷宮専用の色模様の強さを外した。保存値と開発用の旧迷宮設定は維持する。03映写室の一時停止設定にも無関係な紋章色ボタンが出ていたため、同画面では除いた。01展示室の色選択と旧入口の紋章色選択は維持。関連する画面試験2スイート/21テストは通過した。端末での設定画面・文字拡大・アクセシビリティ確認は未実施。

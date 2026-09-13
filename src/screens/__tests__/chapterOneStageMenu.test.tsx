@@ -43,6 +43,20 @@ it.each(['mirror-corridor-v1', 'departure-control-v1'] as const)(
   },
 );
 
+it('keeps the hidden probe free of chapter notes and actor fear controls', async () => {
+  canvas.mockClear();
+  const chapterId = 'stage-kit-probe';
+  const checkpoint = stageModule(chapterId)!.checkpoint(stageModule(chapterId)!.create());
+  const view = await render(<FirstPersonScreen chapterId={chapterId} checkpoint={checkpoint}
+    controls={DEFAULT_FIRST_PERSON_CONTROLS} settings={DEFAULT_SETTINGS} preferredColor="neutral"
+    onSettingsChange={jest.fn()} onControlsChange={jest.fn()} onCheckpoint={jest.fn()}
+    onComplete={jest.fn()} onRestart={jest.fn()} onExit={jest.fn()} />);
+  await fireEvent.press(view.getByTestId('pause-control'));
+  expect(view.queryByRole('button', { name: '発見メモ' })).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: '操作と快適設定' }));
+  expect(view.queryByText('怖さ')).toBeNull();
+});
+
 it('separates the inspected figure-ground display from the actual mirror', async () => {
   const module = stageModule('mirror-corridor-v1')!;
   const checkpoint = module.checkpoint(module.create());

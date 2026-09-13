@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+その後、04・05のStage IDを共通画面に直書きしたメモ接続を、第一章エリア台帳から引く対応へ変更した。怖さ設定はStage Moduleのactor能力から決め、メモボタンは実際にメモ画面があるエリアだけに出す。hidden probeで両ボタンを出さない画面試験も追加した。変更後の `npm run check` はlint・型検査・110スイート全通過・iOS通常export（1,571 modules、10 assets）。循環検査はiOS/Android/neutral各225 modules・694 edges・0 SCC/0 errors。source map付き公開用JSはiOS 1,578/Android 1,577 source・各10 asset、5エリア同梱・開発画面/probe除外、first-party各199 source本文一致、iOSのThree 1 source/22参照のclass identity一致。実端末と正式な公開URLのゲートは変わらない。
+
 04・05の一時停止メニューでは、巡回体がいるのに怖さ設定が出ず、「発見メモ」は押しても開かない状態だった。両エリアにも怖さの標準/控えめ切替を表示し、Stage Moduleの検証済みcheckpointから明示的な観察bitだけを読むメモ画面を接続した。04のメモは静止した顔/鍵形の図地反転と、背後の実通路を映す平面鏡を別の仕組みとして説明する。05は実際の隔離と停止の順に記録し、停止前に在館反応01を見せない。メモを開いた間はcontrollerの既存pause経路で入力と危険を止める。公開ナビゲーションにないprobeにはメモボタンを出さない。共通タイトルをホームの発見記録と共有した。
 
 このUI修正後の `npm run check` はlint・型検査・110スイート/1,130テスト・iOS通常export（1,571 modules、10 assets）を通過。Stage定義2件、iOS/Android/neutralのruntime循環検査は各225 modules・692 edges・0 SCC/0 errors。source map付き公開用JSを両OSで取り直し、iOS 1,578/Android 1,577 source・各10 asset、5エリア同梱と開発画面/probe除外を確認した。両OSのfirst-party各199 sourceは現ファイルとmap本文が一致し、iOSのThree 1 source/22参照は同一classだった。画面試験4件は04/05のpause・メモ・怖さ変更と、発見bitに応じた表示を確認する。これは端末の読み上げ、実指、鏡/巡回体の見え方、実音を検証したものではない。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
