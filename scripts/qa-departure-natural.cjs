@@ -36,6 +36,8 @@ async function extract() {
     sceneMode: 'chapter', paused: false, open: false });
   const camera = new THREE.PerspectiveCamera(65, 390 / 844, .08, 60);
   RC.syncCamera(controller, camera);
+  if (RC.controllerSnapshot(controller).target?.id !== 'departure-key')
+    throw Error('Carried-key entry does not face the first required key panel');
   const runtime = { current: controller.runtime }, resources = createSceneResources(false, null, true);
   const mounted = await mountThree(React.createElement(StageScene, { world: RC.worldForController(controller),
     runtime, resources, onFrameError: error => { throw error; } }), THREE);

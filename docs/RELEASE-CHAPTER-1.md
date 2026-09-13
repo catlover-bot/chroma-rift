@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+02収蔵庫の西経路と03映写室の通常/鈴・仕切り経路を、現行製品ソースの実controller・画面・sceneから個別に動画化した。計３本の実装と入力の証拠は [QA記録](qa-goal013/README.md) にある。05動画も入口でキー盤を取得可能と検査し、接触シートを初frameから再作成した。これらは各エリアの局所動作を強める証拠であり、01→05の一続きのApp描画、実機preview、正式URL/ストア申告の未完了ゲートは変わらない。
+
 05の隔離キー盤へ向く新規入口pose `8869c76` 後のローカル検査は、lint・型検査・110スイート/1,134テスト・iOS通常export、iOS/Androidのsource map付きexport、公開用5エリア同梱/開発画面除外、first-party各201 source本文一致、循環0、Three class identity、Doctor 21/21、Expo依存検査に通過した。[数値とbundle SHA-256](qa-goal013/release-controls-source-checks.json)を参照。実App hostの01→05保存遷移を一つのmountで再現し、10枚のエリアscene/HUD静止画と結末1枚を確認したが、中間の実描画frameを含む連続動画ではない。05の実controller/scene自然成功・復旧動画を現行ソースで再収録した。`automatedChecksPassed=true`。5エリアを通した実描画による内容最終受入は未完、preview/productionのiPhoneバイナリ未実行、正式privacy/support URLとストア申告未完のため、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 最新の権限・プライバシー監査では、アプリ独自の通信API呼出しは製品ソースに見つからず、進行・設定・旧記録はAsyncStorageの管理キーへ保存され、設定から削除できることを確認した。`expo-file-system` が自動追加するAndroid外部ストレージ読書権限はアプリから直接使っていないため、`app.json` の `android.blockedPermissions` で除外した。Expoのintrospectionでは両権限に `tools:node="remove"` が付き、iOS Info.plistの録音設定は変わらない。全 `npm run check` はlint・型検査・110スイート/1,132テスト・iOS exportに成功し、Expo Doctorは21/21、`expo install --check`も通過した。最終統合manifest・実バイナリのSDK通信は未確認で、Android配布用package IDも未設定。公開用本文とサポート案内の未承認案は [プライバシー・サポート文案](CHAPTER-1-PRIVACY-SUPPORT-DRAFT.md) に分離した。正式な運営者・連絡先・公開URL、端末確認、ストア申告を受け取るまで `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

@@ -303,9 +303,9 @@
   ],
   "simulationCpu": {
     "samples": 1819,
-    "p50Ms": 0.033,
-    "p95Ms": 0.139,
-    "maxMs": 3.845
+    "p50Ms": 0.03,
+    "p95Ms": 0.112,
+    "maxMs": 3.003
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -546,5 +546,5 @@
     "durationSeconds": 36.9
   },
   "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. Early closure refusal, manual reopening, second bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "040eefe82e019ee0daf6086a12c8cbe42635bef23e752f5f663745d1178083dc"
+  "toolHash": "91c8b0b18fbf7eb502617926fac1c0761baca2675d39a8d6d046c81f41aca6cd"
 }

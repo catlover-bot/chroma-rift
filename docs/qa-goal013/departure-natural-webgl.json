@@ -3,9 +3,9 @@
   "maxTriangles": 3584,
   "cpuRenderSubmit": {
     "samples": 187,
-    "p50Ms": 0.4,
-    "p95Ms": 0.8,
-    "maxMs": 28.3
+    "p50Ms": 0.3,
+    "p95Ms": 0.7,
+    "maxMs": 27.1
   },
   "cpuTimingScope": "SwiftShader browser JS renderer.render call; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
   "disposed": {
