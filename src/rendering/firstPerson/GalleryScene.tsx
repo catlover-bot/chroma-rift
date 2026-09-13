@@ -199,5 +199,13 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
     <mesh name="gallery-final-door-handle" ref={exitHandle} geometry={resources.box} material={r.outline} position={[4, 1.4, GALLERY_FINAL_DOOR_FIXTURE.center.z]} scale={[.52, .1, .1]} />
     <mesh name="gallery-final-door-pull-cable" geometry={resources.box} material={r.outline} position={[4, 2.25, GALLERY_FINAL_DOOR_FIXTURE.center.z]} scale={[.018, 1.6, .018]} />
     <mesh name="gallery-exit-sign" geometry={resources.box} material={r.exitSign} position={[4, 2.9, 22.82]} scale={[.85, .25, .035]} />
+    <group name="gallery-vault-threshold" position={[4, 0, 25.82]}>
+      <mesh name="gallery-vault-threshold-door" geometry={resources.box} material={resources.door} position={[0, 1.55, 0]} scale={[1.35, 3.1, .06]} />
+      <mesh geometry={resources.box} material={resources.trim} position={[-.73, 1.55, -.035]} scale={[.08, 3.15, .1]} />
+      <mesh geometry={resources.box} material={resources.trim} position={[.73, 1.55, -.035]} scale={[.08, 3.15, .1]} />
+      <mesh geometry={resources.box} material={resources.trim} position={[0, 3.12, -.035]} scale={[1.55, .08, .1]} />
+      <mesh name="gallery-vault-threshold-sign" geometry={resources.box} material={r.exitSign} position={[0, 2.2, -.05]} scale={[.55, .12, .025]} />
+      <mesh name="gallery-vault-threshold-light" geometry={resources.box} material={resources.neutral} position={[0, 3.31, -.3]} scale={[.72, .05, .35]} />
+    </group>
   </group>;
 }

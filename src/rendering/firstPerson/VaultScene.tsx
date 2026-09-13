@@ -128,5 +128,13 @@ export function VaultScene({ world, runtime, resources, reducedMotion, onFrameEr
       <mesh geometry={resources.box} material={resources.trim} position={[x!, 2.25, z!]} scale={[.02, 1.6, .025]} />
       <mesh geometry={resources.box} material={resources.neutral} position={[x!, 2.93, z!]} scale={[.20, .09, .03]} />
     </group>)}
+    <group name="vault-theatre-threshold" position={[3, 0, 30.82]}>
+      <mesh name="vault-theatre-threshold-door" geometry={resources.box} material={resources.door} position={[0, 1.55, 0]} scale={[1.55, 3.1, .06]} />
+      <mesh geometry={resources.box} material={resources.trim} position={[-.84, 1.55, -.035]} scale={[.08, 3.15, .1]} />
+      <mesh geometry={resources.box} material={resources.trim} position={[.84, 1.55, -.035]} scale={[.08, 3.15, .1]} />
+      <mesh geometry={resources.box} material={resources.trim} position={[0, 3.12, -.035]} scale={[1.76, .08, .1]} />
+      <mesh name="vault-theatre-threshold-sign" geometry={resources.box} material={r.guide} position={[0, 2.2, -.05]} scale={[.55, .12, .025]} />
+      <mesh name="vault-theatre-threshold-light" geometry={resources.box} material={resources.neutral} position={[0, 3.31, -.3]} scale={[.78, .05, .35]} />
+    </group>
   </group>;
 }

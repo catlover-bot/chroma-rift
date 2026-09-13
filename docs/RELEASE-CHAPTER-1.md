@@ -72,6 +72,8 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 
 このscene変更後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。iOS/Androidのsource map付き製品JSも再exportし、1,576/1,575 source・各10 asset、5エリア同梱・開発用画面/probe除外を確認した。両OSの存在するfirst-party各197 sourceは本文一致、04前室と05屋外のsceneも同梱。Three source 1件・22参照のclass identity、実行時循環0を確認した。04両動画のtool/video/112 source hash、全frameデコード、WebGL資源解放も通過。これらは署名済みpreviewバイナリや実機体験ではない。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
+01〜03も実sceneの出口側を追加点検し、無地の終端壁／抽象記号だけだった視界へ次区画の扉面・枠・小灯を加えた。`docs/qa-goal013/README.md` の3枚はworld床上へQA cameraを置いた静止画で、実操作やiPhone表示の録画ではない。操作・衝突・保存の製品コードは変えていない。変更後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。source map付き公開用JSはiOS 1,576/Android 1,575 source・各10 assetで5エリア同梱・開発用画面/probe除外を確認し、両OSで現存するfirst-party各197 sourceがmap本文と一致した。Three class identity 22参照、実行時循環0も維持。端末で01〜03の扉の視認性と次区画への移行を確認するまで `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。正式なprivacy/support URLも公開ゲートの残件。
+
 オーナーが上記を埋めた後のコマンド例（**この作業では実行しない**）:
 
 ```sh

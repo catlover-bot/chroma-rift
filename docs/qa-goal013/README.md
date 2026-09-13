@@ -70,3 +70,5 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 5. 320×568/390×844/430×932相当、fontScale 1〜2、無音、標準/控えめ、縦画面で、HUD、機器、pause、物語表示の重なりを画像で開いて確認する。
 
 記録には環境（software WebGL/native mock/iPhone）、commit、素材hash、コマンド、同一入力、開始/終了時刻、実観察範囲、未観察項目を添える。スクリーンショットを生成しただけでは目視確認済みとしない。
+
+01〜03の館内境界を追加点検した。先の短いbefore/after操作動画は今回の終端描画修正より前のソースを比較した履歴であり、修正後のsceneがbyte一致するという主張には使わない。各エリアの既存の最終扉を越えたworld床上の視点から実 `ChapterScene` を描いたところ、01/02は行き先の表示がない無地の終端壁、03は抽象的な二本線だけだった。sceneの終端壁の手前に、次の館内区画を示す扉面・枠・小灯を加えた。修正後の[01→02](area01-vault-threshold.png)、[02→03](area02-theatre-threshold.png)、[03→04](area03-mirror-threshold.png)の390×844静止画を開き、扉面が見えることを確認した。[再現条件・画像/source hash](area01-03-threshold-report.json)は `node scripts/qa-chapter-thresholds.cjs` が生成する。視点は実world床上だがQAが手動配置し、stageは初期状態のまま。既存の実controller/App通しログが境界到達と遷移を別に証明する。この静止画は最終扉の解錠過程、製品HUD、native Canvas、iPhoneの視認性、04へのシームレス歩行を証明しない。
