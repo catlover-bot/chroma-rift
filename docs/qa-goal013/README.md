@@ -40,7 +40,7 @@
 
 自然成功動画SHA-256 `f1329ef4ceddd7307c4f25bb5a067ef92221870f98d09b8ce8e402f6884deebe`。接触シート `d2824479df6e872093fd1ac5a8591c6d1aeed4787fdb79a5bef908e7dda5d05b`。接触シートとframe 00170/00186を開き、出口手前から屋外到達後まで空と歩道が連続することを確認した。MP4の連続視聴は未実施。
 
-05の入退館人数表示の `0` は、旧sceneで左下の線分がなく、右下が二重だった。線分を直し、自然成功経路の実controller記録と実 `StageScene` を再抽出した。[02](departure-attendance-02.png)は開始frame 0、[01](departure-attendance-01.png)は停止操作frame 131、[00](departure-attendance-00.png)は屋外完了frame 186である。[再現用script](../../scripts/qa-departure-attendance.cjs)は `node scripts/qa-departure-natural.cjs` の後に実行する。可視groupの切替順と各数字の線分座標を検査し、固定QA cameraで同じdisplayを近接描画する。[入力・画像hash・結果](departure-attendance-report.json)を残した。3画像を開き、02→01→00が欠けや二重線なしで読めることを確認した。自然成功・復旧の動画SHA-256は再収録後も同一で、各動画はplayer cameraからこの表示を直接見せていない。近接画像は製品camera/HUDやiPhoneでの視認性を証明しない。
+05の入退館人数表示の `0` は、旧sceneで左下の線分がなく、右下が二重だった。線分修正後も、実controllerが記録した安全な開始位置から製品と同じ縦FOV 65・390×844のQA cameraを表示へ向けると、旧寸法では表示の横幅がNDC `-1.116〜1.095` となり左右が切れた。実sceneの表示groupを0.72倍へ縮め、全状態でNDCの左右上下が±0.9の内側に入ることを検査した。[開始位置の02](departure-attendance-spawn-02.png)、[停止後の01](departure-attendance-spawn-01.png)、[退館後の00](departure-attendance-spawn-00.png)と、[近接02](departure-attendance-02.png)、[近接01](departure-attendance-01.png)、[近接00](departure-attendance-00.png)を開き、数字全体が読めることを確認した。状態は自然成功経路のframe 0/131/186で、実sceneの可視groupの全frame切替順と線分座標も検査する。退館後の00を開始位置から見た画像はQA cameraの仮想視点であり、退館後の実プレイヤー視点ではない。[再現用script](../../scripts/qa-departure-attendance.cjs)は `node scripts/qa-departure-natural.cjs` の後に実行し、[入力・画像hash・結果](departure-attendance-report.json)を残す。自然成功・復旧の動画SHA-256は表示寸法の再修正後も同一で、各動画はplayer cameraから表示を直接見せていない。開始位置のQA cameraは手動で表示へ向けたため、製品の実旋回/HUDやiPhoneでの視認性を証明しない。
 
 05単独の復旧記録： [36.9秒の動画](departure-recovery.mp4)、[1秒ごとの接触シート](departure-recovery-contact.png)、[巡回体が戻る場面](departure-recovery-returning.png)、[再誘導後の収容](departure-recovery-contained.png)、[扉の閉鎖](departure-recovery-latched.png)、[イベント・入力とsource hash](departure-recovery-report.json)、[WebGL計測](departure-recovery-webgl.json)。`node scripts/qa-departure-natural.cjs --recovery` は同じ有効な鍵入口・実controller/scene経路で、全身収容前の閉扉拒否、最初のベルによる収容、閉鎖途中の手動開け直し、巡回体が区画外の通路へ戻るまでの待機、二度目のベルからの再誘導、再閉鎖・停止・屋外退館を一実行で通した。最初の拒否は実commandから「巡回体の全身が収容区画に入るのを待つ。」を返し、扉進行率は0のまま。開け直し後も進行率0・隔離falseを検査した。巡回体が区画外の `z<14.5` に戻った時刻はsimulation 20.15秒で、直前phaseは `return`。次のベルで `investigate` へ移ったことを確認してから、全身収容を再判定した。位置・AI phase・solved bitの直接代入はない。
 
@@ -58,8 +58,8 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 | --- | ---: | ---: | ---: |
 | 04 鏡廊・控えめ | 0.025 / 0.106 / 2.232 ms | 0.5 / 1.2 / 35.6 ms | 1,685 / 311 |
 | 04 鏡廊・標準捕捉復帰 | 0.032 / 0.128 / 1.585 ms | 0.4 / 0.8 / 37.1 ms | 1,409 / 251 |
-| 05 自然成功 | 0.069 / 0.268 / 2.651 ms | 0.4 / 0.9 / 32.6 ms | 837 / 187 |
-| 05 開け直し・再誘導 | 0.043 / 0.162 / 4.311 ms | 0.4 / 0.7 / 26.8 ms | 1,819 / 369 |
+| 05 自然成功 | 0.049 / 0.221 / 2.147 ms | 0.5 / 0.9 / 33.0 ms | 837 / 187 |
+| 05 開け直し・再誘導 | 0.049 / 0.193 / 2.839 ms | 0.3 / 0.7 / 30.4 ms | 1,819 / 369 |
 
 `nativeCanvasLifecycle.test.tsx` では04の実R3F/native Canvas境界を10回入退出し、毎回鏡の反射target・materialと固定横顔/鍵形のgeometry/materialが一度だけdisposeされ、R3F root数が開始値に戻り、rendererが一度解放され、旧controllerが停止することを確認した。GL context/rendererは試験用の代替なので、端末GPUの残存メモリや実EXGL解放を測ったものではない。
 

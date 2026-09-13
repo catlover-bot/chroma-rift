@@ -178,9 +178,9 @@
   ],
   "simulationCpu": {
     "samples": 837,
-    "p50Ms": 0.069,
-    "p95Ms": 0.268,
-    "maxMs": 2.651
+    "p50Ms": 0.049,
+    "p95Ms": 0.221,
+    "maxMs": 2.147
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -407,7 +407,7 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/departure-control-v1/scene.tsx": "9a92e9ca0cf808d223bbf7de7cff941ad98f33fd5bca2daea7cb51621584eac2",
+    "src/domain/stages/departure-control-v1/scene.tsx": "2f478ebb7f02bf1741d6cf35de823079c5aaefc709c6eb1d9f9774bbcebfe73d",
     "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },

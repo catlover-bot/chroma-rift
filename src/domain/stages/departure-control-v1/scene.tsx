@@ -83,7 +83,7 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
       position={[BELL_RECEIVER.x,BELL_RECEIVER.y,BELL_RECEIVER.z]} scale={[RECEIVER_RADIUS,RECEIVER_HEIGHT,RECEIVER_RADIUS]}/>
     <mesh name="enclosure-floor-light" geometry={resources.box} material={resources.neutral}
       position={[2.45,.07,18.1]} scale={[2.7,.045,.14]}/>
-    <group name="attendance-display" position={[-4.74,2.35,10.6]} rotation={[0,Math.PI/2,0]}>
+    <group name="attendance-display" position={[-4.74,2.35,10.6]} rotation={[0,Math.PI/2,0]} scale={[.72,.72,.72]}>
       {digit(0,-.38)}
       <group ref={attendance2}>{digit(2,.25)}</group>
       <group ref={attendance1} visible={false}>{digit(1,.25)}</group>

@@ -1,5 +1,9 @@
 # 第一章の公開準備と未完了ゲート
 
+05の人数表示は線分修正後も、安全な開始位置から製品と同じ縦FOV 65で見ると左右が切れていた。実sceneの表示groupを0.72倍にし、自然成功のcontroller記録から02/01/00の各状態を同じ開始位置と近接視点で描画した。6画像を開き、全数字が画面内で読めることを確認した。QA cameraは手動で表示へ向けており、製品の実旋回/HUD、native Canvas、iPhoneでの見え方は未確認。自然成功・復旧動画を再収録し、source hashと計測を更新した。詳細は `docs/qa-goal013/README.md`。
+
+表示寸法修正後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。source map付き公開用JSはiOS 1,576/Android 1,575 source・各10 assetで5エリア同梱・開発画面/probe除外を確認し、first-party各197 sourceの本文一致、Three 1 source/22参照のclass identity、iOS/Android/neutralの実行時循環0、Stage定義2件も通過した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。実機previewと正式なprivacy/support URLは引き続き公開ゲートの残件。
+
 05の人数表示で `0` の左下線が欠け、右下線が重複していたため実sceneを修正した。実controller記録から02→01→00の全frameの切替と線分を検査し、Software WebGLの近接画像3枚を開いた。再収録した自然成功・復旧動画のSHA-256は旧動画と同一で、記録のsource hashと計測を更新した。修正後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。公開用iOS/Android JSは1,576/1,575 source・各10 asset、5エリア同梱、開発画面/probe除外、first-party各197 source本文一致、Three class identity 22参照、循環0を確認した。近接画像は製品cameraや実端末の視認性を証明しない。`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持し、iPhone previewと正式なprivacy/support URLを待つ。
 
 第一章完了後の製品ホームからも、確認付きで「第一章をはじめから」を選べるようにした。Jest App hostでは、確認前の完了記録保持、入場時の原文backup、新runIdとreset世代の更新を確認。変更後の全109スイート/1,124テスト、通常iOS export、両OS公開用source-map検査、循環/定義検査は通過した。端末での完了後の再開始、実AsyncStorageのbackupと画面表示はpreviewで確認する。
