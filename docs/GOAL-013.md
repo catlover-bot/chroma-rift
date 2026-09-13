@@ -149,3 +149,5 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 さらに02の長さ/鉛直装置を実scene・画面付きで17経路、うち12の文字サイズ/画面レイアウトとして再抽出した。補助を開いたときの「探索へ戻る」を中間スクロール位置で24状態検査し、可視領域は最小103×48px。最小画面の2画像を開き、150読込sourceのhash、browser WebGLの解放、HUD矩形を `docs/qa-goal013/vault-large-text-report.json` に残した。この追補はQAツールのみの変更で製品ソース・依存に差分はない。実機のnative text/Yoga、VoiceOver、指スクロールは引き続き公開前の確認対象。
 
 最終画面ソース後の公開用iOS/Android exportへ専用のrelease構成検査を再実行し、5エリア同梱、開発画面/probe除外を両方で確認した。`expo install --check` と `npm ls --depth=0` は通過した一方、最新ローカルのnpm auditは通常/production依存のみの両方でmoderate 11、high/critical 0。SDKを大きく変える自動修正候補は適用せず、bundle・依存・監査のハッシュを `docs/qa-goal013/release-local-checks.json` に記録した。製品ソースは前回の110スイート/1,132テスト成功時から変えていない。native preview、正式privacy/support URL、ストア申告は未完了。
+
+Stage Kit補完ブランチの操作時刻修正 `65dc944` を製品ブランチと照合した。製品のgallery/theatre通常操作は既に直前の受理時刻を下限にしており、明示的に渡された古い時刻はstale packetとして拒否する設計である。映写室に実world・camera・readyな灯り装置を使う逆行テストを追加し、通常操作の受理と明示的な古いpacketの拒否を両方確認した。対応するギャラリー既存テストと合わせた対象2スイート26件が通過。全体の `npm run check` もlint・型検査・110スイート/1,133テスト・iOS通常export（1,573 modules、10 assets）を通過した。製品runtime/依存は変更していない。native previewと正式privacy/support URLは未確認で、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

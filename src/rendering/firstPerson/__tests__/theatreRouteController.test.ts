@@ -9,7 +9,7 @@ import { THEATRE_CHAPTER_ID,THEATRE_CHECKPOINTS,THEATRE_CURTAIN_FIXTURE,THEATRE_
 import { lightHandlePoint } from '../../../domain/theatre/lightGate';
 import { beginStick,endPointer } from '../touchInput';
 import { createCanvasLifecycle } from '../canvasLifecycle';
-import { theatreAction,theatreCurtainAcquisition,theatreDeviceAcquisition,theatrePointer } from '../theatreController';
+import { dispatchTheatreController,theatreAction,theatreCommand,theatreCurtainAcquisition,theatreDeviceAcquisition,theatrePointer } from '../theatreController';
 import { advanceController,commandController,createController,interactController,syncCamera,worldForController,type RuntimeController } from '../runtimeController';
 const WIDTH=390,HEIGHT=844;
 function setup(intensity:'standard'|'subdued',muted:boolean,checkpoint?:CheckpointState) {
@@ -72,6 +72,20 @@ function crank(c:RuntimeController,camera:THREE.PerspectiveCamera) {
   expect(c.runtime.theatre!.projectorSeconds).toBe(5);expect(c.runtime.theatre!.projectorNoise!.position).toEqual(THEATRE_PROJECTOR.position);expect(c.runtime.theatre!.projectorArmed).toBe(false);expect(interactController(c,'theatre-projector')).toBe(false);
 }
 describe('theatre full routes through shared controller and actual world',()=>{
+  it('accepts a ready device after the host clock moves backward, while rejecting an explicitly stale packet',()=>{
+    const run=setup('standard',true),{controller:c,camera}=run;
+    lookAt(c,camera,THEATRE_LIGHT_FIXTURE.center);
+    expect(theatreDeviceAcquisition(c,'light').kind).toBe('ready');
+    const last=performance.now()+1000;
+    c.runtime={...c.runtime,theatre:{...c.runtime.theatre!,lastNowMs:last}};
+    expect(interactController(c,'theatre-light')).toBe(true);
+    expect(c.runtime.theatre!.mode).toBe('light');
+    const stale=theatreCommand(c,{type:'leave'},last-1);
+    expect(stale.nowMs).toBe(last-1);
+    expect(dispatchTheatreController(c,stale)).toBe(false);
+    expect(c.runtime.theatre!.mode).toBe('light');
+    run.lifecycle.close();
+  });
   it('a naturally reached hidden safe bay decoy changes the same-start actor evidence and gives an actual alternate exit',()=>{
     const run=setup('standard',true),{controller:c,camera}=run,phases=new Set<string>();solve(c,camera);
     for(const[x,z]of[[2,-2],[2,3],[2,4.6],[-2.6,6],[-2.6,10.5],[-2.6,14.75],[-5.37,14.75],[-5.37,14.38]])walk(c,camera,x!,z!,phases);
