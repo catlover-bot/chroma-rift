@@ -1,0 +1,75 @@
+{
+  "method": "Retained sample archive, offline scene-replay video and contact sheet from one App-host route. FFprobe metadata and all video frames decoded locally. Native Canvas/HUD/audio and mirror render target are not recorded.",
+  "video": {
+    "file": "chapter-one-app-scene-replay.mp4",
+    "sha256": "889c9eeb089b3a183373da7bf4e1a4e6a3c3828e8f96ee5ff05ce7dd92e23f06",
+    "bytes": 776045,
+    "width": 390,
+    "height": 844,
+    "fps": 5,
+    "frames": 740,
+    "duration": 148,
+    "fullDecode": true
+  },
+  "contact": {
+    "file": "chapter-one-app-scene-replay-contact.png",
+    "sha256": "029ce9a30c1782b3084303336c60853eb032013921f4ba2db65ab1fdc1603014",
+    "bytes": 179057
+  },
+  "reportFile": "app-scene-replay-report.json",
+  "reportSha256": "5b737383d110966c30dc72e6e9dec3553772979e49437534348b34b9bc2efb3d",
+  "runtimeArchive": {
+    "file": "app-scene-replay-runtimes.json.gz",
+    "sha256": "73ed83035c0cff8e8be452d4a24d2ea954ad956c92d19c3533a4458c62ba5d20",
+    "uncompressedSha256": "eca0146786ce37141b800b7ceb8ee945c61f92c63c5a7e53e71de7b8fda93c82",
+    "uncompressedBytes": 5241298,
+    "samples": 740
+  },
+  "milestones": [
+    {
+      "id": "04-key-taken",
+      "frame": 569,
+      "tick": 48
+    },
+    {
+      "id": "04-ratchet-1",
+      "frame": 613,
+      "tick": 576
+    },
+    {
+      "id": "04-ratchet-3",
+      "frame": 633,
+      "tick": 816
+    },
+    {
+      "id": "04-cleared",
+      "frame": 674,
+      "tick": 1302
+    },
+    {
+      "id": "05-key-installed",
+      "frame": 678,
+      "tick": 36
+    },
+    {
+      "id": "05-procedure-read",
+      "frame": 680,
+      "tick": 60
+    },
+    {
+      "id": "05-isolated",
+      "frame": 714,
+      "tick": 468
+    },
+    {
+      "id": "05-stopped",
+      "frame": 717,
+      "tick": 504
+    },
+    {
+      "id": "05-outdoor-exited",
+      "frame": 739,
+      "tick": 763
+    }
+  ]
+}

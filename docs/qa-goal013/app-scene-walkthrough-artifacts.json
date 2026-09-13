@@ -1,7 +1,7 @@
 {
   "method": "11 reviewed App-controller scene/HUD stills; PNG re-encoded losslessly with FFmpeg for portable viewing. A separate sampled domain-motion log covers intervening controller updates; no intervening rendered frames or continuous route video.",
-  "reportSha256": "ac137d247853b6f71810b676a5f674f79a6b438773d234d0db3b920c2a09e97a",
-  "motionTraceSha256": "5ca8e75b21dc0b264274fdc9f65822bd0b997a9693446f01beb2d0a1d47c199f",
+  "reportSha256": "ba291b9d2bc754b728ccb6aee364b2d63ed95c7dccca62f56af1f821dac2badf",
+  "motionTraceSha256": "28874ab18b92b5f2a8d6d3c68a1668322b91b55124a21456d7f6069288ea1043",
   "contactSha256": "e0fe499531865ee7883ffdb1b1eab0b59b7666286faa2adaade8722e90f31f16",
   "webglSha256": "c7e2006c7471cc062d9d1ecf618f601e28098e5cc0dd894c036c235993c19c1b",
   "motionTrace": {

@@ -1,5 +1,11 @@
 # Goal 013 動的QAの記録
 
+## 2026-09-13 同一App経路の途中状態を5エリアの実sceneへ再描画
+
+[第一章01→05の148秒・740 frame動画](chapter-one-app-scene-replay.mp4)、[12秒刻みの接触シート](chapter-one-app-scene-replay-contact.png)、[5エリア・9節目・WebGL計測のreport](app-scene-replay-report.json)、[動画・圧縮状態ログのhash索引](app-scene-replay-artifacts.json)を追加した。`node scripts/qa-chapter-app-replay.cjs` は一つの実 `App` mountで5つのcontrollerを自然経路で進め、合計8,794回のsimulation更新から12回ごと＋入口/完了のruntimeを深くコピーする。これをエリア順のまま実 `ChapterScene` とcameraへ再投入し、静的進行が変わる33箇所でsceneを組み直してSoftware WebGLで5fps描画した。各エリアの画像数は01が386、02が97、03が82、04が110、05が65。04の鍵取得→歯止め1→3→出口、05の鍵設置→手順→隔離→停止→屋外完了は同じApp経路の状態として順序検査した。
+
+これは**同一App経路を材料にしたサンプル状態のオフラインscene再描画**であり、Appのnative Canvas/HUD/音や実指による連続録画ではない。字幕はQA合成。04の平面鏡のlive render targetはObjectLoaderへ移らないため、この動画の鏡像は合格証拠にせず、別の[04実反射動画](mirror-natural.mp4)で確認する。App側のAsyncStorage、Canvas ready、音は隔離したmock。最大138 draw calls／9,866 triangles、終了後geometry/texture 0、browser error 0で、iPhone FPS/発熱の数値ではない。MP4の740 frameは全てデコードした。接触シートと5エリア入口、04の鍵・巻上げ、05の隔離・停止・屋外付近の抽出frameを原寸で開いたが、全148秒を人が連続視聴した記録ではない。採取元の740状態は[圧縮JSON](app-scene-replay-runtimes.json.gz)に保持し、非圧縮SHA-256も索引へ残した。
+
 ## 2026-09-13 第一章ホームの文字拡大と番号列
 
 [ホーム15条件の測定report](home-layout-report.json)と320×568/fontScale 2の12画像を追加した。実 `ChapterOneHomeScreen` に新規/旧記録引き継ぎ、進行中、完了、5エリア振り返り、全発見のUI状態を与え、390×844/1.5、430×932/1でも各ボタンへのスクロール到達を測った。最初の画像では固定幅36のエリア番号が「0」「3」のように2行へ割れたため、製品の番号列を `minWidth` に変更した。修正後は5つの番号が全条件で1行、横はみ出し0、全ボタンの表示高さは最低48px。第二章の予定/未プレイ案内と、各状態の主ボタンcallbackも実componentから確認した。
