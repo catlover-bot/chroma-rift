@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-09-13T09:18:53.841Z",
+  "observedAt": "2026-09-13T09:31:19.897Z",
   "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
   "productCommit": "1a0d612",
   "scope": "Local source-map JS exports and QA only; no signed binary or iPhone execution.",
@@ -67,8 +67,8 @@
   "qa": {
     "stageSceneHudImages": 24,
     "stageSceneHudSourceHashes": 157,
-    "naturalVideoSha256": "0f7fdd3a1585380b559ebd6c3f457e4f7fdf36e2fe61b711e13fd3fe749d1c28",
-    "recoveryVideoSha256": "cc26efc2806dd1f0baf6998b8311823bc3f13410fb23dc75aa35d1ba3cb5bf23",
+    "naturalVideoSha256": "6e2afb012cb66c092ff666565d9b5b04906d211948efae21b6f4ff1eebea7ad9",
+    "recoveryVideoSha256": "50dba3edfe1f89668c3d39eb965349b85cad3898124c6fefaba9d512f648d250",
     "naturalSourceHashes": 112,
     "recoverySourceHashes": 112,
     "stageSceneHudReportSha256": "744a14900b71acd2b145aac79f052b2e2dca664be49b4decd9bdbd7048f578c2",
@@ -78,7 +78,7 @@
       "mirror-corridor-v1",
       "departure-control-v1"
     ],
-    "boundary": "Area-05 outdoor-exit keeps the walked runtime pose. Cold checkpoint remains canonical OUTDOOR. Same-App sampled motion log and 11 scene/HUD stills were recaptured; local area-05 videos and reports were re-extracted.",
+    "boundary": "Area-05 outdoor-exit keeps the walked runtime pose; cold checkpoint remains canonical OUTDOOR. Both current area-05 videos record the accepted exit followed by nine static QA frames with the real completion feedback. The QA camera and HUD are browser approximations; the 01→05 App route remains a sampled domain log plus 11 stills.",
     "appSceneWalkthrough": {
       "host": "one actual App mount; five natural controller routes; memory AsyncStorage and stubbed native Canvas/audio",
       "snapshots": 11,
@@ -101,6 +101,11 @@
       "afterUnmount": 0,
       "continuousVideo": false
     },
-    "attendanceReportSha256": "86bd764b531c4e22de20b8cd084315b01f30c7397de76af8c093af04a871a8f5"
+    "attendanceReportSha256": "ce1aeb03abf17a03642b5de9dd4ba561abb6b39f34ef78de92d60ab5e5dca285",
+    "naturalVideoFrames": 196,
+    "recoveryVideoFrames": 378,
+    "completionCaptionHoldFrames": 9,
+    "naturalReportSha256": "7b1914b18dc9fa96257c0bf74c5cca5a3127643100449527c644a21e66401130",
+    "recoveryReportSha256": "708f623e684a659a846626eba5f0ae3ec8307dc0f7c81fcc3e7903f839870173"
   }
 }

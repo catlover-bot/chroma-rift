@@ -1,6 +1,6 @@
 {
   "mode": "recovery",
-  "frames": 369,
+  "frames": 378,
   "simulationSeconds": 30.316666666666666,
   "events": [
     {
@@ -303,9 +303,9 @@
   ],
   "simulationCpu": {
     "samples": 1819,
-    "p50Ms": 0.03,
-    "p95Ms": 0.104,
-    "maxMs": 2.472
+    "p50Ms": 0.031,
+    "p95Ms": 0.111,
+    "maxMs": 2.99
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -422,7 +422,9 @@
         "y": 2.9,
         "z": 18.1
       }
-    }
+    },
+    "completionFeedback": "在館反応 00。閉館処理 完了。",
+    "captionHoldFrames": 9
   },
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
@@ -540,11 +542,11 @@
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-recovery/departure-recovery.mp4",
-    "bytes": 227278,
-    "sha256": "cc26efc2806dd1f0baf6998b8311823bc3f13410fb23dc75aa35d1ba3cb5bf23",
+    "bytes": 230761,
+    "sha256": "50dba3edfe1f89668c3d39eb965349b85cad3898124c6fefaba9d512f648d250",
     "fps": 10,
-    "durationSeconds": 36.9
+    "durationSeconds": 37.8
   },
-  "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. Early closure refusal, manual reopening, second bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "91c8b0b18fbf7eb502617926fac1c0761baca2675d39a8d6d046c81f41aca6cd"
+  "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. Early closure refusal, manual reopening, second bell and final outdoor exit. Nine duplicate post-command QA frames hold actual completion feedback without advancing simulation. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
+  "toolHash": "cde493d84882d750bbc0ff29ea157b082d75fb29f2879d8c1b2a3689b0767cd0"
 }

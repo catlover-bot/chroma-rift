@@ -65,7 +65,7 @@ async function extract() {
     if (events.length === 0 || tick.count % 6 === 0) capture();
     tick.count += 1;
   }; tick.count = 0;
-  const capture = () => {
+  const capture = caption => {
     scene.updateMatrixWorld(true);
     const receiverBottom = receiverMesh.position.y - receiverMesh.scale.y / 2;
     minimumReceiverBottom = Math.min(minimumReceiverBottom, receiverBottom);
@@ -73,7 +73,7 @@ async function extract() {
       throw Error(`Bell receiver obscures the actor body envelope: ${receiverBottom}`);
     const objects = [];
     scene.traverse(object => objects.push({ uuid: object.uuid, matrix: object.matrix.toArray(), visible: object.visible }));
-    frames.push({ objects, event: events.at(-1)?.label ?? '退館制御室',
+    frames.push({ objects, event: caption ?? events.at(-1)?.label ?? '退館制御室',
       actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
   };
   const turn = (yaw, pitch = 0) => {
@@ -98,6 +98,7 @@ async function extract() {
       throw Error(`Equipment ray/command rejected: ${id} ${controller.feedbackMessage}`);
     events.push({ at: tick.count / 60, id, label, feedback: controller.feedbackMessage,
       actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
+    RC.syncCamera(controller, camera);
     runtime.current = controller.runtime;
     callbacks.forEach(callback => callback({}, 0)); capture();
   };
@@ -189,14 +190,23 @@ async function extract() {
     actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
   lookAtActor(); for (let i = 0; i < 30; i += 1) tick();
   press('departure-staff-door', '職員出口を開ける', Math.PI, -.07);
-  walkTo(22.45); press('departure-outdoor', '屋外へ出る', Math.PI, -.07);
+  walkTo(22.45);
+  const outdoorApproach = { ...controller.runtime.pose.position };
+  press('departure-outdoor', '屋外へ出る', Math.PI, -.07);
   if (!controller.runtime.progress.cleared || !state().stopped) throw Error('Natural outdoor route did not complete');
+  if (Math.hypot(...['x', 'y', 'z'].map(axis => controller.runtime.pose.position[axis] - outdoorApproach[axis])) > 1e-9)
+    throw Error('Outdoor exit moved the live camera away from the walked position');
+  const completionFeedback = controller.feedbackMessage;
+  if (!completionFeedback.includes('在館反応 00') || !completionFeedback.includes('閉館処理 完了'))
+    throw Error('Outdoor completion feedback is missing');
+  for (let i = 0; i < 9; i += 1) capture(completionFeedback);
   fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
   await mounted.unmount(); resources.dispose(); bridge.verify();
   return { mode: recovery ? 'recovery' : 'natural', frames: frames.length, simulationSeconds: tick.count / 60, events,
     simulationCpu: timingSummary(simulationCpuMs),
     visualClearance: { minimumReceiverBottom, actorBodyHeight: ACTOR_MODEL_BOUNDS.height },
-    final: { pose: controller.runtime.pose, cleared: controller.runtime.progress.cleared, actor: state().actor },
+    final: { pose: controller.runtime.pose, cleared: controller.runtime.progress.cleared, actor: state().actor,
+      completionFeedback, captionHoldFrames: 9 },
     sourceHashes: Object.fromEntries(bridge.hashes) };
 }
 
@@ -258,7 +268,7 @@ async function render(report) {
 async function main() {
   const report = await extract();
   await render(report);
-  report.boundary = `Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. ${recovery ? 'Early closure refusal, manual reopening, second bell and final outdoor exit.' : 'First bell and final outdoor exit.'} Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.`;
+  report.boundary = `Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. ${recovery ? 'Early closure refusal, manual reopening, second bell and final outdoor exit.' : 'First bell and final outdoor exit.'} Nine duplicate post-command QA frames hold actual completion feedback without advancing simulation. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.`;
   report.toolHash = sha256(fs.readFileSync(__filename));
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ frames: report.frames, duration: report.simulationSeconds, video: report.video }));

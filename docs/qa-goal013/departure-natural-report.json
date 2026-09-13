@@ -1,6 +1,6 @@
 {
   "mode": "natural",
-  "frames": 187,
+  "frames": 196,
   "simulationSeconds": 13.95,
   "events": [
     {
@@ -178,9 +178,9 @@
   ],
   "simulationCpu": {
     "samples": 837,
-    "p50Ms": 0.038,
-    "p95Ms": 0.188,
-    "maxMs": 1.729
+    "p50Ms": 0.037,
+    "p95Ms": 0.146,
+    "maxMs": 2.356
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -297,7 +297,9 @@
         "y": 2.9,
         "z": 18.1
       }
-    }
+    },
+    "completionFeedback": "在館反応 00。閉館処理 完了。",
+    "captionHoldFrames": 9
   },
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
@@ -415,11 +417,11 @@
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-natural/departure-natural.mp4",
-    "bytes": 123918,
-    "sha256": "0f7fdd3a1585380b559ebd6c3f457e4f7fdf36e2fe61b711e13fd3fe749d1c28",
+    "bytes": 127465,
+    "sha256": "6e2afb012cb66c092ff666565d9b5b04906d211948efae21b6f4ff1eebea7ad9",
     "fps": 10,
-    "durationSeconds": 18.7
+    "durationSeconds": 19.6
   },
-  "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. First bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "91c8b0b18fbf7eb502617926fac1c0761baca2675d39a8d6d046c81f41aca6cd"
+  "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. First bell and final outdoor exit. Nine duplicate post-command QA frames hold actual completion feedback without advancing simulation. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
+  "toolHash": "cde493d84882d750bbc0ff29ea157b082d75fb29f2879d8c1b2a3689b0767cd0"
 }
