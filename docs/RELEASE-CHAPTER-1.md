@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+04の鏡像と実身体を同一simulation frameで並べたSoftware WebGLのQA動画を `docs/qa-goal013/mirror-identity.mp4` に追加した。右側は固定QA cameraであり、製品の一人称表示やiPhoneの反射確認ではない。native previewで鏡像・実体・操作を確認するゲートは未完了のまま。
+
 この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,124テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成

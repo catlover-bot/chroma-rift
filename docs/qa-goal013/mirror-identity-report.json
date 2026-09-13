@@ -1,0 +1,61 @@
+{
+  "method": "Two QA camera views of the same serialized StageScene and controller frame, rendered in one Software WebGL scene. The right view is not the product camera or a second simulation.",
+  "input": {
+    "originalToolSha256": "74b1bec80d4524ba2e14ac8e5aabd7a8a6c1449ff7604852bc958b838118d54c",
+    "originalCaptureReportSha256": "b4229215fad16a63774125d33510b874f8d81345581db4d14a6d89376e03f47e",
+    "originalVideoSha256": "fe8d06c7b884fdcae58cff15a2b0dae92792a07ea28d1c86f4ed96d0b426ed1f",
+    "sceneSha256": "9aeb6dc9ac917e7ab7c776a444cb8f3a6d7f387ef1278d518e0b0e86e100a549",
+    "animationSha256": "059b6c5f5f7b6cd9c670b1fb9ec7076978903360b30cc9dd7aa42197684ea705",
+    "currentSourceCount": 112,
+    "currentSourceManifestSha256": "5b4f22a4ffe9b606daf3e44d18318aed337e7ed1559c18d981e2cae55a25feeb"
+  },
+  "actorUuid": "ab0e0881-625b-4b83-9c0f-19ccc67542ac",
+  "mirrorUuid": "9b3b6864-7230-433a-85c3-3bdd7925bd5b",
+  "observer": {
+    "fovDegrees": 45,
+    "position": [
+      0,
+      1.6,
+      4
+    ],
+    "lookAt": [
+      -0.5,
+      1.6,
+      16
+    ]
+  },
+  "simulationFrames": [
+    98,
+    140
+  ],
+  "capturedFrames": 43,
+  "fps": 10,
+  "anchor": {
+    "frame": 100,
+    "actor": {
+      "x": -0.8250137342877712,
+      "y": 0,
+      "z": 15.204397180721003
+    },
+    "playerReflection": true
+  },
+  "reflectedFrames": 40,
+  "disposed": {
+    "geometries": 0,
+    "textures": 0,
+    "renderers": 1
+  },
+  "browserErrors": [],
+  "output": {
+    "video": {
+      "bytes": 70856,
+      "sha256": "6a7c5f9eb7fbdf6d1c72e46b59cd4d4ff04c49c81c58c69434970a2c67ef7956"
+    },
+    "still": {
+      "bytes": 33061,
+      "sha256": "d6f13966938ddec0dc698411de44c8d8462c3527cbbee1aebc91278140414469"
+    }
+  },
+  "toolSha256": "2b7a67992f01fdb086cef7d3c3e9732187c4f94184f786bf032e8f1f13e3d119",
+  "limits": "Software WebGL and CSS QA labels; observer camera adds an extra main render only for comparison. Not native Canvas, product HUD, iPhone visibility, frame-rate, audio, or a perceptual proof."
+}

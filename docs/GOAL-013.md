@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+04の鏡像と実身体の同時確認を補うため、実controller/StageSceneの既存の控えめ経路から同一simulation frameを取り、player cameraと固定QA cameraを左右に描いた4.3秒・43枚のSoftware WebGL動画を追加した。一つの巡回体groupの座標とcontroller記録が全frameで一致し、frame 100で鏡内の身体と実身体を左右に開いて確認した。QA合成は製品の追加描画や一人称画面ではない。全frameデコード、source/tool/video hash、反射40枚、資源解放/error 0を確認。再現手順・SHA-256・範囲は `docs/qa-goal013/README.md`。製品ソースは前の109スイート/1,124テスト・公開用JS検査から変更していない。実機の鏡像と操作はなお未確認で、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
 開始点は `/home/mhirotaka/workspace/chroma-rift-goal012` の `feat/goal-012-stage-kit`、HEAD `478b376ea9a954974ad2f08ab5f09d929bd35f06`、clean。`feat/goal-013-chapter-one-product` を同じworktreeに作成した。Goal 012の補完ブランチ `feat/goal-012-completion` にあった比較動画・検証スクリプト・記録は、重複しない差分として `1fb7a94` に取り込んだ。元の `/home/mhirotaka/workspace/chroma-rift` は `5c04d98` の別worktreeのまま。Node `v24.20.0`、npm `11.19.0`、実 `node_modules` を確認した。Goal 011の鏡廊は基準HEADに存在しない。
 
 基準 `npm run check` は95スイート・1,046テスト、lint、typecheck、iOS exportを通過。実行時循環は iOS/Android/neutralでそれぞれ194 production modules、584 runtime edges、0 SCC/0 errors。Stage Kit定義検査も通過。実行中に新しい未参照のcampaignファイルを追加したが、Jestの基準発見件数は95/1,046、MetroのApp到達コードは基準のままである。後続の完全回帰は別に実施する。
