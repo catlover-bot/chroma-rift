@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+公開情報の次の準備として、実際の第一章ホーム・設定・5エリア定義とAppleの現行項目を照合し、[App Store掲載・審査情報の下書き](CHAPTER-1-STORE-METADATA-DRAFT.md) を作成した。名前、サブタイトル、説明、キーワード、審査Notesの長さは各上限内。第二章をプレイ可能と書かず、未検証の「完全オフライン」主張を掲載文から除いた。スクリーンショットは配布候補iPhoneバイナリから撮る手順のみで、実素材は0枚。年齢質問票の根拠は整理したが数値は未確定。正式URL、オーナーの掲載承認、native preview、App Store申告は依然として未完了。
+
 最新の公開情報監査：製品ソースの保存・通信・権限を確認し、未承認の [プライバシー・サポート文案](CHAPTER-1-PRIVACY-SUPPORT-DRAFT.md) を作成した。`expo-file-system` 由来でアプリ未使用のAndroid外部ストレージ読書権限を `app.json` で除外し、Expo introspectionの `tools:node="remove"` を確認。これはAndroidネイティブ設定の変更で、新しいAndroidバイナリでのみ反映される。iOS設定、本編進行、保存schema、依存は変更していない。変更後の `npm run check` はlint・型検査・110スイート/1,132テスト・iOS export成功、Expo Doctor 21/21、`expo install --check` 通過。正式URLと連絡先、SDK/実バイナリの取扱い、native preview、App Store申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` のまま。
 
 その後、04・05のStage IDを共通画面に直書きしたメモ接続を、第一章エリア台帳から引く対応へ変更した。怖さ設定はStage Moduleのactor能力から決め、メモボタンは実際にメモ画面があるエリアだけに出す。hidden probeで両ボタンを出さない画面試験も追加した。変更後の `npm run check` はlint・型検査・110スイート全通過・iOS通常export（1,571 modules、10 assets）。循環検査はiOS/Android/neutral各225 modules・694 edges・0 SCC/0 errors。source map付き公開用JSはiOS 1,578/Android 1,577 source・各10 asset、5エリア同梱・開発画面/probe除外、first-party各199 source本文一致、iOSのThree 1 source/22参照のclass identity一致。実端末と正式な公開URLのゲートは変わらない。
