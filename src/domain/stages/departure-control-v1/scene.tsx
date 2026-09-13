@@ -1,14 +1,15 @@
 /* eslint-disable react/no-unknown-property -- R3F Three.js intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
-import { MeshBasicMaterial, type Group, type Mesh } from 'three';
+import { DoubleSide, MeshBasicMaterial, type Group, type Mesh } from 'three';
 import type { ChapterRuntime, WorldGeometry } from '../../firstPerson/types';
+import { isolationKeyGeometry } from '../isolationKeyGeometry';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
 import type { SceneResources } from '../../../rendering/firstPerson/resources';
 import { BELL_RECEIVER, CONTAINMENT_DOOR_Z, STAFF_DOOR_Z, stageWorld } from './definition';
 import { isStageSession } from './session';
 
-const RECEIVER_RADIUS = .24, RECEIVER_HEIGHT = .16;
+const RECEIVER_RADIUS = .24, RECEIVER_HEIGHT = .16, KEY_INSERT_SECONDS = .2;
 
 /** Uses the same Canvas and actor body as the earlier areas. The remote bell,
  * observation window, two physical doors and short outdoor threshold remain
@@ -16,17 +17,27 @@ const RECEIVER_RADIUS = .24, RECEIVER_HEIGHT = .16;
 export function StageScene({ world, resources, runtime, onFrameError }: { world: WorldGeometry<string>;
   resources: SceneResources; runtime: RefObject<ChapterRuntime>; onFrameError?: ((error: unknown) => void) | undefined }) {
   const containmentDoor = useRef<Mesh>(null), staffDoor = useRef<Mesh>(null), receiver = useRef<Mesh>(null);
-  const key = useRef<Mesh>(null), attendance2 = useRef<Group>(null), attendance1 = useRef<Group>(null), attendance0 = useRef<Group>(null);
+  const key = useRef<Group>(null), attendance2 = useRef<Group>(null), attendance1 = useRef<Group>(null), attendance0 = useRef<Group>(null);
+  const keyVisual = useRef<{ wasInstalled: boolean | null; elapsed: number }>({ wasInstalled: null, elapsed: 0 });
   const devices = useRef<Record<string, Mesh | null>>({});
   const glass = useMemo(() => new MeshBasicMaterial({ color: '#9ac5cc', transparent: true, opacity: .2, depthWrite: false }), []);
-  useEffect(() => () => glass.dispose(), [glass]);
-  useFrame(() => {
+  const keyShape = useMemo(() => isolationKeyGeometry(), []);
+  const keyMaterial = useMemo(() => new MeshBasicMaterial({ color: '#edf3e5', side: DoubleSide }), []);
+  useEffect(() => () => { glass.dispose(); keyShape.dispose(); keyMaterial.dispose(); }, [glass, keyShape, keyMaterial]);
+  useFrame((_, delta) => {
     try {
       const raw = runtime.current.stageSession?.value;
       if (!isStageSession(raw)) return;
       if (containmentDoor.current) containmentDoor.current.position.y = 3.5 * (1 - raw.doorProgress) + 1.75;
       if (staffDoor.current) staffDoor.current.position.y = (raw.staffDoorOpened ? 3.6 : 0) + 1.75;
-      if (key.current) key.current.visible = raw.keyAvailable && !raw.keyInstalled;
+      if (key.current) {
+        const visual = keyVisual.current;
+        if (visual.wasInstalled === null) { visual.wasInstalled = raw.keyInstalled; visual.elapsed = raw.keyInstalled ? KEY_INSERT_SECONDS : 0; }
+        else if (visual.wasInstalled !== raw.keyInstalled) { visual.wasInstalled = raw.keyInstalled; visual.elapsed = 0; }
+        if (raw.keyInstalled && !runtime.current.paused) visual.elapsed = Math.min(KEY_INSERT_SECONDS, visual.elapsed + Math.max(0, Math.min(delta, .05)));
+        key.current.visible = raw.keyInstalled;
+        key.current.position.x = -4.35 - .35 * (visual.elapsed / KEY_INSERT_SECONDS);
+      }
       if (receiver.current) {
         const pulse = raw.bellCooldown > 5.5 ? 1.35 : 1;
         receiver.current.scale.set(RECEIVER_RADIUS * pulse, RECEIVER_HEIGHT * pulse, RECEIVER_RADIUS * pulse);
@@ -64,8 +75,10 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     {world.interactables.map(t => <mesh key={t.id} name={t.id}
       ref={mesh => { devices.current[t.id] = mesh; }} geometry={resources.box} material={resources.device}
       position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.28,.1]}/>)}
-    <mesh name="installed-key" ref={key} geometry={resources.box} material={resources.neutral}
-      position={[-4.7,1.55,9]} scale={[.12,.35,.09]}/>
+    <group name="installed-key" ref={key} visible={false} position={[-4.7,1.55,9]} rotation={[0,Math.PI/2,0]}>
+      <mesh name="installed-key-silhouette" geometry={keyShape} material={keyMaterial}/>
+      <mesh name="installed-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
+    </group>
     <mesh name="containment-bell-receiver" ref={receiver} geometry={resources.cylinder} material={resources.neutral}
       position={[BELL_RECEIVER.x,BELL_RECEIVER.y,BELL_RECEIVER.z]} scale={[RECEIVER_RADIUS,RECEIVER_HEIGHT,RECEIVER_RADIUS]}/>
     <mesh name="enclosure-floor-light" geometry={resources.box} material={resources.neutral}

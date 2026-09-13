@@ -71,3 +71,7 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 動的QAの未記録項目だったCPU時間を、04の鏡pass込みの実controller/sceneと、05の自然成功・開け直し復旧の両経路へ追加した。Nodeのsimulation/callbackとSwiftShaderブラウザーのJS描画投入を別々に測り、p50/p95/max、サンプル数、測定に含まないscreenshot・RAF・native presentation/GPU完了を `docs/qa-goal013/README.md` と各reportに記録した。3動画のhashはbyte一致で、経路内容は変わらない。これをiPhoneのframe timeや発熱の証拠とはしない。
 
 04の資源所有を10回のnative Canvas再入場で追加検査した。実R3F reconcilerとsceneを使い、各入場で反射target、鏡material、横顔/鍵形geometryと鍵materialのdispose一回、renderer一回、R3F root数の復帰、旧controller停止を確認した。端末GLだけは試験代替なので、実GPUメモリとiPhoneの連続再入場は残件。追加後の `npm run check` はlint・型検査・109スイート/1,123テスト・iOS通常exportを通過した。製品ソースは先のiOS/Android source map付きexportから変えていない。
+
+04の鍵は取得した瞬間に消えるだけだったため、同じ輪郭を0.3秒で台板から浮かせてから非表示にした。05では設置前に鍵形を隠し、実command受理後に04と共通のShapeGeometryで作った鍵を0.2秒かけて制御盤へ差し込み、そのまま残す。保存済みの `keyTaken` / `keyInstalled` とcold復元時の表示は従来の状態に従う。単独の実controller/scene動画で04の取得前・移動中・取得後、05の設置前・挿入中・設置後を抽出し、QA scriptで可視bitと座標を検査した。04は311枚・simulation28.28秒、05自然成功は187枚・13.95秒、開け直し復旧は369枚・30.32秒。映像・CPU計測・source hashは `docs/qa-goal013/README.md` と各reportを参照。これらはSoftware WebGLの映像で、native端末での鍵の見え方は未確認。
+
+この鍵表示修正後の `npm run check` はlint・型検査・109スイート/1,123テスト・iOS通常export（1,569 modules、10 assets）を通過した。3本のQA動画は全frameをデコードでき、report記載の動画・実行script・読み込んだsourceのSHA-256は現在のファイルと一致した。source map付きiOS/Android exportとnative端末確認はこの差分の後には再実行していない。release gateは `automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

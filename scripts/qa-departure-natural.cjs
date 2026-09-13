@@ -43,6 +43,8 @@ async function extract() {
   mounted.objects.forEach(object => scene.add(object));
   const receiverMesh = scene.getObjectByName('containment-bell-receiver');
   if (!receiverMesh) throw Error('Containment bell receiver is missing from the scene');
+  const installedKey = scene.getObjectByName('installed-key');
+  if (!installedKey) throw Error('Area 05 has no physical isolation key');
   let minimumReceiverBottom = Infinity;
   const callbacks = bridge.callbacks.splice(0), frames = [], events = [];
   const simulationCpuMs = [];
@@ -101,8 +103,16 @@ async function extract() {
   };
   const lookAtActor = () => lookAt(state().actor.motion.position);
   callbacks.forEach(callback => callback({}, 0)); scene.updateMatrixWorld(true);
+  if (installedKey.visible) throw Error('Isolation key appeared in the socket before installation');
   fs.writeFileSync(path.join(out, 'scene.json'), JSON.stringify(scene.toJSON())); capture();
   walkTo(9); press('departure-key', '隔離キーを差す');
+  if (!installedKey.visible || installedKey.position.x <= -4.7) throw Error('Accepted key installation has no visible insertion travel');
+  for (let i = 0; i < 12; i += 1) tick();
+  if (!installedKey.visible || Math.abs(installedKey.position.x + 4.7) > 1e-6)
+    throw Error('Installed key did not remain seated in the control panel');
+  events.push({ at: tick.count / 60, id: 'key-seated', label: '隔離キーが制御盤に収まる',
+    actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
+  capture();
   walkTo(10); press('departure-procedure', '点検手順を読む');
   if (recovery) {
     walkTo(12); turn(Math.PI / 2, -.16);
@@ -120,7 +130,7 @@ async function extract() {
     while (!(actorFullyContained(state().actor.motion.position) && doorSweepClear(state().actor.motion.position)) && wait < 780) {
       tick(); wait += 1;
     }
-    if (wait === 780) throw Error('Actor never entered the physical containment space');
+    if (wait === 780) throw Error(`Actor never entered the physical containment space: ${JSON.stringify({phase:state().actor.phase,position:state().actor.motion.position})}`);
     events.push({ at: tick.count / 60, id: 'observe-containment', label,
       actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });
   };

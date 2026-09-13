@@ -1,6 +1,6 @@
 {
-  "frames": 303,
-  "simulationSeconds": 27.583333333333332,
+  "frames": 311,
+  "simulationSeconds": 28.283333333333335,
   "events": [
     {
       "id": "mirror-corridor-figure",
@@ -35,155 +35,171 @@
       "ratchets": 0
     },
     {
+      "id": "key-lifted",
+      "label": "中央の部品を取り出した",
+      "at": 1.0666666666666667,
+      "pose": {
+        "x": 1.755327078777874e-16,
+        "y": 1.6,
+        "z": -1.0666666666666675
+      },
+      "actor": {
+        "x": 1.1709419809331019,
+        "y": 0,
+        "z": 14.639701938562208
+      },
+      "ratchets": 0
+    },
+    {
       "id": "practice",
       "label": "安全な練習レバーを保持",
-      "at": 5.3,
+      "at": 5.7,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 7.4616666666666855
       },
       "actor": {
-        "x": 0.09845201350050405,
+        "x": -0.18905775916184311,
         "y": 0,
-        "z": 15.647511436780663
+        "z": 15.664308076614292
       },
       "ratchets": 0
     },
     {
       "id": "practice-release",
       "label": "練習終了",
-      "at": 5.966666666666667,
+      "at": 6.366666666666666,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 7.4616666666666855
       },
       "actor": {
-        "x": 0.09845201350050405,
+        "x": -0.18905775916184311,
         "y": 0,
-        "z": 15.647511436780663
+        "z": 15.664308076614292
       },
       "ratchets": 0
     },
     {
       "id": "mirror-corridor-mirror",
       "label": "実鏡面を調べ、背後の通路を確認",
-      "at": 7.55,
+      "at": 7.95,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 10.865833333333308
       },
       "actor": {
-        "x": -0.684748332724309,
+        "x": -0.7435698284986596,
         "y": 0,
-        "z": 15.609357271876585
+        "z": 15.439533794203719
       },
       "ratchets": 0
     },
     {
       "id": "winch-one",
       "label": "鏡を見ながら一段目を巻き上げる",
-      "at": 7.55,
+      "at": 7.95,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 10.865833333333308
       },
       "actor": {
-        "x": -0.684748332724309,
+        "x": -0.7435698284986596,
         "y": 0,
-        "z": 15.609357271876585
+        "z": 15.439533794203719
       },
       "ratchets": 0
     },
     {
       "id": "release-one",
       "label": "一段目を残して離す",
-      "at": 9.55,
+      "at": 9.95,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 10.865833333333308
       },
       "actor": {
-        "x": -1.1195762121085433,
+        "x": -1.2138362050393787,
         "y": 0,
-        "z": 14.353966165376535
+        "z": 14.081828240384924
       },
       "ratchets": 1
     },
     {
       "id": "retreat",
       "label": "離れて巡回体を避ける",
-      "at": 10.633333333333333,
+      "at": 11.033333333333333,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 8.536666666666681
       },
       "actor": {
-        "x": -1.3748636929628892,
+        "x": -1.3465234229411165,
         "y": 0,
-        "z": 13.616925951857588
+        "z": 13.519269495521243
       },
       "ratchets": 1
     },
     {
       "id": "winch-rest",
       "label": "残りの歯止めを巻き上げる",
-      "at": 12.216666666666667,
+      "at": 12.616666666666667,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 10.865833333333308
       },
       "actor": {
-        "x": -1.3617997441678753,
+        "x": -1.2505728066947088,
         "y": 0,
-        "z": 12.780773439492
+        "z": 13.056971904852295
       },
       "ratchets": 1
     },
     {
       "id": "grate-open",
       "label": "格子が開いた",
-      "at": 16.216666666666665,
+      "at": 16.616666666666667,
       "pose": {
         "x": -1.4333333333333333,
         "y": 1.6,
         "z": 10.865833333333308
       },
       "actor": {
-        "x": -1.9957612909208378,
+        "x": -1.9965942854747405,
         "y": 0,
-        "z": 11.299287218144325
+        "z": 11.298356282589603
       },
       "ratchets": 3
     },
     {
       "id": "exit",
       "label": "制御室への前室に着く",
-      "at": 27.583333333333332,
+      "at": 28.283333333333335,
       "pose": {
         "x": -0.03583333333332951,
         "y": 1.6,
         "z": 21.93833333333312
       },
       "actor": {
-        "x": -0.603047445590702,
+        "x": -0.6029526597586995,
         "y": 0,
-        "z": 13.03881081464241
+        "z": 13.035941526565077
       },
       "ratchets": 3
     }
   ],
   "simulationCpu": {
-    "samples": 1655,
-    "p50Ms": 0.056,
-    "p95Ms": 0.176,
-    "maxMs": 2.217
+    "samples": 1697,
+    "p50Ms": 0.037,
+    "p95Ms": 0.15,
+    "maxMs": 2.452
   },
   "final": {
     "pose": {
@@ -307,16 +323,17 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/mirror-corridor-v1/scene.tsx": "f635862cb119fad3f0e01d1380d6fd68c8298d2cb25a72a7169aac2b7aec04ee",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "c9aefdc0a363b676106431b91784590b7117775822286bafc3caa08cea2d7ddb",
+    "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-natural/mirror-natural.mp4",
-    "bytes": 234620,
-    "sha256": "e70485c27561a6c66f3e61012666382cdad0e383866986a8bb4fcc48c5e3dac3",
+    "bytes": 246628,
+    "sha256": "69697ad9a717a9c5e05e338fe07f47b8c02cbfc1cb43396ce86b3d415efd0e10",
     "fps": 10
   },
   "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity.",
-  "toolHash": "4fe91ad155194f46989968ac8c95da272e3bd0591fad359f121649ad99f4aa19"
+  "toolHash": "7d1abea81699c03f3b1410687f870b75014c4064b59411c5fbe1e6a4db8dbe30"
 }

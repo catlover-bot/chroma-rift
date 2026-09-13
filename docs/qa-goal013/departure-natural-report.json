@@ -1,7 +1,7 @@
 {
   "mode": "natural",
-  "frames": 182,
-  "simulationSeconds": 13.516666666666667,
+  "frames": 187,
+  "simulationSeconds": 13.95,
   "events": [
     {
       "at": 0.43333333333333335,
@@ -20,7 +20,22 @@
       }
     },
     {
-      "at": 0.85,
+      "at": 0.6333333333333333,
+      "id": "key-seated",
+      "label": "隔離キーが制御盤に収まる",
+      "actor": {
+        "x": 2.15,
+        "y": 0,
+        "z": 12.4
+      },
+      "pose": {
+        "x": -3.75,
+        "y": 1.6,
+        "z": 9.06833333333335
+      }
+    },
+    {
+      "at": 1.05,
       "id": "departure-procedure",
       "label": "点検手順を読む",
       "feedback": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
@@ -36,14 +51,14 @@
       }
     },
     {
-      "at": 1.3,
+      "at": 1.5,
       "id": "departure-bell",
       "label": "収容区画の呼び鈴",
       "feedback": "収容区画の受鈴器が鳴った。",
       "actor": {
         "x": 2.15,
         "y": 0,
-        "z": 12.397766509328745
+        "z": 12.365868925309115
       },
       "pose": {
         "x": -3.75,
@@ -52,13 +67,13 @@
       }
     },
     {
-      "at": 5.683333333333334,
+      "at": 6.116666666666666,
       "id": "observe-containment",
       "label": "観察窓で巡回体の全身を確認",
       "actor": {
-        "x": 2.3238502405682824,
+        "x": 2.32507352115298,
         "y": 0,
-        "z": 15.702215389761461
+        "z": 15.7121839853052
       },
       "pose": {
         "x": -3.75,
@@ -67,14 +82,14 @@
       }
     },
     {
-      "at": 6.65,
+      "at": 7.083333333333333,
       "id": "departure-door",
       "label": "全身収容後に隔離扉を閉じる",
       "feedback": "隔離扉を閉じる。全身が区画内にいる。",
       "actor": {
-        "x": 2.374637266061646,
+        "x": 2.3755788040535477,
         "y": 0,
-        "z": 16.667546981960793
+        "z": 16.677530359025905
       },
       "pose": {
         "x": -3.75,
@@ -83,13 +98,13 @@
       }
     },
     {
-      "at": 6.65,
+      "at": 7.083333333333333,
       "id": "watch-latch",
       "label": "観察窓から隔離扉の閉鎖を確認",
       "actor": {
-        "x": 2.374637266061646,
+        "x": 2.3755788040535477,
         "y": 0,
-        "z": 16.667546981960793
+        "z": 16.677530359025905
       },
       "pose": {
         "x": -3.75,
@@ -98,7 +113,7 @@
       }
     },
     {
-      "at": 8.616666666666667,
+      "at": 9.05,
       "id": "departure-stop",
       "label": "閉館制御を停止",
       "feedback": "巡回体が止まった。在館反応 01。職員出口へ進む。",
@@ -114,7 +129,7 @@
       }
     },
     {
-      "at": 8.616666666666667,
+      "at": 9.05,
       "id": "watch-stopped",
       "label": "停止した巡回体を観察",
       "actor": {
@@ -129,7 +144,7 @@
       }
     },
     {
-      "at": 9.116666666666667,
+      "at": 9.55,
       "id": "departure-staff-door",
       "label": "職員出口を開ける",
       "feedback": "職員出口が開いた。屋外へ進む。",
@@ -145,7 +160,7 @@
       }
     },
     {
-      "at": 13.516666666666667,
+      "at": 13.95,
       "id": "departure-outdoor",
       "label": "屋外へ出る",
       "feedback": "在館反応 00。閉館処理 完了。",
@@ -162,10 +177,10 @@
     }
   ],
   "simulationCpu": {
-    "samples": 811,
-    "p50Ms": 0.065,
-    "p95Ms": 0.253,
-    "maxMs": 1.852
+    "samples": 837,
+    "p50Ms": 0.056,
+    "p95Ms": 0.246,
+    "maxMs": 2.246
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -189,8 +204,8 @@
           "y": 0,
           "z": 18.1
         },
-        "yaw": -3.089170241919297,
-        "desiredHeading": -3.0890301501580035,
+        "yaw": -3.089462100629846,
+        "desiredHeading": -3.0893220088685527,
         "angularVelocity": -0.03619114736938825,
         "velocity": {
           "x": 0,
@@ -198,38 +213,38 @@
           "z": 0
         },
         "speed": 0,
-        "travelledDistance": 5.712353172615884,
+        "travelledDistance": 5.77610453176401,
         "accumulator": 0,
-        "headYaw": -0.052422411670496334,
+        "headYaw": -0.052130552959947174,
         "headPitch": 0.3141592653589793,
-        "chestYaw": -0.052713299879162186,
-        "chestLean": 0.0008893264682754166,
-        "pelvisShift": 0.0023841452473940773,
-        "turnAge": 7.308333333333486,
+        "chestYaw": -0.052421441168613025,
+        "chestLean": 0.000838933184034994,
+        "pelvisShift": 0.002086540309242344,
+        "turnAge": 7.541666666666831,
         "launchAge": 0,
         "movingIntent": false,
         "gait": "investigate",
-        "gaitTime": 7.308333333333486,
+        "gaitTime": 7.541666666666831,
         "feet": [
           {
             "name": "left",
             "position": {
-              "x": 2.5548541524476436,
+              "x": 2.554857417155657,
               "y": 0,
-              "z": 18.094467666452
+              "z": 18.09452989328764
             },
             "anchor": {
-              "x": 2.5548541524476436,
+              "x": 2.554857417155657,
               "y": 0,
-              "z": 18.094467666452
+              "z": 18.09452989328764
             },
             "from": {
-              "x": 2.5509322256873337,
+              "x": 2.550569561426059,
               "y": 0,
-              "z": 18.01953610192339
+              "z": 18.01296071341071
             },
-            "yaw": -3.088879353710631,
-            "fromYaw": -3.088879353710632,
+            "yaw": -3.0894728053159253,
+            "fromYaw": -3.0894728053159186,
             "stance": true,
             "swingTime": 0,
             "swingDuration": 0.28
@@ -237,22 +252,22 @@
           {
             "name": "right",
             "position": {
-              "x": 2.3521364538292886,
+              "x": 2.3520599341059443,
               "y": 0,
-              "z": 18.23879165511624
+              "z": 18.23729886005874
             },
             "anchor": {
-              "x": 2.3521364538292886,
+              "x": 2.3520599341059443,
               "y": 0,
-              "z": 18.23879165511624
+              "z": 18.23729886005874
             },
             "from": {
-              "x": 2.326295926644812,
+              "x": 2.326093587778041,
               "y": 0,
-              "z": 17.74762925668969
+              "z": 17.740984082141946
             },
-            "yaw": -3.089180946605474,
-            "fromYaw": -3.0891809466053775,
+            "yaw": -3.089171212421197,
+            "fromYaw": -3.0891712124211756,
             "stance": true,
             "swingTime": 0,
             "swingDuration": 0.28
@@ -260,7 +275,7 @@
         ],
         "swingFoot": null,
         "nextFoot": 1,
-        "plantSequence": 27
+        "plantSequence": 29
       },
       "visible": true,
       "phase": "stopped",
@@ -392,16 +407,17 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/departure-control-v1/scene.tsx": "dc0da0d63a7409e0a1fd625f42fc24d403cac2396cd449134569674bc5ab3a7d",
+    "src/domain/stages/departure-control-v1/scene.tsx": "00ab9c2150b34c79466aca00731911370cfda0a1cae3b53447e6cfb8a2be8ffb",
+    "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-natural/departure-natural.mp4",
-    "bytes": 105352,
-    "sha256": "f87d82c51730b897e33708651a42d1f87cd90b03d700e1d43b4eeaaff1b7f6f8",
+    "bytes": 112191,
+    "sha256": "b16128a2657a7e0ce798cd6afa6318a103276a48ffa31a1cda25d54be351b7e1",
     "fps": 10,
-    "durationSeconds": 18.2
+    "durationSeconds": 18.7
   },
   "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. First bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "8c5c02444ad88e51585e3e30f7f2da76e3e735c7a955335ed2009d2b657d244a"
+  "toolHash": "aedba2362b000bca98620de4249411d99de1848fe32ccab8f353245e5ad97946"
 }

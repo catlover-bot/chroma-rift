@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { DoubleSide, Frustum, Matrix4, MeshBasicMaterial, Shape, ShapeGeometry, type Group, type Mesh } from 'three';
 import type { ChapterRuntime, WorldGeometry } from '../../firstPerson/types';
+import { isolationKeyGeometry } from '../isolationKeyGeometry';
 import { createPlanarMirror, type OffscreenDraw } from '../../../rendering/firstPerson/planarMirror';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
 import type { SceneResources } from '../../../rendering/firstPerson/resources';
@@ -21,32 +22,31 @@ function profileGeometry() {
   return new ShapeGeometry(face);
 }
 
-function isolationKeyGeometry() {
-  const key = new Shape();
-  key.moveTo(-.05,.09);
-  key.bezierCurveTo(-.16,.11,-.16,.29,0,.29);
-  key.bezierCurveTo(.16,.29,.16,.11,.05,.09);
-  key.lineTo(.05,-.07); key.lineTo(.12,-.07); key.lineTo(.12,-.13);
-  key.lineTo(.05,-.13); key.lineTo(.05,-.18); key.lineTo(.11,-.18);
-  key.lineTo(.11,-.24); key.lineTo(-.05,-.24); key.closePath();
-  return new ShapeGeometry(key);
-}
-
 /** One flat mirror borrows this area's Canvas. The same actor mesh is rendered
  * once in the scene and appears again optically through the reflection pass. */
 export function StageScene({world,resources,runtime,renderOffscreen,onFrameError}:{world:WorldGeometry<string>;resources:SceneResources;runtime:RefObject<ChapterRuntime>;
   renderOffscreen?:OffscreenDraw|undefined;onFrameError?:((error:unknown)=>void)|undefined}){
   const gate=useRef<Mesh>(null),key=useRef<Group>(null),mirrorMesh=useRef<Mesh>(null);
+  const keyVisual=useRef<{wasTaken:boolean|null;elapsed:number}>({wasTaken:null,elapsed:0});
   const mirror=useMemo(()=>createPlanarMirror(),[]);
   const mirrorFrustum=useMemo(()=>new Frustum(),[]),projectionView=useMemo(()=>new Matrix4(),[]);
   const shape=useMemo(()=>profileGeometry(),[]),faceMaterial=useMemo(()=>new MeshBasicMaterial({color:'#bebfb4',side:DoubleSide}),[]);
   const keyShape=useMemo(()=>isolationKeyGeometry(),[]),keyMaterial=useMemo(()=>new MeshBasicMaterial({color:'#edf3e5',side:DoubleSide}),[]);
   useEffect(()=>()=>{shape.dispose();faceMaterial.dispose();keyShape.dispose();keyMaterial.dispose();mirror.dispose();},[shape,faceMaterial,keyShape,keyMaterial,mirror]);
-  useFrame(()=>{
+  useFrame((_,delta)=>{
     const raw=runtime.current.stageSession?.value;
     if(!isStageSession(raw))return;
     if(gate.current)gate.current.position.y=grateY(raw.ratchets)+1.75;
-    if(key.current)key.current.visible=!raw.keyTaken;
+    if(key.current){
+      const visual=keyVisual.current;
+      if(visual.wasTaken===null){visual.wasTaken=raw.keyTaken;visual.elapsed=raw.keyTaken ? .3 : 0;}
+      else if(visual.wasTaken!==raw.keyTaken){visual.wasTaken=raw.keyTaken;visual.elapsed=0;}
+      if(raw.keyTaken&&!runtime.current.paused)visual.elapsed=Math.min(.3,visual.elapsed+Math.max(0,Math.min(delta,.05)));
+      const travel=raw.keyTaken?visual.elapsed/.3:0;
+      key.current.visible=!raw.keyTaken||travel<1;
+      key.current.position.set(KEY_CENTER.x,KEY_CENTER.y-.16*travel,KEY_CENTER.z-.1-.24*travel);
+      key.current.rotation.z=-.25*travel;
+    }
   },-.5);
   useFrame(state=>{
     if(!mirrorMesh.current)return;

@@ -12,7 +12,7 @@ const RC = require('../src/rendering/firstPerson/runtimeController.ts');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
 const { StageScene } = require('../src/domain/stages/mirror-corridor-v1/scene.tsx');
 const { isStageSession } = require('../src/domain/stages/mirror-corridor-v1/session.ts');
-const { MIRROR_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
+const { KEY_CENTER, MIRROR_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
 
 function timingSummary(samples) {
   if (!samples.length) throw Error('No CPU timing samples');
@@ -35,6 +35,8 @@ async function extract() {
     runtime, resources, renderOffscreen: () => {}, onFrameError: error => { throw error; } }), THREE);
   const scene = new THREE.Scene(); scene.background = new THREE.Color('#09090C'); scene.add(camera);
   mounted.objects.forEach(object => scene.add(object));
+  const keyMesh = scene.getObjectByName('isolation-key');
+  if (!keyMesh) throw Error('The figure-ground key is absent from area 04');
   const mirrorCallbacks = bridge.callbacks.filter(callback => callback.toString().includes('mirror.render'));
   if (mirrorCallbacks.length !== 1) throw Error(`Expected one mirror callback; found ${mirrorCallbacks.length}`);
   const callbacks = bridge.callbacks.filter(callback => !mirrorCallbacks.includes(callback));
@@ -104,6 +106,10 @@ async function extract() {
   walkZ(-1);
   press('mirror-corridor-figure', '向き合う横顔を観察', Math.PI, .1);
   press('mirror-corridor-key', '中央の隔離キーを取得', Math.PI, -.16);
+  if (!keyMesh.visible) throw Error('Accepted key pickup skipped its visible movement');
+  for (let i = 0; i < 24; i += 1) tick();
+  if (keyMesh.visible || keyMesh.position.z > KEY_CENTER.z - .28) throw Error('Picked-up key did not leave the fixed figure-ground panel');
+  event('key-lifted', '中央の部品を取り出した');
   walkZ(7.5); walkX(-1.5);
   turn(Math.PI / 2, -.16);
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-practice' ||
