@@ -38,6 +38,7 @@ import { UI_COLORS } from '../theme/ui';
 import { DEFAULT_FIRST_PERSON_ONBOARDING, type FirstPersonOnboarding, type AppSettings, type FirstPersonChapterSummary, type FirstPersonControls } from '../types/application';
 import { effectiveControlMode, simpleGuideAimInstruction } from './firstPersonControlMode';
 import { chapterOneBeat, type ChapterOneBeatId } from '../domain/campaign/story';
+import { CampaignStageNotebook } from './CampaignStageNotebook';
 
 export type FirstPersonScreenProps = {
   settings: AppSettings;
@@ -134,6 +135,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const simpleStage=!!snapshot.runtime.stageSession;
   const projectorStatus = theatre ? theatreProjectorStatus(snapshot.runtime) : undefined;
   const hasActorChapter=!!gallery||!!vault||!!theatre;
+  const stageNotebookArea = chapterId === 'mirror-corridor-v1' ? 'chapter-1-area-04' : chapterId === 'departure-control-v1' ? 'chapter-1-area-05' : undefined;
+  const hasThreatChapter=hasActorChapter||!!stageNotebookArea;
   const independentChapter = hasActorChapter || simpleStage;
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
   const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
@@ -215,13 +218,13 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   }, [controller]);
   const stopNotebookSound = useCallback(() => { controller.audio?.stopIllusion(); }, [controller]);
   const openNotes = useCallback(() => {
-    if (!mounted.current || failed.current || (!controller.runtime.gallery && !controller.runtime.vault && !controller.runtime.theatre) || !ready) return;
+    if (!mounted.current || failed.current || (!controller.runtime.gallery && !controller.runtime.vault && !controller.runtime.theatre && !stageNotebookArea) || !ready) return;
     prepareControllerNotebook(controller);
     pause();
     setControllerNotebookPreview(controller, undefined);
     setNotebookSelection(undefined);
     setNotesOpen(true);
-  }, [controller, pause, ready]);
+  }, [controller, pause, ready, stageNotebookArea]);
   const closeNotes = () => {
     controller.audio?.setPreviewActive(false);
     notebookPreview(undefined);
@@ -600,7 +603,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
               <ActionButton label="ドラッグ操作を試す" onPress={() => { changeMode('standard'); resume(); }} />
               <ActionButton label="今の操作を使う" onPress={() => onOnboardingChange?.({ ...onboardingRef.current, controlChoiceAcknowledged: true })} />
             </View> : null}
-            {independentChapter ? <ActionButton label="発見メモ" onPress={openNotes} disabled={!ready} /> : null}
+            {hasThreatChapter ? <ActionButton label="発見メモ" onPress={openNotes} disabled={!ready} /> : null}
             <ActionButton label="ヒント" onPress={() => openMenu('hints')} disabled={!ready || renderMode !== 'chapter'} />
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
             <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>
@@ -616,7 +619,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
             <ActionButton label="探索へ戻る" onPress={resume} />
             <ActionButton label="一時停止メニュー" onPress={() => setMenu('pause')} />
           </> : <>
-            {hasActorChapter ? <>
+            {hasThreatChapter ? <>
               <Body>怖さ</Body>
               <Body muted>控えめは気配を残し、追尾と接触によるやり直しをなくします。謎と出口条件は同じです。</Body>
               <ChoiceRow>
@@ -647,6 +650,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       </View></View>
     </Modal>
     <Modal visible={notesOpen && !pauseForCampaignSave} transparent animationType="none" onRequestClose={closeNotes}>
+      {notesOpen && stageNotebookArea ? <CampaignStageNotebook areaId={stageNotebookArea} checkpoint={createCheckpoint(controller.runtime)} onClose={closeNotes} /> : null}
       {notesOpen && progress.theatre ? <TheatreNotebook progress={progress.theatre} completed={progress.cleared} onClose={closeNotes} /> : null}
       {notesOpen && progress.vault ? <VaultNotebook progress={progress.vault} completed={progress.cleared} onClose={closeNotes} {...(vaultComparisons ? { comparisons: vaultComparisons } : {})} onComparisonsChange={setVaultComparisons} /> : null}
       {notesOpen && progress.gallery ? <DiscoveryNotebook {...(notebookSelection ? { initialSelection: notebookSelection } : {})} comparisons={notebookComparisons} onComparisonsChange={setNotebookComparisons} progress={progress.gallery} completed={progress.cleared} settings={settings} onSettingsChange={onSettingsChange}

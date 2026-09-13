@@ -1,20 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionButton } from '../components/Layout';
+import { CHAPTER_ONE_DISCOVERY_TITLES } from '../content/chapterOneDiscoveries';
 import { CHAPTER_ONE, CHAPTER_TWO, type CampaignAreaId } from '../domain/campaign/definition';
 import type { LegacyImportProposal } from '../domain/campaign/migration';
 import type { ChapterOneSession } from '../domain/campaign/session';
 import type { CampaignDiscoveryHistory } from '../domain/campaign/discoveries';
 import { UI_COLORS } from '../theme/ui';
-
-const DISCOVERY_TITLES: Readonly<Record<CampaignAreaId, Readonly<Record<string, string>>>> = {
-  'chapter-1-area-01': { chromatic: '色の奥行き', shadow: '明暗の対比', contour: '主観的輪郭',
-    mask: '凹面の仮面', wiring: '隠れた配線', hybrid: '近づくと変わる掲示', shepard: '音の錯覚' },
-  'chapter-1-area-02': { length: '長さの見え方', rod: '鉛直の見え方', cafe: '平行な目地' },
-  'chapter-1-area-03': { shadow: '影の大きさ', depth: '部屋の奥行き' },
-  'chapter-1-area-04': { figure: '顔と顔の間の輪郭', mirror: '背後を映す鏡', ratchet: '巻き上げた歯止め' },
-  'chapter-1-area-05': { containment: '収容区画の隔離', attendance: '在館反応の変化' },
-};
 
 type Props = {
   session?: ChapterOneSession | undefined;
@@ -55,7 +47,7 @@ export function ChapterOneHomeScreen(props: Props) {
           <View style={styles.areaCopy}>
             <Text style={styles.areaName}>{area.title}</Text>
             {(props.discoveries[area.id] ?? []).length
-              ? (props.discoveries[area.id] ?? []).map(id => <Text key={id} style={styles.note}>・{DISCOVERY_TITLES[area.id][id] ?? '調べた展示'}</Text>)
+              ? (props.discoveries[area.id] ?? []).map(id => <Text key={id} style={styles.note}>・{CHAPTER_ONE_DISCOVERY_TITLES[area.id][id] ?? '調べた展示'}</Text>)
               : <Text style={styles.areaStatus}>まだ発見の記録はありません</Text>}
           </View>
         </View>)}
