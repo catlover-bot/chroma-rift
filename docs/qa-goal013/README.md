@@ -1,5 +1,15 @@
 # Goal 013 動的QAの記録
 
+## 2026-09-13 同一Appの01→05動作ログと屋外到達
+
+[App経路report](app-scene-walkthrough-report.json)と[中間動作ログ](app-scene-walkthrough-motion-trace.json)を同じ製品ソースで再生成した。一つの `App` mountで各エリアに実際にmountされた `FirstPersonScreen` controllerを自然入力で01→05へ進め、5回の保存遷移を通した。入口・完了の[scene/HUD 10枚と結末1枚](app-scene-walkthrough-contact.png)も同じcontrollerから再撮影した。[画像・report・ログのSHA-256](app-scene-walkthrough-artifacts.json)と[WebGL計測](app-scene-walkthrough-webgl.json)を保持する。
+
+ログは各controller更新の6回ごとと入口・完了を採り、5エリア計8,794更新、1,474 sample、約146.5秒のsimulationを記録した。各エリア内の時刻とtickは単調で、非有限の位置差はなく、隣接sampleのplayer最大移動は0.215m（検査上限0.25m）、actor最大移動は0.235m。保存済みprefixは1→5、revisionは3→5→7→8→14、最終 `campaignCompleted=true`、7つの必須物語beatが発火・提示済み。Canvas mock境界の同時ownerは最大1、unmount後0だった。sample間の個別commandや描画frameをすべて記録したものではない。
+
+ログ作成時、05の屋外 `outdoor-exit` が実際の歩行位置 `z≈22.45` をcheckpoint用の `z=23` へ即時移し、約0.58mの見た目の飛びを生むことが分かった。製品commandを修正し、完了中のruntime poseは歩いた位置に保ち、cold再開用checkpointだけ従来の安全な `OUTDOOR` poseへ正規化した。実歩行を含むApp経路・05単独自然成功・開け直し復旧を再実行し、前二者の屋外静止画と接触シートを開いた。[自然成功動画](departure-natural.mp4)は187 frame/18.7秒・SHA-256 `0f7fdd3a1585380b559ebd6c3f457e4f7fdf36e2fe61b711e13fd3fe749d1c28`、[復旧動画](departure-recovery.mp4)は369 frame/36.9秒・SHA-256 `cc26efc2806dd1f0baf6998b8311823bc3f13410fb23dc75aa35d1ba3cb5bf23`。両MP4を全frameデコードしたが、人による全編連続視聴はしていない。
+
+このAppログは一続きの**domain/pose/actor/保存遷移の記録**であり、scene/HUDは入口・完了の11静止画だけである。05動画も単独実行で、5本をつないだApp動画ではない。AsyncStorageは隔離メモリ、native Canvas/ready/audioはstub、描画はbrowser Software WebGL/CSSであり、実機Yoga/EXGL・実指・実音・鏡像・iPhone性能や恐怖の受入は未確認。04の静止画に平面鏡render targetは含まれず、反射は別の鏡動画に限って観察した。
+
 05の初期cameraを隔離キー盤へ向けた製品ソース `8869c76` の検証は、下段の「2026-09-13 05入口とApp静止画経路」に記録した。現在保持する05自然成功・復旧MP4のSHA-256はそれぞれ `0f7fdd3a1585380b559ebd6c3f457e4f7fdf36e2fe61b711e13fd3fe749d1c28`、`cc26efc2806dd1f0baf6998b8311823bc3f13410fb23dc75aa35d1ba3cb5bf23`。途中の旧SHA-256記述は当時のソースを示す履歴である。
 
 04の同一身体を見比べるため、[左右同期動画](mirror-identity.mp4)、[frame 100の静止画](mirror-identity-frame100.png)、[入力・source・出力hash](mirror-identity-report.json)を追加した。`node scripts/qa-mirror-natural.cjs` の後に `node scripts/qa-mirror-identity.cjs` を実行すると、前者の実controller/StageSceneが生成した311 frameのうち98〜140を再利用する。一つのscene内の巡回体groupは1個で、各frameのgroup座標がcontroller記録と一致することを検査する。左は元のplayer cameraで実 `planarMirror.ts` の反射を描き、右は固定QA cameraから実体を描く。frame 100では左の鏡内の身体と右の身体を同時に開いて確認した。右視点は製品のcameraではなく、左右合成のために主描画を追加するので、製品の一frameの描画負荷を表さない。780×844、10fps、43枚・4.3秒。左の反射passは40枚、終了時geometry/texture 0、browser error 0。MP4全43枚をデコードし、frame 100/110/140を開いた。連続MP4視聴とnative Canvas・iPhoneでの知覚確認は未実施。動画SHA-256 `6a7c5f9eb7fbdf6d1c72e46b59cd4d4ff04c49c81c58c69434970a2c67ef7956`、静止画SHA-256 `d6f13966938ddec0dc698411de44c8d8462c3527cbbee1aebc91278140414469`。

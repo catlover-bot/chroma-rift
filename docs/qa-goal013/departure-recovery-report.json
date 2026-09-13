@@ -297,15 +297,15 @@
       "pose": {
         "x": -3.75,
         "y": 1.6,
-        "z": 23
+        "z": 22.39833333333312
       }
     }
   ],
   "simulationCpu": {
     "samples": 1819,
     "p50Ms": 0.03,
-    "p95Ms": 0.112,
-    "maxMs": 3.003
+    "p95Ms": 0.104,
+    "maxMs": 2.472
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -316,10 +316,10 @@
       "position": {
         "x": -3.75,
         "y": 1.6,
-        "z": 23
+        "z": 22.39833333333312
       },
-      "yaw": 3.141592653589793,
-      "pitch": 0
+      "yaw": -3.141592653589793,
+      "pitch": -0.07
     },
     "cleared": true,
     "actor": {
@@ -498,7 +498,7 @@
     "src/domain/stages/departure-control-v1/actor.ts": "0f82eae40ea9c8131e5851920b21927723bb58a5c56f38ead36cb5231b6ab4d4",
     "src/domain/stages/departure-control-v1/definition.ts": "879fbaa6a6f6c5c1c1571f8496aa5a86846a4a8dd43cf6513e29161bd2b34177",
     "src/domain/stages/departure-control-v1/checkpoint.ts": "2a59ccc50b6ebf81091f8f35a6d375d97fa09e131239e1dfe044e6cf3063c9f8",
-    "src/domain/stages/departure-control-v1/session.ts": "d5a38f142f0d73ca68bf5c175837cf9f1b396923b4957a082d310e8c5d5d9b38",
+    "src/domain/stages/departure-control-v1/session.ts": "e202c90258be6c4a66ef03dcfb2f6aafc32e03c55f9e3ce51d1bf54cd7608744",
     "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
     "src/rendering/firstPerson/labRuntime.ts": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
     "src/rendering/firstPerson/controllerTransitionAudio.ts": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a",

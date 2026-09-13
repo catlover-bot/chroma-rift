@@ -1,5 +1,5 @@
 {
-  "method": "One actual App host mount, five mounted FirstPersonScreen controllers, natural domain routes and serialized campaign transitions. Entry/cleared scene+HUD stills come from each mounted App controller but omit the intervening simulation frames; the ending is a separate App still. This is not a continuous video of play. The Three JSON snapshot omits the live planar-mirror render target; the separate mirror QA checks the reflection. AsyncStorage is isolated memory; native Canvas/ready/audio are stubbed and the React Three scene host does not reconcile props. Browser Software WebGL/CSS, not native Yoga/EXGL, touch, sound, perception or iPhone FPS.",
+  "method": "One actual App host mount, five mounted FirstPersonScreen controllers, natural domain routes and serialized campaign transitions. Entry/cleared scene+HUD stills come from each mounted App controller; a separate 10Hz-style per-six-update motion log covers intervening domain simulation but not scene rendering. The ending is a separate App still. This is not a continuous video of play. The Three JSON snapshot omits the live planar-mirror render target; the separate mirror QA checks the reflection. AsyncStorage is isolated memory; native Canvas/ready/audio are stubbed and the React Three scene host does not reconcile props. Browser Software WebGL/CSS, not native Yoga/EXGL, touch, sound, perception or iPhone FPS.",
   "frames": 11,
   "duration": 0.36666666666666664,
   "sequence": [
@@ -337,10 +337,10 @@
         "position": {
           "x": -3.75,
           "y": 1.6,
-          "z": 23
+          "z": 22.45
         },
-        "yaw": 3.141592653589793,
-        "pitch": 0
+        "yaw": -3.141592653589793,
+        "pitch": -0.07
       },
       "cleared": true,
       "canvasOwners": 1
@@ -397,6 +397,20 @@
   ],
   "maxActiveCanvasBoundaries": 1,
   "activeCanvasBoundariesAfterUnmount": 0,
+  "motionTrace": {
+    "file": "motion-trace.json",
+    "sha256": "7232566c404b0fec1def8b71b03fd50699e6ae19226b9bf36e55ca05ede48177",
+    "areas": 5,
+    "samples": 1474,
+    "ticks": 8794,
+    "validation": {
+      "maxPlayerStepMeters": 0.215,
+      "maxActorStepMeters": 0.235,
+      "playerStepLimitMeters": 0.25,
+      "sameAreaTimeAndTickMonotonic": true,
+      "finitePoseAndActorSteps": true
+    }
+  },
   "final": {
     "currentArea": "chapter-1-area-05",
     "completedAreas": [
@@ -507,7 +521,7 @@
     "src/domain/stages/departure-control-v1/actor.ts": "0f82eae40ea9c8131e5851920b21927723bb58a5c56f38ead36cb5231b6ab4d4",
     "src/domain/stages/departure-control-v1/definition.ts": "879fbaa6a6f6c5c1c1571f8496aa5a86846a4a8dd43cf6513e29161bd2b34177",
     "src/domain/stages/departure-control-v1/checkpoint.ts": "2a59ccc50b6ebf81091f8f35a6d375d97fa09e131239e1dfe044e6cf3063c9f8",
-    "src/domain/stages/departure-control-v1/session.ts": "d5a38f142f0d73ca68bf5c175837cf9f1b396923b4957a082d310e8c5d5d9b38",
+    "src/domain/stages/departure-control-v1/session.ts": "e202c90258be6c4a66ef03dcfb2f6aafc32e03c55f9e3ce51d1bf54cd7608744",
     "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
     "src/rendering/firstPerson/labRuntime.ts": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
     "src/rendering/firstPerson/controllerTransitionAudio.ts": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a",
@@ -625,7 +639,7 @@
     "src/content/chapterOneDiscoveries.ts": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
     "src/screens/ChapterOneEndingScreen.tsx": "2bceea1bb5ad3b4bc432213a5a59440c91fd6ed75810b8005846c8817e2388e6",
     "src/storage/chapterOneLegacy.ts": "7807879fd04cc89961cb6618cc5810f7d7e08ac992b220eb2f381ff1e2736a5a",
-    "test-support/naturalChapterRoute.ts": "f471c28de92d88ab571b987bbe4343f25ebffdae7ea6285ce71ac2262cb7d3b1",
+    "test-support/naturalChapterRoute.ts": "4ea8a7236abe4bc64960ee1dd27cdbc71d291eef2903540002cbf4b2f5ae06a8",
     "src/screens/FirstPersonScreen.tsx": "c8db7a73f7beeb2bac30c8266590fe890d92c544e7f3fa968601db19431fbbbe",
     "src/screens/TheatreNotebook.tsx": "bd0e7bc84e4c30789c264c889b2181fd2e958a77a29ef903860ea97684b9ff29",
     "src/content/theatreComparisons.ts": "8b598de2efd3557c73f6bffd93357c9346527191993849222ddc980102e09680",
@@ -642,5 +656,5 @@
     "src/screens/firstPersonControlMode.ts": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
     "src/screens/CampaignStageNotebook.tsx": "948aa1f06eccc7e7149245d905f1e0b7b2a4ff383544b8950409aceca6b61f8f"
   },
-  "toolHash": "303c955d8a64cb107526453953ab931c2f725f66f76a5529dc7210925b3c8e73"
+  "toolHash": "47086ca7a27b19dca703747623bc574e2bf5bca13f7851ba78deed1725c0fa3c"
 }

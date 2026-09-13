@@ -1,8 +1,21 @@
 {
-  "method": "11 reviewed App-controller scene/HUD stills; PNG re-encoded losslessly with ffmpeg for portable viewing. No intervening frames or continuous route video.",
-  "reportSha256": "967548eaceb7ff64609473783e0536e04a5ac6a448875fb6eda1012d7dac7b3e",
-  "contactSha256": "466dc0c549be4d55da642b702b8c23d787b04be93747efd81ff5972f3856bb3f",
+  "method": "11 reviewed App-controller scene/HUD stills; PNG re-encoded losslessly with FFmpeg for portable viewing. A separate sampled domain-motion log covers intervening controller updates; no intervening rendered frames or continuous route video.",
+  "reportSha256": "a0266baf03c95b59ed61ea4fe61d7804bed00aab2da9cdffa0ea65f565fbbe89",
+  "motionTraceSha256": "7232566c404b0fec1def8b71b03fd50699e6ae19226b9bf36e55ca05ede48177",
+  "contactSha256": "e0fe499531865ee7883ffdb1b1eab0b59b7666286faa2adaade8722e90f31f16",
   "webglSha256": "c7e2006c7471cc062d9d1ecf618f601e28098e5cc0dd894c036c235993c19c1b",
+  "motionTrace": {
+    "areas": 5,
+    "ticks": 8794,
+    "samples": 1474,
+    "validation": {
+      "maxPlayerStepMeters": 0.215,
+      "maxActorStepMeters": 0.235,
+      "playerStepLimitMeters": 0.25,
+      "sameAreaTimeAndTickMonotonic": true,
+      "finitePoseAndActorSteps": true
+    }
+  },
   "images": [
     {
       "index": 0,
@@ -71,8 +84,8 @@
       "index": 9,
       "name": "05-cleared",
       "file": "app-scene-walkthrough-05-cleared.png",
-      "sha256": "475ee895e9947ea524b914b5b3b2e427de7ba11507df81fda1ec0d459b555444",
-      "sourceScreenshotSha256": "c0054ee4316c8b7ea65a17e661f431375b8f3f560ed1634917e41260816c224f"
+      "sha256": "9728c36f1ea4b836468c6200aea68db7e12f63c0b0d3f49d6aaa1103a4385418",
+      "sourceScreenshotSha256": "f74a9e4fad9f1c3bbee6039bf80395ce385dae30bd88cc6d60769e92eec77acc"
     },
     {
       "index": 10,
@@ -81,5 +94,6 @@
       "sha256": "8d6d72bed8e40404030bd11e4503305212164805b887934e5551f2fff09b4c5e",
       "sourceScreenshotSha256": "0c88333599403c148c07a173b9c128f403ee6b8405c87c60cc1cc7b670c4dc47"
     }
-  ]
+  ],
+  "motionTraceFile": "app-scene-walkthrough-motion-trace.json"
 }

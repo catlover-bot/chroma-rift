@@ -5,7 +5,7 @@
     "samples": 369,
     "p50Ms": 0.3,
     "p95Ms": 0.6,
-    "maxMs": 27.7
+    "maxMs": 26.6
   },
   "cpuTimingScope": "SwiftShader browser JS renderer.render call; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
   "disposed": {

@@ -1,7 +1,7 @@
 {
-  "observedAt": "2026-09-13T08:43:08.009Z",
+  "observedAt": "2026-09-13T09:18:53.841Z",
   "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
-  "productCommit": "8869c76",
+  "productCommit": "1a0d612",
   "scope": "Local source-map JS exports and QA only; no signed binary or iPhone execution.",
   "commands": {
     "check": "npm run check",
@@ -34,18 +34,20 @@
     "ios": {
       "sourceMapSources": 1580,
       "assets": 10,
-      "bundleSha256": "d3e8bfbcd3eeb89fa26def2bd096a917dbd2cc41d1641d2ad72da6bf7288229a",
-      "bundle": "_expo/static/js/ios/index-b3deba848588f371ce1d0f063876d03b.js",
+      "bundleSha256": "3b8bd93985fcac64aa9ed71c6baf499877f49c18db1ada39c6af24c40f985cc8",
+      "bundle": "_expo/static/js/ios/index-a769b40e0997f379b78f2ed0855b9cea.js",
       "firstPartyCount": 201,
+      "firstPartyMismatchCount": 0,
       "firstPartyMatches": true
     },
     "android": {
       "sourceMapSources": 1579,
       "assets": 10,
-      "bundleSha256": "bf923371ce264a44d784338a6619a0980211a7b1471e3bd4ae472bec8f1d6bf8",
-      "bundle": "_expo/static/js/android/index-cf0f1a9bd8a1d2eadcb0db17e5519d9f.js",
+      "bundleSha256": "7885ac52069b3587a734bee2ff3d548ede406f9b676a3403ba58749db90b521a",
+      "bundle": "_expo/static/js/android/index-c21f7f2155960cb78428ff9b49cb830c.js",
       "firstPartyCount": 201,
-      "firstPartyMismatchCount": 0
+      "firstPartyMismatchCount": 0,
+      "firstPartyMatches": true
     },
     "fiveAreasPresent": true,
     "developmentScreensProbeAndDevClientAbsent": true
@@ -60,7 +62,7 @@
     "expoInstallCheck": "Dependencies are up to date",
     "npmLsDepth0": "exit 0",
     "doctor": "21/21",
-    "auditReference": "release-local-checks.json (same package-lock SHA-256; not rerun for this scene-only change)"
+    "auditReference": "release-local-checks.json (same package-lock SHA-256; not rerun for this source-only change)"
   },
   "qa": {
     "stageSceneHudImages": 24,
@@ -69,23 +71,36 @@
     "recoveryVideoSha256": "cc26efc2806dd1f0baf6998b8311823bc3f13410fb23dc75aa35d1ba3cb5bf23",
     "naturalSourceHashes": 112,
     "recoverySourceHashes": 112,
-    "stageSceneHudReportSha256": "2374a3a2e1826b85e199a5f657ffbd39fb472954dd87a4f933b67d80841f9946",
+    "stageSceneHudReportSha256": "744a14900b71acd2b145aac79f052b2e2dca664be49b4decd9bdbd7048f578c2",
     "stageSceneHudStages": [
       "perception-gallery-v1",
       "uncanny-vault-v1",
       "mirror-corridor-v1",
       "departure-control-v1"
     ],
-    "boundary": "Area-05 carried-key entry now faces the key panel; old exit-facing schema-1 checkpoint remains readable. Area-01/02/04/05 scene+HUD sample images were recaptured or source-hash verified. All 24 stage-scene-HUD images remain byte-identical; fresh reports reflect current source.",
+    "boundary": "Area-05 outdoor-exit keeps the walked runtime pose. Cold checkpoint remains canonical OUTDOOR. Same-App sampled motion log and 11 scene/HUD stills were recaptured; local area-05 videos and reports were re-extracted.",
     "appSceneWalkthrough": {
       "host": "one actual App mount; five natural controller routes; memory AsyncStorage and stubbed native Canvas/audio",
       "snapshots": 11,
       "sourceHashes": 207,
-      "reportSha256": "967548eaceb7ff64609473783e0536e04a5ac6a448875fb6eda1012d7dac7b3e",
+      "reportSha256": "a0266baf03c95b59ed61ea4fe61d7804bed00aab2da9cdffa0ea65f565fbbe89",
+      "motionTraceSha256": "7232566c404b0fec1def8b71b03fd50699e6ae19226b9bf36e55ca05ede48177",
+      "motionTrace": {
+        "areas": 5,
+        "ticks": 8794,
+        "samples": 1474,
+        "validation": {
+          "maxPlayerStepMeters": 0.215,
+          "maxActorStepMeters": 0.235,
+          "playerStepLimitMeters": 0.25,
+          "sameAreaTimeAndTickMonotonic": true,
+          "finitePoseAndActorSteps": true
+        }
+      },
       "maxActiveCanvas": 1,
       "afterUnmount": 0,
       "continuousVideo": false
     },
-    "attendanceReportSha256": "e6bd2af04f09c3dda4219cd8234e71a155970d87ed4eeff028b50735743a667d"
+    "attendanceReportSha256": "86bd764b531c4e22de20b8cd084315b01f30c7397de76af8c093af04a871a8f5"
   }
 }
