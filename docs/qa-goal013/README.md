@@ -90,3 +90,11 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 03の灯り操作について、実 `FirstPersonScreen` のhost tree・controller・sceneを使い、`scripts/preview-theatre-motion.cjs` の `--viewport` / `--font-scale` / `--sample-only` で320×568/2、390×844/1.5、430×932/1を各20秒・7 frame抽出した。3条件とも実タッチevent形状のドラッグを13.5秒に正しい値で離しても未確定、14.5秒の明示ボタン操作後だけ扉が開いた。320×568/2では画面内の150pxスクロールパネルを下まで動かす必要があり、[確定前の画面](theatre-hud-320-panel-top.png)と[スクロール後の確定ボタン](theatre-hud-320-commit-scrolled.png)、[退出ボタン](theatre-hud-320-leave-scrolled.png)を開いた。確定ボタンの可視高さは約82px、退出は約52px。390/430の[確定画面](theatre-hud-390-commit.png)・[確定画面](theatre-hud-430-commit.png)も開いた。pauseと目的表示の重なりは抽出時点ではなく、browser CSS座標では検出されなかった。
 
 [サイズ別・画像・144 source hash・WebGL解放のreport](theatre-hud-responsive-report.json)と各画面のDOM監査値を残した。再現例は `node scripts/preview-theatre-motion.cjs --scenario=light --viewport=320x568 --font-scale=2 --sample-only --commit-label='灯りを固定して扉を開く' --solved-leave-label='観察を終える' --out=.expo/goal013/responsive-theatre-320`。実React Native host styleをbrowser CSSへ翻訳した画面であり、native Yogaの測定、VoiceOverのスクロール、実指入力やiPhoneの可読性、04/05と結末のHUDは未確認。
+
+04・05の通常操作HUDを `node scripts/qa-stage-hud.cjs` で追加検査した。Stage Moduleのcodecが受けた04の鍵・練習済み安全地点と05の持参キー入口から実controllerを作り、照準を合わせた実 `FirstPersonScreen` を320×568/fontScale 2、390×844/1.5、430×932/1でマウントした。04の保持開始・解放、05のキー設置→手順確認→ベルを、画面の実ボタンhandlerから受理させた。これは通しプレイの代用ではなく、画面操作とcontroller判定をそろえた局所検査である。
+
+修正前の[04最小画面](mirror-hud-320-before.png)と[05最小画面](departure-hud-320-before.png)を開くと、取得対象名がボタンと重複し、拡大文字のラベルが左の移動スティックへ重なった。取得可能な対象ではボタン自体が同じ名前を示すため、この重複した中段ラベルだけ省いた。修正後の[04保持前](mirror-winch-ready-320.png)、[05ベル](departure-bell-ready-320.png)、[04保持中390幅](mirror-winch-holding-390.png)、[05キー430幅](departure-key-ready-430.png)を実際に開き、移動スティックの上に重複文字がなく、目的・pause・操作ボタンが画面内にあることを確認した。取得不能理由や機器の状態など、ボタンと異なる文は引き続き表示する。
+
+[12状態の寸法・画像/source hash](stage-hud-report.json)では、各ボタンの高さ/幅が44px以上、操作ボタン全体が画面内、pauseと目的欄の重なりなし、対象名とスティックの重なりなし。320幅の04保持ボタンは142×104px、05のベルボタンも142×104px。12枚のスクリーンショットは同じフォルダーへ保存した。Canvasは空のplaceholderで、React Native host styleをbrowser CSSへ翻訳しただけである。実scene、native Yoga/EXGL、安全領域、文字メトリクス、VoiceOver、実指の保持、iPhoneの視認性はこの検査で確認していない。
+
+修正前の2画像はcleanな `f60ee7e` の製品ソースから取得した。SHA-256は04 `cdb1e0be021862a98e6b5bd76f98fcd7a5cf8a0cadcadf6a6d6c9ff7b6e1367d`、05 `cff33cebd634b0dea7a02954f2085a924e4f0b10173aeb9d48c7f972b7cd08f1e`。修正後の画像・tool・読込ソースの個別ハッシュはreportにある。

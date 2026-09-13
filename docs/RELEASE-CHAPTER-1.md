@@ -109,3 +109,7 @@ eas build --platform ios --profile production
 看板追加後の `npm run check` は110スイート/1,132テスト、lint、型検査、iOS通常exportを通過。Stage定義2件、iOS/Android/neutral循環0、両OSの公開用source-map export（iOS 1,580/Android 1,579 source、各10 asset、first-party各201 source本文一致、5エリア同梱・開発画面/probe除外）、iOS Three 1 source/23参照のclass identity、Doctor 21/21、Expo依存検査も通過した。04/05の現行ソースでの動画4本は旧MP4とbyte一致し、resource変更に伴うQA reportだけを更新した。`automatedChecksPassed=true` を維持し、native previewと正式な公開URLがないため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 03灯り装置のHUDを、実画面host treeをbrowser CSSへ翻訳したQAで320×568/fontScale 2、390×844/1.5、430×932/1の3条件へ広げた。最小条件では装置パネルをスクロールした下端に確定・退出ボタンが収まり、実controller操作も同じ受理結果になった。画像と寸法は `docs/qa-goal013/theatre-hud-responsive-report.json`。この局所QAでnative Yoga/VoiceOverのレイアウトや01・02・04・05のHUDを確認したことにはならない。preview実機で全エリアの画面・操作を確認するゲート、正式なprivacy/support URL、ストア申告は残る。
+
+04巻上機と05隔離キー/手順/ベルのHUDも3サイズ・12状態で局所検査した。最小幅・最大文字で重複した対象名が移動スティックへ重なっていたため、ボタンと同じ中段名を省いた。修正後の画像・寸法・画面ボタンからの実controller受理は `docs/qa-goal013/stage-hud-report.json`。空のCanvasとbrowser CSSによる検査であり、native画面/操作・VoiceOver・実sceneとの重なりの公開ゲートは満たさない。
+
+このHUD修正後の全回帰は110スイート/1,132テスト、lint、型検査、iOS通常exportに成功。定義検査2件、実行時循環0、iOS/Android公開用source mapのfirst-party各201件本文一致、iOS Three class identity 1 source/23参照を確認した。製品の依存・native設定は変えていない。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

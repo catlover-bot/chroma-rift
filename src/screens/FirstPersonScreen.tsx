@@ -426,6 +426,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const openStructureNotes = () => { if (blocked || !structureNote) return; openNotes(); setNotebookSelection(structureNote); };
   const actionLabel = cue.actionLabel ?? '調べる';
   const contextLabel = acquisitionBlocked ? snapshot.acquisition!.message : cue.kind === 'approach' ? `${cue.target?.label} · 近づくと調べられます` : cue.kind === 'locked' ? cue.reason : snapshot.target?.label;
+  // The action button already names a ready target. Repeating the same label
+  // above it can cover the movement stick when large text wraps on a small screen.
+  const visibleContextLabel = contextLabel === actionLabel ? undefined : contextLabel;
   // A motor/noise-state readout survives the automatic return to exploration.
   // It never claims that an enemy heard the emitter or changed its behavior.
   const projectorReadout = !manipulating && projectorStatus && (projectorStatus.phase !== 'idle' || snapshot.target?.id === 'theatre-projector') ? projectorStatus.message : undefined;
@@ -548,8 +551,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       {!manipulating ? <View testID="first-person-reticle" pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View> : null}
       {notice && !manipulating ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
       {!simple && !manipulating && renderMode === 'chapter' ? <>
-        {contextLabel || projectorReadout ? <View pointerEvents="none" style={[styles.context, { bottom: layout.action.height + 28 }]}>
-          {contextLabel && contextLabel !== projectorReadout ? <Text style={styles.contextText}>{contextLabel}</Text> : null}
+        {visibleContextLabel || projectorReadout ? <View pointerEvents="none" testID="target-context" style={[styles.context, { bottom: layout.action.height + 28 }]}>
+          {visibleContextLabel && visibleContextLabel !== projectorReadout ? <Text style={styles.contextText}>{visibleContextLabel}</Text> : null}
           {projectorReadout ? <Text testID="theatre-projector-status" accessibilityLiveRegion="polite" style={styles.contextText}>{projectorReadout}</Text> : null}
         </View> : null}
         <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}>{holdAction ?? <GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : interactionBlocked || !snapshot.target)} testID="interact" />}</View>
