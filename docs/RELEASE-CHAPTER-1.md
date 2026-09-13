@@ -107,3 +107,5 @@ eas build --platform ios --profile production
 01〜03の出口銘板には日本語の次エリア名と番号を加えた。ローカルSoftware WebGLの390×844画像3枚を開いて可読性を確認した。フォント本体は同梱せず、生成済みマスクをstageごとのDataTextureへ復元する。iPhoneの実表示・製品HUDとの重なりと最終扉からの操作はpreviewで確認するまで未検証。
 
 看板追加後の `npm run check` は110スイート/1,132テスト、lint、型検査、iOS通常exportを通過。Stage定義2件、iOS/Android/neutral循環0、両OSの公開用source-map export（iOS 1,580/Android 1,579 source、各10 asset、first-party各201 source本文一致、5エリア同梱・開発画面/probe除外）、iOS Three 1 source/23参照のclass identity、Doctor 21/21、Expo依存検査も通過した。04/05の現行ソースでの動画4本は旧MP4とbyte一致し、resource変更に伴うQA reportだけを更新した。`automatedChecksPassed=true` を維持し、native previewと正式な公開URLがないため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
+03灯り装置のHUDを、実画面host treeをbrowser CSSへ翻訳したQAで320×568/fontScale 2、390×844/1.5、430×932/1の3条件へ広げた。最小条件では装置パネルをスクロールした下端に確定・退出ボタンが収まり、実controller操作も同じ受理結果になった。画像と寸法は `docs/qa-goal013/theatre-hud-responsive-report.json`。この局所QAでnative Yoga/VoiceOverのレイアウトや01・02・04・05のHUDを確認したことにはならない。preview実機で全エリアの画面・操作を確認するゲート、正式なprivacy/support URL、ストア申告は残る。

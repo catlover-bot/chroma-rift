@@ -1,0 +1,203 @@
+{
+  "boundary": "Actual FirstPersonScreen host, real theatre controller/scene and touch event shape; native Canvas/readiness/audio stubs and browser CSS approximation of React Native layout. This checks sampled desktop Chromium screenshots and DOM rectangles, not iPhone Yoga, VoiceOver, real touch, native audio, FPS or perceived horror.",
+  "tool": "scripts/preview-theatre-motion.cjs",
+  "toolSha256": "b678f4179aaa5faa11072e3c15ecab7b273597101b634bcc6edd5689196716aa",
+  "sourceHashes": "theatre-hud-source-hashes.json",
+  "sourceHashesSha256": "5e96f443eb2cc6b3959fbc6ca1a1f5d8fe0989cef9ae00c51c29e00a658a493d",
+  "sourceCount": 144,
+  "scenario": "light",
+  "sampleFrames": [
+    0,
+    60,
+    150,
+    300,
+    420,
+    450,
+    599
+  ],
+  "variants": [
+    {
+      "viewport": "320x568",
+      "fontScale": 2,
+      "samples": 7,
+      "simulationSeconds": 20,
+      "lightAccepted": true,
+      "gateOpen": 1,
+      "commit": {
+        "frame": 420,
+        "requiresScroll": true,
+        "visibleHeightPx": 82
+      },
+      "leave": {
+        "frame": 450,
+        "requiresScroll": true,
+        "visibleHeightPx": 51.6
+      },
+      "pauseObjectiveOverlap": false,
+      "scrollAtCommit": {
+        "left": 12,
+        "top": 407.875,
+        "right": 308,
+        "bottom": 558,
+        "width": 296,
+        "height": 150.125,
+        "scrollHeight": 352,
+        "clientHeight": 150
+      },
+      "webgl": {
+        "maxCalls": 124,
+        "maxTriangles": 6237,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "browserErrors": 0
+      },
+      "auditFile": "theatre-hud-320-audit.json",
+      "auditSha256": "814b8a6019d8a94b9cfaaf6a2831014e07ae1758bdcb3c63ffc8a447b83aea79",
+      "images": {
+        "theatre-hud-320-start.png": "866d03ea5ba95c89751b6d7b9bed3c92eca0beee884c49dc9fb742d87189264d",
+        "theatre-hud-320-panel-top.png": "9317ce79b86bc38c1b204969ee52831a4b6cd5f0b402e98353e54ebfdc1fe93f",
+        "theatre-hud-320-commit-scrolled.png": "d126a13a65d533555a1d5ac29870311493a0698ae2d3a35759d30b7f24dbafbb",
+        "theatre-hud-320-leave-scrolled.png": "8e3b8d02a2c8282653a78f42fc2218338e85a43d8bb63e25f55473078b7e778c"
+      },
+      "events": [
+        {
+          "type": "drag-release",
+          "simulationSecond": 6,
+          "rail": 0.25000000000000044
+        },
+        {
+          "type": "correct-release-still-unaccepted",
+          "simulationSecond": 13.5,
+          "rail": 0.6499999999999986
+        },
+        {
+          "type": "accepted-after-explicit-commit",
+          "simulationSecond": 14.5
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "fontScale": 1.5,
+      "samples": 7,
+      "simulationSeconds": 20,
+      "lightAccepted": true,
+      "gateOpen": 1,
+      "commit": {
+        "frame": 420,
+        "requiresScroll": false,
+        "visibleHeightPx": 48
+      },
+      "leave": {
+        "frame": 450,
+        "requiresScroll": false,
+        "visibleHeightPx": 48
+      },
+      "pauseObjectiveOverlap": false,
+      "scrollAtCommit": {
+        "left": 12,
+        "top": 591.5,
+        "right": 378,
+        "bottom": 834,
+        "width": 366,
+        "height": 242.5,
+        "scrollHeight": 243,
+        "clientHeight": 243
+      },
+      "webgl": {
+        "maxCalls": 111,
+        "maxTriangles": 3371,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "browserErrors": 0
+      },
+      "auditFile": "theatre-hud-390-audit.json",
+      "auditSha256": "425a66f282e27a71c2d5b75b3baa187c69c24abe6f21e0feb59043217df91376",
+      "images": {
+        "theatre-hud-390-commit.png": "6a8d5cf87789ac32fe9c3eab8fc7f55d4512381c717ff622778d36f501669a25"
+      },
+      "events": [
+        {
+          "type": "drag-release",
+          "simulationSecond": 6,
+          "rail": 0.2499999999999967
+        },
+        {
+          "type": "correct-release-still-unaccepted",
+          "simulationSecond": 13.5,
+          "rail": 0.6499999999999988
+        },
+        {
+          "type": "accepted-after-explicit-commit",
+          "simulationSecond": 14.5
+        }
+      ]
+    },
+    {
+      "viewport": "430x932",
+      "fontScale": 1,
+      "samples": 7,
+      "simulationSeconds": 20,
+      "lightAccepted": true,
+      "gateOpen": 1,
+      "commit": {
+        "frame": 420,
+        "requiresScroll": false,
+        "visibleHeightPx": 48
+      },
+      "leave": {
+        "frame": 450,
+        "requiresScroll": false,
+        "visibleHeightPx": 48
+      },
+      "pauseObjectiveOverlap": false,
+      "scrollAtCommit": {
+        "left": 12,
+        "top": 650.046875,
+        "right": 418,
+        "bottom": 922,
+        "width": 406,
+        "height": 271.953125,
+        "scrollHeight": 272,
+        "clientHeight": 272
+      },
+      "webgl": {
+        "maxCalls": 111,
+        "maxTriangles": 3371,
+        "disposed": {
+          "geometries": 0,
+          "textures": 0,
+          "renderers": 1
+        },
+        "browserErrors": 0
+      },
+      "auditFile": "theatre-hud-430-audit.json",
+      "auditSha256": "28c795c2435d987b43968f3797c95a26285598e833a3b5caea07441759fb4ee7",
+      "images": {
+        "theatre-hud-430-commit.png": "65e2fbc75c335b7177eff66252094ba49652184e131a34f95e3faae2fa1512fc"
+      },
+      "events": [
+        {
+          "type": "drag-release",
+          "simulationSecond": 6,
+          "rail": 0.2500000000000004
+        },
+        {
+          "type": "correct-release-still-unaccepted",
+          "simulationSecond": 13.5,
+          "rail": 0.6499999999999977
+        },
+        {
+          "type": "accepted-after-explicit-commit",
+          "simulationSecond": 14.5
+        }
+      ]
+    }
+  ]
+}
