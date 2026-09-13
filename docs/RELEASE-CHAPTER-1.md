@@ -121,3 +121,5 @@ eas build --platform ios --profile production
 現行ソースで03映写機と灯り操作を各3サイズ・7抽出frameで再検査し、HUD重なり0と320幅のスクロール後の確定・退出ボタンを画像で確認した。全回帰はlint・型検査・110スイート/1,132テスト・iOS通常exportを通過。定義検査2件、3対象の循環0、iOS/Androidのsource mapでfirst-party各201件一致、iOS Three 1 source/23参照のclass identityを確認した。native preview、正式なprivacy/support URLとストア申告は未完了で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 02の長さ/鉛直装置も現行の実sceneと画面で12レイアウトを再抽出し、補助前後24状態で「探索へ戻る」がスクロール途中に44px以上見えることを確認した。画像と150 source hashは `docs/qa-goal013/vault-large-text-report.json`。端末のYoga/VoiceOver/指操作のゲートは未確認のまま。
+
+最終HUDの製品ソース以降はQAツールと文書だけが変わったことを確認し、同じ両OSのsource-map exportへ `check-release-export.cjs` を再適用した。iOS 1,580 source/10 asset、Android 1,579 source/10 assetで、5エリア同梱・開発画面/probe除外を両方とも通過した。`expo install --check` は推奨依存と一致、`npm ls --depth=0` はexit 0。現行lockfileへの `npm audit` と `npm audit --omit=dev` はともにmoderate 11、high/critical 0で、11件を解決済みとはしない。CLIが示す自動修正候補はExpo 46とsplash-screen 55へのメジャー変更を含むため適用していない。コマンド範囲・bundle hash・生のaudit JSONは [release-local-checks.json](qa-goal013/release-local-checks.json) に残した。署名済みバイナリ、実機のoffline起動、正式URL、ストア申告のゲートは変わらない。

@@ -1,0 +1,92 @@
+{
+  "observedAt": "2026-09-13T06:46:42.891Z",
+  "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
+  "sourceHead": "7538792",
+  "productSourceUnchangedSince": "9c3f1f4",
+  "sourceDiffCommand": "git diff --name-only 9c3f1f4..HEAD -- src App.tsx package.json package-lock.json app.json eas.json metro.config.js",
+  "sourceDiffFiles": [],
+  "releaseExportVerifier": {
+    "command": "node scripts/check-release-export.cjs <export-dir> ios|android",
+    "toolSha256": "58966d4386e2aa408bfbcc4d7e50393c88bfc01ccdc1d799d0f0f94141161178",
+    "ios": {
+      "sources": 1580,
+      "assets": 10,
+      "fiveAreasPresent": true,
+      "developmentScreensAndProbeAbsent": true,
+      "bundle": "_expo/static/js/ios/index-5837bb90410c2112f494652a33d72c7f.js",
+      "bundleSha256": "1810b692fd0ab0978a35900655f12962310bb548a792cc5f38943567f9cf1620",
+      "firstPartyCount": 201,
+      "allFirstPartyMatches": true
+    },
+    "android": {
+      "sources": 1579,
+      "assets": 10,
+      "fiveAreasPresent": true,
+      "developmentScreensAndProbeAbsent": true,
+      "bundle": "_expo/static/js/android/index-b00bd1e9be8d8b7111bda928fb6c0739.js",
+      "bundleSha256": "8268e2885df62c850cddf59af1ecba04e4a42d11aa34c019391e9d0087d2334b",
+      "firstPartyCount": 201,
+      "firstPartyMismatchCount": 0
+    }
+  },
+  "three": {
+    "sourceCount": 1,
+    "edges": 23,
+    "sameClassIdentity": true
+  },
+  "dependencies": {
+    "packageLockSha256": "75af020d9b5ea67905506d0a45acee6deb17705adc7cc9f836059314330780df",
+    "expoInstalled": "57.0.22",
+    "expoInstallCheck": "Dependencies are up to date",
+    "npmLsDepth0": "exit 0",
+    "npmAudit": {
+      "rawFile": "npm-audit-current.json",
+      "rawSha256": "c3e10b75464f5951fb22c897ff0ec6673d382ab581deffa7ba2b18ccd618e783",
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 11,
+        "high": 0,
+        "critical": 0,
+        "total": 11
+      },
+      "names": [
+        "@expo/cli",
+        "@expo/config",
+        "@expo/config-plugins",
+        "@expo/inline-modules",
+        "@expo/local-build-cache-provider",
+        "@expo/metro-config",
+        "@expo/prebuild-config",
+        "expo",
+        "expo-splash-screen",
+        "uuid",
+        "xcode"
+      ],
+      "fixAvailable": {
+        "expo": {
+          "name": "expo",
+          "version": "46.0.21",
+          "isSemVerMajor": true
+        },
+        "expoSplashScreen": {
+          "name": "expo-splash-screen",
+          "version": "55.0.25",
+          "isSemVerMajor": true
+        }
+      }
+    },
+    "npmAuditOmitDev": {
+      "rawSha256": "c3e10b75464f5951fb22c897ff0ec6673d382ab581deffa7ba2b18ccd618e783",
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 11,
+        "high": 0,
+        "critical": 0,
+        "total": 11
+      }
+    }
+  },
+  "boundary": "Local JS export and dependency audit only; no signed preview/production binary, offline iPhone execution, native permissions inspection, App Store Connect filing or approval."
+}
