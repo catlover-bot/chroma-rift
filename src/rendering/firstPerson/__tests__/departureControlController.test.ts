@@ -34,6 +34,8 @@ test('registered final-area controller follows a real bell, latch, stop and outd
     sceneMode: 'chapter', paused: false, open: false });
   expect(STAGE_SCENE_BINDINGS['departure-control-v1']).toBeDefined();
   expect(worldForController(controller).chapterId).toBe('departure-control-v1');
+  syncCamera(controller, view);
+  expect(controllerSnapshot(controller).target?.id).toBe('departure-key');
   const facePanel = (z: number) => {
     controller.runtime.pose = { position: { x: -3.75, y: 1.6, z }, yaw: Math.PI / 2, pitch: -.16 };
     syncCamera(controller, view);

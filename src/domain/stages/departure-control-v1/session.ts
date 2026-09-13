@@ -2,7 +2,7 @@ import { updatePlayer } from '../../firstPerson/geometry';
 import type { MovementInput, PlayerPose } from '../../firstPerson/types';
 import { createContainmentActor, isContainmentActor, type ContainmentActor, type ContainmentNoise } from './actor';
 import { parseStageCheckpoint, type StageCheckpoint } from './checkpoint';
-import { actorFullyContained, BELL_RECEIVER, CONTROL_SAFE, DOOR_CLOSE_SECONDS, doorSweepClear, OUTDOOR,
+import { actorFullyContained, BELL_RECEIVER, CONTROL_KEY_ENTRY, CONTROL_SAFE, DOOR_CLOSE_SECONDS, doorSweepClear, OUTDOOR,
   STAFF_EXIT_SAFE, STAGE_ID, stageWorld, type TargetId } from './definition';
 
 export type StageSession = { stageId: typeof STAGE_ID; sessionId: string; lastSeq: number; pose: PlayerPose;
@@ -50,7 +50,7 @@ export function createStageSession(sessionId: string, raw?: unknown): StageSessi
 export function carriedKeyEntry(): StageCheckpoint {
   return { schemaVersion: 1, stageId: STAGE_ID, keyAvailable: true, keyInstalled: false,
     procedureRead: false, isolated: false, stopped: false, staffDoorOpened: false, cleared: false,
-    pose: { ...CONTROL_SAFE, position: { ...CONTROL_SAFE.position } } };
+    pose: { ...CONTROL_KEY_ENTRY, position: { ...CONTROL_KEY_ENTRY.position } } };
 }
 
 export function stepStage(session: StageSession, input: MovementInput, dt: number): StageSession {
@@ -124,7 +124,8 @@ export function commandStage(session: StageSession, command: StageCommand): Comm
 }
 
 export function checkpointStage(session: StageSession): StageCheckpoint {
-  const pose = session.cleared ? OUTDOOR : session.staffDoorOpened && session.pose.position.z > 14.4 ? STAFF_EXIT_SAFE : CONTROL_SAFE;
+  const pose = session.cleared ? OUTDOOR : session.staffDoorOpened && session.pose.position.z > 14.4 ? STAFF_EXIT_SAFE :
+    session.keyInstalled ? CONTROL_SAFE : CONTROL_KEY_ENTRY;
   return { schemaVersion: 1, stageId: STAGE_ID, keyAvailable: session.keyAvailable, keyInstalled: session.keyInstalled,
     procedureRead: session.procedureRead, isolated: session.isolated, stopped: session.stopped,
     staffDoorOpened: session.staffDoorOpened, cleared: session.cleared,

@@ -7,6 +7,9 @@ export type TargetId = 'departure-key' | 'departure-procedure' | 'departure-bell
   'departure-reopen' | 'departure-stop' | 'departure-staff-door' | 'departure-outdoor';
 export const SPAWN: PlayerPose = { position: { x: -3.75, y: 1.6, z: 10 }, yaw: Math.PI, pitch: 0 };
 export const CONTROL_SAFE: PlayerPose = { position: { ...SPAWN.position }, yaw: SPAWN.yaw, pitch: SPAWN.pitch };
+/** The first required key panel is behind and left of the original exit-facing safe pose. */
+export const CONTROL_KEY_ENTRY: PlayerPose = { position: { ...SPAWN.position },
+  yaw: Math.PI / 4, pitch: Math.atan2(-.2, Math.SQRT2) };
 export const STAFF_EXIT_SAFE: PlayerPose = { position: { x: -3.75, y: 1.6, z: 17.2 }, yaw: Math.PI, pitch: 0 };
 export const OUTDOOR: PlayerPose = { position: { x: -3.75, y: 1.6, z: 23 }, yaw: Math.PI, pitch: 0 };
 export const ACTOR_START: Vec3 = { x: 2.15, y: 0, z: 12.4 };

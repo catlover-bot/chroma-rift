@@ -1,11 +1,12 @@
 import { isSafePose, segmentOccluded } from '../../firstPerson/geometry';
 import { vaultActorEdgeOpen } from '../../vault/actorPolicy';
-import { actorFullyContained, BELL_RECEIVER, CONTROL_SAFE, doorSweepClear, stageWorld } from './definition';
+import { actorFullyContained, BELL_RECEIVER, CONTROL_KEY_ENTRY, CONTROL_SAFE, doorSweepClear, stageWorld } from './definition';
 import { carriedKeyEntry, advanceStage, checkpointStage, commandStage, createStageSession } from './session';
 import { parseStageCheckpoint } from './checkpoint';
 
 test('control bay, both patrol lanes, and independent staff route have physical geometry', () => {
   expect(isSafePose(CONTROL_SAFE, stageWorld())).toBe(true);
+  expect(isSafePose(CONTROL_KEY_ENTRY, stageWorld())).toBe(true);
   expect(vaultActorEdgeOpen({ x: -1.2, y: 0, z: 4 }, { x: -1.2, y: 0, z: 10 }, stageWorld())).toBe(true);
   expect(vaultActorEdgeOpen({ x: 1.2, y: 0, z: 4 }, { x: 1.2, y: 0, z: 10 }, stageWorld())).toBe(true);
   expect(vaultActorEdgeOpen({ x: -3.75, y: 0, z: 7.1 }, { x: -3.75, y: 0, z: 9 }, stageWorld())).toBe(false);
@@ -13,6 +14,19 @@ test('control bay, both patrol lanes, and independent staff route have physical 
   expect(vaultActorEdgeOpen({ x: 2.4, y: 0, z: 14 }, { x: 2.4, y: 0, z: 17 }, stageWorld(1))).toBe(false);
   expect(vaultActorEdgeOpen({ x: -3.7, y: 0, z: 13.2 }, { x: -3.7, y: 0, z: 16 }, stageWorld(1, false))).toBe(false);
   expect(vaultActorEdgeOpen({ x: -3.7, y: 0, z: 13.2 }, { x: -3.7, y: 0, z: 16 }, stageWorld(1, true))).toBe(true);
+});
+
+test('key-facing cold entry keeps the original exit-facing checkpoint valid', () => {
+  const entry = carriedKeyEntry();
+  expect(entry.pose).toEqual(CONTROL_KEY_ENTRY);
+  expect(parseStageCheckpoint(entry)?.pose).toEqual(CONTROL_KEY_ENTRY);
+  const legacy = { ...entry, pose: CONTROL_SAFE };
+  expect(parseStageCheckpoint(legacy)?.pose).toEqual(CONTROL_SAFE);
+  expect(checkpointStage(createStageSession('before-key', entry)).pose).toEqual(CONTROL_KEY_ENTRY);
+  const installed = commandStage(createStageSession('after-key', entry),
+    { sessionId: 'after-key', seq: 1, targetId: 'departure-key', type: 'install-key' });
+  expect(installed.accepted).toBe(true);
+  expect(checkpointStage(installed.session).pose).toEqual(CONTROL_SAFE);
 });
 
 test('control-bay glass exposes the contained body while outdoor completion lies beyond the facade', () => {
