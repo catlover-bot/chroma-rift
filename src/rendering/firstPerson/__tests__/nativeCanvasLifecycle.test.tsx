@@ -202,7 +202,12 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
         expect(key.visible).toBe(entry.visible);
         if (entry.stageId === 'mirror-corridor-v1')
           expect(rendererRoot(renderer).store.getState().scene.getObjectByName('winch-key')?.visible).toBe(false);
-        if (entry.stageId === 'departure-control-v1' && entry.visible) expect(key.position.x).toBeCloseTo(-4.7);
+        if (entry.stageId === 'departure-control-v1') {
+          const panel = rendererRoot(renderer).store.getState().scene.getObjectByName('departure-key');
+          expect(panel?.visible).toBe(true);
+          expect(panel?.getObjectByName('key-socket')).toBeDefined();
+          if (entry.visible) expect(key.position.x).toBeCloseTo(-4.66);
+        }
       } finally { await view.unmount(); }
     }
   });

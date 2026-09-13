@@ -10,6 +10,9 @@ import { BELL_RECEIVER, CONTAINMENT_DOOR_Z, STAFF_DOOR_Z, stageWorld } from './d
 import { isStageSession } from './session';
 
 const RECEIVER_RADIUS = .24, RECEIVER_HEIGHT = .16, KEY_INSERT_SECONDS = .2;
+// Controls remain physical objects after their interaction targets deactivate.
+// The door/reopen commands share the same authored panel.
+const CONTROL_PANELS = stageWorld().interactables.filter(target => target.id !== 'departure-outdoor');
 
 /** Uses the same Canvas and actor body as the earlier areas. The remote bell,
  * observation window, two physical doors and short outdoor threshold remain
@@ -19,7 +22,6 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
   const containmentDoor = useRef<Mesh>(null), staffDoor = useRef<Mesh>(null), receiver = useRef<Mesh>(null);
   const key = useRef<Group>(null), attendance2 = useRef<Group>(null), attendance1 = useRef<Group>(null), attendance0 = useRef<Group>(null);
   const keyVisual = useRef<{ wasInstalled: boolean | null; elapsed: number }>({ wasInstalled: null, elapsed: 0 });
-  const devices = useRef<Record<string, Mesh | null>>({});
   const glass = useMemo(() => new MeshBasicMaterial({ color: '#9ac5cc', transparent: true, opacity: .2, depthWrite: false }), []);
   const outdoorSky = useMemo(() => new MeshBasicMaterial({ color: '#53676d', side: DoubleSide, fog: false, toneMapped: false }), []);
   const keyShape = useMemo(() => isolationKeyGeometry(), []);
@@ -37,7 +39,7 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
         else if (visual.wasInstalled !== raw.keyInstalled) { visual.wasInstalled = raw.keyInstalled; visual.elapsed = 0; }
         if (raw.keyInstalled && !runtime.current.paused) visual.elapsed = Math.min(KEY_INSERT_SECONDS, visual.elapsed + Math.max(0, Math.min(delta, .05)));
         key.current.visible = raw.keyInstalled;
-        key.current.position.x = -4.35 - .35 * (visual.elapsed / KEY_INSERT_SECONDS);
+        key.current.position.x = -4.35 - .31 * (visual.elapsed / KEY_INSERT_SECONDS);
       }
       if (receiver.current) {
         const pulse = raw.bellCooldown > 5.5 ? 1.35 : 1;
@@ -46,10 +48,6 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
       if (attendance2.current) attendance2.current.visible = !raw.stopped;
       if (attendance1.current) attendance1.current.visible = raw.stopped && !raw.cleared;
       if (attendance0.current) attendance0.current.visible = raw.cleared;
-      const visible = new Set<string>(stageWorld(raw.doorProgress, raw.staffDoorOpened, undefined, raw.keyInstalled, raw.stopped)
-        .interactables.map(item => item.id));
-      for (const [id, mesh] of Object.entries(devices.current)) if (mesh)
-        mesh.visible = visible.has(id) || id === 'departure-door' && visible.has('departure-reopen');
     } catch (error) { if (onFrameError) onFrameError(error); else throw error; }
   }, -.5);
   const segment = (x: number, y: number, horizontal: boolean) =>
@@ -63,6 +61,35 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     {value === 0 || value === 1 ? segment(.15, -.14, false) : null}
     {(value === 0 || value === 2) && segment(-.15, -.14, false)}
   </group>;
+  const deviceMarks = (id: string) => {
+    if (id === 'departure-key') return <>
+      <mesh name="key-socket" geometry={resources.box} material={resources.dark} position={[.068,0,0]} scale={[.018,.19,.055]}/>
+      <mesh geometry={resources.box} material={resources.trim} position={[.07,-.13,0]} scale={[.02,.018,.23]}/>
+    </>;
+    if (id === 'departure-procedure') return <>
+      <mesh name="procedure-sheet" geometry={resources.box} material={resources.quiet} position={[.067,0,0]} scale={[.018,.24,.24]}/>
+      {[-.07,0,.07].map(y => <mesh key={y} geometry={resources.box} material={resources.dark}
+        position={[.079,y,0]} scale={[.01,.014,y === .07 ? .13 : .18]}/>)}
+    </>;
+    if (id === 'departure-bell') return <>
+      <mesh name="bell-control-ring" geometry={resources.ring} material={resources.dark}
+        position={[.067,0,0]} rotation={[0,Math.PI/2,0]} scale={[.38,.38,.38]}/>
+      <mesh name="bell-control-button" geometry={resources.cylinder} material={resources.neutral}
+        position={[.09,0,0]} rotation={[0,0,Math.PI/2]} scale={[.105,.04,.105]}/>
+    </>;
+    if (id === 'departure-door' || id === 'departure-reopen') return <>
+      {[-.075,.075].map(z => <mesh key={z} geometry={resources.box} material={resources.dark}
+        position={[.068,0,z]} scale={[.018,.22,.025]}/>)}
+      <mesh geometry={resources.box} material={resources.neutral} position={[.079,0,0]} scale={[.012,.035,.08]}/>
+    </>;
+    if (id === 'departure-stop') return <>
+      <mesh name="stop-control-switch" geometry={resources.box} material={resources.dark}
+        position={[.069,0,0]} scale={[.022,.18,.19]}/>
+      <mesh geometry={resources.box} material={resources.neutral} position={[.084,.05,0]} scale={[.012,.045,.12]}/>
+    </>;
+    return <mesh geometry={resources.box} material={resources.trim}
+      position={[.068,0,0]} scale={[.018,.07,.18]}/>;
+  };
   return <group name="departure-control-v1" dispose={null}>
     <ambientLight intensity={1.05}/><directionalLight intensity={.8} position={[-2,4,6]}/>
     {world.floors.map(f => <mesh key={f.id} geometry={resources.box} material={f.id === 'outdoor-paving' ? resources.quiet : resources.floor}
@@ -72,10 +99,12 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
       geometry={resources.box} material={s.opaque === false ? glass : s.kind === 'door' ? resources.door : resources.wall}
       position={[(s.min.x+s.max.x)/2,(s.min.y+s.max.y)/2,(s.min.z+s.max.z)/2]}
       scale={[s.max.x-s.min.x,s.max.y-s.min.y,s.max.z-s.min.z]}/>)}
-    {world.interactables.filter(t => t.id !== 'departure-outdoor').map(t => <mesh key={t.id} name={t.id}
-      ref={mesh => { devices.current[t.id] = mesh; }} geometry={resources.box} material={resources.device}
-      position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.28,.1]}/>)}
-    <group name="installed-key" ref={key} visible={false} position={[-4.7,1.55,9]} rotation={[0,Math.PI/2,0]}>
+    {CONTROL_PANELS.map(t => <group key={t.id} name={t.id}
+      position={[t.center.x,t.center.y,t.center.z]}>
+      <mesh name={`${t.id}-housing`} geometry={resources.box} material={resources.device} scale={[.12,.34,.34]}/>
+      {deviceMarks(t.id)}
+    </group>)}
+    <group name="installed-key" ref={key} visible={false} position={[-4.7,1.55,9]} rotation={[0,Math.PI/2,0]} scale={[.55,.55,.55]}>
       <mesh name="installed-key-silhouette" geometry={keyShape} material={keyMaterial}/>
       <mesh name="installed-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
     </group>
