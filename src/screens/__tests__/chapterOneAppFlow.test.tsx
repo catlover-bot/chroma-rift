@@ -25,6 +25,7 @@ import { OUTDOOR } from '../../domain/stages/departure-control-v1/definition';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../domain/stages/mirror-corridor-v1/checkpoint';
 import { parseStageCheckpoint as parseDepartureCheckpoint } from '../../domain/stages/departure-control-v1/checkpoint';
 import { recordCampaignReplayDiscoveries } from '../../domain/campaign/session';
+import { mergeCampaignDiscoveries } from '../../domain/campaign/discoveries';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import { advanceController, controllerSnapshot, interactController, syncCamera } from '../../rendering/firstPerson/runtimeController';
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
@@ -78,7 +79,8 @@ test.each([
   const reentries: { area: string; visit: number; revision: number; canvasOwners: number }[] = [];
   const coldTransitions: { from: string; to: string; revision: number; canvasOwners: number }[] = [];
   const transitionStories: { from: string; beat: string; canvasOwners: number }[] = [];
-  const reverseReplays: { area: string; stageId: string; canvasOwnersAfterExit: number }[] = [];
+  const reverseReplays: { area: string; stageId: string; completed: boolean;
+    discoveriesAdded: string[]; canvasOwnersAfterExit: number }[] = [];
   let entryCount = 1;
   let coldRestores = 0;
   const Gate = gateModule.NativeFirstPersonGate;
@@ -226,7 +228,7 @@ test.each([
   await fireEvent.press(resumed.getByRole('button', { name: 'ホームへ戻る' }));
   if (cold) for (let index = CHAPTER_ONE.areas.length - 1; index >= 0; index--) {
     const area = CHAPTER_ONE.areas[index]!;
-    const savedBeforeReplay = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+    const savedBeforeReplay = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
     const replayLabel = `${area.title}を振り返る`;
     if (!resumed.queryByRole('button', { name: replayLabel }))
       await fireEvent.press(resumed.getByRole('button', { name: 'エリアを振り返る' }));
@@ -237,11 +239,32 @@ test.each([
     expect(latest!.checkpoint?.progress.cleared).toBe(false);
     expect(mockCanvasOwners.active).toBe(1);
     expect(mockCanvasOwners.peak).toBe(1);
-    await fireEvent.press(resumed.getByRole('button', { name: '一時停止' }));
-    await fireEvent.press(resumed.getByRole('button', { name: 'ホームへ戻る' }));
+    const replayGate = latest!;
+    const replayRun = attachNaturalRun(mockLatestCanvas.current!.controller);
+    let replayCleared: CheckpointState | undefined;
+    await act(() => { replayCleared = playNaturalArea(replayRun, index, order); });
+    expect(replayCleared?.progress.cleared).toBe(true);
+    await act(() => {
+      replayGate.onCheckpoint(replayCleared!);
+      replayGate.onComplete(chapterCompletionSummary(area.stageId, replayCleared!.progress));
+    });
+    expect(await resumed.findByText(`${area.title}を振り返った`)).toBeTruthy();
     expect(mockCanvasOwners.active).toBe(0);
-    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(savedBeforeReplay);
-    reverseReplays.push({ area: area.id, stageId: area.stageId, canvasOwnersAfterExit: mockCanvasOwners.active });
+    const expectedDiscoveries = mergeCampaignDiscoveries(savedBeforeReplay.discoveryHistory, area.id, replayCleared!);
+    await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).discoveryHistory)
+      .toEqual(expectedDiscoveries));
+    const afterReplay = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+    for (const key of ['runId', 'currentArea', 'completedAreas', 'checkpoint', 'keyLocation',
+      'storyFired', 'storyPresented', 'finale', 'campaignCompleted'] as const)
+      expect(afterReplay[key]).toEqual(savedBeforeReplay[key]);
+    if (expectedDiscoveries === savedBeforeReplay.discoveryHistory) expect(afterReplay).toEqual(savedBeforeReplay);
+    else expect(afterReplay.revision).toBeGreaterThan(savedBeforeReplay.revision);
+    await act(() => replayGate.onCheckpoint(replayCleared!));
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(JSON.stringify(afterReplay));
+    reverseReplays.push({ area: area.id, stageId: area.stageId, completed: true,
+      discoveriesAdded: (expectedDiscoveries[area.id] ?? []).filter(id =>
+        !(savedBeforeReplay.discoveryHistory[area.id] ?? []).includes(id)), canvasOwnersAfterExit: mockCanvasOwners.active });
+    await fireEvent.press(resumed.getByRole('button', { name: 'エリア一覧へ' }));
   }
   if (cold) { expect(entryCount).toBe(20); expect(reverseReplays).toHaveLength(5); }
   await resumed.unmount();
@@ -260,7 +283,7 @@ test.each([
       coldEndingAvailable: true,
     }, null, 2) + '\n');
   }
-}, 60_000);
+}, 90_000);
 
 test('product home starts one campaign envelope and resumes the same first area', async () => {
   const Gate = gateModule.NativeFirstPersonGate;

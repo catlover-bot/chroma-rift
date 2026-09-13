@@ -5,11 +5,11 @@
     "shadow",
     "contour"
   ],
-  "runId": "chapter-one-1789251900502",
+  "runId": "chapter-one-1789257891250",
   "trace": [
     {
       "area": "chapter-1-area-01",
-      "runId": "chapter-one-1789251900502",
+      "runId": "chapter-one-1789257891250",
       "revision": 3,
       "completedAreas": [
         "chapter-1-area-01"
@@ -19,7 +19,7 @@
     },
     {
       "area": "chapter-1-area-02",
-      "runId": "chapter-one-1789251900502",
+      "runId": "chapter-one-1789257891250",
       "revision": 5,
       "completedAreas": [
         "chapter-1-area-01",
@@ -30,7 +30,7 @@
     },
     {
       "area": "chapter-1-area-03",
-      "runId": "chapter-one-1789251900502",
+      "runId": "chapter-one-1789257891250",
       "revision": 7,
       "completedAreas": [
         "chapter-1-area-01",
@@ -42,7 +42,7 @@
     },
     {
       "area": "chapter-1-area-04",
-      "runId": "chapter-one-1789251900502",
+      "runId": "chapter-one-1789257891250",
       "revision": 8,
       "completedAreas": [
         "chapter-1-area-01",
@@ -55,7 +55,7 @@
     },
     {
       "area": "chapter-1-area-05",
-      "runId": "chapter-one-1789251900502",
+      "runId": "chapter-one-1789257891250",
       "revision": 14,
       "completedAreas": [
         "chapter-1-area-01",
@@ -177,26 +177,36 @@
     {
       "area": "chapter-1-area-05",
       "stageId": "departure-control-v1",
+      "completed": true,
+      "discoveriesAdded": [],
       "canvasOwnersAfterExit": 0
     },
     {
       "area": "chapter-1-area-04",
       "stageId": "mirror-corridor-v1",
+      "completed": true,
+      "discoveriesAdded": [],
       "canvasOwnersAfterExit": 0
     },
     {
       "area": "chapter-1-area-03",
       "stageId": "shadow-theatre-v1",
+      "completed": true,
+      "discoveriesAdded": [],
       "canvasOwnersAfterExit": 0
     },
     {
       "area": "chapter-1-area-02",
       "stageId": "uncanny-vault-v1",
+      "completed": true,
+      "discoveriesAdded": [],
       "canvasOwnersAfterExit": 0
     },
     {
       "area": "chapter-1-area-01",
       "stageId": "perception-gallery-v1",
+      "completed": true,
+      "discoveriesAdded": [],
       "canvasOwnersAfterExit": 0
     }
   ],

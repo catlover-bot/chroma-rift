@@ -53,3 +53,7 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 映写室の通しテストで、巡回体が防火幕の可動域にいる間は実UIと同じ取得判定が操作を拒否するのに、テストだけがブース到着直後の受理を仮定していた。Goal 012完了ブランチで検証済みのテスト修正を取り込み、最大12秒のsimulation中に取得判定がreadyになるのを待ってから実controller commandを要求する。身体への幕の下降を防ぐ本編ルールは変更していない。この取り込み後の `npm run check` はlint・型検査・109スイート/1,121テスト・iOS通常exportを再度通過した。
 
 到達済みエリアの練習で、最終checkpointは発見履歴へ合流していたが、完了通知が参照する `campaignCleared` へ格納されず、結果画面へ進めなかった。replay callbackも同じStage codecでcheckpointを検証し、検証済みの完了checkpointだけを練習の完了判定に渡す。App host試験では未検証のclear bitを拒否し、codec有効な完了fixtureから結果画面へ進み、最終checkpointだけにある観察bitを一方向に追加する一方、本編位置・checkpoint・物語は保持し、旧callbackを拒否した。fixtureによるhost検査であり、練習の全操作を実端末で通した証拠ではない。変更後の `npm run check` はlint・型検査・109スイート/1,121テスト・iOS通常exportに成功。source map付きiOS/Android製品exportは1,575/1,574 source・各10 asset、5エリア同梱・開発用画面/probe除外、iOS first-party source 196件一致とThree class同一性を確認した。native previewと公開URLの残件、および4つのrelease gateの判定は変わらない。
+
+続けて、完走後の05→01逆順replayを入口確認だけで終えず、各エリアでマウント済みcontrollerの実旋回・衝突付き歩行・装置操作から最終checkpointを作り、screenのhost callbackへ渡した。5エリアすべてが練習結果画面へ到達。新発見のない各回は本編envelope原文を変えず、Canvas mock ownerは入場中最大1・結果画面で0だった。`docs/qa-goal013/app-natural-route-standard-cold.json` の `reverseReplays` に完走と発見追加数を記録した。Canvas frame callbackとAsyncStorageはJestモックで、nativeでの練習完走を証明しない。
+
+この試験拡張後の `npm run check` はlint・型検査・109スイート/1,121テスト・iOS通常exportを通過した。製品ソースは前回のsource map付きiOS/Android export以降変更していない。4つのrelease gateは従来の判定を維持する。

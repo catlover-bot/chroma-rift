@@ -43,6 +43,7 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 - 第一章01→05の実controllerとcampaign domain host、およびマウント済みcontrollerを動かすApp/AsyncStorageモックの連続経路は、標準B→C/控えめC→Bで通過した。Canvas mockのpeak ownerは1、エンディング後0で、App cold restart後もエンディング入口が残る。結末画面の提示前に終了した条件もJest hostで検査し、完了envelopeと後追いのbeat提示を分けて確認した。05停止beatを読み飛ばして屋外へ進む場合も、結末で巡回体の正体・01→00を台帳の文で示し、両beatの提示を保存する。**native Canvas・実音声を伴うApp操作の連続動画**は未完了。04控えめと05標準の単独成功経路は実controller/sceneのSoftware WebGL動画で確認した。05の早すぎる閉扉拒否と手動開け直し→再誘導→退館、04標準の保持中捕捉とcold復元後の出口は実controller試験で通過した。両復帰経路の動画、追跡の実機見え方、実HUD・音・native Canvasは未確認。`docs/qa-goal013/README.md`に証拠と範囲を記録した。
 - Appの途中checkpoint・物語提示・replay発見の保存失敗は再試行/起動中だけ継続の選択肢を出し、画面内controllerを停止する。モックの書込失敗を連続させた試験で、原文保持、再試行成功後の保存、起動中だけのメモリ上の発見を確認した。保存依頼直後にホームへ退出した失敗も同じleaseなら通知・再試行できる。実端末の容量不足とnative画面重なりは未確認。
 - 標準B→CのJest App経路では、4回のエリア遷移後cold restore、10回の同一エリア再入場、完走後の05→01逆順replayを加えた。Canvas mockは計20回の入場でpeak 1、退出・unmount後0。本編セーブとrunIdは保持された。実端末のGPU/音owner、AsyncStorage、熱・frame timeを証明しない。
+- 逆順replayの5エリアは、各マウント済みcontrollerを実操作で出口まで進め、codec有効な最終checkpointから練習結果画面へ到達した。新発見のない実行では本編envelope原文を変えず、結果画面のCanvas mock ownerは0。練習完了のnative Canvas/実音/端末保存は未確認。
 - 01〜03の変更前後は同条件のSoftware WebGL動画で各エリアの短い操作を比較した。01は目的文と点灯後の点検記録の差があり、非常灯の受理とcameraは一致。02の長さ調整と03の灯り調整は観測経路のtimeline・独立動画がbyte一致。各エリア全体の実機比較は未完了。
 - App hostでエリア境界の未提示短文を次Canvas起動前に表示・保存する経路を追加した。完了envelope保存後に提示bitの書込が失敗しても、旧Canvasを維持して再試行/起動中のみ継続を選べる。境界表示中のcold終了は次エリアの安全入口で未提示文を再表示する。JestのCanvas/AsyncStorageモックによる確認で、native表示と実端末の永続性は未確認。
 
