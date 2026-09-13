@@ -286,6 +286,12 @@
       }
     }
   ],
+  "simulationCpu": {
+    "samples": 1801,
+    "p50Ms": 0.049,
+    "p95Ms": 0.157,
+    "maxMs": 2.903
+  },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
     "actorBodyHeight": 2.24
@@ -411,7 +417,7 @@
     "src/domain/stageKit/modules.ts": "063b1c2cfe480b4c64fc162b4653aaa33621880e2917def091693e317b41e6fa",
     "src/domain/theatre/environment.ts": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246",
     "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
-    "src/domain/stageKit/definitions.ts": "480d755637db35de91886f4ac240e444324f04e8195adf18affcd9b8ea25f49c",
+    "src/domain/stageKit/definitions.ts": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495",
     "src/domain/theatre/runtime.ts": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f",
     "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
     "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
@@ -467,10 +473,10 @@
     "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
     "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
     "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
-    "src/domain/stages/mirror-corridor-v1/binding.ts": "9ea1535f6a721550e5686e5f0971ab5bb028de74e94ee537fb22f20020a72dab",
-    "src/domain/stages/mirror-corridor-v1/definition.ts": "9905419be315c60984364dc07bf6799df9b9dbc2daa6a43966e479af175d5d0b",
-    "src/domain/stages/mirror-corridor-v1/session.ts": "e2638576c3c8c04a7eeafc3cdaad848024735e8f4fe58dad50bf85faf5925285",
-    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "f7e3b65c05aa8a6e7a7404c32ef8ab5bbfababb77f2d3cab7a483261f8bca2d9",
+    "src/domain/stages/mirror-corridor-v1/binding.ts": "919d197ce00dfcff11a263b553928a66fc70d4ce9615232de75e680d1ea07960",
+    "src/domain/stages/mirror-corridor-v1/definition.ts": "11a792634b9c0d124a6ce74630284b607e77aaaf45b368c3ceeadc899b95ede3",
+    "src/domain/stages/mirror-corridor-v1/session.ts": "1e6546b658a27843c9eb64a751607aa9ee2cfc6de5d40afd1f42ade6884fbf72",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
     "src/domain/stages/mirror-corridor-v1/actor.ts": "b8fc6cfc197e98b908450b7addd0967f4141dbadb339a2095395fc9f19d9feda",
     "src/domain/stages/departure-control-v1/binding.ts": "ae6e0fdba7ac6a6354f28d4cd3d8d727088ed82630b7ec25bf5300bfbfec574b",
     "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
@@ -522,5 +528,5 @@
     "durationSeconds": 36.5
   },
   "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. Early closure refusal, manual reopening, second bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "33fbb0daed52de93e343d16084bb575c8d70897f4ea5377c829de13ed2ffaf5f"
+  "toolHash": "8c5c02444ad88e51585e3e30f7f2da76e3e735c7a955335ed2009d2b657d244a"
 }

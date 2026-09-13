@@ -179,6 +179,12 @@
       "ratchets": 3
     }
   ],
+  "simulationCpu": {
+    "samples": 1655,
+    "p50Ms": 0.056,
+    "p95Ms": 0.176,
+    "maxMs": 2.217
+  },
   "final": {
     "pose": {
       "position": {
@@ -312,5 +318,5 @@
     "fps": 10
   },
   "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity.",
-  "toolHash": "b7cf931792b394c125c30cf7adc478afc228b74ac1806fb6b9ab0e1037a584d0"
+  "toolHash": "4fe91ad155194f46989968ac8c95da272e3bd0591fad359f121649ad99f4aa19"
 }

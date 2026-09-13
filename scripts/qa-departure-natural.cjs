@@ -19,6 +19,13 @@ const { actorFullyContained, doorSweepClear, BELL_RECEIVER } = require('../src/d
 const { ACTOR_MODEL_BOUNDS } = require('../src/domain/actorMotion/envelope.ts');
 const observationTarget = { ...BELL_RECEIVER, y: 1.6 };
 
+function timingSummary(samples) {
+  if (!samples.length) throw Error('No CPU timing samples');
+  const sorted = [...samples].sort((a, b) => a - b);
+  const at = fraction => Number(sorted[Math.floor((sorted.length - 1) * fraction)].toFixed(3));
+  return { samples: sorted.length, p50Ms: at(.5), p95Ms: at(.95), maxMs: at(1) };
+}
+
 async function extract() {
   const module = stageModule('departure-control-v1');
   const fresh = module.checkpoint(module.create());
@@ -38,13 +45,16 @@ async function extract() {
   if (!receiverMesh) throw Error('Containment bell receiver is missing from the scene');
   let minimumReceiverBottom = Infinity;
   const callbacks = bridge.callbacks.splice(0), frames = [], events = [];
+  const simulationCpuMs = [];
   const state = () => { const value = controller.runtime.stageSession?.value;
     if (!isStageSession(value)) throw Error('Departure session lost'); return value; };
   const tick = () => {
+    const started = performance.now();
     RC.advanceController(controller, 1 / 60, camera);
     runtime.current = controller.runtime;
     callbacks.forEach(callback => callback({}, 1 / 60));
     scene.updateMatrixWorld(true);
+    simulationCpuMs.push(performance.now() - started);
     if (events.length === 0 || tick.count % 6 === 0) capture();
     tick.count += 1;
   }; tick.count = 0;
@@ -168,6 +178,7 @@ async function extract() {
   fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
   await mounted.unmount(); resources.dispose(); bridge.verify();
   return { mode: recovery ? 'recovery' : 'natural', frames: frames.length, simulationSeconds: tick.count / 60, events,
+    simulationCpu: timingSummary(simulationCpuMs),
     visualClearance: { minimumReceiverBottom, actorBodyHeight: ACTOR_MODEL_BOUNDS.height },
     final: { pose: controller.runtime.pose, cleared: controller.runtime.progress.cleared, actor: state().actor },
     sourceHashes: Object.fromEntries(bridge.hashes) };
@@ -188,10 +199,12 @@ async function render(report) {
     const objects=new Map();scene.traverse(o=>objects.set(o.uuid,o));
     const camera=[...objects.values()].find(o=>o.isPerspectiveCamera);
     window.draw=async i=>{const frame=data.frames[i];for(const v of frame.objects){const o=objects.get(v.uuid);o.matrix.fromArray(v.matrix);o.matrix.decompose(o.position,o.quaternion,o.scale);o.visible=v.visible;}
-      scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);renderer.render(scene,camera);
+      scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);
+      const cpuStarted=performance.now();renderer.render(scene,camera);
+      const cpuSubmitMs=performance.now()-cpuStarted;
       document.getElementById('caption').textContent=frame.event;
       await new Promise(resolve=>requestAnimationFrame(resolve));
-      return{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};};
+      return{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,cpuSubmitMs,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};};
     window.finish=()=>{const gs=new Set(),ms=new Set(),ts=new Set();scene.traverse(o=>{if(o.geometry)gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){ms.add(m);for(const t of Object.values(m))if(t?.isTexture)ts.add(t);}});
       gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();renderer.renderLists.dispose();
       return{geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,renderers:1};};window.ready=true;
@@ -204,14 +217,18 @@ async function render(report) {
       if (browser.errors.length) throw Error(JSON.stringify(browser.errors)); await delay(100);
     }
     let maxCalls = 0, maxTriangles = 0;
+    const renderCpuMs = [];
     for (let i = 0; i < report.frames; i += 1) {
       const result = await browser.evaluate(`window.draw(${i})`);
+      renderCpuMs.push(result.cpuSubmitMs);
       maxCalls = Math.max(maxCalls, result.calls); maxTriangles = Math.max(maxTriangles, result.triangles);
       const screenshot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
       fs.writeFileSync(path.join(directory, String(i).padStart(5, '0') + '.png'), Buffer.from(screenshot.data, 'base64'));
     }
     const disposed = await browser.evaluate('window.finish()');
-    const metrics = { maxCalls, maxTriangles, disposed, errors: browser.errors };
+    const metrics = { maxCalls, maxTriangles, cpuRenderSubmit: timingSummary(renderCpuMs),
+      cpuTimingScope: 'SwiftShader browser JS renderer.render call; excludes screenshot/readback, RAF wait, native presentation and GPU completion',
+      disposed, errors: browser.errors };
     fs.writeFileSync(path.join(out, 'webgl.json'), JSON.stringify(metrics, null, 2) + '\n');
     if (disposed.geometries || disposed.textures || browser.errors.length) throw Error('WebGL disposal/error gate failed');
   } finally { await browser.close(); }

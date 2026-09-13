@@ -7,6 +7,13 @@
     384,
     384
   ],
+  "cpuRenderSubmit": {
+    "samples": 303,
+    "p50Ms": 0.6,
+    "p95Ms": 1.2,
+    "maxMs": 38
+  },
+  "cpuTimingScope": "SwiftShader browser JS mirror and main renderer.render calls; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
   "disposed": {
     "geometries": 0,
     "textures": 0,

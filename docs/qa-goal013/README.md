@@ -44,6 +44,14 @@
 
 Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF](../GOAL-012-EXTENSION-PROOF.md) を参照。今回の変更前後は [01の入室・非常灯](area01-light-before-after.mp4)、[02の長さ調整](area02-length-before-after.mp4)、[03の灯り調整](area03-light-before-after.mp4) を左右同時に収録し、[01の入力・hash・限界](area01-before-after.json) と [02/03の入力・hash・限界](area02-03-before-after.json) に固定した。左はGoal 012のゲームソース、右はGoal 013。01は入室後の90 frame、seed 73、全frameのcamera行列が一致し、両方で実HUDから非常灯操作が受理された。Goal 013では冒頭の目的文が職員通路に変わり、点灯後に新しい点検記録が出るため、映像と提示動作は異なる。QA用Three hostは点灯後にpropsを更新するため再構築した。02/03は同じscript、seed、camera、入力を各ソースへ独立に通した結果、それぞれのtimelineと独立動画がbyte一致した。これは各**装置操作一つずつ**の証拠であり、各エリア全体を確認するものではない。01は3秒、02は8.17秒、03は20秒。各並列動画の抽出フレームを開いたが、MP4の連続視聴はしていない。旧素材と新素材を混ぜた編集動画は単一実行の証拠にしない。
 
+04/05の同じ経路をCPU計測付きで再実行した。Node v24.20.0上の実controller更新とscene callback（60Hz）を `performance.now()` で測り、ChromiumのSwiftShader Software WebGLで反射を含む `renderer.render` のJS呼出し時間を別に測った。描画投入時間にはscreenshot取得、RAF待機、native presentation、GPU完了を含めない。各動画のSHA-256は再実行前とbyte一致で、描画内容と経路の差はない。数値はこのローカル環境の計測で、iPhoneのframe timeやFPSではない。
+
+| 経路 | simulation CPU p50 / p95 / max | WebGL描画投入 p50 / p95 / max | サンプル数 simulation / 描画 |
+| --- | ---: | ---: | ---: |
+| 04 鏡廊 | 0.056 / 0.176 / 2.217 ms | 0.6 / 1.2 / 38.0 ms | 1,655 / 303 |
+| 05 自然成功 | 0.065 / 0.253 / 1.852 ms | 0.4 / 0.9 / 27.6 ms | 811 / 182 |
+| 05 開け直し・再誘導 | 0.049 / 0.157 / 2.903 ms | 0.4 / 0.7 / 25.3 ms | 1,801 / 365 |
+
 必要な録画/ログの順序:
 
 1. 標準と控えめで、B→C/C→Bの両順を含む新規01→05のApp経路を、native Canvasと実音声を使う端末で再実行・録画する。Jestのhandoffログと端末のrunId、保存revision、Canvas owner数を照合する。

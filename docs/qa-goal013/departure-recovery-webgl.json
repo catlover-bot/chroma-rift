@@ -1,6 +1,13 @@
 {
   "maxCalls": 46,
   "maxTriangles": 3578,
+  "cpuRenderSubmit": {
+    "samples": 365,
+    "p50Ms": 0.4,
+    "p95Ms": 0.7,
+    "maxMs": 25.3
+  },
+  "cpuTimingScope": "SwiftShader browser JS renderer.render call; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
   "disposed": {
     "geometries": 0,
     "textures": 0,
