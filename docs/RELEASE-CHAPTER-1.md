@@ -119,3 +119,5 @@ eas build --platform ios --profile production
 03映写機の実scene付きHUDも3サイズで再抽出した。320幅では取得不能理由・映写機状態・通知が重なったため、右列の説明を一つにし、コンパクト画面の通知を目的欄に一時表示するよう修正した。各サイズ7抽出frameのCSS監査でHUD矩形の重なり0、代表画像を開いて確認した。native previewとVoiceOverの公開ゲートは引き続き未確認。
 
 現行ソースで03映写機と灯り操作を各3サイズ・7抽出frameで再検査し、HUD重なり0と320幅のスクロール後の確定・退出ボタンを画像で確認した。全回帰はlint・型検査・110スイート/1,132テスト・iOS通常exportを通過。定義検査2件、3対象の循環0、iOS/Androidのsource mapでfirst-party各201件一致、iOS Three 1 source/23参照のclass identityを確認した。native preview、正式なprivacy/support URLとストア申告は未完了で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
+02の長さ/鉛直装置も現行の実sceneと画面で12レイアウトを再抽出し、補助前後24状態で「探索へ戻る」がスクロール途中に44px以上見えることを確認した。画像と150 source hashは `docs/qa-goal013/vault-large-text-report.json`。端末のYoga/VoiceOver/指操作のゲートは未確認のまま。

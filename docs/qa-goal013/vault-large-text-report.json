@@ -1,0 +1,371 @@
+{
+  "boundary": "Actual FirstPersonScreen/controller/VaultScene, native readiness/audio stubbed; software WebGL and browser CSS host translation, not iPhone Yoga, VoiceOver, finger scroll, audio, FPS or perceived illusion.",
+  "command": "node scripts/preview-vault-chapter.cjs --quick --stage=.expo/goal013/vault-layout-current --output=.expo/goal013/vault-layout-current-report",
+  "sourceHashCount": 150,
+  "toolHash": "865d4f187023ab3894c87890bf9761db32987958342a79f4a65ecdaf83c2e585",
+  "sourceHashesFile": "vault-large-text-source-hashes.json",
+  "sourceHashesSha256": "da08fa63928fb112af17a6aaae5f5398c183ff6f2981b3ed33ca1102057f39d7",
+  "runs": 17,
+  "layouts": 12,
+  "returnChecks": 24,
+  "minReturnVisibleWidth": 103.328125,
+  "minReturnVisibleHeight": 48,
+  "returnFailures": [],
+  "layoutChecks": [
+    {
+      "id": "layout-length-320-font1",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 108,
+          "visibleHeight": 48
+        },
+        {
+          "frame": 1,
+          "scrollTop": 20,
+          "disabled": false,
+          "visibleWidth": 265,
+          "visibleHeight": 48
+        }
+      ]
+    },
+    {
+      "id": "layout-rod-320-font1",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 103.328125,
+          "visibleHeight": 48
+        },
+        {
+          "frame": 1,
+          "scrollTop": 28,
+          "disabled": false,
+          "visibleWidth": 265,
+          "visibleHeight": 48
+        }
+      ]
+    },
+    {
+      "id": "layout-length-320-font2",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 280,
+          "visibleHeight": 51.59375
+        },
+        {
+          "frame": 1,
+          "scrollTop": 100,
+          "disabled": false,
+          "visibleWidth": 265,
+          "visibleHeight": 51.59375
+        }
+      ]
+    },
+    {
+      "id": "layout-rod-320-font2",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 39,
+          "disabled": false,
+          "visibleWidth": 265,
+          "visibleHeight": 51.59375
+        },
+        {
+          "frame": 1,
+          "scrollTop": 142,
+          "disabled": false,
+          "visibleWidth": 265,
+          "visibleHeight": 51.59375
+        }
+      ]
+    },
+    {
+      "id": "layout-length-390-font1.5",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 140.671875,
+          "visibleHeight": 48
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 350,
+          "visibleHeight": 48
+        }
+      ]
+    },
+    {
+      "id": "layout-rod-390-font1.5",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 133.671875,
+          "visibleHeight": 48
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 350,
+          "visibleHeight": 48
+        }
+      ]
+    },
+    {
+      "id": "layout-length-390-font2",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 350,
+          "visibleHeight": 51.59375
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 335,
+          "visibleHeight": 51.59375
+        }
+      ]
+    },
+    {
+      "id": "layout-rod-390-font2",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 350,
+          "visibleHeight": 51.59375
+        },
+        {
+          "frame": 1,
+          "scrollTop": 65,
+          "disabled": false,
+          "visibleWidth": 335,
+          "visibleHeight": 51.59375
+        }
+      ]
+    },
+    {
+      "id": "layout-length-430-font1",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 144.671875,
+          "visibleHeight": 48
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 126,
+          "visibleHeight": 48
+        }
+      ]
+    },
+    {
+      "id": "layout-rod-430-font1",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 140,
+          "visibleHeight": 48
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 121.328125,
+          "visibleHeight": 48
+        }
+      ]
+    },
+    {
+      "id": "layout-length-430-font2",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 163.328125,
+          "visibleHeight": 51.59375
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 390,
+          "visibleHeight": 51.59375
+        }
+      ]
+    },
+    {
+      "id": "layout-rod-430-font2",
+      "maxCalls": null,
+      "maxTriangles": null,
+      "disposed": {
+        "geometries": 0,
+        "textures": 0,
+        "rendererCount": 1
+      },
+      "buttonOverlaps": 0,
+      "pauseOverlaps": 0,
+      "returnActions": [
+        {
+          "frame": 0,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 390,
+          "visibleHeight": 51.59375
+        },
+        {
+          "frame": 1,
+          "scrollTop": 0,
+          "disabled": false,
+          "visibleWidth": 375,
+          "visibleHeight": 51.59375
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "images": [
+    {
+      "file": "vault-large-text-layout-length-320-font2-baseline.png",
+      "sha256": "414d22b3a9fec8faebd570d0b6d76cfba875bffe7b2f3361c3300d916e3fb1cb"
+    },
+    {
+      "file": "vault-large-text-layout-length-320-font2-expanded-return.png",
+      "sha256": "952505619c5c5cd8d2544126cdb1ee401a1361b72391a8d08a4e2bcb4f161957"
+    },
+    {
+      "file": "vault-large-text-layout-rod-320-font2-baseline.png",
+      "sha256": "551b4ba067a4138fb0a249a8169eacdf2b94009d6b6eca6964818122081eb452"
+    },
+    {
+      "file": "vault-large-text-layout-rod-320-font2-expanded-return.png",
+      "sha256": "ba3113abf2fc8590da3ea9b3543fb7a610656e89a937420ad2a0c60c6e66db45"
+    }
+  ]
+}

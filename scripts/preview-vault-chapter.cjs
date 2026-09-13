@@ -329,6 +329,27 @@ async function capture(reports) {
             const bottom = await browser.evaluate('window.renderChapterFrame(' + frame + ',true)'); stats.push({ ...bottom, scrollPosition: 'bottom' });
             const bottomShot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
             fs.writeFileSync(path.join(output, report.id + '-' + shot.name + '-bottom.png'), Buffer.from(bottomShot.data, 'base64'));
+            // The expanded aids can place the return action between the top and
+            // bottom positions. Scroll it into view and check its clipped size.
+            const returnAction = await browser.evaluate(`new Promise(resolve => {
+              const scroll = document.querySelector('[data-testid="vault-device-scroll"]');
+              const button = [...scroll.querySelectorAll('[role="button"]')]
+                .find(node => node.dataset.label === '探索へ戻る');
+              if (!button) { resolve(null); return; }
+              const before = button.getBoundingClientRect(), clip = scroll.getBoundingClientRect();
+              scroll.scrollTop += before.top - clip.top - (scroll.clientHeight - before.height) / 2;
+              requestAnimationFrame(() => requestAnimationFrame(() => {
+                const rect = button.getBoundingClientRect(), visible = scroll.getBoundingClientRect();
+                resolve({ scrollTop: scroll.scrollTop, disabled: button.dataset.disabled === 'true',
+                  visibleWidth: Math.min(rect.right, visible.right) - Math.max(rect.left, visible.left),
+                  visibleHeight: Math.min(rect.bottom, visible.bottom) - Math.max(rect.top, visible.top) });
+              }));
+            })`);
+            if (!returnAction || returnAction.disabled || returnAction.visibleWidth < 44 || returnAction.visibleHeight < 44)
+              throw new Error(`${report.id}/${shot.name}: return action is not reachable after scrolling`);
+            stats.push({ frame, scrollPosition: 'return', returnAction });
+            const returnShot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+            fs.writeFileSync(path.join(output, report.id + '-' + shot.name + '-return.png'), Buffer.from(returnShot.data, 'base64'));
           }
         }
         if (frame % 300 === 0) console.log('WebGL ' + report.id + ' ' + frame + '/' + report.frameCount);
