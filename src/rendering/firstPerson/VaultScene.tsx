@@ -138,7 +138,8 @@ export function VaultScene({ world, runtime, resources, reducedMotion, onFrameEr
       <mesh geometry={resources.box} material={r.board} position={[0, 2.96, -.105]} scale={[1.16, .035, .035]} />
       <mesh geometry={resources.box} material={r.board} position={[0, .17, -.105]} scale={[1.16, .035, .035]} />
       <mesh name="vault-theatre-threshold-handle" geometry={resources.box} material={r.board} position={[.35, 1.35, -.14]} scale={[.045, .32, .045]} />
-      <mesh name="vault-theatre-threshold-sign" geometry={resources.box} material={r.board} position={[0, 2.2, -.145]} scale={[.55, .12, .025]} />
+      <mesh name="vault-theatre-threshold-sign" geometry={resources.plane} material={resources.destinationSign('03')}
+        position={[0, 2.2, -.16]} rotation={[0, Math.PI, 0]} scale={[.9, .225, 1]} />
       <mesh name="vault-theatre-threshold-light" geometry={resources.box} material={resources.neutral} position={[0, 3.31, -.3]} scale={[.78, .05, .35]} />
     </group>
   </group>;

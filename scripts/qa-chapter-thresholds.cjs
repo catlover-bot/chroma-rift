@@ -43,14 +43,19 @@ async function main() {
     const door = scene.getObjectByName(doorName);
     const leaf = scene.getObjectByName(doorName.replace(/-door$/, '-leaf'));
     const handle = scene.getObjectByName(doorName.replace(/-door$/, '-handle'));
-    if (!(door instanceof THREE.Mesh) || !(leaf instanceof THREE.Mesh) || !(handle instanceof THREE.Mesh))
+    const sign = scene.getObjectByName(doorName.replace(/-door$/, '-sign'));
+    if (!(door instanceof THREE.Mesh) || !(leaf instanceof THREE.Mesh) || !(handle instanceof THREE.Mesh) ||
+        !(sign instanceof THREE.Mesh) || !(sign.material.map instanceof THREE.DataTexture))
       throw Error(`${id}: incomplete destination threshold door`);
     for (const fn of bridge.callbacks.splice(0)) fn({}, 0);
     scene.updateMatrixWorld(true);
     const base = door.material.color, face = leaf.material.color;
     if (Math.hypot(base.r - face.r, base.g - face.g, base.b - face.b) < .1)
       throw Error(`${id}: destination door leaf has insufficient material contrast`);
-    for (const part of [leaf, handle]) {
+    const pixels = sign.material.map.image.data;
+    if (new Set(Array.from({ length: pixels.length / 4 }, (_, i) => pixels[i * 4])).size < 2)
+      throw Error(`${id}: destination plaque has no lettering`);
+    for (const part of [leaf, handle, sign]) {
       const point = part.getWorldPosition(new THREE.Vector3()).project(camera);
       if (Math.abs(point.x) >= 1 || Math.abs(point.y) >= 1 || point.z < 0 || point.z > 1)
         throw Error(`${id}: ${part.name} is outside the threshold QA view`);

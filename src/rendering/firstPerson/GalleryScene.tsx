@@ -209,7 +209,8 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       <mesh geometry={resources.box} material={r.outline} position={[0, 2.96, -.105]} scale={[1.1, .035, .035]} />
       <mesh geometry={resources.box} material={r.outline} position={[0, .17, -.105]} scale={[1.1, .035, .035]} />
       <mesh name="gallery-vault-threshold-handle" geometry={resources.box} material={r.outline} position={[.34, 1.35, -.14]} scale={[.045, .32, .045]} />
-      <mesh name="gallery-vault-threshold-sign" geometry={resources.box} material={r.exitSign} position={[0, 2.2, -.145]} scale={[.55, .12, .025]} />
+      <mesh name="gallery-vault-threshold-sign" geometry={resources.plane} material={resources.destinationSign('02')}
+        position={[0, 2.2, -.16]} rotation={[0, Math.PI, 0]} scale={[.9, .225, 1]} />
       <mesh name="gallery-vault-threshold-light" geometry={resources.box} material={resources.neutral} position={[0, 3.31, -.3]} scale={[.72, .05, .35]} />
     </group>
   </group>;

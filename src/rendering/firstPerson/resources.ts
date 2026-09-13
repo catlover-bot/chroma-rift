@@ -2,12 +2,15 @@ import { createTheatreResources } from './theatreResources';
 import { createVaultResources } from './vaultResources';
 import * as THREE from 'three';
 import { createGalleryResources } from './galleryResources';
+import { createDestinationSign } from './destinationSigns';
+import type { DestinationSignId } from './destinationSignData';
 
 import { illusionPalette, type PreferredColor } from '../IllusionPalette';
 import { createEmblemSurface, DEFAULT_EMBLEM_APPEARANCE, type EmblemAppearance } from './emblemSurface';
 
 /** Explicitly owned by one scene mount; no geometries or materials are made in useFrame. */
 export function createSceneResources(lowQuality: boolean, emblemAppearance: EmblemAppearance | null = DEFAULT_EMBLEM_APPEARANCE, gallery = false, vault = false, theatre = false) {
+  const destinationSigns = new Map<DestinationSignId, ReturnType<typeof createDestinationSign>>();
   const theatreResources = theatre ? createTheatreResources() : undefined;
   const vaultResources = vault ? createVaultResources() : undefined;
   const galleryResources = gallery ? createGalleryResources() : undefined;
@@ -55,7 +58,13 @@ export function createSceneResources(lowQuality: boolean, emblemAppearance: Embl
   updatePalette('neutral', false, 'medium');
   return {
     theatreResources, vaultResources, galleryResources, box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
+    destinationSign(id: DestinationSignId) {
+      let sign = destinationSigns.get(id);
+      if (!sign) { sign = createDestinationSign(id); destinationSigns.set(id, sign); }
+      return sign.material;
+    },
     dispose() {
+      destinationSigns.forEach(sign => sign.dispose()); destinationSigns.clear();
       emblemSurface?.dispose();
       galleryResources?.dispose();
       vaultResources?.dispose();

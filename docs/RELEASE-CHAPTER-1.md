@@ -100,6 +100,10 @@ eas build --platform ios --profile preview
 eas build --platform ios --profile production
 ```
 
-01〜03の旧境界画像を開き直すと、近接視点では実際の扉が判別しにくかったため、各終端sceneの扉面・内枠・取っ手を視野内へ追加し、同じworld床上QA cameraの3枚を再生成・目視した。QAは色差・部品の視野内位置と画像/source hashを確認する。銘板に読める次エリア名はない。端末の製品HUD・実操作・視認性は未確認で、公開ゲートは引き続き `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。
+01〜03の旧境界画像を開き直すと、近接視点では実際の扉が判別しにくかったため、各終端sceneの扉面・内枠・取っ手を視野内へ追加し、同じworld床上QA cameraの3枚を再生成・目視した。QAは色差・部品の視野内位置と画像/source hashを確認する。この段階では銘板に読める次エリア名はなかった。端末の製品HUD・実操作・視認性は未確認で、公開ゲートは引き続き `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。
 
 この差分後の全回帰は110スイート/1,131テスト、lint、型検査、iOS通常exportに成功。Stage定義2件、iOS/Android/neutralの循環0、source map付き両OS公開用export（iOS 1,578/Android 1,577 source、各10 asset、first-party各199 source本文一致、5エリア同梱・開発画面/probe除外）、iOS Three 1 source/22参照のclass identity、Doctor 21/21、Expo依存検査も通過した。`automatedChecksPassed=true` を維持し、実機previewと公式URLがないため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
+01〜03の出口銘板には日本語の次エリア名と番号を加えた。ローカルSoftware WebGLの390×844画像3枚を開いて可読性を確認した。フォント本体は同梱せず、生成済みマスクをstageごとのDataTextureへ復元する。iPhoneの実表示・製品HUDとの重なりと最終扉からの操作はpreviewで確認するまで未検証。
+
+看板追加後の `npm run check` は110スイート/1,132テスト、lint、型検査、iOS通常exportを通過。Stage定義2件、iOS/Android/neutral循環0、両OSの公開用source-map export（iOS 1,580/Android 1,579 source、各10 asset、first-party各201 source本文一致、5エリア同梱・開発画面/probe除外）、iOS Three 1 source/23参照のclass identity、Doctor 21/21、Expo依存検査も通過した。04/05の現行ソースでの動画4本は旧MP4とbyte一致し、resource変更に伴うQA reportだけを更新した。`automatedChecksPassed=true` を維持し、native previewと正式な公開URLがないため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

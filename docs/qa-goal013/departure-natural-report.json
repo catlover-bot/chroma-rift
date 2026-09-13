@@ -178,9 +178,9 @@
   ],
   "simulationCpu": {
     "samples": 837,
-    "p50Ms": 0.049,
-    "p95Ms": 0.221,
-    "maxMs": 2.147
+    "p50Ms": 0.038,
+    "p95Ms": 0.132,
+    "maxMs": 2.073
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -390,7 +390,7 @@
     "src/domain/firstPerson/tutorial.ts": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
     "src/domain/firstPerson/interactionCue.ts": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
     "src/rendering/firstPerson/diagnostics.ts": "3ca2cc8c1576b3f148a8b2e5a9d084362f921432018f5bdf6d9d73d014fa9584",
-    "src/rendering/firstPerson/resources.ts": "9e6752e852b763083073fff47dd1d4f9657a8b021c9517ec7da440fd35ca51d6",
+    "src/rendering/firstPerson/resources.ts": "7b404df301198974fdd000c38ef75c1089697ee293f03f65459c1a7ea51acd9e",
     "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
     "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
     "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
@@ -399,6 +399,8 @@
     "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
     "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
     "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/firstPerson/destinationSigns.ts": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518",
+    "src/rendering/firstPerson/destinationSignData.ts": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097",
     "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
     "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
     "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",

@@ -47,4 +47,17 @@ describe('first-person native scene resources', () => {
     expect(low.panel.type).toBe(standard.panel.type);
     low.dispose(); standard.dispose();
   });
+  it('reuses each destination plaque and releases its owned texture and material once', () => {
+    const resources = createSceneResources(false, null);
+    const gallerySign = resources.destinationSign('02');
+    const vaultSign = resources.destinationSign('03');
+    expect(resources.destinationSign('02')).toBe(gallerySign);
+    expect(vaultSign).not.toBe(gallerySign);
+    const owned = [gallerySign, gallerySign.map!, vaultSign, vaultSign.map!];
+    const disposed = new Map<object, number>();
+    for (const resource of owned)
+      resource.addEventListener('dispose', () => disposed.set(resource, (disposed.get(resource) ?? 0) + 1));
+    resources.dispose();
+    expect([...disposed.values()]).toEqual([1, 1, 1, 1]);
+  });
 });

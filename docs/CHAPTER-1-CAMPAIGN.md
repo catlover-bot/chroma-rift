@@ -15,3 +15,5 @@
 この文書は進行中の接続記録である。04控えめの実鏡像・保持・退避、05標準の収容・停止・屋外の単独経路はSoftware WebGL動画で確認した。04格子後の制御室前室と05の屋外はそれぞれの出口から見えるsceneを持ち、汎用の浮いた出口meshは描かない。04標準の保持中捕捉→指解放→codec復元→物理出口は実controller試験と、検証済み鍵・練習入口からのSoftware WebGL動画で確認した。動画では歯止め2/3を保持し、残り一段を実操作する。01から屋外までの実controllerによる自然操作は、標準B→Cと控えめC→BでAppのマウント済みcontrollerにも接続した。JestのCanvas/AsyncStorageモックでは4回のエリア遷移後cold restore、10回の再入場、完走後の05→01逆順replayも通過した。native Canvas・音・実端末保存を伴うApp通しプレイ、物語beatと発見記録の実機表示確認は残っている。`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。第二章を追加する時は別のCampaignDefinitionとstage群を登録し、第一章の保存schemaや結末を再定義しない。
 
 01〜03の既存最終扉の先も、sceneの終端壁に次区画の扉面・枠・小灯を表示する。worldの境界判定や保存遷移は変えない。各stageの終端床上に置いたQA視点で3枚のSoftware WebGL静止画を確認した。実controllerの到達・handoffは別の連続ログで確認済みだが、この静止画は同じ操作録画やiPhone表示を示さない。証拠と範囲は `docs/qa-goal013/README.md`。
+
+01〜03の終端扉には次のエリア番号と日本語名を描いた。02「収蔵庫」、03「映写室」、04「鏡越しの回廊」の静的銘板は、各sceneのresource ownerが必要時に作るDataTextureで、退出時に解放する。旧最終扉のworld判定・保存handoffは変えていない。390×844の手動QA cameraで文字と扉の視認性を確認したが、native iPhoneの画面と遷移操作は未確認。

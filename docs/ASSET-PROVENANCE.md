@@ -52,3 +52,5 @@ node scripts/preview-gallery.cjs --capture
 ## Goal 013 の公開用図形
 
 - `assets/branding/icon.png` と `assets/branding/splash-icon.png` は `scripts/generate-brand-assets.cjs` の自作ベクター輪郭をChromium Canvasで1024角PNGへ描いた。外部図版、商標、生成AI画像は使用していない。前者は不透明な暗色背景、後者は透過背景。実際のiPhoneホーム画面と起動画面は未確認。
+
+01〜03の次区画銘板「02 収蔵庫」「03 映写室」「04 鏡越しの回廊」は `scripts/generate-destination-signs.cjs` がローカルChromium Canvasで日本語文字を二値マスク化した。生成結果 `src/rendering/firstPerson/destinationSignData.ts` のSHA-256は `2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097`。制作時に使用した `NotoSansCJK-Regular.ttc` はSHA-256 `b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a` のNoto Sans CJK JPで、[Noto CJK Sansのライセンス](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)はSIL Open Font License 1.1。フォント本体はアプリへ同梱せず、3つのビットマップだけをDataTextureへ復元する。実sceneの資源ownerがtexture/materialを解放する。外部の看板画像は転載していない。`node scripts/generate-destination-signs.cjs --check` で生成一致を検査できる。
