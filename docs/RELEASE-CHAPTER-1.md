@@ -20,11 +20,13 @@
 
 04の鏡像と実身体を同一simulation frameで並べたSoftware WebGLのQA動画を `docs/qa-goal013/mirror-identity.mp4` に追加した。右側は固定QA cameraであり、製品の一人称表示やiPhoneの反射確認ではない。native previewで鏡像・実体・操作を確認するゲートは未完了のまま。
 
-この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,124テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
+この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（最新のlint、型検査、110スイート/1,133テスト、iOS通常export、および製品ソース最終変更後のiOS/Android公開用export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成
 
-`app.json` の表示版は1.0.0。`package.json` も同じ版とし、保存記録の `APP_VERSION` は `app.json` から読む。既存の `com.hirotakam.chromarift`、EAS projectId、縦画面、マイク録音と背景再生の無効化を維持した。`eas.json` には従来のdevelopmentに加え、内部配布・開発ツールなしのpreviewと、ストア用productionを追加。preview/productionはdevelopmentを継承しない。`cli.appVersionSource=remote` とproductionの `autoIncrement=true` を指定した。**EAS上の既存buildNumberは未確認**であり、remote値の初期化や変更は行っていない。ビルド実行前にオーナーが過去のTestFlight/App Store ConnectとEASの番号を照合する。
+`app.json` の表示版は1.0.0。`package.json` も同じ版とし、保存記録の `APP_VERSION` は `app.json` から読む。既存の `com.hirotakam.chromarift`、EAS projectId、縦画面、マイク録音と背景再生の無効化を維持した。`eas.json` には従来のdevelopmentに加え、内部配布のpreviewとストア用productionを追加。preview/productionはdevelopmentを継承せず、両方に `developmentClient: false` を明示した。`cli.appVersionSource=remote` とproductionの `autoIncrement=true` を指定した。**EAS上の既存buildNumberは未確認**であり、remote値の初期化や変更は行っていない。ビルド実行前にオーナーが過去のTestFlight/App Store ConnectとEASの番号を照合する。
+
+[EASの設定仕様](https://docs.expo.dev/eas/json/)では `developmentClient: false` は通常ビルドを指定する。現行製品ソースの公開用JS source mapを検査すると、iOS 1,580・Android 1,579 sourceの双方で開発画面、probe、`expo-dev-client`/`expo-dev-launcher`/`expo-dev-menu`系JSは0件。検査scriptにもこれらのJSが混入したら失敗する条件を加えた。ただしローカルのExpo prebuild設定には開発用ネイティブモジュールが自動リンク候補として残る。ここで分かるのはprofileとJSの範囲までで、実際のpreview/productionバイナリの起動画面・開発メニュー・深いリンクの挙動は新しい端末ビルドで確認する。
 
 `assets/branding/icon.png` は1024角・不透明の自作アイコン、`splash-icon.png` は同じ図形の透過PNG。`scripts/generate-brand-assets.cjs` で再生成できる。SDK 57が推奨した `expo-splash-screen` 57.0.9のconfig pluginで、暗色背景と中央200pxの図形を設定した。ローカル `expo config --type prebuild --json` は設定を解釈できた。実際のlaunch画面とOS側のアイコンmaskはpreview/production端末で確認する。 [Expoのicon/splash設定](https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/)。
 

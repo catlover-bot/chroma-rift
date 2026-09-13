@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+preview/productionのEAS profileに `developmentClient: false` を明示した。製品ソース最終変更後のiOS/Android公開用JS source mapに開発画面、probe、dev-client系JSが含まれないことを再確認し、`scripts/check-release-export.cjs` に混入時の失敗条件を追加した。対象exportはiOS 1,580・Android 1,579 source、各10 asset。ローカルprebuild設定では開発用ネイティブモジュールが自動リンク候補に残るため、実バイナリの開発メニュー等の不在は未確認。詳細は [公開準備手順](RELEASE-CHAPTER-1.md)。本編runtime/依存は変更しておらず、native previewと正式privacy/support URLのrelease blockerを維持する。
+
 公開情報の次の準備として、実際の第一章ホーム・設定・5エリア定義とAppleの現行項目を照合し、[App Store掲載・審査情報の下書き](CHAPTER-1-STORE-METADATA-DRAFT.md) を作成した。名前、サブタイトル、説明、キーワード、審査Notesの長さは各上限内。第二章をプレイ可能と書かず、未検証の「完全オフライン」主張を掲載文から除いた。スクリーンショットは配布候補iPhoneバイナリから撮る手順のみで、実素材は0枚。年齢質問票の根拠は整理したが数値は未確定。正式URL、オーナーの掲載承認、native preview、App Store申告は依然として未完了。
 
 最新の公開情報監査：製品ソースの保存・通信・権限を確認し、未承認の [プライバシー・サポート文案](CHAPTER-1-PRIVACY-SUPPORT-DRAFT.md) を作成した。`expo-file-system` 由来でアプリ未使用のAndroid外部ストレージ読書権限を `app.json` で除外し、Expo introspectionの `tools:node="remove"` を確認。これはAndroidネイティブ設定の変更で、新しいAndroidバイナリでのみ反映される。iOS設定、本編進行、保存schema、依存は変更していない。変更後の `npm run check` はlint・型検査・110スイート/1,132テスト・iOS export成功、Expo Doctor 21/21、`expo install --check` 通過。正式URLと連絡先、SDK/実バイナリの取扱い、native preview、App Store申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` のまま。

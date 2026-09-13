@@ -17,7 +17,7 @@ const bundlePath = path.join(root, entry.bundle);
 const mapPath = `${bundlePath}.map`;
 const bundle = fs.readFileSync(bundlePath, 'utf8');
 const sources = JSON.parse(fs.readFileSync(mapPath, 'utf8')).sources;
-const forbidden = /(?:^|\/)(?:DeveloperLabScreen|StageSelectScreen|MicroMazeScreen|IllusionMazeScreen|JourneyResultScreen|FirstPersonResultScreen)\.[jt]sx?$|\/stage-kit-probe\/|\/test-support\//;
+const forbidden = /(?:^|\/)(?:DeveloperLabScreen|StageSelectScreen|MicroMazeScreen|IllusionMazeScreen|JourneyResultScreen|FirstPersonResultScreen)\.[jt]sx?$|\/stage-kit-probe\/|\/test-support\/|\/expo-dev-(?:client|launcher|menu(?:-interface)?)(?:\/|$)/;
 const included = sources.filter(source => forbidden.test(source));
 if (included.length) fail(`development source packaged: ${included.join(', ')}`);
 if (bundle.includes('stage-kit-probe')) fail('probe ID packaged in release bundle');
@@ -27,4 +27,4 @@ for (const id of ['perception-gallery-v1', 'uncanny-vault-v1', 'shadow-theatre-v
 const assets = entry.assets ?? [];
 if (!assets.some(asset => asset.ext === 'png') || !assets.some(asset => asset.ext === 'wav')) fail('visual or sound assets missing');
 for (const asset of assets) if (!fs.statSync(path.join(root, asset.path)).isFile()) fail(`missing asset: ${asset.path}`);
-console.log(`${platform} release export checked: ${sources.length} sources, ${assets.length} assets; 5 campaign areas present; development screens and probe absent`);
+console.log(`${platform} release export checked: ${sources.length} sources, ${assets.length} assets; 5 campaign areas present; development screens, probe and dev-client JS absent`);
