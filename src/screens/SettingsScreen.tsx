@@ -106,7 +106,7 @@ export function SettingsScreen({
             onPress={() => set('audio', { ...audio, [field]: volume })} />)}</ChoiceRow>
         </Panel>)}
       </Panel>
-      <SectionTitle>色の展示と旧章の表示</SectionTitle>
+      <SectionTitle>{onLegacyMaze ? '色の展示と旧章の表示' : '色の展示'}</SectionTitle>
       <Body muted>見え方を比べて選べます。奥行きの強さに決まった順序はありません。</Body>
       <ChoiceRow>
         {PALETTE_IDS.map((palette) => (
@@ -117,16 +117,18 @@ export function SettingsScreen({
           />
         ))}
       </ChoiceRow>
-      <SectionTitle>旧迷宮の色模様の強さ</SectionTitle>
-      <ChoiceRow>
-        {(['low', 'medium', 'high'] as const).map((strength) => (
-          <ActionButton
-            key={strength}
-            label={`${strength === 'low' ? '弱い' : strength === 'medium' ? '普通' : '強い'}${settings.effectStrength === strength ? '（選択中）' : ''}`}
-            onPress={() => set('effectStrength', strength as EffectStrength)}
-          />
-        ))}
-      </ChoiceRow>
+      {onLegacyMaze ? <>
+        <SectionTitle>旧迷宮の色模様の強さ</SectionTitle>
+        <ChoiceRow>
+          {(['low', 'medium', 'high'] as const).map((strength) => (
+            <ActionButton
+              key={strength}
+              label={`${strength === 'low' ? '弱い' : strength === 'medium' ? '普通' : '強い'}${settings.effectStrength === strength ? '（選択中）' : ''}`}
+              onPress={() => set('effectStrength', strength as EffectStrength)}
+            />
+          ))}
+        </ChoiceRow>
+      </> : null}
       <ActionButton label="簡単に調整する（3問）" onPress={onQuickSetup} />
       <ActionButton label="詳しく調整する" onPress={onRecalibrate} />
       <Body muted>調整は表示のための目安です。見え方を診断するものではありません。</Body>

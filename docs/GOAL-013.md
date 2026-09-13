@@ -1,5 +1,9 @@
 # Goal 013 作業記録
 
+製品画面の設定を再監査した。全体設定には製品で起動できない旧迷宮だけの「色模様の強さ」が残り、03映写室の一時停止設定には同エリアに存在しない「紋章の色表示」が出ていた。旧迷宮の強さは保存値を変えず、開発用の旧迷宮入口がある時だけ設定に表示する。映写室では無効な色ボタンを除き、01展示室の色選択と旧入口の紋章選択は保持した。SettingsScreenと実FirstPersonScreenのメニュー試験は2スイート/21テスト通過。これは製品UIの文言・導線検査であり、実端末の文字拡大やレイアウト確認ではない。
+
+このUI修正後の `npm run check` はlint・型検査・109スイート/1,126テスト・通常iOS export（1,569 modules、10 assets）を通過した。source map付き公開用JSはiOS 1,576/Android 1,575 source・各10 assetで、5エリア同梱・開発画面/probe除外を検査。first-party各197 sourceは現行本文と一致し、iOSのThree 1 source/22参照は同一class。実行時循環はiOS/Android/neutral各223 modules/684 edges/0 SCC・errors、Stage定義検査2件も通過。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
 人数表示の線分を直した後、05の実controller記録を使って安全な開始位置から製品と同じ縦FOV 65の視点を追加した。旧寸法の02は画面横方向のNDCが `-1.116〜1.095` で切れていた。実sceneの表示groupを0.72倍にし、02/01/00の全状態で横・縦とも±0.9以内になることを再現scriptで検査した。開始位置と近接の計6枚を実際に開き、数字が読めることを確認した。修正後の自然成功・開け直し復旧を実controller/sceneで再収録し、報告のsource hashとWebGL計測を更新した。どちらの動画も表示を直接見せない経路なので動画SHA-256は同一。製品の実旋回/HUD、native Canvas、iPhoneの視認性は未確認である。詳細は `docs/qa-goal013/README.md`。
 
 この表示寸法修正後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常export（1,569 modules、10 assets）を通過した。source map付き公開用JSの再exportはiOS 1,576/Android 1,575 source・各10 assetで、5エリア同梱・開発画面/probe除外を確認。両OSでfirst-party各197 sourceが現行本文と一致し、iOSのThreeは1 source/22参照でclass identity一致。iOS/Android/neutralの実行時循環は各223 modules/684 edges/0 SCC・errors、Stage定義2件も通過した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

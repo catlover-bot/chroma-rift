@@ -37,6 +37,19 @@ it('adjusts independent audio preferences without changing visual or accessibili
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, effectsVolume: 0 } });
 });
 
+it('keeps the old maze-only intensity out of product settings while preserving gallery colors', async () => {
+  const onChange = jest.fn();
+  const base = { settings: DEFAULT_SETTINGS, onChange, onRecalibrate: jest.fn(),
+    onQuickSetup: jest.fn(), onReset: jest.fn(), onBack: jest.fn() };
+  const view = await render(<SettingsScreen {...base} />);
+  expect(view.getByText('色の展示')).toBeTruthy();
+  expect(view.queryByText('旧迷宮の色模様の強さ')).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: '表示B' }));
+  expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, emblemPalette: 'alternate' });
+  await view.rerender(<SettingsScreen {...base} onLegacyMaze={jest.fn()} />);
+  expect(view.getByText('旧迷宮の色模様の強さ')).toBeTruthy();
+});
+
 it('makes current-chapter and full-data reset scope explicit before either action', async () => {
   const alert = jest.spyOn(Alert, 'alert'), current = jest.fn(), all = jest.fn();
   const view = await render(<SettingsScreen settings={DEFAULT_SETTINGS} onChange={jest.fn()} onRecalibrate={jest.fn()}

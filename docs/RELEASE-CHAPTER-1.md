@@ -1,5 +1,9 @@
 # 第一章の公開準備と未完了ゲート
 
+製品の設定から、公開ナビゲーションにない旧迷宮専用の色模様の強さを外した。保存値と開発用の旧迷宮設定は維持する。03映写室の一時停止設定にも無関係な紋章色ボタンが出ていたため、同画面では除いた。01展示室の色選択と旧入口の紋章色選択は維持。関連する画面試験2スイート/21テストは通過した。端末での設定画面・文字拡大・アクセシビリティ確認は未実施。
+
+この製品UI修正後の `npm run check` はlint・型検査・109スイート/1,126テスト・通常iOS exportを通過。公開用iOS/Android JSは1,576/1,575 source・各10 assetで5エリア同梱・開発画面/probe除外、first-party各197 source本文一致、Three 1 source/22参照のclass identity、3対象の実行時循環0、Stage定義2件を確認した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` は維持。iPhone previewと正式なprivacy/support URLは残件。
+
 05の人数表示は線分修正後も、安全な開始位置から製品と同じ縦FOV 65で見ると左右が切れていた。実sceneの表示groupを0.72倍にし、自然成功のcontroller記録から02/01/00の各状態を同じ開始位置と近接視点で描画した。6画像を開き、全数字が画面内で読めることを確認した。QA cameraは手動で表示へ向けており、製品の実旋回/HUD、native Canvas、iPhoneでの見え方は未確認。自然成功・復旧動画を再収録し、source hashと計測を更新した。詳細は `docs/qa-goal013/README.md`。
 
 表示寸法修正後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。source map付き公開用JSはiOS 1,576/Android 1,575 source・各10 assetで5エリア同梱・開発画面/probe除外を確認し、first-party各197 sourceの本文一致、Three 1 source/22参照のclass identity、iOS/Android/neutralの実行時循環0、Stage定義2件も通過した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。実機previewと正式なprivacy/support URLは引き続き公開ゲートの残件。

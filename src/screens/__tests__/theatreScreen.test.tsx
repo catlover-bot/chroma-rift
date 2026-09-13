@@ -58,6 +58,15 @@ beforeEach(async () => {
 });
 afterEach(async () => { jest.restoreAllMocks(); await act(() => Dimensions.set(originalDimensions)); });
 
+it('keeps the live theatre settings free of unrelated emblem color controls', async () => {
+  const view = await render(<FirstPersonScreen {...props()} />);
+  await fireEvent.press(view.getByTestId('pause-control'));
+  await fireEvent.press(view.getByRole('button', { name: '操作と快適設定' }));
+  expect(view.getByText('怖さ')).toBeTruthy();
+  expect(view.queryByText('紋章の色表示')).toBeNull();
+  expect(view.queryByRole('button', { name: '表示A' })).toBeNull();
+});
+
 it('reports an equipment investigation after the actor consumes its one-frame bell noise', async () => {
   const observed = jest.fn();
   const view = await render(<FirstPersonScreen {...props(theatreCheckpoint('light'), { onCampaignNoiseObserved: observed })} />);
