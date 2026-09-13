@@ -1,0 +1,32 @@
+{
+  "scope": "Expo config introspection only; no signed native binary was inspected",
+  "baseHead": "9dc717fc4f850e6a5717708e708f3258423ad56d",
+  "appJsonSha256After": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+  "command": "./node_modules/.bin/expo config --type introspect --json",
+  "androidPermissionsBefore": [
+    "android.permission.INTERNET",
+    "android.permission.SYSTEM_ALERT_WINDOW",
+    "android.permission.VIBRATE",
+    "android.permission.READ_EXTERNAL_STORAGE (maxSdkVersion 32)",
+    "android.permission.WRITE_EXTERNAL_STORAGE (maxSdkVersion 32)",
+    "android.permission.MODIFY_AUDIO_SETTINGS"
+  ],
+  "androidPermissionsAfter": [
+    "android.permission.INTERNET",
+    "android.permission.SYSTEM_ALERT_WINDOW",
+    "android.permission.VIBRATE",
+    "android.permission.MODIFY_AUDIO_SETTINGS",
+    "android.permission.READ_EXTERNAL_STORAGE (tools:node remove)",
+    "android.permission.WRITE_EXTERNAL_STORAGE (tools:node remove)"
+  ],
+  "iosInfoPlistAfter": {
+    "ITSAppUsesNonExemptEncryption": false
+  },
+  "androidPackageInGeneratedTemplate": "com.placeholder.appid",
+  "localValidation": {
+    "npmRunCheck": "lint, typecheck, 110 suites / 1132 tests, iOS export passed",
+    "expoDoctor": "21/21 passed",
+    "expoInstallCheck": "passed"
+  },
+  "releaseGate": "Inspect merged permissions and SDK manifests in a new distribution binary; Android package ID is not configured"
+}

@@ -14,6 +14,12 @@
         "ITSAppUsesNonExemptEncryption": false
       }
     },
+    "android": {
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
     "extra": {
       "eas": {
         "projectId": "43063855-e1de-4072-b1e6-1c8621e3cb10"

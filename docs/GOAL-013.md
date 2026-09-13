@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+最新の公開情報監査：製品ソースの保存・通信・権限を確認し、未承認の [プライバシー・サポート文案](CHAPTER-1-PRIVACY-SUPPORT-DRAFT.md) を作成した。`expo-file-system` 由来でアプリ未使用のAndroid外部ストレージ読書権限を `app.json` で除外し、Expo introspectionの `tools:node="remove"` を確認。これはAndroidネイティブ設定の変更で、新しいAndroidバイナリでのみ反映される。iOS設定、本編進行、保存schema、依存は変更していない。変更後の `npm run check` はlint・型検査・110スイート/1,132テスト・iOS export成功、Expo Doctor 21/21、`expo install --check` 通過。正式URLと連絡先、SDK/実バイナリの取扱い、native preview、App Store申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` のまま。
+
 その後、04・05のStage IDを共通画面に直書きしたメモ接続を、第一章エリア台帳から引く対応へ変更した。怖さ設定はStage Moduleのactor能力から決め、メモボタンは実際にメモ画面があるエリアだけに出す。hidden probeで両ボタンを出さない画面試験も追加した。変更後の `npm run check` はlint・型検査・110スイート全通過・iOS通常export（1,571 modules、10 assets）。循環検査はiOS/Android/neutral各225 modules・694 edges・0 SCC/0 errors。source map付き公開用JSはiOS 1,578/Android 1,577 source・各10 asset、5エリア同梱・開発画面/probe除外、first-party各199 source本文一致、iOSのThree 1 source/22参照のclass identity一致。実端末と正式な公開URLのゲートは変わらない。
 
 04・05の一時停止メニューでは、巡回体がいるのに怖さ設定が出ず、「発見メモ」は押しても開かない状態だった。両エリアにも怖さの標準/控えめ切替を表示し、Stage Moduleの検証済みcheckpointから明示的な観察bitだけを読むメモ画面を接続した。04のメモは静止した顔/鍵形の図地反転と、背後の実通路を映す平面鏡を別の仕組みとして説明する。05は実際の隔離と停止の順に記録し、停止前に在館反応01を見せない。メモを開いた間はcontrollerの既存pause経路で入力と危険を止める。公開ナビゲーションにないprobeにはメモボタンを出さない。共通タイトルをホームの発見記録と共有した。
