@@ -99,3 +99,7 @@ cd /home/mhirotaka/workspace/chroma-rift-goal012
 eas build --platform ios --profile preview
 eas build --platform ios --profile production
 ```
+
+01〜03の旧境界画像を開き直すと、近接視点では実際の扉が判別しにくかったため、各終端sceneの扉面・内枠・取っ手を視野内へ追加し、同じworld床上QA cameraの3枚を再生成・目視した。QAは色差・部品の視野内位置と画像/source hashを確認する。銘板に読める次エリア名はない。端末の製品HUD・実操作・視認性は未確認で、公開ゲートは引き続き `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。
+
+この差分後の全回帰は110スイート/1,131テスト、lint、型検査、iOS通常exportに成功。Stage定義2件、iOS/Android/neutralの循環0、source map付き両OS公開用export（iOS 1,578/Android 1,577 source、各10 asset、first-party各199 source本文一致、5エリア同梱・開発画面/probe除外）、iOS Three 1 source/22参照のclass identity、Doctor 21/21、Expo依存検査も通過した。`automatedChecksPassed=true` を維持し、実機previewと公式URLがないため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

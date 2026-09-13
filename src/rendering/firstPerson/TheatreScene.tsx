@@ -135,6 +135,11 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
       <mesh geometry={resources.box} material={t.trim} position={[-.77, 1.55, -.035]} scale={[.08, 3.15, .1]} />
       <mesh geometry={resources.box} material={t.trim} position={[.77, 1.55, -.035]} scale={[.08, 3.15, .1]} />
       <mesh geometry={resources.box} material={t.trim} position={[0, 3.12, -.035]} scale={[1.64, .08, .1]} />
+      <mesh name="theatre-mirror-threshold-leaf" geometry={resources.box} material={t.metal} position={[0, 1.55, -.07]} scale={[1.12, 2.78, .025]} />
+      {[-.58, .58].map(x => <mesh key={x} geometry={resources.box} material={t.label} position={[x, 1.55, -.105]} scale={[.035, 2.8, .035]} />)}
+      <mesh geometry={resources.box} material={t.label} position={[0, 2.96, -.105]} scale={[1.2, .035, .035]} />
+      <mesh geometry={resources.box} material={t.label} position={[0, .17, -.105]} scale={[1.2, .035, .035]} />
+      <mesh name="theatre-mirror-threshold-handle" geometry={resources.box} material={t.label} position={[.42, 1.18, -.14]} scale={[.045, .32, .045]} />
       <mesh name="theatre-mirror-threshold-light" geometry={resources.box} material={t.amber} position={[0, 3.32, -.3]} scale={[.72, .05, .35]} />
     </group>
     <group name="maintenance-tool-landmark" position={[-5.20,2.16,10.64]}>

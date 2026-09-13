@@ -40,9 +40,21 @@ async function main() {
     camera.name = 'qa-camera'; camera.position.set(x, 1.6, z);
     camera.lookAt(x, 1.6, z + 10); scene.add(camera);
     mounted.objects.forEach(o => scene.add(o));
-    if (!scene.getObjectByName(doorName)) throw Error(`${id}: missing destination threshold door`);
+    const door = scene.getObjectByName(doorName);
+    const leaf = scene.getObjectByName(doorName.replace(/-door$/, '-leaf'));
+    const handle = scene.getObjectByName(doorName.replace(/-door$/, '-handle'));
+    if (!(door instanceof THREE.Mesh) || !(leaf instanceof THREE.Mesh) || !(handle instanceof THREE.Mesh))
+      throw Error(`${id}: incomplete destination threshold door`);
     for (const fn of bridge.callbacks.splice(0)) fn({}, 0);
     scene.updateMatrixWorld(true);
+    const base = door.material.color, face = leaf.material.color;
+    if (Math.hypot(base.r - face.r, base.g - face.g, base.b - face.b) < .1)
+      throw Error(`${id}: destination door leaf has insufficient material contrast`);
+    for (const part of [leaf, handle]) {
+      const point = part.getWorldPosition(new THREE.Vector3()).project(camera);
+      if (Math.abs(point.x) >= 1 || Math.abs(point.y) >= 1 || point.z < 0 || point.z > 1)
+        throw Error(`${id}: ${part.name} is outside the threshold QA view`);
+    }
     fs.writeFileSync(path.join(out, `${id}.json`), JSON.stringify(scene.toJSON()));
     await mounted.unmount(); resources.dispose(); RC.retireController(controller);
   }

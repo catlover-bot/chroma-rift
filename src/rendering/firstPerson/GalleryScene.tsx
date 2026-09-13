@@ -204,7 +204,12 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       <mesh geometry={resources.box} material={resources.trim} position={[-.73, 1.55, -.035]} scale={[.08, 3.15, .1]} />
       <mesh geometry={resources.box} material={resources.trim} position={[.73, 1.55, -.035]} scale={[.08, 3.15, .1]} />
       <mesh geometry={resources.box} material={resources.trim} position={[0, 3.12, -.035]} scale={[1.55, .08, .1]} />
-      <mesh name="gallery-vault-threshold-sign" geometry={resources.box} material={r.exitSign} position={[0, 2.2, -.05]} scale={[.55, .12, .025]} />
+      <mesh name="gallery-vault-threshold-leaf" geometry={resources.box} material={r.guide} position={[0, 1.55, -.07]} scale={[1.02, 2.78, .025]} />
+      {[-.53, .53].map(x => <mesh key={x} geometry={resources.box} material={r.outline} position={[x, 1.55, -.105]} scale={[.035, 2.8, .035]} />)}
+      <mesh geometry={resources.box} material={r.outline} position={[0, 2.96, -.105]} scale={[1.1, .035, .035]} />
+      <mesh geometry={resources.box} material={r.outline} position={[0, .17, -.105]} scale={[1.1, .035, .035]} />
+      <mesh name="gallery-vault-threshold-handle" geometry={resources.box} material={r.outline} position={[.34, 1.35, -.14]} scale={[.045, .32, .045]} />
+      <mesh name="gallery-vault-threshold-sign" geometry={resources.box} material={r.exitSign} position={[0, 2.2, -.145]} scale={[.55, .12, .025]} />
       <mesh name="gallery-vault-threshold-light" geometry={resources.box} material={resources.neutral} position={[0, 3.31, -.3]} scale={[.72, .05, .35]} />
     </group>
   </group>;

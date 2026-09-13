@@ -133,7 +133,12 @@ export function VaultScene({ world, runtime, resources, reducedMotion, onFrameEr
       <mesh geometry={resources.box} material={resources.trim} position={[-.84, 1.55, -.035]} scale={[.08, 3.15, .1]} />
       <mesh geometry={resources.box} material={resources.trim} position={[.84, 1.55, -.035]} scale={[.08, 3.15, .1]} />
       <mesh geometry={resources.box} material={resources.trim} position={[0, 3.12, -.035]} scale={[1.76, .08, .1]} />
-      <mesh name="vault-theatre-threshold-sign" geometry={resources.box} material={r.guide} position={[0, 2.2, -.05]} scale={[.55, .12, .025]} />
+      <mesh name="vault-theatre-threshold-leaf" geometry={resources.box} material={r.guide} position={[0, 1.55, -.07]} scale={[1.08, 2.78, .025]} />
+      {[-.56, .56].map(x => <mesh key={x} geometry={resources.box} material={r.board} position={[x, 1.55, -.105]} scale={[.035, 2.8, .035]} />)}
+      <mesh geometry={resources.box} material={r.board} position={[0, 2.96, -.105]} scale={[1.16, .035, .035]} />
+      <mesh geometry={resources.box} material={r.board} position={[0, .17, -.105]} scale={[1.16, .035, .035]} />
+      <mesh name="vault-theatre-threshold-handle" geometry={resources.box} material={r.board} position={[.35, 1.35, -.14]} scale={[.045, .32, .045]} />
+      <mesh name="vault-theatre-threshold-sign" geometry={resources.box} material={r.board} position={[0, 2.2, -.145]} scale={[.55, .12, .025]} />
       <mesh name="vault-theatre-threshold-light" geometry={resources.box} material={resources.neutral} position={[0, 3.31, -.3]} scale={[.78, .05, .35]} />
     </group>
   </group>;

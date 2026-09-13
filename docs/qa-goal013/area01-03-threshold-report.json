@@ -13,10 +13,10 @@
         "z": 23.4
       },
       "doorName": "gallery-vault-threshold-door",
-      "calls": 14,
-      "triangles": 2220,
-      "bytes": 3070,
-      "sha256": "86314de8ab0a9685e7f2d59f3e124dca11fd53eb76574e054ebc4bf508da6c1c"
+      "calls": 20,
+      "triangles": 2292,
+      "bytes": 3360,
+      "sha256": "c9ffbdba310b4e650bd9a9ab6d8da07f63ea021d69fc94013203a11af592a8ba"
     },
     {
       "stage": "uncanny-vault-v1",
@@ -26,10 +26,10 @@
         "z": 28.1
       },
       "doorName": "vault-theatre-threshold-door",
-      "calls": 13,
-      "triangles": 648,
-      "bytes": 3156,
-      "sha256": "5c7a81ecf61c5fc1d6c9d9d82372d8a26076e0c216b85b5fa7de7a0f4294343e"
+      "calls": 19,
+      "triangles": 720,
+      "bytes": 3455,
+      "sha256": "34f565afec21673aad4b39c28d2dab7df5c813bafbb1bfd5f052423008a11ef9"
     },
     {
       "stage": "shadow-theatre-v1",
@@ -39,13 +39,13 @@
         "z": 22
       },
       "doorName": "theatre-mirror-threshold-door",
-      "calls": 19,
-      "triangles": 1514,
-      "bytes": 3301,
-      "sha256": "d23df54e056f4d74d0aad93c7298b763f37c148b607cdc3e9caa7788260b29a8"
+      "calls": 25,
+      "triangles": 1586,
+      "bytes": 3458,
+      "sha256": "7fcafa331664b4ae9ddde122b9cdf1a42a25a4368c9f241de4156286ae176c80"
     }
   ],
-  "toolHash": "e0a3d2929525d74eac457e2ed62e5f2da7821094abbbf308c985ba187d5a8339",
+  "toolHash": "eae926b498ca205475252cb3e70978415c4f764c8de8d0a6dbce51de8b1282a2",
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
     "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
@@ -140,20 +140,20 @@
     "src/rendering/firstPerson/ChapterScene.tsx": "8e87f90bbbc8eabf1287454b092c29cd5c0be02e564a2e7e15af5ffade8e5b6e",
     "src/rendering/firstPerson/PanelFixture.tsx": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
     "src/rendering/firstPerson/GlyphMark.tsx": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
-    "src/rendering/firstPerson/TheatreScene.tsx": "b2e79e3bb16f7e71975ae7f374fe169c1fbfd11de5a1387b57c51775fb48ad13",
+    "src/rendering/firstPerson/TheatreScene.tsx": "d21fba7582ebc7caec6b3b13adfd3015d2c5c42555fec87102ef5c058f8dc952",
     "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72",
     "src/rendering/firstPerson/segmentTransform.ts": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
-    "src/rendering/firstPerson/VaultScene.tsx": "f23a632f5100d31b4c3be9b48857a4c9b09dd6f5d6f72bd9e334b9c979119d50",
+    "src/rendering/firstPerson/VaultScene.tsx": "2397a81700569b300b9bab6dd755a867f9afe8e4a0d328c0b66671eb41193566",
     "src/rendering/firstPerson/VaultDevices.tsx": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
-    "src/rendering/firstPerson/GalleryScene.tsx": "15fd31c50ba1f42e02160b5b51f558f43fff031aa50e022b56ff99751a9160e9",
+    "src/rendering/firstPerson/GalleryScene.tsx": "79eb74309a5e4089be49dc7197d0937f78cb175ac34c28e1468b33f935d5677b",
     "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
     "src/rendering/firstPerson/stageSceneBindings.tsx": "cd175512d63cc1c546659be3f7420073e988a3c6f3fef40c940aee08d19c38bc",
     "src/domain/stages/stage-kit-probe/scene.tsx": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555",
     "src/domain/stages/mirror-corridor-v1/scene.tsx": "ce1800701d1126629afb9f4bac67b12a17425d7da97c7fc4e560ec0f14ae5aa6",
     "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
-    "src/domain/stages/departure-control-v1/scene.tsx": "fdae64130a1d73456ea4004c4465a7e4e58968891e35df37f167d77df370a9ca",
+    "src/domain/stages/departure-control-v1/scene.tsx": "2f478ebb7f02bf1741d6cf35de823079c5aaefc709c6eb1d9f9774bbcebfe73d",
     "src/rendering/firstPerson/resources.ts": "9e6752e852b763083073fff47dd1d4f9657a8b021c9517ec7da440fd35ca51d6",
     "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
     "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
