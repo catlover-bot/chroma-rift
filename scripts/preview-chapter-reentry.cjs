@@ -6,7 +6,7 @@
 // are explicit QA boundaries. No native device or user storage is accessed.
 const fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..'),opt=n=>process.argv.find(a=>a.startsWith('--'+n+'='))?.slice(n.length+3),source=path.resolve(opt('source')||root),out=path.resolve(opt('out')||path.join(root,'.expo/goal010-1/chapter-reentry'));
-const galleryOnly=process.argv.includes('--gallery-only');
+const galleryOnly=process.argv.includes('--gallery-only'),chapterOne=process.argv.includes('--chapter-one');
 fs.mkdirSync(out,{recursive:true});
 const{installSourceBridge,mountThree,openBrowser,delay,sha256}=require('./lib/three-scene-qa.cjs'),{installNativeHudBridge,browserStyles,browserHelpers}=require('./lib/native-hud-qa.cjs');
 const bridge=installSourceBridge(source),context={width:390,height:844,fontScale:1.5},native=installNativeHudBridge(context),React=require('react'),R=require('react-test-renderer'),THREE=require('three');
@@ -21,6 +21,7 @@ Module._load=function(name,...args){
  if(name==='react-native'){const actual=load.call(this,name,...args);return{...actual,ActivityIndicator:'View',Modal:({visible,children})=>visible?React.createElement('View',{style:{position:'absolute',inset:0}},children):null,AccessibilityInfo:{...actual.AccessibilityInfo,isReduceMotionEnabled:async()=>false},Alert:{alert:(title,message,buttons)=>alerts.push({title,message,buttons})}};}
  if(name==='react-native-safe-area-context')return{...load.call(this,name,...args),SafeAreaProvider:({children})=>React.createElement(React.Fragment,null,children)};
  if(name==='@shopify/react-native-skia')return{Canvas:'QASkiaCanvas',Rect:'QASkiaRect',Circle:'QASkiaCircle',Line:'QASkiaLine',vec:(x,y)=>({x,y})};
+ if(chapterOne&&name.endsWith('/NativeFirstPersonGate')){const actual=load.call(this,name,...args);return{...actual,NativeFirstPersonGate:props=>{context.gateProps=props;return React.createElement(actual.NativeFirstPersonGate,props);}};}
  if(name.endsWith('/FirstPersonCanvas'))return{FirstPersonCanvas:props=>{
   const{controller,onReady,onSnapshot}=props;context.controller=controller;context.snapshotCallback=onSnapshot;
   React.useEffect(()=>{const record={chapterId:controller.runtime.chapterId,session:controller.runtime.session,mounted:true,unmounted:false};owners.push(record);activeOwners++;maxActiveOwners=Math.max(maxActiveOwners,activeOwners);if(activeOwners>1)throw Error('App has concurrent Canvas boundary owners');context.camera=new THREE.PerspectiveCamera(65,390/844,.08,60);controller.viewport={width:390,height:844};RC.syncCamera(controller,context.camera);Object.assign(controller.diagnostics,{stage:'ready',rendererOwnership:'live',appActive:true});onReady();return()=>{record.unmounted=true;activeOwners--;};},[controller,onReady]);
@@ -92,17 +93,123 @@ async function extract(){
  const report={method:galleryOnly?'Area 01: actual App entry, FirstPersonScreen and ChapterScene; 30 controller turn/advance frames, actual HUD emergency-light interact at frame 30, then 60 neutral-input frames at 30 Hz. App entry differs by version but capture starts after entry. The test renderer does not reconcile R3F props, so the Three host is rebuilt after the accepted light command; this models the visible light refresh, not native resource ownership. Isolated memory storage; native Canvas/ready/audio stubbed; browser Software WebGL and translated HUD CSS, not native Yoga or FPS.':'Actual App selection/preparation/Screen pause/home/reentry and actual ChapterScene with 45 controller turn+advance frames per chapter. Shared storage uses isolated memory. Native availability/Canvas ready/presentation/audio are stubbed; Modal and Skia are translated host boundaries. Browser renderer is single; UI timing is authored 30 Hz capture timing, not native FPS.',duration:frames.length/30,frames:frames.length,sequence:sequence.map(x=>x[0]),events,galleryState,owners,maxActiveCanvasBoundaries:maxActiveOwners,activeCanvasBoundariesAfterUnmount:activeOwners,storageKeys:[...memory.keys()],writeCount:writes.length,storedApplication:finalApp,sourceHashes:Object.fromEntries(bridge.hashes),toolHash:sha256(fs.readFileSync(__filename))};
  fs.writeFileSync(path.join(out,'animation.json'),JSON.stringify({hudTrees,frames}));fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');return report;
 }
+async function extractChapterOne(){
+ global.expect=require('expect').expect;
+ const {CHAPTER_ONE}=from('src/domain/campaign/definition.ts');
+ const {CHAPTER_ONE_BEATS}=from('src/domain/campaign/story.ts');
+ const {chapterCompletionSummary}=from('src/app/chapterSummary.ts');
+ const {createCheckpoint}=from('src/domain/firstPerson/index.ts');
+ const {attachNaturalRun,playNaturalArea}=from('test-support/naturalChapterRoute.ts');
+ await Store.resetAllApplicationStorage();memory.clear();
+ const app=AS.createDefaultApplication();
+ app.quickSetupResult=skipQuickSetup('2026-09-10T00:00:00Z');
+ app.settings={...app.settings,haptics:false,audio:{...app.settings.audio,enabled:false}};
+ await storage.setItem(AS.APPLICATION_STORAGE_KEY,JSON.stringify(app));
+ await storage.setItem(Store.FIRST_PERSON_ONBOARDING_KEY,JSON.stringify({...Defaults.DEFAULT_FIRST_PERSON_ONBOARDING,tutorialCompleted:true,controlChoiceAcknowledged:true}));
+ const hud=await native.mount(App,{});await settle();
+ const frames=[],hudTrees=[],hudMap=new Map(),events=[],route=[];
+ const event=(type,detail={})=>events.push({frame:frames.length,type,...detail});
+ const press=async label=>{
+  const button=hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel===label&&!node.props.disabled)[0];
+  if(!button)throw Error('Missing enabled App button '+label);
+  await R.act(async()=>button.props.onPress());await settle();event('actual-App-button',{label});
+ };
+ const has=label=>hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel===label&&!node.props.disabled).length>0;
+ const record=(id,scene,camera,stage)=>{
+  const tree=serialize(hud.tree.root),key=JSON.stringify(tree);
+  let index=hudMap.get(key);if(index===undefined){index=hudTrees.length;hudTrees.push(tree);hudMap.set(key,index);}
+  frames.push({scene:id,camera:camera?.uuid??null,updates:[],hud:index,stage});
+ };
+ const visual=async(index,phase,controller,camera)=>{
+  const stageId=CHAPTER_ONE.areas[index].stageId,id=`area-${index+1}-${phase}`;
+  const resources=createSceneResources(false,null,true,stageId==='uncanny-vault-v1',stageId==='shadow-theatre-v1');
+  const runtime={current:controller.runtime},scene=new THREE.Scene();scene.background=new THREE.Color('#171a1b');scene.add(camera);
+  const mounted=await mountThree(React.createElement(ChapterScene,{world:RC.worldForController(controller),runtime,
+   progress:controller.runtime.progress,resources,assist:false,reducedMotion:false,lowQuality:false,lab:false,
+   renderOffscreen:()=>{},onFrameError:error=>{throw error;}}),THREE);
+  try{
+   mounted.objects.forEach(object=>scene.add(object));
+   const callbacks=bridge.callbacks.splice(0).filter(callback=>!callback.toString().includes('mirror.render'));
+   callbacks.forEach(callback=>callback({},0));scene.updateMatrixWorld(true);
+   fs.writeFileSync(path.join(out,id+'.json'),JSON.stringify(scene.toJSON()));
+   context.snapshot=()=>RC.controllerSnapshot(controller);context.camera=camera;
+   await hud.update();record(id,scene,camera,id);
+   event('App-controller-scene-snapshot',{area:CHAPTER_ONE.areas[index].id,stageId,phase,
+    pose:controller.runtime.pose,cleared:controller.runtime.progress.cleared,canvasOwners:activeOwners});
+  }finally{await mounted.unmount();resources.dispose();}
+ };
+ await press('第一章をはじめる');
+ if(has('あとで調整して遊ぶ'))await press('あとで調整して遊ぶ');
+  await press('展示室へ入る');
+  if(context.gateProps?.onValidatedEntry)await R.act(async()=>context.gateProps.onValidatedEntry());
+  const runId=JSON.parse(memory.get('chroma-rift.campaign.chapter-1.v1')).runId;
+ for(let index=0;index<CHAPTER_ONE.areas.length;index++){
+  const area=CHAPTER_ONE.areas[index];
+  for(let attempt=0;attempt<20&&context.controller?.runtime.chapterId!==area.stageId;attempt++)await settle();
+  if(context.controller?.runtime.chapterId!==area.stageId){
+   const label=`${area.title}へ入る`;if(has(label))await press(label);
+  }
+  for(let attempt=0;attempt<4;attempt++){
+   const resume=has('探索へ戻る')?'探索へ戻る':has('点検を続ける')?'点検を続ける':null;
+   if(!resume)break;await press(resume);
+  }
+  const controller=context.controller;
+  if(controller?.runtime.chapterId!==area.stageId)throw Error(`App did not mount ${area.stageId}`);
+  if(activeOwners!==1||maxActiveOwners!==1)throw Error('App Canvas owner mismatch on entry');
+  const run=attachNaturalRun(controller);context.camera=run.camera;
+  await visual(index,'entry',controller,run.camera);
+  const gate=context.gateProps;if(gate?.chapterId!==area.stageId)throw Error('App gate missing '+area.stageId);
+  let stopped;
+  const cleared=playNaturalArea(run,index,['shadow','contour'],()=>{stopped=createCheckpoint(controller.runtime);});
+  if(!cleared.progress.cleared)throw Error('Natural route did not clear '+area.stageId);
+  await visual(index,'cleared',controller,run.camera);
+  if(stopped)await R.act(async()=>gate.onCheckpoint(stopped));
+  await R.act(async()=>{gate.onCheckpoint(cleared);gate.onComplete(chapterCompletionSummary(area.stageId,cleared.progress));});
+  await settle();
+  const raw=memory.get('chroma-rift.campaign.chapter-1.v1');if(!raw)throw Error('Campaign envelope missing after '+area.id);
+  const saved=JSON.parse(raw);
+  if(saved.runId!==runId||saved.completedAreas.length!==index+1||saved.campaignCompleted!==(index===4))
+   throw Error('Campaign transition mismatch after '+area.id);
+  route.push({area:area.id,stageId:area.stageId,completedAreas:saved.completedAreas,
+   currentArea:saved.currentArea,campaignCompleted:saved.campaignCompleted,revision:saved.revision,
+   canvasOwners:activeOwners});
+  event('actual-App-saved-transition',route.at(-1));
+  if(index===4)record(null,null,null,'ending');
+  if(index<4){
+   const pending=CHAPTER_ONE_BEATS.filter(beat=>beat.area===area.id&&saved.storyFired.includes(beat.id)&&!saved.storyPresented.includes(beat.id));
+   for(const beat of pending){
+    if(!has('点検を続ける'))throw Error('Transition story missing '+beat.id);
+    await press('点検を続ける');
+   }
+  }
+ }
+ await hud.unmount();bridge.verify();
+ if(activeOwners!==0||maxActiveOwners!==1||owners.length!==5||owners.some(owner=>!owner.unmounted))
+  throw Error('App Canvas ownership mismatch after complete run');
+ const final=JSON.parse(memory.get('chroma-rift.campaign.chapter-1.v1'));
+ if(!final.campaignCompleted)throw Error('App did not persist campaign completion');
+ const report={method:'One actual App host mount, five mounted FirstPersonScreen controllers, natural domain routes and serialized campaign transitions. Entry/cleared scene+HUD stills come from each mounted App controller but omit the intervening simulation frames; the ending is a separate App still. This is not a continuous video of play. The Three JSON snapshot omits the live planar-mirror render target; the separate mirror QA checks the reflection. AsyncStorage is isolated memory; native Canvas/ready/audio are stubbed and the React Three scene host does not reconcile props. Browser Software WebGL/CSS, not native Yoga/EXGL, touch, sound, perception or iPhone FPS.',
+  frames:frames.length,duration:frames.length/30,sequence:route.map(item=>item.stageId),route,events,owners,
+  maxActiveCanvasBoundaries:maxActiveOwners,activeCanvasBoundariesAfterUnmount:activeOwners,
+  final:{currentArea:final.currentArea,completedAreas:final.completedAreas,campaignCompleted:final.campaignCompleted,
+   revision:final.revision,storyFired:final.storyFired,storyPresented:final.storyPresented},
+  storageKeys:[...memory.keys()],writeCount:writes.length,sourceHashes:Object.fromEntries(bridge.hashes),
+  toolHash:sha256(fs.readFileSync(__filename))};
+ fs.writeFileSync(path.join(out,'animation.json'),JSON.stringify({hudTrees,frames}));
+ fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
+ return report;
+}
 async function capture(report){
  for(const f of['three.module.js','three.core.js'])fs.copyFileSync(path.join(root,'node_modules/three/build',f),path.join(out,f));
  fs.writeFileSync(path.join(out,'index.html'),'<!doctype html><meta charset="utf-8"><style>'+browserStyles+'</style><script type="module" src="./viewer.js"></script>');fs.writeFileSync(path.join(out,'viewer.js'),"import * as THREE from './three.module.js';\nHELPERS\nconst renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);renderer.setSize(390,844);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;\nconst root=document.createElement('div');root.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column';document.body.append(root);\nconst data=await(await fetch('./animation.json')).json();let scene,sceneId,objects=new Map(),materials=new Map(),last=-1,lastHUD=-1;\nfunction dispose(){if(!scene)return;const gs=new Set(),ms=new Set(),ts=new Set();scene.traverse(o=>{if(o.geometry)gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){ms.add(m);for(const t of Object.values(m))if(t?.isTexture)ts.add(t);}if(o.isInstancedMesh)o.dispose();});gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();renderer.renderLists.dispose();scene=null;}\nwindow.draw=async frame=>{\n if(frame<last)throw Error('Sequential frames required');\n for(let n=last+1;n<=frame;n++){const f=data.frames[n];\n  if(f.scene!==sceneId){dispose();sceneId=f.scene;objects=new Map();materials=new Map();if(sceneId){scene=await new THREE.ObjectLoader().parseAsync(await(await fetch(sceneId+'.json')).json());scene.traverse(o=>{objects.set(o.uuid,o);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.set(m.uuid,m);});}}\n  for(const[id,v]of f.updates){const o=objects.get(id);o.matrix.fromArray(v.matrix);o.matrix.decompose(o.position,o.quaternion,o.scale);o.visible=v.visible;if(v.material)o.material=materials.get(v.material);}\n }\n last=frame;const f=data.frames[frame];\n if(lastHUD!==f.hud){root.replaceChildren(hudDOM(data.hudTrees[f.hud],1.5,renderer.domElement));lastHUD=f.hud;await document.fonts.ready;}\n if(f.focusId){const target=root.querySelector('[data-testid=\"'+f.focusId+'\"]');target?.scrollIntoView({block:'center'});}\n if(scene){const camera=objects.get(f.camera);scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);renderer.render(scene,camera);}\n await new Promise(r=>requestAnimationFrame(r));\n return{calls:scene?renderer.info.render.calls:0,triangles:scene?renderer.info.render.triangles:0,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};\n};\nwindow.finish=()=>{dispose();root.replaceChildren();return{geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,renderers:1};};window.ready=true;".replace('HELPERS',browserHelpers));
  const browser=await openBrowser(out),dir=path.join(out,'frames');fs.mkdirSync(dir,{recursive:true});let maxCalls=0,maxTriangles=0;
  try{
   await browser.send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});for(let i=0;i<100&&!await browser.evaluate('window.ready===true');i++){if(browser.errors.length)throw Error(JSON.stringify(browser.errors));await delay(100);}
-  const samples=process.argv.includes('--sample-only')?[...new Set([0,...report.events.filter(e=>['preparation','validated-entry-boundary','paused','retired-on-return'].includes(e.type)).map(e=>Math.min(report.frames-1,Math.round(e.time*30)+3)),report.frames-1])].sort((a,b)=>a-b):Array.from({length:report.frames},(_,i)=>i);
+  const samples=process.argv.includes('--sample-only')?(chapterOne?Array.from({length:report.frames},(_,i)=>i):[...new Set([0,...report.events.filter(e=>['preparation','validated-entry-boundary','paused','retired-on-return'].includes(e.type)).map(e=>Math.min(report.frames-1,Math.round(e.time*30)+3)),report.frames-1])].sort((a,b)=>a-b)):Array.from({length:report.frames},(_,i)=>i);
   for(const f of samples){const stats=await browser.evaluate('window.draw('+f+')');maxCalls=Math.max(maxCalls,stats.calls);maxTriangles=Math.max(maxTriangles,stats.triangles);const shot=await browser.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(path.join(dir,String(f).padStart(6,'0')+'.png'),Buffer.from(shot.data,'base64'));if(f%150===0)console.log('captured '+f+'/'+report.frames);}
   const disposed=await browser.evaluate('window.finish()');fs.writeFileSync(path.join(out,'webgl.json'),JSON.stringify({maxCalls,maxTriangles,disposed,errors:browser.errors},null,2)+'\n');if(disposed.geometries||disposed.textures||browser.errors.length)throw Error('Browser resource/error gate failed');
  }finally{await browser.close();}
  if(!process.argv.includes('--sample-only')){const file=path.join(out,'chapter-reentry.mp4');cp.execFileSync('ffmpeg',['-nostdin','-hide_banner','-loglevel','error','-y','-framerate','30','-i',path.join(dir,'%06d.png'),'-frames:v',String(report.frames),'-c:v','libx264','-crf','21','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['ignore','inherit','inherit']});fs.writeFileSync(path.join(out,'video.json'),JSON.stringify({file:'chapter-reentry.mp4',sha256:sha256(fs.readFileSync(file)),bytes:fs.statSync(file).size,duration:report.duration},null,2)+'\n');}
 }
-async function main(){const report=process.argv.includes('--capture-only')?JSON.parse(fs.readFileSync(path.join(out,'report.json'))):await extract();if(process.argv.includes('--capture-only'))for(const[f,hash]of Object.entries(report.sourceHashes))if(sha256(fs.readFileSync(path.join(source,f)))!==hash)throw Error('Source changed since extraction: '+f);if(!process.argv.includes('--extract-only'))await capture(report);bridge.verify();console.log(JSON.stringify({frames:report.frames,duration:report.duration,entries:report.owners.length,out}));}
+async function main(){if(chapterOne&&!process.argv.includes('--sample-only')&&!process.argv.includes('--extract-only'))throw Error('Chapter-one App route supports snapshot capture only; use --sample-only');const report=process.argv.includes('--capture-only')?JSON.parse(fs.readFileSync(path.join(out,'report.json'))):chapterOne?await extractChapterOne():await extract();if(process.argv.includes('--capture-only'))for(const[f,hash]of Object.entries(report.sourceHashes))if(sha256(fs.readFileSync(path.join(source,f)))!==hash)throw Error('Source changed since extraction: '+f);if(!process.argv.includes('--extract-only'))await capture(report);bridge.verify();console.log(JSON.stringify({frames:report.frames,duration:report.duration,entries:report.owners.length,out}));}
 main().catch(error=>{console.error(error);process.exitCode=1;});

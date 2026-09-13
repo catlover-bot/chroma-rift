@@ -2,15 +2,15 @@
   "method": "Two QA camera views of the same serialized StageScene and controller frame, rendered in one Software WebGL scene. The right view is not the product camera or a second simulation.",
   "input": {
     "originalToolSha256": "74b1bec80d4524ba2e14ac8e5aabd7a8a6c1449ff7604852bc958b838118d54c",
-    "originalCaptureReportSha256": "efa920d8dd5c5be36e5205499ce21739732a4ad6eb255d053710cb038a8a82c1",
+    "originalCaptureReportSha256": "966311d24ac70e803cfd5e869cce42e1f351ca9ffa10dd86d138aaa57e29f76a",
     "originalVideoSha256": "fe8d06c7b884fdcae58cff15a2b0dae92792a07ea28d1c86f4ed96d0b426ed1f",
-    "sceneSha256": "d84dc5445529fd0ffd0b7324858f2d4a21ea6e65a8b0c03f52c1be66769bbca7",
-    "animationSha256": "88623f51a49879f34ad989742b9503e1b5b66ee981cae599d678711fe86066de",
+    "sceneSha256": "efd1ec0c4f960eaac1c63db11e74b5eea699a597626df316990eb223056a3764",
+    "animationSha256": "5634cb20eadb7c04d369e14bd63ae97250d5787544918d822c32ca1e53836e17",
     "currentSourceCount": 114,
-    "currentSourceManifestSha256": "caff3c7576c4aafa4090ed6f4feb53ebf014152e29ef4dd980974a601df3cb70"
+    "currentSourceManifestSha256": "d22f71f4281badd57070d771d58b7a0e8d725633a16c5660bd22701646229ab0"
   },
-  "actorUuid": "2e7741ed-4949-40a8-9779-edee67907475",
-  "mirrorUuid": "8a5bde77-f076-4666-b059-11c95e940780",
+  "actorUuid": "4fb4b2da-3edf-45fb-ae48-fb1698e7b521",
+  "mirrorUuid": "0f578d4a-6069-49cc-9b7c-e5c8a4044856",
   "observer": {
     "fovDegrees": 45,
     "position": [

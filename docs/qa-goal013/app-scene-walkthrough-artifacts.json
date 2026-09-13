@@ -1,0 +1,85 @@
+{
+  "method": "11 reviewed App-controller scene/HUD stills; PNG re-encoded losslessly with ffmpeg for portable viewing. No intervening frames or continuous route video.",
+  "reportSha256": "967548eaceb7ff64609473783e0536e04a5ac6a448875fb6eda1012d7dac7b3e",
+  "contactSha256": "466dc0c549be4d55da642b702b8c23d787b04be93747efd81ff5972f3856bb3f",
+  "webglSha256": "c7e2006c7471cc062d9d1ecf618f601e28098e5cc0dd894c036c235993c19c1b",
+  "images": [
+    {
+      "index": 0,
+      "name": "01-entry",
+      "file": "app-scene-walkthrough-01-entry.png",
+      "sha256": "bb75487dd22e4fb1f46867ce4c0a166aa9896999a450b42afd9dcc14ab86fa7a",
+      "sourceScreenshotSha256": "a9769e7639aabc310b777e303ed95e0212ad008f1ea009d5edb81d2d97c446a0"
+    },
+    {
+      "index": 1,
+      "name": "01-cleared",
+      "file": "app-scene-walkthrough-01-cleared.png",
+      "sha256": "b92c2a390376224b7f73b91c644d75abd035a3e3907e948d7bfd854e7a5e7119",
+      "sourceScreenshotSha256": "9a51008c63ae47568def7476519808643fed0d7c5335c941f1952c788b72a6a1"
+    },
+    {
+      "index": 2,
+      "name": "02-entry",
+      "file": "app-scene-walkthrough-02-entry.png",
+      "sha256": "b6b8397a599fa2a6d5e73e9e6d28e9e1a0e601ee603f86e7d6454bf1a1f6b6c0",
+      "sourceScreenshotSha256": "917976a1aae12d1922c4a209ff1b9acb6dbb6fa1709b97cd6c6104888b60ac62"
+    },
+    {
+      "index": 3,
+      "name": "02-cleared",
+      "file": "app-scene-walkthrough-02-cleared.png",
+      "sha256": "47e6fe86e3ad4a4262383b51790ef49a54b9a8851fe2b11c2df0cd6c26fed2f9",
+      "sourceScreenshotSha256": "d1f5d4f120df29754eb5afba8dcb30c8cb20b98a84e19b67d712839ae7eb248c"
+    },
+    {
+      "index": 4,
+      "name": "03-entry",
+      "file": "app-scene-walkthrough-03-entry.png",
+      "sha256": "ee56a881abb37bb52556650adee01d177e7b1ba432e9fe1524f17026055fddc2",
+      "sourceScreenshotSha256": "408ea57af8aa20a4362c07bd5f070a577878d102450883e871357b8eb2e42cbe"
+    },
+    {
+      "index": 5,
+      "name": "03-cleared",
+      "file": "app-scene-walkthrough-03-cleared.png",
+      "sha256": "e568fa36ff3705adae9dba2973c3e7a3792055bfd39215f490003fa87df319e0",
+      "sourceScreenshotSha256": "a99ac8b42695638ad115a11a2977717c2372fb37f4d267f9a60c2bdb3784ee5d"
+    },
+    {
+      "index": 6,
+      "name": "04-entry",
+      "file": "app-scene-walkthrough-04-entry.png",
+      "sha256": "7e1af7c78523cf3cc6d3bf4eb0349a051ac64f181140ffc146076195da3c5d32",
+      "sourceScreenshotSha256": "2e6b8b7c8b95eb1e234a1a46122c9f383dee7b62c8efa165e8d1517efdb34c25"
+    },
+    {
+      "index": 7,
+      "name": "04-cleared",
+      "file": "app-scene-walkthrough-04-cleared.png",
+      "sha256": "8267cad817ad5b6e4ea692cb709e51b4a2df1cdbc0baf3c91aafc22c719eb81b",
+      "sourceScreenshotSha256": "fa2bfe1e7454a4369d0ef5d97f331b711552f039ba0619a06fb3a8b7d9d59a9d"
+    },
+    {
+      "index": 8,
+      "name": "05-entry",
+      "file": "app-scene-walkthrough-05-entry.png",
+      "sha256": "59ecd7bbd90012e4dc265586aaa80d0e874e043e6f9fa7fa13ffd122c26f6272",
+      "sourceScreenshotSha256": "63e03f11c9deb76088f2f3d08afb1fcadde9dac66251956b6f76df23c8b18f2f"
+    },
+    {
+      "index": 9,
+      "name": "05-cleared",
+      "file": "app-scene-walkthrough-05-cleared.png",
+      "sha256": "475ee895e9947ea524b914b5b3b2e427de7ba11507df81fda1ec0d459b555444",
+      "sourceScreenshotSha256": "c0054ee4316c8b7ea65a17e661f431375b8f3f560ed1634917e41260816c224f"
+    },
+    {
+      "index": 10,
+      "name": "ending",
+      "file": "app-scene-walkthrough-ending.png",
+      "sha256": "8d6d72bed8e40404030bd11e4503305212164805b887934e5551f2fff09b4c5e",
+      "sourceScreenshotSha256": "0c88333599403c148c07a173b9c128f403ee6b8405c87c60cc1cc7b670c4dc47"
+    }
+  ]
+}
