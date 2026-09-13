@@ -1,5 +1,11 @@
 # Goal 013 動的QAの記録
 
+## 2026-09-13 01の自然通過を実sceneで採った動画
+
+[01の自然通過77.2秒・386 frame](area01-natural-route.mp4)、[8秒刻みの接触シート](area01-natural-route-contact.png)、[入力・source hash・WebGL report](area01-natural-route-report.json)を現行の第一章ソースから追加した。`node scripts/qa-gallery-natural.cjs` は新規campaignの01を標準の怖さで実controller/worldへ入れ、既存の `playNaturalArea` によって非常灯、B→Cの見本、配線、巡回体の回避、管理用防火扉の越境まで進める。直接のsolved flagやpose注入はない。4,612回・約76.85秒のsimulation更新を12回ごとに保存し、実 `ChapterScene` とplayer cameraへ386状態を再投入して5fpsで描いた。進行による静的propsの変化は9回のscene再構築で反映した。
+
+映像は**一つの実controller経路から採ったサンプル状態のオフライン再描画**であり、Appの連続描画録画やnative R3F frameそのものではない。上部の進行表示もQA字幕で、製品HUDではない。接触シートとframe 47/88/139/160/240/385を原寸で開き、明暗・輪郭の展示、巡回体、館内02を示す終端扉、壁向きの待避frameを確認した。MP4は全386 frameをデコードしたが、人が全編を連続視聴したわけではない。最大138 draw calls／9,866 triangles、browser終了後geometry/texture 0、error 0。映像SHA-256は `f43733166609b8abf47cffe9354b3e12a8644140c98f13c372c925deb9a3bbc3`。同じAppを通した01→05のdomain/保存経路は下段の別記録であり、この単独01動画を5エリア連続のApp動画とは扱わない。実指・音・鏡・iPhone性能と知覚の確認は未実施。
+
 ## 2026-09-13 05退館動画の完了表示
 
 05の旧単独動画は屋外を映していたが、受理後の最後のQA字幕が「屋外へ出る」のままで、実commandの完了feedbackを映像で読めなかった。現在の `scripts/qa-departure-natural.cjs` は受理後にcameraを同期し、歩いた位置からの不意な移動がないことと、実 `feedbackMessage` に `在館反応 00`・`閉館処理 完了` があることを検査する。commandの「屋外へ出る」frameに続け、同じsimulation状態を進めず実feedbackを9枚・0.9秒保持する。字幕はQA合成であり製品HUDではない。
