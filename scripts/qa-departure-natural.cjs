@@ -43,6 +43,9 @@ async function extract() {
   mounted.objects.forEach(object => scene.add(object));
   const receiverMesh = scene.getObjectByName('containment-bell-receiver');
   if (!receiverMesh) throw Error('Containment bell receiver is missing from the scene');
+  if (!scene.getObjectByName('outdoor-sky') || !scene.getObjectByName('distant-courtyard-ground') ||
+    scene.getObjectByName('departure-outdoor'))
+    throw Error('Outdoor exit must show the courtyard rather than a floating interaction marker');
   const installedKey = scene.getObjectByName('installed-key');
   if (!installedKey) throw Error('Area 05 has no physical isolation key');
   let minimumReceiverBottom = Infinity;

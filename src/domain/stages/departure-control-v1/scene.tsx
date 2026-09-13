@@ -21,9 +21,10 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
   const keyVisual = useRef<{ wasInstalled: boolean | null; elapsed: number }>({ wasInstalled: null, elapsed: 0 });
   const devices = useRef<Record<string, Mesh | null>>({});
   const glass = useMemo(() => new MeshBasicMaterial({ color: '#9ac5cc', transparent: true, opacity: .2, depthWrite: false }), []);
+  const outdoorSky = useMemo(() => new MeshBasicMaterial({ color: '#53676d', side: DoubleSide, fog: false, toneMapped: false }), []);
   const keyShape = useMemo(() => isolationKeyGeometry(), []);
   const keyMaterial = useMemo(() => new MeshBasicMaterial({ color: '#edf3e5', side: DoubleSide }), []);
-  useEffect(() => () => { glass.dispose(); keyShape.dispose(); keyMaterial.dispose(); }, [glass, keyShape, keyMaterial]);
+  useEffect(() => () => { glass.dispose(); outdoorSky.dispose(); keyShape.dispose(); keyMaterial.dispose(); }, [glass, outdoorSky, keyShape, keyMaterial]);
   useFrame((_, delta) => {
     try {
       const raw = runtime.current.stageSession?.value;
@@ -72,7 +73,7 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
       geometry={resources.box} material={s.opaque === false ? glass : s.kind === 'door' ? resources.door : resources.wall}
       position={[(s.min.x+s.max.x)/2,(s.min.y+s.max.y)/2,(s.min.z+s.max.z)/2]}
       scale={[s.max.x-s.min.x,s.max.y-s.min.y,s.max.z-s.min.z]}/>)}
-    {world.interactables.map(t => <mesh key={t.id} name={t.id}
+    {world.interactables.filter(t => t.id !== 'departure-outdoor').map(t => <mesh key={t.id} name={t.id}
       ref={mesh => { devices.current[t.id] = mesh; }} geometry={resources.box} material={resources.device}
       position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.28,.1]}/>)}
     <group name="installed-key" ref={key} visible={false} position={[-4.7,1.55,9]} rotation={[0,Math.PI/2,0]}>
@@ -91,16 +92,30 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     </group>
     <mesh name="outdoor-threshold" geometry={resources.box} material={resources.neutral}
       position={[-3.75,.02,22.15]} scale={[2,.04,.18]}/>
+    <mesh name="outdoor-sky" geometry={resources.plane} material={outdoorSky}
+      position={[-3.75,8,42]} scale={[60,30,1]}/>
+    <mesh name="distant-courtyard-ground" geometry={resources.box} material={resources.dark}
+      position={[-3.75,-.14,34]} scale={[30,.22,16]}/>
+    <mesh name="distant-garden-left" geometry={resources.box} material={resources.trim}
+      position={[-10,1.25,37]} scale={[9,2.5,1.2]}/>
+    <mesh name="distant-garden-right" geometry={resources.box} material={resources.trim}
+      position={[4.2,1.85,38]} scale={[10,3.7,1.2]}/>
     <mesh name="outdoor-walkway" geometry={resources.box} material={resources.trim}
-      position={[-3.75,.015,24.05]} scale={[1.55,.03,3.6]}/>
+      position={[-3.75,.015,27.1]} scale={[1.55,.03,9.7]}/>
+    <mesh name="outdoor-walkway-line" geometry={resources.box} material={resources.neutral}
+      position={[-3.75,.04,23.5]} scale={[1.4,.012,.045]}/>
     <mesh name="courtyard-planter-left" geometry={resources.box} material={resources.wall}
       position={[-1.25,.3,24.7]} scale={[1.8,.6,.8]}/>
     <mesh name="courtyard-planter-right" geometry={resources.box} material={resources.wall}
       position={[2.8,.3,24.7]} scale={[1.8,.6,.8]}/>
     <mesh name="courtyard-lamp-post" geometry={resources.cylinder} material={resources.trim}
-      position={[1.1,1.65,25.3]} scale={[.07,1.65,.07]}/>
+      position={[-2.05,1.65,28.5]} scale={[.07,1.65,.07]}/>
     <mesh name="courtyard-lamp" geometry={resources.box} material={resources.neutral}
-      position={[1.1,3.3,25.3]} scale={[.42,.18,.42]}/>
+      position={[-2.05,3.3,28.5]} scale={[.42,.18,.42]}/>
+    <mesh name="courtyard-lamp-post-left" geometry={resources.cylinder} material={resources.trim}
+      position={[-5.45,1.65,28.5]} scale={[.07,1.65,.07]}/>
+    <mesh name="courtyard-lamp-left" geometry={resources.box} material={resources.neutral}
+      position={[-5.45,3.3,28.5]} scale={[.42,.18,.42]}/>
     <mesh name="containment-door-marker" geometry={resources.box} material={resources.trim}
       position={[2.55,3.45,CONTAINMENT_DOOR_Z]} scale={[3.7,.12,.2]}/>
     <mesh name="staff-exit-marker" geometry={resources.box} material={resources.trim}

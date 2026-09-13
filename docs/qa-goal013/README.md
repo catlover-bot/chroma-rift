@@ -30,13 +30,13 @@
 
 04標準の捕捉・復帰試験 `src/rendering/firstPerson/__tests__/mirrorCorridorHoldController.test.ts` は、Stage codecで受けた鍵・練習済みの途中checkpointから開始する。実controllerの衝突付き歩行で巻上機へ寄り、一段目を保持・解放してから再保持中に巡回体へ捕捉される。保持と未完成fractionが消え、鍵と確定した歯止め、保持指の解放barrier、safe poseが維持される。保存checkpointをStage codecで復元し、標準設定の実controllerで格子を越えて制御室前室の出口まで歩いた。途中入口は試験用の有効fixtureであり、01→04の通し操作や製品HUD・実音・native Canvas・動画の証拠ではない。
 
-05単独の自然成功記録： [18.7秒の動画](departure-natural.mp4)、[1秒ごとの接触シート](departure-natural-contact.png)、[鍵の設置前](departure-key-before.png)、[鍵の挿入途中](departure-key-inserting.png)、[鍵の設置後](departure-key-seated.png)、[巡回体の収容](departure-contained.png)、[屋外床と通路](departure-outdoor.png)、[イベント・入力とsource hash](departure-natural-report.json)、[WebGL計測](departure-natural-webgl.json)。`node scripts/qa-departure-natural.cjs` は有効な04由来の鍵checkpointを入口とし、実controllerへの旋回・歩行入力で各操作面まで移動する。設備操作も実照準とcommand受理を使い、位置やsolved bitの代入で攻略しない。鍵の設置前は制御盤に鍵形がなく、受理後に04と同じ輪郭の鍵が0.2秒で制御盤へ移動して残る。sceneの可視・座標と3枚のPNGを照合した。ベル後は巡回体の全身が物理収容区画へ入るまで同じsimulationを進め、観察窓から身体と閉扉を描き、停止後に職員出口から屋外床を歩いて最終操作する。実 `StageScene` をReact hostで組み立て、単一のブラウザーSoftware WebGLで描画した。字幕帯はQA用合成ラベルで製品HUDではない。動画は390×844、10fps、187枚、simulation 13.95秒。最大46 draw calls/3,578 triangles、終了時geometries/textures 0、renderer 1、browser errors 0。反射pass、iPhone FPS、音、native Canvasは対象外。
+05単独の自然成功記録： [18.7秒の動画](departure-natural.mp4)、[1秒ごとの接触シート](departure-natural-contact.png)、[鍵の設置前](departure-key-before.png)、[鍵の挿入途中](departure-key-inserting.png)、[鍵の設置後](departure-key-seated.png)、[巡回体の収容](departure-contained.png)、[出口に近づく視界](departure-outdoor-approach.png)、[屋外へ出た視界](departure-outdoor.png)、[イベント・入力とsource hash](departure-natural-report.json)、[WebGL計測](departure-natural-webgl.json)。`node scripts/qa-departure-natural.cjs` は有効な04由来の鍵checkpointを入口とし、実controllerへの旋回・衝突付き歩行・照準・command受理で収容、停止、退館まで進む。位置やsolved bitは代入しない。鍵の設置前後と挿入中、観察窓内の巡回体、出口手前と屋外到達後の画像を抽出した。出口の先には空、遠景、地面、歩道と灯具を描き、照準対象の浮いた四角いmeshは置かない。出口のinteractableとcommandは実worldに残る。実 `StageScene` をReact hostで組み立て、ブラウザーSoftware WebGLで描画した。字幕帯はQA用合成ラベルで製品HUDではない。390×844、10fps、187枚、simulation 13.95秒。最大49 draw calls/3,584 triangles、終了時geometries/textures 0、renderer 1、browser errors 0。反射pass、iPhone FPS、音、native Canvasは対象外。
 
-自然成功動画SHA-256 `b16128a2657a7e0ce798cd6afa6318a103276a48ffa31a1cda25d54be351b7e1`。接触シート `f54b83c0ebd22e9c7c7e357a2eca26561d02796c538163024fb06f9680c0f667`。PNG抽出と接触シートを開いて鍵の移動、観察窓内の身体、屋外床を確認したが、MP4の連続視聴は未実施。
+自然成功動画SHA-256 `f1329ef4ceddd7307c4f25bb5a067ef92221870f98d09b8ce8e402f6884deebe`。接触シート `d2824479df6e872093fd1ac5a8591c6d1aeed4787fdb79a5bef908e7dda5d05b`。接触シートとframe 00170/00186を開き、出口手前から屋外到達後まで空と歩道が連続することを確認した。MP4の連続視聴は未実施。
 
 05単独の復旧記録： [36.9秒の動画](departure-recovery.mp4)、[1秒ごとの接触シート](departure-recovery-contact.png)、[巡回体が戻る場面](departure-recovery-returning.png)、[再誘導後の収容](departure-recovery-contained.png)、[扉の閉鎖](departure-recovery-latched.png)、[イベント・入力とsource hash](departure-recovery-report.json)、[WebGL計測](departure-recovery-webgl.json)。`node scripts/qa-departure-natural.cjs --recovery` は同じ有効な鍵入口・実controller/scene経路で、全身収容前の閉扉拒否、最初のベルによる収容、閉鎖途中の手動開け直し、巡回体が区画外の通路へ戻るまでの待機、二度目のベルからの再誘導、再閉鎖・停止・屋外退館を一実行で通した。最初の拒否は実commandから「巡回体の全身が収容区画に入るのを待つ。」を返し、扉進行率は0のまま。開け直し後も進行率0・隔離falseを検査した。巡回体が区画外の `z<14.5` に戻った時刻はsimulation 20.15秒で、直前phaseは `return`。次のベルで `investigate` へ移ったことを確認してから、全身収容を再判定した。位置・AI phase・solved bitの直接代入はない。
 
-復旧動画は390×844、10fps、369枚、simulation 30.32秒。最大46 draw calls/3,578 triangles、終了時geometries/textures 0、renderer 1、browser errors 0。動画SHA-256 `766bca87d9bf32cb0a60925d9a7098cf285bc5ab75185b1524de9b29a35efec1`、接触シート `f7b0ae6aead1a6d6496cc305fdc01ac68a9a2c6d73eacc8cf5c6cb0b1ff6a51f`。接触シートとframe 00240/00290/00305の戻り・再収容・閉鎖のPNGを開いた。MP4の連続視聴、製品HUD・実音・native Canvas、端末での見え方・怖さ・FPS・発熱は未実施。区画外へ戻った位置はイベントログで検査しており、接触シートだけで位置を証明したものではない。
+復旧動画は390×844、10fps、369枚、simulation 30.32秒。最大49 draw calls/3,584 triangles、終了時geometries/textures 0、renderer 1、browser errors 0。動画SHA-256 `7400077a2c50c55f57952ee40c16d2e994b5efd997f0ced24b40bb018d0a1752`、接触シート `3eef7ca89b33b5e926a3c250a77f0e6ce46b0a79b5882d33ee99fe85d0b80fba`。接触シートとframe 00240/00290/00305の戻り・再収容・閉鎖、および最終frame 00368の屋外視界を開いた。MP4の連続視聴、製品HUD・実音・native Canvas、端末での見え方・怖さ・FPS・発熱は未実施。区画外へ戻った位置はイベントログで検査しており、接触シートだけで位置を証明したものではない。
 
 最初の05動画では、受鈴器の反応frameで `scale.setScalar` が配置時の寸法を消し、大きな白い形が巡回体の上半身に重なった。受鈴器の半径・高さへ反応倍率を掛け、音源と実meshを同じ頭上の位置へ移した。今回の実scene収録では受鈴器の最下点が2.792m、巡回体の保守的な身体上端が2.24mで、同じ位置にいても上下で重ならないことを全抽出frameで検査した。更新後の[収容画像](departure-contained.png)と[閉鎖画像](departure-recovery-latched.png)を開き、身体と床灯が確認できることを観察した。これはSoftware WebGL上の観察であり、実端末の透過・明るさ・視認性の保証ではない。
 
@@ -49,8 +49,8 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 | 経路 | simulation CPU p50 / p95 / max | WebGL描画投入 p50 / p95 / max | サンプル数 simulation / 描画 |
 | --- | ---: | ---: | ---: |
 | 04 鏡廊 | 0.036 / 0.148 / 2.111 ms | 0.6 / 1.2 / 40.2 ms | 1,685 / 311 |
-| 05 自然成功 | 0.056 / 0.246 / 2.246 ms | 0.4 / 0.8 / 27.9 ms | 837 / 187 |
-| 05 開け直し・再誘導 | 0.036 / 0.182 / 2.440 ms | 0.4 / 0.7 / 25.7 ms | 1,819 / 369 |
+| 05 自然成功 | 0.050 / 0.174 / 2.022 ms | 0.4 / 0.8 / 31.6 ms | 837 / 187 |
+| 05 開け直し・再誘導 | 0.035 / 0.136 / 2.931 ms | 0.4 / 0.7 / 30.1 ms | 1,819 / 369 |
 
 `nativeCanvasLifecycle.test.tsx` では04の実R3F/native Canvas境界を10回入退出し、毎回鏡の反射target・materialと固定横顔/鍵形のgeometry/materialが一度だけdisposeされ、R3F root数が開始値に戻り、rendererが一度解放され、旧controllerが停止することを確認した。GL context/rendererは試験用の代替なので、端末GPUの残存メモリや実EXGL解放を測ったものではない。
 

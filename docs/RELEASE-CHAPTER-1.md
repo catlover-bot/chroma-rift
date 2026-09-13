@@ -62,6 +62,10 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 
 04巻上機への鍵の差し戻しを実sceneへ追加した後、実controller動画で初回・再使用と格子通過を確認した。iOS/Androidのsource map付き製品exportを取り直し、1,576/1,575 source・各10 asset、開発用画面/probe除外、first-party本文一致、Three class同一性、実行時循環0を確認した。`npm run check` は109スイート/1,124テスト、lint、型検査、通常iOS exportを通過。端末の鍵の大きさ・鏡像・実指の離し戻しは未確認。
 
+05の屋外出口は、Software WebGL録画で黒い背景と浮いた操作四角形になっていた。worldの退館操作を維持して実sceneへ空・遠景・歩道・灯具を追加し、自然成功と扉の開け直し復旧の両方で出口を歩いて完了する動画を取り直した。抽出画像とWebGL計測は `docs/qa-goal013/README.md`。実機の輝度、色、操作面の見つけやすさはiPhone previewで確認する。native preview、正式なプライバシーURLとサポート連絡先、ストア申告は引き続きrelease gateの残件。
+
+このscene変更後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常exportを通過。iOS/Androidのsource map付き公開用JSも再exportし、1,576/1,575 source・各10 assetで5エリア同梱、開発用画面/probe除外を検査した。両OSで現在存在するfirst-party source各197件がmap本文と一致し、Three source 1件・22参照のclass identityと実行時循環0を確認した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。実機previewと公式URLなしで公開判定へ進めない。
+
 オーナーが上記を埋めた後のコマンド例（**この作業では実行しない**）:
 
 ```sh
