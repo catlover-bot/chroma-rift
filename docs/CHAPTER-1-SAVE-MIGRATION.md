@@ -1,5 +1,7 @@
 # 第一章の保存と旧記録の移行
 
+第一章完了済みのホームにも確認付き再開始を表示する。確認前は完了envelopeを保持し、新周回の01入場時に旧原文をbackupへ複写してから新しいrunId・reset世代+1のenvelopeへ置き換える。App host統合試験でこの順序を検査した。保存層の処理自体は変更していない。端末の実AsyncStorageでは未確認。
+
 第一章の単一 envelope は `chroma-rift.campaign.chapter-1.v1`。明示した新規開始時だけ、既存 envelope の原文を `chroma-rift.campaign.chapter-1.backup.v1` へ先に複写する。Stage Kit の既存キーを改名・削除しない。campaign は既存 first-person の直列 writer と session lease を使い、エリア完了と次の安全入口を一つの値で保存する。AsyncStorage の二つのキーをtransactionとは扱わない。
 
 | 既存記録 | 現在のキー | 移行時の意味 |

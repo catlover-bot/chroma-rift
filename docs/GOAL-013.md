@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+第一章を完了すると製品ホームの「第一章をはじめから」が消え、設定経由でしか新しい周回を始められなかった。完了後も同じ確認付きボタンを表示する。App host統合試験では、完了済みenvelopeをcold起動し、確認前は原文不変、明示確認後の01入場で旧原文がbackupへ保存され、新runId・reset世代+1・未完了の新周回になることを検査した。修正後の `npm run check` はlint・型検査・109スイート/1,124テスト・iOS通常export（1,569 modules、10 assets）を通過。公開用source map付きexportはiOS 1,576/Android 1,575 source・各10 asset、5エリア同梱・開発画面/probe除外を通過し、両OSのfirst-party各197 sourceが現行ファイルと一致した。iOSのThree class identityは1 source/22参照、iOS/Android/neutralの循環は各223 modules/684 edges/0 SCC・errors、Stage定義検査2件も通過。iPhone上のホーム操作と実保存は未確認で、公開ゲートは維持する。
+
 04の鏡像と実身体の同時確認を補うため、実controller/StageSceneの既存の控えめ経路から同一simulation frameを取り、player cameraと固定QA cameraを左右に描いた4.3秒・43枚のSoftware WebGL動画を追加した。一つの巡回体groupの座標とcontroller記録が全frameで一致し、frame 100で鏡内の身体と実身体を左右に開いて確認した。QA合成は製品の追加描画や一人称画面ではない。全frameデコード、source/tool/video hash、反射40枚、資源解放/error 0を確認。再現手順・SHA-256・範囲は `docs/qa-goal013/README.md`。製品ソースは前の109スイート/1,124テスト・公開用JS検査から変更していない。実機の鏡像と操作はなお未確認で、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 開始点は `/home/mhirotaka/workspace/chroma-rift-goal012` の `feat/goal-012-stage-kit`、HEAD `478b376ea9a954974ad2f08ab5f09d929bd35f06`、clean。`feat/goal-013-chapter-one-product` を同じworktreeに作成した。Goal 012の補完ブランチ `feat/goal-012-completion` にあった比較動画・検証スクリプト・記録は、重複しない差分として `1fb7a94` に取り込んだ。元の `/home/mhirotaka/workspace/chroma-rift` は `5c04d98` の別worktreeのまま。Node `v24.20.0`、npm `11.19.0`、実 `node_modules` を確認した。Goal 011の鏡廊は基準HEADに存在しない。

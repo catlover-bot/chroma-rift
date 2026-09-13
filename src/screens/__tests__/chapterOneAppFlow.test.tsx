@@ -220,6 +220,7 @@ test.each([
   expect(mockCanvasOwners.active).toBe(0);
   const resumed = await render(<App/>);
   expect(await resumed.findByRole('button', { name: 'エンディングを見る' })).toBeTruthy();
+  expect(resumed.getByRole('button', { name: '第一章をはじめから' })).toBeTruthy();
   const completedRaw = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
   await fireEvent.press(resumed.getByRole('button', { name: 'エンディングを見る' }));
   expect(await resumed.findByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
@@ -282,6 +283,29 @@ test.each([
       canvasAfterUnmount: mockCanvasOwners.active,
       coldEndingAvailable: true,
     }, null, 2) + '\n');
+  }
+  if (caseName === 'standard') {
+    const restartHome = await render(<App/>);
+    const alert = jest.spyOn(Alert, 'alert');
+    const oldRaw = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+    await fireEvent.press(await restartHome.findByRole('button', { name: '第一章をはじめから' }));
+    const confirmation = alert.mock.calls.at(-1)!;
+    expect(confirmation[0]).toBe('第一章を最初から');
+    expect(confirmation[1]).toContain('現在の第一章の進行を新しい周回に置き換えます');
+    expect(confirmation[2]?.some(button => button.text === 'キャンセル')).toBe(true);
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(oldRaw);
+    await act(() => confirmation[2]?.find(button => button.text === '最初から始める')?.onPress?.());
+    const skipSetup = restartHome.queryByText('あとで調整して遊ぶ');
+    if (skipSetup) await fireEvent.press(skipSetup);
+    await fireEvent.press(await restartHome.findByText('展示室へ入る'));
+    await restartHome.findByTestId('campaign-native-canvas');
+    const newRaw = JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!);
+    expect(await AsyncStorage.getItem(CHAPTER_ONE_BACKUP_KEY)).toBe(oldRaw);
+    expect(newRaw.runId).not.toBe(runId);
+    expect(newRaw.resetGeneration).toBe(JSON.parse(oldRaw!).resetGeneration + 1);
+    expect(newRaw).toMatchObject({ currentArea: 'chapter-1-area-01', completedAreas: [], campaignCompleted: false });
+    await restartHome.unmount();
+    expect(mockCanvasOwners.active).toBe(0);
   }
 }, 90_000);
 

@@ -1,5 +1,7 @@
 # 第一章 campaign 接続記録
 
+本編完了後も製品ホームへ「第一章をはじめから」を残す。確認操作だけでは保存を変更せず、次に01へ入場する時に旧envelopeをbackupして新しいrunIdとreset世代で開始する。完了済み記録からのこのApp host経路はJestのAsyncStorageモックで検査した。実端末の保存と画面は未確認。
+
 基準HEADは `478b376ea9a954974ad2f08ab5f09d929bd35f06`。作業worktreeは `/home/mhirotaka/workspace/chroma-rift-goal012`、ブランチは `feat/goal-013-chapter-one-product`。現行コードの旧入口と hidden probe は第一章のエリアではない。Goal 011の鏡廊の実装は基準HEADになかった。
 
 `src/domain/campaign/definition.ts` が製品上の順序を固定し、Stage Kitの `stageId` と表示上の `areaId` を分ける。01→gallery、02→vault、03→theatre、04→新規 `mirror-corridor-v1`、05→新規 `departure-control-v1`。既存3章の保存キーは変更しない。第二章は `planned` の文章だけで、stage IDを割り当てず、実行経路も持たない。

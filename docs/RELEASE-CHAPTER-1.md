@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+第一章完了後の製品ホームからも、確認付きで「第一章をはじめから」を選べるようにした。Jest App hostでは、確認前の完了記録保持、入場時の原文backup、新runIdとreset世代の更新を確認。変更後の全109スイート/1,124テスト、通常iOS export、両OS公開用source-map検査、循環/定義検査は通過した。端末での完了後の再開始、実AsyncStorageのbackupと画面表示はpreviewで確認する。
+
 04の鏡像と実身体を同一simulation frameで並べたSoftware WebGLのQA動画を `docs/qa-goal013/mirror-identity.mp4` に追加した。右側は固定QA cameraであり、製品の一人称表示やiPhoneの反射確認ではない。native previewで鏡像・実体・操作を確認するゲートは未完了のまま。
 
 この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,124テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。

@@ -101,7 +101,7 @@ export function ChapterOneHomeScreen(props: Props) {
         {props.migration?.status === 'await-area' && !props.session ? <Text style={styles.warning}>
           以前の記録を引き継ぐ入口を準備中です。原文を保持しています。
         </Text> : null}
-        {props.session && !props.session.campaignCompleted ? <ActionButton label="第一章をはじめから" onPress={props.onNew}/> : null}
+        {props.session ? <ActionButton label="第一章をはじめから" onPress={props.onNew}/> : null}
         <ActionButton label="エリアを振り返る" onPress={props.onAreas} disabled={props.loading}/>
         <ActionButton label="発見の記録" onPress={props.onDiscoveries} disabled={props.loading}/>
         <ActionButton label="設定" onPress={props.onSettings}/>
