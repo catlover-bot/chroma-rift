@@ -15,6 +15,7 @@ import { createActorMotion } from '../../domain/actorMotion';
 import { CHAPTER_ONE } from '../../domain/campaign/definition';
 import { CHAPTER_ONE_BEATS, CHAPTER_ONE_COPY } from '../../domain/campaign/story';
 import { recordGalleryDiscovery } from '../../domain/gallery';
+import { migrateGalleryV1Checkpoint } from '../../domain/gallery/checkpoint';
 import { THEATRE_BELLS } from '../../domain/theatre/environment';
 import { attachNaturalRun, playNaturalArea } from '../../../test-support/naturalChapterRoute';
 import { createCheckpoint } from '../../domain/firstPerson';
@@ -348,6 +349,28 @@ test('the discovery record shows observed notes and replay unions notes without 
   await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!))
     .toMatchObject({ currentArea: 'chapter-1-area-01', checkpoint: observed,
       discoveryHistory: { 'chapter-1-area-01': ['chromatic', 'shadow'] }, storyPresented: [] }));
+  const invalidClear = { ...replay.checkpoint!, progress: { ...replay.checkpoint!.progress, cleared: true } };
+  await act(() => {
+    replay.onCheckpoint(invalidClear);
+    replay.onComplete(chapterCompletionSummary(invalidClear.chapterId, invalidClear.progress));
+  });
+  expect(view.queryByText('閉館後の展示室を振り返った')).toBeNull();
+  const clearedFixture = migrateGalleryV1Checkpoint(originalV1('cleared'))!.checkpoint;
+  const clearedGallery = clearedFixture.progress.gallery!;
+  const replayCleared = { ...clearedFixture, progress: { ...clearedFixture.progress,
+    gallery: { ...clearedGallery, discoveries: { ...clearedGallery.discoveries, contour: true } } } };
+  await act(() => {
+    replay.onCheckpoint(replayCleared);
+    replay.onComplete(chapterCompletionSummary(replayCleared.chapterId, replayCleared.progress));
+  });
+  expect(await view.findByText('閉館後の展示室を振り返った')).toBeTruthy();
+  await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!))
+    .toMatchObject({ currentArea: 'chapter-1-area-01', checkpoint: observed,
+      discoveryHistory: { 'chapter-1-area-01': ['chromatic', 'shadow', 'contour'] }, storyPresented: [] }));
+  expect(mockCanvasOwners.active).toBe(0);
+  const savedAfterReplay = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+  await act(() => replay.onCheckpoint(replayObserved));
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(savedAfterReplay);
 });
 
 test('old cleared gallery proposes an indoor area-02 entry without changing old bytes', async () => {

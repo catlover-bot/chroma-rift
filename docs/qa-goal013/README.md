@@ -8,6 +8,8 @@
 
 [App host標準・cold restoreと逆順replayログ](app-natural-route-standard-cold.json) では、上記と同じ自然操作の標準B→Cを、各エリア完了後の**4回のApp unmount→cold起動**を挟んで通した。各エリアでさらに2回ずつホーム退出→再入場し、完走後のcold起動から05→01の5エリアへ逆順replayした。計20回のCanvas mock入場、10回の同一エリア再入場、4回のエリア遷移後cold restore。保存runIdと次エリア、終了後の本編セーブ原文、古い画面callbackの拒否を検査した。mock ownerは全期間peak 1、退出・unmount後0。ログSHA-256 `52315a8417f81e1aa552af4bb4f82718acaaf62cf309ebc026b39cf544f4ac69`。再生成時のrunIdは時刻由来のためhashは変わる。これはJestのAsyncStorage/Canvasモック境界であり、実端末の永続性・GPU/音owner解放・frame・発熱の検証ではない。
 
+練習エリアの完了handoffは、同じApp host試験の発見記録ケースで別に検査した。偽のclear bitはStage codecで拒否し、codec有効な完了fixtureをscreen callbackへ渡すと練習結果画面へ進む。最終checkpointにだけある発見bitは保存に加わり、本編のエリア・checkpoint・物語提示は保持される。結果画面へ移った旧callbackも拒否する。このケースはApp callbackとJestのCanvas/AsyncStorageモックの検査で、練習を実controllerや実端末で完走した記録ではない。
+
 保存失敗のApp host試験は `src/screens/__tests__/chapterOneAppFlow.test.tsx` で行う。campaign keyへのsetItemだけを拒否し、途中checkpointと冒頭beatの未保存を表示する。再試行が再度失敗しても元rawを保持し、成功時は最新envelopeを保存する。起動中だけ継続なら画面の発見記録は保持するがrawは変えない。書込直後にホームへ退出した場合もCanvas owner 0のまま失敗を表示し、再試行で最新envelopeを保存した。Canvas・AsyncStorageはJestモックであり、実端末の書込失敗・Modal重なりは未確認。
 
 更新したAppログの `transitionStories` は、01 `emergency-circuit`、02 `containment-procedure`、04 `isolation-key` を次エリアのCanvas起動前に表示したことを記録する。05の結末二beatはエンディング画面で提示する。04→05の保存後、隔離キーの文を読む前にunmountした試験では、cold起動後の05安全入口で未提示文が戻る。別のApp host試験は境界文の提示bit書込だけを失敗させ、旧Canvasの保持、元rawの保持、再試行成功または起動中のみの継続を検査した。いずれもCanvas・AsyncStorageのJestモックで、native画面重なりや端末の保存失敗は未確認。

@@ -12,7 +12,7 @@ import { APP_VERSION } from './src/app/version';
 import { CHAPTER_ONE, campaignArea, nextCampaignArea, type CampaignAreaId } from './src/domain/campaign/definition';
 import { createCampaignAreaEntry, createCampaignReplayEntry } from './src/domain/campaign/areaEntry';
 import { proposeLegacyCampaignImport, type LegacyImportProposal } from './src/domain/campaign/migration';
-import { completeCampaignArea, createChapterOneSession, recordCampaignBeatPresented, recordCampaignCheckpoint, recordCampaignNoiseObservation, recordCampaignReplayDiscoveries, recordCampaignSafeEntry, type ChapterOneSession } from './src/domain/campaign/session';
+import { completeCampaignArea, createChapterOneSession, recordCampaignBeatPresented, recordCampaignCheckpoint, recordCampaignNoiseObservation, recordCampaignReplayDiscoveries, recordCampaignSafeEntry, verifiedAreaCheckpoint, type ChapterOneSession } from './src/domain/campaign/session';
 import { CHAPTER_ONE_BEATS } from './src/domain/campaign/story';
 import type { CampaignDiscoveryHistory } from './src/domain/campaign/discoveries';
 import { STAGE_DEFINITIONS, type PlayableStageId } from './src/domain/stageKit/definitions';
@@ -663,8 +663,10 @@ export default function App() {
         onCheckpoint={checkpoint => {
           if (!current() || checkpoint.chapterId !== area.stageId) return;
           if (run.replay) {
+            const verified = verifiedAreaCheckpoint(run.areaId, checkpoint);
+            if (!verified) { setCampaignMessage('練習の進行を確認できませんでした。現在の記録を保持しています。'); return; }
             const previous = campaignRef.current;
-            const update = previous && recordCampaignReplayDiscoveries(previous, run.areaId, checkpoint);
+            const update = previous && recordCampaignReplayDiscoveries(previous, run.areaId, verified);
             if (update?.accepted) {
               if (update.changed) {
                 campaignRef.current = update.session;
@@ -674,11 +676,12 @@ export default function App() {
                 });
               }
             } else if (area.stageId === 'perception-gallery-v1' || area.stageId === 'uncanny-vault-v1' || area.stageId === 'shadow-theatre-v1') {
-              setJournal(previousJournal => mergeStageHistory(previousJournal, [checkpoint]));
-              void recordStageHistory([checkpoint], run.lease).then(saved => {
+              setJournal(previousJournal => mergeStageHistory(previousJournal, [verified]));
+              void recordStageHistory([verified], run.lease).then(saved => {
                 if (current() && !saved) setJournalMessage('発見の記録を保存できませんでした。');
               });
             }
+            if (verified.progress.cleared) campaignCleared.current = verified;
             return;
           }
           if (checkpoint.progress.cleared) { campaignCleared.current = checkpoint; return; }
