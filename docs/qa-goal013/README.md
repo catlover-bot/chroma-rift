@@ -54,6 +54,8 @@ Goal 012の同条件before/after比較と検証器は [GOAL-012-EXTENSION-PROOF]
 
 `nativeCanvasLifecycle.test.tsx` では04の実R3F/native Canvas境界を10回入退出し、毎回鏡の反射target・materialと固定横顔/鍵形のgeometry/materialが一度だけdisposeされ、R3F root数が開始値に戻り、rendererが一度解放され、旧controllerが停止することを確認した。GL context/rendererは試験用の代替なので、端末GPUの残存メモリや実EXGL解放を測ったものではない。
 
+同じnative R3F境界へ、Stage Module codecで復元した04未取得・取得済み、05持参中・設置済みの4状態をcold入場させた。最初のframeでは04取得済みの鍵は非表示、05持参中は未設置、設置済みは制御盤に残る。GL context/rendererは試験代替で、iPhone上の可視性を測っていない。
+
 必要な録画/ログの順序:
 
 1. 標準と控えめで、B→C/C→Bの両順を含む新規01→05のApp経路を、native Canvasと実音声を使う端末で再実行・録画する。Jestのhandoffログと端末のrunId、保存revision、Canvas owner数を照合する。

@@ -23,6 +23,9 @@ import { ChapterScene } from '../ChapterScene';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../FirstPersonCanvas';
 import { createSceneResources } from '../resources';
 import { MIRROR_TARGET_SIZE } from '../planarMirror';
+import { stageModule } from '../../../domain/stageKit/modules';
+import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../../domain/stages/mirror-corridor-v1/checkpoint';
+import { carriedKeyEntry } from '../../../domain/stages/departure-control-v1/session';
 import { commandController, prepareControllerNotebook, setControllerNotebookPreview, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
 
 // Keep installed native Canvas, Provider, reconciler, applyProps and useFrame.
@@ -171,6 +174,36 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     }
     expect(THREE.WebGLRenderer).toHaveBeenCalledTimes(10);
   }, 60000);
+
+  it('restores the taken and installed key at the correct visible state on a cold Canvas entry', async () => {
+    const mirror = stageModule('mirror-corridor-v1')!, departure = stageModule('departure-control-v1')!;
+    const mirrorFresh = mirror.checkpoint(mirror.create());
+    const mirrorData = parseMirrorCheckpoint(mirrorFresh.stageData)!;
+    const departureFresh = departure.checkpoint(departure.create());
+    const cases = [
+      { stageId: 'mirror-corridor-v1', checkpoint: mirrorFresh, object: 'isolation-key', visible: true },
+      { stageId: 'mirror-corridor-v1', checkpoint: mirror.restore({ ...mirrorFresh,
+        stageData: { ...mirrorData, keyTaken: true } })!.checkpoint, object: 'isolation-key', visible: false },
+      { stageId: 'departure-control-v1', checkpoint: departure.restore({ ...departureFresh,
+        stageData: carriedKeyEntry() })!.checkpoint, object: 'installed-key', visible: false },
+      { stageId: 'departure-control-v1', checkpoint: departure.restore({ ...departureFresh,
+        stageData: { ...carriedKeyEntry(), keyAvailable: false, keyInstalled: true } })!.checkpoint,
+        object: 'installed-key', visible: true },
+    ];
+    for (const entry of cases) {
+      renderer = fakeRenderer();
+      const controller = createController(entry.checkpoint, false, true, entry.stageId);
+      const view = await render(<FirstPersonCanvas {...props()} controller={controller} snapshot={controllerSnapshot(controller)} />);
+      try {
+        await createNativeContext(view);
+        await submitFrame(renderer);
+        const key = rendererRoot(renderer).store.getState().scene.getObjectByName(entry.object) as THREE.Group;
+        expect(key).toBeDefined();
+        expect(key.visible).toBe(entry.visible);
+        if (entry.stageId === 'departure-control-v1' && entry.visible) expect(key.position.x).toBeCloseTo(-4.7);
+      } finally { await view.unmount(); }
+    }
+  });
 
   it('skips a hidden mirror and refreshes it on the first visible native frame', async () => {
     const controller = createController(undefined, false, true, 'mirror-corridor-v1');

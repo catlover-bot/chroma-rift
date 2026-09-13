@@ -1,6 +1,6 @@
 # 第一章の公開準備と未完了ゲート
 
-この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,123テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
+この文書は2026-09-13時点のローカル設定と確認範囲を記録する。`automatedChecksPassed=true`（lint、型検査、109スイート/1,124テスト、iOS/Android export、循環と定義検査、Doctor）、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false`。自動検査の詳細は `docs/GOAL-013.md` に記録した。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成
 
@@ -57,6 +57,8 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 04で取得した隔離キーと05の制御盤に残る鍵は同じ形状から描く。取得時0.3秒、設置時0.2秒の移動と、設置前後の可視状態をSoftware WebGLの実controller/scene動画で確認した。抽出画像・ログ・CPU計測は `docs/qa-goal013/README.md` に保存した。iPhone previewで同じ操作を行い、鍵形の見やすさと挿入の向き・長さを最終確認する。
 
 鍵表示修正後の製品JSをsource map付きでiOS/Androidへ再exportし、1,576/1,575 source・各10 asset、5エリア同梱、開発用画面/probe除外を確認した。iOSのfirst-party 197 source、Androidの存在するfirst-party 195 sourceはmap内本文と一致し、Three class identityと実行時循環0も確認した。`npm run check` は109スイート/1,123テスト、lint、型検査、通常iOS exportを通過。これらはpreview/productionの署名済み端末バイナリや機内モード起動の証拠ではない。
+
+さらにnative R3F Canvas境界で、04未取得・取得済み、05持参中・設置済みの4つの検証済みcheckpointをcold起動し、最初のframeの鍵表示と05の設置座標を照合した。端末GLは試験代替。この追加後の全チェックは109スイート/1,124テスト、lint、型検査、通常iOS exportを通過した。製品ソースは前段のsource map付きexportから変わっていない。
 
 オーナーが上記を埋めた後のコマンド例（**この作業では実行しない**）:
 
