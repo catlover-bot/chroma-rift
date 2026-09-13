@@ -111,7 +111,8 @@ async function extract() {
   walkTo(9); press('departure-key', '隔離キーを差す');
   if (!installedKey.visible || installedKey.position.x <= -4.7) throw Error('Accepted key installation has no visible insertion travel');
   for (let i = 0; i < 12; i += 1) tick();
-  if (!installedKey.visible || Math.abs(installedKey.position.x + 4.7) > 1e-6)
+  if (!installedKey.visible || Math.abs(installedKey.position.x + 4.66) > 1e-6 ||
+    !scene.getObjectByName('departure-key')?.visible)
     throw Error('Installed key did not remain seated in the control panel');
   events.push({ at: tick.count / 60, id: 'key-seated', label: '隔離キーが制御盤に収まる',
     actor: { ...state().actor.motion.position }, pose: { ...controller.runtime.pose.position } });

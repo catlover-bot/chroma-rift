@@ -17,7 +17,7 @@
       1
     ]
   ],
-  "toolHash": "12239255c2fd6f7b2c7d7c91a3ddcb7cd0e907c42f86779a928904784e76a14b",
+  "toolHash": "6b911a07df4b02760eff2640e9c776329ee24b4ad4e1fa55075c03d0927531b7",
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
     "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
@@ -134,7 +134,7 @@
     "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72",
-    "src/domain/stages/departure-control-v1/scene.tsx": "2f478ebb7f02bf1741d6cf35de823079c5aaefc709c6eb1d9f9774bbcebfe73d",
+    "src/domain/stages/departure-control-v1/scene.tsx": "9a8ee2d7bcc8aecf94bb865f56b663b684c87051c496609e32e0ea5500e06f74",
     "src/screens/FirstPersonScreen.tsx": "c8db7a73f7beeb2bac30c8266590fe890d92c544e7f3fa968601db19431fbbbe",
     "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
     "src/components/Layout.tsx": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
@@ -326,7 +326,7 @@
         "pitch": -0.14048970175352046
       },
       "image": "departure-key-ready.png",
-      "sha256": "640d0a97449c90eae9edbdd27a83047afbe36f427b8e2ed441f5972797b5a0a7",
+      "sha256": "237ae10d9f6761ac6eb3be28014353e0d088fcd691409dfe6dc69b43f6efcfe8",
       "metrics": {
         "hud": {
           "pause": {
@@ -373,8 +373,149 @@
         },
         "reflected": false,
         "offscreenCalls": 0,
-        "mainCalls": 9,
-        "triangles": 98,
+        "mainCalls": 11,
+        "triangles": 122,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-key-installed",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "action": "調べる",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974492,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-key-installed.png",
+      "sha256": "34febe1850774bf58a0005ea4225a8f8cb28a2c649ee7dadaab98a6280e4a11e",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 308,
+            "bottom": 154,
+            "width": 240,
+            "height": 142
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 244.234375,
+            "right": 154,
+            "bottom": 439.984375,
+            "width": 142,
+            "height": 195.75
+          },
+          "notice": null,
+          "action": {
+            "left": 166,
+            "top": 452,
+            "right": 308,
+            "bottom": 556,
+            "width": 142,
+            "height": 104
+          },
+          "objectiveText": "隔離キーを制御盤に差した。鍵はここに残る。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 13,
+        "triangles": 165,
+        "rtSize": null,
+        "geometries": 3,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-procedure-ready",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "target": "departure-procedure",
+      "action": "点検手順を読む",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.19739555984988094
+      },
+      "image": "departure-procedure-ready.png",
+      "sha256": "45f6f504bffa35d5cbb2533de40ff31bbe14dbf58dc39db4d25f975b23861bda",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 308,
+            "bottom": 112,
+            "width": 240,
+            "height": 100
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 244.234375,
+            "right": 154,
+            "bottom": 439.984375,
+            "width": 142,
+            "height": 195.75
+          },
+          "notice": null,
+          "action": {
+            "left": 166,
+            "top": 452,
+            "right": 308,
+            "bottom": 556,
+            "width": 142,
+            "height": 104
+          },
+          "objectiveText": "収容手順を読む。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 14,
+        "triangles": 158,
         "rtSize": null,
         "geometries": 2,
         "textures": 0
@@ -397,7 +538,7 @@
         "pitch": -0.14048970175352046
       },
       "image": "departure-bell-ready.png",
-      "sha256": "6e775ca59dc45ceba8c03745bbb98bfec112387dca6460fc77fde542d805a583",
+      "sha256": "ec9ba71b332d283929a38bd4c7e58f70a75681e37f9311770442d2e197880f68",
       "metrics": {
         "hud": {
           "pause": {
@@ -444,10 +585,10 @@
         },
         "reflected": false,
         "offscreenCalls": 0,
-        "mainCalls": 20,
-        "triangles": 230,
+        "mainCalls": 25,
+        "triangles": 394,
         "rtSize": null,
-        "geometries": 2,
+        "geometries": 4,
         "textures": 0
       }
     },
@@ -610,7 +751,7 @@
         "pitch": -0.14048970175352046
       },
       "image": "departure-key-ready-390.png",
-      "sha256": "2cb71cbdee0877d6dcadf93a3fc65999ab00cdfd71595c30eebe46834ca45395",
+      "sha256": "63e03f11c9deb76088f2f3d08afb1fcadde9dac66251956b6f76df23c8b18f2f",
       "metrics": {
         "hud": {
           "pause": {
@@ -657,8 +798,149 @@
         },
         "reflected": false,
         "offscreenCalls": 0,
-        "mainCalls": 9,
-        "triangles": 98,
+        "mainCalls": 11,
+        "triangles": 122,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-key-installed-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "action": "調べる",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974492,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-key-installed-390.png",
+      "sha256": "76311c24b1768d9e3ddd672276ca6d2c6defda0521a4dd5dd6b2cbe1ab11487f",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 91,
+            "width": 310,
+            "height": 79
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "隔離キーを制御盤に差した。鍵はここに残る。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 13,
+        "triangles": 165,
+        "rtSize": null,
+        "geometries": 3,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-procedure-ready-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "target": "departure-procedure",
+      "action": "点検手順を読む",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.19739555984988094
+      },
+      "image": "departure-procedure-ready-390.png",
+      "sha256": "af99f484bdedf3b99410e3400a99072e1b6ff0b79d736a8bff54e7eb9796272c",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 378,
+            "bottom": 59.5,
+            "width": 310,
+            "height": 47.5
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 362.90625,
+            "right": 189,
+            "bottom": 735.984375,
+            "width": 177,
+            "height": 373.078125
+          },
+          "notice": null,
+          "action": {
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          },
+          "objectiveText": "収容手順を読む。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 14,
+        "triangles": 158,
         "rtSize": null,
         "geometries": 2,
         "textures": 0
@@ -681,7 +963,7 @@
         "pitch": -0.14048970175352046
       },
       "image": "departure-bell-ready-390.png",
-      "sha256": "8b39404c420df6ded00f5ec8a8794b30928d82bf9dbdf710a1b9935204ae7166",
+      "sha256": "a1171b5a32b567933edafb68cd8fd4a06a61433a5f46bf98c03a516dbbac3c2b",
       "metrics": {
         "hud": {
           "pause": {
@@ -728,10 +1010,10 @@
         },
         "reflected": false,
         "offscreenCalls": 0,
-        "mainCalls": 20,
-        "triangles": 230,
+        "mainCalls": 24,
+        "triangles": 382,
         "rtSize": null,
-        "geometries": 2,
+        "geometries": 4,
         "textures": 0
       }
     },
@@ -894,7 +1176,7 @@
         "pitch": -0.14048970175352046
       },
       "image": "departure-key-ready-430.png",
-      "sha256": "ae22dd7865d44e0be9d8193f601f18dd80cc8eac35bf9e1cf007c045834cacca",
+      "sha256": "ddb57ce2309fc1db6dd0b98039ea2ea07c6c479be38c246b459c0422b837f51a",
       "metrics": {
         "hud": {
           "pause": {
@@ -941,8 +1223,156 @@
         },
         "reflected": false,
         "offscreenCalls": 0,
-        "mainCalls": 9,
-        "triangles": 98,
+        "mainCalls": 11,
+        "triangles": 122,
+        "rtSize": null,
+        "geometries": 2,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-key-installed-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "action": "調べる",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974492,
+        "pitch": -0.14048970175352046
+      },
+      "image": "departure-key-installed-430.png",
+      "sha256": "9bda2675dde64683542e818f81cc77d1e8b935a3b147ce500a72cfe280c5901e",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 49,
+            "width": 350,
+            "height": 37
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": {
+            "left": 16,
+            "top": 82,
+            "right": 414,
+            "bottom": 116,
+            "width": 398,
+            "height": 34
+          },
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "収容手順を読む。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 13,
+        "triangles": 165,
+        "rtSize": null,
+        "geometries": 3,
+        "textures": 0
+      }
+    },
+    {
+      "id": "departure-procedure-ready-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "target": "departure-procedure",
+      "action": "点検手順を読む",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.19739555984988094
+      },
+      "image": "departure-procedure-ready-430.png",
+      "sha256": "32c5113848ac57bac9d29330eb348d93a541475b365b88edfe971599aeea0c8e",
+      "metrics": {
+        "hud": {
+          "pause": {
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          "objective": {
+            "left": 68,
+            "top": 12,
+            "right": 418,
+            "bottom": 49,
+            "width": 350,
+            "height": 37
+          },
+          "context": null,
+          "movement": {
+            "left": 12,
+            "top": 400.75,
+            "right": 209,
+            "bottom": 843.984375,
+            "width": 197,
+            "height": 443.234375
+          },
+          "notice": null,
+          "action": {
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          },
+          "objectiveText": "収容手順を読む。",
+          "pauseOverlapsObjective": false,
+          "contextOverlapsObjective": false,
+          "contextOverlapsMovement": false,
+          "noticeOverlapsObjective": false,
+          "noticeOverlapsContext": false,
+          "contextOverlapsAction": false
+        },
+        "reflected": false,
+        "offscreenCalls": 0,
+        "mainCalls": 14,
+        "triangles": 158,
         "rtSize": null,
         "geometries": 2,
         "textures": 0
@@ -965,7 +1395,7 @@
         "pitch": -0.14048970175352046
       },
       "image": "departure-bell-ready-430.png",
-      "sha256": "d717a2c728e652031d69ef8446d30c95ce3fd4611831796a6a2541ef7a4b72e5",
+      "sha256": "04a51d477a567caaed566747d4dd081f6be2ba2ad599b89e55cea9fed79a10e3",
       "metrics": {
         "hud": {
           "pause": {
@@ -1012,10 +1442,10 @@
         },
         "reflected": false,
         "offscreenCalls": 0,
-        "mainCalls": 20,
-        "triangles": 230,
+        "mainCalls": 24,
+        "triangles": 382,
         "rtSize": null,
-        "geometries": 2,
+        "geometries": 4,
         "textures": 0
       }
     }

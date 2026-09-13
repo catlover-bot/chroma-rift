@@ -178,9 +178,9 @@
   ],
   "simulationCpu": {
     "samples": 837,
-    "p50Ms": 0.038,
-    "p95Ms": 0.132,
-    "maxMs": 2.073
+    "p50Ms": 0.043,
+    "p95Ms": 0.143,
+    "maxMs": 1.809
   },
   "visualClearance": {
     "minimumReceiverBottom": 2.792,
@@ -409,17 +409,17 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/departure-control-v1/scene.tsx": "2f478ebb7f02bf1741d6cf35de823079c5aaefc709c6eb1d9f9774bbcebfe73d",
+    "src/domain/stages/departure-control-v1/scene.tsx": "9a8ee2d7bcc8aecf94bb865f56b663b684c87051c496609e32e0ea5500e06f74",
     "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/departure-natural/departure-natural.mp4",
-    "bytes": 117569,
-    "sha256": "f1329ef4ceddd7307c4f25bb5a067ef92221870f98d09b8ce8e402f6884deebe",
+    "bytes": 122466,
+    "sha256": "ea1bba60caa4d2e3d0360b4dac53e91a2b45c7e816d956d558abb7641202986b",
     "fps": 10,
     "durationSeconds": 18.7
   },
   "boundary": "Actual area-05 controller, world collision, commands, StageScene and body animation; isolated memory entry carries a validated key. First bell and final outdoor exit. Browser Software WebGL with QA caption, no native HUD/audio/Canvas or first four areas.",
-  "toolHash": "2cfb98c9f20bf34047ea7c523bdfa55ac12de08afb47c75adebb8660f37d3a9a"
+  "toolHash": "040eefe82e019ee0daf6086a12c8cbe42635bef23e752f5f663745d1178083dc"
 }

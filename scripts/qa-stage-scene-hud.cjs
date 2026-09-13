@@ -66,6 +66,13 @@ async function extract(stageId, width, height, fontScale) {
   mounted.objects.forEach(object => scene.add(object));
   const callbacks = bridge.callbacks.splice(0).filter(callback => !callback.toString().includes('mirror.render'));
   const updateScene = () => { runtime.current = controller.runtime; callbacks.forEach(callback => callback({}, 0)); scene.updateMatrixWorld(true); };
+  const advanceFrames = count => {
+    for (let frame = 0; frame < count; frame++) {
+      RC.advanceController(controller, 1 / 60, camera);
+      runtime.current = controller.runtime;
+      callbacks.forEach(callback => callback({}, 1 / 60));
+    }
+  };
   context.snapshot = () => RC.controllerSnapshot(controller);
   const hud = await native.mount(FirstPersonScreen, { chapterId: stageId,
     settings: { ...Defaults.DEFAULT_SETTINGS, haptics: false }, controls: Defaults.DEFAULT_FIRST_PERSON_CONTROLS,
@@ -77,12 +84,12 @@ async function extract(stageId, width, height, fontScale) {
     const id = width === 320 ? name : `${name}-${width}`;
     await hud.update(); updateScene();
     const tree = hud.serialize(), button = action(tree);
-    if (!button || button.disabled || button.label !== expectedLabel)
+    if (expectedLabel && (!button || button.disabled || button.label !== expectedLabel))
       throw Error(`${id}: expected enabled ${expectedLabel}, got ${button?.label} disabled=${button?.disabled}`);
     const file = `${id}-scene.json`;
     fs.writeFileSync(path.join(out, file), JSON.stringify(scene.toJSON()));
     records.push({ id, stageId, file, width, height, fontScale, tree, target: RC.controllerSnapshot(controller).target?.id,
-      pose: controller.runtime.pose, action: button.label });
+      pose: controller.runtime.pose, action: button?.label ?? null });
   };
   try {
     if (mirror) {
@@ -94,8 +101,11 @@ async function extract(stageId, width, height, fontScale) {
       await capture('departure-key-ready', '隔離キーを差す');
       await hud.pressTestID('interact');
       if (!controller.runtime.stageSession?.value?.keyInstalled) throw Error('HUD key was not installed');
+      advanceFrames(12);
+      await capture('departure-key-installed');
       aim(controller, camera, { x: -4.75, y: 1.4, z: 10 }, 'departure-procedure');
-      await hud.update(); await hud.pressTestID('interact');
+      await capture('departure-procedure-ready', '点検手順を読む');
+      await hud.pressTestID('interact');
       if (!controller.runtime.stageSession?.value?.procedureRead) throw Error('HUD procedure was not read');
       aim(controller, camera, { x: -4.75, y: 1.4, z: 11 }, 'departure-bell');
       await capture('departure-bell-ready', '収容区画の呼び鈴を鳴らす');

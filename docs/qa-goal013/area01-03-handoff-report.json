@@ -180,7 +180,7 @@
     "src/domain/stages/mirror-corridor-v1/scene.tsx": "ce1800701d1126629afb9f4bac67b12a17425d7da97c7fc4e560ec0f14ae5aa6",
     "src/domain/stages/isolationKeyGeometry.ts": "4db444596f9f3b6fa6e16186c2c9c928ff13ad06364b54f633e3f78aae1bd20a",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
-    "src/domain/stages/departure-control-v1/scene.tsx": "2f478ebb7f02bf1741d6cf35de823079c5aaefc709c6eb1d9f9774bbcebfe73d",
+    "src/domain/stages/departure-control-v1/scene.tsx": "9a8ee2d7bcc8aecf94bb865f56b663b684c87051c496609e32e0ea5500e06f74",
     "src/rendering/firstPerson/resources.ts": "7b404df301198974fdd000c38ef75c1089697ee293f03f65459c1a7ea51acd9e",
     "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
     "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",

@@ -1,0 +1,73 @@
+{
+  "observedAt": "2026-09-13T08:05:05.783Z",
+  "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
+  "productCommit": "7ff4a83",
+  "scope": "Local source-map JS exports and QA only; no signed binary or iPhone execution.",
+  "commands": {
+    "check": "npm run check",
+    "definition": "node scripts/validate-stage-definitions.cjs",
+    "cycles": "node scripts/check-runtime-cycles.cjs",
+    "exports": "expo export --platform ios|android --no-bytecode --source-maps",
+    "release": "node scripts/check-release-export.cjs <directory> ios|android",
+    "doctor": "npm run doctor",
+    "dependencies": "expo install --check; npm ls --depth=0"
+  },
+  "check": {
+    "suites": 110,
+    "tests": 1133,
+    "iosNormalModules": 1573,
+    "assets": 10
+  },
+  "stageDefinitionTests": 2,
+  "cycles": {
+    "platforms": [
+      "ios",
+      "android",
+      "neutral"
+    ],
+    "productionModules": 227,
+    "runtimeEdges": 696,
+    "sccs": 0,
+    "errors": 0
+  },
+  "releaseExports": {
+    "ios": {
+      "sourceMapSources": 1580,
+      "assets": 10,
+      "bundleSha256": "e93f15ca04d1549b76dfad71d1d15027b0cbfc3116700594b2a85d84441b0bab",
+      "bundle": "_expo/static/js/ios/index-615c91a933058bd681b3975bdff33f2d.js",
+      "firstPartyCount": 201,
+      "firstPartyMatches": true
+    },
+    "android": {
+      "sourceMapSources": 1579,
+      "assets": 10,
+      "bundleSha256": "880d8c58918f57b70b0aba9db514e454fe4cf157b2b171a4a919b13b2fd12cd2",
+      "bundle": "_expo/static/js/android/index-f748d0ad864313699c397b7f7d288a64.js",
+      "firstPartyCount": 201,
+      "firstPartyMismatchCount": 0
+    },
+    "fiveAreasPresent": true,
+    "developmentScreensProbeAndDevClientAbsent": true
+  },
+  "three": {
+    "sources": 1,
+    "edges": 23,
+    "sameClassIdentity": true
+  },
+  "dependencies": {
+    "packageLockSha256": "75af020d9b5ea67905506d0a45acee6deb17705adc7cc9f836059314330780df",
+    "expoInstallCheck": "Dependencies are up to date",
+    "npmLsDepth0": "exit 0",
+    "doctor": "21/21",
+    "auditReference": "release-local-checks.json (same package-lock SHA-256; not rerun for this scene-only change)"
+  },
+  "qa": {
+    "stageSceneHudImages": 18,
+    "stageSceneHudSourceHashes": 146,
+    "naturalVideoSha256": "ea1bba60caa4d2e3d0360b4dac53e91a2b45c7e816d956d558abb7641202986b",
+    "recoveryVideoSha256": "64890651855ed9631c899ddb6d115f41a421aefb5de2a0567f69d7ece973abb1",
+    "naturalSourceHashes": 112,
+    "recoverySourceHashes": 112
+  }
+}
