@@ -45,6 +45,7 @@ npm 11のinstall-script方針では、`@shopify/react-native-skia` のpostinstal
 - 標準B→CのJest App経路では、4回のエリア遷移後cold restore、10回の同一エリア再入場、完走後の05→01逆順replayを加えた。Canvas mockは計20回の入場でpeak 1、退出・unmount後0。本編セーブとrunIdは保持された。実端末のGPU/音owner、AsyncStorage、熱・frame timeを証明しない。
 - 逆順replayの5エリアは、各マウント済みcontrollerを実操作で出口まで進め、codec有効な最終checkpointから練習結果画面へ到達した。新発見のない実行では本編envelope原文を変えず、結果画面のCanvas mock ownerは0。練習完了のnative Canvas/実音/端末保存は未確認。
 - 01〜03の変更前後は同条件のSoftware WebGL動画で各エリアの短い操作を比較した。01は目的文と点灯後の点検記録の差があり、非常灯の受理とcameraは一致。02の長さ調整と03の灯り調整は観測経路のtimeline・独立動画がbyte一致。各エリア全体の実機比較は未完了。
+- 04の図地展示は、単独scene動画の再点検で横顔が台板に隠れていたため描画順を修正した。自作の鍵形も実sceneへ入れ、取得前後の抽出画像と実controller動画で表示を照合した。反射を含むSoftware WebGLの最大主50/反射42 draw calls・3,579 triangles・RT384×384は端末測定ではない。iPhone previewで横顔と鍵の視認性、鍵取得の動き、鏡と実景の一体感を改めて確認する。
 - App hostでエリア境界の未提示短文を次Canvas起動前に表示・保存する経路を追加した。完了envelope保存後に提示bitの書込が失敗しても、旧Canvasを維持して再試行/起動中のみ継続を選べる。境界表示中のcold終了は次エリアの安全入口で未提示文を再表示する。JestのCanvas/AsyncStorageモックによる確認で、native表示と実端末の永続性は未確認。
 
 - 05完了保存後に未提示の収容手順がある場合は、エンディングで一度示してから提示bitを保存する。結末表示前のcold終了と再閲覧の非反復をJest App hostで確認した。実機表示と実AsyncStorageは未確認。

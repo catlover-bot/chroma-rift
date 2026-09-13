@@ -1,7 +1,7 @@
 {
-  "maxMainCalls": 49,
+  "maxMainCalls": 50,
   "maxOffscreenCalls": 42,
-  "maxTriangles": 3548,
+  "maxTriangles": 3579,
   "reflectedFrames": 134,
   "targetSize": [
     384,

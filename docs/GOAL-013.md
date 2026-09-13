@@ -61,3 +61,9 @@ App hostのエリア境界では、完了envelopeを先に保存した後、そ�
 旧記録が収蔵庫にだけある順不同ケースでも、campaignを作る前に製品ホームから02の練習を開始し、マウント済みcontrollerの実操作で出口まで到達、結果画面へ進むことをApp hostで検査した。旧収蔵庫のrawはbyte一致、campaign保存keyは未生成、ホームの残り4エリアは未到達のまま。旧記録の存在と本編の連続prefixを混同しない。ただしCanvas frame callbackとAsyncStorageはJestモックで、端末上の旧保存移行・練習完走を証明しない。
 
 この追加後の `npm run check` はlint・型検査・109スイート/1,122テスト・iOS通常exportを通過した。製品ソースと依存は変更していないため、前回のsource map付き製品export/循環/Doctorの測定対象は同じまま。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
+04の実scene動画を再点検すると、図地展示の横顔が暗い台板の奥に隠れ、中央の鍵も直方体に見えていた。鏡の反射や攻略は動いていても、エリア固有の最初の観察が画面に成立していないため、固定した二つの横顔を台板の手前へ出し、中央部品を自作の鍵形ShapeGeometryへ置き換えた。鍵の取得判定・位置・所有状態・歯止め・鏡・AIは変更していない。新しいSoftware WebGL動画の冒頭で二つの顔と鍵を目視し、取得直後のframe 00011で鍵groupが非表示になることを抽出画像とanimation可視bitで照合した。横顔の輪郭は視線や時間で差し替えず、取得操作まで動かない。
+
+修正後の `node scripts/qa-mirror-natural.cjs` は303枚、simulation27.58秒、鍵・明示鏡観察・練習・三歯止め・退避・物理出口を通過した。反射は134枚、RT384×384、最大主50/反射42 draw calls、3,579 triangles、解放後geometry/texture 0、browser errors 0。MP4は全frameデコードし、tool/videoと読み込んだ110 sourceのhashを現ファイルと照合した。接触シート、横顔と鍵の前後、鏡内の身体、開いた格子の抽出画像を開いたが、連続視聴とiPhone表示は未実施。成果物とSHA-256は `docs/qa-goal013/README.md`。
+
+このscene変更後の `npm run check` はlint・型検査・109スイート/1,122テスト・iOS通常exportを通過した。定義検査2件、iOS/Android/neutralの222 production modules・682 runtime edges・0 SCC/0 errorsを確認。source map付き製品exportはiOS 1,575/Android 1,574 source、各10 JS assetで5エリアを含み、開発用画面とprobeを除外した。iOSのfirst-party source 196件とThree class同一性も一致。`automatedChecksPassed=true` を維持し、native preview、実HUD/音・知覚、正式な公開URLが未確認のため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` も維持する。

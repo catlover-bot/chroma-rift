@@ -301,14 +301,14 @@
     "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
     "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
     "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
-    "src/domain/stages/mirror-corridor-v1/scene.tsx": "a938f0c2a17746d6997726b0a51f2a20550a4025af8a4c70ab5b332caa455df4",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "f635862cb119fad3f0e01d1380d6fd68c8298d2cb25a72a7169aac2b7aec04ee",
     "src/rendering/firstPerson/planarMirror.ts": "6f1bac7651396569d9b1c2a03416b6dfdf689f5efa9075fafef2408cb81852ba",
     "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72"
   },
   "video": {
     "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-natural/mirror-natural.mp4",
-    "bytes": 220813,
-    "sha256": "f68f97fb77a3e372a25fd7b9016381dc9b82e272e79f49a2abca12c62fc0a8d1",
+    "bytes": 234620,
+    "sha256": "e70485c27561a6c66f3e61012666382cdad0e383866986a8bb4fcc48c5e3dac3",
     "fps": 10
   },
   "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity.",

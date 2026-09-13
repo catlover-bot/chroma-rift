@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property -- R3F Three.js intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
-import { DoubleSide, Frustum, Matrix4, MeshBasicMaterial, Shape, ShapeGeometry, type Mesh } from 'three';
+import { DoubleSide, Frustum, Matrix4, MeshBasicMaterial, Shape, ShapeGeometry, type Group, type Mesh } from 'three';
 import type { ChapterRuntime, WorldGeometry } from '../../firstPerson/types';
 import { createPlanarMirror, type OffscreenDraw } from '../../../rendering/firstPerson/planarMirror';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
@@ -21,15 +21,27 @@ function profileGeometry() {
   return new ShapeGeometry(face);
 }
 
+function isolationKeyGeometry() {
+  const key = new Shape();
+  key.moveTo(-.05,.09);
+  key.bezierCurveTo(-.16,.11,-.16,.29,0,.29);
+  key.bezierCurveTo(.16,.29,.16,.11,.05,.09);
+  key.lineTo(.05,-.07); key.lineTo(.12,-.07); key.lineTo(.12,-.13);
+  key.lineTo(.05,-.13); key.lineTo(.05,-.18); key.lineTo(.11,-.18);
+  key.lineTo(.11,-.24); key.lineTo(-.05,-.24); key.closePath();
+  return new ShapeGeometry(key);
+}
+
 /** One flat mirror borrows this area's Canvas. The same actor mesh is rendered
  * once in the scene and appears again optically through the reflection pass. */
 export function StageScene({world,resources,runtime,renderOffscreen,onFrameError}:{world:WorldGeometry<string>;resources:SceneResources;runtime:RefObject<ChapterRuntime>;
   renderOffscreen?:OffscreenDraw|undefined;onFrameError?:((error:unknown)=>void)|undefined}){
-  const gate=useRef<Mesh>(null),key=useRef<Mesh>(null),mirrorMesh=useRef<Mesh>(null);
+  const gate=useRef<Mesh>(null),key=useRef<Group>(null),mirrorMesh=useRef<Mesh>(null);
   const mirror=useMemo(()=>createPlanarMirror(),[]);
   const mirrorFrustum=useMemo(()=>new Frustum(),[]),projectionView=useMemo(()=>new Matrix4(),[]);
   const shape=useMemo(()=>profileGeometry(),[]),faceMaterial=useMemo(()=>new MeshBasicMaterial({color:'#bebfb4',side:DoubleSide}),[]);
-  useEffect(()=>()=>{shape.dispose();faceMaterial.dispose();mirror.dispose();},[shape,faceMaterial,mirror]);
+  const keyShape=useMemo(()=>isolationKeyGeometry(),[]),keyMaterial=useMemo(()=>new MeshBasicMaterial({color:'#edf3e5',side:DoubleSide}),[]);
+  useEffect(()=>()=>{shape.dispose();faceMaterial.dispose();keyShape.dispose();keyMaterial.dispose();mirror.dispose();},[shape,faceMaterial,keyShape,keyMaterial,mirror]);
   useFrame(()=>{
     const raw=runtime.current.stageSession?.value;
     if(!isStageSession(raw))return;
@@ -59,11 +71,14 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       material={s.kind==='door'?resources.door:resources.wall} position={[(s.min.x+s.max.x)/2,(s.min.y+s.max.y)/2,(s.min.z+s.max.z)/2]}
       scale={[s.max.x-s.min.x,s.max.y-s.min.y,s.max.z-s.min.z]}/>)}
     <group name="fixed-figure-ground" position={[FIGURE_CENTER.x,FIGURE_CENTER.y,FIGURE_CENTER.z]} rotation={[0,Math.PI,0]}>
-      <mesh geometry={resources.plane} material={resources.dark} scale={[3.1,2.2,1]} position={[0,0,.01]}/>
-      <mesh name="left-profile" geometry={shape} material={faceMaterial}/>
-      <mesh name="right-profile" geometry={shape} material={faceMaterial} scale={[-1,1,1]}/>
+      <mesh geometry={resources.plane} material={resources.dark} scale={[3.1,2.2,1]}/>
+      <mesh name="left-profile" geometry={shape} material={faceMaterial} position={[0,0,.02]}/>
+      <mesh name="right-profile" geometry={shape} material={faceMaterial} position={[0,0,.02]} scale={[-1,1,1]}/>
     </group>
-    <mesh name="isolation-key" ref={key} geometry={resources.box} material={resources.neutral} position={[KEY_CENTER.x,KEY_CENTER.y,KEY_CENTER.z-.1]} scale={[.16,.42,.08]}/>
+    <group name="isolation-key" ref={key} position={[KEY_CENTER.x,KEY_CENTER.y,KEY_CENTER.z-.1]}>
+      <mesh name="isolation-key-silhouette" geometry={keyShape} material={keyMaterial}/>
+      <mesh name="isolation-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
+    </group>
     <group position={[MIRROR_CENTER.x,MIRROR_CENTER.y,MIRROR_CENTER.z]} rotation={[0,MIRROR_YAW,0]}>
       <mesh name="planar-mirror" ref={mirrorMesh} geometry={resources.plane} material={mirror.material} scale={[1.2,1.2,1]}/>
       <mesh name="mirror-frame-top" geometry={resources.box} material={resources.trim} position={[0,.65,0]} scale={[1.3,.08,.1]}/>
