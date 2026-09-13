@@ -317,7 +317,7 @@
       "src/screens/StageResultScreen.tsx": "971fe826dc726b1ccec5614309cd4f4088550944af30c289d55055f99be83923",
       "src/screens/StageSelectScreen.tsx": "70a7ecbb4288dea55c515a52de24aea746c855485b71af1fd215ebd57fb3a600",
       "src/components/StageArtwork.tsx": "b26de99cc40129aab5cdaf16490fc58d6230b595d92d8e14bdbec9baf2d68d6d",
-      "src/screens/ChapterOneHomeScreen.tsx": "848f49830075e5f596ec9567b9ad06bebdf07cd691415fde103a3fffccc29ead",
+      "src/screens/ChapterOneHomeScreen.tsx": "9514eeacbd410bbc8c3ada3926f4857c709c2ccfd957fee30cda519d4af904ad",
       "src/content/chapterOneDiscoveries.ts": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
       "src/screens/ChapterOneEndingScreen.tsx": "2bceea1bb5ad3b4bc432213a5a59440c91fd6ed75810b8005846c8817e2388e6",
       "src/storage/chapterOneLegacy.ts": "7807879fd04cc89961cb6618cc5810f7d7e08ac992b220eb2f381ff1e2736a5a",

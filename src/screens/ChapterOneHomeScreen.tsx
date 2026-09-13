@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   small: { color: UI_COLORS.textMuted, fontSize: 14, lineHeight: 21 },
   migration: { gap: 9, paddingVertical: 10, borderTopWidth: 1, borderColor: UI_COLORS.border },
   areaRow: { flexDirection: 'row', gap: 20, borderTopWidth: 1, borderColor: UI_COLORS.border, paddingVertical: 15 },
-  areaNumber: { color: '#9EB6A8', fontSize: 22, width: 36, fontWeight: '700' },
+  areaNumber: { color: '#9EB6A8', fontSize: 22, minWidth: 36, fontWeight: '700' },
   areaCopy: { flex: 1, gap: 5 },
   areaName: { color: UI_COLORS.text, fontSize: 19, fontWeight: '600' },
   areaStatus: { color: UI_COLORS.textMuted, fontSize: 14 },

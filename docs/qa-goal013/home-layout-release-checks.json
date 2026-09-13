@@ -1,0 +1,56 @@
+{
+  "observedAt": "2026-09-13T10:16:57.720Z",
+  "scope": "Source-only first chapter home number-column fix. Local checks and source-map JS exports; no signed build or device execution.",
+  "commands": [
+    "npm run check",
+    "node scripts/validate-stage-definitions.cjs",
+    "node scripts/check-runtime-cycles.cjs",
+    "expo export --platform ios|android --no-bytecode --source-maps",
+    "node scripts/check-release-export.cjs <directory> ios|android"
+  ],
+  "check": {
+    "suites": 110,
+    "tests": 1134,
+    "normalIosModules": 1573,
+    "assets": 10
+  },
+  "definitionTests": 2,
+  "cycles": {
+    "platforms": [
+      "ios",
+      "android",
+      "neutral"
+    ],
+    "productionModules": 227,
+    "runtimeEdges": 696,
+    "sccs": 0,
+    "errors": 0
+  },
+  "releaseExports": {
+    "ios": {
+      "sourceMapSources": 1580,
+      "assets": 10,
+      "firstPartySources": 201,
+      "firstPartyMismatchCount": 0,
+      "chapterHomeSourceSha256": "9514eeacbd410bbc8c3ada3926f4857c709c2ccfd957fee30cda519d4af904ad",
+      "bundle": "_expo/static/js/ios/index-65d239d6ec018f54c8e0bfa89ae295c4.js",
+      "bundleSha256": "cd0218c30c869f550749f497a9d1c823f0362a1eb987836a8671fee5bb483841",
+      "sourceMapSha256": "5fe682d332517a108bcd420354c9d6a7b19de6374afe55335bbee671a88ab084",
+      "releaseComposition": "check-release-export.cjs passed: 5 campaign areas; development screens, probe and dev-client JS absent"
+    },
+    "android": {
+      "sourceMapSources": 1579,
+      "assets": 10,
+      "firstPartySources": 201,
+      "firstPartyMismatchCount": 0,
+      "chapterHomeSourceSha256": "9514eeacbd410bbc8c3ada3926f4857c709c2ccfd957fee30cda519d4af904ad",
+      "bundle": "_expo/static/js/android/index-e7c6d55260f626f10428ef71347a28b0.js",
+      "bundleSha256": "3f2ac44302c703c293c67dbd7107610601af77498a3f800b15cf538a640dd843",
+      "sourceMapSha256": "002183481819397e32bf86f890edd6602beb8b4b6e51563976ce029635926ee3",
+      "releaseComposition": "check-release-export.cjs passed: 5 campaign areas; development screens, probe and dev-client JS absent"
+    }
+  },
+  "homeLayoutReportSha256": "1f2cfbdd2f4ed4c1ddc7635251100e828935aa7ff973fa8a9a6aee2718701e3a",
+  "packageLockSha256": "75af020d9b5ea67905506d0a45acee6deb17705adc7cc9f836059314330780df",
+  "nativePreviewVerified": false
+}

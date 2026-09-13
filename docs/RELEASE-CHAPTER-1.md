@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+第一章ホームを最大文字・最小幅で描くと5エリア一覧の番号が2行に割れたため、番号列の固定幅を最小幅へ変更した。新規/旧記録案内、進行中、完了、振り返り、発見記録の15条件では番号が1行、各ボタンのスクロール到達は最低48px、横はみ出し0。[QA画像と測定](qa-goal013/README.md)はbrowser CSSであり、native Yoga、VoiceOver、safe areaや実端末の操作確認ではない。製品ソース変更後の全check（110スイート/1,134テスト、lint、型検査、通常iOS export）と[両OS公開用source-map検査](qa-goal013/home-layout-release-checks.json)は通過した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持し、preview端末と正式privacy/support URL、ストア申告の公開ゲートは残る。
+
 結末とエリア間の点検記録を、実React Native component/App hostから3つの縦画面・文字倍率へ再描画した。最小320×568/fontScale 2では結末の3ボタンへスクロールで到達でき、01→02、02→03、04→05の短文と続行ボタンは画面内に収まった。画像と寸法、再現方法は [QA記録](qa-goal013/README.md)。従来の01→05同一Appログとscene/HUD静止画も現行抽出ツールで再検証した。これはbrowser CSSによる確認で、native Yoga、VoiceOver、safe area、preview端末の受入ではない。製品ソース・依存に差分はなく、前回の全check/両OS公開用export結果を維持する。正式privacy/support URL、ストア申告、iPhone previewの残件と4つの公開ゲートは変わらない。
 
 05単独の自然成功・開け直し復旧動画は、屋外操作の受理後に実controllerが返す `在館反応 00。閉館処理 完了。` をQA字幕で見せるよう再収録した。各196/378 frameで、最後の9 frame・0.9秒はsimulationを進めない静止保持。受理後もcameraが実歩行位置に残ることを検査し、全frameをデコード、最終画像を原寸で確認した。[現行動画・計測・hash](qa-goal013/README.md)を参照。製品runtimeと依存・native設定は変更しておらず、前回の両OS公開用exportと全checkの製品ソース検証が適用される。iPhone実行や正式URL・ストア申告の未完了ゲートは維持する。

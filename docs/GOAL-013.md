@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+第一章ホームの新規/引き継ぎ、進行中、完了、振り返り、発見記録を実componentで3画面サイズへ描いたところ、320幅/fontScale 2でエリア番号が2行に割れる欠陥を発見した。固定幅を最小幅へ変え、5つの番号が全15条件で1行、全ボタンがスクロールで48px以上見えることを[QA記録](qa-goal013/README.md)の12画像と測定で確認した。製品UI変更後の全回帰は110スイート/1,134テスト、lint、型検査、iOS通常exportに通過。両OSの公開用source-map exportもfirst-party各201 source本文一致、5エリア同梱・開発画面/probe除外、循環0を確認した。[公開用検査の数値とhash](qa-goal013/home-layout-release-checks.json)を保持した。native Yoga、VoiceOver、実機、正式URL/ストア申告のゲートは未確認のまま。
+
 第一章の結末と3件のエリア間点検記録を、最小320×568/fontScale 2を含む3条件で視覚確認した。結末は実componentの通常/未提示手順あり、点検記録は一つの実App hostで01→05を進めた保存遷移から採った。browser CSSで21画像を描き、320幅の結末は縦スクロールで戻り先3ボタンへ届き、点検記録の本文と「点検を続ける」は画面内に収まった。[QA記録](qa-goal013/README.md)に画像、計測、source hashと再現手順を保持した。App抽出ツールの変更後、従来の11 scene/HUD画像とWebGL計測はbyte一致、中間1,474 sampleの内容一致を確認し、runIdとtool hashの変化に合わせてreport索引を更新した。製品ソースと依存は変更していない。native Yoga/VoiceOver/実機・正式URLとストア申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 01の入口・完了静止画と同一Appのdomain動作ログを補うため、01単独の自然経路を実controllerで最後まで進め、状態を実 `ChapterScene` でサンプル再描画した。非常灯、B→Cの見本、配線、巡回体の回避、02を示す館内扉を越えるまで4,612 simulation更新・386描画frame・77.2秒の動画を[QA記録](qa-goal013/README.md)へ保持した。上部表示はQA字幕で製品HUDではなく、App hostの一続きの描画動画でもない。接触シートと6枚の原寸frameを開き、全MP4 frameをデコードした。最大138 draw calls／9,866 triangles、終了後geometry/texture 0、browser error 0。製品ソース・依存は変更していないため、直前の全check/両OS公開用export結果を維持する。実機preview、正式privacy/support URL、ストア申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

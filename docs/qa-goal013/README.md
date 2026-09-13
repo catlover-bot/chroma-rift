@@ -1,5 +1,13 @@
 # Goal 013 動的QAの記録
 
+## 2026-09-13 第一章ホームの文字拡大と番号列
+
+[ホーム15条件の測定report](home-layout-report.json)と320×568/fontScale 2の12画像を追加した。実 `ChapterOneHomeScreen` に新規/旧記録引き継ぎ、進行中、完了、5エリア振り返り、全発見のUI状態を与え、390×844/1.5、430×932/1でも各ボタンへのスクロール到達を測った。最初の画像では固定幅36のエリア番号が「0」「3」のように2行へ割れたため、製品の番号列を `minWidth` に変更した。修正後は5つの番号が全条件で1行、横はみ出し0、全ボタンの表示高さは最低48px。第二章の予定/未プレイ案内と、各状態の主ボタンcallbackも実componentから確認した。
+
+[振り返り一覧の中間](area-list-320-middle.png)と[発見記録の中間](discoveries-320-middle.png)、[旧記録案内の先頭](new-import-320-top.png)と[末尾](new-import-320-bottom.png)を原寸で開いた。stateは画面内容を試すUI fixtureで、実セーブや引き継ぎを生成した経路ではない。描画はReact Native styleをbrowser CSSへ翻訳したもの。native Yogaの文字測定、safe area、VoiceOverの順序、実指操作と端末永続性はiPhone previewで判定する。
+
+製品ソース変更後の[ローカル公開用検査](home-layout-release-checks.json)は `npm run check` の110スイート/1,134テスト、iOS通常export、Stage定義2件、iOS/Android/neutral循環0、両OSの公開用source-map exportを通過。各201件のfirst-party sourceは現行本文と一致し、5エリア同梱・開発画面/probe除外を確認した。従来のApp経路report/動作ログと結末のhost hashも現行ソースで採り直した。11枚のApp静止画とWebGL計測は保持版とbyte一致、1,474動作sampleの内容は一致し、runIdとsource hashの更新を[artifact索引](app-scene-walkthrough-artifacts.json)に反映した。
+
 ## 2026-09-13 エリア間の点検記録と結末の文字拡大
 
 [結末・点検記録21画像の測定report](ending-layout-report.json)を追加した。結末は実 `ChapterOneEndingScreen` を、未提示の収容手順がある場合とない場合でmountした。エリア01→02、02→03、04→05の点検記録は一つの実 `App` mountで自然経路を進め、保存済み遷移の後・次Canvas起動の前に出た[3件のhost tree](story-layout.json)を採った。測定reportの `storyHost` に5エリア・207読込sourceのhashと実controller更新の要約を残す。各画面を320×568/fontScale 2、390×844/1.5、430×932/1のbrowser CSSへ描き、結末の上下12枚と点検記録9枚を保持した。

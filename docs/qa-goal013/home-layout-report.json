@@ -1,0 +1,1066 @@
+{
+  "method": "Actual ChapterOneHomeScreen host with UI-only new/import, progress, completed, area-list and full-discoveries fixtures. Native styles translated to browser CSS at three sizes. All actions are individually scrolled into view and their visible button rectangles measured. This does not verify native Yoga, VoiceOver focus, safe-area insets, device persistence, or real user progress.",
+  "toolHash": "2f34e7ad4e450f1f3c4fb8d7912e86e66aabf0aacc9968c4539e30ed0558659c",
+  "sourceHashes": {
+    "src/screens/ChapterOneHomeScreen.tsx": "9514eeacbd410bbc8c3ada3926f4857c709c2ccfd957fee30cda519d4af904ad",
+    "src/components/Layout.tsx": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+    "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+    "src/content/chapterOneDiscoveries.ts": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
+    "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+    "src/domain/campaign/story.ts": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+    "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4"
+  },
+  "results": [
+    {
+      "id": "new-import-320",
+      "state": "new-import",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "labels": [
+        "第一章をはじめる",
+        "記録を引き継ぐ",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 2042,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "reach": [
+          {
+            "label": "第一章をはじめる",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "記録を引き継ぐ",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "発見の記録",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          },
+          {
+            "label": "設定",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          }
+        ],
+        "numbers": [],
+        "bottom": {
+          "scrollTop": 1474,
+          "scrollHeight": 2042,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        }
+      },
+      "files": [
+        {
+          "file": "new-import-320-top.png",
+          "sha256": "c43173616d9f7a742209760535387119b7aa0072b39271dbb03b931e906c4362"
+        },
+        {
+          "file": "new-import-320-bottom.png",
+          "sha256": "c244a8799a7be89bdee75fb05a4ecff8d77475eb7fc2958e2143648a01c011df"
+        }
+      ]
+    },
+    {
+      "id": "in-progress-320",
+      "state": "in-progress",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "labels": [
+        "続きから",
+        "第一章をはじめから",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1753,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "reach": [
+          {
+            "label": "続きから",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          },
+          {
+            "label": "第一章をはじめから",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "発見の記録",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          },
+          {
+            "label": "設定",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          }
+        ],
+        "numbers": [],
+        "bottom": {
+          "scrollTop": 1185,
+          "scrollHeight": 1753,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        }
+      },
+      "files": [
+        {
+          "file": "in-progress-320-top.png",
+          "sha256": "a0322dc8b12e616603c9ee045ac014587e7dd777f5c1735ef24b9cfb6d5c810c"
+        },
+        {
+          "file": "in-progress-320-bottom.png",
+          "sha256": "74a8816f01b7afd51f937e94bb238666bafc76c2d5508e245becc3a70ad2b3e0"
+        }
+      ]
+    },
+    {
+      "id": "completed-320",
+      "state": "completed",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "labels": [
+        "エンディングを見る",
+        "第一章をはじめから",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1750,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "reach": [
+          {
+            "label": "エンディングを見る",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "第一章をはじめから",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "発見の記録",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          },
+          {
+            "label": "設定",
+            "width": 257,
+            "height": 64.390625,
+            "visibleHeight": 64.390625
+          }
+        ],
+        "numbers": [],
+        "bottom": {
+          "scrollTop": 1182,
+          "scrollHeight": 1750,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        }
+      },
+      "files": [
+        {
+          "file": "completed-320-top.png",
+          "sha256": "f0de659ad4e5220821efdecc9e0ce14f2ed84e4c057e7630c765da99d2f95230"
+        },
+        {
+          "file": "completed-320-bottom.png",
+          "sha256": "cd199030947e45c762ddbd625a0be0366d4e0ea207134cc1a10546b72b546208"
+        }
+      ]
+    },
+    {
+      "id": "area-list-320",
+      "state": "area-list",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "labels": [
+        "閉館後の展示室を振り返る",
+        "測れない収蔵庫を振り返る",
+        "影の映写室を振り返る",
+        "鏡越しの回廊を振り返る",
+        "退館制御室を振り返る",
+        "第一章のホームへ"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 2692,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "reach": [
+          {
+            "label": "閉館後の展示室を振り返る",
+            "width": 185.078125,
+            "height": 141.171875,
+            "visibleHeight": 141.171875
+          },
+          {
+            "label": "測れない収蔵庫を振り返る",
+            "width": 185.078125,
+            "height": 141.171875,
+            "visibleHeight": 141.171875
+          },
+          {
+            "label": "影の映写室を振り返る",
+            "width": 185.078125,
+            "height": 141.171875,
+            "visibleHeight": 141.171875
+          },
+          {
+            "label": "鏡越しの回廊を振り返る",
+            "width": 185.078125,
+            "height": 141.171875,
+            "visibleHeight": 141.171875
+          },
+          {
+            "label": "退館制御室を振り返る",
+            "width": 185.078125,
+            "height": 141.171875,
+            "visibleHeight": 141.171875
+          },
+          {
+            "label": "第一章のホームへ",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          }
+        ],
+        "numbers": [
+          {
+            "text": "01",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "02",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "03",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "04",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "05",
+            "lines": 1,
+            "width": 51.921875
+          }
+        ],
+        "middle": {
+          "scrollTop": 1346,
+          "scrollHeight": 2692,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "bottom": {
+          "scrollTop": 2124,
+          "scrollHeight": 2692,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        }
+      },
+      "files": [
+        {
+          "file": "area-list-320-top.png",
+          "sha256": "f30e7ec479d8691d3a4bba30d2556478e26228f8d7c55b8d34b531cf565a77e8"
+        },
+        {
+          "file": "area-list-320-middle.png",
+          "sha256": "c25d933e45a39e14ec2f026f3aece5c29d348cc4ee12ec53f9289d3fffb8e1e9"
+        },
+        {
+          "file": "area-list-320-bottom.png",
+          "sha256": "2467a4f6d2fa92be065a741bb903b030b36228ca08fa497cce359b023b536685"
+        }
+      ]
+    },
+    {
+      "id": "discoveries-320",
+      "state": "discoveries",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "labels": [
+        "第一章のホームへ"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 3593,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "reach": [
+          {
+            "label": "第一章のホームへ",
+            "width": 257,
+            "height": 102.78125,
+            "visibleHeight": 102.78125
+          }
+        ],
+        "numbers": [
+          {
+            "text": "01",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "02",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "03",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "04",
+            "lines": 1,
+            "width": 51.921875
+          },
+          {
+            "text": "05",
+            "lines": 1,
+            "width": 51.921875
+          }
+        ],
+        "middle": {
+          "scrollTop": 1797,
+          "scrollHeight": 3593,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        },
+        "bottom": {
+          "scrollTop": 3025,
+          "scrollHeight": 3593,
+          "clientHeight": 568,
+          "scrollWidth": 305,
+          "clientWidth": 305
+        }
+      },
+      "files": [
+        {
+          "file": "discoveries-320-top.png",
+          "sha256": "d23eeab2484144ed6d667927e4e45dd8cc3c56aef776ea071bc764f8bf98a66d"
+        },
+        {
+          "file": "discoveries-320-middle.png",
+          "sha256": "0217644b03784207140fc616760e57ddf6299baa3278e430c3b2714bad203c50"
+        },
+        {
+          "file": "discoveries-320-bottom.png",
+          "sha256": "b0b7988b79013e90ba7f3bed0030ea2f41fdeaab8a17a5c775e9123794d1128e"
+        }
+      ]
+    },
+    {
+      "id": "new-import-390",
+      "state": "new-import",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "labels": [
+        "第一章をはじめる",
+        "記録を引き継ぐ",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1275,
+          "clientHeight": 844,
+          "scrollWidth": 375,
+          "clientWidth": 375
+        },
+        "reach": [
+          {
+            "label": "第一章をはじめる",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "記録を引き継ぐ",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "発見の記録",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "設定",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          }
+        ],
+        "numbers": []
+      },
+      "files": []
+    },
+    {
+      "id": "in-progress-390",
+      "state": "in-progress",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "labels": [
+        "続きから",
+        "第一章をはじめから",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1120,
+          "clientHeight": 844,
+          "scrollWidth": 375,
+          "clientWidth": 375
+        },
+        "reach": [
+          {
+            "label": "続きから",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "第一章をはじめから",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "発見の記録",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "設定",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          }
+        ],
+        "numbers": []
+      },
+      "files": []
+    },
+    {
+      "id": "completed-390",
+      "state": "completed",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "labels": [
+        "エンディングを見る",
+        "第一章をはじめから",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1120,
+          "clientHeight": 844,
+          "scrollWidth": 375,
+          "clientWidth": 375
+        },
+        "reach": [
+          {
+            "label": "エンディングを見る",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "第一章をはじめから",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "発見の記録",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "設定",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          }
+        ],
+        "numbers": []
+      },
+      "files": []
+    },
+    {
+      "id": "area-list-390",
+      "state": "area-list",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "labels": [
+        "閉館後の展示室を振り返る",
+        "測れない収蔵庫を振り返る",
+        "影の映写室を振り返る",
+        "鏡越しの回廊を振り返る",
+        "退館制御室を振り返る",
+        "第一章のホームへ"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1663,
+          "clientHeight": 844,
+          "scrollWidth": 375,
+          "clientWidth": 375
+        },
+        "reach": [
+          {
+            "label": "閉館後の展示室を振り返る",
+            "width": 268.046875,
+            "height": 83.59375,
+            "visibleHeight": 83.59375
+          },
+          {
+            "label": "測れない収蔵庫を振り返る",
+            "width": 268.046875,
+            "height": 83.59375,
+            "visibleHeight": 83.59375
+          },
+          {
+            "label": "影の映写室を振り返る",
+            "width": 268.046875,
+            "height": 83.59375,
+            "visibleHeight": 83.59375
+          },
+          {
+            "label": "鏡越しの回廊を振り返る",
+            "width": 268.046875,
+            "height": 83.59375,
+            "visibleHeight": 83.59375
+          },
+          {
+            "label": "退館制御室を振り返る",
+            "width": 268.046875,
+            "height": 83.59375,
+            "visibleHeight": 83.59375
+          },
+          {
+            "label": "第一章のホームへ",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          }
+        ],
+        "numbers": [
+          {
+            "text": "01",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "02",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "03",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "04",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "05",
+            "lines": 1,
+            "width": 38.953125
+          }
+        ]
+      },
+      "files": []
+    },
+    {
+      "id": "discoveries-390",
+      "state": "discoveries",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "labels": [
+        "第一章のホームへ"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1844,
+          "clientHeight": 844,
+          "scrollWidth": 375,
+          "clientWidth": 375
+        },
+        "reach": [
+          {
+            "label": "第一章のホームへ",
+            "width": 327,
+            "height": 54.796875,
+            "visibleHeight": 54.796875
+          }
+        ],
+        "numbers": [
+          {
+            "text": "01",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "02",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "03",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "04",
+            "lines": 1,
+            "width": 38.953125
+          },
+          {
+            "text": "05",
+            "lines": 1,
+            "width": 38.953125
+          }
+        ]
+      },
+      "files": []
+    },
+    {
+      "id": "new-import-430",
+      "state": "new-import",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "labels": [
+        "第一章をはじめる",
+        "記録を引き継ぐ",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 895,
+          "clientHeight": 895,
+          "scrollWidth": 430,
+          "clientWidth": 430
+        },
+        "reach": [
+          {
+            "label": "第一章をはじめる",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "記録を引き継ぐ",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "設定",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          }
+        ],
+        "numbers": []
+      },
+      "files": []
+    },
+    {
+      "id": "in-progress-430",
+      "state": "in-progress",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "labels": [
+        "続きから",
+        "第一章をはじめから",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 832,
+          "clientHeight": 832,
+          "scrollWidth": 430,
+          "clientWidth": 430
+        },
+        "reach": [
+          {
+            "label": "続きから",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "第一章をはじめから",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "設定",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          }
+        ],
+        "numbers": []
+      },
+      "files": []
+    },
+    {
+      "id": "completed-430",
+      "state": "completed",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "labels": [
+        "エンディングを見る",
+        "第一章をはじめから",
+        "エリアを振り返る",
+        "発見の記録",
+        "設定"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 832,
+          "clientHeight": 832,
+          "scrollWidth": 430,
+          "clientWidth": 430
+        },
+        "reach": [
+          {
+            "label": "エンディングを見る",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "第一章をはじめから",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "エリアを振り返る",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "設定",
+            "width": 382,
+            "height": 48,
+            "visibleHeight": 48
+          }
+        ],
+        "numbers": []
+      },
+      "files": []
+    },
+    {
+      "id": "area-list-430",
+      "state": "area-list",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "labels": [
+        "閉館後の展示室を振り返る",
+        "測れない収蔵庫を振り返る",
+        "影の映写室を振り返る",
+        "鏡越しの回廊を振り返る",
+        "退館制御室を振り返る",
+        "第一章のホームへ"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1226,
+          "clientHeight": 932,
+          "scrollWidth": 415,
+          "clientWidth": 415
+        },
+        "reach": [
+          {
+            "label": "閉館後の展示室を振り返る",
+            "width": 311,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "測れない収蔵庫を振り返る",
+            "width": 311,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "影の映写室を振り返る",
+            "width": 311,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "鏡越しの回廊を振り返る",
+            "width": 311,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "退館制御室を振り返る",
+            "width": 311,
+            "height": 48,
+            "visibleHeight": 48
+          },
+          {
+            "label": "第一章のホームへ",
+            "width": 367,
+            "height": 48,
+            "visibleHeight": 48
+          }
+        ],
+        "numbers": [
+          {
+            "text": "01",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "02",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "03",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "04",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "05",
+            "lines": 1,
+            "width": 36
+          }
+        ]
+      },
+      "files": []
+    },
+    {
+      "id": "discoveries-430",
+      "state": "discoveries",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "labels": [
+        "第一章のホームへ"
+      ],
+      "metrics": {
+        "top": {
+          "scrollTop": 0,
+          "scrollHeight": 1371,
+          "clientHeight": 932,
+          "scrollWidth": 415,
+          "clientWidth": 415
+        },
+        "reach": [
+          {
+            "label": "第一章のホームへ",
+            "width": 367,
+            "height": 48,
+            "visibleHeight": 48
+          }
+        ],
+        "numbers": [
+          {
+            "text": "01",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "02",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "03",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "04",
+            "lines": 1,
+            "width": 36
+          },
+          {
+            "text": "05",
+            "lines": 1,
+            "width": 36
+          }
+        ]
+      },
+      "files": []
+    }
+  ],
+  "browserErrors": []
+}
