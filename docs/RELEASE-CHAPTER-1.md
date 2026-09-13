@@ -20,7 +20,7 @@
 
 04の鏡像と実身体を同一simulation frameで並べたSoftware WebGLのQA動画を `docs/qa-goal013/mirror-identity.mp4` に追加した。右側は固定QA cameraであり、製品の一人称表示やiPhoneの反射確認ではない。native previewで鏡像・実体・操作を確認するゲートは未完了のまま。
 
-この文書は2026-09-13時点のローカル設定と確認範囲を記録する。05操作盤の実scene修正 `7ff4a83` 後、`automatedChecksPassed=true`（lint、型検査、110スイート/1,133テスト、iOS通常export、両OSの公開用source-map export、循環・定義検査、Doctor）。現行ソースのexportとQAの数値は [release-controls-source-checks.json](qa-goal013/release-controls-source-checks.json)、画像と動画は [QA記録](qa-goal013/README.md) に残した。iPhoneで操作盤・鏡・画面と実指/実音を確認していないため `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。正式privacy/support URL、ストア申告も未完了。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
+この文書は2026-09-13時点のローカル設定と確認範囲を記録する。05操作盤の実scene修正 `7ff4a83` 後、`automatedChecksPassed=true`（lint、型検査、110スイート/1,133テスト、iOS通常export、両OSの公開用source-map export、循環・定義検査、Doctor）。現行ソースのexportとQAの数値は [release-controls-source-checks.json](qa-goal013/release-controls-source-checks.json)、画像と動画は [QA記録](qa-goal013/README.md) に残した。全5エリアを一続きに実描画したApp操作の最終受入が未完了のため `contentComplete=false`。iPhoneで操作盤・鏡・画面と実指/実音を確認していないため `nativePreviewVerified=false`。正式privacy/support URLとストア申告も未完了なので `releaseReady=false` を維持する。ローカルのJS export、Doctor、JestはiPhoneの実行やストア審査の代わりにならない。
 
 ## ビルド構成
 
