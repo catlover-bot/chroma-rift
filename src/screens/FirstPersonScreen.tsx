@@ -419,6 +419,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const progress = snapshot.runtime.progress;
   const emblem = snapshot.runtime.emblem;
   const shortObjective = independentChapter ? snapshot.objective : progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
+  const objectiveCopy = (renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective)
+    + (scene === 'chapter' && !independentChapter && emblem.assist ? ' · 輪郭ガイド使用中' : '');
   const colorIsNeutral = gallery ? gallery.chromaticNeutral : scene === 'chapter' ? emblem.presentation === 'neutral' : neutralColors;
   const compareAvailable = scene === 'lab' || ['emblem-panel', 'chromatic-exhibit', 'shadow-panel', 'contour-panel', 'vault-cafe'].includes(snapshot.target?.id ?? '');
   const colorLabel = vault ? progress.vault?.aids.cafeNeutral ? '元の明暗へ戻す' : 'タイルの明暗をそろえる' : cue.target?.id === 'shadow-panel' ? gallery?.shadowCompare ? '元の背景' : '背景をそろえる' : cue.target?.id === 'contour-panel' ? gallery?.contourGuide ? 'ガイドを消す' : '輪郭ガイド' : colorIsNeutral ? '色を戻す' : '色をほどく';
@@ -430,8 +432,13 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   // above it can cover the movement stick when large text wraps on a small screen.
   const visibleContextLabel = contextLabel === actionLabel ? undefined : contextLabel;
   // A motor/noise-state readout survives the automatic return to exploration.
+  // A more specific acquisition reason takes this one HUD slot while the
+  // player aims at another device; otherwise both texts can cover the goal.
   // It never claims that an enemy heard the emitter or changed its behavior.
   const projectorReadout = !manipulating && projectorStatus && (projectorStatus.phase !== 'idle' || snapshot.target?.id === 'theatre-projector') ? projectorStatus.message : undefined;
+  const explorationReadout = projectorReadout && (snapshot.target?.id === 'theatre-projector' || !visibleContextLabel)
+    ? projectorReadout : visibleContextLabel;
+  const visibleReadout = notice === explorationReadout ? undefined : explorationReadout;
   const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete;
   const moveSide = controls.handedness === 'right' ? '左' : '右';
   const lookSide = controls.handedness === 'right' ? '右' : '左';
@@ -542,18 +549,20 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       <View pointerEvents="none" style={[styles.hudSlot, layout.goal]}>
         {theatre && manipulating ? <TheatreDeviceHeading controller={controller} /> : null}
         {vault && vault.mode !== 'explore' ? <VaultDeviceHeading puzzle={vault.mode} /> : null}
-        {!manipulating ? <Text testID="current-objective" style={styles.objective}>{renderMode === 'proof' ? '箱・床・壁の形が見えるか確認します。' : renderMode === 'raw-gl' ? '橙色の三角形が見えるか確認します。' : scene === 'lab' ? '3D確認室' : shortObjective}{scene === 'chapter' && !independentChapter && emblem.assist ? ' · 輪郭ガイド使用中' : ''}</Text> : null}
+        {!manipulating ? <Text testID="current-objective" style={styles.objective}>{compact && notice ? notice : objectiveCopy}</Text> : null}
         {gallery && progress.gallery ? <View style={styles.powerStock} testID="gallery-power-stock" accessible accessibilityLabel={`予備電源 ${galleryPowerCount(progress.gallery)}/2${progress.gallery.powerConnected ? ' 接続済み' : ''}`}>
           <Text style={styles.powerText}>電源</Text>{(['shadow', 'contour'] as const).map(puzzle => <View key={puzzle} style={[styles.powerCell, progress.gallery!.powerTaken[puzzle] && styles.powerCellTaken]}><Text style={styles.powerText}>{progress.gallery!.powerTaken[puzzle] ? '✓' : ''}</Text></View>)}
           {progress.gallery.powerConnected ? <Text style={styles.powerText}>接続済み</Text> : null}
         </View> : null}
       </View>
       {!manipulating ? <View testID="first-person-reticle" pointerEvents="none" style={styles.reticle}><View style={[styles.reticleDot, snapshot.target && styles.reticleReady]} /></View> : null}
-      {notice && !manipulating ? <View pointerEvents="none" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
+      {notice && !manipulating && !compact ? <View pointerEvents="none" testID="current-notice" style={[styles.notice, { top: layout.goal.top + layout.goal.height + 8 }]}><Text style={styles.noticeText}>{notice}</Text></View> : null}
       {!simple && !manipulating && renderMode === 'chapter' ? <>
-        {visibleContextLabel || projectorReadout ? <View pointerEvents="none" testID="target-context" style={[styles.context, { bottom: layout.action.height + 28 }]}>
-          {visibleContextLabel && visibleContextLabel !== projectorReadout ? <Text style={styles.contextText}>{visibleContextLabel}</Text> : null}
-          {projectorReadout ? <Text testID="theatre-projector-status" accessibilityLiveRegion="polite" style={styles.contextText}>{projectorReadout}</Text> : null}
+        {visibleReadout ? <View pointerEvents="none" testID="target-context" style={[styles.context, {
+          left: layout.action.left, width: layout.action.width, bottom: layout.action.height + 28,
+        }]}>
+          <Text testID={visibleReadout === projectorReadout ? 'theatre-projector-status' : undefined}
+            accessibilityLiveRegion={visibleReadout === projectorReadout ? 'polite' : undefined} style={styles.contextText}>{visibleReadout}</Text>
         </View> : null}
         <View pointerEvents="box-none" style={[styles.hudSlot, layout.action]}>{holdAction ?? <GameButton sessionKey={controlSessionKey} label={canCloseExit ? "扉を閉める" : actionLabel} onPress={canCloseExit ? closeExit : examine} disabled={blocked || (canCloseExit ? !controller.matrices : interactionBlocked || !snapshot.target)} testID="interact" />}</View>
         {compareAvailable ? <View pointerEvents="box-none" style={[styles.hudSlot, layout.color]}><GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} testID="compare-colors" /></View> : null}
@@ -704,7 +713,7 @@ const styles = StyleSheet.create({
   openingStory: { position: 'absolute', left: 16, right: 16, top: 110, padding: 12, gap: 5, borderRadius: 12, borderWidth: 1, borderColor: '#819A89', backgroundColor: '#152822F0' },
   storyResponse: { color: '#B5D2BD', fontSize: 14, fontWeight: '700' },
   storyText: { color: '#F4F1DF', fontSize: 16, lineHeight: 23 },
-  context: { position: 'absolute', left: 16, right: 16, alignItems: 'center' },
+  context: { position: 'absolute', alignItems: 'center' },
   contextText: { color: '#F4F1DF', backgroundColor: '#142421BA', borderRadius: 8, padding: 6, fontSize: 14, textAlign: 'center' },
   tutorial: { position: 'absolute', padding: 8, alignItems: 'center' },
   tutorialText: { color: '#F2EFDA', backgroundColor: '#142421BA', borderRadius: 8, padding: 6, fontSize: 15, textAlign: 'center' },

@@ -1,6 +1,6 @@
 {
   "boundary": "Actual FirstPersonScreen/controller and validated area checkpoints; Canvas placeholder and browser CSS host translation, not native Yoga/EXGL/gesture or visible scene",
-  "toolHash": "0f72a8c8a5422331941695f14959522cd2b85da9c51b950bc50faf005b70e668",
+  "toolHash": "3777b16b2c4752cec1eca03841abc8a2c2ade98aa498746cb7e62ff70cb2ae76",
   "sourceHashes": {
     "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
     "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
@@ -94,7 +94,7 @@
     "src/rendering/firstPerson/diagnostics.ts": "3ca2cc8c1576b3f148a8b2e5a9d084362f921432018f5bdf6d9d73d014fa9584",
     "src/types/application.ts": "7f3236ea92c95dd961a70d13d8ce165dbead531d4f16ca0ce502b8761719dcf4",
     "src/domain/calibration/types.ts": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
-    "src/screens/FirstPersonScreen.tsx": "90d854b2e37321d3bb4f1d0f2080a0b5b5573ef5621228daafe01cd75bbf76e6",
+    "src/screens/FirstPersonScreen.tsx": "c8db7a73f7beeb2bac30c8266590fe890d92c544e7f3fa968601db19431fbbbe",
     "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
     "src/components/Layout.tsx": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
     "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
@@ -128,6 +128,176 @@
     "src/domain/campaign/discoveries.ts": "3f7e6eb88ce9e5eda5242cd1e668d67e40aef4cdc18e13b5aa56cf04d9a6e3a4"
   },
   "reports": [
+    {
+      "id": "gallery-entry-320",
+      "stageId": "perception-gallery-v1",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "state": "entry",
+      "label": "非常口を確認",
+      "file": "gallery-entry-320.png",
+      "sha256": "2282bca474b271327a8c87142b5e62546a97fec3aaaca6d9ffec1a3d467528e5",
+      "actionVisible": true,
+      "actionAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "actionOverlapsObjective": false,
+      "contextOverlapsMovement": false,
+      "metrics": {
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 308,
+          "bottom": 112,
+          "width": 240,
+          "height": 100
+        },
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "reticle": {
+          "left": 156,
+          "top": 280,
+          "right": 164,
+          "bottom": 288,
+          "width": 8,
+          "height": 8
+        },
+        "action": {
+          "left": 166,
+          "top": 452,
+          "right": 308,
+          "bottom": 556,
+          "width": 142,
+          "height": 104
+        },
+        "context": null,
+        "movement": {
+          "left": 12,
+          "top": 244.234375,
+          "right": 154,
+          "bottom": 439.984375,
+          "width": 142,
+          "height": 195.75
+        },
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "label": "非常口を確認",
+            "disabled": true,
+            "left": 166,
+            "top": 452,
+            "right": 308,
+            "bottom": 556,
+            "width": 142,
+            "height": 104
+          }
+        ]
+      }
+    },
+    {
+      "id": "vault-length-ready-320",
+      "stageId": "uncanny-vault-v1",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "state": "length-ready",
+      "target": "vault-length",
+      "label": "留め金を調整",
+      "file": "vault-length-ready-320.png",
+      "sha256": "3eef4d65d13fd67d0a77424b98a304bc0ee505b66d2547d61805d4a2e085276f",
+      "actionVisible": true,
+      "actionAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "actionOverlapsObjective": false,
+      "contextOverlapsMovement": false,
+      "metrics": {
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 308,
+          "bottom": 154,
+          "width": 240,
+          "height": 142
+        },
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "reticle": {
+          "left": 156,
+          "top": 280,
+          "right": 164,
+          "bottom": 288,
+          "width": 8,
+          "height": 8
+        },
+        "action": {
+          "left": 166,
+          "top": 452,
+          "right": 308,
+          "bottom": 556,
+          "width": 142,
+          "height": 104
+        },
+        "context": {
+          "left": 166,
+          "top": 323.21875,
+          "right": 308,
+          "bottom": 436,
+          "width": 142,
+          "height": 112.78125
+        },
+        "movement": {
+          "left": 12,
+          "top": 244.234375,
+          "right": 154,
+          "bottom": 439.984375,
+          "width": 142,
+          "height": 195.75
+        },
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "label": "留め金を調整",
+            "disabled": false,
+            "left": 166,
+            "top": 452,
+            "right": 308,
+            "bottom": 556,
+            "width": 142,
+            "height": 104
+          }
+        ]
+      }
+    },
     {
       "id": "mirror-winch-ready-320",
       "stageId": "mirror-corridor-v1",
@@ -457,6 +627,176 @@
       }
     },
     {
+      "id": "gallery-entry-390",
+      "stageId": "perception-gallery-v1",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "state": "entry",
+      "label": "非常口を確認",
+      "file": "gallery-entry-390.png",
+      "sha256": "e18bcd34a36adbaa07e4683eddec6eba45203ac7b530ac4c5a5846a5221c2481",
+      "actionVisible": true,
+      "actionAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "actionOverlapsObjective": false,
+      "contextOverlapsMovement": false,
+      "metrics": {
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 378,
+          "bottom": 91,
+          "width": 310,
+          "height": 79
+        },
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "reticle": {
+          "left": 191,
+          "top": 418,
+          "right": 199,
+          "bottom": 426,
+          "width": 8,
+          "height": 8
+        },
+        "action": {
+          "left": 201,
+          "top": 748,
+          "right": 378,
+          "bottom": 832,
+          "width": 177,
+          "height": 84
+        },
+        "context": null,
+        "movement": {
+          "left": 12,
+          "top": 362.90625,
+          "right": 189,
+          "bottom": 735.984375,
+          "width": 177,
+          "height": 373.078125
+        },
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "label": "非常口を確認",
+            "disabled": true,
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          }
+        ]
+      }
+    },
+    {
+      "id": "vault-length-ready-390",
+      "stageId": "uncanny-vault-v1",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "state": "length-ready",
+      "target": "vault-length",
+      "label": "留め金を調整",
+      "file": "vault-length-ready-390.png",
+      "sha256": "e3c079e3e0518abb831c9847158134daf84544893c3d6c3606045e0686bbac48",
+      "actionVisible": true,
+      "actionAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "actionOverlapsObjective": false,
+      "contextOverlapsMovement": false,
+      "metrics": {
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 378,
+          "bottom": 91,
+          "width": 310,
+          "height": 79
+        },
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "reticle": {
+          "left": 191,
+          "top": 418,
+          "right": 199,
+          "bottom": 426,
+          "width": 8,
+          "height": 8
+        },
+        "action": {
+          "left": 201,
+          "top": 748,
+          "right": 378,
+          "bottom": 832,
+          "width": 177,
+          "height": 84
+        },
+        "context": {
+          "left": 201,
+          "top": 669.625,
+          "right": 378,
+          "bottom": 732,
+          "width": 177,
+          "height": 62.375
+        },
+        "movement": {
+          "left": 12,
+          "top": 362.90625,
+          "right": 189,
+          "bottom": 735.984375,
+          "width": 177,
+          "height": 373.078125
+        },
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "label": "留め金を調整",
+            "disabled": false,
+            "left": 201,
+            "top": 748,
+            "right": 378,
+            "bottom": 832,
+            "width": 177,
+            "height": 84
+          }
+        ]
+      }
+    },
+    {
       "id": "mirror-winch-ready-390",
       "stageId": "mirror-corridor-v1",
       "width": 390,
@@ -780,6 +1120,176 @@
             "bottom": 832,
             "width": 177,
             "height": 84
+          }
+        ]
+      }
+    },
+    {
+      "id": "gallery-entry-430",
+      "stageId": "perception-gallery-v1",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "state": "entry",
+      "label": "非常口を確認",
+      "file": "gallery-entry-430.png",
+      "sha256": "ff6b0d127922545fc75a86ae0be80dabe9055aa79b65b3d6d0061333f2066ce7",
+      "actionVisible": true,
+      "actionAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "actionOverlapsObjective": false,
+      "contextOverlapsMovement": false,
+      "metrics": {
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 418,
+          "bottom": 49,
+          "width": 350,
+          "height": 37
+        },
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "reticle": {
+          "left": 211,
+          "top": 462,
+          "right": 219,
+          "bottom": 470,
+          "width": 8,
+          "height": 8
+        },
+        "action": {
+          "left": 221,
+          "top": 856,
+          "right": 418,
+          "bottom": 920,
+          "width": 197,
+          "height": 64
+        },
+        "context": null,
+        "movement": {
+          "left": 12,
+          "top": 400.75,
+          "right": 209,
+          "bottom": 843.984375,
+          "width": 197,
+          "height": 443.234375
+        },
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "label": "非常口を確認",
+            "disabled": true,
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
+          }
+        ]
+      }
+    },
+    {
+      "id": "vault-length-ready-430",
+      "stageId": "uncanny-vault-v1",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "state": "length-ready",
+      "target": "vault-length",
+      "label": "留め金を調整",
+      "file": "vault-length-ready-430.png",
+      "sha256": "210e0afb3639c724fcb33b94192f733d38547300d85ee39f960fc14e1a25bdbc",
+      "actionVisible": true,
+      "actionAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "actionOverlapsObjective": false,
+      "contextOverlapsMovement": false,
+      "metrics": {
+        "objective": {
+          "left": 68,
+          "top": 12,
+          "right": 418,
+          "bottom": 49,
+          "width": 350,
+          "height": 37
+        },
+        "pause": {
+          "left": 12,
+          "top": 12,
+          "right": 60,
+          "bottom": 60,
+          "width": 48,
+          "height": 48
+        },
+        "reticle": {
+          "left": 211,
+          "top": 462,
+          "right": 219,
+          "bottom": 470,
+          "width": 8,
+          "height": 8
+        },
+        "action": {
+          "left": 221,
+          "top": 856,
+          "right": 418,
+          "bottom": 920,
+          "width": 197,
+          "height": 64
+        },
+        "context": {
+          "left": 221,
+          "top": 811.203125,
+          "right": 418,
+          "bottom": 840,
+          "width": 197,
+          "height": 28.796875
+        },
+        "movement": {
+          "left": 12,
+          "top": 400.75,
+          "right": 209,
+          "bottom": 843.984375,
+          "width": 197,
+          "height": 443.234375
+        },
+        "buttons": [
+          {
+            "label": "一時停止",
+            "disabled": false,
+            "left": 12,
+            "top": 12,
+            "right": 60,
+            "bottom": 60,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "label": "留め金を調整",
+            "disabled": false,
+            "left": 221,
+            "top": 856,
+            "right": 418,
+            "bottom": 920,
+            "width": 197,
+            "height": 64
           }
         ]
       }

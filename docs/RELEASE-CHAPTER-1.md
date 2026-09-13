@@ -113,3 +113,9 @@ eas build --platform ios --profile production
 04巻上機と05隔離キー/手順/ベルのHUDも3サイズ・12状態で局所検査した。最小幅・最大文字で重複した対象名が移動スティックへ重なっていたため、ボタンと同じ中段名を省いた。修正後の画像・寸法・画面ボタンからの実controller受理は `docs/qa-goal013/stage-hud-report.json`。空のCanvasとbrowser CSSによる検査であり、native画面/操作・VoiceOver・実sceneとの重なりの公開ゲートは満たさない。
 
 このHUD修正後の全回帰は110スイート/1,132テスト、lint、型検査、iOS通常exportに成功。定義検査2件、実行時循環0、iOS/Android公開用source mapのfirst-party各201件本文一致、iOS Three class identity 1 source/23参照を確認した。製品の依存・native設定は変えていない。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
+01初期画面と02留め金取得画面も同じサイズ条件へ加えた。02でボタンと異なる対象説明がスティックに重なったため、説明を残して操作ボタン真上の右列へ移した。現行reportは01/02/04/05の18状態を記録する。01/02の装置全体、native場面との重なり・実指・VoiceOverはpreviewで確認する。
+
+03映写機の実scene付きHUDも3サイズで再抽出した。320幅では取得不能理由・映写機状態・通知が重なったため、右列の説明を一つにし、コンパクト画面の通知を目的欄に一時表示するよう修正した。各サイズ7抽出frameのCSS監査でHUD矩形の重なり0、代表画像を開いて確認した。native previewとVoiceOverの公開ゲートは引き続き未確認。
+
+現行ソースで03映写機と灯り操作を各3サイズ・7抽出frameで再検査し、HUD重なり0と320幅のスクロール後の確定・退出ボタンを画像で確認した。全回帰はlint・型検査・110スイート/1,132テスト・iOS通常exportを通過。定義検査2件、3対象の循環0、iOS/Androidのsource mapでfirst-party各201件一致、iOS Three 1 source/23参照のclass identityを確認した。native preview、正式なprivacy/support URLとストア申告は未完了で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。

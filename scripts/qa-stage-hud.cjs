@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 /* global __dirname, __filename, Buffer */
-// Actual area-04/05 controller and FirstPersonScreen hosts. The Canvas is a
+// Actual area-01/02/04/05 controller and FirstPersonScreen hosts. The Canvas is a
 // placeholder and React Native host styles are translated to browser CSS;
 // this is a HUD check, not native Yoga, EXGL, touch delivery, or scene QA.
 const fs = require('node:fs'), path = require('node:path');
-const { installSourceBridge, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
+const { installSourceBridge, openBrowser, sha256 } = require('./lib/three-scene-qa.cjs');
 const { installNativeHudBridge, browserStyles, browserHelpers } = require('./lib/native-hud-qa.cjs');
 if (process.argv.length !== 2) throw Error('usage: node scripts/qa-stage-hud.cjs');
 const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/stage-hud');
@@ -24,6 +24,7 @@ context.bindController = true;
 const { FirstPersonScreen } = require('../src/screens/FirstPersonScreen.tsx');
 
 function checkpointFor(stageId) {
+  if (stageId === 'perception-gallery-v1' || stageId === 'uncanny-vault-v1') return undefined;
   const module = stageModule(stageId), fresh = module.checkpoint(module.create());
   if (stageId === 'mirror-corridor-v1') {
     const data = parseStageCheckpoint(fresh.stageData);
@@ -59,16 +60,18 @@ async function main() {
   const records = [];
   for (const [width, height, fontScale] of [[320, 568, 2], [390, 844, 1.5], [430, 932, 1]]) {
     Object.assign(context, { width, height, fontScale });
-    for (const stageId of ['mirror-corridor-v1', 'departure-control-v1']) {
+    for (const stageId of ['perception-gallery-v1', 'uncanny-vault-v1', 'mirror-corridor-v1', 'departure-control-v1']) {
       const controller = RC.createController(checkpointFor(stageId), false, true, stageId);
       context.controller = controller;
       controller.viewport = { width, height };
       Object.assign(controller.diagnostics, { stage: 'ready', rendererOwnership: 'live', appActive: true,
         paused: false, open: false, sceneMode: 'chapter' });
       const camera = new THREE.PerspectiveCamera(65, width / height, .08, 60);
-      const mirror = stageId === 'mirror-corridor-v1';
-      aim(controller, camera, mirror ? WINCH_CENTER : { x: -4.75, y: 1.4, z: 9 },
+      const mirror = stageId === 'mirror-corridor-v1', departure = stageId === 'departure-control-v1';
+      const prefix = stageId === 'perception-gallery-v1' ? 'gallery' : stageId === 'uncanny-vault-v1' ? 'vault' : mirror ? 'mirror' : 'departure';
+      if (mirror || departure) aim(controller, camera, mirror ? WINCH_CENTER : { x: -4.75, y: 1.4, z: 9 },
         mirror ? 'mirror-corridor-winch' : 'departure-key');
+      else RC.syncCamera(controller, camera);
       context.snapshot = () => RC.controllerSnapshot(controller);
       const hud = await native.mount(FirstPersonScreen, { chapterId: stageId,
         settings: { ...Defaults.DEFAULT_SETTINGS, haptics: false },
@@ -77,16 +80,22 @@ async function main() {
         preferredColor: 'neutral', onSettingsChange() {}, onControlsChange() {}, onCheckpoint() {},
         onComplete() {}, onRestart() {}, onExit() {} });
       try {
-        const capture = (state, expectedLabel) => {
+        const capture = (state, expectedLabel, expectedDisabled = false) => {
           const tree = hud.serialize(), action = button(tree, 'interact');
-          if (!action || action.disabled || action.label !== expectedLabel)
+          if (!action || action.disabled !== expectedDisabled || action.label !== expectedLabel)
             throw Error(`${stageId}/${state}: HUD action ${action?.label} disabled=${action?.disabled}; expected ${expectedLabel}`);
-          records.push({ id: `${mirror ? 'mirror' : 'departure'}-${state}-${width}`, stageId,
+          records.push({ id: `${prefix}-${state}-${width}`, stageId,
             width, height, fontScale, state, target: RC.controllerSnapshot(controller).target?.id,
             label: action.label, tree });
         };
         await hud.update();
-        if (mirror) {
+        if (stageId === 'perception-gallery-v1') {
+          capture('entry', '非常口を確認', true);
+        } else if (stageId === 'uncanny-vault-v1') {
+          if (RC.controllerSnapshot(controller).target?.id !== 'vault-length')
+            throw Error('Fresh vault did not aim at its length clasp');
+          capture('length-ready', '留め金を調整');
+        } else if (mirror) {
           capture('winch-ready', '巻き上げレバーを保持する');
           await hud.pressTestID('interact'); await hud.update();
           if (controller.runtime.stageSession?.value?.holding !== 'winch')
@@ -146,7 +155,7 @@ async function main() {
   } finally { await browser.close(); }
   bridge.verify();
   const failures = reports.filter(r => !r.actionVisible || !r.actionAtLeast44 || r.pauseOverlapsObjective ||
-    r.actionOverlapsObjective || r.contextOverlapsMovement || r.metrics.context);
+    r.actionOverlapsObjective || r.contextOverlapsMovement);
   const report = { boundary: 'Actual FirstPersonScreen/controller and validated area checkpoints; Canvas placeholder and browser CSS host translation, not native Yoga/EXGL/gesture or visible scene',
     toolHash: sha256(fs.readFileSync(__filename)), sourceHashes: Object.fromEntries(bridge.hashes), reports, failures: failures.map(r => r.id) };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2));

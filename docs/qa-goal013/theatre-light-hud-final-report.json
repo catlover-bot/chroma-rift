@@ -1,0 +1,84 @@
+{
+  "boundary": "Actual FirstPersonScreen/controller/TheatreScene rendered with software WebGL and browser CSS React Native host translation; native readiness/audio stubbed; not iPhone Yoga, touch, VoiceOver, audio, FPS, or continuous human playback.",
+  "sampledFramesPerSize": 7,
+  "toolHash": "4c6e530f1cd38b86a367890fdb249b8e3c1c3271f03712f3f07a2e884655b4c1",
+  "hudHelperHash": "703378d8ac9a24b5764581eda37171b26fe738a8afe03ee413fa3ffedc07c2f5",
+  "sizes": [
+    {
+      "scenario": "projector",
+      "size": 320,
+      "viewport": "320x568",
+      "fontScale": 2,
+      "frames": 7,
+      "overlaps": [],
+      "auditSha256": "9edcf8980a48decb0d4c05f0a6cb851afe98415bab0098776afb7d3c843a79fe",
+      "sourceHashesSha256": "6bc9733739a4cb3ebb52a3c0c2b0c2a7876b8bedd622bf32e9142729b54b58a5",
+      "webglSha256": "cc169877fe4d9ea303894ac6b2b4f204d19933c31c2fb8d1831d81a94201b6e1"
+    },
+    {
+      "scenario": "light",
+      "size": 320,
+      "viewport": "320x568",
+      "fontScale": 2,
+      "frames": 7,
+      "overlaps": [],
+      "auditSha256": "20d62e438475911256051ff75e25e2d1dd4f3879104e88bbeba01ece06d92455",
+      "sourceHashesSha256": "6bc9733739a4cb3ebb52a3c0c2b0c2a7876b8bedd622bf32e9142729b54b58a5",
+      "webglSha256": "b304e10ccb6c6f7a7cbbaad54d9aca42b50d50753607d59196095ec33404ee3a"
+    },
+    {
+      "scenario": "projector",
+      "size": 390,
+      "viewport": "390x844",
+      "fontScale": 1.5,
+      "frames": 7,
+      "overlaps": [],
+      "auditSha256": "dca9a7066350a90d6c70144cce7278289e5e889eaf9d540ebb99e8a253a19abb",
+      "sourceHashesSha256": "6bc9733739a4cb3ebb52a3c0c2b0c2a7876b8bedd622bf32e9142729b54b58a5",
+      "webglSha256": "cc169877fe4d9ea303894ac6b2b4f204d19933c31c2fb8d1831d81a94201b6e1"
+    },
+    {
+      "scenario": "light",
+      "size": 390,
+      "viewport": "390x844",
+      "fontScale": 1.5,
+      "frames": 7,
+      "overlaps": [],
+      "auditSha256": "3e6f306825381a34fa5ccd507618877a4d39f01ec4a74bd26dd891e07edf1fb1",
+      "sourceHashesSha256": "6bc9733739a4cb3ebb52a3c0c2b0c2a7876b8bedd622bf32e9142729b54b58a5",
+      "webglSha256": "8c8995b1a23cb04529842be3249f853c1315adcf0073c1e69648453b09094d1c"
+    },
+    {
+      "scenario": "projector",
+      "size": 430,
+      "viewport": "430x932",
+      "fontScale": 1,
+      "frames": 7,
+      "overlaps": [],
+      "auditSha256": "0415f045a8f55f818f7527d20fa4ff0d8fc031994e4758f619bae3165610d4dc",
+      "sourceHashesSha256": "6bc9733739a4cb3ebb52a3c0c2b0c2a7876b8bedd622bf32e9142729b54b58a5",
+      "webglSha256": "cc169877fe4d9ea303894ac6b2b4f204d19933c31c2fb8d1831d81a94201b6e1"
+    },
+    {
+      "scenario": "light",
+      "size": 430,
+      "viewport": "430x932",
+      "fontScale": 1,
+      "frames": 7,
+      "overlaps": [],
+      "auditSha256": "65bcf3b6a20f72f568d941cc064f3a14c33274b1e16946f5a1af34ecc1a1af8a",
+      "sourceHashesSha256": "6bc9733739a4cb3ebb52a3c0c2b0c2a7876b8bedd622bf32e9142729b54b58a5",
+      "webglSha256": "8c8995b1a23cb04529842be3249f853c1315adcf0073c1e69648453b09094d1c"
+    }
+  ],
+  "lightButtonImages": {
+    "commit": {
+      "file": "theatre-light-hud-final-320-commit.png",
+      "sha256": "d126a13a65d533555a1d5ac29870311493a0698ae2d3a35759d30b7f24dbafbb"
+    },
+    "leave": {
+      "file": "theatre-light-hud-final-320-leave.png",
+      "sha256": "8e3b8d02a2c8282653a78f42fc2218338e85a43d8bb63e25f55473078b7e778c"
+    }
+  }
+}

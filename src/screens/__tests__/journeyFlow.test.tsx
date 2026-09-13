@@ -281,7 +281,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await walk(0, -6);
     await walk(1.6, -6);
     await inspect('emblem-panel');
-    expect(view.getByTestId('current-objective')).toHaveTextContent('切れずにつながる輪郭を探す');
+    expect(view.getByTestId('current-objective')).toHaveTextContent('触れた指は、壁で止まる。');
+    await waitFor(() => expect(view.getByTestId('current-objective')).toHaveTextContent('切れずにつながる輪郭を探す'), { timeout: 6000 });
     expect(scene().controller.runtime.emblem.phase).toBe('observing');
     const seed = scene().controller.runtime.emblem.seed;
     const answer = createSealStimulus(seed).answer;
@@ -327,7 +328,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(scene().controller.runtime.progress.cleared).toBe(false);
     expect(JSON.parse((await AsyncStorage.getItem(FIRST_PERSON_CONTROLS_KEY))!).controls.handedness).toBe('left');
     expect(JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).quickSetupResult.status).toBe('skipped');
-  });
+  }, 15000);
 
   it('resumes each chapter from its own home action and keeps both saved documents intact', async () => {
     const old = createCheckpoint(createInitialRuntime());
