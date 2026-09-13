@@ -1,5 +1,13 @@
 # Goal 013 動的QAの記録
 
+## 2026-09-13 エリア間の点検記録と結末の文字拡大
+
+[結末・点検記録21画像の測定report](ending-layout-report.json)を追加した。結末は実 `ChapterOneEndingScreen` を、未提示の収容手順がある場合とない場合でmountした。エリア01→02、02→03、04→05の点検記録は一つの実 `App` mountで自然経路を進め、保存済み遷移の後・次Canvas起動の前に出た[3件のhost tree](story-layout.json)を採った。測定reportの `storyHost` に5エリア・207読込sourceのhashと実controller更新の要約を残す。各画面を320×568/fontScale 2、390×844/1.5、430×932/1のbrowser CSSへ描き、結末の上下12枚と点検記録9枚を保持した。
+
+320幅・文字2倍の[手順付き結末の上部](ending-320-procedure-top.png)と[下部](ending-320-procedure-bottom.png)、[通常結末の上部](ending-320-normal-top.png)、[01→02](story-emergency-circuit-320-overlay.png)・[02→03](story-containment-procedure-320-overlay.png)・[04→05](story-isolation-key-320-overlay.png)の点検記録を原寸で開いた。390/430幅の代表画像も開いた。結末は縦スクロール可能で、320幅の内容高は通常1,674px／手順付き1,934px、最下部の「ホームへ戻る」は可視高さ48px、横はみ出し0。3件の点検記録では本文・「点検を続ける」の画面外はみ出し0、ボタン高は最小48px。結末の提示callbackは各mountで一度、3つのナビゲーションボタンとホームcallbackを実componentから確認した。21画像・tool・host/source hashを検証した。画面は実React Nativeのstyleをbrowser CSSに翻訳したもので、native Yogaの改行、safe area、VoiceOverのfocus順、実iPhone操作を検証したものではない。
+
+このために `scripts/preview-chapter-reentry.cjs` へ `--story-layout` を加えた。通常の[App経路report](app-scene-walkthrough-report.json)と[中間動作ログ](app-scene-walkthrough-motion-trace.json)も現行ツールで再取得した。11枚の元スクリーンショット、WebGL計測は保持版とbyte一致し、中間1,474 sampleの内容も一致した。新しいrunIdだけが変わったため、report・動作ログのSHA-256と[artifact索引](app-scene-walkthrough-artifacts.json)を更新した。これはAppの一続きの実描画動画を追加したという意味ではない。
+
 ## 2026-09-13 01の自然通過を実sceneで採った動画
 
 [01の自然通過77.2秒・386 frame](area01-natural-route.mp4)、[8秒刻みの接触シート](area01-natural-route-contact.png)、[入力・source hash・WebGL report](area01-natural-route-report.json)を現行の第一章ソースから追加した。`node scripts/qa-gallery-natural.cjs` は新規campaignの01を標準の怖さで実controller/worldへ入れ、既存の `playNaturalArea` によって非常灯、B→Cの見本、配線、巡回体の回避、管理用防火扉の越境まで進める。直接のsolved flagやpose注入はない。4,612回・約76.85秒のsimulation更新を12回ごとに保存し、実 `ChapterScene` とplayer cameraへ386状態を再投入して5fpsで描いた。進行による静的propsの変化は9回のscene再構築で反映した。

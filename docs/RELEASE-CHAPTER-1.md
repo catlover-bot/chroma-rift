@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+結末とエリア間の点検記録を、実React Native component/App hostから3つの縦画面・文字倍率へ再描画した。最小320×568/fontScale 2では結末の3ボタンへスクロールで到達でき、01→02、02→03、04→05の短文と続行ボタンは画面内に収まった。画像と寸法、再現方法は [QA記録](qa-goal013/README.md)。従来の01→05同一Appログとscene/HUD静止画も現行抽出ツールで再検証した。これはbrowser CSSによる確認で、native Yoga、VoiceOver、safe area、preview端末の受入ではない。製品ソース・依存に差分はなく、前回の全check/両OS公開用export結果を維持する。正式privacy/support URL、ストア申告、iPhone previewの残件と4つの公開ゲートは変わらない。
+
 05単独の自然成功・開け直し復旧動画は、屋外操作の受理後に実controllerが返す `在館反応 00。閉館処理 完了。` をQA字幕で見せるよう再収録した。各196/378 frameで、最後の9 frame・0.9秒はsimulationを進めない静止保持。受理後もcameraが実歩行位置に残ることを検査し、全frameをデコード、最終画像を原寸で確認した。[現行動画・計測・hash](qa-goal013/README.md)を参照。製品runtimeと依存・native設定は変更しておらず、前回の両OS公開用exportと全checkの製品ソース検証が適用される。iPhone実行や正式URL・ストア申告の未完了ゲートは維持する。
 
 最新の同一App host検査では、01→05を一つのmountと5つの実controllerで進め、8,794更新／1,474 sampleの[domain動作ログ](qa-goal013/app-scene-walkthrough-motion-trace.json)、各入口・完了のscene/HUD 10枚と結末1枚、保存遷移を再取得した。05屋外完了で歩行位置が約0.58m飛ぶ不具合を直し、修正後は歩行中の位置を維持したまま完了する。cold checkpointだけは安全な屋外位置へ正規化する。[QA記録](qa-goal013/README.md)にログの範囲、画像・動画hash、Software WebGLの計測を記した。修正後の全checkはlint・型検査・110スイート/1,134テスト・通常iOS exportを通過し、両OS公開用export、first-party各201 source本文一致、5エリア同梱・開発画面除外、循環0、Doctor 21/21、Expo依存検査を[数値とbundle hash](qa-goal013/release-controls-source-checks.json)に記録した。`automatedChecksPassed=true`。sample間の描画frameはなく、一続きのApp実描画動画やnative previewの代用ではない。5エリアの実機受入が残るため `contentComplete=false`、iPhoneバイナリを実行していないため `nativePreviewVerified=false`、正式privacy/support URL・ストア申告も未完了のため `releaseReady=false` を維持する。

@@ -1,5 +1,7 @@
 # Goal 013 作業記録
 
+第一章の結末と3件のエリア間点検記録を、最小320×568/fontScale 2を含む3条件で視覚確認した。結末は実componentの通常/未提示手順あり、点検記録は一つの実App hostで01→05を進めた保存遷移から採った。browser CSSで21画像を描き、320幅の結末は縦スクロールで戻り先3ボタンへ届き、点検記録の本文と「点検を続ける」は画面内に収まった。[QA記録](qa-goal013/README.md)に画像、計測、source hashと再現手順を保持した。App抽出ツールの変更後、従来の11 scene/HUD画像とWebGL計測はbyte一致、中間1,474 sampleの内容一致を確認し、runIdとtool hashの変化に合わせてreport索引を更新した。製品ソースと依存は変更していない。native Yoga/VoiceOver/実機・正式URLとストア申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
+
 01の入口・完了静止画と同一Appのdomain動作ログを補うため、01単独の自然経路を実controllerで最後まで進め、状態を実 `ChapterScene` でサンプル再描画した。非常灯、B→Cの見本、配線、巡回体の回避、02を示す館内扉を越えるまで4,612 simulation更新・386描画frame・77.2秒の動画を[QA記録](qa-goal013/README.md)へ保持した。上部表示はQA字幕で製品HUDではなく、App hostの一続きの描画動画でもない。接触シートと6枚の原寸frameを開き、全MP4 frameをデコードした。最大138 draw calls／9,866 triangles、終了後geometry/texture 0、browser error 0。製品ソース・依存は変更していないため、直前の全check/両OS公開用export結果を維持する。実機preview、正式privacy/support URL、ストア申告は未確認で、`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 05単独動画の最終frameは屋外を映していたが、字幕が操作名「屋外へ出る」で止まり、受理後の `在館反応 00。閉館処理 完了。` を映像で確認できなかった。QA収録を修正し、受理後のcamera同期と実歩行位置の保持を検査してから、実controllerの完了feedbackを9静止frame・0.9秒表示する。自然成功196 frame/19.6秒、開け直し復旧378 frame/37.8秒を再収録し、全frameデコード、最終画面原寸、frame 0と完了frameを含む接触シートを確認した。[現行SHA-256と範囲](qa-goal013/README.md)を更新した。これは05単独のSoftware WebGL・QA字幕であり、製品HUDや01→05の連続App描画、実機体験の証拠ではない。製品ソース・依存は前回の `1a0d612` から変更していない。

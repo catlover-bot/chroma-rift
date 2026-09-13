@@ -6,7 +6,7 @@
 // are explicit QA boundaries. No native device or user storage is accessed.
 const fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..'),opt=n=>process.argv.find(a=>a.startsWith('--'+n+'='))?.slice(n.length+3),source=path.resolve(opt('source')||root),out=path.resolve(opt('out')||path.join(root,'.expo/goal010-1/chapter-reentry'));
-const galleryOnly=process.argv.includes('--gallery-only'),chapterOne=process.argv.includes('--chapter-one');
+const galleryOnly=process.argv.includes('--gallery-only'),chapterOne=process.argv.includes('--chapter-one'),storyLayout=process.argv.includes('--story-layout');
 fs.mkdirSync(out,{recursive:true});
 const{installSourceBridge,mountThree,openBrowser,delay,sha256}=require('./lib/three-scene-qa.cjs'),{installNativeHudBridge,browserStyles,browserHelpers}=require('./lib/native-hud-qa.cjs');
 const bridge=installSourceBridge(source),context={width:390,height:844,fontScale:1.5},native=installNativeHudBridge(context),React=require('react'),R=require('react-test-renderer'),THREE=require('three');
@@ -107,7 +107,7 @@ async function extractChapterOne(){
  await storage.setItem(AS.APPLICATION_STORAGE_KEY,JSON.stringify(app));
  await storage.setItem(Store.FIRST_PERSON_ONBOARDING_KEY,JSON.stringify({...Defaults.DEFAULT_FIRST_PERSON_ONBOARDING,tutorialCompleted:true,controlChoiceAcknowledged:true}));
  const hud=await native.mount(App,{});await settle();
- const frames=[],hudTrees=[],hudMap=new Map(),events=[],route=[],motionSamples=[],motionAreas=[];
+ const frames=[],hudTrees=[],hudMap=new Map(),events=[],route=[],motionSamples=[],motionAreas=[],storyScreens=[];
  const event=(type,detail={})=>events.push({frame:frames.length,type,...detail});
  const press=async label=>{
   const button=hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel===label&&!node.props.disabled)[0];
@@ -200,6 +200,11 @@ async function extractChapterOne(){
    const pending=CHAPTER_ONE_BEATS.filter(beat=>beat.area===area.id&&saved.storyFired.includes(beat.id)&&!saved.storyPresented.includes(beat.id));
    for(const beat of pending){
     if(!has('点検を続ける'))throw Error('Transition story missing '+beat.id);
+    if(storyLayout){
+     await hud.update();
+     storyScreens.push({beat:beat.id,fromArea:area.id,toArea:CHAPTER_ONE.areas[index+1].id,
+      tree:serialize(hud.tree.root)});
+    }
     await press('点検を続ける');
    }
   }
@@ -230,6 +235,7 @@ async function extractChapterOne(){
  const motion={method:'One actual App host; samples from every sixth advanceController update of its five mounted controllers, plus each entry/clear. Commands between samples are not individually recorded here. Domain/pose/actor log, not rendered frames, native time or human input.',
   runId,areas:motionAreas,validation:motionValidation,samples:motionSamples};
  const motionFile=path.join(out,'motion-trace.json');fs.writeFileSync(motionFile,JSON.stringify(motion,null,2)+'\n');
+ if(storyLayout)fs.writeFileSync(path.join(out,'story-layout.json'),JSON.stringify({method:'Actual App transition overlay trees after campaign save and before the next Canvas entry; captured from the same five-area natural host route. Native Canvas, AsyncStorage and audio are mocked.',screens:storyScreens},null,2)+'\n');
  const report={method:'One actual App host mount, five mounted FirstPersonScreen controllers, natural domain routes and serialized campaign transitions. Entry/cleared scene+HUD stills come from each mounted App controller; a separate 10Hz-style per-six-update motion log covers intervening domain simulation but not scene rendering. The ending is a separate App still. This is not a continuous video of play. The Three JSON snapshot omits the live planar-mirror render target; the separate mirror QA checks the reflection. AsyncStorage is isolated memory; native Canvas/ready/audio are stubbed and the React Three scene host does not reconcile props. Browser Software WebGL/CSS, not native Yoga/EXGL, touch, sound, perception or iPhone FPS.',
   frames:frames.length,duration:frames.length/30,sequence:route.map(item=>item.stageId),route,events,owners,
   maxActiveCanvasBoundaries:maxActiveOwners,activeCanvasBoundariesAfterUnmount:activeOwners,
@@ -256,5 +262,5 @@ async function capture(report){
  }finally{await browser.close();}
  if(!process.argv.includes('--sample-only')){const file=path.join(out,'chapter-reentry.mp4');cp.execFileSync('ffmpeg',['-nostdin','-hide_banner','-loglevel','error','-y','-framerate','30','-i',path.join(dir,'%06d.png'),'-frames:v',String(report.frames),'-c:v','libx264','-crf','21','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['ignore','inherit','inherit']});fs.writeFileSync(path.join(out,'video.json'),JSON.stringify({file:'chapter-reentry.mp4',sha256:sha256(fs.readFileSync(file)),bytes:fs.statSync(file).size,duration:report.duration},null,2)+'\n');}
 }
-async function main(){if(chapterOne&&!process.argv.includes('--sample-only')&&!process.argv.includes('--extract-only'))throw Error('Chapter-one App route supports snapshot capture only; use --sample-only');const report=process.argv.includes('--capture-only')?JSON.parse(fs.readFileSync(path.join(out,'report.json'))):chapterOne?await extractChapterOne():await extract();if(process.argv.includes('--capture-only'))for(const[f,hash]of Object.entries(report.sourceHashes))if(sha256(fs.readFileSync(path.join(source,f)))!==hash)throw Error('Source changed since extraction: '+f);if(!process.argv.includes('--extract-only'))await capture(report);bridge.verify();console.log(JSON.stringify({frames:report.frames,duration:report.duration,entries:report.owners.length,out}));}
+async function main(){if(storyLayout&&!chapterOne)throw Error('--story-layout requires --chapter-one');if(chapterOne&&!process.argv.includes('--sample-only')&&!process.argv.includes('--extract-only'))throw Error('Chapter-one App route supports snapshot capture only; use --sample-only');const report=process.argv.includes('--capture-only')?JSON.parse(fs.readFileSync(path.join(out,'report.json'))):chapterOne?await extractChapterOne():await extract();if(process.argv.includes('--capture-only'))for(const[f,hash]of Object.entries(report.sourceHashes))if(sha256(fs.readFileSync(path.join(source,f)))!==hash)throw Error('Source changed since extraction: '+f);if(!process.argv.includes('--extract-only'))await capture(report);bridge.verify();console.log(JSON.stringify({frames:report.frames,duration:report.duration,entries:report.owners.length,out}));}
 main().catch(error=>{console.error(error);process.exitCode=1;});

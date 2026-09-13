@@ -1,0 +1,1473 @@
+{
+  "method": "Actual App transition overlay trees after campaign save and before the next Canvas entry; captured from the same five-area natural host route. Native Canvas, AsyncStorage and audio are mocked.",
+  "screens": [
+    {
+      "beat": "emergency-circuit",
+      "fromArea": "chapter-1-area-01",
+      "toArea": "chapter-1-area-02",
+      "tree": [
+        {
+          "type": "View",
+          "style": {
+            "flex": 1,
+            "backgroundColor": "#09090C"
+          },
+          "contentStyle": {},
+          "disabled": false,
+          "children": [
+            {
+              "type": "View",
+              "style": {
+                "flex": 1,
+                "backgroundColor": "#09090C"
+              },
+              "contentStyle": {},
+              "disabled": false,
+              "children": [
+                {
+                  "type": "View",
+                  "style": {
+                    "flex": 1,
+                    "minHeight": 200,
+                    "position": "relative",
+                    "overflow": "hidden"
+                  },
+                  "contentStyle": {},
+                  "testID": "first-person-play",
+                  "disabled": false,
+                  "children": [
+                    {
+                      "type": "CanvasPlaceholder",
+                      "style": {},
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": []
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 0,
+                        "right": 0,
+                        "top": 0,
+                        "bottom": 0
+                      },
+                      "contentStyle": {},
+                      "testID": "touch-controls",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "View",
+                          "style": {
+                            "position": "absolute",
+                            "left": 201,
+                            "top": 103,
+                            "width": 177,
+                            "height": 633
+                          },
+                          "contentStyle": {},
+                          "testID": "look-region",
+                          "disabled": false,
+                          "children": []
+                        },
+                        {
+                          "type": "View",
+                          "style": {
+                            "position": "absolute",
+                            "left": 12,
+                            "top": 362.92,
+                            "width": 177,
+                            "height": 373.08
+                          },
+                          "contentStyle": {},
+                          "testID": "movement-stick",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "View",
+                              "style": {
+                                "position": "absolute",
+                                "left": 0,
+                                "top": 0,
+                                "width": 116,
+                                "height": 116,
+                                "borderRadius": 58,
+                                "borderColor": "#D8E0D16E",
+                                "borderWidth": 1,
+                                "backgroundColor": "#15202838",
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "transform": [
+                                  {
+                                    "translateX": 30.5
+                                  },
+                                  {
+                                    "translateY": 249.07999999999998
+                                  }
+                                ]
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "Text",
+                                  "style": {
+                                    "position": "absolute",
+                                    "top": 4,
+                                    "color": "#E1E6DDB8",
+                                    "fontSize": 20
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": [
+                                    "↑"
+                                  ]
+                                },
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 34,
+                                    "height": 34,
+                                    "borderRadius": 17,
+                                    "backgroundColor": "#D9E0D37A",
+                                    "borderWidth": 1,
+                                    "borderColor": "#EDF0E980",
+                                    "transform": [
+                                      {
+                                        "translateX": 0
+                                      },
+                                      {
+                                        "translateY": 0
+                                      }
+                                    ]
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 12,
+                        "top": 12,
+                        "width": 48,
+                        "height": 48
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Pressable",
+                          "style": {
+                            "flex": 1,
+                            "minWidth": 44,
+                            "minHeight": 44,
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "borderRadius": 12,
+                            "backgroundColor": "#162723D9",
+                            "borderWidth": 1,
+                            "borderColor": "#8F9E94"
+                          },
+                          "contentStyle": {},
+                          "testID": "pause-control",
+                          "label": "一時停止",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "View",
+                              "style": {
+                                "flexDirection": "row",
+                                "gap": 5
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 4,
+                                    "height": 18,
+                                    "backgroundColor": "#F0EFE5",
+                                    "borderRadius": 1
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                },
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 4,
+                                    "height": 18,
+                                    "backgroundColor": "#F0EFE5",
+                                    "borderRadius": 1
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 68,
+                        "top": 12,
+                        "width": 310,
+                        "height": 83
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Text",
+                          "style": {
+                            "backgroundColor": "#142421B8",
+                            "color": "#EEF0E5",
+                            "borderRadius": 10,
+                            "paddingHorizontal": 10,
+                            "paddingVertical": 8,
+                            "fontSize": 15,
+                            "lineHeight": 21
+                          },
+                          "contentStyle": {},
+                          "testID": "current-objective",
+                          "disabled": false,
+                          "children": [
+                            "職員通路を確保した。次は収蔵庫へ。"
+                          ]
+                        },
+                        {
+                          "type": "View",
+                          "style": {
+                            "flexDirection": "row",
+                            "alignItems": "center",
+                            "flexWrap": "wrap",
+                            "gap": 5,
+                            "paddingVertical": 3,
+                            "paddingHorizontal": 8,
+                            "backgroundColor": "#142421D9",
+                            "borderRadius": 8
+                          },
+                          "contentStyle": {},
+                          "testID": "gallery-power-stock",
+                          "label": "予備電源 2/2 接続済み",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "Text",
+                              "style": {
+                                "color": "#EEF0E5",
+                                "fontSize": 12
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                "電源"
+                              ]
+                            },
+                            {
+                              "type": "View",
+                              "style": {
+                                "width": 22,
+                                "height": 22,
+                                "borderWidth": 1,
+                                "borderColor": "#AEBCA5",
+                                "borderRadius": 3,
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "backgroundColor": "#49604B"
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "Text",
+                                  "style": {
+                                    "color": "#EEF0E5",
+                                    "fontSize": 12
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": [
+                                    "✓"
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View",
+                              "style": {
+                                "width": 22,
+                                "height": 22,
+                                "borderWidth": 1,
+                                "borderColor": "#AEBCA5",
+                                "borderRadius": 3,
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "backgroundColor": "#49604B"
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "Text",
+                                  "style": {
+                                    "color": "#EEF0E5",
+                                    "fontSize": 12
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": [
+                                    "✓"
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Text",
+                              "style": {
+                                "color": "#EEF0E5",
+                                "fontSize": 12
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                "接続済み"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "top": "50%",
+                        "left": "50%",
+                        "marginLeft": -4,
+                        "marginTop": -4
+                      },
+                      "contentStyle": {},
+                      "testID": "first-person-reticle",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "View",
+                          "style": {
+                            "width": 8,
+                            "height": 8,
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "borderColor": "#FFFFFF",
+                            "backgroundColor": "#ECE7CA"
+                          },
+                          "contentStyle": {},
+                          "disabled": false,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "alignItems": "center",
+                        "left": 201,
+                        "width": 177,
+                        "bottom": 112
+                      },
+                      "contentStyle": {},
+                      "testID": "target-context",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Text",
+                          "style": {
+                            "color": "#F4F1DF",
+                            "backgroundColor": "#142421BA",
+                            "borderRadius": 8,
+                            "padding": 6,
+                            "fontSize": 14,
+                            "textAlign": "center"
+                          },
+                          "contentStyle": {},
+                          "disabled": false,
+                          "children": [
+                            "扉は閉まりました。"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 201,
+                        "top": 748,
+                        "width": 177,
+                        "height": 84
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Pressable",
+                          "style": {
+                            "flexGrow": 1,
+                            "flexShrink": 1,
+                            "minHeight": 48,
+                            "minWidth": 44,
+                            "paddingHorizontal": 9,
+                            "paddingVertical": 10,
+                            "backgroundColor": "#203A34E8",
+                            "borderColor": "#ABBDB0",
+                            "borderWidth": 1,
+                            "borderRadius": 12,
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "opacity": 0.5
+                          },
+                          "contentStyle": {},
+                          "testID": "interact",
+                          "label": "扉を閉める",
+                          "disabled": true,
+                          "children": [
+                            {
+                              "type": "Text",
+                              "style": {
+                                "color": "#F2F2E8",
+                                "fontSize": 14,
+                                "fontWeight": "600",
+                                "textAlign": "center"
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                "扉を閉める"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "View",
+              "style": {
+                "position": "absolute",
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0,
+                "zIndex": 10,
+                "backgroundColor": "#09090C",
+                "justifyContent": "center",
+                "padding": 26,
+                "gap": 14
+              },
+              "contentStyle": {},
+              "disabled": false,
+              "children": [
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#F4F4F6",
+                    "fontSize": 23,
+                    "fontWeight": "700",
+                    "marginBottom": 16
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "点検記録"
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#B4B4BD",
+                    "fontSize": 16,
+                    "lineHeight": 25,
+                    "marginBottom": 20
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "非常回路が戻った。収蔵庫の職員通路へ進む。"
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#B4B4BD",
+                    "fontSize": 16,
+                    "lineHeight": 25,
+                    "marginBottom": 20
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "非常灯が点く"
+                  ]
+                },
+                {
+                  "type": "Pressable",
+                  "style": {
+                    "alignItems": "center",
+                    "backgroundColor": "#34343E",
+                    "borderColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 48,
+                    "minWidth": 48,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 12
+                  },
+                  "contentStyle": {},
+                  "label": "点検を続ける",
+                  "disabled": false,
+                  "children": [
+                    {
+                      "type": "Text",
+                      "style": {
+                        "color": "#F4F4F6",
+                        "fontSize": 16,
+                        "fontWeight": "700",
+                        "textAlign": "center"
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        "点検を続ける"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "beat": "containment-procedure",
+      "fromArea": "chapter-1-area-02",
+      "toArea": "chapter-1-area-03",
+      "tree": [
+        {
+          "type": "View",
+          "style": {
+            "flex": 1,
+            "backgroundColor": "#09090C"
+          },
+          "contentStyle": {},
+          "disabled": false,
+          "children": [
+            {
+              "type": "View",
+              "style": {
+                "flex": 1,
+                "backgroundColor": "#09090C"
+              },
+              "contentStyle": {},
+              "disabled": false,
+              "children": [
+                {
+                  "type": "View",
+                  "style": {
+                    "flex": 1,
+                    "minHeight": 200,
+                    "position": "relative",
+                    "overflow": "hidden"
+                  },
+                  "contentStyle": {},
+                  "testID": "first-person-play",
+                  "disabled": false,
+                  "children": [
+                    {
+                      "type": "CanvasPlaceholder",
+                      "style": {},
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": []
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 0,
+                        "right": 0,
+                        "top": 0,
+                        "bottom": 0
+                      },
+                      "contentStyle": {},
+                      "testID": "touch-controls",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "View",
+                          "style": {
+                            "position": "absolute",
+                            "left": 201,
+                            "top": 103,
+                            "width": 177,
+                            "height": 633
+                          },
+                          "contentStyle": {},
+                          "testID": "look-region",
+                          "disabled": false,
+                          "children": []
+                        },
+                        {
+                          "type": "View",
+                          "style": {
+                            "position": "absolute",
+                            "left": 12,
+                            "top": 362.92,
+                            "width": 177,
+                            "height": 373.08
+                          },
+                          "contentStyle": {},
+                          "testID": "movement-stick",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "View",
+                              "style": {
+                                "position": "absolute",
+                                "left": 0,
+                                "top": 0,
+                                "width": 116,
+                                "height": 116,
+                                "borderRadius": 58,
+                                "borderColor": "#D8E0D16E",
+                                "borderWidth": 1,
+                                "backgroundColor": "#15202838",
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "transform": [
+                                  {
+                                    "translateX": 30.5
+                                  },
+                                  {
+                                    "translateY": 249.07999999999998
+                                  }
+                                ]
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "Text",
+                                  "style": {
+                                    "position": "absolute",
+                                    "top": 4,
+                                    "color": "#E1E6DDB8",
+                                    "fontSize": 20
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": [
+                                    "↑"
+                                  ]
+                                },
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 34,
+                                    "height": 34,
+                                    "borderRadius": 17,
+                                    "backgroundColor": "#D9E0D37A",
+                                    "borderWidth": 1,
+                                    "borderColor": "#EDF0E980",
+                                    "transform": [
+                                      {
+                                        "translateX": 0
+                                      },
+                                      {
+                                        "translateY": 0
+                                      }
+                                    ]
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 12,
+                        "top": 12,
+                        "width": 48,
+                        "height": 48
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Pressable",
+                          "style": {
+                            "flex": 1,
+                            "minWidth": 44,
+                            "minHeight": 44,
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "borderRadius": 12,
+                            "backgroundColor": "#162723D9",
+                            "borderWidth": 1,
+                            "borderColor": "#8F9E94"
+                          },
+                          "contentStyle": {},
+                          "testID": "pause-control",
+                          "label": "一時停止",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "View",
+                              "style": {
+                                "flexDirection": "row",
+                                "gap": 5
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 4,
+                                    "height": 18,
+                                    "backgroundColor": "#F0EFE5",
+                                    "borderRadius": 1
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                },
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 4,
+                                    "height": 18,
+                                    "backgroundColor": "#F0EFE5",
+                                    "borderRadius": 1
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 68,
+                        "top": 12,
+                        "width": 310,
+                        "height": 83
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Text",
+                          "style": {
+                            "backgroundColor": "#142421B8",
+                            "color": "#EEF0E5",
+                            "borderRadius": 10,
+                            "paddingHorizontal": 10,
+                            "paddingVertical": 8,
+                            "fontSize": 15,
+                            "lineHeight": 21
+                          },
+                          "contentStyle": {},
+                          "testID": "current-objective",
+                          "disabled": false,
+                          "children": [
+                            "館内搬送路を確保した。次は映写室へ。"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "top": "50%",
+                        "left": "50%",
+                        "marginLeft": -4,
+                        "marginTop": -4
+                      },
+                      "contentStyle": {},
+                      "testID": "first-person-reticle",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "View",
+                          "style": {
+                            "width": 8,
+                            "height": 8,
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "borderColor": "#FFFFFF",
+                            "backgroundColor": "#ECE7CA"
+                          },
+                          "contentStyle": {},
+                          "disabled": false,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "alignItems": "center",
+                        "left": 201,
+                        "width": 177,
+                        "bottom": 112
+                      },
+                      "contentStyle": {},
+                      "testID": "target-context",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Text",
+                          "style": {
+                            "color": "#F4F1DF",
+                            "backgroundColor": "#142421BA",
+                            "borderRadius": 8,
+                            "padding": 6,
+                            "fontSize": 14,
+                            "textAlign": "center"
+                          },
+                          "contentStyle": {},
+                          "disabled": false,
+                          "children": [
+                            "搬出口を封鎖しました。"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 201,
+                        "top": 748,
+                        "width": 177,
+                        "height": 84
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Pressable",
+                          "style": {
+                            "flexGrow": 1,
+                            "flexShrink": 1,
+                            "minHeight": 48,
+                            "minWidth": 44,
+                            "paddingHorizontal": 9,
+                            "paddingVertical": 10,
+                            "backgroundColor": "#203A34E8",
+                            "borderColor": "#ABBDB0",
+                            "borderWidth": 1,
+                            "borderRadius": 12,
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "opacity": 0.5
+                          },
+                          "contentStyle": {},
+                          "testID": "interact",
+                          "label": "搬出口を封鎖",
+                          "disabled": true,
+                          "children": [
+                            {
+                              "type": "Text",
+                              "style": {
+                                "color": "#F2F2E8",
+                                "fontSize": 14,
+                                "fontWeight": "600",
+                                "textAlign": "center"
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                "搬出口を封鎖"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "View",
+              "style": {
+                "position": "absolute",
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0,
+                "zIndex": 10,
+                "backgroundColor": "#09090C",
+                "justifyContent": "center",
+                "padding": 26,
+                "gap": 14
+              },
+              "contentStyle": {},
+              "disabled": false,
+              "children": [
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#F4F4F6",
+                    "fontSize": 23,
+                    "fontWeight": "700",
+                    "marginBottom": 16
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "点検記録"
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#B4B4BD",
+                    "fontSize": 16,
+                    "lineHeight": 25,
+                    "marginBottom": 20
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "閉館手順は中断されたまま。巡回体を収容区画へ戻す。"
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#B4B4BD",
+                    "fontSize": 16,
+                    "lineHeight": 25,
+                    "marginBottom": 20
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "管理経路の標識"
+                  ]
+                },
+                {
+                  "type": "Pressable",
+                  "style": {
+                    "alignItems": "center",
+                    "backgroundColor": "#34343E",
+                    "borderColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 48,
+                    "minWidth": 48,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 12
+                  },
+                  "contentStyle": {},
+                  "label": "点検を続ける",
+                  "disabled": false,
+                  "children": [
+                    {
+                      "type": "Text",
+                      "style": {
+                        "color": "#F4F4F6",
+                        "fontSize": 16,
+                        "fontWeight": "700",
+                        "textAlign": "center"
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        "点検を続ける"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "beat": "isolation-key",
+      "fromArea": "chapter-1-area-04",
+      "toArea": "chapter-1-area-05",
+      "tree": [
+        {
+          "type": "View",
+          "style": {
+            "flex": 1,
+            "backgroundColor": "#09090C"
+          },
+          "contentStyle": {},
+          "disabled": false,
+          "children": [
+            {
+              "type": "View",
+              "style": {
+                "flex": 1,
+                "backgroundColor": "#09090C"
+              },
+              "contentStyle": {},
+              "disabled": false,
+              "children": [
+                {
+                  "type": "View",
+                  "style": {
+                    "flex": 1,
+                    "minHeight": 200,
+                    "position": "relative",
+                    "overflow": "hidden"
+                  },
+                  "contentStyle": {},
+                  "testID": "first-person-play",
+                  "disabled": false,
+                  "children": [
+                    {
+                      "type": "CanvasPlaceholder",
+                      "style": {},
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": []
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 0,
+                        "right": 0,
+                        "top": 0,
+                        "bottom": 0
+                      },
+                      "contentStyle": {},
+                      "testID": "touch-controls",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "View",
+                          "style": {
+                            "position": "absolute",
+                            "left": 201,
+                            "top": 103,
+                            "width": 177,
+                            "height": 633
+                          },
+                          "contentStyle": {},
+                          "testID": "look-region",
+                          "disabled": false,
+                          "children": []
+                        },
+                        {
+                          "type": "View",
+                          "style": {
+                            "position": "absolute",
+                            "left": 12,
+                            "top": 362.92,
+                            "width": 177,
+                            "height": 373.08
+                          },
+                          "contentStyle": {},
+                          "testID": "movement-stick",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "View",
+                              "style": {
+                                "position": "absolute",
+                                "left": 0,
+                                "top": 0,
+                                "width": 116,
+                                "height": 116,
+                                "borderRadius": 58,
+                                "borderColor": "#D8E0D16E",
+                                "borderWidth": 1,
+                                "backgroundColor": "#15202838",
+                                "alignItems": "center",
+                                "justifyContent": "center",
+                                "transform": [
+                                  {
+                                    "translateX": 30.5
+                                  },
+                                  {
+                                    "translateY": 249.07999999999998
+                                  }
+                                ]
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "Text",
+                                  "style": {
+                                    "position": "absolute",
+                                    "top": 4,
+                                    "color": "#E1E6DDB8",
+                                    "fontSize": 20
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": [
+                                    "↑"
+                                  ]
+                                },
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 34,
+                                    "height": 34,
+                                    "borderRadius": 17,
+                                    "backgroundColor": "#D9E0D37A",
+                                    "borderWidth": 1,
+                                    "borderColor": "#EDF0E980",
+                                    "transform": [
+                                      {
+                                        "translateX": 0
+                                      },
+                                      {
+                                        "translateY": 0
+                                      }
+                                    ]
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 12,
+                        "top": 12,
+                        "width": 48,
+                        "height": 48
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Pressable",
+                          "style": {
+                            "flex": 1,
+                            "minWidth": 44,
+                            "minHeight": 44,
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "borderRadius": 12,
+                            "backgroundColor": "#162723D9",
+                            "borderWidth": 1,
+                            "borderColor": "#8F9E94"
+                          },
+                          "contentStyle": {},
+                          "testID": "pause-control",
+                          "label": "一時停止",
+                          "disabled": false,
+                          "children": [
+                            {
+                              "type": "View",
+                              "style": {
+                                "flexDirection": "row",
+                                "gap": 5
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 4,
+                                    "height": 18,
+                                    "backgroundColor": "#F0EFE5",
+                                    "borderRadius": 1
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                },
+                                {
+                                  "type": "View",
+                                  "style": {
+                                    "width": 4,
+                                    "height": 18,
+                                    "backgroundColor": "#F0EFE5",
+                                    "borderRadius": 1
+                                  },
+                                  "contentStyle": {},
+                                  "disabled": false,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 68,
+                        "top": 12,
+                        "width": 310,
+                        "height": 83
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Text",
+                          "style": {
+                            "backgroundColor": "#142421B8",
+                            "color": "#EEF0E5",
+                            "borderRadius": 10,
+                            "paddingHorizontal": 10,
+                            "paddingVertical": 8,
+                            "fontSize": 15,
+                            "lineHeight": 21
+                          },
+                          "contentStyle": {},
+                          "testID": "current-objective",
+                          "disabled": false,
+                          "children": [
+                            "制御室への前室に着いた。"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "top": "50%",
+                        "left": "50%",
+                        "marginLeft": -4,
+                        "marginTop": -4
+                      },
+                      "contentStyle": {},
+                      "testID": "first-person-reticle",
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "View",
+                          "style": {
+                            "width": 8,
+                            "height": 8,
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "borderColor": "#FFFFFF",
+                            "backgroundColor": "#ECE7CA"
+                          },
+                          "contentStyle": {},
+                          "disabled": false,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View",
+                      "style": {
+                        "position": "absolute",
+                        "left": 201,
+                        "top": 748,
+                        "width": 177,
+                        "height": 84
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        {
+                          "type": "Pressable",
+                          "style": {
+                            "flexGrow": 1,
+                            "flexShrink": 1,
+                            "minHeight": 48,
+                            "minWidth": 44,
+                            "paddingHorizontal": 9,
+                            "paddingVertical": 10,
+                            "backgroundColor": "#203A34E8",
+                            "borderColor": "#ABBDB0",
+                            "borderWidth": 1,
+                            "borderRadius": 12,
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "opacity": 0.5
+                          },
+                          "contentStyle": {},
+                          "testID": "interact",
+                          "label": "制御室への前室へ進む",
+                          "disabled": true,
+                          "children": [
+                            {
+                              "type": "Text",
+                              "style": {
+                                "color": "#F2F2E8",
+                                "fontSize": 14,
+                                "fontWeight": "600",
+                                "textAlign": "center"
+                              },
+                              "contentStyle": {},
+                              "disabled": false,
+                              "children": [
+                                "制御室への前室へ進む"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "View",
+              "style": {
+                "position": "absolute",
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0,
+                "zIndex": 10,
+                "backgroundColor": "#09090C",
+                "justifyContent": "center",
+                "padding": 26,
+                "gap": 14
+              },
+              "contentStyle": {},
+              "disabled": false,
+              "children": [
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#F4F4F6",
+                    "fontSize": 23,
+                    "fontWeight": "700",
+                    "marginBottom": 16
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "点検記録"
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#B4B4BD",
+                    "fontSize": 16,
+                    "lineHeight": 25,
+                    "marginBottom": 20
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "顔と顔の間にも、輪郭がある。"
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "style": {
+                    "color": "#B4B4BD",
+                    "fontSize": 16,
+                    "lineHeight": 25,
+                    "marginBottom": 20
+                  },
+                  "contentStyle": {},
+                  "disabled": false,
+                  "children": [
+                    "中央の部品だけが取れる"
+                  ]
+                },
+                {
+                  "type": "Pressable",
+                  "style": {
+                    "alignItems": "center",
+                    "backgroundColor": "#34343E",
+                    "borderColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 48,
+                    "minWidth": 48,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 12
+                  },
+                  "contentStyle": {},
+                  "label": "点検を続ける",
+                  "disabled": false,
+                  "children": [
+                    {
+                      "type": "Text",
+                      "style": {
+                        "color": "#F4F4F6",
+                        "fontSize": 16,
+                        "fontWeight": "700",
+                        "textAlign": "center"
+                      },
+                      "contentStyle": {},
+                      "disabled": false,
+                      "children": [
+                        "点検を続ける"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -399,7 +399,7 @@
   "activeCanvasBoundariesAfterUnmount": 0,
   "motionTrace": {
     "file": "motion-trace.json",
-    "sha256": "7232566c404b0fec1def8b71b03fd50699e6ae19226b9bf36e55ca05ede48177",
+    "sha256": "71ee951508aebbccdbc0c1a8d37664582b7799ece08e355653481c62143a6450",
     "areas": 5,
     "samples": 1474,
     "ticks": 8794,
@@ -656,5 +656,5 @@
     "src/screens/firstPersonControlMode.ts": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
     "src/screens/CampaignStageNotebook.tsx": "948aa1f06eccc7e7149245d905f1e0b7b2a4ff383544b8950409aceca6b61f8f"
   },
-  "toolHash": "47086ca7a27b19dca703747623bc574e2bf5bca13f7851ba78deed1725c0fa3c"
+  "toolHash": "076eaca22736c05d76b22aa8cf03c738225174d51a0260b12f52a191ba66ace0"
 }
