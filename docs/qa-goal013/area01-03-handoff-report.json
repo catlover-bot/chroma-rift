@@ -1,5 +1,5 @@
 {
-  "boundary": "Real ChapterScene and initial stage world, manually placed camera on an existing floor after the prior door; complete destination sign must fit the approach view. No controller route, product HUD, native Canvas, iPhone visibility or FPS proof.",
+  "boundary": "Real ChapterScene and initial stage world, manually placed camera at the three exit poses recorded in natural-route-standard.json. The controller hands off here; a cropped sign at this pose is not a failure if it was readable on approach. No actual controller camera, product HUD, native Canvas, iPhone visibility or FPS proof.",
   "size": [
     390,
     844
@@ -10,66 +10,66 @@
       "camera": {
         "x": 4,
         "y": 1.6,
-        "z": 23.4
+        "z": 24.6
       },
       "doorName": "gallery-vault-threshold-door",
       "sign": {
-        "fullyVisible": true,
+        "fullyVisible": false,
         "projectedBounds": {
-          "minX": -0.6763859566476317,
-          "maxX": 0.6763859566476317,
-          "minY": 0.33859368090476827,
-          "maxY": 0.4948676874761995
+          "minX": -1.4421059075694818,
+          "maxX": 1.4421059075694818,
+          "minY": 0.7219072819290356,
+          "maxY": 1.0550952582039745
         }
       },
-      "calls": 20,
-      "triangles": 2282,
-      "bytes": 7547,
-      "sha256": "0a47ccd6fe253416ae70f1e7b26002230f7cb0b1bf11b1491ef54f52c38ff4b9"
+      "calls": 17,
+      "triangles": 2246,
+      "bytes": 12819,
+      "sha256": "921a3dad2d394ff5fe01ed8df919bd0e7f463678f89d05558165365054d9b100"
     },
     {
       "stage": "uncanny-vault-v1",
       "camera": {
         "x": 3,
         "y": 1.6,
-        "z": 28.1
+        "z": 29
       },
       "doorName": "vault-theatre-threshold-door",
       "sign": {
         "fullyVisible": true,
         "projectedBounds": {
-          "minX": -0.5971219773529881,
-          "maxX": 0.5971219773529881,
-          "minY": 0.2989147339237411,
-          "maxY": 0.43687538035008294
+          "minX": -0.9208628084479811,
+          "maxX": 0.9208628084479811,
+          "minY": 0.46097693906311854,
+          "maxY": 0.673735526323019
         }
       },
-      "calls": 19,
-      "triangles": 710,
-      "bytes": 6389,
-      "sha256": "737ad7348ff6474fd5b781a0e45bf25e97477b18cc335cce9390b3ad7fe2dc75"
+      "calls": 18,
+      "triangles": 698,
+      "bytes": 7691,
+      "sha256": "5a50a2617c279f647eae3e6afa270c94d004b131bfecec215dbe177230867ed7"
     },
     {
       "stage": "shadow-theatre-v1",
       "camera": {
         "x": 0,
         "y": 1.6,
-        "z": 22
+        "z": 23.6
       },
       "doorName": "theatre-mirror-threshold-door",
       "sign": {
-        "fullyVisible": true,
+        "fullyVisible": false,
         "projectedBounds": {
-          "minX": -0.7856406633014347,
-          "maxX": 0.7856406633014347,
-          "minY": 0.04754003675190629,
-          "maxY": 0.22905654071373074
+          "minX": -2.6617974711854644,
+          "maxX": 2.6617974711854644,
+          "minY": 0.16106848272660826,
+          "maxY": 0.7760572349554777
         }
       },
-      "calls": 26,
-      "triangles": 1588,
-      "bytes": 10924,
-      "sha256": "cd16d12ec028ef41019193163a9c3de82aebe9f61c13ed3d4a85495df1f1bb81"
+      "calls": 20,
+      "triangles": 1456,
+      "bytes": 18410,
+      "sha256": "07266fb6940b7f4d026984f6795573a846c97bc529a12271805004ef87245dba"
     }
   ],
   "toolHash": "24d5e16ab2af3f9361d450809318c6b0bc4690fda724a0425a46426d65ee54d0",

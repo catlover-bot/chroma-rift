@@ -124,7 +124,7 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
       <mesh geometry={resources.box} material={t.dark} scale={[.54,.70,.08]}/>
       <mesh geometry={resources.box} material={t.amber} position={[0,0,i===0?-.07:.07]} scale={[.34,.13,.13]}/>
     </group>)}
-    <group name="control-room-paired-bar-landmark" position={[0,2.10,24.2]}>
+    <group name="control-room-paired-bar-landmark" position={[0,2.45,24.2]}>
       <mesh geometry={resources.box} material={t.dark} scale={[.92,.72,.025]}/>
       {[-.18,.18].map(x=><mesh key={x} geometry={resources.box} material={t.label} position={[x,0,-.018]} scale={[.075,.42,.012]}/>)}
       {[-1,1].map(sign=><mesh key={'slider'+sign} name="control-room-slider-mark" geometry={resources.box} material={t.label} position={[sign*.18,sign*.11,-.02]} scale={[.22,.065,.014]}/>)}
@@ -141,7 +141,7 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
       <mesh geometry={resources.box} material={t.label} position={[0, .17, -.105]} scale={[1.2, .035, .035]} />
       <mesh name="theatre-mirror-threshold-handle" geometry={resources.box} material={t.label} position={[.42, 1.18, -.14]} scale={[.045, .32, .045]} />
       <mesh name="theatre-mirror-threshold-sign" geometry={resources.plane} material={resources.destinationSign('04')}
-        position={[0, 2.73, -.16]} rotation={[0, Math.PI, 0]} scale={[1.05, .2625, 1]} />
+        position={[0, 1.8, -.16]} rotation={[0, Math.PI, 0]} scale={[1.05, .2625, 1]} />
       <mesh name="theatre-mirror-threshold-light" geometry={resources.box} material={t.amber} position={[0, 3.32, -.3]} scale={[.72, .05, .35]} />
     </group>
     <group name="maintenance-tool-landmark" position={[-5.20,2.16,10.64]}>

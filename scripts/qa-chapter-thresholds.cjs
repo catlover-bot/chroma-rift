@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 /* global __dirname, __filename, Buffer */
-// Visual-only QA at three reachable post-door floor positions. The camera is
-// placed directly; this is not a filmed controller route or native preview.
+// Visual-only QA at three reachable post-door floor positions or at the
+// recorded controller handoff poses. The camera is placed directly; this is
+// not a filmed controller route or native preview.
 const fs = require('node:fs');
 const path = require('node:path');
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/chapter-thresholds');
+const handoff = process.argv[2] === '--handoff';
+if (process.argv.length > (handoff ? 3 : 2)) throw Error('Usage: node scripts/qa-chapter-thresholds.cjs [--handoff]');
+const root = path.resolve(__dirname, '..');
+const out = path.join(root, handoff ? '.expo/goal013/chapter-thresholds-handoff' : '.expo/goal013/chapter-thresholds');
 fs.mkdirSync(out, {recursive: true});
 const {installSourceBridge, mountThree, openBrowser, delay, sha256} = require(path.join(root, 'scripts/lib/three-scene-qa.cjs'));
 const bridge = installSourceBridge(root);
@@ -17,10 +21,11 @@ const {createSceneResources} = require(path.join(root, 'src/rendering/firstPerso
 
 async function main() {
   const exits = [
-    ['perception-gallery-v1', 4, 23.4, 'gallery-vault-threshold-door'],
-    ['uncanny-vault-v1', 3, 28.1, 'vault-theatre-threshold-door'],
-    ['shadow-theatre-v1', 0, 22, 'theatre-mirror-threshold-door'],
+    ['perception-gallery-v1', 4, handoff ? 24.6 : 23.4, 'gallery-vault-threshold-door'],
+    ['uncanny-vault-v1', 3, handoff ? 29 : 28.1, 'vault-theatre-threshold-door'],
+    ['shadow-theatre-v1', 0, handoff ? 23.6 : 22, 'theatre-mirror-threshold-door'],
   ];
+  const signViews = new Map();
   for (const [id, x, z, doorName] of exits) {
     const controller = RC.createController(undefined, false, true, id);
     const world = RC.worldForController(controller);
@@ -57,9 +62,20 @@ async function main() {
       throw Error(`${id}: destination plaque has no lettering`);
     for (const part of [leaf, handle, sign]) {
       const point = part.getWorldPosition(new THREE.Vector3()).project(camera);
-      if (Math.abs(point.x) >= 1 || Math.abs(point.y) >= 1 || point.z < 0 || point.z > 1)
+      if (!handoff && (Math.abs(point.x) >= 1 || Math.abs(point.y) >= 1 || point.z < 0 || point.z > 1))
         throw Error(`${id}: ${part.name} is outside the threshold QA view`);
     }
+    // A sign can have its centre on screen while most of its label is cropped.
+    const corners = [];
+    for (const xSign of [-.5, .5]) for (const ySign of [-.5, .5]) {
+      const corner = new THREE.Vector3(xSign, ySign, 0).applyMatrix4(sign.matrixWorld).project(camera);
+      corners.push({ x: corner.x, y: corner.y, z: corner.z });
+      if (!handoff && (Math.abs(corner.x) >= 1 || Math.abs(corner.y) >= 1 || corner.z < 0 || corner.z > 1))
+        throw Error(`${id}: destination plaque lettering is cropped in the approach view`);
+    }
+    signViews.set(id, { fullyVisible: corners.every(corner => Math.abs(corner.x) < 1 && Math.abs(corner.y) < 1 && corner.z >= 0 && corner.z <= 1),
+      projectedBounds: { minX: Math.min(...corners.map(corner => corner.x)), maxX: Math.max(...corners.map(corner => corner.x)),
+        minY: Math.min(...corners.map(corner => corner.y)), maxY: Math.max(...corners.map(corner => corner.y)) } });
     fs.writeFileSync(path.join(out, `${id}.json`), JSON.stringify(scene.toJSON()));
     await mounted.unmount(); resources.dispose(); RC.retireController(controller);
   }
@@ -86,13 +102,15 @@ async function main() {
       await browser.send('Page.captureScreenshot', {format:'png', captureBeyondViewport:false})
         .then(r=>fs.writeFileSync(path.join(out, id+'.png'), Buffer.from(r.data,'base64')));
       const image = fs.readFileSync(path.join(out,id+'.png'));
-      images.push({stage:id, camera:{x,y:1.6,z}, doorName, ...metrics, bytes:image.length, sha256:sha256(image)});
+      images.push({stage:id, camera:{x,y:1.6,z}, doorName, sign:signViews.get(id), ...metrics, bytes:image.length, sha256:sha256(image)});
     }
     if (browser.errors.length) throw Error(JSON.stringify(browser.errors));
   } finally {await browser.close();}
   bridge.verify();
   fs.writeFileSync(path.join(out,'report.json'), JSON.stringify({
-    boundary:'Real ChapterScene and initial stage world, manually placed camera on an existing floor after the prior door; visual destination-threshold audit only. No controller route, product HUD, native Canvas, iPhone visibility or FPS proof.',
+    boundary:handoff
+      ? 'Real ChapterScene and initial stage world, manually placed camera at the three exit poses recorded in natural-route-standard.json. The controller hands off here; a cropped sign at this pose is not a failure if it was readable on approach. No actual controller camera, product HUD, native Canvas, iPhone visibility or FPS proof.'
+      : 'Real ChapterScene and initial stage world, manually placed camera on an existing floor after the prior door; complete destination sign must fit the approach view. No controller route, product HUD, native Canvas, iPhone visibility or FPS proof.',
     size:[390,844], images, toolHash:sha256(fs.readFileSync(__filename)), sourceHashes:Object.fromEntries(bridge.hashes),
   },null,2)+'\n');
   console.log(JSON.stringify({images, sourceCount:bridge.hashes.size}));
