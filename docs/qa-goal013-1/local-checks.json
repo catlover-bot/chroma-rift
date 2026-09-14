@@ -5,7 +5,7 @@
     "npmCheck": {
       "passed": true,
       "suites": 110,
-      "tests": 1149,
+      "tests": 1150,
       "iosModules": 1573,
       "assets": 10
     },
@@ -61,7 +61,7 @@
       "developmentSourcesAbsent": true,
       "firstPartySources": 201,
       "allFirstPartyMatch": true,
-      "bundleSha256": "32ca2e212564aa19487b1a9d4c0f0b16cec1c83276bb5ac1235ea1b912c21819",
+      "bundleSha256": "4928ff24be3c7521a32583c25a376b0c7745317567e8668014b938182a7a741c",
       "threeSources": 1,
       "threeEdges": 23,
       "threeClassIdentity": true
@@ -84,5 +84,5 @@
     "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
   },
   "scope": "Local Node/Jest/Metro/Software WebGL only; no iPhone EXGL, binary contents, native presentation, or device acceptance.",
-  "diagnosticRevision": "goal-013-1-mirror-runtime-r4"
+  "diagnosticRevision": "goal-013-1-mirror-runtime-r5"
 }

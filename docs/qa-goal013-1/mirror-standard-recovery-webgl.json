@@ -195,8 +195,8 @@
   "cpuRenderSubmit": {
     "samples": 251,
     "p50Ms": 0.7,
-    "p95Ms": 1.1,
-    "maxMs": 36.2
+    "p95Ms": 1,
+    "maxMs": 32.6
   },
   "cpuTimingScope": "SwiftShader browser JS mirror and main renderer.render calls; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
   "disposed": {
