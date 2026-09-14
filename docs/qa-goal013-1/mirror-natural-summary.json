@@ -1,0 +1,45 @@
+{
+  "mode": "subdued-natural",
+  "frames": 311,
+  "simulationSeconds": 28.083333333333332,
+  "simulationCpu": {
+    "samples": 1685,
+    "p50Ms": 0.029,
+    "p95Ms": 0.134,
+    "maxMs": 1.595
+  },
+  "final": {
+    "pose": {
+      "position": {
+        "x": -0.03583333333332951,
+        "y": 1.6,
+        "z": 21.93833333333312
+      },
+      "yaw": -3.141592653589793,
+      "pitch": -0.06
+    },
+    "mirrorInspected": true,
+    "ratchets": 3,
+    "cleared": true
+  },
+  "video": {
+    "file": "mirror-natural.mp4",
+    "bytes": 286884,
+    "sha256": "813ba494323ec51fcdbb5294d3db78d46cad1963346838a71609d6c49d4f5abe",
+    "fps": 10
+  },
+  "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Subdued intensity from a fresh area entry.",
+  "sourceHashes": {
+    "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
+    "src/domain/theatre/checkpoint.ts": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e",
+    "src/domain/vault/checkpoint.ts": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
+    "src/domain/stages/departure-control-v1/checkpoint.ts": "2a59ccc50b6ebf81091f8f35a6d375d97fa09e131239e1dfe044e6cf3063c9f8",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f",
+    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499"
+  },
+  "toolHash": "bfc294ec9e819dfe9c123ffe9033b17ee89100eab2d2d9e9adf791e796f64e1f"
+}

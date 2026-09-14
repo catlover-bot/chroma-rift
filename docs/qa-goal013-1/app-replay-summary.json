@@ -1,0 +1,260 @@
+{
+  "method": "One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.",
+  "fps": 5,
+  "frames": 740,
+  "duration": 148,
+  "sequence": [
+    {
+      "area": "chapter-1-area-01",
+      "stageId": "perception-gallery-v1",
+      "samples": 386
+    },
+    {
+      "area": "chapter-1-area-02",
+      "stageId": "uncanny-vault-v1",
+      "samples": 97
+    },
+    {
+      "area": "chapter-1-area-03",
+      "stageId": "shadow-theatre-v1",
+      "samples": 82
+    },
+    {
+      "area": "chapter-1-area-04",
+      "stageId": "mirror-corridor-v1",
+      "samples": 110
+    },
+    {
+      "area": "chapter-1-area-05",
+      "stageId": "departure-control-v1",
+      "samples": 65
+    }
+  ],
+  "sceneRebuilds": 33,
+  "milestones": [
+    {
+      "id": "04-key-taken",
+      "frame": 569,
+      "tick": 48
+    },
+    {
+      "id": "04-ratchet-1",
+      "frame": 613,
+      "tick": 576
+    },
+    {
+      "id": "04-ratchet-3",
+      "frame": 633,
+      "tick": 816
+    },
+    {
+      "id": "04-cleared",
+      "frame": 674,
+      "tick": 1302
+    },
+    {
+      "id": "05-key-installed",
+      "frame": 678,
+      "tick": 36
+    },
+    {
+      "id": "05-procedure-read",
+      "frame": 680,
+      "tick": 60
+    },
+    {
+      "id": "05-isolated",
+      "frame": 714,
+      "tick": 468
+    },
+    {
+      "id": "05-stopped",
+      "frame": 717,
+      "tick": 504
+    },
+    {
+      "id": "05-outdoor-exited",
+      "frame": 739,
+      "tick": 763
+    }
+  ],
+  "host": {
+    "route": [
+      {
+        "area": "chapter-1-area-01",
+        "stageId": "perception-gallery-v1",
+        "currentArea": "chapter-1-area-02",
+        "revision": 3,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-02",
+        "stageId": "uncanny-vault-v1",
+        "currentArea": "chapter-1-area-03",
+        "revision": 5,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-03",
+        "stageId": "shadow-theatre-v1",
+        "currentArea": "chapter-1-area-04",
+        "revision": 7,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-04",
+        "stageId": "mirror-corridor-v1",
+        "currentArea": "chapter-1-area-05",
+        "revision": 8,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-05",
+        "stageId": "departure-control-v1",
+        "currentArea": "chapter-1-area-05",
+        "revision": 14,
+        "canvasOwners": 0
+      }
+    ],
+    "final": {
+      "currentArea": "chapter-1-area-05",
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03",
+        "chapter-1-area-04",
+        "chapter-1-area-05"
+      ],
+      "campaignCompleted": true,
+      "revision": 14,
+      "storyFired": [
+        "closing-interrupted",
+        "emergency-circuit",
+        "containment-procedure",
+        "isolation-key",
+        "containment-bell",
+        "attendance-identified",
+        "outdoor-exit"
+      ],
+      "storyPresented": [
+        "closing-interrupted",
+        "emergency-circuit",
+        "containment-procedure",
+        "isolation-key",
+        "containment-bell",
+        "attendance-identified",
+        "outdoor-exit"
+      ]
+    },
+    "maxActiveCanvasBoundaries": 1,
+    "activeCanvasBoundariesAfterUnmount": 0,
+    "simulationTicks": 8794
+  },
+  "webgl": {
+    "maxCalls": 138,
+    "maxOffscreenCalls": 49,
+    "maxTotalCalls": 138,
+    "maxTriangles": 9866,
+    "maxOffscreenTriangles": 3593,
+    "maxTotalTriangles": 9866,
+    "reflectedFrames": 47,
+    "reflectedFrameIndices": [
+      574,
+      575,
+      576,
+      577,
+      578,
+      579,
+      580,
+      581,
+      582,
+      583,
+      596,
+      597,
+      598,
+      599,
+      600,
+      601,
+      602,
+      604,
+      605,
+      606,
+      607,
+      608,
+      609,
+      610,
+      611,
+      612,
+      613,
+      614,
+      615,
+      616,
+      617,
+      618,
+      619,
+      620,
+      621,
+      622,
+      623,
+      624,
+      625,
+      626,
+      627,
+      628,
+      629,
+      630,
+      631,
+      632,
+      633
+    ],
+    "mirrorTargetSize": [
+      384,
+      384
+    ],
+    "cpuRenderSubmit": {
+      "samples": 740,
+      "p50Ms": 0.5,
+      "p95Ms": 9.1,
+      "maxMs": 53.3
+    },
+    "cpuTimingScope": "SwiftShader browser JS offscreen and main renderer.render submission; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
+    "disposed": {
+      "geometries": 0,
+      "textures": 0,
+      "renderers": 1
+    },
+    "errors": []
+  },
+  "video": {
+    "file": "chapter-one-app-scene-replay.mp4",
+    "sha256": "b1e896de12e6e8363a9102a1be64926f299d8d4b576fd43b05a416b43d845368",
+    "bytes": 790768
+  },
+  "clips": [
+    {
+      "file": "area03-to-04.mp4",
+      "firstFrame": 560,
+      "lastFrame": 589,
+      "frames": 30,
+      "fps": 5,
+      "durationSeconds": 6,
+      "bytes": 69264,
+      "sha256": "c74b5f0182522a18176fa1cb1a73ae3bb0f62b1e36ba1d7d2c80fd37819679dd"
+    },
+    {
+      "file": "area04-to-05.mp4",
+      "firstFrame": 660,
+      "lastFrame": 689,
+      "frames": 30,
+      "fps": 5,
+      "durationSeconds": 6,
+      "bytes": 41293,
+      "sha256": "48ffa277ca182a552fcd46e35d19a27cf6e1f2122025d867d7cfef931428936a"
+    }
+  ],
+  "sourceHashes": {
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f",
+    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5"
+  },
+  "toolHash": "a445c08b9f8d51044de3bf7c4f0091adb96fd86dd246a09547100a8f96e88529"
+}

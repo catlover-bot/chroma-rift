@@ -1,0 +1,45 @@
+{
+  "mode": "standard-recovery",
+  "frames": 251,
+  "simulationSeconds": 23.483333333333334,
+  "simulationCpu": {
+    "samples": 1409,
+    "p50Ms": 0.025,
+    "p95Ms": 0.107,
+    "maxMs": 2.171
+  },
+  "final": {
+    "pose": {
+      "position": {
+        "x": -0.007331026278222967,
+        "y": 1.6,
+        "z": 22.449090095290114
+      },
+      "yaw": -3.141592653589793,
+      "pitch": -0.06
+    },
+    "mirrorInspected": false,
+    "ratchets": 3,
+    "cleared": true
+  },
+  "video": {
+    "file": "mirror-standard-recovery.mp4",
+    "bytes": 145181,
+    "sha256": "d7adfeab7f1b773cabcdb044e917f309a650ae981088a0a4e3117f6ca53a2c4e",
+    "fps": 10
+  },
+  "boundary": "Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. Standard intensity from a validated key/practice checkpoint; capture with unfinished winch progress, Stage-codec checkpoint restore, remaining ratchet and physical exit. The viewer retains one scene across controller restoration, so it does not prove a native Canvas remount.",
+  "sourceHashes": {
+    "src/rendering/firstPerson/runtimeController.ts": "b6aadd61650f95b247259171fc07f62e788a237b73d4438f687a8ad44b92298b",
+    "src/domain/theatre/checkpoint.ts": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e",
+    "src/domain/vault/checkpoint.ts": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
+    "src/domain/stages/departure-control-v1/checkpoint.ts": "2a59ccc50b6ebf81091f8f35a6d375d97fa09e131239e1dfe044e6cf3063c9f8",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f",
+    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499"
+  },
+  "toolHash": "bfc294ec9e819dfe9c123ffe9033b17ee89100eab2d2d9e9adf791e796f64e1f"
+}

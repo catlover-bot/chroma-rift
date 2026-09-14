@@ -1,0 +1,57 @@
+{
+  "maxMainCalls": 59,
+  "maxOffscreenCalls": 49,
+  "maxCombinedCalls": 84,
+  "maxTriangles": 3687,
+  "maxCombinedTriangles": 6916,
+  "reflectedFrames": 142,
+  "backingFrames": 28,
+  "backingIndices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "glErrors": [],
+  "targetSize": [
+    384,
+    384
+  ],
+  "cpuRenderSubmit": {
+    "samples": 311,
+    "p50Ms": 1,
+    "p95Ms": 1.7,
+    "maxMs": 35.8
+  },
+  "cpuTimingScope": "SwiftShader browser JS mirror and main renderer.render calls; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
+  "disposed": {
+    "geometries": 0,
+    "textures": 0,
+    "renderers": 1
+  },
+  "errors": []
+}

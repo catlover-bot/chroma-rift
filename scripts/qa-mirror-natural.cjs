@@ -304,14 +304,19 @@ async function render(report) {
       surface.updateWorldMatrix(true,false);
       frustum.setFromProjectionMatrix(projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
       const cpuStarted=performance.now();
-      const reflected=frustum.intersectsObject(surface)
+      const visible=frustum.intersectsObject(surface);
+      const reflected=visible
         ? mirror.render(renderer,scene,camera,surface,(r,s,c)=>r.render(s,c)) : false;
+      if(visible)surface.material=reflected?mirror.material:mirror.fallbackMaterial;
       const offscreenCalls=reflected?renderer.info.render.calls:0;
+      const offscreenTriangles=reflected?renderer.info.render.triangles:0;
       renderer.render(scene,camera);document.getElementById('caption').textContent=frame.event;
+      const glError=renderer.getContext().getError();
       const cpuSubmitMs=performance.now()-cpuStarted;
       await new Promise(resolve=>requestAnimationFrame(resolve));
-      return{reflected,offscreenCalls,mainCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,
-        cpuSubmitMs,geometres:renderer.info.memory.geometries,textures:renderer.info.memory.textures,rtSize:MIRROR_TARGET_SIZE};};
+      return{reflected,offscreenCalls,offscreenTriangles,mainCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,
+        cpuSubmitMs,glError,backing:surface.material===mirror.fallbackMaterial,
+        geometres:renderer.info.memory.geometries,textures:renderer.info.memory.textures,rtSize:MIRROR_TARGET_SIZE};};
     window.finish=()=>{const gs=new Set(),ms=new Set(),ts=new Set();scene.traverse(o=>{if(o.geometry)gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){ms.add(m);for(const t of Object.values(m))if(t?.isTexture)ts.add(t);}});
       mirror.dispose();originalMaterial.dispose();gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();renderer.renderLists.dispose();
       return{geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,renderers:1};};window.ready=true;
@@ -323,25 +328,31 @@ async function render(report) {
     for (let i = 0; i < 100 && !await browser.evaluate('window.ready===true'); i += 1) {
       if (browser.errors.length) throw Error(JSON.stringify(browser.errors)); await delay(100);
     }
-    let maxMainCalls = 0, maxOffscreenCalls = 0, maxTriangles = 0, reflectedFrames = 0;
+    let maxMainCalls = 0, maxOffscreenCalls = 0, maxCombinedCalls = 0, maxTriangles = 0, maxCombinedTriangles = 0, reflectedFrames = 0, backingFrames = 0;
+    const glErrors = [], backingIndices = [];
     const renderCpuMs = [];
     for (let i = 0; i < report.frames; i += 1) {
       const result = await browser.evaluate(`window.draw(${i})`);
       renderCpuMs.push(result.cpuSubmitMs);
       maxMainCalls = Math.max(maxMainCalls, result.mainCalls);
       maxOffscreenCalls = Math.max(maxOffscreenCalls, result.offscreenCalls);
+      maxCombinedCalls = Math.max(maxCombinedCalls, result.mainCalls + result.offscreenCalls);
       maxTriangles = Math.max(maxTriangles, result.triangles);
+      maxCombinedTriangles = Math.max(maxCombinedTriangles, result.triangles + result.offscreenTriangles);
       if (result.reflected) reflectedFrames += 1;
+      if (result.backing) { backingFrames += 1; backingIndices.push(i); }
+      if (result.glError) glErrors.push({ frame: i, code: result.glError });
       const screenshot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
       fs.writeFileSync(path.join(directory, String(i).padStart(5, '0') + '.png'), Buffer.from(screenshot.data, 'base64'));
     }
     const disposed = await browser.evaluate('window.finish()');
-    const metrics = { maxMainCalls, maxOffscreenCalls, maxTriangles, reflectedFrames,
+    const metrics = { maxMainCalls, maxOffscreenCalls, maxCombinedCalls, maxTriangles, maxCombinedTriangles,
+      reflectedFrames, backingFrames, backingIndices, glErrors,
       targetSize: [384, 384], cpuRenderSubmit: timingSummary(renderCpuMs),
       cpuTimingScope: 'SwiftShader browser JS mirror and main renderer.render calls; excludes screenshot/readback, RAF wait, native presentation and GPU completion',
       disposed, errors: browser.errors };
     fs.writeFileSync(path.join(out, 'webgl.json'), JSON.stringify(metrics, null, 2) + '\n');
-    if (!reflectedFrames || disposed.geometries || disposed.textures || browser.errors.length)
+    if (!reflectedFrames || !backingFrames || glErrors.length || disposed.geometries || disposed.textures || browser.errors.length)
       throw Error('Mirror WebGL pass/disposal/error gate failed');
   } finally { await browser.close(); }
   const file = path.join(out, name + '.mp4');

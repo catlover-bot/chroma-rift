@@ -1,5 +1,16 @@
 # Goal 013 — iPhone previewで第一章を確認する
 
+## Goal 013.1 — エリア04の描画失敗を再確認（未実施）
+
+2026-09-14の端末録画では、04の鍵・練習レバー付近で一度3Dが表示された後、約08:26にアプリ内エラーとなり、再試行とホームからの続きも録画内では復帰を確認できなかった。修正コードの識別子は `goal-013-1-mirror-runtime-r1`。現在のローカル検査はiPhoneの合格判定ではなく、`DEVICE_ACCEPTANCE=PENDING` のまま。
+
+1. 端末のアプリ種別（Development Build／preview／TestFlight）、端末・iOS、build番号、実際に読み込んだコード識別子を記録する。Development Buildは `/home/mhirotaka/workspace/chroma-rift-goal012` で `npx expo start --dev-client --tunnel --clear` を起動してJS更新を読み込める。既存Metroが動いていれば先に停止する。preview/TestFlightの同梱Releaseにはこの作業木のJSが自動で入らないので、修正コードを含む新しいpreview等を用意してから判定する。今回のローカル作業ではEAS build、配布、署名を行っていない。
+2. アプリや保存を消さず、既存の「エリア04から続き」で入る。鍵の有無と目的文を確認し、鍵取得前なら取得する。淡い壁印をたどって練習レバーを実指で保持し、鏡を視界に入れる／外す／背を向ける／再び入れる。古い像の残留、暗転、エラーを記録する。
+3. 鏡を見ながら巻き上げ、格子を越えて04出口を実指で使い、05の制御室まで進む。04で一度ホームへ戻り「続きから」を試し、完全終了後のcold再開でも鍵・確定済み歯止めと現在エリアが保たれるか確認する。失敗した場合はエラー画面の「詳細を表示」→「診断情報をコピー」を自分で選び、`FIRST_FAILURE` のreason code、最初のstack、最後の主描画／反射／提示frame、FBO/GL status、build情報を保存する。診断は自動送信されない。
+4. 04の再発がなければ、01→05の通常経路、05の本来の終了条件、オフラインRelease候補で同じ箇所を確認する。録画あり／なし、怖さ設定、pause／背景／復帰も区別する。画面の見え方・実指・VoiceOver・実音・fps／発熱は実測した項目だけ記録する。
+
+記録欄: `日付 / tester / device / iOS / build番号 / channel / code識別子 / 04入場由来 / 鍵・練習・鏡・巻上・05 / retry・home・cold結果 / FIRST_FAILURE（発生時） / 録画有無 / 未確認`。この結果を得るまで「実機修正済み」としない。
+
 **以下は実施待ち。** Goal 013はexpo 57.0.22とnative Expoモジュールの推奨パッチ、1.0.0、preview/production設定を変更した。従来のDevelopment BuildやMetroでのJS更新を、新しい配布バイナリの確認と扱わない。EAS Build、Apple認証、TestFlightアップロードはこのローカル作業では行っていない。[公開ゲート](RELEASE-CHAPTER-1.md)を先に読む。
 
 保存失敗の端末確認では、通常checkpointと物語提示で再試行/起動中のみの選択肢、危険停止、実保存と画面表示の一致を確認する。端末のデータを意図的に壊さず、再現可能な条件でのみ行う。

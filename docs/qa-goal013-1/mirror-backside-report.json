@@ -1,0 +1,63 @@
+{
+  "backend": "Chromium SwiftShader, actual area-04 StageScene export and current planarMirror.ts; no native EXGL",
+  "camera": {
+    "front": [
+      -1.433,
+      1.6,
+      10.866
+    ],
+    "back": [
+      -2.45,
+      1.6,
+      7.5
+    ]
+  },
+  "results": {
+    "main-only": {
+      "reflected": false,
+      "material": "chroma-rift-mirror-unavailable",
+      "framebufferStatus": "not-checked",
+      "glError": 0,
+      "drawCalls": 15,
+      "sha256": "e993370276639d2976e99a643d1540157bfbe4138a580387e3fae6c7911b3d94"
+    },
+    "target-only": {
+      "reflected": false,
+      "material": "chroma-rift-mirror-unavailable",
+      "framebufferStatus": 36053,
+      "glError": 0,
+      "drawCalls": 15,
+      "sha256": "e993370276639d2976e99a643d1540157bfbe4138a580387e3fae6c7911b3d94"
+    },
+    "front": {
+      "reflected": true,
+      "material": "chroma-rift-planar-mirror",
+      "framebufferStatus": "not-checked",
+      "glError": 0,
+      "drawCalls": 15,
+      "sha256": "71b87f1fc2eb9828f64bfe734a729b745271c636f34b673ae0397315f08eece4"
+    },
+    "legacy-back": {
+      "reflected": false,
+      "material": "chroma-rift-planar-mirror",
+      "framebufferStatus": "not-checked",
+      "glError": 0,
+      "drawCalls": 29,
+      "sha256": "180fbbec3260b879dc4330680a27b25be34a1c912982cf3365d33f7dd4e8409e"
+    },
+    "back": {
+      "reflected": false,
+      "material": "chroma-rift-mirror-unavailable",
+      "framebufferStatus": "not-checked",
+      "glError": 0,
+      "drawCalls": 29,
+      "sha256": "1138dead52461f83412acb8e432f8ab2011642b755eb2dd60af9202e8c1c3857"
+    }
+  },
+  "browserErrors": [],
+  "sourceSha256": {
+    "scene": "307f527353499fa86637a8f22d3a6cb2f0b10679bb4dcc245a20966bd166c2f2",
+    "mirror": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "stage": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f"
+  }
+}

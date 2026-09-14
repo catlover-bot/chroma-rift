@@ -1,0 +1,87 @@
+{
+  "startHead": "1cc74d8e5475ec517e0dabdc4a71c8b7970bff39",
+  "branch": "fix/goal-013-1-mirror-runtime-recovery",
+  "checks": {
+    "npmCheck": {
+      "passed": true,
+      "suites": 110,
+      "tests": 1142,
+      "iosModules": 1573,
+      "assets": 10
+    },
+    "doctor": {
+      "passed": true,
+      "checks": 21
+    },
+    "npmLsDepth0": {
+      "passed": true
+    },
+    "expoInstallCheck": {
+      "passed": true,
+      "message": "Dependencies are up to date"
+    },
+    "npmAudit": {
+      "exitCode": 1,
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 11,
+        "high": 0,
+        "critical": 0,
+        "total": 11
+      },
+      "packages": [
+        "@expo/cli",
+        "@expo/config",
+        "@expo/config-plugins",
+        "@expo/inline-modules",
+        "@expo/local-build-cache-provider",
+        "@expo/metro-config",
+        "@expo/prebuild-config",
+        "expo",
+        "expo-splash-screen",
+        "uuid",
+        "xcode"
+      ]
+    },
+    "runtimeCycles": {
+      "platforms": [
+        "ios",
+        "android",
+        "neutral"
+      ],
+      "productionModules": 227,
+      "runtimeEdges": 697,
+      "cycles": 0
+    },
+    "releaseExport": {
+      "sources": 1580,
+      "assets": 10,
+      "fiveAreas": true,
+      "developmentSourcesAbsent": true,
+      "firstPartySources": 201,
+      "allFirstPartyMatch": true,
+      "bundleSha256": "8a79f8a409fdc3d917d8746a5d60040f7777e5e239eb110533cd8d2a81a59b2a",
+      "threeSources": 1,
+      "threeEdges": 23,
+      "threeClassIdentity": true
+    },
+    "devMetro": {
+      "registeredModules": 1721,
+      "firstPartySources": 221,
+      "allFirstPartyMatch": true,
+      "entryOrders": 6,
+      "warnings": 0,
+      "firstPartyCycles": 0
+    }
+  },
+  "protectedFileSha256": {
+    "package.json": "46a63a65ce15b6143cc65b8bc66cb55b7803049db16de6a0e9eaca9ad8e29c7a",
+    "package-lock.json": "75af020d9b5ea67905506d0a45acee6deb17705adc7cc9f836059314330780df",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "eas.json": "7e16cd811f8c743ef6622c0245f97544c7ebb27a4cf70152e0875f1a7acaad86",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  },
+  "scope": "Local Node/Jest/Metro/Software WebGL only; no iPhone EXGL, binary contents, native presentation, or device acceptance."
+}
