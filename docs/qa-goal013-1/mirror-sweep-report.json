@@ -1,0 +1,52 @@
+{
+  "scope": "Serialized actual mirror StageScene and actual planarMirror.ts in Chromium SwiftShader; authored camera grid around practice/winch/mirror, not controller route, native EXGL or iPhone.",
+  "grid": {
+    "xs": [
+      -3.2,
+      -2.8,
+      -2.65,
+      -2.58,
+      -2.45,
+      -1.8
+    ],
+    "zs": [
+      7.5,
+      10,
+      11.3,
+      11.4,
+      11.5,
+      13
+    ],
+    "yawOffsets": [
+      -1.2,
+      -0.3,
+      0,
+      0.3,
+      1.2
+    ],
+    "pitches": [
+      -0.2,
+      0,
+      0.2
+    ]
+  },
+  "total": {
+    "samples": 540,
+    "visible": 432,
+    "reflected": 204,
+    "backing": 336,
+    "fboIncomplete": 0,
+    "nonfinite": 0,
+    "maxCalls": 54,
+    "glErrors": [],
+    "exceptions": []
+  },
+  "browserErrors": [],
+  "toolSha256": "69bc4cfe28dc872112d83f7bdf9feecb049d22428ba2c55b5e6387d9cf034ec3",
+  "naturalReportSha256": "acb6ff96a14ced768967d303ad7b363ffb12b3b0ea3a1dd76093cf18ba8a9e9f",
+  "sourceHashes": {
+    "scene": "6ed5d79450c1f63d97d09c361cfcd0f0264e8383174921db4d3de380c0742dfb",
+    "mirror": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "stage": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f"
+  }
+}

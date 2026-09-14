@@ -4,6 +4,8 @@
 
 画像と動画はChromium SwiftShaderであり、native EXGL、iPhoneの画面提示、FPS、音、実指、VoiceOverを検証しない。ユーザーの録画はローカルに見つからず、このフォルダーには入れていない。最初の端末例外も未取得。
 
+`mirror-sweep-report.json` は `node scripts/qa-mirror-sweep.cjs` による作者指定540視点のSoftware WebGL走査。`qa-mirror-natural.cjs` で現行StageSceneを書き出した後に実行する。練習・巻き上げ・鏡面付近の視点格子で反射、背面材、FBO、投影行列、GL errorを数える。座標は本編controllerが歩いた経路ではなく、実機の08:26を再現したとは扱わない。
+
 `area03-to-04.mp4` と `area04-to-05.mp4` は一つの実App hostで01→05を通した保存済みruntimeを、実ChapterSceneへ5fpsで再描画した148秒の内部動画から、それぞれ30 frame／6秒を切り出した。元経路は8,794 simulation tick、App側のCanvas mock同時owner最大1、04の鍵・歯止め・出口と05の隔離・停止・屋外まで順序検査済み。`app-replay-summary.json` にframe範囲、hash、経路、Software WebGL計測を記す。これはApp native Canvasの直接録画ではなく、QA字幕が製品HUDの代わりに表示される。
 
 `local-checks.json` は今回の全体チェック、Doctor、依存監査、実Metro/Three、循環と保護ファイルの小さい索引。npm auditのmoderate 11件は失敗を隠さずexit code 1として記録した。
