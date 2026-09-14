@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import { getWorld } from '../../../domain/firstPerson/chapter';
 import { createInitialRuntime } from '../../../domain/firstPerson/runtime';
+import * as appBuild from '../../../platform/buildIdentity';
 import { createFirstPersonDiagnostics, installShaderDiagnostics, recordDiagnosticError, recordFailureFrameContext, recordFirstFailure, sampleGlDiagnostics, sampleRendererDiagnostics, serializeDiagnostics, serializeFailureDiagnostics, snapshotDiagnostics } from '../diagnostics';
 import { PROOF_CAMERA, PROOF_OBJECTS } from '../ProofScene';
 
@@ -22,6 +23,23 @@ function proofFixture() {
   return { scene, camera, renderer };
 }
 describe('bounded local diagnostic record (CPU/contract evidence only)', () => {
+  it.each(['pending', 'failure'] as const)('includes versioned build identity in %s diagnostic copies (TEST/FIXTURE)', (kind) => {
+    const fixture: ReturnType<typeof appBuild.buildIdentity> = { code: appBuild.DIAGNOSTIC_REVISION,
+      appVersion: 'TEST/FIXTURE version', nativeBuild: 'TEST/FIXTURE native build',
+      profileMarker: 'preview', bundleSource: 'release-js' };
+    const identity = jest.spyOn(appBuild, 'buildIdentity').mockReturnValue(fixture);
+    try {
+      const record = createFirstPersonDiagnostics();
+      if (kind === 'failure') recordFirstFailure(record, new Error('TEST/FIXTURE initial render failure'), 'render', 'MAIN_RENDER');
+      const text = kind === 'pending' ? serializeDiagnostics(record) : serializeFailureDiagnostics(record, {
+        chapterId: 'mirror-corridor-v1', runtimeSession: 12, attempt: 0, restoreOrigin: 'checkpoint', revision: 3,
+        pose: { position: { x: 0, y: 1.6, z: 0 }, yaw: 0, pitch: 0 },
+      });
+      expect(JSON.parse(text)).toMatchObject({ schemaVersion: 1, revision: appBuild.DIAGNOSTIC_REVISION,
+        app: { version: fixture.appVersion, build: fixture.nativeBuild, profileMarker: 'preview',
+          bundleSource: 'release-js', code: appBuild.DIAGNOSTIC_REVISION } });
+    } finally { identity.mockRestore(); }
+  });
   it('separates simulation, actual render and presentation counters from pixel evidence', () => {
     const record = createFirstPersonDiagnostics('proof');
     const next = createFirstPersonDiagnostics('proof');

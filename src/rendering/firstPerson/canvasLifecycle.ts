@@ -1,7 +1,7 @@
 import type { RootState } from '@react-three/fiber/native';
 import type * as THREE from 'three';
 
-import { recordDiagnosticEvent, recordFirstFailure } from './diagnostics';
+import { recordDiagnosticEvent, recordFirstFailure, sampleStartupTiming } from './diagnostics';
 import { commandController, retireController } from './runtimeController';
 import type { RuntimeController } from './controllerTypes';
 
@@ -82,9 +82,9 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
           diagnostics.renderReturns < 1 || diagnostics.presentationReturns < 1) return false;
       ready = true;
       diagnostics.stage = 'ready';
+      sampleStartupTiming(diagnostics);
+      diagnostics.startupActiveSinceMs = null;
       diagnostics.readyAtMs = Math.max(0, Date.now() - diagnostics.startedAtMs);
-      if (typeof diagnostics.startupTimeoutMs === 'number')
-        diagnostics.startupRemainingMs = Math.max(0, diagnostics.startupTimeoutMs - diagnostics.readyAtMs);
       recordDiagnosticEvent(diagnostics, 'ready');
       return true;
     },

@@ -9,6 +9,7 @@ import type { AudioBackend, AudioPlayerPort, AudioSourceId } from '../../audio/t
 import { createCheckpoint, createInitialRuntime, VERTICAL_FOV, type InteractableId } from '../../domain/firstPerson';
 import { createContourSpec, createGalleryRuntime, createShadowSpec, fixtureForPuzzle, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_FINAL_CHECKPOINT, GALLERY_SAFE_RETREATS, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_WIRING_OBSERVATION_POSE, getWiringSpec, initialWiring, migrateGalleryV2Checkpoint, migrateGalleryV1Checkpoint, normalizeAngle, SAMPLE_IDS, SHADOW_SLOT_POSITIONS, type GalleryDevice, type Point2, type SampleId, type ShadowSlotId } from '../../domain/gallery';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
+import * as appBuild from '../../platform/buildIdentity';
 import { recordFirstFailure } from '../../rendering/firstPerson/diagnostics';
 import { advanceController, commandController, controllerSnapshot, flushControllerAudioFrame, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
@@ -302,6 +303,35 @@ it('retires manipulation and readiness callbacks across renderer retry and unmou
   expect(fresh.controller.retired).toBe(true); expect(original.onCheckpoint).not.toHaveBeenCalled();
 });
 
+it('shows and copies versioned build identity during preview preparation without a GL frame (TEST/FIXTURE)', async () => {
+  const env = globalThis as typeof globalThis & { __DEV__: boolean };
+  const previousDev = env.__DEV__, previousProfile = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
+  const fixture: ReturnType<typeof appBuild.buildIdentity> = { code: appBuild.DIAGNOSTIC_REVISION,
+    appVersion: 'TEST/FIXTURE version', nativeBuild: 'TEST/FIXTURE native build',
+    profileMarker: 'preview', bundleSource: 'release-js' };
+  jest.spyOn(appBuild, 'buildIdentity').mockReturnValue(fixture);
+  env.__DEV__ = false;
+  process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = 'preview';
+  mockSubmittedFrame = false;
+  const view = await render(<FirstPersonScreen {...screenProps('shadow')} />);
+  try {
+    expect(view.getByText('部屋の描画を準備しています…')).toBeTruthy();
+    expect(scene().controller.diagnostics).toMatchObject({ stage: 'initializing', contextCreates: 0, readyAtMs: null, firstFailure: null });
+    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    const expected = { schemaVersion: 1, stage: 'initializing', contextCreates: 0, firstFailure: null,
+      app: { version: fixture.appVersion, build: fixture.nativeBuild, profileMarker: 'preview',
+        bundleSource: 'release-js', code: appBuild.DIAGNOSTIC_REVISION } };
+    expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toMatchObject(expected);
+    expect(view.getByTestId('render-diagnostic-record').props.selectable).toBe(true);
+    await fireEvent.press(view.getByRole('button', { name: '診断をコピー' }));
+    expect(JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0])).toMatchObject(expected);
+  } finally {
+    await view.unmount(); env.__DEV__ = previousDev;
+    if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
+    else process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = previousProfile;
+  }
+});
+
 it('shows and copies the first raw failure in an internal preview-style build', async () => {
   const env = globalThis as typeof globalThis & { __DEV__: boolean };
   const previousDev = env.__DEV__;
@@ -318,6 +348,8 @@ it('shows and copies the first raw failure in an internal preview-style build', 
     await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
     const record = view.getByTestId('render-diagnostic-record').props.children as string;
     expect(record).toContain('FIRST_FAILURE'); expect(record).toContain('SCENE_FRAME');
+    expect(JSON.parse(record)).toMatchObject({ schemaVersion: 1,
+      app: { code: appBuild.DIAGNOSTIC_REVISION, profileMarker: 'preview', bundleSource: 'release-js' } });
     expect(record).toContain('original mirror frame exception');
     await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
     expect(Clipboard.setStringAsync).toHaveBeenCalledWith(expect.stringContaining('FIRST_FAILURE'));

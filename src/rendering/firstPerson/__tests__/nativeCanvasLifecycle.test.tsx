@@ -21,6 +21,7 @@ import { FirstPersonScreen } from '../../../screens/FirstPersonScreen';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../../types/application';
 import { ChapterScene } from '../ChapterScene';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../FirstPersonCanvas';
+import { snapshotDiagnostics } from '../diagnostics';
 import { createSceneResources } from '../resources';
 import { MIRROR_TARGET_SIZE } from '../planarMirror';
 import { stageModule } from '../../../domain/stageKit/modules';
@@ -936,12 +937,18 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
   it('reports a native context that never arrives as one controlled failure', async () => {
     const current = props();
     const view = await render(<FirstPersonCanvas {...current} />);
-    await act(async () => { await jest.advanceTimersByTimeAsync(12000); });
+    await act(async () => { await jest.advanceTimersByTimeAsync(4000); });
+    expect(snapshotDiagnostics(current.controller.diagnostics).startupRemainingMs).toBe(8000);
+    await act(async () => { await jest.advanceTimersByTimeAsync(8000); });
     expect(current.onReady).not.toHaveBeenCalled();
     expect(current.onError).toHaveBeenCalledTimes(1);
     expect(current.controller.runtime.paused).toBe(true);
+    expect(current.controller.diagnostics.firstFailure).toMatchObject({
+      reasonCode: 'STARTUP_TIMEOUT', startupTimeoutMs: 12000, startupRemainingMs: 0, readyAtMs: null,
+    });
     await act(async () => { await jest.advanceTimersByTimeAsync(12000); });
     expect(current.onError).toHaveBeenCalledTimes(1);
+    expect(current.controller.diagnostics.firstFailure?.startupRemainingMs).toBe(0);
     expect(diagnostics.mock.calls.some(([label, error]) => String(label).includes('initialization timeout') && error instanceof Error)).toBe(true);
     await view.unmount();
   });
@@ -1076,9 +1083,11 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     expect(current.onReady).toHaveBeenCalledTimes(1);
     expect(current.controller.diagnostics.readiness).toMatchObject({ sampled: true, valid: true });
     expect(current.controller.diagnostics.readyAtMs).not.toBeNull();
+    expect(current.controller.diagnostics.startupRemainingMs).toBe(100);
     expect(current.controller.runtime.paused).toBe(false);
     await act(async () => { await jest.advanceTimersByTimeAsync(1000); });
     expect(current.onError).not.toHaveBeenCalled();
+    expect(snapshotDiagnostics(current.controller.diagnostics).startupRemainingMs).toBe(100);
     await view.unmount();
   });
 
@@ -1087,12 +1096,14 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     renderer.draw.mockImplementation(() => { throw original; });
     const current = props();
     const view = await render(<FirstPersonCanvas {...current} />);
+    await act(async () => { await jest.advanceTimersByTimeAsync(350); });
     await createNativeContext(view);
     await submitFrame(renderer);
     expect(current.onReady).not.toHaveBeenCalled();
     expect(current.onError).toHaveBeenCalledTimes(1);
     expect(deviceContext.endFrameEXP).not.toHaveBeenCalled();
     expect(current.controller.diagnostics).toMatchObject({ renderCalls: 1, renderReturns: 0, presentationReturns: 0, lastError: { phase: 'render', message: original.message } });
+    expect(current.controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'MAIN_RENDER', startupRemainingMs: 11650 });
     expect(diagnostics.mock.calls.some(([label, error]) => String(label).includes(': render') && error === original)).toBe(true);
     await view.unmount();
   });
@@ -1300,7 +1311,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(targetDisposed).toHaveBeenCalledTimes(1);
       await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
       const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
-      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r6',
+      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r7',
         chapterId: 'mirror-corridor-v1', attempt: 0, restoreOrigin: 'checkpoint',
         poseSource: 'failed-unpresented-frame',
         firstFailure: { reasonCode: 'NATIVE_PRESENTATION', stageBeforeFailure: 'ready',

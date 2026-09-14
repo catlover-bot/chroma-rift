@@ -27,6 +27,7 @@ export type FirstPersonDiagnostics = {
   contextCreates: number; rendererCreates: number; rendererOwnership: 'unknown' | 'live' | 'teardown-only' | 'closed';
   activeRendererOwners: number; startedAtMs: number; frameSequence: number; lastMainRenderFrame: number; lastPresentationFrame: number; lastOffscreenFrame: number;
   startupTimeoutMs: number | 'unknown'; startupRemainingMs: number | 'unknown'; readyAtMs: number | null;
+  startupActiveSinceMs: number | null;
   readiness: null | { frame: number; sampled: boolean; layout: boolean; drawingBuffer: boolean; camera: boolean; viewport: boolean;
     sceneDensity: boolean; frustum: boolean; draw: boolean; target: boolean; pose: boolean; shader: boolean; valid: boolean };
   events: { atMs: number; frame: number; event: string }[];
@@ -60,7 +61,7 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
     nativeGL: 'unknown', appActive: 'unknown', paused: false, rnLayout: 'unknown', drawingBuffer: 'unknown', pixelRatio: 'unknown',
     contextCreates: 0, rendererCreates: 0, rendererOwnership: 'unknown', activeRendererOwners: 0,
     startedAtMs: Date.now(), frameSequence: 0, lastMainRenderFrame: 0, lastPresentationFrame: 0, lastOffscreenFrame: 0,
-    startupTimeoutMs: 'unknown', startupRemainingMs: 'unknown', readyAtMs: null, readiness: null, events: [], sceneCommitted: false,
+    startupTimeoutMs: 'unknown', startupRemainingMs: 'unknown', readyAtMs: null, startupActiveSinceMs: null, readiness: null, events: [], sceneCommitted: false,
     frameCallbacks: 0, simulationTicks: 0, renderCalls: 0, renderReturns: 0, presentationReturns: 0, sceneSampleRenderReturn: 0,
     offscreenPasses: 0, frameOffscreenPasses: 0, offscreenTargetSize: 'unknown', offscreenTargetConfig: 'unknown', offscreenFramebufferStatus: 'unknown', camera: 'unknown',
     pose: { insideSolid: 'unknown', supportedFloor: 'unknown', safe: 'unknown' },
@@ -100,6 +101,8 @@ export function recordDiagnosticEvent(record: FirstPersonDiagnostics, event: str
 }
 export function recordFirstFailure(record: FirstPersonDiagnostics, error: unknown, phase: string, reasonCode: string, componentStack?: string | null): void {
   if (record.firstFailure) return;
+  sampleStartupTiming(record);
+  record.startupActiveSinceMs = null;
   recordDiagnosticError(record, error, phase, componentStack);
   const atMs = Date.now();
   record.firstFailure = { reasonCode, stageBeforeFailure: record.stage, atMs, elapsedMs: Math.max(0, atMs - record.startedAtMs),
@@ -119,10 +122,20 @@ export function recordFailureFrameContext(record: FirstPersonDiagnostics, pose: 
 export function snapshotDiagnostics(record: FirstPersonDiagnostics): FirstPersonDiagnostics {
   // No renderer references or callbacks enter the record; copies cannot mutate
   // the live counters. Consumers refresh at most twice per second while open.
-  return JSON.parse(JSON.stringify(record)) as FirstPersonDiagnostics;
+  const snapshot = JSON.parse(JSON.stringify(record)) as FirstPersonDiagnostics;
+  sampleStartupTiming(snapshot);
+  return snapshot;
+}
+// Keep preparation and failure copies identifiable without a native GL frame.
+// The serialized schema version is independent of the code revision marker.
+function diagnosticHeader() {
+  const identity = buildIdentity();
+  return { schemaVersion: 1,
+    app: { version: identity.appVersion, build: identity.nativeBuild, profileMarker: identity.profileMarker,
+      bundleSource: identity.bundleSource, code: identity.code } };
 }
 export function serializeDiagnostics(record: FirstPersonDiagnostics): string {
-  return JSON.stringify(snapshotDiagnostics(record), null, 2);
+  return JSON.stringify({ ...diagnosticHeader(), ...snapshotDiagnostics(record) }, null, 2);
 }
 /** Only this bounded, redacted failure summary is exposed in internal preview.
  * Build/channel are unknown until a native build explicitly supplies them. */
@@ -130,10 +143,7 @@ export function serializeFailureDiagnostics(record: FirstPersonDiagnostics, cont
   runtimeSession: number; attempt: number; restoreOrigin: 'fresh' | 'checkpoint' | 'retry'; pose: PlayerPose; revision: number }): string {
   const safe = snapshotDiagnostics(record);
   const pose = safe.failureFrameContext?.pose ?? context.pose;
-  const identity = buildIdentity();
-  return JSON.stringify({ label: 'FIRST_FAILURE', revision: safe.revision,
-    app: { version: identity.appVersion, build: identity.nativeBuild, profileMarker: identity.profileMarker,
-      bundleSource: identity.bundleSource, code: identity.code },
+  return JSON.stringify({ label: 'FIRST_FAILURE', ...diagnosticHeader(), revision: safe.revision,
     campaignId: context.campaignId ?? 'unknown', areaId: context.areaId ?? 'unknown', chapterId: boundedDiagnosticText(context.chapterId, 80),
     diagnosticSession: safe.session, runtimeSession: context.runtimeSession, attempt: context.attempt,
     restoreOrigin: context.restoreOrigin, stateRevision: safe.failureFrameContext?.revision ?? context.revision,
@@ -169,9 +179,19 @@ export function updateStageKitDiagnostics(record: FirstPersonDiagnostics, contro
     ownedResources:{geometries:record.scene.geometries,materials:record.scene.materials,textures:record.scene.textures}};
 }
 export function updateDiagnosticEnvironment(record: FirstPersonDiagnostics, value: Partial<Pick<FirstPersonDiagnostics, 'sceneMode' | 'appActive' | 'paused' | 'nativeGL'>>): void { Object.assign(record, value); }
-export function recordStartupTiming(record: FirstPersonDiagnostics, timeoutMs: number, remainingMs: number): void {
+export function recordStartupTiming(record: FirstPersonDiagnostics, timeoutMs: number, remainingMs: number, activeSinceMs: number | null = null): void {
+  if (record.firstFailure || record.readyAtMs !== null) return;
   record.startupTimeoutMs = timeoutMs;
-  if (record.readyAtMs === null) record.startupRemainingMs = remainingMs;
+  record.startupRemainingMs = remainingMs;
+  record.startupActiveSinceMs = activeSinceMs;
+}
+/** Sample the same active segment used by the Canvas timer. Wall time since
+ * controller creation includes pause/background and is not its timeout budget. */
+export function sampleStartupTiming(record: FirstPersonDiagnostics): void {
+  if (record.firstFailure || record.readyAtMs !== null || record.startupActiveSinceMs === null || typeof record.startupRemainingMs !== 'number') return;
+  const now = Date.now();
+  record.startupRemainingMs = Math.max(0, record.startupRemainingMs - Math.max(0, now - record.startupActiveSinceMs));
+  record.startupActiveSinceMs = now;
 }
 export function recordCanvasLayout(record: FirstPersonDiagnostics, width: number, height: number): void {
   record.rnLayout = { width: Number.isFinite(width) ? width : 0, height: Number.isFinite(height) ? height : 0 };

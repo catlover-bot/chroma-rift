@@ -74,8 +74,8 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   useEffect(() => { resources?.updatePalette(props.preferredColor, props.neutralColors, props.effectStrength); }, [props.effectStrength, props.neutralColors, props.preferredColor, resources]);
   useEffect(() => {
     if (props.paused || !appActive || lifecycle.ready || !lifecycle.active) return;
-    recordStartupTiming(controller.diagnostics, props.startupTimeoutMs ?? 12000, remainingStartup.current);
     const start = Date.now();
+    recordStartupTiming(controller.diagnostics, props.startupTimeoutMs ?? 12000, remainingStartup.current, start);
     const timer = setTimeout(() => {
       if (!lifecycle.ready) lifecycle.fail(new Error('No valid completed native frame before the active startup deadline'), 'initialization timeout');
     }, remainingStartup.current);
