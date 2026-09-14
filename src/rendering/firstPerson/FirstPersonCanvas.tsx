@@ -10,7 +10,7 @@ import { CanvasFailureBoundary } from './CanvasFailureBoundary';
 import { createCanvasLifecycle, type CanvasLifecycle } from './canvasLifecycle';
 import { NotebookMaskScene } from './NotebookMaskScene';
 import { ChapterScene } from './ChapterScene';
-import { recordCanvasLayout, updateDiagnosticEnvironment } from './diagnostics';
+import { recordCanvasLayout, recordStartupTiming, updateDiagnosticEnvironment } from './diagnostics';
 import { createNativeSceneSession, type NativeSceneSession } from './nativeSceneSession';
 import { PROOF_CAMERA, ProofScene } from './ProofScene';
 import { createSceneResources } from './resources';
@@ -52,10 +52,11 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   const options = useMemo(() => proof ? PROOF_CAMERA : { fov: VERTICAL_FOV, near: CAMERA_NEAR, far: CAMERA_FAR }, [proof]);
 
   useLayoutEffect(() => {
+    recordStartupTiming(controller.diagnostics, props.startupTimeoutMs ?? 12000, remainingStartup.current);
     updateDiagnosticEnvironment(controller.diagnostics, { sceneMode: proof ? 'proof' : controller.lab ? 'lab' : 'chapter',
       appActive, paused: props.paused, nativeGL: hasNative3D() });
     if (props.paused || !appActive) stopController(controller);
-  }, [controller, appActive, props.paused, proof]);
+  }, [controller, appActive, props.paused, proof, props.startupTimeoutMs]);
   useEffect(() => () => resources?.dispose(), [resources]);
   useEffect(() => () => session.close(), [session]);
   useLayoutEffect(() => {
@@ -73,6 +74,7 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
   useEffect(() => { resources?.updatePalette(props.preferredColor, props.neutralColors, props.effectStrength); }, [props.effectStrength, props.neutralColors, props.preferredColor, resources]);
   useEffect(() => {
     if (props.paused || !appActive || lifecycle.ready || !lifecycle.active) return;
+    recordStartupTiming(controller.diagnostics, props.startupTimeoutMs ?? 12000, remainingStartup.current);
     const start = Date.now();
     const timer = setTimeout(() => {
       if (!lifecycle.ready) lifecycle.fail(new Error('No valid completed native frame before the active startup deadline'), 'initialization timeout');
@@ -80,8 +82,9 @@ export function FirstPersonCanvas(props: FirstPersonCanvasProps) {
     return () => {
       clearTimeout(timer);
       remainingStartup.current = Math.max(0, remainingStartup.current - (Date.now() - start));
+      if (!lifecycle.ready) recordStartupTiming(controller.diagnostics, props.startupTimeoutMs ?? 12000, remainingStartup.current);
     };
-  }, [lifecycle, props.paused, appActive]);
+  }, [lifecycle, props.paused, appActive, controller, props.startupTimeoutMs]);
 
   return <View style={StyleSheet.absoluteFill} pointerEvents="none" testID="first-person-native-canvas"
     onLayout={(event) => recordCanvasLayout(controller.diagnostics, event.nativeEvent.layout.width, event.nativeEvent.layout.height)}>

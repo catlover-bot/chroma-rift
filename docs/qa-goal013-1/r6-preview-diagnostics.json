@@ -1,0 +1,60 @@
+{
+  "label": "LOCAL_QA_NOT_DEVICE_EVIDENCE",
+  "date": "2026-09-15",
+  "startHead": "ff4509414758a45b5b7118e98cb3cfb97f732206",
+  "diagnosticRevision": "goal-013-1-mirror-runtime-r6",
+  "newVideo": {
+    "name": "ScreenRecording_09-15-2026 02-36-21_1.mp4",
+    "observation": "area-04 error at approximately 04:12 after area-04 appeared at 04:00",
+    "r5InstalledDuringRecording": "unknown",
+    "firstFailure": "not captured",
+    "easBuildIdReportedByUser": "89bd24f7-0be9-4fd7-82c8-414b0937813f",
+    "videoMatchesReportedBuild": "unknown"
+  },
+  "previewReleaseExport": {
+    "profileEnv": "EXPO_PUBLIC_CHROMA_BUILD_PROFILE=preview",
+    "cleanMetroCache": true,
+    "platform": "ios",
+    "modules": 1575,
+    "assets": 10,
+    "hermesSha256": "3e395acf59c81fc85243a705b72e8f6105bf8708f49b5dc572582613d17dc78f",
+    "r6MarkerPresent": true,
+    "r5MarkerPresent": false,
+    "mappedJavaScriptSha256": "6ad4dca4f1890171fa00a825192bd69cdf5e91b271860963e424a480eb7dbc7a",
+    "mappedFirstPartySources": 203,
+    "allMappedFirstPartySourcesMatchWorktree": true,
+    "sourceManifestSha256": "e30e654a154ce622fc7c6addaec07a0a2793a537a95721f0cbef858d1b6f9894",
+    "sourceManifestAlgorithm": "SHA256 of compact JSON array of [relative source path, SHA256 of source text], sorted by path, for all first-party App/index/src sources in the exported source map",
+    "profileMarkerInJavaScript": "preview",
+    "internalDiagnosticsEnabledInJavaScript": true
+  },
+  "productionControlExport": {
+    "profileEnv": "EXPO_PUBLIC_CHROMA_BUILD_PROFILE=production",
+    "cleanMetroCache": true,
+    "javascriptSha256": "b2ebd75fd16a6dc8f2a61ebc65956972a727decd735eb736a06481ee10fc1587",
+    "profileMarkerInJavaScript": "production",
+    "internalDiagnosticsEnabledInJavaScript": false,
+    "note": "An initial export without --clear reused preview's transformed environment value. Only the clean-cache control export is counted."
+  },
+  "selectedInputSha256": {
+    "src/platform/buildIdentity.ts": "fc01fd9c7d136cf16fdf83415cdb63be837d61137326857b68cca0dff80dc621",
+    "src/screens/FirstPersonScreen.tsx": "66e772222181f101ed4e70044508932b4d3e3c3b22f581d5328b425c7192e120",
+    "src/screens/ChapterOneHomeScreen.tsx": "b003772a195341544f0fd23939a4be8eaa8814a2aab68791a7260b43f246cbcc",
+    "src/rendering/firstPerson/diagnostics.ts": "ab06d8e7dacc96d774b5e74466f3d881ab59e6cfb13e897330eac0c697fcce8e",
+    "src/rendering/firstPerson/nativeSceneSession.ts": "f6a0e069fc1d611d4f552084d6854745452f573cfc22e5b969d2200b4bf2e117",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037"
+  },
+  "checks": {
+    "npmRunCheck": "pass: lint, typecheck, 110 suites, 1152 tests, iOS export",
+    "previewErrorAccessibilitySimulation": "320x568pt, fontScale 2, screen reader enabled; detail and selectable text accessible in React Native test tree, not physical iPhone layout",
+    "expoDoctor": "21/21 pass",
+    "expoInstallCheck": "pass",
+    "npmAudit": { "moderate": 11, "high": 0, "critical": 0 },
+    "runtimeCycles": "ios/android/neutral: 229 production modules, 703 edges, zero cycles or errors each",
+    "threeBundle": "one three.cjs source, 23 app/R3F edges, same class identity"
+  },
+  "deviceAcceptance": "PENDING",
+  "releaseReady": false
+}

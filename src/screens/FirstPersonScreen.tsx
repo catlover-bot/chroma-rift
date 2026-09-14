@@ -22,7 +22,9 @@ import { GLYPH_LABELS, PALETTE_IDS, PALETTE_LABELS, sealDescription } from '../d
 import { ActionButton, Body, ChoiceRow, Heading, SettingSwitch } from '../components/Layout';
 import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage, type InteractableId } from '../domain/firstPerson';
 import { playSelectionHaptic } from '../platform/haptics';
+import { buildIdentity, internalDiagnosticsEnabled } from '../platform/buildIdentity';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
+import { rememberFailureSnapshot } from '../rendering/firstPerson/failureLedger';
 import { serializeDiagnostics, serializeFailureDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
 import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, beginStageHoldController, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, endStageHoldController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
@@ -81,7 +83,10 @@ export function FirstPersonScreen(props: FirstPersonScreenProps) {
   const [session, setSession] = useState(() => ({ checkpoint: props.checkpoint, attempt: 0, mode: 'chapter' as RecoveryScene }));
   const [neutralColors, setNeutralColors] = useState(false);
   const [firstFailureText, setFirstFailureText] = useState<string>();
-  const rememberFirstFailure = useCallback((record: string) => setFirstFailureText(previous => previous ?? record), []);
+  const rememberFirstFailure = useCallback((record: string) => {
+    rememberFailureSnapshot(record);
+    setFirstFailureText(previous => previous ?? record);
+  }, []);
   const clearRecoveredFailure = useCallback(() => setFirstFailureText(undefined), []);
   return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors}
     firstFailureText={firstFailureText} onFirstFailure={rememberFirstFailure} onRecoveryReady={clearRecoveredFailure}
@@ -279,7 +284,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     setReady(false);
     // The next retry mounts a new controller. Keep the original attempt's
     // bounded record in this screen owner, without making diagnostics fatal.
-    try { onFirstFailure(serializeCurrentFailure()); } catch { /* keep the recovery screen available */ }
+    try { onFirstFailure(serializeCurrentFailure()); }
+    catch { try { onFirstFailure(JSON.stringify({ label: 'FIRST_FAILURE', revision: controller.diagnostics.revision,
+      reasonCode: controller.diagnostics.firstFailure?.reasonCode ?? 'UNKNOWN', error: 'diagnostic-unavailable' })); }
+      catch { /* keep the recovery screen available */ } }
     setError(message);
   }, [controller, onFirstFailure, serializeCurrentFailure]);
   const canvasReady = useCallback(() => {
@@ -472,7 +480,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       if (mounted.current) setCopyStatus('診断をコピーしました。外部へ送信していません。');
     } catch { if (mounted.current) setCopyStatus('コピーできませんでした。診断はこの画面で確認できます。'); }
   };
-  const diagnostics = (__DEV__ || !!error) ? <Modal visible={showDiagnostics && (!pauseForCampaignSave || !!error)} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
+  const detailedDiagnostics = internalDiagnosticsEnabled();
+  const identity = buildIdentity();
+  const diagnostics = detailedDiagnostics ? <Modal visible={showDiagnostics && (!pauseForCampaignSave || !!error)} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
     <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
       <Heading>描画の診断</Heading>
       <ScrollView contentContainerStyle={styles.menuContent}>
@@ -489,9 +499,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   </Modal> : null;
 
   if (error) return <SafeAreaView style={styles.screen}><ScrollView contentContainerStyle={styles.errorCard} accessibilityElementsHidden={showDiagnostics} importantForAccessibility={showDiagnostics ? 'no-hide-descendants' : 'auto'}><Heading>3Dを表示できませんでした</Heading><Body>{error}</Body>
+    <Text selectable style={styles.failureIdentity} testID="render-build-identity">{`コード ${identity.code} / ${identity.profileMarker} / iOS build ${identity.nativeBuild}`}</Text>
+    {detailedDiagnostics ? <ActionButton label="詳細を表示" onPress={() => setShowDiagnostics(true)} />
+      : <Text selectable style={styles.failureIdentity}>{`エラー番号 ${controller.diagnostics.firstFailure?.reasonCode ?? 'UNKNOWN'}`}</Text>}
     <ActionButton label="表示を再試行" onPress={() => changeSession(renderMode, true)} disabled={attempt >= MAX_RENDER_RETRIES} />
-    <Body muted>{attempt >= MAX_RENDER_RETRIES ? 'この起動での再試行を終えました。診断を確認してホームへ戻れます。' : '現在位置と進行を保ったまま、描画を作り直します。'}</Body>
-    <ActionButton label="詳細を表示" onPress={() => setShowDiagnostics(true)} />
+    <Body muted>{attempt >= MAX_RENDER_RETRIES ? detailedDiagnostics ? 'この起動での再試行を終えました。診断を確認してホームへ戻れます。' : 'この起動での再試行を終えました。ホームへ戻れます。' : '現在位置と進行を保ったまま、描画を作り直します。'}</Body>
     <ActionButton label="ホームへ戻る" onPress={onExit} />
   </ScrollView>{diagnostics}</SafeAreaView>;
 
@@ -595,7 +607,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
         {intro && snapshot.tutorial.moved && !snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.look.left, width: layout.look.width, top: layout.look.top + 30 }]}><Text style={styles.tutorialText}>{lookSide}側をドラッグして見回す</Text></View> : null}
       </> : null}
       {manipulating ? <ScrollView style={[styles.bottom, { height: deviceControlsHeight, maxHeight: deviceControlsHeight }]} testID={theatre ? "theatre-device-scroll" : vault ? "vault-device-scroll" : "gallery-device-scroll"} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.deviceContent}>{deviceControls}</ScrollView> : null}
-      {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>部屋の描画を準備しています…</Text>{__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}</View> : null}
+      {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>部屋の描画を準備しています…</Text>{detailedDiagnostics ? <><Text selectable style={styles.failureIdentity}>{identity.code}</Text><ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /></> : null}</View> : null}
       {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !manipulating && !compact && !independentChapter ? <View pointerEvents="box-none" style={styles.bottom}>
         <Text style={styles.target} accessibilityLabel={`照準：${targetLabel}`}>{targetLabel}</Text>
         {manipulating ? deviceControls : <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
@@ -644,7 +656,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
             <ActionButton label="ヒント" onPress={() => openMenu('hints')} disabled={!ready || renderMode !== 'chapter'} />
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
             <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>
-            {__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}
+            {detailedDiagnostics ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}
             <ActionButton label={theatre ? 'この映写室を最初から' : vault ? 'この収蔵庫を最初から' : chapterId === CHAPTER_ID ? 'この旧章を最初から' : gallery ? 'この展示室を最初から' : `${stageDefinition(chapterId)?.title??'この章'}を最初から`} onPress={restart} />
             <ActionButton label="ホームへ戻る" onPress={leave} />
           </> : menu === 'hints' ? <>
@@ -727,7 +739,8 @@ const styles = StyleSheet.create({
   backdrop: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#080F0EE8' },
   menuCard: { maxHeight: '92%', padding: 20, gap: 14, borderRadius: 20, borderWidth: 1, borderColor: '#50635A', backgroundColor: '#172522' },
   menuContent: { gap: 14, paddingBottom: 6 },
-  errorCard: { flexGrow: 1, justifyContent: 'center', padding: 24, gap: 18 },
+  errorCard: { flexGrow: 1, padding: 24, gap: 18 },
+  failureIdentity: { color: '#D5E5D7', fontSize: 13, lineHeight: 20 },
   hudSlot: { position: 'absolute' },
   pauseButton: { flex: 1, minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: '#162723D9', borderWidth: 1, borderColor: '#8F9E94' },
   pauseSymbol: { flexDirection: 'row', gap: 5 },

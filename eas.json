@@ -5,15 +5,19 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "development" }
     },
     "preview": {
       "developmentClient": false,
-      "distribution": "internal"
+      "distribution": "internal",
+      "autoIncrement": true,
+      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "preview" }
     },
     "production": {
       "developmentClient": false,
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "production" }
     }
   }
 }

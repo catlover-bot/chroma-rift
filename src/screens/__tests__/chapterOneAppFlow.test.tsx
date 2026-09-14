@@ -31,6 +31,8 @@ import { advanceController, commandController, controllerSnapshot, interactContr
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
 import * as gateModule from '../NativeFirstPersonGate';
 import * as endingModule from '../ChapterOneEndingScreen';
+import { recentFailureSnapshots, resetFailureSnapshotsForTest } from '../../rendering/firstPerson/failureLedger';
+import { recordFirstFailure } from '../../rendering/firstPerson/diagnostics';
 
 const mockLatestCanvas: { current: FirstPersonCanvasProps | undefined } = { current: undefined };
 const mockCanvasOwners = { active: 0, peak: 0 };
@@ -57,6 +59,7 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => {
 const originalAsyncStorageWrite = jest.mocked(AsyncStorage.setItem).getMockImplementation()!;
 
 beforeEach(async () => {
+  resetFailureSnapshotsForTest();
   mockLatestCanvas.current = undefined;
   mockCanvasOwners.active = 0;
   mockCanvasOwners.peak = 0;
@@ -673,6 +676,7 @@ test('area-04 render retries and a cold home continue retain the accepted isolat
   await waitFor(async () => expect(parseMirrorCheckpoint(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).checkpoint.stageData))
     .toMatchObject({ keyTaken: true, practiced: false, ratchets: 0 }));
   const savedBeforeFailure = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+  recordFirstFailure(controller.diagnostics, new Error('TEST/FIXTURE: first native failure'), 'presentation', 'NATIVE_PRESENTATION');
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const old = mockLatestCanvas.current!;
     await act(() => old.onError('部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。'));
@@ -686,6 +690,9 @@ test('area-04 render retries and a cold home continue retain the accepted isolat
   expect(view.getByRole('button', { name: '表示を再試行' })).toBeDisabled();
   await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
   expect(mockCanvasOwners.active).toBe(0);
+  expect(recentFailureSnapshots()).toHaveLength(3);
+  await fireEvent.press(view.getByRole('button', { name: '直前の描画診断を表示' }));
+  expect(view.getByTestId('home-render-diagnostic-record').props.children).toContain('TEST/FIXTURE: first native failure');
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(savedBeforeFailure);
   await view.unmount();
   view = await render(<App/>);

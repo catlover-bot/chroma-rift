@@ -106,6 +106,8 @@ describe('bounded local diagnostic record (CPU/contract evidence only)', () => {
   });
   it('keeps the first failure and frame timeline when a later cleanup error arrives', () => {
     const record = createFirstPersonDiagnostics();
+    record.startupTimeoutMs = 12000; record.startupRemainingMs = 4200; record.readyAtMs = 2300;
+    record.appActive = true;
     record.stage = 'ready'; record.frameSequence = 91; record.lastMainRenderFrame = 90;
     record.lastPresentationFrame = 90; record.lastOffscreenFrame = 88; record.activeRendererOwners = 1;
     const first = new Error('mirror failed at /Users/private/game with token=secret');
@@ -114,11 +116,13 @@ describe('bounded local diagnostic record (CPU/contract evidence only)', () => {
     recordFirstFailure(record, new Error('secondary dispose error'), 'render', 'MAIN_RENDER');
     recordDiagnosticError(record, new Error('late timeout'), 'initialization timeout');
     expect(record.firstFailure).toMatchObject({ reasonCode: 'SCENE_FRAME', stageBeforeFailure: 'ready',
+      startupTimeoutMs: 12000, startupRemainingMs: 4200, readyAtMs: 2300, appActive: true, paused: false,
       frameSequence: 91, lastMainRenderFrame: 90, lastPresentationFrame: 90, lastOffscreenFrame: 88, activeRendererOwners: 1 });
     const text = serializeFailureDiagnostics(record, { chapterId: 'mirror-corridor-v1', campaignId: 'last-departure',
       areaId: 'chapter-1-area-04', runtimeSession: 22, attempt: 1, restoreOrigin: 'retry', revision: 4,
       pose: { position: { x: -2.45, y: 1.6, z: 7.5 }, yaw: Math.PI, pitch: 0 } });
     expect(text).toContain('FIRST_FAILURE'); expect(text).toContain('SCENE_FRAME');
+    expect(JSON.parse(text).startup).toMatchObject({ timeoutMs: 12000, remainingMs: 4200, readyAtMs: 2300, appActive: true });
     expect(text).toContain('mirror-corridor-v1'); expect(text).toContain('chapter-1-area-04');
     expect(text).not.toContain('secondary dispose error'); expect(text).not.toContain('late timeout');
     expect(text).not.toContain('/Users/private'); expect(text).not.toContain('token=secret');

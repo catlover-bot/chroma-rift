@@ -978,6 +978,9 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     expect(current.controller.diagnostics.presentationReturns).toBe(1);
     expect(current.onReady).not.toHaveBeenCalled();
     expect(current.onSnapshot).not.toHaveBeenCalled();
+    expect(current.controller.diagnostics.readiness).toMatchObject(invalid === 'zero viewport'
+      ? { sampled: true, viewport: false, valid: false }
+      : { sampled: true, camera: false, valid: false });
     await act(async () => { await jest.advanceTimersByTimeAsync(200); });
     expect(current.onError).toHaveBeenCalledTimes(1);
     expect(current.controller.runtime.paused).toBe(true);
@@ -1071,6 +1074,8 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     blockedRender.mockRestore();
     await submitFrame(renderer);
     expect(current.onReady).toHaveBeenCalledTimes(1);
+    expect(current.controller.diagnostics.readiness).toMatchObject({ sampled: true, valid: true });
+    expect(current.controller.diagnostics.readyAtMs).not.toBeNull();
     expect(current.controller.runtime.paused).toBe(false);
     await act(async () => { await jest.advanceTimersByTimeAsync(1000); });
     expect(current.onError).not.toHaveBeenCalled();
@@ -1295,7 +1300,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(targetDisposed).toHaveBeenCalledTimes(1);
       await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
       const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
-      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r5',
+      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r6',
         chapterId: 'mirror-corridor-v1', attempt: 0, restoreOrigin: 'checkpoint',
         poseSource: 'failed-unpresented-frame',
         firstFailure: { reasonCode: 'NATIVE_PRESENTATION', stageBeforeFailure: 'ready',

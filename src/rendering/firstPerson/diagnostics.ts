@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import appConfig from '../../../app.json';
+import { buildIdentity, DIAGNOSTIC_REVISION } from '../../platform/buildIdentity';
 
 import { inspectPoseSafety, isSafePose } from '../../domain/firstPerson/geometry';
 import { stageDefinition } from '../../domain/stageKit/definitions';
@@ -7,13 +7,16 @@ import { stageInputPolicy } from '../../domain/stageKit/modules';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
-export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r5';
+export { DIAGNOSTIC_REVISION } from '../../platform/buildIdentity';
+
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
 export type DiagnosticStage = 'initializing' | 'context-created' | 'renderer-created' | 'scene-committed' | 'first-submitted' | 'ready' | 'failed' | 'closed';
 export type Measurement<T> = T | 'unknown' | 'unsupported';
 export type DimensionsRecord = { width: number; height: number };
 export type DiagnosticError = { phase: string; name: string; message: string; stack: string; componentStack: string };
 export type DiagnosticFailure = { reasonCode: string; stageBeforeFailure: DiagnosticStage; atMs: number; elapsedMs: number;
+  startupTimeoutMs: number | 'unknown'; startupRemainingMs: number | 'unknown'; readyAtMs: number | null;
+  appActive: Measurement<boolean>; paused: boolean;
   frameSequence: number; lastMainRenderFrame: number; lastPresentationFrame: number; lastOffscreenFrame: number;
   renderReturns: number; presentationReturns: number; offscreenPasses: number; activeRendererOwners: number; error: DiagnosticError };
 export type ShaderDiagnostic = { program: string; vertex: string; fragment: string };
@@ -23,6 +26,9 @@ export type FirstPersonDiagnostics = {
   rnLayout: Measurement<DimensionsRecord>; drawingBuffer: Measurement<DimensionsRecord>; pixelRatio: Measurement<number>;
   contextCreates: number; rendererCreates: number; rendererOwnership: 'unknown' | 'live' | 'teardown-only' | 'closed';
   activeRendererOwners: number; startedAtMs: number; frameSequence: number; lastMainRenderFrame: number; lastPresentationFrame: number; lastOffscreenFrame: number;
+  startupTimeoutMs: number | 'unknown'; startupRemainingMs: number | 'unknown'; readyAtMs: number | null;
+  readiness: null | { frame: number; sampled: boolean; layout: boolean; drawingBuffer: boolean; camera: boolean; viewport: boolean;
+    sceneDensity: boolean; frustum: boolean; draw: boolean; target: boolean; pose: boolean; shader: boolean; valid: boolean };
   events: { atMs: number; frame: number; event: string }[];
   sceneCommitted: boolean; frameCallbacks: number; simulationTicks: number; renderCalls: number; renderReturns: number; presentationReturns: number; sceneSampleRenderReturn: number;
   offscreenPasses: number; frameOffscreenPasses: number; offscreenTargetSize: Measurement<[number, number]>;
@@ -53,7 +59,8 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
     revision: DIAGNOSTIC_REVISION, session: ++nextSession, sceneMode, stage: 'initializing', open: false,
     nativeGL: 'unknown', appActive: 'unknown', paused: false, rnLayout: 'unknown', drawingBuffer: 'unknown', pixelRatio: 'unknown',
     contextCreates: 0, rendererCreates: 0, rendererOwnership: 'unknown', activeRendererOwners: 0,
-    startedAtMs: Date.now(), frameSequence: 0, lastMainRenderFrame: 0, lastPresentationFrame: 0, lastOffscreenFrame: 0, events: [], sceneCommitted: false,
+    startedAtMs: Date.now(), frameSequence: 0, lastMainRenderFrame: 0, lastPresentationFrame: 0, lastOffscreenFrame: 0,
+    startupTimeoutMs: 'unknown', startupRemainingMs: 'unknown', readyAtMs: null, readiness: null, events: [], sceneCommitted: false,
     frameCallbacks: 0, simulationTicks: 0, renderCalls: 0, renderReturns: 0, presentationReturns: 0, sceneSampleRenderReturn: 0,
     offscreenPasses: 0, frameOffscreenPasses: 0, offscreenTargetSize: 'unknown', offscreenTargetConfig: 'unknown', offscreenFramebufferStatus: 'unknown', camera: 'unknown',
     pose: { insideSolid: 'unknown', supportedFloor: 'unknown', safe: 'unknown' },
@@ -96,6 +103,8 @@ export function recordFirstFailure(record: FirstPersonDiagnostics, error: unknow
   recordDiagnosticError(record, error, phase, componentStack);
   const atMs = Date.now();
   record.firstFailure = { reasonCode, stageBeforeFailure: record.stage, atMs, elapsedMs: Math.max(0, atMs - record.startedAtMs),
+    startupTimeoutMs: record.startupTimeoutMs, startupRemainingMs: record.startupRemainingMs, readyAtMs: record.readyAtMs,
+    appActive: record.appActive, paused: record.paused,
     frameSequence: record.frameSequence, lastMainRenderFrame: record.lastMainRenderFrame, lastPresentationFrame: record.lastPresentationFrame,
     lastOffscreenFrame: record.lastOffscreenFrame, renderReturns: record.renderReturns, presentationReturns: record.presentationReturns,
     offscreenPasses: record.offscreenPasses, activeRendererOwners: record.activeRendererOwners, error: record.lastError! };
@@ -121,14 +130,19 @@ export function serializeFailureDiagnostics(record: FirstPersonDiagnostics, cont
   runtimeSession: number; attempt: number; restoreOrigin: 'fresh' | 'checkpoint' | 'retry'; pose: PlayerPose; revision: number }): string {
   const safe = snapshotDiagnostics(record);
   const pose = safe.failureFrameContext?.pose ?? context.pose;
+  const identity = buildIdentity();
   return JSON.stringify({ label: 'FIRST_FAILURE', revision: safe.revision,
-    app: { version: appConfig.expo.version, build: 'unknown', channel: 'unknown', code: safe.revision },
+    app: { version: identity.appVersion, build: identity.nativeBuild, profileMarker: identity.profileMarker,
+      bundleSource: identity.bundleSource, code: identity.code },
     campaignId: context.campaignId ?? 'unknown', areaId: context.areaId ?? 'unknown', chapterId: boundedDiagnosticText(context.chapterId, 80),
     diagnosticSession: safe.session, runtimeSession: context.runtimeSession, attempt: context.attempt,
     restoreOrigin: context.restoreOrigin, stateRevision: safe.failureFrameContext?.revision ?? context.revision,
     poseSource: safe.failureFrameContext ? 'failed-unpresented-frame' : 'current-controller',
     pose: { x: pose.position.x, y: pose.position.y, z: pose.position.z, yaw: pose.yaw, pitch: pose.pitch },
     stage: safe.stage, firstFailure: safe.firstFailure, events: safe.events,
+    startup: { timeoutMs: safe.startupTimeoutMs, remainingMs: safe.startupRemainingMs, readyAtMs: safe.readyAtMs,
+      appActive: safe.appActive, paused: safe.paused },
+    readiness: safe.readiness,
     frames: { sequence: safe.frameSequence, mainRender: safe.lastMainRenderFrame, presentation: safe.lastPresentationFrame,
       reflection: safe.lastOffscreenFrame, renderReturns: safe.renderReturns, presentationReturns: safe.presentationReturns,
       offscreenPasses: safe.offscreenPasses },
@@ -155,6 +169,10 @@ export function updateStageKitDiagnostics(record: FirstPersonDiagnostics, contro
     ownedResources:{geometries:record.scene.geometries,materials:record.scene.materials,textures:record.scene.textures}};
 }
 export function updateDiagnosticEnvironment(record: FirstPersonDiagnostics, value: Partial<Pick<FirstPersonDiagnostics, 'sceneMode' | 'appActive' | 'paused' | 'nativeGL'>>): void { Object.assign(record, value); }
+export function recordStartupTiming(record: FirstPersonDiagnostics, timeoutMs: number, remainingMs: number): void {
+  record.startupTimeoutMs = timeoutMs;
+  if (record.readyAtMs === null) record.startupRemainingMs = remainingMs;
+}
 export function recordCanvasLayout(record: FirstPersonDiagnostics, width: number, height: number): void {
   record.rnLayout = { width: Number.isFinite(width) ? width : 0, height: Number.isFinite(height) ? height : 0 };
 }

@@ -210,14 +210,22 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
             const buffer = diagnostics.drawingBuffer;
             const cameraData = diagnostics.camera;
             const viewport = diagnostics.viewport;
-            const valid = typeof dimensions === 'object' && dimensions.width > 0 && dimensions.height > 0 &&
-              typeof buffer === 'object' && buffer.width > 0 && buffer.height > 0 &&
-              typeof cameraData === 'object' && cameraData.valid &&
-              Array.isArray(viewport) && viewport[2] > 0 && viewport[3] > 0 &&
-              diagnostics.scene.meshes >= (proof ? 3 : controller.lab ? 10 : 20) && diagnostics.scene.frustumCandidateMeshes > 0 &&
-              typeof diagnostics.lastFrame.drawCalls === 'number' && diagnostics.lastFrame.drawCalls > 0 &&
-              diagnostics.renderTarget === 'default-framebuffer' && (proof || diagnostics.pose.safe === true) &&
-              diagnostics.shaderErrors.length === 0;
+            const gates = {
+              frame: diagnostics.frameSequence, sampled: sampledFrame,
+              layout: typeof dimensions === 'object' && dimensions.width > 0 && dimensions.height > 0,
+              drawingBuffer: typeof buffer === 'object' && buffer.width > 0 && buffer.height > 0,
+              camera: typeof cameraData === 'object' && cameraData.valid,
+              viewport: Array.isArray(viewport) && viewport[2] > 0 && viewport[3] > 0,
+              sceneDensity: diagnostics.scene.meshes >= (proof ? 3 : controller.lab ? 10 : 20),
+              frustum: diagnostics.scene.frustumCandidateMeshes > 0,
+              draw: typeof diagnostics.lastFrame.drawCalls === 'number' && diagnostics.lastFrame.drawCalls > 0,
+              target: diagnostics.renderTarget === 'default-framebuffer',
+              pose: proof || diagnostics.pose.safe === true,
+              shader: diagnostics.shaderErrors.length === 0,
+            };
+            const valid = gates.sampled && gates.layout && gates.drawingBuffer && gates.camera && gates.viewport &&
+              gates.sceneDensity && gates.frustum && gates.draw && gates.target && gates.pose && gates.shader;
+            if (!lifecycle.ready && sampledFrame) diagnostics.readiness = { ...gates, valid };
             if (lifecycle.markReady(valid && sampledFrame)) onReady();
             if (lifecycle.ready && pendingPublish) {
               flushControllerAudioFrame(controller);

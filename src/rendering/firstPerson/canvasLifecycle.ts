@@ -82,6 +82,9 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
           diagnostics.renderReturns < 1 || diagnostics.presentationReturns < 1) return false;
       ready = true;
       diagnostics.stage = 'ready';
+      diagnostics.readyAtMs = Math.max(0, Date.now() - diagnostics.startedAtMs);
+      if (typeof diagnostics.startupTimeoutMs === 'number')
+        diagnostics.startupRemainingMs = Math.max(0, diagnostics.startupTimeoutMs - diagnostics.readyAtMs);
       recordDiagnosticEvent(diagnostics, 'ready');
       return true;
     },

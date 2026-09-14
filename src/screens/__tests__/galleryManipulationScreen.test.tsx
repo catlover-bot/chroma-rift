@@ -305,7 +305,11 @@ it('retires manipulation and readiness callbacks across renderer retry and unmou
 it('shows and copies the first raw failure in an internal preview-style build', async () => {
   const env = globalThis as typeof globalThis & { __DEV__: boolean };
   const previousDev = env.__DEV__;
+  const previousProfile = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
   env.__DEV__ = false;
+  process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = 'preview';
+  await act(() => Dimensions.set({ window: { width: 320, height: 568, scale: 3, fontScale: 2 }, screen: { width: 320, height: 568, scale: 3, fontScale: 2 } }));
+  jest.spyOn(AccessibilityInfo, 'isScreenReaderEnabled').mockResolvedValueOnce(true);
   const view = await render(<FirstPersonScreen {...screenProps('shadow')} />);
   try {
     const current = scene();
@@ -317,7 +321,27 @@ it('shows and copies the first raw failure in an internal preview-style build', 
     expect(record).toContain('original mirror frame exception');
     await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
     expect(Clipboard.setStringAsync).toHaveBeenCalledWith(expect.stringContaining('FIRST_FAILURE'));
-  } finally { await view.unmount(); env.__DEV__ = previousDev; }
+    jest.mocked(Clipboard.setStringAsync).mockRejectedValueOnce(new Error('TEST/FIXTURE: clipboard unavailable'));
+    await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
+    expect(view.getByText('コピーできませんでした。診断はこの画面で確認できます。')).toBeTruthy();
+    expect(view.getByTestId('render-diagnostic-record').props.selectable).toBe(true);
+  } finally { await view.unmount(); env.__DEV__ = previousDev; if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE; else process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = previousProfile; }
+});
+
+it('shows only the error number when a production Release frame fails', async () => {
+  const env = globalThis as typeof globalThis & { __DEV__: boolean };
+  const previousDev = env.__DEV__, previousProfile = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
+  env.__DEV__ = false;
+  process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = 'production';
+  const view = await render(<FirstPersonScreen {...screenProps('shadow')} />);
+  try {
+    const current = scene();
+    recordFirstFailure(current.controller.diagnostics, new Error('TEST/FIXTURE: private stack'), 'render', 'MAIN_RENDER');
+    await act(() => current.onError('部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。'));
+    expect(view.getByText('エラー番号 MAIN_RENDER')).toBeTruthy();
+    expect(view.queryByRole('button', { name: '詳細を表示' })).toBeNull();
+    expect(view.queryByText('TEST/FIXTURE: private stack')).toBeNull();
+  } finally { await view.unmount(); env.__DEV__ = previousDev; if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE; else process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = previousProfile; }
 });
 
 it('supports the same B selection and explicit commit through simple controls', async () => {
