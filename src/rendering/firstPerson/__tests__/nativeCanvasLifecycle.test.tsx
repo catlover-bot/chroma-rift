@@ -283,6 +283,33 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     } finally { await view.unmount(); }
   });
 
+  it('presents a backing surface behind the plane, then refreshes the native mirror on return', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    const front = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    controller.runtime.pose = front;
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      const surface = rendererRoot(renderer).store.getState().scene.getObjectByName('planar-mirror') as THREE.Mesh;
+      await submitFrame(renderer);
+      expect(surface.material).toBeInstanceOf(THREE.ShaderMaterial);
+      expect(controller.diagnostics.offscreenPasses).toBe(1);
+      controller.runtime.pose = { position: { x: -2.45, y: 1.6, z: 7.5 }, yaw: Math.PI, pitch: -.08 };
+      await submitFrame(renderer, 2);
+      expect(surface.material).toBeInstanceOf(THREE.MeshBasicMaterial);
+      expect(controller.diagnostics.offscreenPasses).toBe(1);
+      expect(controller.diagnostics.lastOffscreenFrame).toBe(1);
+      controller.runtime.pose = front;
+      await submitFrame(renderer, 3);
+      expect(surface.material).toBeInstanceOf(THREE.ShaderMaterial);
+      expect(controller.diagnostics.offscreenPasses).toBe(2);
+      expect(controller.diagnostics.lastOffscreenFrame).toBe(3);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(3);
+      expect(current.onError).not.toHaveBeenCalled();
+    } finally { await view.unmount(); }
+  });
+
   it('fails the mirror frame without presenting a stale main pass after offscreen draw failure', async () => {
     const controller = createController(undefined, false, true, 'mirror-corridor-v1');
     controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
