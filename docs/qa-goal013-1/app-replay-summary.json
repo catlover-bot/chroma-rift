@@ -286,7 +286,8 @@
     "src/domain/stages/mirror-corridor-v1/scene.tsx": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f",
     "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
     "App.tsx": "981cb3831964c2515fe169f9b1fe636e9347d261eb831c0877fdaf6b4223c8f4",
-    "src/screens/FirstPersonScreen.tsx": "d0fe1d95907aff43f998a5cc380f0dd47c6e427b7537fb0783fe1e793d5b8595"
+    "src/screens/FirstPersonScreen.tsx": "d0fe1d95907aff43f998a5cc380f0dd47c6e427b7537fb0783fe1e793d5b8595",
+    "src/rendering/firstPerson/diagnostics.ts": "56a28e5e4280c4549fecd8fb329525c5bd17554f67abf40c09bdaa621f90350b"
   },
   "toolHash": "a445c08b9f8d51044de3bf7c4f0091adb96fd86dd246a09547100a8f96e88529"
 }
