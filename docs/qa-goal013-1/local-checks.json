@@ -5,7 +5,7 @@
     "npmCheck": {
       "passed": true,
       "suites": 110,
-      "tests": 1150,
+      "tests": 1151,
       "iosModules": 1573,
       "assets": 10
     },

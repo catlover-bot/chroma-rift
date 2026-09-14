@@ -12,6 +12,8 @@
 
 r5のnative R3F境界テストは、成功した反射の次にoffscreen shader callbackが失敗を通知し、raw drawが通常returnする条件を注入する。修正前は失敗反射を成功として数え、修正後は最後の成功反射frameを保持して主画面提示を止める。これはdevice GLではなくmock境界の比較であり、端末録画の例外を特定した証拠ではない。
 
+同じR3F境界に実`FirstPersonScreen`のエラー画面と再試行を重ねた検査では、鍵取得・練習前の04 checkpointから正面反射を提示した後、次のnative提示だけを失敗させた。新しい画面sessionは取得済みの鍵を保持し、`KEY_SAFE`へ戻ってから鏡の反射と提示を再開した。旧targetはdisposeされ、非同期unmount後のR3F rootは一つ。これは実EXGLを持たないmock端末検査で、別のApp保存テストと合わせてもiPhoneの直接証拠にはならない。
+
 r5で自然経路、標準復帰、Appの01→05経路を再取得した。保持済みの3本の全編MP4と新しい生成物はバイト一致したため動画は追加せず、現在ソースのhash・CPU計測・540視点走査結果をJSONへ更新した。Release/開発Metroの実exportは再照合したが、native画面の新規観察ではない。
 
 4本のMP4はFFmpegで全frameをデコードしてエラー0。画像として開いたのは04自然経路の4 frame、App経路の03/04/05境界6 frame、鏡の正面・旧背面・新背面の3枚。人が4本を全編連続視聴した記録ではない。

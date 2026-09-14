@@ -25,6 +25,7 @@ import { createSceneResources } from '../resources';
 import { MIRROR_TARGET_SIZE } from '../planarMirror';
 import { stageModule } from '../../../domain/stageKit/modules';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../../domain/stages/mirror-corridor-v1/checkpoint';
+import { KEY_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
 import { carriedKeyEntry } from '../../../domain/stages/departure-control-v1/session';
 import { commandController, prepareControllerNotebook, setControllerNotebookPreview, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
 
@@ -1261,6 +1262,52 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     expect(_roots.size).toBe(rootsBefore + 1);
     await view.unmount();
+    await act(async () => { await jest.advanceTimersByTimeAsync(600); });
+    expect(_roots.size).toBe(rootsBefore);
+  });
+
+  it('rebuilds a presented mirror screen after native presentation fails and retains its saved key', async () => {
+    const mirror = stageModule('mirror-corridor-v1')!;
+    const fresh = mirror.checkpoint(mirror.create());
+    const data = parseMirrorCheckpoint(fresh.stageData)!;
+    const checkpoint = mirror.restore({ ...fresh, stageData: { ...data, keyTaken: true, pose: KEY_SAFE } })!.checkpoint;
+    const frontPose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    const rootsBefore = _roots.size;
+    const view = await render(<FirstPersonScreen chapterId="mirror-corridor-v1" settings={DEFAULT_SETTINGS}
+      controls={DEFAULT_FIRST_PERSON_CONTROLS} checkpoint={checkpoint} preferredColor="neutral"
+      onSettingsChange={jest.fn()} onControlsChange={jest.fn()} onCheckpoint={jest.fn()}
+      onComplete={jest.fn()} onRestart={jest.fn()} onExit={jest.fn()} />);
+    try {
+      await createNativeContext(view);
+      const firstRuntime = chapterScene.mock.calls.at(-1)![0].runtime.current;
+      expect(firstRuntime.stageSession?.value).toMatchObject({ keyTaken: true, practiced: false, ratchets: 0 });
+      firstRuntime.pose = frontPose;
+      await submitFrame(renderer);
+      expect(renderer.draw).toHaveBeenCalledTimes(2);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      const oldRenderer = renderer;
+      const firstTarget = renderer.setRenderTarget.mock.calls.find(([value]) => value instanceof THREE.WebGLRenderTarget)?.[0] as THREE.WebGLRenderTarget;
+      const targetDisposed = jest.fn();
+      firstTarget.addEventListener('dispose', targetDisposed);
+      deviceContext.endFrameEXP.mockImplementationOnce(() => { throw new Error('running mirror native presentation failed'); });
+      await submitFrame(renderer, 2);
+      expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
+      expect(targetDisposed).toHaveBeenCalledTimes(1);
+      renderer = fakeRenderer();
+      await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+      await createNativeContext(view);
+      const restored = chapterScene.mock.calls.at(-1)![0].runtime.current;
+      expect(restored.stageSession?.value).toMatchObject({ keyTaken: true, practiced: false, ratchets: 0 });
+      expect(restored.pose).toEqual(KEY_SAFE);
+      restored.pose = frontPose;
+      await submitFrame(renderer);
+      expect(renderer.draw).toHaveBeenCalledTimes(2);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(3);
+      expect(view.queryByText('3Dを表示できませんでした')).toBeNull();
+      expect(oldRenderer.dispose).toHaveBeenCalledTimes(1);
+      await act(async () => { await jest.advanceTimersByTimeAsync(600); });
+      expect(_roots.size).toBe(rootsBefore + 1);
+    } finally { await view.unmount(); }
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     expect(_roots.size).toBe(rootsBefore);
   });
