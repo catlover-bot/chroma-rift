@@ -503,7 +503,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     {detailedDiagnostics ? <ActionButton label="詳細を表示" onPress={() => setShowDiagnostics(true)} />
       : <Text selectable style={styles.failureIdentity}>{`エラー番号 ${controller.diagnostics.firstFailure?.reasonCode ?? 'UNKNOWN'}`}</Text>}
     <ActionButton label="表示を再試行" onPress={() => changeSession(renderMode, true)} disabled={attempt >= MAX_RENDER_RETRIES} />
-    <Body muted>{attempt >= MAX_RENDER_RETRIES ? detailedDiagnostics ? 'この起動での再試行を終えました。診断を確認してホームへ戻れます。' : 'この起動での再試行を終えました。ホームへ戻れます。' : '現在位置と進行を保ったまま、描画を作り直します。'}</Body>
+    <Body muted>{attempt >= MAX_RENDER_RETRIES ? detailedDiagnostics ? 'この起動での再試行を終えました。診断を確認してホームへ戻れます。' : 'この起動での再試行を終えました。ホームへ戻れます。' : '確定済みの進行を保ち、安全な再開位置から描画を作り直します。'}</Body>
     <ActionButton label="ホームへ戻る" onPress={onExit} />
   </ScrollView>{diagnostics}</SafeAreaView>;
 

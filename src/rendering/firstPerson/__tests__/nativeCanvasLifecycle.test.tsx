@@ -1309,6 +1309,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await submitFrame(renderer, 2);
       expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
       expect(targetDisposed).toHaveBeenCalledTimes(1);
+      expect(view.getByText('確定済みの進行を保ち、安全な再開位置から描画を作り直します。')).toBeTruthy();
       await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
       const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
       expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r7',
