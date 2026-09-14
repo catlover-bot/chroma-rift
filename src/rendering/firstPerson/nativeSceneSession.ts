@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import type { ChapterRuntime } from '../../domain/firstPerson/types';
 import { configureNotebookCamera } from './notebookCamera';
 import type { CanvasLifecycle } from './canvasLifecycle';
-import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
+import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, recordFailureFrameContext, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
 import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
@@ -35,6 +35,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
   let rawDraw: ((scene: THREE.Scene, camera: THREE.Camera) => void) | undefined;
   let offscreenRenderer: THREE.WebGLRenderer | undefined;
   const fail = (error: unknown, phase: Parameters<CanvasLifecycle['fail']>[1]) => {
+    recordFailureFrameContext(diagnostics, controller.runtime.pose, controller.viewCommandRevision);
     // Do not retain an automatic puzzle transition from a frame that failed.
     if (previousRuntime) { controller.runtime = previousRuntime; previousRuntime = undefined; }
     if (previousTutorial) { controller.tutorial = previousTutorial; previousTutorial = undefined; }

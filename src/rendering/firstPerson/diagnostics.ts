@@ -7,7 +7,7 @@ import { stageInputPolicy } from '../../domain/stageKit/modules';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
-export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r2';
+export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r3';
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
 export type DiagnosticStage = 'initializing' | 'context-created' | 'renderer-created' | 'scene-committed' | 'first-submitted' | 'ready' | 'failed' | 'closed';
 export type Measurement<T> = T | 'unknown' | 'unsupported';
@@ -37,6 +37,7 @@ export type FirstPersonDiagnostics = {
   glVersion: Measurement<string>; shaderLanguage: Measurement<string>; supportsWebGL2: Measurement<boolean>; framebufferStatus: Measurement<number>; glErrors: string[]; shaderErrors: ShaderDiagnostic[];
   lastError: DiagnosticError | null;
   firstFailure: DiagnosticFailure | null;
+  failureFrameContext: { pose: PlayerPose; revision: number } | null;
   effectiveControls: { mode: 'unknown' | 'standard' | 'simple'; reason: string };
   pixelEvidence: 'not-sampled' | 'proof-triangle-center-differs-from-clear' | 'proof-center-did-not-match-triangle' | 'unsupported';
   stageKit?: { stageId: string; contentVersion: number | 'unknown'; session: number; revision: number;
@@ -59,7 +60,7 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
     scene: { children: 0, meshes: 0, visibleLayerMeshes: 0, frustumCandidateMeshes: 0, materials: 0, geometries: 0, textures: 0 },
     lastFrame: { drawCalls: 'unknown', triangles: 'unknown', geometries: 'unknown', textures: 'unknown', samplePoint: 'not-sampled' },
     renderTarget: 'unknown', viewport: 'unknown', scissor: 'unknown', scissorTest: 'unknown',
-    glVersion: 'unknown', shaderLanguage: 'unknown', supportsWebGL2: 'unknown', framebufferStatus: 'unknown', glErrors: [], shaderErrors: [], lastError: null, firstFailure: null,
+    glVersion: 'unknown', shaderLanguage: 'unknown', supportsWebGL2: 'unknown', framebufferStatus: 'unknown', glErrors: [], shaderErrors: [], lastError: null, firstFailure: null, failureFrameContext: null,
     effectiveControls: { mode: 'unknown', reason: 'not-evaluated' }, pixelEvidence: 'not-sampled',
   };
 }
@@ -100,6 +101,12 @@ export function recordFirstFailure(record: FirstPersonDiagnostics, error: unknow
     offscreenPasses: record.offscreenPasses, activeRendererOwners: record.activeRendererOwners, error: record.lastError! };
   recordDiagnosticEvent(record, `FIRST_FAILURE:${reasonCode}`);
 }
+/** Preserve the unpresented camera state before the runtime rolls back to its
+ * last confirmed frame. This record never enters a checkpoint. */
+export function recordFailureFrameContext(record: FirstPersonDiagnostics, pose: PlayerPose, revision: number): void {
+  if (record.firstFailure || record.failureFrameContext) return;
+  record.failureFrameContext = { pose: { position: { ...pose.position }, yaw: pose.yaw, pitch: pose.pitch }, revision };
+}
 export function snapshotDiagnostics(record: FirstPersonDiagnostics): FirstPersonDiagnostics {
   // No renderer references or callbacks enter the record; copies cannot mutate
   // the live counters. Consumers refresh at most twice per second while open.
@@ -113,12 +120,14 @@ export function serializeDiagnostics(record: FirstPersonDiagnostics): string {
 export function serializeFailureDiagnostics(record: FirstPersonDiagnostics, context: { chapterId: string; campaignId?: string; areaId?: string;
   runtimeSession: number; attempt: number; restoreOrigin: 'fresh' | 'checkpoint' | 'retry'; pose: PlayerPose; revision: number }): string {
   const safe = snapshotDiagnostics(record);
+  const pose = safe.failureFrameContext?.pose ?? context.pose;
   return JSON.stringify({ label: 'FIRST_FAILURE', revision: safe.revision,
     app: { version: appConfig.expo.version, build: 'unknown', channel: 'unknown', code: safe.revision },
     campaignId: context.campaignId ?? 'unknown', areaId: context.areaId ?? 'unknown', chapterId: boundedDiagnosticText(context.chapterId, 80),
     diagnosticSession: safe.session, runtimeSession: context.runtimeSession, attempt: context.attempt,
-    restoreOrigin: context.restoreOrigin, stateRevision: context.revision,
-    pose: { x: context.pose.position.x, y: context.pose.position.y, z: context.pose.position.z, yaw: context.pose.yaw, pitch: context.pose.pitch },
+    restoreOrigin: context.restoreOrigin, stateRevision: safe.failureFrameContext?.revision ?? context.revision,
+    poseSource: safe.failureFrameContext ? 'failed-unpresented-frame' : 'current-controller',
+    pose: { x: pose.position.x, y: pose.position.y, z: pose.position.z, yaw: pose.yaw, pitch: pose.pitch },
     stage: safe.stage, firstFailure: safe.firstFailure, events: safe.events,
     frames: { sequence: safe.frameSequence, mainRender: safe.lastMainRenderFrame, presentation: safe.lastPresentationFrame,
       reflection: safe.lastOffscreenFrame, renderReturns: safe.renderReturns, presentationReturns: safe.presentationReturns,

@@ -1083,11 +1083,13 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     const original = new Error('Injected fault during switch return');
     let frameShouldFail = false;
     let candidateRemaining = Number.POSITIVE_INFINITY;
+    let candidatePose: typeof controller.runtime.pose | undefined;
     const ActualChapterScene = jest.requireActual('../ChapterScene').ChapterScene as typeof ChapterScene;
     chapterScene.mockImplementation(function FaultingScene(sceneProps: ComponentProps<typeof ChapterScene>) {
       useFrame(() => {
         if (frameShouldFail && phase === 'scene frame') {
           candidateRemaining = controller.runtime.switchFeedback?.remainingSeconds ?? 0;
+          candidatePose = controller.runtime.pose;
           sceneProps.onFrameError?.(original);
         }
       });
@@ -1116,11 +1118,17 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       // its always-loop clock otherwise sees no time under Jest fake timers.
       jest.spyOn(rendererRoot(renderer).store.getState().clock, 'getDelta').mockReturnValue(0.05);
       frameShouldFail = true;
-      if (phase === 'render') renderer.draw.mockImplementation(() => { candidateRemaining = controller.runtime.switchFeedback?.remainingSeconds ?? 0; throw original; });
+      if (phase === 'render') renderer.draw.mockImplementation(() => {
+        candidateRemaining = controller.runtime.switchFeedback?.remainingSeconds ?? 0;
+        candidatePose = controller.runtime.pose;
+        throw original;
+      });
       commandController(controller, { type: 'step', forward: -1 });
       await submitFrame(renderer, 2);
       expect(candidateRemaining).toBeLessThan(before.switchFeedback!.remainingSeconds);
+      expect(candidatePose).not.toEqual(before.pose);
       expect(controller.runtime.pose).toEqual(before.pose);
+      expect(controller.diagnostics.failureFrameContext?.pose).toEqual(candidatePose);
       expect(controller.runtime.progress).toEqual(before.progress);
       expect(controller.runtime.emblem).toEqual({ ...before.emblem, paused: true });
       expect(controller.runtime.switchFeedback).toEqual(before.switchFeedback);

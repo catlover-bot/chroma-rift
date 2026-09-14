@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { getWorld } from '../../../domain/firstPerson/chapter';
 import { createInitialRuntime } from '../../../domain/firstPerson/runtime';
-import { createFirstPersonDiagnostics, installShaderDiagnostics, recordDiagnosticError, recordFirstFailure, sampleGlDiagnostics, sampleRendererDiagnostics, serializeDiagnostics, serializeFailureDiagnostics, snapshotDiagnostics } from '../diagnostics';
+import { createFirstPersonDiagnostics, installShaderDiagnostics, recordDiagnosticError, recordFailureFrameContext, recordFirstFailure, sampleGlDiagnostics, sampleRendererDiagnostics, serializeDiagnostics, serializeFailureDiagnostics, snapshotDiagnostics } from '../diagnostics';
 import { PROOF_CAMERA, PROOF_OBJECTS } from '../ProofScene';
 
 function proofFixture() {
@@ -123,6 +123,19 @@ describe('bounded local diagnostic record (CPU/contract evidence only)', () => {
     expect(text).not.toContain('secondary dispose error'); expect(text).not.toContain('late timeout');
     expect(text).not.toContain('/Users/private'); expect(text).not.toContain('token=secret');
     expect(text.length).toBeLessThan(7000);
+  });
+  it('reports the failing unpresented pose while the controller restores its last safe pose', () => {
+    const record = createFirstPersonDiagnostics();
+    const failedPose = { position: { x: -2.65, y: 1.6, z: 11.3 }, yaw: 1.3, pitch: -.1 };
+    recordFailureFrameContext(record, failedPose, 12);
+    failedPose.position.z = 99;
+    recordFirstFailure(record, new Error('mirror draw failed'), 'scene frame', 'SCENE_FRAME');
+    recordFailureFrameContext(record, { position: { x: 0, y: 0, z: 0 }, yaw: 0, pitch: 0 }, 13);
+    const text = serializeFailureDiagnostics(record, { chapterId: 'mirror-corridor-v1', runtimeSession: 1,
+      attempt: 0, restoreOrigin: 'checkpoint', revision: 11,
+      pose: { position: { x: -1.43, y: 1.6, z: 10.86 }, yaw: 1.97, pitch: -.16 } });
+    expect(JSON.parse(text)).toMatchObject({ stateRevision: 12, poseSource: 'failed-unpresented-frame',
+      pose: { x: -2.65, y: 1.6, z: 11.3, yaw: 1.3, pitch: -.1 } });
   });
   it('places a large unlit proof box predictably within the fixed portrait frustum', () => {
     const { scene, camera } = proofFixture();
