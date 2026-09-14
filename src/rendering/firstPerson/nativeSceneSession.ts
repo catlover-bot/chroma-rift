@@ -131,6 +131,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
           throw new Error(`Mirror framebuffer incomplete: 0x${diagnostics.offscreenFramebufferStatus.toString(16)}`);
       }
       rawDraw(scene, camera);
+      if (!lifecycle.active) throw rejectedFrame;
       if (diagnostics.offscreenPasses === 0) recordDiagnosticEvent(diagnostics, 'first-reflection-render');
       diagnostics.offscreenPasses += 1;
       diagnostics.frameOffscreenPasses += 1;

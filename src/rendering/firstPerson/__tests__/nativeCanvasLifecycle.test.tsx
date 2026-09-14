@@ -198,6 +198,41 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     expect(controller.diagnostics.activeRendererOwners).toBe(0);
   });
 
+  it('does not count a nonthrowing reflection shader failure as a successful offscreen pass', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      const surface = rendererRoot(renderer).store.getState().scene.getObjectByName('planar-mirror') as THREE.Mesh;
+      await submitFrame(renderer);
+      expect(controller.diagnostics.stage).toBe('ready');
+      expect(controller.diagnostics.offscreenPasses).toBe(1);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      const vertex = {} as WebGLShader;
+      const fragment = {} as WebGLShader;
+      const program = {} as Parameters<NonNullable<THREE.WebGLRenderer['debug']['onShaderError']>>[1];
+      const shaderContext = { getProgramInfoLog: () => 'reflection program link failed', getShaderInfoLog: () => 'reflection compile failed' };
+      renderer.draw.mockImplementationOnce(() => {
+        renderer.debug.onShaderError!(shaderContext as unknown as WebGLRenderingContext, program, vertex, fragment);
+      });
+      await submitFrame(renderer, 2);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics.lastError?.phase).toBe('shader');
+      expect(controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'SHADER', stageBeforeFailure: 'ready',
+        frameSequence: 2, lastOffscreenFrame: 1, lastPresentationFrame: 1,
+        error: { message: expect.stringContaining('reflection program link failed') } });
+      expect(controller.diagnostics.offscreenPasses).toBe(1);
+      expect(controller.diagnostics.frameOffscreenPasses).toBe(0);
+      expect(controller.diagnostics.lastOffscreenFrame).toBe(1);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      expect(renderer.getRenderTarget()).toBeNull();
+      expect(surface.visible).toBe(true);
+    } finally { await view.unmount(); }
+    expect(controller.diagnostics.activeRendererOwners).toBe(0);
+  });
+
   it('releases mirror target and figure-ground resources on ten native Canvas reentries (device GPU excluded)', async () => {
     const rootsBefore = _roots.size;
     for (let replay = 0; replay < 10; replay++) {
