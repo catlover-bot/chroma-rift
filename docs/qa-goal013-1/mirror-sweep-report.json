@@ -43,9 +43,9 @@
   },
   "browserErrors": [],
   "toolSha256": "69bc4cfe28dc872112d83f7bdf9feecb049d22428ba2c55b5e6387d9cf034ec3",
-  "naturalReportSha256": "acb6ff96a14ced768967d303ad7b363ffb12b3b0ea3a1dd76093cf18ba8a9e9f",
+  "naturalReportSha256": "f3e77a4afc1364869892bbd4f6f73ae58043d7f77574943625d0a8ffa00e177b",
   "sourceHashes": {
-    "scene": "6ed5d79450c1f63d97d09c361cfcd0f0264e8383174921db4d3de380c0742dfb",
+    "scene": "016c17c1a2326cfa49e3377b70b4c8d5dacc08f0138c694fe74cf7587efc9c41",
     "mirror": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
     "stage": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f"
   }

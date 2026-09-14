@@ -244,8 +244,8 @@
     "cpuRenderSubmit": {
       "samples": 740,
       "p50Ms": 0.4,
-      "p95Ms": 8.1,
-      "maxMs": 51.6
+      "p95Ms": 9.3,
+      "maxMs": 51.3
     },
     "cpuTimingScope": "SwiftShader browser JS offscreen and main renderer.render submission; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
     "disposed": {
@@ -287,7 +287,7 @@
     "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
     "App.tsx": "981cb3831964c2515fe169f9b1fe636e9347d261eb831c0877fdaf6b4223c8f4",
     "src/screens/FirstPersonScreen.tsx": "d0fe1d95907aff43f998a5cc380f0dd47c6e427b7537fb0783fe1e793d5b8595",
-    "src/rendering/firstPerson/diagnostics.ts": "56a28e5e4280c4549fecd8fb329525c5bd17554f67abf40c09bdaa621f90350b"
+    "src/rendering/firstPerson/diagnostics.ts": "e510a966181190aed351a865ab2a3f7df9bff13e9f38fafe1d5d86c52737b4a3"
   },
   "toolHash": "a445c08b9f8d51044de3bf7c4f0091adb96fd86dd246a09547100a8f96e88529"
 }

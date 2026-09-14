@@ -2,7 +2,7 @@
 
 ## Goal 013.1 — エリア04の描画失敗を再確認（未実施）
 
-2026-09-14の端末録画では、04の鍵・練習レバー付近で一度3Dが表示された後、約08:26にアプリ内エラーとなり、再試行とホームからの続きも録画内では復帰を確認できなかった。修正コードの識別子は `goal-013-1-mirror-runtime-r3`。現在のローカル検査はiPhoneの合格判定ではなく、`DEVICE_ACCEPTANCE=PENDING` のまま。
+2026-09-14の端末録画では、04の鍵・練習レバー付近で一度3Dが表示された後、約08:26にアプリ内エラーとなり、再試行とホームからの続きも録画内では復帰を確認できなかった。修正コードの識別子は `goal-013-1-mirror-runtime-r4`。現在のローカル検査はiPhoneの合格判定ではなく、`DEVICE_ACCEPTANCE=PENDING` のまま。
 
 1. 端末のアプリ種別（Development Build／preview／TestFlight）、端末・iOS、build番号、実際に読み込んだコード識別子を記録する。Development Buildは `/home/mhirotaka/workspace/chroma-rift-goal012` で `npx expo start --dev-client --tunnel --clear` を起動してJS更新を読み込める。既存Metroが動いていれば先に停止する。preview/TestFlightの同梱Releaseにはこの作業木のJSが自動で入らないので、修正コードを含む新しいpreview等を用意してから判定する。今回のローカル作業ではEAS build、配布、署名を行っていない。
 2. アプリや保存を消さず、既存の「エリア04から続き」で入る。鍵の有無と目的文を確認し、鍵取得前なら取得する。淡い壁印をたどって練習レバーを実指で保持し、鏡を視界に入れる／外す／背を向ける／再び入れる。古い像の残留、暗転、エラーを記録する。

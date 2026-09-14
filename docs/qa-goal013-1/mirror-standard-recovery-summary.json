@@ -4,9 +4,9 @@
   "simulationSeconds": 23.483333333333334,
   "simulationCpu": {
     "samples": 1409,
-    "p50Ms": 0.025,
-    "p95Ms": 0.104,
-    "maxMs": 1.563
+    "p50Ms": 0.026,
+    "p95Ms": 0.133,
+    "maxMs": 1.649
   },
   "final": {
     "pose": {
@@ -40,7 +40,7 @@
     "src/domain/stages/mirror-corridor-v1/scene.tsx": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f",
     "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
     "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499",
-    "src/rendering/firstPerson/diagnostics.ts": "56a28e5e4280c4549fecd8fb329525c5bd17554f67abf40c09bdaa621f90350b"
+    "src/rendering/firstPerson/diagnostics.ts": "e510a966181190aed351a865ab2a3f7df9bff13e9f38fafe1d5d86c52737b4a3"
   },
   "toolHash": "bfc294ec9e819dfe9c123ffe9033b17ee89100eab2d2d9e9adf791e796f64e1f"
 }
