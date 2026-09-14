@@ -1293,6 +1293,16 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await submitFrame(renderer, 2);
       expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
       expect(targetDisposed).toHaveBeenCalledTimes(1);
+      await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+      const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
+      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r5',
+        chapterId: 'mirror-corridor-v1', attempt: 0, restoreOrigin: 'checkpoint',
+        poseSource: 'failed-unpresented-frame',
+        firstFailure: { reasonCode: 'NATIVE_PRESENTATION', stageBeforeFailure: 'ready',
+          frameSequence: 2, lastMainRenderFrame: 2, lastOffscreenFrame: 2, lastPresentationFrame: 1,
+          error: { message: 'running mirror native presentation failed' } },
+        frames: { sequence: 2, mainRender: 2, reflection: 2, presentation: 1 } });
+      await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
       renderer = fakeRenderer();
       await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
       await createNativeContext(view);
