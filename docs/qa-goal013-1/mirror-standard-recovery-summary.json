@@ -5,8 +5,8 @@
   "simulationCpu": {
     "samples": 1409,
     "p50Ms": 0.025,
-    "p95Ms": 0.107,
-    "maxMs": 2.171
+    "p95Ms": 0.104,
+    "maxMs": 1.563
   },
   "final": {
     "pose": {
@@ -23,7 +23,7 @@
     "cleared": true
   },
   "video": {
-    "file": "mirror-standard-recovery.mp4",
+    "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-standard-recovery/mirror-standard-recovery.mp4",
     "bytes": 145181,
     "sha256": "d7adfeab7f1b773cabcdb044e917f309a650ae981088a0a4e3117f6ca53a2c4e",
     "fps": 10

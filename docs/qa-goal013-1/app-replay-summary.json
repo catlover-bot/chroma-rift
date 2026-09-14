@@ -83,35 +83,65 @@
       {
         "area": "chapter-1-area-01",
         "stageId": "perception-gallery-v1",
+        "completedAreas": [
+          "chapter-1-area-01"
+        ],
         "currentArea": "chapter-1-area-02",
+        "campaignCompleted": false,
         "revision": 3,
         "canvasOwners": 1
       },
       {
         "area": "chapter-1-area-02",
         "stageId": "uncanny-vault-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02"
+        ],
         "currentArea": "chapter-1-area-03",
+        "campaignCompleted": false,
         "revision": 5,
         "canvasOwners": 1
       },
       {
         "area": "chapter-1-area-03",
         "stageId": "shadow-theatre-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02",
+          "chapter-1-area-03"
+        ],
         "currentArea": "chapter-1-area-04",
+        "campaignCompleted": false,
         "revision": 7,
         "canvasOwners": 1
       },
       {
         "area": "chapter-1-area-04",
         "stageId": "mirror-corridor-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02",
+          "chapter-1-area-03",
+          "chapter-1-area-04"
+        ],
         "currentArea": "chapter-1-area-05",
+        "campaignCompleted": false,
         "revision": 8,
         "canvasOwners": 1
       },
       {
         "area": "chapter-1-area-05",
         "stageId": "departure-control-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02",
+          "chapter-1-area-03",
+          "chapter-1-area-04",
+          "chapter-1-area-05"
+        ],
         "currentArea": "chapter-1-area-05",
+        "campaignCompleted": true,
         "revision": 14,
         "canvasOwners": 0
       }
@@ -213,9 +243,9 @@
     ],
     "cpuRenderSubmit": {
       "samples": 740,
-      "p50Ms": 0.5,
-      "p95Ms": 9.1,
-      "maxMs": 53.3
+      "p50Ms": 0.4,
+      "p95Ms": 8.1,
+      "maxMs": 51.6
     },
     "cpuTimingScope": "SwiftShader browser JS offscreen and main renderer.render submission; excludes screenshot/readback, RAF wait, native presentation and GPU completion",
     "disposed": {
@@ -254,7 +284,9 @@
   ],
   "sourceHashes": {
     "src/domain/stages/mirror-corridor-v1/scene.tsx": "c21750bd9c77c463bf47385b35dd6274646d432376347ae860d8e99ea389218f",
-    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5"
+    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "App.tsx": "981cb3831964c2515fe169f9b1fe636e9347d261eb831c0877fdaf6b4223c8f4",
+    "src/screens/FirstPersonScreen.tsx": "d0fe1d95907aff43f998a5cc380f0dd47c6e427b7537fb0783fe1e793d5b8595"
   },
   "toolHash": "a445c08b9f8d51044de3bf7c4f0091adb96fd86dd246a09547100a8f96e88529"
 }

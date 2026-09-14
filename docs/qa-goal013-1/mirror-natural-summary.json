@@ -4,9 +4,9 @@
   "simulationSeconds": 28.083333333333332,
   "simulationCpu": {
     "samples": 1685,
-    "p50Ms": 0.029,
-    "p95Ms": 0.134,
-    "maxMs": 1.595
+    "p50Ms": 0.023,
+    "p95Ms": 0.086,
+    "maxMs": 1.566
   },
   "final": {
     "pose": {
@@ -23,7 +23,7 @@
     "cleared": true
   },
   "video": {
-    "file": "mirror-natural.mp4",
+    "file": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal013/mirror-natural/mirror-natural.mp4",
     "bytes": 286884,
     "sha256": "813ba494323ec51fcdbb5294d3db78d46cad1963346838a71609d6c49d4f5abe",
     "fps": 10
