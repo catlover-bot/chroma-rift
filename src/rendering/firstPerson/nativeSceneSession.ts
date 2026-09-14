@@ -32,6 +32,9 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
   let previousTutorial: RuntimeController['tutorial'] | undefined;
   let adapterCanvas: object | undefined;
   let checkPresentation = false;
+  // The installed native wrapper calls endFrameEXP whenever its render
+  // delegate returns. An inner shader/GL failure must escape that wrapper.
+  const rejectedFrame = Symbol('native frame rejected before presentation');
   let rawDraw: ((scene: THREE.Scene, camera: THREE.Camera) => void) | undefined;
   let offscreenRenderer: THREE.WebGLRenderer | undefined;
   const fail = (error: unknown, phase: Parameters<CanvasLifecycle['fail']>[1]) => {
@@ -79,6 +82,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         lifecycle.submitFrame();
         diagnostics.renderCalls += 1;
         draw(scene, camera);
+        if (!lifecycle.active) throw rejectedFrame;
         if (diagnostics.renderReturns === 0) recordDiagnosticEvent(diagnostics, 'first-main-render');
         diagnostics.renderReturns += 1;
         diagnostics.lastMainRenderFrame = diagnostics.frameSequence;
@@ -88,6 +92,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         if (checkPresentation && lifecycle.active) {
           lastGlCheck = now;
           inspectGl(renderer, 'before native presentation');
+          if (!lifecycle.active) throw rejectedFrame;
         }
       };
       return renderer;
@@ -221,7 +226,9 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
             previousRuntime = undefined;
             previousTutorial = undefined;
             pendingPublish = undefined;
-          } catch (error) { fail(error, diagnostics.renderReturns > completedBefore ? 'presentation' : 'render'); }
+          } catch (error) {
+            if (error !== rejectedFrame) fail(error, diagnostics.renderReturns > completedBefore ? 'presentation' : 'render');
+          }
         };
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.toneMapping = THREE.NoToneMapping;

@@ -1073,7 +1073,29 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     expect(current.controller.runtime.paused).toBe(true);
     expect(current.controller.diagnostics.lastError?.phase).toBe('shader');
     expect(current.controller.diagnostics.shaderErrors).toEqual([{ program: 'program link failed', vertex: 'vertex compile failed', fragment: 'fragment compile failed' }]);
+    expect(deviceContext.endFrameEXP).not.toHaveBeenCalled();
     await view.unmount();
+  });
+
+  it.each([false, true])('does not present a main frame rejected by the pre-presentation GL check after ready=%s', async running => {
+    const current = props();
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      if (running) {
+        await submitFrame(renderer);
+        expect(current.onReady).toHaveBeenCalledTimes(1);
+        jest.setSystemTime(Date.now() + 1000);
+      }
+      deviceContext.checkFramebufferStatus.mockReturnValueOnce(0x8cd6);
+      await submitFrame(renderer, running ? 2 : 1);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(current.controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'GL_FRAME',
+        stageBeforeFailure: running ? 'ready' : 'first-submitted',
+        lastMainRenderFrame: running ? 2 : 1, lastPresentationFrame: running ? 1 : 0,
+        error: { message: expect.stringContaining('Invalid native GL frame before native presentation') } });
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(running ? 1 : 0);
+    } finally { await view.unmount(); }
   });
 
   it.each(['render', 'scene frame'] as const)('rolls back unpresented walking/switch return when %s fails, preserving prior emblem observation', async (phase) => {
