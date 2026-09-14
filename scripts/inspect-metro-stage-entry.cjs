@@ -16,7 +16,7 @@ const rawMap = JSON.parse(fs.readFileSync(path.join(directory, bundleName + '.ma
 const map = new TraceMap(rawMap), mappings = decodedMappings(map);
 const ast = parser.parse(code, { sourceType: 'script' });
 const records = [];
-let prelude, loader;
+let preludeStart, loaderStart, loader;
 function relative(source) {
   const s = source?.replaceAll('\\', '/');
   if (!s || s.includes('node_modules/')) return undefined;
@@ -27,12 +27,13 @@ function relative(source) {
 }
 for (const statement of ast.program.body) {
   const text = code.slice(statement.start, statement.end);
-  if (statement.type === 'VariableDeclaration' && text.includes('__BUNDLE_START_TIME__')) prelude = text;
-  if (statement.type === 'ExpressionStatement' && text.includes('__registerSegment') && text.includes('Require cycle:')) loader = text;
+  if (statement.type === 'VariableDeclaration' && text.includes('__BUNDLE_START_TIME__')) preludeStart = statement.start;
+  if (statement.type === 'ExpressionStatement' && text.includes('__registerSegment') && text.includes('Require cycle:')) {
+    loader = text; loaderStart = statement.start;
+  }
   const call = statement.type === 'ExpressionStatement' && statement.expression;
   if (call?.type !== 'CallExpression') continue;
   if (call.callee.type !== 'Identifier' || call.callee.name !== '__d') {
-    if (text.includes('__registerSegment') && text.includes('Require cycle:')) loader = text;
     continue;
   }
   const [factory, id, dependencies, name] = call.arguments;
@@ -46,8 +47,13 @@ for (const statement of ast.program.body) {
   records.push({ id: id.value, source, relative: relative(source), text,
     dependencies: dependencies.elements.map(n => n?.value) });
 }
-assert(prelude && loader, 'Actual development prelude and Metro loader must be present');
+assert(preludeStart !== undefined && loaderStart > preludeStart && loader, 'Actual development prelude and Metro loader must be present');
+// Metro emits process.env initialization as separate statements after the var
+// declaration. Keep the complete emitted prelude rather than inventing an env.
+const prelude = code.slice(preludeStart, loaderStart);
 const bySource = new Map(records.filter(r => r.relative).map(r => [r.relative, r]));
+const constantsBoundary = records.find(r => /node_modules\/expo-constants\/build\/Constants\.js$/.test(r.source || ''));
+assert(constantsBoundary, 'The native expo-constants public API boundary must be present');
 const correspondence = rawMap.sources.flatMap((source, i) => {
   const name = relative(source);
   if (!name) return [];
@@ -74,11 +80,21 @@ for (const first of roots.filter(s => bySource.has(s))) {
   }, setTimeout, clearTimeout, performance });
   context.global = context;
   registryScript.runInContext(context, { timeout: 10000 });
+  // TEST/FIXTURE: This Node-only inspection has no installed native metadata.
+  // Skip exactly the external Constants facade, whose native import closure
+  // would require a full RN host. Application and Three factories remain real.
+  const constantsModule = context.__r.getModules().get(constantsBoundary.id);
+  assert(constantsModule && !constantsModule.isInitialized, 'Constants fixture must precede any factory execution');
+  constantsModule.publicModule.exports = {};
+  constantsModule.isInitialized = true;
   const read = s => context.__r(bySource.get(s).id);
   const observation = { first, warnings, output };
   try {
     read(first);
     for (const source of roots.filter(s => bySource.has(s))) read(source);
+    observation.buildIdentity = read('src/platform/buildIdentity.ts').buildIdentity();
+    assert.equal(observation.buildIdentity.nativeBuild, 'unknown');
+    assert.equal(observation.buildIdentity.bundleSource, 'metro-development');
     const runtime = read(roots[0]), world = read(roots[1]), controller = read(roots[5]);
     const legacy = read('src/domain/firstPerson/chapter.ts').CHAPTER_ID;
     const ids = [legacy,
@@ -109,9 +125,13 @@ for (const first of roots.filter(s => bySource.has(s))) {
   observations.push(observation);
 }
 const firstPartyCycles = [...new Set(observations.flatMap(o => o.warnings).filter(s => s.startsWith('Require cycle:')))];
-const result = { scope: 'Actual emitted iOS development Metro loader/factories executed in isolated Node VM registries; domain/controller entries only. No RN App mount, native GL, audio bridge, or physical iPhone startup.',
+const result = { scope: 'Actual emitted iOS development Metro loader and domain/controller/Three factories executed in isolated Node VM registries, with an explicit external expo-constants API fixture. No RN App mount, native GL, audio bridge, or physical iPhone startup.',
   bundle: bundleName, bundleSha256: crypto.createHash('sha256').update(code).digest('hex'),
-  loaderUnmodified: true, nativeDeviceStartup: 'not run', registeredModules: records.length,
+  preludeUnmodified: true, loaderUnmodified: true, firstPartyFactoriesUnmodified: true,
+  factorySubstitutions: [{ source: constantsBoundary.source, moduleId: constantsBoundary.id,
+    fixture: 'TEST/FIXTURE: empty CommonJS exports seeded into the Metro module cache; native build metadata unavailable',
+    emittedFactoryExecuted: false, nativeRegistryFixtures: false }],
+  nativeDeviceStartup: 'not run', registeredModules: records.length,
   sourceCorrespondence: correspondence, missingRoots, observations, firstPartyCycles };
 console.log(JSON.stringify(result, null, 2));
 if (observations.some(o => !o.passed) || process.argv.includes('--expect-acyclic') && (firstPartyCycles.length || missingRoots.length)) process.exitCode = 1;

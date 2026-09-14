@@ -1,5 +1,24 @@
 # Goal 013 — iPhone previewで第一章を確認する
 
+## Goal 013.1 r7 — 診断の残り時間・識別情報を確認する（実機未確認）
+
+最新のローカル識別子は`goal-013-1-mirror-runtime-r7`。r6のpreview診断導線を保持し、起動残り時間の誤記録、待機中コピーのbuild情報、schema番号を修正した。新しい端末結果はなく、停止原因の特定と実機受入れは引き続き未完了。`DEVICE_ACCEPTANCE=PENDING`、`RELEASE_READY=false`。
+
+1. ユーザーが次のworktreeからpreviewを作り、その**完成したpreviewのインストールリンク**で既存アプリを更新する。EAS build IDとiOS build番号を記録する。アプリやセーブを削除しない。
+
+   ```sh
+   cd /home/mhirotaka/workspace/chroma-rift-goal012
+   git status --short --branch
+   git log -1 --oneline
+   eas build --platform ios --profile preview
+   ```
+
+2. iPhone上でアプリを直接起動し、ホームの`goal-013-1-mirror-runtime-r7 / preview / iOS build <番号>`を確認する。異なる場合は再検証結果をr7へ結び付けない。previewは同梱ReleaseなのでMetro/トンネル/開発クライアントのQRでは更新されない。r7では依存・native設定を変更していないが、インストール済みバイナリの内容は未確認。
+3. 既存の「続きから」で04へ入り、キーの有無→練習保持→鏡の視界内外→本作業→05を確認する。準備中にも「描画の診断」からversion/build/schema付き本文を表示・コピーできる。失敗したら「詳細を表示」→「診断情報をコピー」。Clipboard失敗時は選択可能な本文を長押しする。retry上限後も詳細があり、ホームの「直前の描画診断を表示」で直近3試行を読める。
+4. 再試行では確定済み進行を保って認可された安全な再開位置へ戻る場合がある。04でホーム／完全終了から再開し、キー・歯止め・現在エリアを確認する。04→05が確認できてから01→05の通しとオフラインRelease候補へ進む。停止時は最初のreason/stack、startup/readiness、最後の主描画・反射・提示番号、code/profile/native buildを保存する。診断は自動送信されない。
+
+このローカル作業でクラウドビルド・インストールは実行していない。表示・タッチ・VoiceOver・実音・FPS／発熱は実機で確認した項目だけ記入する。以下はr6以前の履歴。
+
 ## Goal 013.1 r6 — 再発時に最初の故障を取得する（実機未確認）
 
 2026-09-15の新しい動画では、エリア04が表示された約12秒後に再びアプリ内エラーへ移った。EAS preview build ID `89bd24f7-0be9-4fd7-82c8-414b0937813f` の完了は分かるが、そのバイナリを録画端末が使ったか、r5が入っていたかは不明。現状のr5を同条件で再ビルドしたり、最初から全章を遊び直したりするより先に、r6診断入りpreviewでバイナリを識別する。`DEVICE_ACCEPTANCE=PENDING`、`RELEASE_READY=false`。コード識別子がr5だったと確認できた録画ならr5の実機判定をFAILへ更新する。
