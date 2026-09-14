@@ -1,5 +1,5 @@
 import {
-  DoubleSide, LinearFilter, Matrix4, Mesh, PerspectiveCamera, Plane, ShaderMaterial,
+  DoubleSide, LinearFilter, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Plane, ShaderMaterial,
   Vector3, Vector4, WebGLRenderTarget, type Scene, type WebGLRenderer,
 } from 'three';
 
@@ -31,6 +31,9 @@ export function createPlanarMirror(size = MIRROR_TARGET_SIZE) {
         #include <colorspace_fragment>
       }`,
   });
+  // The reflective texture is meaningful only after this frame's offscreen
+  // draw. A visible back face must never advertise an old actor position.
+  const fallbackMaterial = new MeshBasicMaterial({ name: 'chroma-rift-mirror-unavailable', color: '#263331', side: DoubleSide });
   const camera = new PerspectiveCamera();
   const mirrorPosition = new Vector3(), eyePosition = new Vector3(), normal = new Vector3();
   const rotation = new Matrix4(), view = new Vector3(), lookAt = new Vector3(), reflectedTarget = new Vector3();
@@ -38,7 +41,7 @@ export function createPlanarMirror(size = MIRROR_TARGET_SIZE) {
   const viewport = new Vector4(), scissor = new Vector4();
   let disposed = false;
   return {
-    target, material, camera,
+    target, material, fallbackMaterial, camera,
     render(renderer: WebGLRenderer, scene: Scene, mainCamera: PerspectiveCamera, mirror: Mesh, draw: OffscreenDraw): boolean {
       if (disposed) throw new Error('Mirror target was disposed');
       mirror.updateWorldMatrix(true, false);
@@ -48,7 +51,9 @@ export function createPlanarMirror(size = MIRROR_TARGET_SIZE) {
       rotation.extractRotation(mirror.matrixWorld);
       normal.set(0, 0, 1).applyMatrix4(rotation);
       view.subVectors(mirrorPosition, eyePosition);
-      if (view.dot(normal) >= 0) return false;
+      // At or behind the plane the oblique projection is undefined. The caller
+      // presents the opaque backing material for this frame instead.
+      if (view.dot(normal) >= -0.02) return false;
 
       view.reflect(normal).negate().add(mirrorPosition);
       rotation.extractRotation(mainCamera.matrixWorld);
@@ -93,7 +98,8 @@ export function createPlanarMirror(size = MIRROR_TARGET_SIZE) {
         renderer.setViewport(0, 0, size, size);
         renderer.setScissor(0, 0, size, size);
         renderer.setScissorTest(false);
-        renderer.state.buffers.depth.setMask(true);
+        // WebGLRenderer clears depth for the offscreen render (or clear() below).
+        // Avoid changing its private depth-mask cache outside that owner.
         if (!renderer.autoClear) renderer.clear();
         draw(renderer, scene, camera, size, size);
         return true;
@@ -107,6 +113,6 @@ export function createPlanarMirror(size = MIRROR_TARGET_SIZE) {
         renderer.setScissorTest(previousScissorTest);
       }
     },
-    dispose() { if (!disposed) { disposed = true; material.dispose(); target.dispose(); } },
+    dispose() { if (!disposed) { disposed = true; material.dispose(); fallbackMaterial.dispose(); target.dispose(); } },
   };
 }

@@ -299,7 +299,7 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
     await act(() => scene().onError('二度目の再試行後のエラー'));
     expect(view.getByRole('button', { name: '表示を再試行' })).toBeDisabled();
-    expect(view.getByRole('button', { name: '描画の診断' })).toBeEnabled();
+    expect(view.getByRole('button', { name: '詳細を表示' })).toBeEnabled();
   });
 
   it('refreshes diagnostics only while open at most twice per second and copies only on request', async () => {

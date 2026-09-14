@@ -1,6 +1,21 @@
 import { advanceStage, cancelStageHold, createStageSession, commandStage, checkpointStage } from './session';
 import { parseStageCheckpoint } from './checkpoint';
 import { EXIT, KEY_SAFE, RATCHET_COUNT, STAGE_ID, stageWorld } from './definition';
+import { stageBinding } from './binding';
+
+test('area-04 guidance follows key, safe practice, and settled winch progress', () => {
+  let runtime = stageBinding.create();
+  expect(stageBinding.present(runtime).objective).toContain('隔離キー');
+  runtime = { ...runtime, pose: KEY_SAFE };
+  runtime = stageBinding.interact!(runtime, 'mirror-corridor-key');
+  expect(stageBinding.present(runtime)).toMatchObject({ objective: '淡い壁印の先で、練習レバーを保持する。',
+    hint: { text: '壁沿いの淡い印が練習レバーの方へ続く。' } });
+  runtime = { ...runtime, pose: { position: { x: -2, y: 1.6, z: 7.5 }, yaw: Math.PI, pitch: 0 } };
+  runtime = stageBinding.hold!.start(runtime, 'mirror-corridor-practice');
+  for (let frame = 0; frame < 36; frame += 1) runtime = stageBinding.advance(runtime, 1 / 60);
+  runtime = stageBinding.hold!.release(runtime, 'mirror-corridor-practice');
+  expect(stageBinding.present(runtime).objective).toContain('歯止め 0/3');
+});
 
 test('a figure is optional to inspect; taking its actual center key is explicit', () => {
   let session = createStageSession('first');

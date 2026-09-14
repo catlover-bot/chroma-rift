@@ -1,4 +1,5 @@
 import { act, fireEvent, render, within } from '@testing-library/react-native';
+import * as Clipboard from 'expo-clipboard';
 import { AccessibilityInfo, AppState, Dimensions, StyleSheet } from 'react-native';
 import { Matrix4, PerspectiveCamera, Vector3 } from 'three';
 
@@ -8,6 +9,7 @@ import type { AudioBackend, AudioPlayerPort, AudioSourceId } from '../../audio/t
 import { createCheckpoint, createInitialRuntime, VERTICAL_FOV, type InteractableId } from '../../domain/firstPerson';
 import { createContourSpec, createGalleryRuntime, createShadowSpec, fixtureForPuzzle, GALLERY_CONTOUR_OBSERVATION_POSE, GALLERY_FINAL_CHECKPOINT, GALLERY_SAFE_RETREATS, GALLERY_SHADOW_OBSERVATION_POSE, GALLERY_WIRING_OBSERVATION_POSE, getWiringSpec, initialWiring, migrateGalleryV2Checkpoint, migrateGalleryV1Checkpoint, normalizeAngle, SAMPLE_IDS, SHADOW_SLOT_POSITIONS, type GalleryDevice, type Point2, type SampleId, type ShadowSlotId } from '../../domain/gallery';
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
+import { recordFirstFailure } from '../../rendering/firstPerson/diagnostics';
 import { advanceController, commandController, controllerSnapshot, flushControllerAudioFrame, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
 import { originalV1 } from '../../storage/testFixtures/galleryV1';
@@ -18,6 +20,7 @@ import { FirstPersonScreen, type FirstPersonScreenProps } from '../FirstPersonSc
 // Screen, touch layer, controller projection, gallery state and checkpoints are real.
 let mockSubmittedFrame = true;
 jest.mock('../../rendering/firstPerson/RawGLProof', () => ({ RawGLProof: jest.fn(() => null) }));
+jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(async () => undefined) }));
 jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonCanvas: jest.fn(({ onReady, controller }: FirstPersonCanvasProps) => {
   const React = require('react');
   React.useEffect(() => {
@@ -297,6 +300,24 @@ it('retires manipulation and readiness callbacks across renderer retry and unmou
   jest.mocked(original.onCheckpoint).mockClear();
   await act(() => { fresh.onReady(); fresh.onSnapshot(fresh.snapshot); oldStart(start); });
   expect(fresh.controller.retired).toBe(true); expect(original.onCheckpoint).not.toHaveBeenCalled();
+});
+
+it('shows and copies the first raw failure in an internal preview-style build', async () => {
+  const env = globalThis as typeof globalThis & { __DEV__: boolean };
+  const previousDev = env.__DEV__;
+  env.__DEV__ = false;
+  const view = await render(<FirstPersonScreen {...screenProps('shadow')} />);
+  try {
+    const current = scene();
+    recordFirstFailure(current.controller.diagnostics, new Error('original mirror frame exception'), 'scene frame', 'SCENE_FRAME');
+    await act(() => current.onError('部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。'));
+    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    const record = view.getByTestId('render-diagnostic-record').props.children as string;
+    expect(record).toContain('FIRST_FAILURE'); expect(record).toContain('SCENE_FRAME');
+    expect(record).toContain('original mirror frame exception');
+    await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
+    expect(Clipboard.setStringAsync).toHaveBeenCalledWith(expect.stringContaining('FIRST_FAILURE'));
+  } finally { await view.unmount(); env.__DEV__ = previousDev; }
 });
 
 it('supports the same B selection and explicit commit through simple controls', async () => {

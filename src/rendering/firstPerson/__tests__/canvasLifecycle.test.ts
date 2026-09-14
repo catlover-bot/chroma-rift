@@ -40,4 +40,21 @@ describe('canvas ownership across late native callbacks', () => {
     expect(onCurrentError).not.toHaveBeenCalled();
     current.close();
   });
+  it('reports a running frame exception rather than a startup timeout after readiness', () => {
+    const controller = createController();
+    const onError = jest.fn(), lifecycle = createCanvasLifecycle(controller, onError);
+    const renderer = { dispose: jest.fn() } as unknown as THREE.WebGLRenderer;
+    lifecycle.ownRenderer(renderer); lifecycle.attachRoot({ setFrameloop: jest.fn() }); lifecycle.commitScene();
+    controller.diagnostics.renderReturns = 1; controller.diagnostics.presentationReturns = 1;
+    expect(lifecycle.markReady(true)).toBe(true);
+    controller.diagnostics.frameSequence = 100; controller.diagnostics.lastPresentationFrame = 99;
+    lifecycle.fail(new Error('main frame failed'), 'render');
+    lifecycle.fail(new Error('late startup deadline'), 'initialization timeout');
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'MAIN_RENDER', stageBeforeFailure: 'ready',
+      frameSequence: 100, lastPresentationFrame: 99 });
+    expect(controller.diagnostics.firstFailure?.error.message).toBe('main frame failed');
+    lifecycle.close();
+    expect(renderer.dispose).toHaveBeenCalledTimes(1);
+  });
 });

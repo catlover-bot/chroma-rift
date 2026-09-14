@@ -38,7 +38,8 @@ jest.mock('../resources', () => ({ ...jest.requireActual('../resources'), create
 const glView = jest.mocked(GLView);
 const chapterScene = jest.mocked(ChapterScene);
 const resourceFactory = jest.mocked(createSceneResources);
-const deviceContext = { drawingBufferWidth: 390, drawingBufferHeight: 740, endFrameEXP: jest.fn() };
+const deviceContext = { drawingBufferWidth: 390, drawingBufferHeight: 740, endFrameEXP: jest.fn(),
+  FRAMEBUFFER: 0x8d40, FRAMEBUFFER_COMPLETE: 0x8cd5, checkFramebufferStatus: jest.fn(() => 0x8cd5) };
 function fakeRenderer() {
   const viewport = new THREE.Vector4(0, 0, 390, 740);
   const scissor = new THREE.Vector4(0, 0, 390, 740);
@@ -103,6 +104,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     glView.mockClear(); chapterScene.mockClear(); resourceFactory.mockClear();
     renderer = fakeRenderer();
     deviceContext.endFrameEXP.mockReset();
+    deviceContext.checkFramebufferStatus.mockReset().mockReturnValue(deviceContext.FRAMEBUFFER_COMPLETE);
     jest.spyOn(THREE, 'WebGLRenderer').mockImplementation((options) => {
       (options!.canvas as HTMLCanvasElement).getContext('webgl2', { antialias: options!.antialias });
       return renderer as unknown as THREE.WebGLRenderer;
@@ -143,6 +145,27 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await view.unmount();
       expect(disposed).toHaveBeenCalledTimes(1);
     } finally { if (_roots.size) await view.unmount(); }
+  });
+
+  it('captures the actual mirror target and rejects an incomplete framebuffer before main presentation', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      deviceContext.checkFramebufferStatus.mockReturnValueOnce(0x8cd6);
+      await submitFrame(renderer);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'SCENE_FRAME',
+        error: { message: 'Mirror framebuffer incomplete: 0x8cd6' }, presentationReturns: 0 });
+      expect(controller.diagnostics.offscreenTargetConfig).toMatchObject({ width: MIRROR_TARGET_SIZE,
+        height: MIRROR_TARGET_SIZE, samples: 0, depthBuffer: true, stencilBuffer: false });
+      expect(controller.diagnostics.offscreenFramebufferStatus).toBe(0x8cd6);
+      expect(controller.diagnostics.lastPresentationFrame).toBe(0);
+      expect(renderer.draw).not.toHaveBeenCalled();
+      expect(deviceContext.endFrameEXP).not.toHaveBeenCalled();
+    } finally { await view.unmount(); }
   });
 
   it('releases mirror target and figure-ground resources on ten native Canvas reentries (device GPU excluded)', async () => {

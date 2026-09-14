@@ -27,7 +27,7 @@ import { parseStageCheckpoint as parseDepartureCheckpoint } from '../../domain/s
 import { recordCampaignReplayDiscoveries } from '../../domain/campaign/session';
 import { mergeCampaignDiscoveries } from '../../domain/campaign/discoveries';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
-import { advanceController, controllerSnapshot, interactController, syncCamera } from '../../rendering/firstPerson/runtimeController';
+import { advanceController, commandController, controllerSnapshot, interactController, syncCamera } from '../../rendering/firstPerson/runtimeController';
 import type { FirstPersonScreenProps } from '../FirstPersonScreen';
 import * as gateModule from '../NativeFirstPersonGate';
 import * as endingModule from '../ChapterOneEndingScreen';
@@ -634,6 +634,73 @@ test('verified area-03 through area-05 host callbacks survive a cold exit before
   });
   expect(await AsyncStorage.getItem('chroma-rift.uncanny-vault.v1')).toBe(oldVault);
   expect(await AsyncStorage.getItem('chroma-rift.shadow-theatre.v1')).toBe(oldTheatre);
+});
+
+test('area-04 render retries and a cold home continue retain the accepted isolation key', async () => {
+  await AsyncStorage.setItem(GALLERY_V1_CHECKPOINT_KEY, JSON.stringify(originalV1('cleared')));
+  await AsyncStorage.setItem('chroma-rift.uncanny-vault.v1', JSON.stringify(vaultCheckpoint('clear')));
+  await AsyncStorage.setItem('chroma-rift.shadow-theatre.v1', JSON.stringify(theatreCheckpoint('initial')));
+  const Gate = gateModule.NativeFirstPersonGate;
+  let latest: FirstPersonScreenProps | undefined;
+  jest.spyOn(gateModule, 'NativeFirstPersonGate').mockImplementation(props => { latest = props; return <Gate {...props}/>; });
+  let view = await render(<App/>);
+  await fireEvent.press(await view.findByRole('button', { name: '記録を引き継ぐ' }));
+  await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
+  await fireEvent.press(view.getByText('映写室へ入る'));
+  await view.findByTestId('campaign-native-canvas');
+  const theatreClear = theatreCheckpoint('completed');
+  await act(() => { latest!.onCheckpoint(theatreClear); latest!.onComplete(chapterCompletionSummary('shadow-theatre-v1', theatreClear.progress)); });
+  await waitFor(() => expect(latest!.chapterId).toBe('mirror-corridor-v1'));
+  const first = mockLatestCanvas.current!;
+  const controller = first.controller, camera = new PerspectiveCamera(65, 390 / 844, .08, 60);
+  controller.horrorIntensity = 'subdued';
+  for (let frame = 0; frame < 90 && controller.runtime.pose.position.z < -1.05; frame += 1) {
+    controller.input.forward = 1; advanceController(controller, 1 / 60, camera);
+  }
+  controller.input.forward = 0;
+  expect(controller.runtime.pose.position.z).toBeGreaterThan(-1.1);
+  let pose = controller.runtime.pose;
+  commandController(controller, { type: 'turn', yaw: Math.PI - pose.yaw, pitch: .1 - pose.pitch });
+  syncCamera(controller, camera);
+  expect(controllerSnapshot(controller).target?.id).toBe('mirror-corridor-figure');
+  expect(interactController(controller, 'mirror-corridor-figure')).toBe(true);
+  pose = controller.runtime.pose;
+  commandController(controller, { type: 'turn', yaw: Math.PI - pose.yaw, pitch: -.16 - pose.pitch });
+  syncCamera(controller, camera);
+  expect(controllerSnapshot(controller).target?.id).toBe('mirror-corridor-key');
+  expect(interactController(controller, 'mirror-corridor-key')).toBe(true);
+  await act(() => first.onSnapshot(controllerSnapshot(controller)));
+  await waitFor(async () => expect(parseMirrorCheckpoint(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).checkpoint.stageData))
+    .toMatchObject({ keyTaken: true, practiced: false, ratchets: 0 }));
+  const savedBeforeFailure = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const old = mockLatestCanvas.current!;
+    await act(() => old.onError('部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。'));
+    if (attempt < 2) {
+      await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+      await waitFor(() => expect(mockLatestCanvas.current!.controller).not.toBe(old.controller));
+      expect(mockLatestCanvas.current!.controller.runtime.stageSession?.value).toMatchObject({ keyTaken: true, practiced: false, ratchets: 0 });
+      expect(mockCanvasOwners.peak).toBe(1);
+    }
+  }
+  expect(view.getByRole('button', { name: '表示を再試行' })).toBeDisabled();
+  await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
+  expect(mockCanvasOwners.active).toBe(0);
+  expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(savedBeforeFailure);
+  await view.unmount();
+  view = await render(<App/>);
+  await fireEvent.press(await view.findByRole('button', { name: '続きから' }));
+  await fireEvent.press(view.getByText('鏡越しの回廊へ入る'));
+  for (let i = 0; i < 3; i++) {
+    const resume = view.queryByRole('button', { name: '探索へ戻る' }) ?? view.queryByRole('button', { name: '点検を続ける' });
+    if (!resume) break;
+    await fireEvent.press(resume);
+  }
+  await view.findByTestId('campaign-native-canvas');
+  expect(mockLatestCanvas.current!.controller.runtime.stageSession?.value).toMatchObject({ keyTaken: true, practiced: false, ratchets: 0 });
+  expect(mockCanvasOwners.active).toBe(1); expect(mockCanvasOwners.peak).toBe(1);
+  await view.unmount();
+  expect(mockCanvasOwners.active).toBe(0);
 });
 
 test('a failed area handoff keeps the old scene until an explicit save retry succeeds', async () => {

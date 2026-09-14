@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import type { ChapterRuntime } from '../../domain/firstPerson/types';
 import { configureNotebookCamera } from './notebookCamera';
 import type { CanvasLifecycle } from './canvasLifecycle';
-import { installShaderDiagnostics, recordContextDiagnostics, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
+import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
 import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
@@ -61,6 +61,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
       const renderer = observeNativeContext(defaults, (context) => {
         recordContextDiagnostics(diagnostics, context);
         diagnostics.stage = 'context-created';
+        recordDiagnosticEvent(diagnostics, 'context-created');
       }, () => new THREE.WebGLRenderer({ ...defaults, antialias: false, alpha: false, depth: true, stencil: false, powerPreference: 'low-power' }));
       if (!lifecycle.ownRenderer(renderer)) return createTeardownOnlyRenderer();
       cleanupShader?.();
@@ -77,7 +78,9 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         lifecycle.submitFrame();
         diagnostics.renderCalls += 1;
         draw(scene, camera);
+        if (diagnostics.renderReturns === 0) recordDiagnosticEvent(diagnostics, 'first-main-render');
         diagnostics.renderReturns += 1;
+        diagnostics.lastMainRenderFrame = diagnostics.frameSequence;
         recordFrameStats(controller, lastDelta, renderer.info);
         const now = Date.now();
         checkPresentation = now - lastGlCheck >= (lifecycle.ready ? 1000 : 500);
@@ -109,10 +112,24 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
     renderOffscreen(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera, width: number, height: number) {
       if (renderer !== offscreenRenderer || !rawDraw || !lifecycle.isCurrentRenderer(renderer) || diagnostics.paused || diagnostics.appActive === false)
         throw new Error('Offscreen render has no live native Canvas owner');
+      const target = renderer.getRenderTarget();
+      if (!target) throw new Error('Offscreen draw has no render target');
+      diagnostics.offscreenTargetConfig = { width: target.width, height: target.height, samples: target.samples,
+        depthBuffer: target.depthBuffer, stencilBuffer: target.stencilBuffer,
+        type: target.texture.type, format: target.texture.format };
+      if (diagnostics.offscreenPasses === 0) {
+        const gl = renderer.getContext();
+        diagnostics.offscreenFramebufferStatus = typeof gl.checkFramebufferStatus === 'function' && typeof gl.FRAMEBUFFER === 'number'
+          ? gl.checkFramebufferStatus(gl.FRAMEBUFFER) : 'unsupported';
+        if (typeof diagnostics.offscreenFramebufferStatus === 'number' && diagnostics.offscreenFramebufferStatus !== gl.FRAMEBUFFER_COMPLETE)
+          throw new Error(`Mirror framebuffer incomplete: 0x${diagnostics.offscreenFramebufferStatus.toString(16)}`);
+      }
       rawDraw(scene, camera);
+      if (diagnostics.offscreenPasses === 0) recordDiagnosticEvent(diagnostics, 'first-reflection-render');
       diagnostics.offscreenPasses += 1;
       diagnostics.frameOffscreenPasses += 1;
       diagnostics.offscreenTargetSize = [width, height];
+      diagnostics.lastOffscreenFrame = diagnostics.frameSequence;
     },
     close() { cleanupShader?.(); lifecycle.close(); },
     sceneError(error: unknown) { fail(error, 'scene frame'); },
@@ -123,6 +140,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         return;
       }
       if (diagnostics.paused) return;
+      diagnostics.frameSequence += 1;
       diagnostics.frameCallbacks += 1;
       diagnostics.frameOffscreenPasses = 0;
       if (typeof state.gl.info?.reset === 'function') state.gl.info.reset();
@@ -149,10 +167,13 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
           try {
             // This is the installed native render+endFrameEXP wrapper, once.
             present(scene, previewing() ? notebookCamera : camera);
-            diagnostics.presentationReturns += 1;
             if (!lifecycle.active) return;
             if (previewing()) {
               if (checkPresentation) { checkPresentation = false; inspectGl(renderer, 'after native wrapper return'); }
+              if (lifecycle.active) {
+                diagnostics.presentationReturns += 1;
+                diagnostics.lastPresentationFrame = diagnostics.frameSequence;
+              }
               // No simulation, story, input, ready promotion or game snapshot from a note.
               return;
             }
@@ -175,6 +196,9 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
               inspectGl(renderer, 'after native wrapper return');
               if (!lifecycle.active) return;
             }
+            if (diagnostics.presentationReturns === 0) recordDiagnosticEvent(diagnostics, 'first-native-presentation');
+            diagnostics.presentationReturns += 1;
+            diagnostics.lastPresentationFrame = diagnostics.frameSequence;
             const dimensions = diagnostics.rnLayout;
             const buffer = diagnostics.drawingBuffer;
             const cameraData = diagnostics.camera;

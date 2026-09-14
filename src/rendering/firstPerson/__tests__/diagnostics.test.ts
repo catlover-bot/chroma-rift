@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { getWorld } from '../../../domain/firstPerson/chapter';
 import { createInitialRuntime } from '../../../domain/firstPerson/runtime';
-import { createFirstPersonDiagnostics, installShaderDiagnostics, recordDiagnosticError, sampleGlDiagnostics, sampleRendererDiagnostics, serializeDiagnostics, snapshotDiagnostics } from '../diagnostics';
+import { createFirstPersonDiagnostics, installShaderDiagnostics, recordDiagnosticError, recordFirstFailure, sampleGlDiagnostics, sampleRendererDiagnostics, serializeDiagnostics, serializeFailureDiagnostics, snapshotDiagnostics } from '../diagnostics';
 import { PROOF_CAMERA, PROOF_OBJECTS } from '../ProofScene';
 
 function proofFixture() {
@@ -103,6 +103,26 @@ describe('bounded local diagnostic record (CPU/contract evidence only)', () => {
     expect(text).not.toContain('user@example.com'); expect(text).not.toContain('https://example.com'); expect(text).not.toContain('/home/private');
     expect(text).toContain('[email]'); expect(text).toContain('[url]'); expect(text.length).toBeLessThan(7000);
     expect(record.lastError?.message.length).toBeLessThanOrEqual(1600); expect(record.lastError?.stack.length).toBeLessThanOrEqual(2400);
+  });
+  it('keeps the first failure and frame timeline when a later cleanup error arrives', () => {
+    const record = createFirstPersonDiagnostics();
+    record.stage = 'ready'; record.frameSequence = 91; record.lastMainRenderFrame = 90;
+    record.lastPresentationFrame = 90; record.lastOffscreenFrame = 88; record.activeRendererOwners = 1;
+    const first = new Error('mirror failed at /Users/private/game with token=secret');
+    recordFirstFailure(record, first, 'scene frame', 'SCENE_FRAME');
+    record.stage = 'failed';
+    recordFirstFailure(record, new Error('secondary dispose error'), 'render', 'MAIN_RENDER');
+    recordDiagnosticError(record, new Error('late timeout'), 'initialization timeout');
+    expect(record.firstFailure).toMatchObject({ reasonCode: 'SCENE_FRAME', stageBeforeFailure: 'ready',
+      frameSequence: 91, lastMainRenderFrame: 90, lastPresentationFrame: 90, lastOffscreenFrame: 88, activeRendererOwners: 1 });
+    const text = serializeFailureDiagnostics(record, { chapterId: 'mirror-corridor-v1', campaignId: 'last-departure',
+      areaId: 'chapter-1-area-04', runtimeSession: 22, attempt: 1, restoreOrigin: 'retry', revision: 4,
+      pose: { position: { x: -2.45, y: 1.6, z: 7.5 }, yaw: Math.PI, pitch: 0 } });
+    expect(text).toContain('FIRST_FAILURE'); expect(text).toContain('SCENE_FRAME');
+    expect(text).toContain('mirror-corridor-v1'); expect(text).toContain('chapter-1-area-04');
+    expect(text).not.toContain('secondary dispose error'); expect(text).not.toContain('late timeout');
+    expect(text).not.toContain('/Users/private'); expect(text).not.toContain('token=secret');
+    expect(text.length).toBeLessThan(7000);
   });
   it('places a large unlit proof box predictably within the fixed portrait frustum', () => {
     const { scene, camera } = proofFixture();

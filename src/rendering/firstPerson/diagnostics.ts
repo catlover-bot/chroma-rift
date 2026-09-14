@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import appConfig from '../../../app.json';
 
 import { inspectPoseSafety, isSafePose } from '../../domain/firstPerson/geometry';
 import { stageDefinition } from '../../domain/stageKit/definitions';
@@ -6,20 +7,27 @@ import { stageInputPolicy } from '../../domain/stageKit/modules';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
-export const DIAGNOSTIC_REVISION = 'goal-012-stage-kit-r1';
+export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r1';
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
 export type DiagnosticStage = 'initializing' | 'context-created' | 'renderer-created' | 'scene-committed' | 'first-submitted' | 'ready' | 'failed' | 'closed';
 export type Measurement<T> = T | 'unknown' | 'unsupported';
 export type DimensionsRecord = { width: number; height: number };
 export type DiagnosticError = { phase: string; name: string; message: string; stack: string; componentStack: string };
+export type DiagnosticFailure = { reasonCode: string; stageBeforeFailure: DiagnosticStage; atMs: number; elapsedMs: number;
+  frameSequence: number; lastMainRenderFrame: number; lastPresentationFrame: number; lastOffscreenFrame: number;
+  renderReturns: number; presentationReturns: number; offscreenPasses: number; activeRendererOwners: number; error: DiagnosticError };
 export type ShaderDiagnostic = { program: string; vertex: string; fragment: string };
 export type FirstPersonDiagnostics = {
   revision: string; session: number; sceneMode: DiagnosticSceneMode; stage: DiagnosticStage; open: boolean;
   nativeGL: Measurement<boolean>; appActive: Measurement<boolean>; paused: boolean;
   rnLayout: Measurement<DimensionsRecord>; drawingBuffer: Measurement<DimensionsRecord>; pixelRatio: Measurement<number>;
   contextCreates: number; rendererCreates: number; rendererOwnership: 'unknown' | 'live' | 'teardown-only' | 'closed';
+  activeRendererOwners: number; startedAtMs: number; frameSequence: number; lastMainRenderFrame: number; lastPresentationFrame: number; lastOffscreenFrame: number;
+  events: { atMs: number; frame: number; event: string }[];
   sceneCommitted: boolean; frameCallbacks: number; simulationTicks: number; renderCalls: number; renderReturns: number; presentationReturns: number; sceneSampleRenderReturn: number;
   offscreenPasses: number; frameOffscreenPasses: number; offscreenTargetSize: Measurement<[number, number]>;
+  offscreenTargetConfig: Measurement<{ width: number; height: number; samples: number; depthBuffer: boolean; stencilBuffer: boolean; type: number; format: number }>;
+  offscreenFramebufferStatus: Measurement<number>;
   camera: Measurement<{ position: [number, number, number]; yaw: number; pitch: number; aspect: number; near: number; far: number; matricesFinite: boolean; valid: boolean; layers: number }>;
   pose: { insideSolid: Measurement<boolean>; supportedFloor: Measurement<boolean>; safe: Measurement<boolean> };
   scene: { children: number; meshes: number; visibleLayerMeshes: number; frustumCandidateMeshes: number; materials: number; geometries: number; textures: number };
@@ -28,6 +36,7 @@ export type FirstPersonDiagnostics = {
   viewport: Measurement<[number, number, number, number]>; scissor: Measurement<[number, number, number, number]>; scissorTest: Measurement<boolean>;
   glVersion: Measurement<string>; shaderLanguage: Measurement<string>; supportsWebGL2: Measurement<boolean>; framebufferStatus: Measurement<number>; glErrors: string[]; shaderErrors: ShaderDiagnostic[];
   lastError: DiagnosticError | null;
+  firstFailure: DiagnosticFailure | null;
   effectiveControls: { mode: 'unknown' | 'standard' | 'simple'; reason: string };
   pixelEvidence: 'not-sampled' | 'proof-triangle-center-differs-from-clear' | 'proof-center-did-not-match-triangle' | 'unsupported';
   stageKit?: { stageId: string; contentVersion: number | 'unknown'; session: number; revision: number;
@@ -42,14 +51,15 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
   return {
     revision: DIAGNOSTIC_REVISION, session: ++nextSession, sceneMode, stage: 'initializing', open: false,
     nativeGL: 'unknown', appActive: 'unknown', paused: false, rnLayout: 'unknown', drawingBuffer: 'unknown', pixelRatio: 'unknown',
-    contextCreates: 0, rendererCreates: 0, rendererOwnership: 'unknown', sceneCommitted: false,
+    contextCreates: 0, rendererCreates: 0, rendererOwnership: 'unknown', activeRendererOwners: 0,
+    startedAtMs: Date.now(), frameSequence: 0, lastMainRenderFrame: 0, lastPresentationFrame: 0, lastOffscreenFrame: 0, events: [], sceneCommitted: false,
     frameCallbacks: 0, simulationTicks: 0, renderCalls: 0, renderReturns: 0, presentationReturns: 0, sceneSampleRenderReturn: 0,
-    offscreenPasses: 0, frameOffscreenPasses: 0, offscreenTargetSize: 'unknown', camera: 'unknown',
+    offscreenPasses: 0, frameOffscreenPasses: 0, offscreenTargetSize: 'unknown', offscreenTargetConfig: 'unknown', offscreenFramebufferStatus: 'unknown', camera: 'unknown',
     pose: { insideSolid: 'unknown', supportedFloor: 'unknown', safe: 'unknown' },
     scene: { children: 0, meshes: 0, visibleLayerMeshes: 0, frustumCandidateMeshes: 0, materials: 0, geometries: 0, textures: 0 },
     lastFrame: { drawCalls: 'unknown', triangles: 'unknown', geometries: 'unknown', textures: 'unknown', samplePoint: 'not-sampled' },
     renderTarget: 'unknown', viewport: 'unknown', scissor: 'unknown', scissorTest: 'unknown',
-    glVersion: 'unknown', shaderLanguage: 'unknown', supportsWebGL2: 'unknown', framebufferStatus: 'unknown', glErrors: [], shaderErrors: [], lastError: null,
+    glVersion: 'unknown', shaderLanguage: 'unknown', supportsWebGL2: 'unknown', framebufferStatus: 'unknown', glErrors: [], shaderErrors: [], lastError: null, firstFailure: null,
     effectiveControls: { mode: 'unknown', reason: 'not-evaluated' }, pixelEvidence: 'not-sampled',
   };
 }
@@ -58,19 +68,37 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
  * Do not copy process/env/native identifiers into this document. */
 export function boundedDiagnosticText(value: unknown, maxLength = 1600): string {
   return String(value ?? '')
-    .replace(/https?:\/\/[^\s)]+/gi, '[url]')
+    .replace(/[a-z][a-z0-9+.-]*:\/\/[^\s)]+/gi, '[url]')
     .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '[email]')
     .replace(/[A-Z]:[\\/]Users[\\/][^\\/\s]+/gi, '[user]')
     .replace(/\/home\/[^/\s]+/g, '[user]')
+    .replace(/\/Users\/[^/\s]+/g, '[user]')
+    .replace(/\/var\/mobile\/[^\s)]+/g, '[device-path]')
+    .replace(/\b(?:Bearer|token|api[_-]?key)\s*[:= ]\s*[^\s,;]+/gi, '[credential]')
+    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '[identifier]')
     .slice(0, maxLength);
 }
 export function recordDiagnosticError(record: FirstPersonDiagnostics, error: unknown, phase: string, componentStack?: string | null): void {
+  if (record.lastError) return;
   record.lastError = {
     phase: boundedDiagnosticText(phase, 80), name: error instanceof Error ? boundedDiagnosticText(error.name, 80) : 'Error',
     message: boundedDiagnosticText(error instanceof Error ? error.message : error),
     stack: error instanceof Error ? boundedDiagnosticText(error.stack, 2400) : '',
     componentStack: boundedDiagnosticText(componentStack, 1600),
   };
+}
+export function recordDiagnosticEvent(record: FirstPersonDiagnostics, event: string): void {
+  record.events = [...record.events, { atMs: Date.now() - record.startedAtMs, frame: record.frameSequence, event: boundedDiagnosticText(event, 80) }].slice(-12);
+}
+export function recordFirstFailure(record: FirstPersonDiagnostics, error: unknown, phase: string, reasonCode: string, componentStack?: string | null): void {
+  if (record.firstFailure) return;
+  recordDiagnosticError(record, error, phase, componentStack);
+  const atMs = Date.now();
+  record.firstFailure = { reasonCode, stageBeforeFailure: record.stage, atMs, elapsedMs: Math.max(0, atMs - record.startedAtMs),
+    frameSequence: record.frameSequence, lastMainRenderFrame: record.lastMainRenderFrame, lastPresentationFrame: record.lastPresentationFrame,
+    lastOffscreenFrame: record.lastOffscreenFrame, renderReturns: record.renderReturns, presentationReturns: record.presentationReturns,
+    offscreenPasses: record.offscreenPasses, activeRendererOwners: record.activeRendererOwners, error: record.lastError! };
+  recordDiagnosticEvent(record, `FIRST_FAILURE:${reasonCode}`);
 }
 export function snapshotDiagnostics(record: FirstPersonDiagnostics): FirstPersonDiagnostics {
   // No renderer references or callbacks enter the record; copies cannot mutate
@@ -79,6 +107,27 @@ export function snapshotDiagnostics(record: FirstPersonDiagnostics): FirstPerson
 }
 export function serializeDiagnostics(record: FirstPersonDiagnostics): string {
   return JSON.stringify(snapshotDiagnostics(record), null, 2);
+}
+/** Only this bounded, redacted failure summary is exposed in internal preview.
+ * Build/channel are unknown until a native build explicitly supplies them. */
+export function serializeFailureDiagnostics(record: FirstPersonDiagnostics, context: { chapterId: string; campaignId?: string; areaId?: string;
+  runtimeSession: number; attempt: number; restoreOrigin: 'fresh' | 'checkpoint' | 'retry'; pose: PlayerPose; revision: number }): string {
+  const safe = snapshotDiagnostics(record);
+  return JSON.stringify({ label: 'FIRST_FAILURE', revision: safe.revision,
+    app: { version: appConfig.expo.version, build: 'unknown', channel: 'unknown', code: safe.revision },
+    campaignId: context.campaignId ?? 'unknown', areaId: context.areaId ?? 'unknown', chapterId: boundedDiagnosticText(context.chapterId, 80),
+    diagnosticSession: safe.session, runtimeSession: context.runtimeSession, attempt: context.attempt,
+    restoreOrigin: context.restoreOrigin, stateRevision: context.revision,
+    pose: { x: context.pose.position.x, y: context.pose.position.y, z: context.pose.position.z, yaw: context.pose.yaw, pitch: context.pose.pitch },
+    stage: safe.stage, firstFailure: safe.firstFailure, events: safe.events,
+    frames: { sequence: safe.frameSequence, mainRender: safe.lastMainRenderFrame, presentation: safe.lastPresentationFrame,
+      reflection: safe.lastOffscreenFrame, renderReturns: safe.renderReturns, presentationReturns: safe.presentationReturns,
+      offscreenPasses: safe.offscreenPasses },
+    owners: { activeRendererOwners: safe.activeRendererOwners, rendererCreates: safe.rendererCreates, contextCreates: safe.contextCreates,
+      rendererOwnership: safe.rendererOwnership }, target: { config: safe.offscreenTargetConfig, framebufferStatus: safe.offscreenFramebufferStatus },
+    gl: { nativeGL: safe.nativeGL, supportsWebGL2: safe.supportsWebGL2,
+      framebufferStatus: safe.framebufferStatus, errors: safe.glErrors, shaderErrors: safe.shaderErrors },
+  }, null, 2);
 }
 export function updateDiagnosticContext(record: FirstPersonDiagnostics, value: Pick<FirstPersonDiagnostics, 'effectiveControls' | 'appActive' | 'paused' | 'sceneMode'>): void {
   Object.assign(record, value);

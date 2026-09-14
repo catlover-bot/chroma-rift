@@ -23,7 +23,7 @@ import { ActionButton, Body, ChoiceRow, Heading, SettingSwitch } from '../compon
 import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage, type InteractableId } from '../domain/firstPerson';
 import { playSelectionHaptic } from '../platform/haptics';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
-import { serializeDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
+import { serializeDiagnostics, serializeFailureDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
 import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, beginStageHoldController, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, endStageHoldController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
 import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
@@ -38,6 +38,7 @@ import { UI_COLORS } from '../theme/ui';
 import { DEFAULT_FIRST_PERSON_ONBOARDING, type FirstPersonOnboarding, type AppSettings, type FirstPersonChapterSummary, type FirstPersonControls } from '../types/application';
 import { effectiveControlMode, simpleGuideAimInstruction } from './firstPersonControlMode';
 import { chapterOneBeat, type ChapterOneBeatId } from '../domain/campaign/story';
+import { CHAPTER_ONE } from '../domain/campaign/definition';
 import { CampaignStageNotebook } from './CampaignStageNotebook';
 import { chapterOneStageNoteArea } from '../content/chapterOneDiscoveries';
 
@@ -279,15 +280,20 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   useEffect(() => {
     updateDiagnosticContext(controller.diagnostics, { effectiveControls: { mode: effectiveControls.mode, reason: effectiveControls.reason }, appActive, paused, sceneMode: renderMode === 'chapter' ? scene : renderMode });
   }, [appActive, controller, effectiveControls.mode, effectiveControls.reason, paused, renderMode, scene]);
+  const diagnosticsForDisplay = useCallback(() => error ? serializeFailureDiagnostics(controller.diagnostics, {
+    chapterId, campaignId: CHAPTER_ONE.id, areaId: CHAPTER_ONE.areas.find(area => area.stageId === chapterId)?.id ?? 'unknown',
+    runtimeSession: controller.runtime.session, attempt, restoreOrigin: attempt > 0 ? 'retry' : startCheckpoint ? 'checkpoint' : 'fresh',
+    pose: controller.runtime.pose, revision: controller.viewCommandRevision,
+  }) : serializeDiagnostics(controller.diagnostics), [attempt, chapterId, controller, error, startCheckpoint]);
   useEffect(() => {
     setDiagnosticsOpen(controller.diagnostics, showDiagnostics);
     if (showDiagnostics) stopController(controller);
     if (!showDiagnostics) return;
-    const refresh = () => { updateStageKitDiagnostics(controller.diagnostics,controller,controllerSnapshot(controller)); setDiagnosticText(serializeDiagnostics(controller.diagnostics)); };
+    const refresh = () => { updateStageKitDiagnostics(controller.diagnostics,controller,controllerSnapshot(controller)); setDiagnosticText(diagnosticsForDisplay()); };
     refresh();
     const timer = appActive ? setInterval(refresh, 500) : undefined;
     return () => { if (timer !== undefined) clearInterval(timer); setDiagnosticsOpen(controller.diagnostics, false); };
-  }, [appActive, controller, showDiagnostics]);
+  }, [appActive, controller, showDiagnostics, diagnosticsForDisplay]);
   useEffect(() => {
     const listener = AppState.addEventListener('change', (state) => {
       if (!mounted.current) return;
@@ -444,21 +450,21 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const lookSide = controls.handedness === 'right' ? '右' : '左';
   const copyDiagnostics = async () => {
     try {
-      await Clipboard.setStringAsync(serializeDiagnostics(controller.diagnostics));
+      await Clipboard.setStringAsync(diagnosticsForDisplay());
       if (mounted.current) setCopyStatus('診断をコピーしました。外部へ送信していません。');
     } catch { if (mounted.current) setCopyStatus('コピーできませんでした。診断はこの画面で確認できます。'); }
   };
-  const diagnostics = __DEV__ ? <Modal visible={showDiagnostics && !pauseForCampaignSave} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
+  const diagnostics = (__DEV__ || !!error) ? <Modal visible={showDiagnostics && (!pauseForCampaignSave || !!error)} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
     <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
       <Heading>描画の診断</Heading>
       <ScrollView contentContainerStyle={styles.menuContent}>
-        <Body muted>数値だけでは、部屋が見えているとは判断できません。</Body>
+        <Body muted>{error ? '最初の故障記録です。コピーは端末内だけで行われ、外部へ自動送信されません。' : '数値だけでは、部屋が見えているとは判断できません。'}</Body>
         <Text selectable style={styles.diagnosticText} testID="render-diagnostic-record">{diagnosticText}</Text>
-        <ActionButton label="診断をコピー" onPress={() => void copyDiagnostics()} />
+        <ActionButton label={error ? '診断情報をコピー' : '診断をコピー'} onPress={() => void copyDiagnostics()} />
         {copyStatus ? <Body>{copyStatus}</Body> : null}
-        {renderMode === 'chapter' ? <ActionButton label="R3Fの箱・床・壁を確認" onPress={() => changeSession('proof')} /> : null}
-        {renderMode === 'proof' ? <ActionButton label="箱が見えない：生のGLを確認" onPress={() => changeSession('raw-gl')} /> : null}
-        {renderMode !== 'chapter' ? <ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /> : null}
+        {__DEV__ && renderMode === 'chapter' ? <ActionButton label="R3Fの箱・床・壁を確認" onPress={() => changeSession('proof')} /> : null}
+        {__DEV__ && renderMode === 'proof' ? <ActionButton label="箱が見えない：生のGLを確認" onPress={() => changeSession('raw-gl')} /> : null}
+        {__DEV__ && renderMode !== 'chapter' ? <ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /> : null}
         <ActionButton label="診断を閉じる" onPress={() => setShowDiagnostics(false)} />
       </ScrollView>
     </View></View>
@@ -467,7 +473,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   if (error) return <SafeAreaView style={styles.screen}><ScrollView contentContainerStyle={styles.errorCard} accessibilityElementsHidden={showDiagnostics} importantForAccessibility={showDiagnostics ? 'no-hide-descendants' : 'auto'}><Heading>3Dを表示できませんでした</Heading><Body>{error}</Body>
     <ActionButton label="表示を再試行" onPress={() => changeSession(renderMode, true)} disabled={attempt >= MAX_RENDER_RETRIES} />
     <Body muted>{attempt >= MAX_RENDER_RETRIES ? 'この起動での再試行を終えました。診断を確認してホームへ戻れます。' : '現在位置と進行を保ったまま、描画を作り直します。'}</Body>
-    {__DEV__ ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}
+    <ActionButton label="詳細を表示" onPress={() => setShowDiagnostics(true)} />
     <ActionButton label="ホームへ戻る" onPress={onExit} />
   </ScrollView>{diagnostics}</SafeAreaView>;
 

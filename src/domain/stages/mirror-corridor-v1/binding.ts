@@ -35,7 +35,7 @@ export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
   advance:(runtime,dt)=>{const live=session(runtime);return live?{...runtime,stageSession:{stageId:STAGE_ID,value:advanceStage({...live,pose:{...runtime.pose,position:{...runtime.pose.position}}},dt)}}:runtime;},
   world:runtime=>stageWorld(session(runtime)?.ratchets??0,session(runtime)?.keyTaken??false,session(runtime)?.practiced??false,session(runtime)?.holding??null,
     session(runtime)?.actor.motion.position),
-  present:runtime=>{const live=session(runtime);return {objective:live?.cleared?'制御室への前室に着いた。':!live?.keyTaken?'隔離キーを取り、巻き上げ位置へ進む。':!live.practiced?'練習レバーで保持を確かめる。':live.ratchets<3?`レバーを保持し、格子を巻き上げる。歯止め ${live.ratchets}/3。`:'開いた格子の先へ進む。',hint:{text:'中央の鍵形を狙える。歯止めは離しても残る。'}};},
+  present:runtime=>{const live=session(runtime);return {objective:live?.cleared?'制御室への前室に着いた。':!live?.keyTaken?'隔離キーを取り、巻き上げ位置へ進む。':!live.practiced?'淡い壁印の先で、練習レバーを保持する。':live.ratchets<3?`レバーを保持し、格子を巻き上げる。歯止め ${live.ratchets}/3。`:'開いた格子の先へ進む。',hint:{text:!live?.keyTaken?'中央の鍵形を狙える。':!live.practiced?'壁沿いの淡い印が練習レバーの方へ続く。':'歯止めは離しても残る。'}};},
   command,
   interact:(runtime,targetId:InteractableId)=>{
     const live=session(runtime);if(!live)return runtime;

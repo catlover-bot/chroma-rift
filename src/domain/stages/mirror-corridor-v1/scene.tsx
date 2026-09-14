@@ -67,7 +67,10 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       mirrorFrustum.setFromProjectionMatrix(projectionView.multiplyMatrices(state.camera.projectionMatrix,state.camera.matrixWorldInverse));
       if(!mirrorFrustum.intersectsObject(mirrorMesh.current))return;
       if(!renderOffscreen)throw new Error('Mirror scene has no offscreen native Canvas draw');
-      mirror.render(state.gl,state.scene,state.camera as import('three').PerspectiveCamera,mirrorMesh.current,renderOffscreen);
+      const reflected=mirror.render(state.gl,state.scene,state.camera as import('three').PerspectiveCamera,mirrorMesh.current,renderOffscreen);
+      // A skipped reflection can be behind the plane, even while the mesh is
+      // inside the main camera frustum. Do not show the previous danger frame.
+      mirrorMesh.current.material=reflected?mirror.material:mirror.fallbackMaterial;
     } catch(error) {
       if(onFrameError)onFrameError(error);
       else throw error;
@@ -100,6 +103,8 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       <mesh name="mirror-frame-right" geometry={resources.box} material={resources.trim} position={[.65,0,0]} scale={[.08,1.3,.1]}/>
     </group>
     <mesh name="mirror-landmark" geometry={resources.box} material={resources.neutral} position={[1.05,1.5,14.25]} scale={[.22,.22,.22]}/>
+    <mesh name="practice-waymark" geometry={resources.box} material={resources.neutral} position={[-2.94,1.25,5.25]} scale={[.04,.3,.13]}/>
+    <mesh name="practice-lever-marker" geometry={resources.box} material={resources.neutral} position={[-2.45,1.72,7.5]} scale={[.16,.055,.08]}/>
     <mesh name="control-vestibule-floor" geometry={resources.box} material={resources.floor} position={[0,-.1,27.75]} scale={[6,.2,7.5]}/>
     <mesh name="control-vestibule-west" geometry={resources.box} material={resources.wall} position={[-3.08,1.75,27.75]} scale={[.16,3.5,7.5]}/>
     <mesh name="control-vestibule-east" geometry={resources.box} material={resources.wall} position={[3.08,1.75,27.75]} scale={[.16,3.5,7.5]}/>
