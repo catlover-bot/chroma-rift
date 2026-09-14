@@ -283,7 +283,13 @@ describe('first-person control surface and lifecycle', () => {
     const expectedPose = createCheckpoint(old.controller.runtime).pose;
     await fireEvent.press(view.getByRole('button', { name: '色をほどく' }));
     const checkpointCalls = jest.mocked(original.onCheckpoint).mock.calls.length;
+    diagnostics.recordFirstFailure(old.controller.diagnostics, new Error('original native draw failed'), 'render', 'MAIN_RENDER');
     await act(() => scene().onError('描画が止まりました。'));
+    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    const firstRecord = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
+    expect(firstRecord).toMatchObject({ attempt: 0, firstFailure: { reasonCode: 'MAIN_RENDER', error: { message: 'original native draw failed' } } });
+    await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+    mockSubmittedFrame = false; // Both retries fail before a successful recovery frame.
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
     const fresh = scene();
     expect(fresh.controller).not.toBe(old.controller);
@@ -295,11 +301,55 @@ describe('first-person control surface and lifecycle', () => {
     expect(view.queryByText('以前のエラー')).toBeNull();
     expect(original.onCheckpoint).toHaveBeenCalledTimes(checkpointCalls);
     expect(original.onRestart).not.toHaveBeenCalled();
+    diagnostics.recordFirstFailure(fresh.controller.diagnostics, new Error('later retry failed'), 'GL', 'GL_FRAME');
     await act(() => scene().onError('再試行後のエラー'));
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+    diagnostics.recordFirstFailure(scene().controller.diagnostics, new Error('final retry failed'), 'shader', 'SHADER');
     await act(() => scene().onError('二度目の再試行後のエラー'));
     expect(view.getByRole('button', { name: '表示を再試行' })).toBeDisabled();
     expect(view.getByRole('button', { name: '詳細を表示' })).toBeEnabled();
+    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toEqual(firstRecord);
+    jest.mocked(Clipboard.setStringAsync).mockClear();
+    await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
+    expect(JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls[0]![0])).toEqual(firstRecord);
+  });
+
+  it('starts a new first-failure episode only after a retry presents a ready frame', async () => {
+    const view = await render(<FirstPersonScreen {...props()} />);
+    const initial = scene();
+    diagnostics.recordFirstFailure(initial.controller.diagnostics, new Error('old transient failure'), 'render', 'MAIN_RENDER');
+    await act(() => initial.onError('最初の失敗'));
+    await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+    const recovered = scene();
+    expect(recovered.controller).not.toBe(initial.controller);
+    expect(view.queryByRole('button', { name: '表示を再試行' })).toBeNull();
+    diagnostics.recordFirstFailure(recovered.controller.diagnostics, new Error('new running failure'), 'scene frame', 'SCENE_FRAME');
+    await act(() => recovered.onError('後の失敗'));
+    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toMatchObject({
+      attempt: 1, firstFailure: { reasonCode: 'SCENE_FRAME', error: { message: 'new running failure' } },
+    });
+  });
+
+  it('keeps the original chapter failure when a diagnostic proof renders after retry failure', async () => {
+    mockSubmittedFrame = false;
+    const view = await render(<FirstPersonScreen {...props()} />);
+    const original = scene();
+    diagnostics.recordFirstFailure(original.controller.diagnostics, new Error('chapter reflection failed'), 'offscreen', 'OFFSCREEN_DRAW');
+    await act(() => original.onError('本編の失敗'));
+    await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
+    await act(() => scene().onError('再試行の失敗'));
+    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    await fireEvent.press(view.getByRole('button', { name: 'R3Fの箱・床・壁を確認' }));
+    const proof = scene();
+    await act(() => proof.onReady());
+    await fireEvent.press(view.getByRole('button', { name: '探索へ戻る（進行を維持）' }));
+    await act(() => scene().onError('本編はまだ失敗'));
+    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toMatchObject({
+      attempt: 0, firstFailure: { reasonCode: 'OFFSCREEN_DRAW', error: { message: 'chapter reflection failed' } },
+    });
   });
 
   it('refreshes diagnostics only while open at most twice per second and copies only on request', async () => {

@@ -168,6 +168,36 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     } finally { await view.unmount(); }
   });
 
+  it('keeps a running mirror error after a successful presentation and restores the main renderer state', async () => {
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      const surface = rendererRoot(renderer).store.getState().scene.getObjectByName('planar-mirror') as THREE.Mesh;
+      await submitFrame(renderer);
+      expect(controller.diagnostics.stage).toBe('ready');
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      const originalError = new Error('running mirror draw failed');
+      renderer.draw.mockImplementationOnce(() => { throw originalError; });
+      await submitFrame(renderer, 2);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'SCENE_FRAME', stageBeforeFailure: 'ready',
+        frameSequence: 2, lastMainRenderFrame: 1, lastPresentationFrame: 1, lastOffscreenFrame: 1,
+        renderReturns: 1, presentationReturns: 1, offscreenPasses: 1,
+        error: { message: 'running mirror draw failed' } });
+      expect(controller.diagnostics.stage).toBe('failed');
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+      expect(renderer.getRenderTarget()).toBeNull();
+      expect(surface.visible).toBe(true);
+      await submitFrame(renderer, 3);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(1);
+    } finally { await view.unmount(); }
+    expect(controller.diagnostics.activeRendererOwners).toBe(0);
+  });
+
   it('releases mirror target and figure-ground resources on ten native Canvas reentries (device GPU excluded)', async () => {
     const rootsBefore = _roots.size;
     for (let replay = 0; replay < 10; replay++) {

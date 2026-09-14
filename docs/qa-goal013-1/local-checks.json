@@ -5,7 +5,7 @@
     "npmCheck": {
       "passed": true,
       "suites": 110,
-      "tests": 1142,
+      "tests": 1145,
       "iosModules": 1573,
       "assets": 10
     },
@@ -61,7 +61,7 @@
       "developmentSourcesAbsent": true,
       "firstPartySources": 201,
       "allFirstPartyMatch": true,
-      "bundleSha256": "8a79f8a409fdc3d917d8746a5d60040f7777e5e239eb110533cd8d2a81a59b2a",
+      "bundleSha256": "be81cb86e8e48b9ab1eff4a1210534149bc91f5392688f62ba68b1326112b432",
       "threeSources": 1,
       "threeEdges": 23,
       "threeClassIdentity": true
@@ -83,5 +83,6 @@
     "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
     "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
   },
-  "scope": "Local Node/Jest/Metro/Software WebGL only; no iPhone EXGL, binary contents, native presentation, or device acceptance."
+  "scope": "Local Node/Jest/Metro/Software WebGL only; no iPhone EXGL, binary contents, native presentation, or device acceptance.",
+  "diagnosticRevision": "goal-013-1-mirror-runtime-r2"
 }

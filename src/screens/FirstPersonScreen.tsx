@@ -80,11 +80,17 @@ function checkpointIdentity(runtime: RuntimeSnapshot['runtime']): string {
 export function FirstPersonScreen(props: FirstPersonScreenProps) {
   const [session, setSession] = useState(() => ({ checkpoint: props.checkpoint, attempt: 0, mode: 'chapter' as RecoveryScene }));
   const [neutralColors, setNeutralColors] = useState(false);
-  return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors} onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
+  const [firstFailureText, setFirstFailureText] = useState<string>();
+  const rememberFirstFailure = useCallback((record: string) => setFirstFailureText(previous => previous ?? record), []);
+  const clearRecoveredFailure = useCallback(() => setFirstFailureText(undefined), []);
+  return <FirstPersonSession key={`${session.attempt}-${session.mode}`} {...props} startCheckpoint={session.checkpoint} attempt={session.attempt} renderMode={session.mode} neutralColors={neutralColors}
+    firstFailureText={firstFailureText} onFirstFailure={rememberFirstFailure} onRecoveryReady={clearRecoveredFailure}
+    onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
 }
 
-function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, pauseForCampaignSave = false, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, onColorChange, onSessionChange }: FirstPersonScreenProps & {
+function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, pauseForCampaignSave = false, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, firstFailureText, onFirstFailure, onRecoveryReady, onColorChange, onSessionChange }: FirstPersonScreenProps & {
   startCheckpoint: CheckpointState | undefined; attempt: number; renderMode: RecoveryScene; neutralColors: boolean;
+  firstFailureText: string | undefined; onFirstFailure: (record: string) => void; onRecoveryReady: () => void;
   onColorChange: (neutral: boolean) => void;
   onSessionChange: (checkpoint: CheckpointState, mode: RecoveryScene, retry: boolean) => void;
 }) {
@@ -256,6 +262,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     onStoryPresented?.(acknowledged);
     if (acknowledged !== 'closing-interrupted') resume();
   };
+  const serializeCurrentFailure = useCallback(() => serializeFailureDiagnostics(controller.diagnostics, {
+    chapterId, campaignId: CHAPTER_ONE.id, areaId: CHAPTER_ONE.areas.find(area => area.stageId === chapterId)?.id ?? 'unknown',
+    runtimeSession: controller.runtime.session, attempt, restoreOrigin: attempt > 0 ? 'retry' : startCheckpoint ? 'checkpoint' : 'fresh',
+    pose: controller.runtime.pose, revision: controller.viewCommandRevision,
+  }), [attempt, chapterId, controller, startCheckpoint]);
   const fail = useCallback((message: string) => {
     if (!mounted.current || failed.current) return;
     failed.current = true;
@@ -266,9 +277,16 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     commandController(controller, { type: 'pause' });
     setSnapshot(controllerSnapshot(controller));
     setReady(false);
+    // The next retry mounts a new controller. Keep the original attempt's
+    // bounded record in this screen owner, without making diagnostics fatal.
+    try { onFirstFailure(serializeCurrentFailure()); } catch { /* keep the recovery screen available */ }
     setError(message);
-  }, [controller]);
-  const canvasReady = useCallback(() => { if (mounted.current && !failed.current) setReady(true); }, []);
+  }, [controller, onFirstFailure, serializeCurrentFailure]);
+  const canvasReady = useCallback(() => {
+    if (!mounted.current || failed.current) return;
+    setReady(true);
+    if (attempt > 0 && renderMode === 'chapter') onRecoveryReady();
+  }, [attempt, onRecoveryReady, renderMode]);
   useEffect(() => {
     mounted.current = true;
     return () => { mounted.current = false; retireController(controller); };
@@ -280,11 +298,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   useEffect(() => {
     updateDiagnosticContext(controller.diagnostics, { effectiveControls: { mode: effectiveControls.mode, reason: effectiveControls.reason }, appActive, paused, sceneMode: renderMode === 'chapter' ? scene : renderMode });
   }, [appActive, controller, effectiveControls.mode, effectiveControls.reason, paused, renderMode, scene]);
-  const diagnosticsForDisplay = useCallback(() => error ? serializeFailureDiagnostics(controller.diagnostics, {
-    chapterId, campaignId: CHAPTER_ONE.id, areaId: CHAPTER_ONE.areas.find(area => area.stageId === chapterId)?.id ?? 'unknown',
-    runtimeSession: controller.runtime.session, attempt, restoreOrigin: attempt > 0 ? 'retry' : startCheckpoint ? 'checkpoint' : 'fresh',
-    pose: controller.runtime.pose, revision: controller.viewCommandRevision,
-  }) : serializeDiagnostics(controller.diagnostics), [attempt, chapterId, controller, error, startCheckpoint]);
+  const diagnosticsForDisplay = useCallback(() => {
+    if (!error) return serializeDiagnostics(controller.diagnostics);
+    if (firstFailureText) return firstFailureText;
+    try { return serializeCurrentFailure(); } catch { return '{"label":"FIRST_FAILURE","error":"diagnostic-unavailable"}'; }
+  }, [controller, error, firstFailureText, serializeCurrentFailure]);
   useEffect(() => {
     setDiagnosticsOpen(controller.diagnostics, showDiagnostics);
     if (showDiagnostics) stopController(controller);

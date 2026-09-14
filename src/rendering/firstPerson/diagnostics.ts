@@ -7,7 +7,7 @@ import { stageInputPolicy } from '../../domain/stageKit/modules';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
-export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r1';
+export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r2';
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
 export type DiagnosticStage = 'initializing' | 'context-created' | 'renderer-created' | 'scene-committed' | 'first-submitted' | 'ready' | 'failed' | 'closed';
 export type Measurement<T> = T | 'unknown' | 'unsupported';
