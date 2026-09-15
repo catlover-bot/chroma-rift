@@ -1,5 +1,26 @@
 # Goal 013 — iPhone previewで第一章を確認する
 
+## Goal 013.1 r8 — r7 build 2のGL失敗を受けた修正版候補
+
+**r7 / preview / release-js / 1.0.0 / iOS build 2 の04受入れはFAIL。新しいr8はPENDING、RELEASE_READY=false。** FIRST_FAILUREを受理し、起動timeoutより前のGL_INVALID_OPERATION (0x502)と判明した。採用Three／Expoのdefault framebufferとBACKの不整合を局所補正し、実software GLES・実Three/鏡scene・native lifecycle/保存回帰を検査した。個々の実機失敗命令は未確定。調査、source hash、全体113 suites／1,190 testsの結果は[GL調査記録](GOAL-013-1-R7-GL-INVESTIGATION.md)を参照する。以下のr7以前の手順・待機理由は歴史的記録として残す。
+
+修正commitは `c79a75f`、新コードmarkerは `goal-013-1-mirror-runtime-r8`。JS/TSだけの変更で、追加native依存や設定変更はない。ただし既存の**同梱r7 previewはMetroでは更新できない**ため、r8を含む新しいpreviewを作成する。ローカル検証後、ユーザーが次を実行する。この作業でこちらはEAS buildを起動していない。
+
+```bash
+cd /home/mhirotaka/workspace/chroma-rift-goal012 &&
+npx eas-cli@latest build --platform ios --profile preview
+```
+
+`preview`はinternal distribution、developmentClient=false、`autoIncrement:true`、`EXPO_PUBLIC_CHROMA_BUILD_PROFILE=preview`。version情報は既存 `appVersionSource:remote` を使い、remote番号をリセットしていない。次のiOS build番号とEAS build IDはここではunknownであり、完成ログと端末で確認する。古いr7や同じbuild 2の再インストールを新候補の確認と扱わない。
+
+1. 新previewのインストールリンクから既存アプリを更新し、ホームのアプリアイコンから直接起動する。第一章ホームで **r8 / preview / iOS build〈新番号〉** を確認し、EAS build IDと別々に記録する。アプリや保存は削除しない。MetroのQRやトンネルはこの同梱previewの更新経路ではない。
+2. 既存の「続きから」で04へ入り、最初の3D提示と操作開始を確認する。鍵・確定済み歯止めが以前の進行と整合するか確認し、レバー保持、鏡の正面→視界外／背面→正面、巻き上げ、04出口→05の順で進む。最初から01〜03を再プレイする必要はない。
+3. 再発したら「詳細を表示」→「診断情報をコピー」でFIRST_FAILUREを保存する。r8の `firstErrorBoundary`、`firstInvalidOperation`（観測できない場合はnull）、`gl.trace`、`framebufferAdapter`、query failureが次の切り分けに使える。`tracked/requested` はアプリが追跡した論理bindingで、native FBO IDの照会結果ではない。初回traceは上限付きで、成功後は同期command検査を止める。nullを原因なしと解釈しない。
+4. 必要なら最大2回の明示retry、ホームからの続き、完全終了後のcold再開を確認する。retryは確定進行を保ち安全なcheckpoint位置へ戻る。失敗して未提示のposeをそのまま保存位置として復元するものではない。retry上限後も詳細を読め、ホームでもこの起動の直近3試行を参照できる。コピー不能時は本文を選択する。外部への自動送信はない。
+
+記録欄: `日付 / device / iOS / app version / 新native build / EAS build ID / code・profile / 04入場由来 / 初回提示 / 鍵・レバー・鏡・巻上・05 / retry・home・cold / FIRST_FAILURE（発生時） / 未確認`。04→05が確認できた後で全01→05とオフライン候補を評価する。表示、実指、VoiceOver、錯視、怖さ、実聴、FPS／発熱は端末で実施した項目だけ記入する。ローカル検査をiPhone合格へ置き換えない。
+
+
 ## Goal 013.1 r7 — 診断の残り時間・識別情報を確認する（実機未確認）
 
 最新のローカル識別子は`goal-013-1-mirror-runtime-r7`。r6のpreview診断導線を保持し、起動残り時間の誤記録、待機中コピーのbuild情報、schema番号を修正した。新しい端末結果はなく、停止原因の特定と実機受入れは引き続き未完了。`DEVICE_ACCEPTANCE=PENDING`、`RELEASE_READY=false`。

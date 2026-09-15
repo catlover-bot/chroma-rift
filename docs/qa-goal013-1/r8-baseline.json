@@ -1,0 +1,242 @@
+{
+  "label": "LOCAL_BASELINE_BEFORE_R8_PRODUCT_EDITS",
+  "startedAtUTC": "2026-09-15T05:05:32.860Z",
+  "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
+  "branch": "fix/goal-013-1-mirror-runtime-recovery",
+  "head": "f99406236b0601b093579ecb239c3c08413b6d49",
+  "statusAtStart": "",
+  "node": "v24.20.0",
+  "npm": "11.19.0",
+  "protectedSha256": {
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  },
+  "check": {
+    "command": "npm run check",
+    "log": "/tmp/chroma-goal0131-r8-baseline.log",
+    "status": "PASS",
+    "exitCode": 0,
+    "finishedAtUTC": "2026-09-15T05:09:19.452Z",
+    "testSuites": "110 passed, 110 total",
+    "tests": "1155 passed, 1155 total",
+    "jestTime": "207.003 s",
+    "iosExport": "iOS Bundled 18568ms index.tsx (1575 modules)",
+    "assets": 10,
+    "bundle": "_expo/static/js/ios/index-b5aa6412ff0a92c29f64be013591488c.hbc",
+    "logSha256": "04e098e14c2876a2292f9317a3cb5c625a1a04ad16bb316de5e33488d7d37e18"
+  },
+  "userReportedDeviceEvidence": {
+    "file": "docs/qa-goal013-1/r7-device-build2-first-failure.json",
+    "classification": "USER_REPORTED_NATIVE_FIRST_FAILURE_NOT_LOCALLY_OBSERVED",
+    "notTestFixture": true,
+    "sourceAttachmentSha256": "7b25762b2fafa917c861ca4516dc6310d1a2ac60866744df45d2f915659d94a2",
+    "jsonSha256": "36da7ed8e07454c31043fb86499cbfa87e556eb57e45f578d1016ec9f0f5324a",
+    "bytes": 3464,
+    "extraction": "Appendix A JSON values and original FIRST_FAILURE label unchanged; newline normalization only",
+    "r7Build2Area04Acceptance": "FAIL",
+    "newCandidateAcceptance": "PENDING",
+    "firstStop": "GL_FRAME / INVALID_OPERATION / before first completed presentation",
+    "nativeDeviceModel": "not supplied",
+    "nativeOsVersion": "not supplied",
+    "easBuildId": "not supplied",
+    "individualGlCommandCause": "not established",
+    "releaseReady": false,
+    "rawJsonSha256": "d2755f97bf414e42a91fc31c0b5c3ebc1ad57bc88a6360a5c772c0f755941f32",
+    "rawBytes": 3600,
+    "normalization": "Only CRLF line endings replaced with LF; parsed JSON deep equality verified",
+    "parsedJsonMatchesSourceAppendix": true
+  },
+  "headAtCompletion": "f99406236b0601b093579ecb239c3c08413b6d49",
+  "statusAtCompletion": "?? docs/qa-goal013-1/r7-device-build2-first-failure.json\n",
+  "warnings": [
+    {
+      "message": "THREE.WARNING: Multiple instances of Three.js being imported.",
+      "count": 25,
+      "context": "Jest isolated cold-entry/module loading; full bundle identity validation is separate"
+    },
+    {
+      "message": "The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.",
+      "count": 10,
+      "context": "Metro worker/node terminal output"
+    },
+    {
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "count": 107,
+      "context": "Existing installed Three/R3F test clock path; warning retained"
+    }
+  ],
+  "npmLs": {
+    "command": "npm ls --depth=0 --json",
+    "exitCode": 0,
+    "log": "/tmp/chroma-goal0131-r8-baseline-npm-ls.json",
+    "stderr": "/tmp/chroma-goal0131-r8-baseline-npm-ls.err",
+    "problems": [],
+    "extraneous": []
+  },
+  "sourceGuard": {
+    "algorithm": "SHA256 of each source/config/test file, including untracked source paths; docs and generated export files excluded",
+    "manifestSha256": "f937103b541e823176a9ab2677200e5b8ce68a7a5d9bd572ca4d567b98e4409d",
+    "completedManifestSha256": "f937103b541e823176a9ab2677200e5b8ce68a7a5d9bd572ca4d567b98e4409d",
+    "changedDuringRun": [],
+    "allGuardedFilesUnchanged": true,
+    "entrypoint": {
+      "file": "index.tsx",
+      "fromStartCommit": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75",
+      "atCompletion": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75"
+    },
+    "productDiffAgainstStart": "",
+    "guardedFileCount": 412
+  },
+  "resolvedDependencies": {
+    "@react-native-async-storage/async-storage": {
+      "requested": "2.2.0",
+      "version": "2.2.0",
+      "packageJsonSha256": "6346a7c16602136ed46fc0aadd02c388ab160540dc32c1c5ad877d7152750d30"
+    },
+    "@react-three/fiber": {
+      "requested": "9.7.0",
+      "version": "9.7.0",
+      "packageJsonSha256": "55c4839a93229f0592357355c66db8dcfa50247a0d1c2201c4b316fa4515d62a"
+    },
+    "@shopify/react-native-skia": {
+      "requested": "2.6.2",
+      "version": "2.6.2",
+      "packageJsonSha256": "8f3328f8eb629db45ce755782f055d166b970b57921fa9aa8caaf2a807d1cc8a"
+    },
+    "@testing-library/react-native": {
+      "requested": "^14.0.1",
+      "version": "14.0.1",
+      "packageJsonSha256": "f71f06a285d35943f40faa66895c13e92ee17b4454ca2c0b40856fb0befb470c"
+    },
+    "@types/jest": {
+      "requested": "29.5.14",
+      "version": "29.5.14",
+      "packageJsonSha256": "1cfa25c3dc3c8e9c2469e6bf8ee4d0d99d571e006fc65cfdf8295a0ef6f83621"
+    },
+    "@types/react": {
+      "requested": "^19.2.18",
+      "version": "19.2.18",
+      "packageJsonSha256": "e6a4794d4b2bd136b02c33752667cc651110b82129d643a7cd238376a99607a9"
+    },
+    "@types/three": {
+      "requested": "0.185.4",
+      "version": "0.185.4",
+      "packageJsonSha256": "c3b4a2dad609524f2423886dc7039cfd324b46b272421940bdd5347b0e92bc60"
+    },
+    "eslint": {
+      "requested": "^9.39.5",
+      "version": "9.39.5",
+      "packageJsonSha256": "361210aa42b55fd814c48a01e3724559ec6f0f3e1c021d0f8aa2e8b00276060e"
+    },
+    "eslint-config-expo": {
+      "requested": "^57.0.2",
+      "version": "57.0.2",
+      "packageJsonSha256": "519d20888deaecfacc90c1a3c684419d81add4b9dcaf4312e6d75df8b53308d1"
+    },
+    "expo": {
+      "requested": "~57.0.22",
+      "version": "57.0.22",
+      "packageJsonSha256": "85d4683aa863e3306a61162456656bb51dd7287c90bb5920ddb2b8c6225de9ba"
+    },
+    "expo-asset": {
+      "requested": "~57.0.17",
+      "version": "57.0.17",
+      "packageJsonSha256": "b0b323d9e479b6ec0b685f34417d6920e6d971b25abde952c754158304f73b9b"
+    },
+    "expo-audio": {
+      "requested": "~57.0.5",
+      "version": "57.0.5",
+      "packageJsonSha256": "414f4117da273107eb8617f99caa7e78769a490ff4ffc22412e86a8246fbd98c"
+    },
+    "expo-clipboard": {
+      "requested": "~57.0.2",
+      "version": "57.0.2",
+      "packageJsonSha256": "e65e7bc8a1df23c8a2b00c275a2cd4f0a5f1a29bb7ea9c07ef69a6bcae876264"
+    },
+    "expo-constants": {
+      "requested": "~57.0.18",
+      "version": "57.0.18",
+      "packageJsonSha256": "3098a0614294f93d35ba9280f473a9ab2e3feb7ab8c57976dc6dcaeda53665d0"
+    },
+    "expo-dev-client": {
+      "requested": "~57.0.19",
+      "version": "57.0.19",
+      "packageJsonSha256": "f6debddd96fb17648b100540955ea06116af68bd00373d8786c901ee30264037"
+    },
+    "expo-file-system": {
+      "requested": "~57.0.7",
+      "version": "57.0.7",
+      "packageJsonSha256": "db1d8ced7ce04e7daf4e55c3fd543bfbe42e32aa5e192bbb8ae4bda98de50069"
+    },
+    "expo-gl": {
+      "requested": "~57.0.2",
+      "version": "57.0.2",
+      "packageJsonSha256": "b585e28940f60eb94a0901576ce7e45a8fca86d6a76e602277ddf9040c68d2fe"
+    },
+    "expo-haptics": {
+      "requested": "~57.0.3",
+      "version": "57.0.3",
+      "packageJsonSha256": "25df027b20e1889c5d7e8f4d261dead35d45cecf3c8a22e9da2df4aa2f7f336c"
+    },
+    "expo-splash-screen": {
+      "requested": "~57.0.9",
+      "version": "57.0.9",
+      "packageJsonSha256": "4a01662f6dea29f6d987bd071184d60630251c440d5465ad64689a0d4a7a3f42"
+    },
+    "jest-expo": {
+      "requested": "~57.0.5",
+      "version": "57.0.5",
+      "packageJsonSha256": "6a1d18b6378bcd3ced1b2114e98966270ae9471eb7c91f9151ebfc25cbae3b66"
+    },
+    "react": {
+      "requested": "19.2.3",
+      "version": "19.2.3",
+      "packageJsonSha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+    },
+    "react-native": {
+      "requested": "0.86.3",
+      "version": "0.86.3",
+      "packageJsonSha256": "416224a4e7caf2ee1f8f9bead8508d0b608feed745371ce0a8f0e2cafa16d144"
+    },
+    "react-native-gesture-handler": {
+      "requested": "~2.32.0",
+      "version": "2.32.0",
+      "packageJsonSha256": "837b814bfafd97dcd2f3a50a55e7cffb2dbf06a55e6b449bc52959c0e75c6e58"
+    },
+    "react-native-reanimated": {
+      "requested": "4.5.1",
+      "version": "4.5.1",
+      "packageJsonSha256": "bc85351a040fce75f2e42ba96dea2e3cc3e29f65c7a89ce4eaae893b11c1bece"
+    },
+    "react-native-safe-area-context": {
+      "requested": "~5.7.0",
+      "version": "5.7.0",
+      "packageJsonSha256": "752ca40cc831855a26fb9eda18ff6bad54986835d9aa42bba1129d53857f6131"
+    },
+    "react-native-worklets": {
+      "requested": "0.10.1",
+      "version": "0.10.1",
+      "packageJsonSha256": "485883959fd6a9d6981fbf2dc9607aaf6c9d8ce380c5359f0dd82f27fda95628"
+    },
+    "react-test-renderer": {
+      "requested": "^19.2.3",
+      "version": "19.2.3",
+      "packageJsonSha256": "d9624d9b806bd06cc91b03474c7817185f39509477d060bba369a2b8825d832b"
+    },
+    "three": {
+      "requested": "0.185.1",
+      "version": "0.185.1",
+      "packageJsonSha256": "1d5c438acdc1fe5a52fb8ede2e417afd91fec91d22275c40f7b739591b24e4df"
+    },
+    "typescript": {
+      "requested": "^6.0.3",
+      "version": "6.0.3",
+      "packageJsonSha256": "9332e97c30d3e53ed54910b89207ed657fb444066484df6e5b6965bf130865e9"
+    }
+  },
+  "provenance": "Fresh pre-edit local check. User-reported native r7 failure is separately preserved and is not invalidated by these automated passes."
+}

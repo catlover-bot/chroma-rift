@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "label": "LOCAL_R8_VERIFICATION_NOT_DEVICE_ACCEPTANCE",
+  "recordedAtUTC": "2026-09-15T05:35:09.514912+00:00",
+  "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
+  "branch": "fix/goal-013-1-mirror-runtime-recovery",
+  "startHead": "f99406236b0601b093579ecb239c3c08413b6d49",
+  "startStatus": "clean",
+  "productHead": "c79a75f5a9b37d2dfd872dd2fd3b3902e6748db9",
+  "diagnosticRevision": "goal-013-1-mirror-runtime-r8",
+  "productChanges": [
+    "docs/qa-goal013-1/r7-device-build2-first-failure.json",
+    "src/platform/buildIdentity.ts",
+    "src/rendering/firstPerson/__tests__/mirrorReportedCheckpointRecovery.test.ts",
+    "src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx",
+    "src/rendering/firstPerson/__tests__/nativeDefaultFramebuffer.test.ts",
+    "src/rendering/firstPerson/__tests__/nativeGlObserver.test.ts",
+    "src/rendering/firstPerson/canvasLifecycle.ts",
+    "src/rendering/firstPerson/diagnostics.ts",
+    "src/rendering/firstPerson/nativeDefaultFramebuffer.ts",
+    "src/rendering/firstPerson/nativeGlObserver.ts",
+    "src/rendering/firstPerson/nativeGlSession.ts",
+    "src/rendering/firstPerson/nativeSceneSession.ts"
+  ],
+  "productSourceSha256": {
+    "src/platform/buildIdentity.ts": "0ddbefd34221080bce1fd2d7be86e305fe2ce4a1504f2686444c243b8356303d",
+    "src/rendering/firstPerson/__tests__/mirrorReportedCheckpointRecovery.test.ts": "db0a0cba2fedc508a1d3234b72e3da839c463f47a305747d5a657d32333d8062",
+    "src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx": "41af5c030b23678e3f77487474424151250dd3d4ffce6de091658892ebdad1f3",
+    "src/rendering/firstPerson/__tests__/nativeDefaultFramebuffer.test.ts": "837427f82a06b9e2fafb52a2e341f45cf1cc861f29db32de2d86148014e01367",
+    "src/rendering/firstPerson/__tests__/nativeGlObserver.test.ts": "0774a676cb5044b1759c35dbb99a86d1edcb6604ffe5b8599d1b1a8963957480",
+    "src/rendering/firstPerson/canvasLifecycle.ts": "b9b9cd8304ece45cd7fdbec4db426cc7e669d33df7ec935f75635e29426a4acf",
+    "src/rendering/firstPerson/diagnostics.ts": "710622b8001ab70fd055976a0dc3c779298cd67b0b52d674514886f3a5727ea5",
+    "src/rendering/firstPerson/nativeDefaultFramebuffer.ts": "8e0439c0cf89dcc5c790e357121061f6de27e85e579fa5cb0afb1f4c5605379d",
+    "src/rendering/firstPerson/nativeGlObserver.ts": "d3ef9d422ce00d785a791e987cc93aea79f2055516c8a8ea36924ea6b9e8e177",
+    "src/rendering/firstPerson/nativeGlSession.ts": "d9a3a6a4a71726727d3fa131ba7597e236983d09c8cdfc3039d2d1c4168b4457",
+    "src/rendering/firstPerson/nativeSceneSession.ts": "c57ab0fb3b3ecf10bfe2c9293bcb672b5c382eeefd9fbfda641cb8ecfe046c1b"
+  },
+  "baseline": {
+    "evidence": "r8-baseline.json",
+    "suites": 110,
+    "tests": 1155,
+    "iosExportModules": 1575
+  },
+  "fullCheck": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-r8-check.log",
+    "logSha256": "55a8240b8873fd5cc1dab15ec8347eb915ef7bc855803f40cfd53fe1834419fa",
+    "command": "npm run check",
+    "suites": 113,
+    "tests": 1190,
+    "skipped": 0,
+    "jestSeconds": 240.83,
+    "lint": 0,
+    "typecheck": 0,
+    "iosExport": 0,
+    "iosExportModules": 1578,
+    "assets": 10,
+    "sourceContentsMatchProductCommit": true
+  },
+  "addedCoverage": {
+    "adapterSemantic": 21,
+    "singleGlObserver": 7,
+    "reportedCheckpointRecovery": 2,
+    "nativeCanvasFrameIntegration": 5,
+    "total": 35,
+    "existingTestsRemoved": 0
+  },
+  "testExpectationChanges": [
+    {
+      "test": "pre-presentation framebuffer rejection",
+      "before": "lastMainRenderFrame promoted to rejected frame",
+      "after": "stays at prior accepted frame (0 at startup)",
+      "reason": "A diagnosed invalid frame must not increase accepted return counters; renderCalls still records attempt."
+    },
+    {
+      "test": "cadenced GL diagnostics",
+      "before": "getError 2 per sampled main/presentation pair with one supported status query",
+      "after": "getError 6 per pair, no extra reads at unsampled FPS",
+      "reason": "Read before and after each supported query to distinguish query-produced errors; startup2Hz/play1Hz unchanged."
+    },
+    {
+      "test": "native failure copy marker",
+      "before": "r7",
+      "after": "r8",
+      "reason": "The candidate now includes the GL compatibility fix; prior user r7 evidence remains unchanged."
+    }
+  ],
+  "initialFailuresAndCorrections": [
+    {
+      "label": "strict adapter mechanism RED",
+      "result": {
+        "exitCode": 1,
+        "log": "/tmp/chroma-goal0131-r8-native-default-red.log",
+        "logSha256": "119b81bae447f04e23f4f6414e4f5c12022743f42720c94f2966e3f46ac67b6c"
+      },
+      "observation": "Expected0, received1282 (0x502) on complete nonzero drawable; corresponding case passed after mapping."
+    },
+    {
+      "label": "initial native integration",
+      "result": {
+        "exitCode": 1,
+        "log": "/tmp/chroma-r8-native-integration-first.log",
+        "logSha256": "c51cacc774c277c560f5944423b5cb826f8f1f13b76f99d90b2df7340de0756b"
+      },
+      "passed": 68,
+      "failed": 1,
+      "reason": "Existing copy assertion still expected r7; all five new integration cases passed."
+    },
+    {
+      "label": "mistaken targeted filter",
+      "result": {
+        "exitCode": 0,
+        "log": "/tmp/chroma-r8-native-marker-followup.log",
+        "logSha256": "1aa34bb5c503f27f816aef3b26fdffcd66d77616530d065d00deeb0477234473"
+      },
+      "selected": 0,
+      "excluded": 69,
+      "countedAsValidation": false
+    },
+    {
+      "label": "corrected targeted native copy",
+      "result": {
+        "exitCode": 0,
+        "log": "/tmp/chroma-r8-native-marker-corrected.log",
+        "logSha256": "85dc392a40442b935d5fb14309b120ec2ad96634d26964912712bf7fb12d4eee"
+      },
+      "passed": 1,
+      "excludedBySelection": 68
+    },
+    {
+      "label": "independent observer review",
+      "before": "getError throw followed by successful read falsely attributed queued0x502 to query",
+      "after": "confirmedClear required; query withheld; later rendering boundary retains0x502 without exact-command claim",
+      "verification": "Same standalone reviewer fixture passed; new regression included in final1190."
+    },
+    {
+      "label": "browser QA initial gate",
+      "before": "back-side skipped reflection emitted zero trace events but gate required nonzero",
+      "after": "Corrected expectation for zero GL bind/draw calls; full case matrix rerun. See browser report."
+    },
+    {
+      "label": "first product replay post-capture source change",
+      "reason": "Observer attribution fix changed imported source after successful capture. Original hashes retained; current full capture and six-suite58-test run regenerated. See product regression evidence."
+    }
+  ],
+  "focusedObserverAndDiagnostics": {
+    "suites": 2,
+    "tests": 18,
+    "exitCode": 0,
+    "scope": "Current observer attribution fix and serialization; included again in full check."
+  },
+  "adapter": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-goal0131-r8-native-default-green.log",
+    "logSha256": "d4dad07be2ac780d794bd79944f38d12c9e60e29dce0e1768dc0c3d9e8df9f8b",
+    "tests": 21
+  },
+  "cycles": {
+    "exitCode": 0,
+    "reportSha256": "a37a0d6d3c1629c1dc2fbf8f0d852f7ecd928846cbb6b7920aad08c78c0d4c6e",
+    "ok": true,
+    "platforms": [
+      "ios",
+      "android",
+      "neutral"
+    ],
+    "productionModulesEach": 232,
+    "runtimeEdgesEach": 709,
+    "cyclesEach": 0,
+    "errorsEach": 0
+  },
+  "doctor": {
+    "initial": {
+      "exitCode": 1,
+      "log": "/tmp/chroma-r8-doctor.log",
+      "logSha256": "0178aa84ca757e2d958ba5f9b2765828200b5237af4b37ae681eef09727546c3",
+      "passed": 20,
+      "total": 21,
+      "reason": "React Native Directory unexpected server response"
+    },
+    "verboseRetry": {
+      "exitCode": 0,
+      "log": "/tmp/chroma-r8-doctor-retry.log",
+      "logSha256": "b487a1831f3d90e1d3caea440ecfbdfb309ecf96ee4fc675691e6e6764e867e3",
+      "passed": 21,
+      "total": 21,
+      "version": "1.20.4"
+    },
+    "dependenciesChanged": false
+  },
+  "expoDependencies": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-r8-dependencies.log",
+    "logSha256": "8152e1dfe2839254529bd71a5c9d6f299c93bc1132025c5930dcc5dc042489db",
+    "observation": "Dependencies are up to date"
+  },
+  "npmLs": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-r8-npm-ls.json",
+    "logSha256": "e3b61d114861a30c92ba8803c0a7909cbad3de5db29f3bfdb915a052ca068e57",
+    "depth": 0,
+    "problems": []
+  },
+  "npmAudit": {
+    "exitCode": 1,
+    "log": "/tmp/chroma-r8-audit.json",
+    "logSha256": "85098252e0d69fb31f632ad854b7633e8764544091b84b27c041193d5bfcaf3b",
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 11,
+      "high": 0,
+      "critical": 0,
+      "total": 11
+    },
+    "fixApplied": false
+  },
+  "stageValidator": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-r8-validator.log",
+    "logSha256": "63fb3add7b060e0a980812df163e9224f66c145caeaec17bd7a0331e85cbe193"
+  },
+  "audio": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-r8-audio.log",
+    "logSha256": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17"
+  },
+  "perceptualAudio": {
+    "exitCode": 0,
+    "log": "/tmp/chroma-r8-perceptual-audio.log",
+    "logSha256": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c"
+  },
+  "warnings": {
+    "ThreeClock": 112,
+    "multipleThree": 25,
+    "noColorForceColor": 4,
+    "suppression": "Full check retains console warnings; separate six-suite C --silent limitation is disclosed in its own report."
+  },
+  "protectedFiles": {
+    "package.json": {
+      "before": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+      "after": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+      "matches": true
+    },
+    "package-lock.json": {
+      "before": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+      "after": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+      "matches": true
+    },
+    "app.json": {
+      "before": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+      "after": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+      "matches": true
+    },
+    "eas.json": {
+      "before": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+      "after": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+      "matches": true
+    },
+    "metro.config.js": {
+      "before": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+      "after": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+      "matches": true
+    },
+    "metro/withNativeThree.js": {
+      "before": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "after": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "matches": true
+    }
+  },
+  "evidenceFiles": {
+    "sourceMechanism": "r8-source-mechanism.json",
+    "actualThreeBrowserFixture": "r8-browser-framebuffer-report.json",
+    "productRegression": "r8-product-regression.json",
+    "bundles": "r8-bundles.json"
+  },
+  "nativeAcceptance": {
+    "observedR7PreviewBuild2Area04": "FAIL",
+    "individualDeviceCommand": "NOT_CONFIRMED",
+    "candidateR8": "PENDING",
+    "RELEASE_READY": false
+  },
+  "notRun": [
+    "iPhone/EXGL GPU display",
+    "real touch and VoiceOver",
+    "perception/horror/audio listening",
+    "iPhone FPS/thermals",
+    "EAS build/signing/authentication/OTA/push/PR"
+  ],
+  "releaseIdentity": {
+    "code": "goal-013-1-mirror-runtime-r8",
+    "appVersion": "1.0.0",
+    "newNativeBuild": "unknown until new build",
+    "newEasBuildId": "unknown",
+    "previewAutoIncrement": true,
+    "appVersionSource": "remote",
+    "nativeOrDependencyChanges": false
+  },
+  "bundles": {
+    "evidence": "r8-bundles.json",
+    "sha256": "21de82b0dbde1754f3d0b4d7f4f6196bc66c8641474dd289e4cc3cbb911d2abb",
+    "sourceCommit": "c79a75f5a9b37d2dfd872dd2fd3b3902e6748db9",
+    "allValidationPassed": true,
+    "exports": 4,
+    "sourceGuardCount": 248,
+    "firstPartySourceCounts": {
+      "preview": 206,
+      "production": 206,
+      "development": 226
+    },
+    "r8PresentR7Absent": true,
+    "threeSingleIdentity": true,
+    "developmentMetroRoots": 6,
+    "compiledPreviewDiagnostics": true,
+    "compiledProductionDiagnostics": false,
+    "nativeMetadataFixture": "Expo Constants={} only; nativeBuild remains unknown"
+  },
+  "actualThreeBrowserFixture": {
+    "evidence": "r8-browser-framebuffer-report.json",
+    "sha256": "68a1b398615424a08b9d544ba428fe21d23d90cb7e0470992fb30c5fb01b6f88",
+    "cases": 19,
+    "gates": 14,
+    "passed": true,
+    "scriptSha256": "87700c8037782a037999c113a57968db121636e4dc3de2e432f1abb07433f258",
+    "actualObserverReadCounts": {
+      "frontAndReportedPose": {
+        "traceOff": 6,
+        "traceOn": 23
+      },
+      "back": {
+        "traceOff": 5,
+        "traceOn": 6
+      }
+    },
+    "scope": "Actual application observer + adapter + Three/mirror/scene on real browser WebGL2 with explicit nonzero drawable fixture; no Expo native or iPhone timing claim."
+  },
+  "evidenceSha256": {
+    "r7-device-build2-first-failure.json": "36da7ed8e07454c31043fb86499cbfa87e556eb57e45f578d1016ec9f0f5324a",
+    "r8-baseline.json": "235a13502c458ced80b3e40373d8740b3f2e10af3813597b0c6a74cae4d54da5",
+    "r8-source-mechanism.json": "5fe32b2b6e2937dfe10c9ce4f001116256020ee4a78efd91ad43947c6156fc93",
+    "r8-browser-framebuffer-report.json": "68a1b398615424a08b9d544ba428fe21d23d90cb7e0470992fb30c5fb01b6f88",
+    "r8-product-regression.json": "80f7a3f9ce2d6996b93d3c3eae33fad0f137a497b18f0f11061252ef9ca0487a",
+    "r8-bundles.json": "21de82b0dbde1754f3d0b4d7f4f6196bc66c8641474dd289e4cc3cbb911d2abb"
+  },
+  "gitDiffCheck": {
+    "exitCode": 0,
+    "scope": "Final source and evidence changes before documentation commit; no reset/clean/amend/stash"
+  },
+  "laterQaToolValidation": {
+    "description": "Browser QA additionally executes actual observer command reads after the product full check; product sources unchanged.",
+    "fullLintExitCode": 0,
+    "fullLintLog": "/tmp/chroma-r8-final-lint.log",
+    "fullLintLogSha256": "7bbae30402b0b3cd52fb7d0770ebe48fc8014e66a3c76654e2636c5c06accc56",
+    "scriptSha256": "87700c8037782a037999c113a57968db121636e4dc3de2e432f1abb07433f258"
+  },
+  "otherWorktrees": {
+    "original": {
+      "head": "5c04d98",
+      "status": "clean, unchanged"
+    },
+    "goal012Completion": {
+      "head": "69c6eb6",
+      "status": "clean, unchanged"
+    }
+  },
+  "independentFinalReview": {
+    "readOnly": true,
+    "materialCorrectionsOutstanding": 0,
+    "browserSourceHashesMatched": 116,
+    "bundleSourceHashesMatched": 248,
+    "verified": "r7 FAIL/r8 PENDING, no native equivalence, counts, trace read deltas, Doctor failure/retry, preview profile and unknown native identity"
+  }
+}
