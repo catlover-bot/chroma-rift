@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import type { NativeDefaultFramebufferAdapter } from './nativeDefaultFramebuffer';
+import { createGlTraceRecord, createNativeGlObserver, type GlTraceRecord, type NativeGlObserver } from './nativeGlObserver';
 import { buildIdentity, DIAGNOSTIC_REVISION } from '../../platform/buildIdentity';
 
 import { inspectPoseSafety, isSafePose } from '../../domain/firstPerson/geometry';
@@ -18,7 +20,9 @@ export type DiagnosticFailure = { reasonCode: string; stageBeforeFailure: Diagno
   startupTimeoutMs: number | 'unknown'; startupRemainingMs: number | 'unknown'; readyAtMs: number | null;
   appActive: Measurement<boolean>; paused: boolean;
   frameSequence: number; lastMainRenderFrame: number; lastPresentationFrame: number; lastOffscreenFrame: number;
-  renderReturns: number; presentationReturns: number; offscreenPasses: number; activeRendererOwners: number; error: DiagnosticError };
+  renderReturns: number; presentationReturns: number; offscreenPasses: number; activeRendererOwners: number; error: DiagnosticError;
+  firstErrorBoundary: GlTraceRecord['firstErrorBoundary']; firstInvalidOperation: GlTraceRecord['firstInvalidOperation'];
+  diagnosticQueryFailures: GlTraceRecord['diagnosticQueryFailures'] };
 export type ShaderDiagnostic = { program: string; vertex: string; fragment: string };
 export type FirstPersonDiagnostics = {
   revision: string; session: number; sceneMode: DiagnosticSceneMode; stage: DiagnosticStage; open: boolean;
@@ -42,6 +46,8 @@ export type FirstPersonDiagnostics = {
   renderTarget: Measurement<'default-framebuffer' | 'offscreen-target'>;
   viewport: Measurement<[number, number, number, number]>; scissor: Measurement<[number, number, number, number]>; scissorTest: Measurement<boolean>;
   glVersion: Measurement<string>; shaderLanguage: Measurement<string>; supportsWebGL2: Measurement<boolean>; framebufferStatus: Measurement<number>; glErrors: string[]; shaderErrors: ShaderDiagnostic[];
+  glFramebuffer: ReturnType<NativeDefaultFramebufferAdapter['snapshot']> | 'not-installed';
+  glTrace: GlTraceRecord;
   lastError: DiagnosticError | null;
   firstFailure: DiagnosticFailure | null;
   failureFrameContext: { pose: PlayerPose; revision: number } | null;
@@ -69,7 +75,7 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
     lastFrame: { drawCalls: 'unknown', triangles: 'unknown', geometries: 'unknown', textures: 'unknown', samplePoint: 'not-sampled' },
     renderTarget: 'unknown', viewport: 'unknown', scissor: 'unknown', scissorTest: 'unknown',
     glVersion: 'unknown', shaderLanguage: 'unknown', supportsWebGL2: 'unknown', framebufferStatus: 'unknown', glErrors: [], shaderErrors: [], lastError: null, firstFailure: null, failureFrameContext: null,
-    effectiveControls: { mode: 'unknown', reason: 'not-evaluated' }, pixelEvidence: 'not-sampled',
+    glFramebuffer: 'not-installed', glTrace: createGlTraceRecord(), effectiveControls: { mode: 'unknown', reason: 'not-evaluated' }, pixelEvidence: 'not-sampled',
   };
 }
 
@@ -110,7 +116,9 @@ export function recordFirstFailure(record: FirstPersonDiagnostics, error: unknow
     appActive: record.appActive, paused: record.paused,
     frameSequence: record.frameSequence, lastMainRenderFrame: record.lastMainRenderFrame, lastPresentationFrame: record.lastPresentationFrame,
     lastOffscreenFrame: record.lastOffscreenFrame, renderReturns: record.renderReturns, presentationReturns: record.presentationReturns,
-    offscreenPasses: record.offscreenPasses, activeRendererOwners: record.activeRendererOwners, error: record.lastError! };
+    offscreenPasses: record.offscreenPasses, activeRendererOwners: record.activeRendererOwners, error: record.lastError!,
+    firstErrorBoundary: record.glTrace.firstErrorBoundary, firstInvalidOperation: record.glTrace.firstInvalidOperation,
+    diagnosticQueryFailures: [...record.glTrace.diagnosticQueryFailures] };
   recordDiagnosticEvent(record, `FIRST_FAILURE:${reasonCode}`);
 }
 /** Preserve the unpresented camera state before the runtime rolls back to its
@@ -159,7 +167,7 @@ export function serializeFailureDiagnostics(record: FirstPersonDiagnostics, cont
     owners: { activeRendererOwners: safe.activeRendererOwners, rendererCreates: safe.rendererCreates, contextCreates: safe.contextCreates,
       rendererOwnership: safe.rendererOwnership }, target: { config: safe.offscreenTargetConfig, framebufferStatus: safe.offscreenFramebufferStatus },
     gl: { nativeGL: safe.nativeGL, supportsWebGL2: safe.supportsWebGL2,
-      framebufferStatus: safe.framebufferStatus, errors: safe.glErrors, shaderErrors: safe.shaderErrors },
+      framebufferStatus: safe.framebufferStatus, errors: safe.glErrors, shaderErrors: safe.shaderErrors, trace: safe.glTrace, framebufferAdapter: safe.glFramebuffer },
   }, null, 2);
 }
 export function updateDiagnosticContext(record: FirstPersonDiagnostics, value: Pick<FirstPersonDiagnostics, 'effectiveControls' | 'appActive' | 'paused' | 'sceneMode'>): void {
@@ -267,25 +275,17 @@ export function sampleRendererDiagnostics(record: FirstPersonDiagnostics, render
   record.sceneSampleRenderReturn = record.renderReturns;
 }
 
-/** Call at first render or while the diagnostic panel is open, never per frame.
- * getError is destructive and synchronous; drain at most four entries. */
-export function sampleGlDiagnostics(record: FirstPersonDiagnostics, gl: WebGLRenderingContext): void {
-  // Installed Expo EXWebGLRenderer.cpp exposes the actual native ES capability;
-  // Three's compatibility isWebGL2 flag is not evidence for this field.
+/** Shared observer separates pending render errors from diagnostic query errors.
+ * Called at the existing startup/play cadence, never a second getError reader. */
+export function sampleGlDiagnostics(record: FirstPersonDiagnostics, gl: WebGLRenderingContext, observer?: NativeGlObserver): void {
   const nativeSupport = (gl as WebGLRenderingContext & { supportsWebGL2?: unknown }).supportsWebGL2;
   record.supportsWebGL2 = typeof nativeSupport === 'boolean' ? nativeSupport : 'unsupported';
-  record.framebufferStatus = measure(typeof gl.checkFramebufferStatus === 'function' && typeof gl.FRAMEBUFFER === 'number' ? () => gl.checkFramebufferStatus(gl.FRAMEBUFFER) : undefined);
-  record.glVersion = measure(typeof gl.getParameter === 'function' ? () => boundedDiagnosticText(gl.getParameter(gl.VERSION), 160) : undefined);
-  record.shaderLanguage = measure(typeof gl.getParameter === 'function' ? () => boundedDiagnosticText(gl.getParameter(gl.SHADING_LANGUAGE_VERSION), 160) : undefined);
-  if (typeof gl.getError !== 'function') { if (!record.glErrors.includes('unsupported')) record.glErrors = [...record.glErrors, 'unsupported'].slice(-8); return; }
-  try {
-    for (let index = 0; index < 4; index += 1) {
-      const code = gl.getError();
-      if (code === gl.NO_ERROR) break;
-      record.glErrors.push(`0x${code.toString(16)}`);
-      record.glErrors = record.glErrors.slice(-8);
-    }
-  } catch { record.glErrors = [...record.glErrors, 'unsupported'].slice(-8); }
+  const errors = observer ?? createNativeGlObserver(record, gl, false);
+  const before = errors.read('before-inspectGl');
+  if (before.errors.length || record.glErrors.some(value => value !== 'unsupported')) return;
+  record.framebufferStatus = errors.query('framebuffer-status', typeof gl.checkFramebufferStatus === 'function' && typeof gl.FRAMEBUFFER === 'number' ? () => gl.checkFramebufferStatus(gl.FRAMEBUFFER) : undefined);
+  record.glVersion = errors.query('version', typeof gl.getParameter === 'function' && typeof gl.VERSION === 'number' ? () => boundedDiagnosticText(gl.getParameter(gl.VERSION), 160) : undefined);
+  record.shaderLanguage = errors.query('shader-language', typeof gl.getParameter === 'function' && typeof gl.SHADING_LANGUAGE_VERSION === 'number' ? () => boundedDiagnosticText(gl.getParameter(gl.SHADING_LANGUAGE_VERSION), 160) : undefined);
 }
 
 /** Three replaces its default diagnostic output when this callback is set.

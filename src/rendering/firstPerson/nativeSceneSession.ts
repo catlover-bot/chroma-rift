@@ -1,10 +1,13 @@
 import type { RootState } from '@react-three/fiber/native';
 import * as THREE from 'three';
+import { Platform } from 'react-native';
+import { internalDiagnosticsEnabled } from '../../platform/buildIdentity';
+import { createNativeGlSession } from './nativeGlSession';
 
 import type { ChapterRuntime } from '../../domain/firstPerson/types';
 import { configureNotebookCamera } from './notebookCamera';
 import type { CanvasLifecycle } from './canvasLifecycle';
-import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, recordFailureFrameContext, sampleGlDiagnostics, sampleRendererDiagnostics } from './diagnostics';
+import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, recordFailureFrameContext, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
 import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
@@ -19,6 +22,13 @@ function createTeardownOnlyRenderer() {
  * live here/in the controller; React only receives discrete presented snapshots. */
 export function createNativeSceneSession(controller: RuntimeController, lifecycle: CanvasLifecycle, proof: boolean, onReady: () => void) {
   const diagnostics = controller.diagnostics;
+  const glSession = createNativeGlSession(diagnostics, Platform.OS, internalDiagnosticsEnabled());
+  lifecycle.onStop(() => {
+    glSession.stopTrace();
+    // Let a failed reflection finish its finally/target restoration before
+    // releasing the correction. No further frame can run on this owner.
+    void Promise.resolve().then(() => glSession.dispose());
+  });
   // A CPU camera used only for explicit notebook inspection, in the same GL owner.
   const notebookCamera = new THREE.PerspectiveCamera(38, 1, .05, 10);
   const previewing = () => !!controller.notebookPreview && controller.runtime.paused && lifecycle.ready;
@@ -52,10 +62,17 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
   };
   const inspectGl = (renderer: THREE.WebGLRenderer, point: 'before native presentation' | 'after native wrapper return') => {
     const gl = renderer.getContext();
-    sampleGlDiagnostics(diagnostics, gl);
+    glSession.sample(renderer);
     if (diagnostics.supportsWebGL2 === false || (typeof diagnostics.framebufferStatus === 'number' && diagnostics.framebufferStatus !== gl.FRAMEBUFFER_COMPLETE) ||
         diagnostics.glErrors.some((error) => error !== 'unsupported')) {
       fail(new Error('Invalid native GL frame ' + point + ': WebGL2=' + diagnostics.supportsWebGL2 + ', framebuffer=' + diagnostics.framebufferStatus + ', errors=' + diagnostics.glErrors.join(', ')), 'GL');
+    }
+  };
+  const glBoundary = (name: string) => {
+    glSession.boundary(name);
+    if (diagnostics.glErrors.some(error => error !== 'unsupported')) {
+      fail(new Error('Invalid native GL frame at ' + name + ': errors=' + diagnostics.glErrors.join(', ')), 'GL');
+      throw rejectedFrame;
     }
   };
   const factory = memoizeNativeRenderer((defaults) => {
@@ -64,10 +81,12 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
       adapterCanvas = defaults.canvas;
       const renderer = observeNativeContext(defaults, (context) => {
         recordContextDiagnostics(diagnostics, context);
+        glSession.observeContext(context);
         diagnostics.stage = 'context-created';
         recordDiagnosticEvent(diagnostics, 'context-created');
       }, () => new THREE.WebGLRenderer({ ...defaults, antialias: false, alpha: false, depth: true, stencil: false, powerPreference: 'low-power' }));
-      if (!lifecycle.ownRenderer(renderer)) return createTeardownOnlyRenderer();
+      glSession.attach(renderer);
+      if (!lifecycle.ownRenderer(renderer)) { glSession.dispose(); return createTeardownOnlyRenderer(); }
       cleanupShader?.();
       cleanupShader = installShaderDiagnostics(renderer, diagnostics, (error) => fail(error, 'shader'));
       const draw = renderer.render.bind(renderer);
@@ -81,12 +100,10 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         if (!lifecycle.isCurrentRenderer(renderer)) return;
         lifecycle.submitFrame();
         diagnostics.renderCalls += 1;
+        glBoundary('before-main-draw');
         draw(scene, camera);
+        glBoundary('after-main-draw');
         if (!lifecycle.active) throw rejectedFrame;
-        if (diagnostics.renderReturns === 0) recordDiagnosticEvent(diagnostics, 'first-main-render');
-        diagnostics.renderReturns += 1;
-        diagnostics.lastMainRenderFrame = diagnostics.frameSequence;
-        recordFrameStats(controller, lastDelta, renderer.info);
         const now = Date.now();
         checkPresentation = now - lastGlCheck >= (lifecycle.ready ? 1000 : 500);
         if (checkPresentation && lifecycle.active) {
@@ -94,6 +111,11 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
           inspectGl(renderer, 'before native presentation');
           if (!lifecycle.active) throw rejectedFrame;
         }
+        glBoundary('before-native-presentation');
+        if (diagnostics.renderReturns === 0) recordDiagnosticEvent(diagnostics, 'first-main-render');
+        diagnostics.renderReturns += 1;
+        diagnostics.lastMainRenderFrame = diagnostics.frameSequence;
+        recordFrameStats(controller, lastDelta, renderer.info);
       };
       return renderer;
     } catch (error) {
@@ -125,12 +147,13 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
         type: target.texture.type, format: target.texture.format };
       if (diagnostics.offscreenPasses === 0) {
         const gl = renderer.getContext();
-        diagnostics.offscreenFramebufferStatus = typeof gl.checkFramebufferStatus === 'function' && typeof gl.FRAMEBUFFER === 'number'
-          ? gl.checkFramebufferStatus(gl.FRAMEBUFFER) : 'unsupported';
+        diagnostics.offscreenFramebufferStatus = glSession.offscreenStatus(renderer);
         if (typeof diagnostics.offscreenFramebufferStatus === 'number' && diagnostics.offscreenFramebufferStatus !== gl.FRAMEBUFFER_COMPLETE)
           throw new Error(`Mirror framebuffer incomplete: 0x${diagnostics.offscreenFramebufferStatus.toString(16)}`);
       }
+      glBoundary('before-reflection-draw');
       rawDraw(scene, camera);
+      glBoundary('after-reflection-draw');
       if (!lifecycle.active) throw rejectedFrame;
       if (diagnostics.offscreenPasses === 0) recordDiagnosticEvent(diagnostics, 'first-reflection-render');
       diagnostics.offscreenPasses += 1;
@@ -138,7 +161,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
       diagnostics.offscreenTargetSize = [width, height];
       diagnostics.lastOffscreenFrame = diagnostics.frameSequence;
     },
-    close() { cleanupShader?.(); lifecycle.close(); },
+    close() { cleanupShader?.(); lifecycle.close(); glSession.dispose(); },
     sceneError(error: unknown) { fail(error, 'scene frame'); },
     step(state: RootState, delta: number, publish: (snapshot: RuntimeSnapshot) => void) {
       if (!lifecycle.isCurrentRenderer(state.gl) || diagnostics.appActive === false) return;
@@ -175,9 +198,11 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
             // This is the installed native render+endFrameEXP wrapper, once.
             present(scene, previewing() ? notebookCamera : camera);
             if (!lifecycle.active) return;
+            glBoundary('after-native-wrapper-return');
             if (previewing()) {
               if (checkPresentation) { checkPresentation = false; inspectGl(renderer, 'after native wrapper return'); }
               if (lifecycle.active) {
+                glSession.stopTrace(true);
                 diagnostics.presentationReturns += 1;
                 diagnostics.lastPresentationFrame = diagnostics.frameSequence;
               }
@@ -203,6 +228,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
               inspectGl(renderer, 'after native wrapper return');
               if (!lifecycle.active) return;
             }
+            glSession.stopTrace(true);
             if (diagnostics.presentationReturns === 0) recordDiagnosticEvent(diagnostics, 'first-native-presentation');
             diagnostics.presentationReturns += 1;
             diagnostics.lastPresentationFrame = diagnostics.frameSequence;

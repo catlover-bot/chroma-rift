@@ -25,6 +25,8 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
   let root: Pick<RootState, 'setFrameloop'> | undefined;
   let renderer: THREE.WebGLRenderer | undefined;
   let errorPending = false;
+  const stopListeners = new Set<() => void>();
+  const release = () => { for (const listener of stopListeners) listener(); stopListeners.clear(); };
   const publishFailure = () => {
     if (!errorPending || closed) return;
     errorPending = false;
@@ -36,6 +38,7 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
     root?.setFrameloop('never');
   };
   return {
+    onStop(listener: () => void) { if (closed || failed) listener(); else stopListeners.add(listener); },
     get active() { return !failed && !closed; },
     get ready() { return ready && !failed && !closed; },
     isCurrentRenderer(value: THREE.WebGLRenderer) { return renderer === value && !failed && !closed; },
@@ -100,6 +103,7 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
       recordFirstFailure(diagnostics, error, phase, FAILURE_CODES[phase], componentStack);
       diagnostics.stage = 'failed';
       stop();
+      release();
       if (__DEV__) console.error('[CHROMA RIFT 3D: ' + phase + ']', error, componentStack ?? '');
       if (phase !== 'renderer initialization') publishFailure();
     },
@@ -115,6 +119,7 @@ export function createCanvasLifecycle(controller: RuntimeController, onError: (m
       if (renderer) activeRendererOwners = Math.max(0, activeRendererOwners - 1);
       diagnostics.activeRendererOwners = activeRendererOwners;
       recordDiagnosticEvent(diagnostics, 'closed');
+      release();
       renderer?.dispose();
       renderer = undefined;
       root = undefined;

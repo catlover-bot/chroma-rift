@@ -1,0 +1,136 @@
+{
+"label": "FIRST_FAILURE",
+"schemaVersion": 1,
+"app": {
+"version": "1.0.0",
+"build": "2",
+"profileMarker": "preview",
+"bundleSource": "release-js",
+"code": "goal-013-1-mirror-runtime-r7"
+},
+"revision": "goal-013-1-mirror-runtime-r7",
+"campaignId": "chapter-1",
+"areaId": "chapter-1-area-04",
+"chapterId": "mirror-corridor-v1",
+"diagnosticSession": 1,
+"runtimeSession": 13,
+"attempt": 0,
+"restoreOrigin": "checkpoint",
+"stateRevision": 0,
+"poseSource": "failed-unpresented-frame",
+"pose": {
+"x": 0,
+"y": 1.6,
+"z": 2.5,
+"yaw": 3.141592653589793,
+"pitch": 0
+},
+"stage": "failed",
+"firstFailure": {
+"reasonCode": "GL_FRAME",
+"stageBeforeFailure": "first-submitted",
+"atMs": 1789439290180,
+"elapsedMs": 1040,
+"startupTimeoutMs": 12000,
+"startupRemainingMs": 11871,
+"readyAtMs": null,
+"appActive": true,
+"paused": false,
+"frameSequence": 1,
+"lastMainRenderFrame": 1,
+"lastPresentationFrame": 0,
+"lastOffscreenFrame": 1,
+"renderReturns": 1,
+"presentationReturns": 0,
+"offscreenPasses": 1,
+"activeRendererOwners": 1,
+"error": {
+"phase": "GL",
+"name": "Error",
+"message": "Invalid native GL frame before native presentation: WebGL2=true, framebuffer=36053, errors=0x502",
+"stack": "Error: Invalid native GL frame before native presentation: WebGL2=true, framebuffer=36053, errors=0x502\n at inspectGl ([user]/workingdir/build/ios/build/Build/Intermediates.noindex/ArchiveIntermediates/CHROMARIFT/BuildProductsPath/Release-iphoneos/main.jsbundle:242386:23)\n at anonymous ([user]/workingdir/build/ios/build/Build/Intermediates.noindex/ArchiveIntermediates/CHROMARIFT/BuildProductsPath/Release-iphoneos/main.jsbundle:242429:22)\n at anonymous ([user]/workingdir/build/ios/build/Build/Intermediates.noindex/ArchiveIntermediates/CHROMARIFT/BuildProductsPath/Release-iphoneos/main.jsbundle:222105:28)\n at anonymous ([user]/workingdir/build/ios/build/Build/Intermediates.noindex/ArchiveIntermediates/CHROMARIFT/BuildProductsPath/Release-iphoneos/main.jsbundle:242526:22)\n at update ([user]/workingdir/build/ios/build/Build/Intermediates.noindex/ArchiveIntermediates/CHROMARIFT/BuildProductsPath/Release-iphoneos/main.jsbundle:230432:69)\n at loop ([user]/workingdir/build/ios/build/Build/Intermediates.noindex/ArchiveIntermediates/CHROMARIFT/BuildProductsPath/Release-iphoneos/main.jsbundle:230459:25)\n at RN$rafFn (native)",
+"componentStack": ""
+}
+},
+"events": [
+{
+"atMs": 963,
+"frame": 0,
+"event": "context-created"
+},
+{
+"atMs": 989,
+"frame": 0,
+"event": "renderer-created"
+},
+{
+"atMs": 993,
+"frame": 0,
+"event": "scene-committed"
+},
+{
+"atMs": 993,
+"frame": 0,
+"event": "root-attached"
+},
+{
+"atMs": 1015,
+"frame": 1,
+"event": "first-reflection-render"
+},
+{
+"atMs": 1037,
+"frame": 1,
+"event": "first-main-render"
+},
+{
+"atMs": 1040,
+"frame": 1,
+"event": "FIRST_FAILURE:GL_FRAME"
+}
+],
+"startup": {
+"timeoutMs": 12000,
+"remainingMs": 11871,
+"readyAtMs": null,
+"appActive": true,
+"paused": true
+},
+"readiness": null,
+"frames": {
+"sequence": 1,
+"mainRender": 1,
+"presentation": 0,
+"reflection": 1,
+"renderReturns": 1,
+"presentationReturns": 0,
+"offscreenPasses": 1
+},
+"owners": {
+"activeRendererOwners": 1,
+"rendererCreates": 1,
+"contextCreates": 1,
+"rendererOwnership": "live"
+},
+"target": {
+"config": {
+"width": 384,
+"height": 384,
+"samples": 0,
+"depthBuffer": true,
+"stencilBuffer": false,
+"type": 1009,
+"format": 1023
+},
+"framebufferStatus": 36053
+},
+"gl": {
+"nativeGL": true,
+"supportsWebGL2": true,
+"framebufferStatus": 36053,
+"errors": [
+"0x502"
+],
+"shaderErrors": []
+}
+}

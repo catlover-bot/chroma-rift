@@ -74,6 +74,40 @@ function fakeRenderer() {
     outputColorSpace: '', toneMapping: 0,
   };
 }
+/** TEST/FIXTURE: logical null is an owned nonzero drawable, not native FBO0.
+ * Actual installed Three GL-state execution is covered by the browser QA script. */
+function installSemanticContext(renderer: ReturnType<typeof fakeRenderer>, fault?: 'reflection' | 'restoration' | 'query' | 'pre-existing') {
+  const descriptors = Object.getOwnPropertyDescriptors(deviceContext);
+  let drawDefault = true;
+  const pending = fault === 'pre-existing' ? [0x502] : [];
+  const forwarded: number[][] = [];
+  const gl = Object.assign(deviceContext, { NO_ERROR: 0, BACK: 0x405, COLOR_ATTACHMENT0: 0x8ce0,
+    DRAW_FRAMEBUFFER: 0x8ca9, READ_FRAMEBUFFER: 0x8ca8, supportsWebGL2: true,
+    getError: jest.fn(() => pending.shift() ?? 0),
+    bindFramebuffer: jest.fn((_target: number, value: object | null) => { drawDefault = value === null; }),
+    drawBuffers: jest.fn((buffers: number[]) => {
+      forwarded.push([...buffers]);
+      if (drawDefault && (buffers[0] === 0x405 || fault === 'restoration')) pending.push(0x502);
+    }),
+  });
+  const originalBind = gl.bindFramebuffer, originalDrawBuffers = gl.drawBuffers;
+  const setTarget = renderer.setRenderTarget.getMockImplementation()!;
+  renderer.setRenderTarget.mockImplementation(value => {
+    setTarget(value);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, value);
+    gl.drawBuffers([value ? gl.COLOR_ATTACHMENT0 : gl.BACK]);
+  });
+  const draw = renderer.draw.getMockImplementation()!;
+  renderer.draw.mockImplementation((scene, camera) => {
+    draw(scene, camera);
+    if (fault === 'reflection' && !drawDefault) pending.push(0x502);
+  });
+  gl.checkFramebufferStatus.mockImplementation(() => { if (fault === 'query') pending.push(0x500); return gl.FRAMEBUFFER_COMPLETE; });
+  return { gl, forwarded, originalBind, originalDrawBuffers, dispose() {
+    for (const key of Object.keys(gl)) if (!(key in descriptors)) Reflect.deleteProperty(gl, key);
+    Object.defineProperties(deviceContext, descriptors);
+  } };
+}
 function props(): FirstPersonCanvasProps {
   const controller = createController();
   return { controller, snapshot: controllerSnapshot(controller), paused: false, neutralColors: false, preferredColor: 'neutral', effectStrength: 'medium', assist: true, reducedMotion: true, quality: 'low', onSnapshot: jest.fn(), onReady: jest.fn(), onError: jest.fn() };
@@ -117,6 +151,64 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     jest.restoreAllMocks();
     jest.useRealTimers();
+  });
+
+  it.each(['reflection', 'restoration', 'query', 'pre-existing'] as const)('retains the first %s GL error before presentation (strict native semantic fixture)', async fault => {
+    const native = installSemanticContext(renderer, fault);
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      expect(current.onError).toHaveBeenCalledTimes(1);
+      expect(current.onReady).not.toHaveBeenCalled();
+      expect(deviceContext.endFrameEXP).not.toHaveBeenCalled();
+      expect(controller.diagnostics).toMatchObject({ renderReturns: 0, presentationReturns: 0, simulationTicks: 0,
+        firstFailure: { reasonCode: 'GL_FRAME', renderReturns: 0, presentationReturns: 0 } });
+      expect(controller.diagnostics.glErrors).toContain(fault === 'query' ? '0x500' : '0x502');
+      const trace = controller.diagnostics.glTrace;
+      expect(trace.firstErrorBoundary?.boundary).toBe(fault === 'reflection' ? 'after-reflection-draw'
+        : fault === 'restoration' ? 'target-restoration:drawBuffers:returned'
+        : fault === 'query' ? 'after-query:offscreen-framebuffer-status' : 'pre-existing/init');
+      if (fault === 'restoration') expect(trace.firstInvalidOperation).toMatchObject({ operation: 'drawBuffers',
+        buffers: [native.gl.COLOR_ATTACHMENT0], mapped: true, boundary: { draw: 'default', read: 'default' } });
+      else expect(trace.firstInvalidOperation).toBeNull();
+      expect(trace.diagnosticQueryFailures).toHaveLength(fault === 'query' ? 1 : 0);
+      expect(renderer.getRenderTarget()).toBeNull();
+      const first = controller.diagnostics.firstFailure;
+      await act(async () => { await jest.advanceTimersByTimeAsync(13000); });
+      expect(controller.diagnostics.firstFailure).toBe(first);
+      expect(native.gl.bindFramebuffer).toBe(native.originalBind);
+      expect(native.gl.drawBuffers).toBe(native.originalDrawBuffers);
+    } finally { await view.unmount(); native.dispose(); }
+  });
+
+  it('maps the real mirror target restoration once and removes first-frame query overhead after success (native semantic fixture)', async () => {
+    const native = installSemanticContext(renderer);
+    const controller = createController(undefined, false, true, 'mirror-corridor-v1');
+    controller.runtime.pose = { position: { x: -1.433, y: 1.6, z: 10.866 }, yaw: 1.9744, pitch: -.16 };
+    const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
+    const view = await render(<FirstPersonCanvas {...current} />);
+    try {
+      await createNativeContext(view);
+      await submitFrame(renderer);
+      expect(current.onReady).toHaveBeenCalledTimes(1);
+      expect(controller.diagnostics).toMatchObject({ renderReturns: 1, offscreenPasses: 1, presentationReturns: 1,
+        glErrors: [], glFramebuffer: { draw: 'default', mappedCalls: 1 },
+        glTrace: { scope: 'first-frame', state: 'completed', entries: [], firstErrorBoundary: null } });
+      expect(native.forwarded).toEqual([[native.gl.COLOR_ATTACHMENT0], [native.gl.COLOR_ATTACHMENT0]]);
+      const reads = native.gl.getError.mock.calls.length;
+      expect(reads).toBeLessThan(96);
+      await submitFrame(renderer, 2);
+      expect(native.gl.getError).toHaveBeenCalledTimes(reads);
+      expect(controller.diagnostics.simulationTicks).toBe(1);
+      expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(2);
+    } finally { await view.unmount(); }
+    expect(native.gl.bindFramebuffer).toBe(native.originalBind);
+    expect(native.gl.drawBuffers).toBe(native.originalDrawBuffers);
+    native.dispose();
   });
 
   it('renders the mirror offscreen before one native presentation and releases its target on exit', async () => {
@@ -1011,7 +1103,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     // One bounded GL check on each side of native presentation, one scene
     // sample, despite subsequent frame callbacks at the same wall-clock time.
     for (let time = 2; time <= 10; time += 1) await submitFrame(renderer, time);
-    expect(getError).toHaveBeenCalledTimes(2);
+    expect(getError).toHaveBeenCalledTimes(6);
     expect(checkFramebufferStatus).toHaveBeenCalledTimes(2);
     expect(renderer.getViewport).toHaveBeenCalledTimes(1);
     expect(current.controller.diagnostics.sceneSampleRenderReturn).toBe(1);
@@ -1019,7 +1111,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     expect(current.controller.diagnostics.simulationTicks).toBe(0);
     await act(async () => { await jest.advanceTimersByTimeAsync(500); });
     await submitFrame(renderer, 11);
-    expect(getError).toHaveBeenCalledTimes(4);
+    expect(getError).toHaveBeenCalledTimes(12);
     expect(checkFramebufferStatus).toHaveBeenCalledTimes(4);
     expect(renderer.getViewport).toHaveBeenCalledTimes(2);
     expect(current.controller.diagnostics.sceneSampleRenderReturn).toBe(11);
@@ -1031,16 +1123,16 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await submitFrame(renderer, 13);
     expect(current.onReady).toHaveBeenCalledTimes(1);
     expect(current.controller.diagnostics.sceneSampleRenderReturn).toBe(13);
-    expect(getError).toHaveBeenCalledTimes(6);
+    expect(getError).toHaveBeenCalledTimes(18);
     // Normal play keeps diagnostic camera/scene records fresh at 1 Hz.
     await act(async () => { await jest.advanceTimersByTimeAsync(500); });
     await submitFrame(renderer, 14);
     expect(current.controller.diagnostics.sceneSampleRenderReturn).toBe(13);
-    expect(getError).toHaveBeenCalledTimes(6);
+    expect(getError).toHaveBeenCalledTimes(18);
     await act(async () => { await jest.advanceTimersByTimeAsync(500); });
     await submitFrame(renderer, 15);
     expect(current.controller.diagnostics.sceneSampleRenderReturn).toBe(15);
-    expect(getError).toHaveBeenCalledTimes(8);
+    expect(getError).toHaveBeenCalledTimes(24);
     expect(current.onError).not.toHaveBeenCalled();
     await view.unmount();
   });
@@ -1144,7 +1236,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(current.onError).toHaveBeenCalledTimes(1);
       expect(current.controller.diagnostics.firstFailure).toMatchObject({ reasonCode: 'GL_FRAME',
         stageBeforeFailure: running ? 'ready' : 'first-submitted',
-        lastMainRenderFrame: running ? 2 : 1, lastPresentationFrame: running ? 1 : 0,
+        lastMainRenderFrame: running ? 1 : 0, lastPresentationFrame: running ? 1 : 0,
         error: { message: expect.stringContaining('Invalid native GL frame before native presentation') } });
       expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(running ? 1 : 0);
     } finally { await view.unmount(); }
@@ -1312,7 +1404,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       expect(view.getByText('確定済みの進行を保ち、安全な再開位置から描画を作り直します。')).toBeTruthy();
       await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
       const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
-      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r7',
+      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-013-1-mirror-runtime-r8',
         chapterId: 'mirror-corridor-v1', attempt: 0, restoreOrigin: 'checkpoint',
         poseSource: 'failed-unpresented-frame',
         firstFailure: { reasonCode: 'NATIVE_PRESENTATION', stageBeforeFailure: 'ready',

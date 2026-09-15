@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import appConfig from '../../app.json';
 
 // A source marker, not a claim that a particular EAS binary was installed.
-export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r7';
+export const DIAGNOSTIC_REVISION = 'goal-013-1-mirror-runtime-r8';
 
 export function buildIdentity() {
   const profileMarker = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
