@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/qa-native-metadata.cjs');
 /* global __dirname, __filename, Buffer */
 // Real App selection/preparation/pause/return plus live controller/ChapterScene.
 // In-memory storage, native availability/readiness/audio, Modal and Skia bridge
@@ -112,7 +113,7 @@ async function extractChapterOne(){
  const press=async label=>{
   const button=hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel===label&&!node.props.disabled)[0];
   if(!button)throw Error('Missing enabled App button '+label);
-  await R.act(async()=>button.props.onPress());await settle();event('actual-App-button',{label});
+  await R.act(async()=>{button.props.onPressIn?.();button.props.onPress();});await settle();event('actual-App-button',{label});
  };
  const has=label=>hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel===label&&!node.props.disabled).length>0;
  const record=(id,scene,camera,stage)=>{
@@ -176,6 +177,9 @@ async function extractChapterOne(){
      runtime:JSON.parse(JSON.stringify(controller.runtime))});
   };
   motionSample('entry');
+  // Capture real committed commands that share a 5Hz interval without adding
+  // game time or changing the route; their visual evidence is one frame each.
+  run.onCommand=(_run,id)=>motionSample('command:'+id);
   run.onAdvance=(_run,dt)=>{simulationTicks++;simulationSeconds+=dt;
    if(simulationTicks%6===0)motionSample('simulation');};
   await visual(index,'entry',controller,run.camera);
@@ -199,7 +203,7 @@ async function extractChapterOne(){
    currentArea:saved.currentArea,campaignCompleted:saved.campaignCompleted,revision:saved.revision,
    canvasOwners:activeOwners});
   event('actual-App-saved-transition',route.at(-1));
-  if(index===4)record(null,null,null,'ending');
+  if(index===4){record(null,null,null,'ending-intro');await press('クレジットを表示');await hud.update();record(null,null,null,'ending-credits');}
   if(index<4){
    const pending=CHAPTER_ONE_BEATS.filter(beat=>beat.area===area.id&&saved.storyFired.includes(beat.id)&&!saved.storyPresented.includes(beat.id));
    for(const beat of pending){

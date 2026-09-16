@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/qa-native-metadata.cjs');
 /* global __dirname, __filename, Buffer */
 // Actual ending component and native style objects, rendered with browser CSS.
 // This tests readable layout and scroll reachability, not native Yoga/VoiceOver.
@@ -7,13 +8,13 @@ const fs = require('node:fs'), path = require('node:path'), cp = require('node:c
 const { installSourceBridge, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
 const { installNativeHudBridge, browserStyles, browserHelpers } = require('./lib/native-hud-qa.cjs');
 if (process.argv.length !== 2) throw Error('usage: node scripts/qa-chapter-ending-layout.cjs');
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/ending-layout');
+const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal014/ending-layout');
 fs.mkdirSync(out, { recursive: true });
 const bridge = installSourceBridge(root), context = { width: 320, height: 568, fontScale: 2 };
 const native = installNativeHudBridge(context);
 const { ChapterOneEndingScreen } = require('../src/screens/ChapterOneEndingScreen.tsx');
 const sizes = [[320, 568, 2], [390, 844, 1.5], [430, 932, 1]];
-const storyHost = path.join(root, '.expo/goal013/story-layout-host');
+const storyHost = path.join(root, '.expo/goal014/story-layout-host');
 
 async function extract() {
   const records = [];
@@ -26,6 +27,10 @@ async function extract() {
       onDiscoveries: () => { callbacks.discoveries++; },
     });
     try {
+      if (callbacks.shown !== 0) throw Error('Credits acknowledged before intro');
+      records.push({id:`intro-${width}-${showProcedure ? 'procedure' : 'normal'}`,type:'ending',width,height,fontScale,showProcedure,tree:hud.serialize(),labels:['クレジットを表示']});
+      const skip = hud.tree.root.findAll(node=>node.type==='Pressable'&&node.props.accessibilityLabel==='クレジットを表示')[0];
+      await require('react-test-renderer').act(async()=>{skip.props.onPressIn();skip.props.onPress();});
       if (callbacks.shown !== 1) throw Error('Ending was not presented exactly once');
       const tree = hud.serialize();
       const labels = hud.tree.root.findAll(node => node.type === 'Pressable')

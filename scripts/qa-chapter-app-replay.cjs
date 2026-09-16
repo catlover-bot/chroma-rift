@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/qa-native-metadata.cjs');
 /* global __dirname, __filename, Buffer */
 // One real App host route supplies sampled runtime states. Replaying those
 // states through ChapterScene gives intervening visual evidence, but does not
 // record the App's native Canvas, HUD, audio, or a human's continuous play.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), ts = require('typescript');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
-if (process.argv.length !== 2) throw Error('usage: node scripts/qa-chapter-app-replay.cjs');
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013/app-scene-replay');
+if (process.argv.slice(2).some(arg=>!arg.startsWith('--out='))) throw Error('usage: node scripts/qa-chapter-app-replay.cjs [--out=directory]');
+const root = path.resolve(__dirname, '..'), out = path.resolve(process.argv.find(arg=>arg.startsWith('--out='))?.slice(6) || path.join(root, '.expo/goal014/after/app-scene-replay'));
 fs.mkdirSync(out, { recursive: true });
 const bridge = installSourceBridge(root), React = require('react'), THREE = require('three');
+const { actorFullyContained } = require('../src/domain/stages/departure-control-v1/definition.ts');
 const { CHAPTER_ONE } = require('../src/domain/campaign/definition.ts');
 const { getWorld } = require('../src/domain/firstPerson/chapter.ts');
 const { ChapterScene } = require('../src/rendering/firstPerson/ChapterScene.tsx');
@@ -23,7 +25,7 @@ function sceneKey(sample) {
       practiced: data.practiced, ratchets: data.ratchets, cleared: data.cleared }
     : sample.area === 'chapter-1-area-05' && data
       ? { keyInstalled: data.keyInstalled, procedureRead: data.procedureRead,
-        isolated: data.isolated, stopped: data.stopped,
+        isolated: data.isolated, stopped: data.stopped, contained: actorFullyContained(data.actor.motion.position),
         staffDoorOpened: data.staffDoorOpened, cleared: data.cleared }
       : null;
   return JSON.stringify({ area: sample.area, progress: runtime.progress, staticState });
@@ -34,7 +36,7 @@ function validateHost(data, host) {
   if (seen.join('|') !== ids.join('|') || host.route?.length !== 5 || !host.final?.campaignCompleted ||
     host.maxActiveCanvasBoundaries !== 1 || host.activeCanvasBoundariesAfterUnmount !== 0)
     throw Error('App route was not a completed single-owner chapter');
-  if (data.samples.length < 700 || data.samples.length > 800 ||
+  if (data.samples.length < 700 || data.samples.length > 1000 ||
     data.samples.some(sample => sample.stageId !== CHAPTER_ONE.areas.find(area => area.id === sample.area)?.stageId))
     throw Error('Scene replay runtime sampling changed unexpectedly');
   for (let i = 1; i < data.samples.length; i++) {
@@ -173,13 +175,15 @@ function dispose(){if(!scene)return;
  gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();
  renderer.renderLists.dispose();scene=null;}
 window.draw=async index=>{if(index!==last+1)throw Error('Sequential App replay frames required');
- const f=data.frames[index];if(f.scene!==sceneId){dispose();sceneId=f.scene;
+ const f=data.frames[index],sceneChanged=f.scene!==sceneId,loadStart=performance.now();let sceneLoadMs=0;
+ if(sceneChanged){dispose();sceneId=f.scene;
   scene=await new THREE.ObjectLoader().parseAsync(await(await fetch(sceneId)).json());
   objects=new Map();materials=new Map();scene.traverse(o=>{objects.set(o.uuid,o);
    for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.set(m.uuid,m);});
   surface=scene.getObjectByName('planar-mirror');
   if(surface){if(!scene.getObjectByName('mirror-corridor-actor'))throw Error('Mirror has no shared actor body');
-   transportMaterial=surface.material;mirror=createPlanarMirror();surface.material=mirror.material;}}
+   transportMaterial=surface.material;mirror=createPlanarMirror();surface.material=mirror.material;}
+  sceneLoadMs=performance.now()-loadStart;}
  for(const[id,v]of f.updates){const o=objects.get(id);if(!o)throw Error('Missing scene object '+id);
   o.matrix.fromArray(v.matrix);o.matrix.decompose(o.position,o.quaternion,o.scale);o.visible=v.visible;
   if(v.material)o.material=materials.get(v.material)||o.material;}
@@ -196,7 +200,7 @@ window.draw=async index=>{if(index!==last+1)throw Error('Sequential App replay f
   +'simulation '+f.seconds.toFixed(1)+'s / '+f.phase+' / 巡回体 '+(f.actor||'なし')+'\\n'
   +'native Canvas・HUD・音の録画ではありません';
  last=index;await new Promise(r=>requestAnimationFrame(r));
- return{calls:renderer.info.render.calls,offscreenCalls,offscreenTriangles,reflected,cpuSubmitMs,
+ return{calls:renderer.info.render.calls,offscreenCalls,offscreenTriangles,reflected,cpuSubmitMs,sceneChanged,sceneLoadMs,
   triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,
   textures:renderer.info.memory.textures,rtSize:MIRROR_TARGET_SIZE};};
 window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.memory.geometries,
@@ -206,7 +210,7 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
   let maxCalls = 0, maxOffscreenCalls = 0, maxTotalCalls = 0;
   let maxTriangles = 0, maxOffscreenTriangles = 0, maxTotalTriangles = 0;
   const reflectedFrameIndices = [];
-  const cpuSamples = [];
+  const cpuSamples = [], perFrame = [];
   try {
     await browser.send('Emulation.setDeviceMetricsOverride', {
       width: 390, height: 844, deviceScaleFactor: 1, mobile: false });
@@ -223,7 +227,7 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
       maxTotalCalls = Math.max(maxTotalCalls, stats.calls + stats.offscreenCalls);
       maxTotalTriangles = Math.max(maxTotalTriangles, stats.triangles + stats.offscreenTriangles);
       if (stats.reflected) reflectedFrameIndices.push(frame);
-      cpuSamples.push(stats.cpuSubmitMs);
+      cpuSamples.push(stats.cpuSubmitMs);perFrame.push({frame,...stats});
       const shot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
       fs.writeFileSync(path.join(dir, `${String(frame).padStart(6, '0')}.png`), Buffer.from(shot.data, 'base64'));
       if (frame % 100 === 0) console.log(`app replay capture ${frame}/${frameCount}`);
@@ -231,15 +235,22 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
     const disposed = await browser.evaluate('window.finish()');
     cpuSamples.sort((a, b) => a - b);
     const percentile = fraction => Number(cpuSamples[Math.floor((cpuSamples.length - 1) * fraction)].toFixed(3));
+    const distribution=values=>{const sorted=values.sort((a,b)=>a-b);const p=f=>Number(sorted[Math.floor((sorted.length-1)*f)].toFixed(3));return {samples:sorted.length,p50Ms:p(.5),p95Ms:p(.95),maxMs:p(1)};};
+    fs.writeFileSync(path.join(out,'render-frame-metrics.json'),JSON.stringify(perFrame));
     const webgl = { maxCalls, maxOffscreenCalls, maxTotalCalls,
       maxTriangles, maxOffscreenTriangles, maxTotalTriangles,
       reflectedFrames: reflectedFrameIndices.length, reflectedFrameIndices,
       mirrorTargetSize: [384, 384], cpuRenderSubmit: { samples: cpuSamples.length,
         p50Ms: percentile(.5), p95Ms: percentile(.95), maxMs: percentile(1) },
+      warmRenderSubmit:distribution(perFrame.filter(frame=>!frame.sceneChanged).map(frame=>frame.cpuSubmitMs)),
+      remountRenderSubmit:distribution(perFrame.filter(frame=>frame.sceneChanged).map(frame=>frame.cpuSubmitMs)),
+      sceneLoad:distribution(perFrame.filter(frame=>frame.sceneChanged).map(frame=>frame.sceneLoadMs)),
+      sceneLoadScope:'Offline replay fetch/JSON parse/Three ObjectLoader before GPU submission, not native asset decode. Cold scenes are rebuilt for static evidence states, while the actual Canvas retains its resource owner per entry.',
       cpuTimingScope: 'SwiftShader browser JS offscreen and main renderer.render submission; excludes screenshot/readback, RAF wait, native presentation and GPU completion',
       disposed, errors: browser.errors };
     fs.writeFileSync(path.join(out, 'webgl.json'), JSON.stringify(webgl, null, 2) + '\n');
-    if (!reflectedFrameIndices.length || disposed.geometries || disposed.textures || browser.errors.length)
+    // Three0.185 PBR keeps its renderer-owned16x16 DFG LUT (1KiB), outside scene asset ownership.
+    if (!reflectedFrameIndices.length || disposed.geometries || disposed.textures !== 1 || browser.errors.length)
       throw Error('App replay browser resource/error gate failed');
   } finally { await browser.close(); }
   const video = path.join(out, 'chapter-one-app-scene-replay.mp4');
@@ -259,7 +270,7 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
 async function main() {
   const extracted = await extract(), captured = await capture(extracted.frames.length);
   bridge.verify();
-  const report = { method: 'One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.',
+  const report = { method: 'One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear and every committed interaction. Interaction evidence frames add no simulation time; each occupies one 5Hz video frame, and the audio frame map explicitly retains repeated simulation timestamps. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.',
     fps: FPS, frames: extracted.frames.length, duration: extracted.frames.length / FPS,
     sequence: CHAPTER_ONE.areas.map(area => ({ area: area.id, stageId: area.stageId,
       samples: extracted.frames.filter(frame => frame.area === area.id).length })),

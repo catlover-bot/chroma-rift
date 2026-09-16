@@ -8,9 +8,9 @@ const ts = require('typescript');
 const Module = require('node:module');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
 
-if (process.argv.length !== 2) throw Error('usage: node scripts/qa-native-default-framebuffer.cjs');
+if (process.argv.slice(2).some(arg=>!arg.startsWith('--out=')&&!arg.startsWith('--report='))) throw Error('usage: node scripts/qa-native-default-framebuffer.cjs [--out=directory] [--report=file]');
 const root = path.resolve(__dirname, '..');
-const out = path.join(root, '.expo/goal013-1/r8-native-default-framebuffer', new Date().toISOString().replace(/[:.]/g, '-'));
+const out = path.resolve(process.argv.find(arg=>arg.startsWith('--out='))?.slice(6) || path.join(root, '.expo/goal013-1/r8-native-default-framebuffer', new Date().toISOString().replace(/[:.]/g, '-')));
 fs.mkdirSync(out, { recursive: true });
 const bridge = installSourceBridge(root);
 // Source-only controller construction does not have an installed Expo binary.
@@ -267,6 +267,7 @@ async function main() {
   bridge.verify();
   for (const [file, expected] of Object.entries(dependencies)) if (sha256(fs.readFileSync(path.join(root, file))) !== expected) throw Error('Installed Three changed during QA');
   const beforeFront = results.find(result => result.name === 'before-front');
+  const rendererOwnedTextureCount = JSON.parse(fs.readFileSync(path.join(out,'scene.json'),'utf8')).materials.some(material=>material.type==='MeshStandardMaterial') ? 1 : 0;
   const fixed = results.filter(result => result.fixed), checks = {
     realInvalidOperationOnRestore: beforeFront.reflected && beforeFront.samples.some(sample => sample.phase === 'restore' && sample.framebufferStatus === 36053 && sample.errors.includes('0x502')),
     beforeReflectionClean: beforeFront.samples.find(sample => sample.phase === 'reflection')?.errors.length === 0,
@@ -289,7 +290,7 @@ async function main() {
         off.observerEvidence.log.reads === off.samples.length;
     }),
     successfulObserverTraceReleased: fixed.every(result => result.observerEvidence.afterCompletion.state === 'completed' && result.observerEvidence.afterCompletion.retainedEntries === 0),
-    allOwnersDisposed: results.every(result => result.disposal.adapterMethodsRestored && result.disposal.fixtureObjectsDeleted && result.disposal.matchesBaseline && !result.disposal.errors.length && !result.disposedThreeMemory.geometries && !result.disposedThreeMemory.textures),
+    allOwnersDisposed: results.every(result => result.disposal.adapterMethodsRestored && result.disposal.fixtureObjectsDeleted && result.disposal.matchesBaseline && !result.disposal.errors.length && !result.disposedThreeMemory.geometries && result.disposedThreeMemory.textures === rendererOwnedTextureCount),
     tenFreshEntries: results.filter(result => result.name.startsWith('entry-')).length === 10,
     browserExceptionsAbsent: browser.errors.length === 0,
   };
@@ -311,10 +312,11 @@ async function main() {
     sourceHashes: Object.fromEntries(bridge.hashes), installedThreeHashes: dependencies,
     toolSha256: sha256(fs.readFileSync(__filename)), helperSha256: sha256(fs.readFileSync(path.join(__dirname, 'lib/three-scene-qa.cjs'))),
     sceneSha256: sha256(fs.readFileSync(path.join(out, 'scene.json'))), checks, results, browserErrors: browser.errors,
+    rendererOwnedTextureCount, rendererOwnedTextureNote: 'Three PBR DFG_LUT: 16x16 RG half float, 1024 bytes; renderer-owned until renderer disposal, not scene textures.',
     nativeAcceptance: 'PENDING', RELEASE_READY: false, runDirectory: path.relative(root, out) };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   if (Object.values(checks).some(value => !value)) throw Error('Regression B gates failed: ' + JSON.stringify(checks));
-  const retained = path.join(root, 'docs/qa-goal013-1/r8-browser-framebuffer-report.json');
+  const retained = path.resolve(process.argv.find(arg=>arg.startsWith('--report='))?.slice(9) || path.join(root, 'docs/qa-goal013-1/r8-browser-framebuffer-report.json'));
   fs.copyFileSync(path.join(out, 'report.json'), retained);
   console.log(JSON.stringify({ report: path.relative(root, retained), sha256: sha256(fs.readFileSync(retained)), checks }));
 }

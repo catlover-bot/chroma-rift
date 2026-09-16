@@ -13,6 +13,16 @@ function hostTree(node) {
     testID: p.testID, label: p.accessibilityLabel, disabled: !!p.disabled, pointerEvents: p.pointerEvents, source: p.source?.uri, children };
 }
 function installNativeHudBridge(context) {
+  let flushPresentationFeedback;
+  const acceptFixtureSnapshot = callback => {
+    if (!callback) return;
+    callback(context.snapshot());
+    // Explicit accepted-presentation fixture: this does not certify native GL.
+    if (context.controller) flushPresentationFeedback?.(context.controller);
+  };
+  // Explicitly inert native animation clock: this CSS host is not audio playback.
+  globalThis.requestAnimationFrame ??= () => 0;
+  globalThis.cancelAnimationFrame ??= () => {};
   const RN = {
     View: 'View', Text: 'Text', Image: 'Image', Switch: 'Switch', Modal: () => null,
     Pressable: props => React.createElement('Pressable', { ...props, style: typeof props.style === 'function' ? props.style({ pressed: false }) : props.style }, props.children),
@@ -25,7 +35,7 @@ function installNativeHudBridge(context) {
   const audio = { DEFAULT_AUDIO_PREFERENCES: { enabled: false, musicVolume: .18, effectsVolume: .35, illusionEnabled: true },
     normalizeAudioPreferences: preferences => ({ enabled: false, musicVolume: .18, effectsVolume: .35, illusionEnabled: true, ...preferences }),
     getGalleryAudioAvailability: () => 'unavailable',
-    createGalleryAudio: () => context.audio ?? { beginEnding() {}, stopMovement() {}, setActive() {}, setPreviewActive() {}, setListenerPosition() {}, playIllusion() { return false; }, stopIllusion() {}, updatePreferences() {}, event() { return false; }, movement() {}, actorMovement() {}, dispose() {}, whenReady: () => Promise.resolve(), getDiagnostics: () => ({ availability: 'unavailable', active: false, ready: false, players: 0, playedEvents: 0, droppedEvents: 0 }) } };
+    createGalleryAudio: () => context.audio ?? { beginEnding() {}, stopMovement() {}, setActive() {}, setPreviewActive() {}, setMusicState() {}, advanceMusic() {}, duckMusic() {}, setEnvironment() {}, setListenerPosition() {}, playIllusion() { return false; }, stopIllusion() {}, updatePreferences() {}, event() { return false; }, movement() {}, actorMovement() {}, dispose() {}, whenReady: () => Promise.resolve(), getDiagnostics: () => ({ availability: 'unavailable', active: false, ready: false, players: 0, playedEvents: 0, droppedEvents: 0 }) } };
   const load = Module._load;
   Module._load = function (name, ...args) {
     if (name === 'react-native') return RN;
@@ -38,10 +48,14 @@ function installNativeHudBridge(context) {
     if (name.endsWith('/RawGLProof')) return { RawGLProof: () => null };
     if (name.endsWith('/FirstPersonCanvas')) return { FirstPersonCanvas: props => {
       const { onReady, onSnapshot } = props;
-      React.useEffect(() => { context.snapshotCallback = onSnapshot; onReady(); onSnapshot(context.snapshot()); }, [onReady, onSnapshot]);
+      React.useEffect(() => { context.controller = props.controller; context.snapshotCallback = onSnapshot; onReady(); acceptFixtureSnapshot(onSnapshot); }, [props.controller, onReady, onSnapshot]);
       return React.createElement('CanvasPlaceholder');
     } };
-    if (context.bindController && name.endsWith('/runtimeController')) { const actual = load.call(this, name, ...args); return { ...actual, createController: () => context.controller }; }
+    if (/\/runtimeController(?:\.ts)?$/.test(name)) {
+      const actual = load.call(this, name, ...args);
+      flushPresentationFeedback = actual.flushControllerPresentationFeedback;
+      return context.bindController ? { ...actual, createController: () => context.controller } : actual;
+    }
     return load.call(this, name, ...args);
   };
   require.extensions['.png'] = (mod, filename) => { mod.exports = { uri: 'data:image/png;base64,' + fs.readFileSync(filename).toString('base64') }; };
@@ -49,7 +63,7 @@ function installNativeHudBridge(context) {
   return { audio, async mount(Screen, props) {
     let tree;
     await R.act(async () => { tree = R.create(React.createElement(Screen, props)); });
-    return { tree, serialize: () => hostTree(tree.root), update: () => R.act(async () => context.snapshotCallback?.(context.snapshot())),
+    return { tree, serialize: () => hostTree(tree.root), update: () => R.act(async () => acceptFixtureSnapshot(context.snapshotCallback)),
       async press(label) { const button = tree.root.findAll(n => n.type === 'Pressable' && n.props.accessibilityLabel === label)[0]; if (!button) throw new Error('Actual HUD button missing: ' + label); await R.act(async () => button.props.onPress()); },
       async pressTestID(testID) { const button = tree.root.findAll(n => n.type === 'Pressable' && n.props.testID === testID)[0]; if (!button) throw new Error('Actual HUD button missing: ' + testID); await R.act(async () => button.props.onPress()); },
       async touch(testID, phase, event) { const view = tree.root.findAll(n => n.type === 'View' && n.props.testID === testID)[0]; if (!view) throw new Error('Actual touch view missing: ' + testID); const handler = view.props['onTouch' + phase]; if (!handler) throw new Error('Touch phase missing: ' + phase); await R.act(async () => handler({ nativeEvent: event })); },
