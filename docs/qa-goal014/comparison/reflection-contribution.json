@@ -1,0 +1,1866 @@
+{
+  "boundary": "Read-only software-render QA: at each unchanged controller sample, hide the sole real actor only during one extra reflection draw, restore it before the main draw, and count canvas pixel differences. Simulation is never advanced or replaced; primary comparison movie contains the normal scene only. Counts above RGB-sum threshold12 establish actual contribution through the mirror instead of assuming it from a successful render call.",
+  "probeSha256": "7ec91c3bdc02ba56519a018a10ffae68b38fff84251bdd25ce003992e1098c47",
+  "viewerSha256": "18617f89f6a08a3cd5adb323ccced5e1523192ec4b36e1e46db39e13e909836a",
+  "samples": [
+    {
+      "frame": 0,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 1,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 2,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 3,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 4,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 5,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 6,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 7,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 8,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 9,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 10,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 11,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 12,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 13,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 14,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 15,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 16,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 17,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 18,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 19,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 20,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 21,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 22,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 23,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 24,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 25,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 26,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 27,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 28,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 29,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 30,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 31,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 32,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 33,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 34,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 35,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 36,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 37,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 38,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 39,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 40,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 41,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 42,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 43,
+      "before": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": false,
+        "error": 0
+      }
+    },
+    {
+      "frame": 44,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 45,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 46,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 47,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 48,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 49,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 50,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 51,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 52,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 53,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 54,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 55,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 56,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 57,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 58,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 59,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 60,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 61,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 62,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 63,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 64,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 65,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 66,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 67,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 68,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 69,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 70,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 71,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 72,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 73,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 74,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 75,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 76,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 77,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 78,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 79,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 80,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 81,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 82,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 83,
+      "before": {
+        "changedPixels": 2652,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 84,
+      "before": {
+        "changedPixels": 1481,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 85,
+      "before": {
+        "changedPixels": 3044,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 86,
+      "before": {
+        "changedPixels": 3648,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 87,
+      "before": {
+        "changedPixels": 2966,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 88,
+      "before": {
+        "changedPixels": 33,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 89,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 90,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 91,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 92,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 93,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 94,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 95,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 96,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 97,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 98,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 99,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 100,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 101,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 102,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 103,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 104,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 105,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 106,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 107,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 108,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 109,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 110,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 111,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 112,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 113,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 114,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 115,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 116,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 117,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 118,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 119,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 120,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 121,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 122,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 123,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 124,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 125,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 126,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 127,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 128,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 129,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 130,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 131,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 132,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 133,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 134,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 135,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 136,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 137,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 138,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 139,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 140,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 141,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    },
+    {
+      "frame": 142,
+      "before": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      },
+      "after": {
+        "changedPixels": 0,
+        "rendered": true,
+        "error": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,848 @@
+{
+  "cases": [
+    {
+      "id": "matched-0",
+      "frame": 0,
+      "camera": "b936706a-4cb9-4cf5-800e-65df7fb61a15",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "6c17d06fabeee70e62458139e72791c2c70573d093aeb5816ab5017defe347a1",
+      "stats": [
+        {
+          "frame": 1,
+          "calls": 75,
+          "triangles": 6304,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 2,
+          "calls": 83,
+          "triangles": 25710,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-32",
+      "frame": 32,
+      "camera": "8f5a893a-8048-4256-8d7b-4b8a0187765d",
+      "pose": {
+        "position": {
+          "x": -1.740430988948594,
+          "y": 1.6,
+          "z": -9.767942534806847
+        },
+        "yaw": 1.7033478590915667,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "7716f208028f4a2dd5e69571661971a609dda68b76ec64aef9faa7bd0cf019db",
+      "stats": [
+        {
+          "frame": 3,
+          "calls": 9,
+          "triangles": 2376,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 4,
+          "calls": 13,
+          "triangles": 4816,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-110",
+      "frame": 110,
+      "camera": "31089a18-0e99-47dd-9fa2-2e95719c21db",
+      "pose": {
+        "position": {
+          "x": 0.328333333333327,
+          "y": 1.6,
+          "z": -10
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "ba9d689b64e454f7b0247ab440e38fde3d6b3f36a5c037c15924b9dff46fe95e",
+      "stats": [
+        {
+          "frame": 5,
+          "calls": 10,
+          "triangles": 2472,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 6,
+          "calls": 14,
+          "triangles": 4912,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-365",
+      "frame": 365,
+      "camera": "48de45a5-a39d-4c68-9f3b-9b42efd9bed2",
+      "pose": {
+        "position": {
+          "x": 6.299948304364817,
+          "y": 1.6,
+          "z": 18.789963345932385
+        },
+        "yaw": -3.1364420149717347,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "218a67549520a8c6651b6177d4cc4f39f58b3910ae44d7a509050ea208a1c1d5",
+      "stats": [
+        {
+          "frame": 7,
+          "calls": 22,
+          "triangles": 2522,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 8,
+          "calls": 27,
+          "triangles": 4964,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-395",
+      "frame": 395,
+      "camera": "5bd40f18-fe13-479b-8f6f-6a049c7610d1",
+      "pose": {
+        "position": {
+          "x": 0.5807166145848371,
+          "y": 1.6,
+          "z": 2.761433229169675
+        },
+        "yaw": -2.677945044588986,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "66ee1ca0652585cd81c58696f31b7bb5a3945ffa014cc59eae8da18b33e162ab",
+      "stats": [
+        {
+          "frame": 9,
+          "calls": 51,
+          "triangles": 4426,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 10,
+          "calls": 53,
+          "triangles": 22812,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-465",
+      "frame": 465,
+      "camera": "add1ee9d-493d-4f5a-9d31-2d09d6a81838",
+      "pose": {
+        "position": {
+          "x": 3,
+          "y": 1.6,
+          "z": 21.895833333333318
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "9fd229b5a0d77ac676413a7be964962e0aa4880ff2b2cdd3ff069ac48fbe90de",
+      "stats": [
+        {
+          "frame": 11,
+          "calls": 26,
+          "triangles": 818,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 12,
+          "calls": 30,
+          "triangles": 2238,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-505",
+      "frame": 505,
+      "camera": "7c79b159-2207-46ab-9545-7e780ea481d4",
+      "pose": {
+        "position": {
+          "x": 2,
+          "y": 1.6,
+          "z": 3.3583333333333316
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "8b2b823b286aa437a6f69f64caba2e0e73a55dd9f1f0f30b1d3de1e6470d4cdc",
+      "stats": [
+        {
+          "frame": 13,
+          "calls": 78,
+          "triangles": 5450,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 14,
+          "calls": 81,
+          "triangles": 24300,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-540",
+      "frame": 540,
+      "camera": "d80b1f1b-13e3-4360-90e0-cc33b18db68b",
+      "pose": {
+        "position": {
+          "x": 1.7897895533920076,
+          "y": 1.6,
+          "z": 16.908685220637473
+        },
+        "yaw": 1.838706749218245,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "2910814daaa3b0992139b4a54b0a8ef0c9c44781402fb597869b8171c7ad707f",
+      "stats": [
+        {
+          "frame": 15,
+          "calls": 20,
+          "triangles": 1610,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 16,
+          "calls": 25,
+          "triangles": 2924,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-565",
+      "frame": 565,
+      "camera": "4edfdf34-a1c1-4b3f-8055-eeeb5236fefd",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -2.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyTaken": false,
+        "practiced": false,
+        "ratchets": 0,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "cf2dd20d06af6f607f6e8a00b494ba7eb38b30f6e8c2dadc1855704fbdffdc5f",
+      "stats": [
+        {
+          "frame": 17,
+          "calls": 59,
+          "triangles": 3687,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 18,
+          "calls": 112,
+          "triangles": 27406,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-568",
+      "frame": 568,
+      "camera": "cec990d4-8b1a-4443-b0ed-e34f1a3d9781",
+      "pose": {
+        "position": {
+          "x": 1.5797943709000866e-16,
+          "y": 1.6,
+          "z": -1.210000000000001
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyTaken": false,
+        "practiced": false,
+        "ratchets": 0,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "10c88d6ef182941d5c03b7faf779d176b5ce0c2a6c0717df27f7803f316ea7fa",
+      "stats": [
+        {
+          "frame": 19,
+          "calls": 59,
+          "triangles": 3687,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 20,
+          "calls": 107,
+          "triangles": 26582,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-594",
+      "frame": 594,
+      "camera": "036d1c54-1f7c-4899-8198-6bccb8084b09",
+      "pose": {
+        "position": {
+          "x": -1.5,
+          "y": 1.6,
+          "z": 7.492500000000019
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyTaken": true,
+        "practiced": false,
+        "ratchets": 0,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "a579a60ea34d4a70c3969f3c9f6e21772641b7671babf0d30851035a26e0a712",
+      "stats": [
+        {
+          "frame": 22,
+          "calls": 9,
+          "triangles": 108,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 24,
+          "calls": 32,
+          "triangles": 3418,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-613",
+      "frame": 613,
+      "camera": "a6ba4f52-bab1-4daa-801b-2c58935dca3b",
+      "pose": {
+        "position": {
+          "x": -1.5,
+          "y": 1.6,
+          "z": 10.89666666666664
+        },
+        "yaw": 1.9722954204143246,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyTaken": true,
+        "practiced": true,
+        "ratchets": 1,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "4fc814d7644cf78aae86a16b49c08fef73c95ed344e78dc9df3fb5a601526d3d",
+      "stats": [
+        {
+          "frame": 26,
+          "calls": 17,
+          "triangles": 213,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 28,
+          "calls": 47,
+          "triangles": 4330,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-633",
+      "frame": 633,
+      "camera": "4e46313f-229f-4b9b-8926-5fc17742ca61",
+      "pose": {
+        "position": {
+          "x": -1.5,
+          "y": 1.6,
+          "z": 10.89666666666664
+        },
+        "yaw": 1.9722954204143246,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyTaken": true,
+        "practiced": true,
+        "ratchets": 3,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "ff15add05feebef645e15d7860a90f3b39fc5a3b3983dfb804d1fd5c3b40d348",
+      "stats": [
+        {
+          "frame": 30,
+          "calls": 18,
+          "triangles": 245,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 32,
+          "calls": 47,
+          "triangles": 4330,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-675",
+      "frame": 675,
+      "camera": "73d3b2d5-98e3-4324-b11f-47487b6aab52",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974483,
+        "pitch": -0.14048970175352035
+      },
+      "state": {
+        "keyInstalled": false,
+        "procedureRead": false,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "caa5fb67280e063e1997faafe60e873fe0179b6b4b0b95615c0e216110e249c8",
+      "stats": [
+        {
+          "frame": 33,
+          "calls": 11,
+          "triangles": 122,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 34,
+          "calls": 11,
+          "triangles": 1188,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-680",
+      "frame": 680,
+      "camera": "1d981ed5-8a82-47a3-9154-5a5e62d20ecc",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10.14333333333333
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "24df1a4dfffa4499ec1e09ca081093f4dde133b811c56def10c2b5acc0175c3b",
+      "stats": [
+        {
+          "frame": 35,
+          "calls": 33,
+          "triangles": 426,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 36,
+          "calls": 100,
+          "triangles": 7194,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-706",
+      "frame": 706,
+      "camera": "854e7d3d-baa4-40ae-954c-caf8733d0aec",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.680833333333322
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "5e64943a631aced20093494913004389e7de865374094f6e4591c190bf1800e1",
+      "stats": [
+        {
+          "frame": 37,
+          "calls": 27,
+          "triangles": 354,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 38,
+          "calls": 72,
+          "triangles": 5062,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-714",
+      "frame": 714,
+      "camera": "1ec9c2d5-e937-4940-9951-2258731ed522",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 12
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": true,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "3a07c67dff84a4184298ea2550f8c8d7a7f9982d84c70c4ab21680283d18b333",
+      "stats": [
+        {
+          "frame": 39,
+          "calls": 13,
+          "triangles": 146,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 40,
+          "calls": 13,
+          "triangles": 1412,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-717",
+      "frame": 717,
+      "camera": "9796dcc9-a2fd-4fbf-8675-629567500719",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 13.179166666666664
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": true,
+        "isolated": true,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "b7c958a8c236ad72beea95b3b102c831816c679be539e09845229a8a4e70771c",
+      "stats": [
+        {
+          "frame": 41,
+          "calls": 26,
+          "triangles": 342,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 42,
+          "calls": 45,
+          "triangles": 2546,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "matched-739",
+      "frame": 739,
+      "camera": "7834ae89-1b5b-4c39-9af6-68bd0b7dd801",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 22.45
+        },
+        "yaw": -3.141592653589793,
+        "pitch": -0.07
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": true,
+        "isolated": true,
+        "cleared": true
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477",
+      "imageSha256": "39c69e23558262cf94b6081d8bf762db280e39a87df7d7e54d9e2a4bfc186d3f",
+      "stats": [
+        {
+          "frame": 43,
+          "calls": 17,
+          "triangles": 234,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 44,
+          "calls": 30,
+          "triangles": 1966,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "new-control-spawn",
+      "camera": "d4f02337-f60d-4a8c-8ceb-365d8f21ca16",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.15,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "imageSha256": "01ea5220bf38b4008a6f6631d67720a0eb4a776c3816ba55b5f8d5e250afae9a",
+      "stats": [
+        {
+          "frame": 45,
+          "calls": 71,
+          "triangles": 5104,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 46,
+          "calls": 71,
+          "triangles": 5104,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "new-key-entry",
+      "camera": "cde042e4-e8b5-4e2f-adf5-053d6db03924",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.994514298201391,
+        "pitch": -0.3382034312107085
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "imageSha256": "8f6bc0c4ce62024e899258cc1b98589ab991ddee3cf4c57032405aac36087c95",
+      "stats": [
+        {
+          "frame": 47,
+          "calls": 85,
+          "triangles": 6040,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 48,
+          "calls": 85,
+          "triangles": 6040,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    },
+    {
+      "id": "new-console-side",
+      "camera": "c669159e-d11a-4ecd-8769-f89081c65a1d",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.630122592345775,
+        "pitch": -0.22
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "imageSha256": "4eb2b98411accc4baea9bdf6600bb00a6fd9ba458fedadb42915a01a8a3a9e79",
+      "stats": [
+        {
+          "frame": 49,
+          "calls": 111,
+          "triangles": 8322,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        },
+        {
+          "frame": 50,
+          "calls": 111,
+          "triangles": 8322,
+          "points": 0,
+          "lines": 0,
+          "error": 0
+        }
+      ]
+    }
+  ],
+  "browserErrors": []
+}

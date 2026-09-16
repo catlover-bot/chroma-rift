@@ -1,0 +1,251 @@
+{
+  "boundary": "Historical CSS glyph-range failures before the enlarged-text layout correction; all glyphs remained inside the viewport. Not native Yoga measurement.",
+  "fontScale": 2,
+  "width": 320,
+  "height": 568,
+  "buttonHeightBefore": 104,
+  "buttonHeightAfter": 132,
+  "roundingToleranceCssPixels": 1,
+  "failures": [
+    {
+      "id": "mirror-entry-standard-320",
+      "label": "横顔と余白を見比べる",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "mirror-winch-ready-standard-320",
+      "label": "巻き上げレバーを保持する",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "departure-key-installed-standard-320",
+      "label": "隔離キーは接続済み",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "departure-stop-locked-standard-320",
+      "label": "停止盤：収容と隔離が先",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "departure-bell-ready-standard-320",
+      "label": "収容区画の呼び鈴を鳴らす",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "mirror-entry-low-320",
+      "label": "横顔と余白を見比べる",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "mirror-winch-ready-low-320",
+      "label": "巻き上げレバーを保持する",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "departure-key-installed-low-320",
+      "label": "隔離キーは接続済み",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "departure-stop-locked-low-320",
+      "label": "停止盤：収容と隔離が先",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    },
+    {
+      "id": "departure-bell-ready-low-320",
+      "label": "収容区画の呼び鈴を鳴らす",
+      "bounds": {
+        "left": 166,
+        "top": 452,
+        "right": 308,
+        "bottom": 556,
+        "width": 142,
+        "height": 104
+      },
+      "ranges": [
+        {
+          "left": 180.984375,
+          "top": 449.609375,
+          "right": 293,
+          "bottom": 556.796875,
+          "width": 112.015625,
+          "height": 107.1875
+        }
+      ],
+      "insideButton": false,
+      "insideViewport": true
+    }
+  ]
+}

@@ -1,3 +1,28 @@
+# Goal014 — 第一章の新しい同梱preview
+
+**DEVICE_ACCEPTANCE=PENDING / RELEASE_READY=false。** コードmarkerは`goal-014-polish-r1`。作業場所は`/home/mhirotaka/workspace/chroma-rift-goal012`、branchは`feat/goal-014-chapter-one-polish`。下のr8以前の失敗履歴・診断手順はそのまま残す。
+
+ユーザー提供のr8 / preview / iOS build3の録画では04から第一章完了へ到達した一経路が確認されている。508.365秒、1170×2532、HEVC/AAC44.1kHz、SHA-256 `db76b663c6ac9d41f85c10f68e86712ab3b604bee9dcc043d2aee0691ca06f9c`。今回の根拠は指定された観察表であり、Codexによる連続視聴・実聴・実機FPS測定ではない。全端末、全5エリア、全再開条件の受入れを意味しない。
+
+新しいnative依存・SDK・設定変更はない。新しい音楽・material・モデルを同梱したpreviewが必要。Metro再読込は既存同梱previewの更新方法ではない。EASはこの作業で実行しない。ユーザーが次を実行する。
+
+```bash
+cd /home/mhirotaka/workspace/chroma-rift-goal012 && npx eas-cli@latest build --platform ios --profile preview
+```
+
+既存previewはinternal distribution、developmentClient=false、autoIncrement=true、remote appVersionSource。次のbuild番号を推測せず、完成したEAS build IDと端末表示を別々に記録する。起動時に`goal-014-polish-r1 / preview / release-js`と新しいnative番号を確認し、アプリ削除や保存消去はしない。
+
+1. 機内モードで01〜05を通す。各錯視、鈴2個、任意比較、低負荷、文字拡大、簡単操作を確認する。
+2. 04はパネルの白いキー取得、実壁のある練習、危険下の本保持、0/3→3/3の確定、鏡で背後確認、片指を離して直ちに左操作で退避。途中取消・pause・background・cold resumeで整数段を保持し、保持指や途中演出は再開しない。
+3. 05は手順前の停止対象、キー前の鈴、未収容／一部収容／全身収容／扉sweep／危険側からの操作で、目的・ボタン・理由が一致するか確認する。実鈴に誘導し、扉、停止、在館02→01、職員扉、屋外歩行、01→00を確認する。
+4. 屋外到達時点で終了し、cold起動で完了が残ることを確認する。4秒の屋外余韻と12秒の終幕導入は保存を遅らせない。終幕を飛ばす操作には新しい押下が必要。
+5. 音楽6曲の主題・状態遷移、足音と重要SEの聞こえ方、イヤホン／スピーカー／モノラルを確認する。音楽・環境音・効果音・消音が保持され、隔離／停止後の追跡音、pause／background／GL失敗後の音漏れがないか確認する。
+6. 10回再入場、04鏡描画、retry、旧r8セーブ、標準／控えめを確認する。端末名・OS・設定・長いframe・発熱・音切れを実測の範囲で記録する。失敗時は既存FIRST_FAILUREを使い、画面の準備未完了を成功扱いにしない。
+
+初見3〜5人の理解／手応え／怖さ／不快さ評価はPENDING。公開URL・運営情報・ストア申告も既存の公開ブロッカーのまま。ローカル結果と測定境界は[Goal014 QA](qa-goal014/README.md)へ分離する。
+
+---
+
 # Goal 013 — iPhone previewで第一章を確認する
 
 ## Goal 013.1 r8 — r7 build 2のGL失敗を受けた修正版候補

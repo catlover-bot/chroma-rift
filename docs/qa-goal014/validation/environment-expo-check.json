@@ -1,0 +1,19 @@
+{
+  "command": [
+    "node",
+    "node_modules/expo/bin/cli",
+    "install",
+    "--check"
+  ],
+  "recordedAtUTC": "2026-09-16T08:48:50.345410+00:00",
+  "elapsedSeconds": 7.643,
+  "exitCode": 1,
+  "stdout": {
+    "file": "environment-expo-check.stdout.log.gz",
+    "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "file": "environment-expo-check.stderr.log.gz",
+    "uncompressedSha256": "77bf30c98e93f2dbb2f11d4ed8491f396bb0d6cb58fd398927454974764b8b72"
+  }
+}

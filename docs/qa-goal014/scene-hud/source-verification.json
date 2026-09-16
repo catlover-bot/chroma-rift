@@ -1,0 +1,161 @@
+{
+  "sceneHudStartedAt": "2026-09-16T08:53:39.640351+00:00",
+  "signCaptureStartedAfter": "2026-09-16T08:40:05.435119+00:00",
+  "verifiedAt": "2026-09-16T09:01:58.855408+00:00",
+  "boundary": "Fresh 102-case scene/HUD run after the containment-door and enlarged-text corrections; 11-view sign rerun after the containment-door correction, with all its 136 loaded sources still identical after the HUD layout change. Loaded source hashes, tool hashes, all generated images, and final before/after helper hashes checked against current bytes. CSS/SwiftShader with explicit native readiness/audio fixtures; no native-device or continuous human-viewing claim.",
+  "commands": [
+    "node scripts/qa-stage-scene-hud.cjs",
+    "node scripts/qa-facility-signs.cjs"
+  ],
+  "checks": [
+    {
+      "name": "scene-hud",
+      "sourceCount": 169,
+      "sourceMismatch": [],
+      "imageCount": 102,
+      "imageMismatch": [],
+      "scriptHashMatches": true,
+      "reportSha256": "8a931059e31eb8079547a08fafede7044bd8b59a810d2f4b965711b5b44f193f"
+    },
+    {
+      "name": "facility-signs",
+      "sourceCount": 136,
+      "sourceMismatch": [],
+      "imageCount": 11,
+      "imageMismatch": [],
+      "scriptHashMatches": true,
+      "reportSha256": "397996138b2f17688b5b5c55077209a66e54f6a1dcfd6e5e8284b6dc19eb4825"
+    }
+  ],
+  "fixtureHashes": {
+    "scripts/qa-stage-scene-hud.cjs": "1f0a3ca52af8d9cb7a0cda6d65e88fa47f60b468d34073ae103415e8cd49f2df",
+    "scripts/qa-facility-signs.cjs": "5c75c5abd206e9008c23109ef88de45f601d1d36ad27768da5eda5d7f229ad58",
+    "scripts/lib/native-hud-qa.cjs": "036262a1b6e51d3fc4b44f8a9d3e47bed12d6c4ee0ddeb1769a571605d3a649e",
+    "scripts/lib/three-scene-qa.cjs": "d33722b60d8f38eb4d888c38ef6494a125a37a52faac1d35e442b1650c4bc419",
+    "scripts/lib/qa-native-metadata.cjs": "e866db18c86c9b8ec7b03e0b9f23fe5f7d3830a5b1c6b4c4b19eb439a0d3c527",
+    "node_modules/three/src/renderers/shaders/DFGLUTData.js": "4a6e5e13121a71227524272d63e38adc9f6b3ecad9265f7bb001a0cd8b8990c4",
+    "node_modules/three/src/renderers/WebGLRenderer.js": "867948b57a6abb84d4cfd7619b38ea14fbb2c100c1b6f78d59de2383662ab7a0",
+    "src/rendering/firstPerson/controlLayout.ts": "f26bcc88190234188ac336406b8f2b2f1348afb79c623160d548377a41b6df2b"
+  },
+  "fixtureHashMismatch": [],
+  "logs": [
+    {
+      "file": ".expo/goal014/logs/scene-hud-refresh-final.log",
+      "sha256": "1c426e0ce0c9e2bef3cea6714ef81707325b1706f0448b0d4d8e4f63263089dc"
+    },
+    {
+      "file": ".expo/goal014/logs/facility-signs-refresh.log",
+      "sha256": "65cabe01dda8d3965a31142a9bf1408ef5620945b6923c24650b30b8a4e92eb8"
+    },
+    {
+      "file": ".expo/goal014/logs/hud-three-line-green-final.log",
+      "sha256": "6889945c1ed85b7b515479a09e2bc599a2153a04aaf53bce7bbaaff31e6e5ae1"
+    },
+    {
+      "file": ".expo/goal014/logs/hud-three-line-types-final.log",
+      "sha256": "a13e098ee30ba8fa3bf4d250cab64a72da8fd4ebd9bda4466baee4d3d4ecee32"
+    },
+    {
+      "file": ".expo/goal014/logs/hud-three-line-lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "publishedImages": [
+    {
+      "file": "departure-bell-ready-standard-430.png",
+      "sha256": "a6939424f8e0beb0a16668757b1e34fb32cfbf283a7505122d868c4f1855b488"
+    },
+    {
+      "file": "departure-key-installed-standard-430.png",
+      "sha256": "b61c8efadb0c7ffdc27ef3eaaf0099030c6f993f4f2665b70e5593a8f9c39af7"
+    },
+    {
+      "file": "departure-key-ready-standard-430.png",
+      "sha256": "0d772c49288450cfa39b3a8f66aae5c0b5a6afd2c4d7c097eace90ad4092824e"
+    },
+    {
+      "file": "departure-stop-locked-low-320.png",
+      "sha256": "afcd6ae74de2efd3d13775e5a2a024722e4c8594c1f5fe9a12640ec4c787d230"
+    },
+    {
+      "file": "gallery-entry-standard-430.png",
+      "sha256": "3c28214469520e9467bdaf2b1f2df5d57dd0497c73fe12c1fd0fcc7fb1ba7ed3"
+    },
+    {
+      "file": "gallery-shadow-operating-low-320.png",
+      "sha256": "1a1efa2c7a89c85b4f4ba51c4102b864f34e0ead129973965e86adb9a323d7cd"
+    },
+    {
+      "file": "mirror-entry-standard-430.png",
+      "sha256": "f20a95ce518f91f19f4ef6fccd619e26836f269c3e35874c3f2e6e17af57778d"
+    },
+    {
+      "file": "mirror-winch-holding-standard-430.png",
+      "sha256": "05014e6ecd7499c6fa41077940b8fc53e1e891bc1e25a8f837e47d14ab2e11a3"
+    },
+    {
+      "file": "mirror-winch-ready-low-320.png",
+      "sha256": "78e3fbac4b573fa4eed9ce3b8feb724c4916e9a24d5e4fcefeaa70f7cb79baae"
+    },
+    {
+      "file": "signs/console-bell.png",
+      "sha256": "bc22b9e2ce73fd04ff605871df32b7e573a663b0d9c0647385f1c86ab0a9cc78"
+    },
+    {
+      "file": "signs/console-isolation.png",
+      "sha256": "089744cec7a66e1ecaf91010f695bc2dd71c72dae2c1a44181d8570049f31a65"
+    },
+    {
+      "file": "signs/console-key.png",
+      "sha256": "40911db4abd99bfa943d945af41bfde1f6bdec47dfe51765fe8220ce23f38a41"
+    },
+    {
+      "file": "signs/console-power.png",
+      "sha256": "f79e938e60eea06c0318d882375546d164fe120b83fea4b1b61b6e7df62f8fd9"
+    },
+    {
+      "file": "signs/departure.png",
+      "sha256": "1813029525d5dd99704611e63c08e23650562cfe68a2432e4b988ad165d0dc0d"
+    },
+    {
+      "file": "signs/gallery.png",
+      "sha256": "a599c0aa3db97866fc40ddbacea6f1cd596efbc18e17b684adc858bef16fece0"
+    },
+    {
+      "file": "signs/mirror.png",
+      "sha256": "f367856de7ef2f020ef1bbc63e8520eb49ecb0e4f227cbc73611e18a7cf68088"
+    },
+    {
+      "file": "signs/practice.png",
+      "sha256": "8164f94e2e9d3a3dad356f3a47a6505ac0a272a383aa125d5e7e2109d46c6454"
+    },
+    {
+      "file": "signs/theatre.png",
+      "sha256": "9379ed4e8814729a08b576f2d6e2222604d548ae1aa6092b409c5a51512a9571"
+    },
+    {
+      "file": "signs/vault.png",
+      "sha256": "619e1107287d3ef059ed7758dd7620457088939dfdf722f28cbe14ecd6216ac5"
+    },
+    {
+      "file": "signs/winch.png",
+      "sha256": "3b59976feca0f8ecf0a1173a60f471bf4f4cd6ee01e6b6f2906afcbcbce12f45"
+    },
+    {
+      "file": "theatre-entry-standard-430.png",
+      "sha256": "66addccb63d3d6b735b5633bad1394f4f502211a5ef4809dae442fb052053f93"
+    },
+    {
+      "file": "theatre-light-operating-low-320.png",
+      "sha256": "2d844a1d5f8b184f0bb8ff71934786e37bbad3f5dbd43d8503cf20a03149735a"
+    },
+    {
+      "file": "vault-entry-standard-430.png",
+      "sha256": "82aeb6aa1b945daae5537df9c40ed6853c81640782afe71127ba0576ad4806c4"
+    },
+    {
+      "file": "vault-length-operating-low-320.png",
+      "sha256": "3deaeadee69c7532b1d71d1109469b07b4def41b802734a515ad9bea35f79ea3"
+    }
+  ]
+}

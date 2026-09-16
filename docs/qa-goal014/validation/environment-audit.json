@@ -1,0 +1,18 @@
+{
+  "command": [
+    "npm",
+    "audit",
+    "--json"
+  ],
+  "recordedAtUTC": "2026-09-16T08:48:54.813440+00:00",
+  "elapsedSeconds": 12.071,
+  "exitCode": 1,
+  "stdout": {
+    "file": "environment-audit.stdout.log.gz",
+    "uncompressedSha256": "c3e10b75464f5951fb22c897ff0ec6673d382ab581deffa7ba2b18ccd618e783"
+  },
+  "stderr": {
+    "file": "environment-audit.stderr.log.gz",
+    "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

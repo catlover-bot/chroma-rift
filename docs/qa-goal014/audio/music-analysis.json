@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "scoreSha256": "8dc2e8a8ad453f692356578046f96b8f0e943bcf279aeababf27f7035464502a",
+  "rendererSha256": "6671a6c6529ec118dce074cd9b8451adfcb7879f8fb459e701aa4fb23ae05d84",
+  "sourceManifestSha256": "9fa88cc72372444f39104717fd1d89aeb48ad1aae243c7710ee79323820409f1",
+  "codec": "AAC LC, stereo, 44100 Hz, 112 kbit/s",
+  "artisticListeningVerified": false,
+  "status": "technical mix candidate; headphone/speaker and device listening pending",
+  "tracks": {
+    "title_theme": {
+      "integratedLufs": -22.0,
+      "truePeakDbtp": -9.85,
+      "loudnessRangeLu": 4.7,
+      "durationSeconds": 54.0,
+      "samplePeak": 0.32174405455589294,
+      "clippedSamples": 0,
+      "dcMean": [
+        -9.540391329210252e-05,
+        -9.619350748835132e-05
+      ],
+      "monoRmsRelativeDb": -0.05947458706259058,
+      "channelCorrelation": 0.9734296661065521,
+      "finalHalfSecondPeak": 0.0,
+      "sha256": "9ba7511f72304672ab7b9d3e406ab3af0df75b8ab3586d41c45dede876ab2005",
+      "bytes": 663542,
+      "noteCount": 37,
+      "form": "A: solo call / A2: cello answer / B: displaced harmony / A3: thinning return",
+      "phraseRestBars": [
+        3,
+        7,
+        11,
+        15
+      ]
+    },
+    "exploration": {
+      "integratedLufs": -22.01,
+      "truePeakDbtp": -6.74,
+      "loudnessRangeLu": 9.5,
+      "durationSeconds": 88.0,
+      "samplePeak": 0.4599994421005249,
+      "clippedSamples": 0,
+      "dcMean": [
+        -4.186155638308264e-05,
+        -4.196805821266025e-05
+      ],
+      "monoRmsRelativeDb": -0.06919509383544985,
+      "channelCorrelation": 0.968694700157586,
+      "finalHalfSecondPeak": 0.0,
+      "sha256": "b25cde7ed42c086b8e89e9b3c3b8b94d731089e7cdd7d46a4a1e8fad03af5920",
+      "bytes": 910932,
+      "noteCount": 38,
+      "form": "Five rooms: statement / plucked answer / high fragment / open fifth / tonic rest",
+      "phraseRestBars": [
+        3,
+        7,
+        11,
+        15,
+        19
+      ]
+    },
+    "suspicion": {
+      "integratedLufs": -22.02,
+      "truePeakDbtp": -4.47,
+      "loudnessRangeLu": 8.8,
+      "durationSeconds": 56.0,
+      "samplePeak": 0.5974147319793701,
+      "clippedSamples": 0,
+      "dcMean": [
+        -4.659399564843625e-05,
+        -4.64385848317761e-05
+      ],
+      "monoRmsRelativeDb": -0.08862382959410955,
+      "channelCorrelation": 0.9619288898215481,
+      "finalHalfSecondPeak": 0.0,
+      "sha256": "6ce0a86b75c0392818c99ccb2675400c9dc03a60b916b7fceff400019deef316",
+      "bytes": 500447,
+      "noteCount": 36,
+      "form": "Four three-beat phrases: question / semitone shadow / metal echo / withdrawal",
+      "phraseRestBars": [
+        3,
+        7,
+        11,
+        15
+      ]
+    },
+    "pursuit": {
+      "integratedLufs": -22.01,
+      "truePeakDbtp": -6.04,
+      "loudnessRangeLu": 7.6,
+      "durationSeconds": 38.0,
+      "samplePeak": 0.4990207850933075,
+      "clippedSamples": 0,
+      "dcMean": [
+        -4.941448787576519e-05,
+        -4.962102684658021e-05
+      ],
+      "monoRmsRelativeDb": -0.08568543288807463,
+      "channelCorrelation": 0.9610970077385947,
+      "finalHalfSecondPeak": 0.0,
+      "sha256": "84c4482a80b68907ca3335690de6a5a33afde370d2f8c75d2aae6846369d2aef",
+      "bytes": 454281,
+      "noteCount": 104,
+      "form": "Four compressed cells with off-beat metal; two-beat releases keep footsteps legible",
+      "phraseRestBars": [
+        3.5,
+        7.5,
+        11.5,
+        15.5
+      ]
+    },
+    "release": {
+      "integratedLufs": -22.0,
+      "truePeakDbtp": -10.01,
+      "loudnessRangeLu": 4.9,
+      "durationSeconds": 10.0,
+      "samplePeak": 0.31582820415496826,
+      "clippedSamples": 0,
+      "dcMean": [
+        -8.820404764264822e-05,
+        -9.001047146739438e-05
+      ],
+      "monoRmsRelativeDb": -0.06951848157785237,
+      "channelCorrelation": 0.969306313267894,
+      "finalHalfSecondPeak": 0.0,
+      "sha256": "2e58f6389fa0f1060f6c77ba7eaef239b2bea1d24fff957c4b0627923b3c24a3",
+      "bytes": 100854,
+      "noteCount": 8,
+      "form": "A short answered call, open fifth and long air after the cadence",
+      "phraseRestBars": [
+        1.6
+      ]
+    },
+    "chapter_end": {
+      "integratedLufs": -22.0,
+      "truePeakDbtp": -9.5,
+      "loudnessRangeLu": 5.7,
+      "durationSeconds": 62.0,
+      "samplePeak": 0.33479827642440796,
+      "clippedSamples": 0,
+      "dcMean": [
+        -0.00010085159010486677,
+        -0.00010152220056625083
+      ],
+      "monoRmsRelativeDb": -0.07061173932629729,
+      "channelCorrelation": 0.9707431923123053,
+      "finalHalfSecondPeak": 0.0,
+      "sha256": "f5ccbb4d871e9a563e67aae95c7ddf1edaa82a09d0a225efdaec796be6f7e98e",
+      "bytes": 736149,
+      "noteCount": 54,
+      "form": "Unanswered title / widening daylight / D-major answer / decaying final chord / silence",
+      "phraseRestBars": [
+        15
+      ]
+    }
+  },
+  "totalCompressedBytes": 3366205,
+  "limits": "File loudness/mono measurements do not establish device audibility, final simultaneous mix peak, accessibility or hearing safety."
+}

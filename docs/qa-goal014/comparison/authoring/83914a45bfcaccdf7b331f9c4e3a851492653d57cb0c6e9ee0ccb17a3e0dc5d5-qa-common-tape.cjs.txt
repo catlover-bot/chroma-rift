@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+'use strict';
+// QA-only authoring: identical literal commands, no state-dependent navigation.
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),Module=require('node:module');
+const repo='/home/mhirotaka/workspace/chroma-rift-goal012',base=path.join(repo,'.expo/goal014/comparison-final');
+const {installSourceBridge,mountThree,sha256}=require(repo+'/scripts/lib/three-scene-qa.cjs');
+function tape(area){
+ const pose=area==='04'?{position:{x:0,y:1.6,z:-2.5},yaw:Math.PI,pitch:0}:{position:{x:-3.75,y:1.6,z:10},yaw:Math.PI/4,pitch:Math.atan2(-.2,Math.SQRT2)};
+ const initial=structuredClone(pose),ops=[];let phase='entry';
+ const add=o=>ops.push({...o,phase});
+ const wait=s=>{let left=s;while(left>1e-8){const dt=Math.min(1/60,left);add({type:'frame',dt,forward:0});left-=dt;}};
+ const turn=(yaw,pitch=0)=>{add({type:'turn',yaw:yaw-pose.yaw,pitch:pitch-pose.pitch});pose.yaw=yaw;pose.pitch=pitch;};
+ const aim=(x,y,z)=>{const dx=x-pose.position.x,dz=z-pose.position.z;turn(Math.atan2(-dx,-dz),Math.atan2(y-pose.position.y,Math.hypot(dx,dz)));};
+ const walk=(x,z)=>{const dx=x-pose.position.x,dz=z-pose.position.z,d=Math.hypot(dx,dz);turn(Math.atan2(-dx,-dz));let left=d/2.15;while(left>1e-8){const dt=Math.min(1/60,left);add({type:'frame',dt,forward:1});left-=dt;}pose.position={x,y:1.6,z};add({type:'movement-stop'});};
+ const press=(id,point)=>{aim(...point);add({type:'press',id});wait(.25);};
+ const hold=(id,pointer,seconds)=>{add({type:'hold-start',id,pointer});wait(seconds);add({type:'hold-end',id,pointer});};
+ wait(.4);
+ if(area==='04'){
+  phase='panel';walk(0,-1);press('mirror-corridor-figure',[0,1.95,.4]);press('mirror-corridor-figure',[-.5,1.6,.4]);press('mirror-corridor-key',[0,1.35,.43]);press('mirror-corridor-key',[0,1.6,.43]);
+  phase='practice';walk(0,5.9);walk(-2.16,5.9);walk(-2.16,6.9);aim(-2.45,1.4,7.5);hold('mirror-corridor-practice',3,.75);wait(.3);
+  phase='winch-first-tooth';walk(-2.16,5.9);walk(-1.1,5.9);walk(-1.1,9.6);walk(-1.8,9.6);walk(-1.8,10);aim(-2.45,1.4,11.3);hold('mirror-corridor-winch',4,2);
+  phase='retreat';walk(-1.8,8.9);wait(.5);walk(-1.8,10);aim(-2.45,1.4,11.3);
+  phase='winch-complete';hold('mirror-corridor-winch',5,4);wait(1);
+  phase='mirror';press('mirror-corridor-mirror',[-2.65,1.9,11.4]);wait(.6);
+  phase='passage';walk(-1.8,8.9);walk(0,8.9);walk(0,22);turn(Math.PI,-.06);add({type:'press',id:'mirror-corridor-exit'});wait(.5);
+ }else{
+  phase='key-old-position';press('departure-key',[-4.75,1.4,9]);
+  phase='key-new-position';walk(-3.75,11.6);press('departure-key',[-3.55,1.12,12.95]);
+  phase='procedure';press('departure-procedure',[-4.75,1.4,10]);press('departure-procedure',[-3.15,1.12,13.08]);
+  phase='call';press('departure-bell',[-4.75,1.4,11]);press('departure-bell',[-2.72,1.18,12.72]);turn(-2.15,0);wait(5.5);
+  phase='isolation';press('departure-door',[-4.75,1.4,12]);press('departure-door',[-2.72,1.18,13.18]);turn(-2.15,0);wait(2);
+  phase='power-stop';press('departure-stop',[-4.75,1.4,13]);press('departure-stop',[-3.18,1.55,13.46]);turn(-2.15,0);wait(2);
+  phase='staff-exit';press('departure-staff-door',[-3.7,1.5,13.42]);turn(Math.PI,0);wait(1.5);
+  phase='outdoor';walk(-3.75,22.45);aim(-3.75,1.5,23);add({type:'press',id:'departure-outdoor'});wait(.5);
+  phase='aftermath';walk(-3.75,25);wait(3);
+ }
+ return {schemaVersion:1,area,initialPose:initial,settings:{quality:'standard',horrorIntensity:'subdued',width:390,height:844,verticalFov:65,fps:5},boundary:'Fixed authored operation tape shared byte-for-byte by both revisions; attempts at both old and new control locations are intentional. Refused commands are retained. Initial validated checkpoint only; no mid-run pose/progress injection or conditional route adaptation.',operations:ops};
+}
+function recording(){const events=[],players=[],states=[];let time=0,seq=0,maxPlayers=0;const log=(operation,details={})=>events.push({sequence:++seq,time,area:'comparison',simulationSeconds:time,operation,...details});
+ const backend={availability:'available',prepare:async()=>undefined,createPlayer(source){const id=players.length;let volume=0,loop=false,released=false;const p={get isLoaded(){return true;},get volume(){return volume;},set volume(value){volume=value;log('volume',{id,source,value});},get loop(){return loop;},set loop(value){loop=value;log('loop',{id,source,value});},play(){if(released)throw Error('released');log('play',{id,source});},pause(){log('pause',{id,source});},seekTo(value){log('seek',{id,source,value});return{then(cb){cb();return{catch(){}};}};},release(){if(released)throw Error('duplicate release');released=true;log('release',{id,source});},get released(){return released;}};players.push(p);maxPlayers=Math.max(maxPlayers,players.filter(p=>!p.released).length);log('create',{id,source});return p;}};
+ return{backend,advance(dt){time+=dt;},state(owner,actor){const state=owner.getDiagnostics().musicState??'baseline-no-music';if(states.at(-1)?.state!==state)states.push({time,state,actorPhase:actor});},report(){return{durationSeconds:time,maxPlayers,activePlayersAtEnd:players.filter(p=>!p.released).length,events,states,boundary:'Real audio owner driven by the fixed comparison controller tape. Native successful presentation and already-loaded zero-latency seek are explicit fixtures. No natural campaign completion or native audio capture is claimed.'};}};
+}
+async function extract(root,area,label){
+ const out=path.join(base,label,area);fs.mkdirSync(out,{recursive:true});const tapeFile=path.join(base,'tape-'+area+'.json'),input=JSON.parse(fs.readFileSync(tapeFile));
+ const load=Module._load;Module._load=function(name,...args){if(name==='expo-constants')return{};return load.call(this,name,...args);};globalThis.__DEV__=false;
+ const bridge=installSourceBridge(root),React=require(repo+'/node_modules/react'),T=require(repo+'/node_modules/three');
+ const C=require(root+'/src/rendering/firstPerson/runtimeController.ts'),{stageModule}=require(root+'/src/domain/stageKit/modules.ts'),{ChapterScene}=require(root+'/src/rendering/firstPerson/ChapterScene.tsx'),{getWorld}=require(root+'/src/domain/firstPerson/chapter.ts'),{createSceneResources}=require(root+'/src/rendering/firstPerson/resources.ts'),{createGalleryAudioOwner}=require(root+'/src/audio/owner.ts'),{DEFAULT_AUDIO_PREFERENCES}=require(root+'/src/audio/preferences.ts');
+ const stageId=area==='04'?'mirror-corridor-v1':'departure-control-v1',m=stageModule(stageId),fresh=m.checkpoint(m.create()),data=area==='04'?{schemaVersion:1,stageId,figureInspected:false,mirrorInspected:false,keyTaken:false,practiced:false,ratchets:0,cleared:false,pose:input.initialPose}:{schemaVersion:1,stageId,keyAvailable:true,keyInstalled:false,procedureRead:false,isolated:false,stopped:false,staffDoorOpened:false,cleared:false,pose:input.initialPose};
+ const checkpoint=m.restore({...fresh,stageData:data})?.checkpoint;if(!checkpoint)throw Error('Shared initial checkpoint rejected');
+ const c=C.createController(checkpoint,false,true,stageId);c.horrorIntensity=input.settings.horrorIntensity;c.viewport={width:390,height:844};Object.assign(c.diagnostics,{stage:'ready',rendererOwnership:'live',appActive:true,sceneMode:'chapter',paused:false,open:false,renderReturns:1,presentationReturns:1});
+ const camera=new T.PerspectiveCamera(65,390/844,.08,60);C.syncCamera(c,camera);const audio=recording(),owner=createGalleryAudioOwner({sessionId:String(c.runtime.session),...(label==='after'?{areaId:stageId}:{})},audio.backend);c.audio=owner;owner.setActive(true);await owner.whenReady();
+ const chapterAudio=label==='after'?require(root+'/src/rendering/firstPerson/chapterAudio.ts').presentChapterAudio:null;
+ const present=dt=>{chapterAudio?.(c,dt);C.flushControllerAudioFrame(c);C.flushControllerPresentationFeedback?.(c);audio.state(owner,c.runtime.stageSession.value.actor.phase);};present(0);
+ const commands=[],samples=[],frames=[],scenes=[];let seconds=0,ticks=0,nextSample=0,scene,mounted,resources,callbacks,ref,key;const previous=new Map();
+ async function rebuild(){const v=c.runtime.stageSession.value,k=JSON.stringify([c.runtime.progress,v.keyTaken,v.practiced,v.ratchets,v.keyInstalled,v.procedureRead,v.doorMode,v.isolated,v.stopped,v.staffDoorOpened,v.actor.motion.position.z>15.6]);if(k===key)return false;key=k;if(mounted)await mounted.unmount();resources?.dispose();previous.clear();resources=createSceneResources(false,null,true);scene=new T.Scene();scene.background=new T.Color('#171a1b');scene.add(camera);ref={current:c.runtime};mounted=await mountThree(React.createElement(ChapterScene,{world:getWorld(c.runtime),runtime:ref,progress:c.runtime.progress,resources,assist:false,reducedMotion:false,lowQuality:false,lab:false,renderOffscreen:()=>{},onFrameError:e=>{throw e;}}),T);mounted.objects.forEach(o=>scene.add(o));callbacks=bridge.callbacks.splice(0).filter(f=>!f.toString().includes('mirror.render'));scenes.push('scene-'+String(scenes.length).padStart(3,'0')+'.json');return true;}
+ async function renderState(dt,capture){const rebuilt=await rebuild();ref.current=c.runtime;callbacks.forEach(f=>f({},dt));scene.updateMatrixWorld(true);if(rebuilt){const surface=scene.getObjectByName('planar-mirror'),old=surface?.material,transport=surface?new T.MeshBasicMaterial({color:'#394a4a'}):null;if(surface)surface.material=transport;fs.writeFileSync(path.join(out,scenes.at(-1)),JSON.stringify(scene.toJSON()));if(surface)surface.material=old;transport?.dispose();}if(!capture)return;const updates=[];scene.traverse(o=>{const value={matrix:o.matrix.toArray(),visible:o.visible,material:!Array.isArray(o.material)?o.material?.uuid:undefined},s=JSON.stringify(value);if(previous.get(o.uuid)!==s){previous.set(o.uuid,s);updates.push([o.uuid,value]);}});frames.push({scene:scenes.at(-1),camera:camera.uuid,updates,seconds,ticks,phase:input.operations[Math.max(0,operationIndex)]?.phase??'entry'});samples.push({seconds,ticks,pose:structuredClone(c.runtime.pose),progress:structuredClone(c.runtime.progress),state:structuredClone(c.runtime.stageSession.value),objective:C.controllerSnapshot(c).objective});}
+ let operationIndex=-1;await renderState(0,true);nextSample=.2;
+ for(operationIndex=0;operationIndex<input.operations.length;operationIndex++){const op=input.operations[operationIndex];let accepted;
+  if(op.type==='frame'){c.input.forward=op.forward;c.input.right=0;C.advanceController(c,op.dt,camera);seconds+=op.dt;ticks++;audio.advance(op.dt);present(op.dt);const capture=seconds+1e-8>=nextSample;if(capture)nextSample+=.2;await renderState(op.dt,capture);continue;}
+  if(op.type==='turn'){C.commandController(c,{type:'turn',yaw:op.yaw,pitch:op.pitch});C.syncCamera(c,camera);}
+  else if(op.type==='movement-stop')c.input.forward=0;
+  else if(op.type==='press')accepted=C.interactController(c,op.id);
+  else if(op.type==='hold-start')accepted=C.beginStageHoldController(c,op.id,op.pointer);
+  else if(op.type==='hold-end')accepted=C.endStageHoldController(c,op.id,op.pointer);
+  commands.push({index:operationIndex,seconds,operation:op,accepted,message:c.feedbackMessage,target:C.controllerSnapshot(c).target?.id??null,pose:structuredClone(c.runtime.pose),state:structuredClone(c.runtime.stageSession.value)});present(0);await renderState(0,false);
+ }
+ await renderState(0,true);await mounted.unmount();resources.dispose();owner.dispose();c.audio=undefined;bridge.verify();
+ const assetHashes={};for(const match of fs.readFileSync(root+'/src/audio/sources.ts','utf8').matchAll(/(?:'([^']+)'|(\w+)):\s*require\('\.\.\/\.\.\/([^']+)'\)/g))assetHashes[match[1]??match[2]]={path:match[3],sha256:sha256(fs.readFileSync(path.join(root,match[3])))};
+ const sourceHashes=Object.fromEntries(bridge.hashes);if(label==='before')for(const[file,hash]of Object.entries(sourceHashes))if(!file.startsWith('../')&&sha256(cp.execFileSync('git',['show','3632675:'+file],{cwd:repo}))!==hash)throw Error('Archive source mismatch '+file);
+ const report={label,area,root,initialCheckpoint:checkpoint,tapeSha256:sha256(fs.readFileSync(tapeFile)),scriptSha256:sha256(fs.readFileSync(__filename)),sourceHashes,sourceGuardPassed:true,settings:input.settings,boundary:input.boundary,frames:frames.length,simulationSeconds:seconds,scenes:scenes.length,commands,final:structuredClone(c.runtime),accepted:commands.filter(c=>c.accepted===true).map(c=>c.operation),refused:commands.filter(c=>c.accepted===false).map(c=>({operation:c.operation,seconds:c.seconds,target:c.target,message:c.message})),defaultPreferences:DEFAULT_AUDIO_PREFERENCES,assetHashes,route:audio.report()};
+ fs.writeFileSync(out+'/animation.json',JSON.stringify({frames}));fs.writeFileSync(out+'/samples.json',JSON.stringify(samples));fs.writeFileSync(out+'/report.json',JSON.stringify(report,null,2));fs.writeFileSync(out+'/recording.json',JSON.stringify({sourceHashes,assetHashes,defaultPreferences:DEFAULT_AUDIO_PREFERENCES,route:audio.report()}));console.log(JSON.stringify({label,area,frames:frames.length,seconds,accepted:report.accepted,refused:report.refused,final:report.final.stageSession.value,players:audio.report().activePlayersAtEnd}));
+}
+(async()=>{if(process.argv[2]==='make'){for(const area of['04','05'])fs.writeFileSync(base+'/tape-'+area+'.json',JSON.stringify(tape(area),null,2));}else if(process.argv[2]==='extract')await extract(path.resolve(process.argv[3]),process.argv[4],process.argv[5]);else throw Error('make | extract source-root 04|05 before|after');})().catch(e=>{console.error(e);process.exitCode=1;});

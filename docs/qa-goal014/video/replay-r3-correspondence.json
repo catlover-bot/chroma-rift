@@ -1,0 +1,9 @@
+{
+  "method": "After control-layout fix, fresh App extraction and actual scene replay produced byte-identical silent MP4. Existing final sound movie is retained; audio source/trace correspondence is documented separately.",
+  "oldPath": ".expo/goal014/after-final/app-scene-replay",
+  "newPath": ".expo/goal014/after-final-r3/app-scene-replay",
+  "silentVideoSha256": "af77d6d4facb024028d1eee6740f8ff8cbeec09629406fa1c28e45175b7a26b9",
+  "oldReportSha256": "36925ae5fcf91cece0db84160e725bc77b594bc377bbbc613b52aaee7a27c3bf",
+  "newReportSha256": "5a2259aea83843e3fd6edfc0199f346a5fd35afd7eb330f09d2ace091504f858",
+  "identicalVideo": true
+}

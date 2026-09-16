@@ -1,0 +1,1692 @@
+{
+  "label": "Actual shared body pose extraction; native scheduling and device rendering not tested",
+  "baselineRevision": "3632675e5c42ac252cca433a5e6dd45bb028f8c5",
+  "sourceHead": "3632675e5c42ac252cca433a5e6dd45bb028f8c5",
+  "sourceHashes": {
+    "src/rendering/firstPerson/GalleryActor.tsx": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f",
+    "src/rendering/firstPerson/actorArtRig.ts": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68",
+    "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+    "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+    "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+    "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+    "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+    "src/rendering/firstPerson/resources.ts": "5d39708a8d9f7eb38cf49d096a9ea7e13e0a8bc9a552e41e46b547cab03d47e3",
+    "src/rendering/firstPerson/facilitySigns.ts": "3fb5ccb18f6b77764c43998f5985686f2e5761e9be07b241f83fb5cea2ed09dc",
+    "src/rendering/firstPerson/facilitySignData.ts": "88604f7063de9271419f98512e027f5c0229631f9d85417b2831f3631216cae6",
+    "src/rendering/firstPerson/environmentArtResources.ts": "50c0caba1ca514aece6c8e67492c72ab75f5b2805bb2f2ef6ecad6d6e788b42d",
+    "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
+    "src/domain/theatre/lightGate.ts": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+    "src/domain/theatre/projection.ts": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+    "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+    "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+    "src/domain/vault/specs.ts": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+    "src/rendering/firstPerson/galleryResources.ts": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20",
+    "src/rendering/firstPerson/actorArtResources.ts": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+    "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+    "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+    "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+    "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+    "src/domain/gallery/state.ts": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+    "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+    "src/domain/gallery/world.ts": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+    "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+    "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+    "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+    "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+    "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+    "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+    "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+    "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+    "src/domain/gallery/selectors.ts": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+    "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+    "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+    "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+    "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+    "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+    "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+    "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+    "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+    "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+    "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+    "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/firstPerson/destinationSigns.ts": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518",
+    "src/rendering/firstPerson/destinationSignData.ts": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097",
+    "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+    "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+    "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+    "src/domain/illusion/levels.ts": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+    "src/domain/illusion/projection.ts": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+    "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+    "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+    "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534"
+  },
+  "baselineSourceHashes": {
+    "src/rendering/firstPerson/GalleryActor.tsx": "8c001fee7d4eed7a4509e95eeb1fa2da2fa2a67516639241bacc300203bfaf72",
+    "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+    "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+    "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+    "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+    "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+    "src/rendering/firstPerson/resources.ts": "7b404df301198974fdd000c38ef75c1089697ee293f03f65459c1a7ea51acd9e",
+    "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
+    "src/domain/theatre/lightGate.ts": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+    "src/domain/theatre/projection.ts": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+    "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+    "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+    "src/domain/vault/specs.ts": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+    "src/rendering/firstPerson/galleryResources.ts": "ab3aa0da294bf5a8f7f18c83cd3c860e7db665961367040ecda94ba87254ac31",
+    "src/rendering/firstPerson/exhibitSculpture.ts": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+    "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+    "src/domain/gallery/world.ts": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+    "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+    "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+    "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+    "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+    "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+    "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+    "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+    "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+    "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+    "src/domain/gallery/selectors.ts": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+    "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+    "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+    "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+    "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+    "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+    "src/domain/gallery/state.ts": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+    "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+    "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+    "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+    "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+    "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+    "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+    "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+    "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+    "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/firstPerson/destinationSigns.ts": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518",
+    "src/rendering/firstPerson/destinationSignData.ts": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097",
+    "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+    "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+    "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+    "src/domain/illusion/levels.ts": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+    "src/domain/illusion/projection.ts": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+    "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+    "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+    "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534"
+  },
+  "actorSourceHashes": {
+    "src/rendering/firstPerson/GalleryActor.tsx": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f",
+    "src/rendering/firstPerson/actorArtResources.ts": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd",
+    "src/rendering/firstPerson/actorArtRig.ts": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68",
+    "src/rendering/firstPerson/galleryResources.ts": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20"
+  },
+  "sourceArchiveScope": "src and assets from baseline Git commit; current installed node_modules shared; actual baseline/current component and resource factories",
+  "fps": 24,
+  "frames": 408,
+  "seconds": 17,
+  "sameAuthoritativeTimelineForAllVariants": true,
+  "timelineSha256": "5989e15fbaaa9084d062233c14b8620a01af3e26e54108bb9a5e381557057476",
+  "dataSha256": "538fa64ec96975f78d6ad959d41c7da6ee006f29bb1704e75fa09ea54db2837a",
+  "summary": [
+    {
+      "id": "before-standard",
+      "triangles": 3274,
+      "meshes": 24,
+      "bounds": {
+        "minY": 0,
+        "maxY": 2.1588171588945886,
+        "maxRadius": 0.4147517204830374,
+        "maxEyeError": 5.118345637852858e-16,
+        "maxStanceSlip": 2.237726045655905e-16
+      },
+      "contacts": [
+        {
+          "frame": 0,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 24,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 48,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.142900000000001
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.105,
+                "y": 0.014862557787982409,
+                "z": 0.8900498815597696
+              }
+            }
+          ]
+        },
+        {
+          "frame": 72,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.03060777319969137,
+                "z": 0.5118170985854712
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 0.3141500000000069
+              }
+            }
+          ]
+        },
+        {
+          "frame": 96,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.043000776260376336,
+                "z": -0.3142403601122931
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.23834999999999396
+              }
+            }
+          ]
+        },
+        {
+          "frame": 120,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.006706901977927704,
+                "z": -1.0142620235395667
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.7908499999999938
+              }
+            }
+          ]
+        },
+        {
+          "frame": 144,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.06607864106023284,
+                "y": 0,
+                "z": -0.9993919926196408
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.043553178055249636,
+                "y": 0.033075253601834796,
+                "z": -0.8319040606180594
+              }
+            }
+          ]
+        },
+        {
+          "frame": 168,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.000040995811781296965,
+                "y": 0,
+                "z": -1.022791658663532
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.019784557973285155,
+                "y": 0,
+                "z": -0.8146724576617322
+              }
+            }
+          ]
+        },
+        {
+          "frame": 192,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.03306293297035482,
+                "y": 0.042075730920843664,
+                "z": -0.998419044633088
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.09270896958512831,
+                "y": 0,
+                "z": -0.8684961601933122
+              }
+            }
+          ]
+        },
+        {
+          "frame": 216,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.10459964129376353,
+                "y": 0,
+                "z": -0.9269521820023806
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.1049999989805887,
+                "y": 0,
+                "z": -0.917777035317775
+              }
+            }
+          ]
+        },
+        {
+          "frame": 240,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": 0.2981112701001679,
+                "y": 0.04266143013958458,
+                "z": -1.4399870851073313
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.5001370842816206,
+                "y": 0,
+                "z": -1.3264334670841567
+              }
+            }
+          ]
+        },
+        {
+          "frame": 264,
+          "phase": "windup",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 288,
+          "phase": "attack",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 312,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 336,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 360,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 384,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "after-standard",
+      "triangles": 20214,
+      "meshes": 20,
+      "bounds": {
+        "minY": 0,
+        "maxY": 2.151259139178851,
+        "maxRadius": 0.405073018083274,
+        "maxEyeError": 5.118345637852858e-16,
+        "maxStanceSlip": 2.482534153247273e-16
+      },
+      "contacts": [
+        {
+          "frame": 0,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 24,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 48,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.142900000000001
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.105,
+                "y": 0.014862557787982409,
+                "z": 0.8900498815597696
+              }
+            }
+          ]
+        },
+        {
+          "frame": 72,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.03060777319969137,
+                "z": 0.5118170985854712
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 0.3141500000000069
+              }
+            }
+          ]
+        },
+        {
+          "frame": 96,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.043000776260376336,
+                "z": -0.3142403601122931
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.23834999999999396
+              }
+            }
+          ]
+        },
+        {
+          "frame": 120,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.006706901977927704,
+                "z": -1.0142620235395667
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.7908499999999938
+              }
+            }
+          ]
+        },
+        {
+          "frame": 144,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.06607864106023284,
+                "y": 0,
+                "z": -0.9993919926196408
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.043553178055249636,
+                "y": 0.033075253601834796,
+                "z": -0.8319040606180594
+              }
+            }
+          ]
+        },
+        {
+          "frame": 168,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.000040995811781296965,
+                "y": 0,
+                "z": -1.022791658663532
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.019784557973285155,
+                "y": 0,
+                "z": -0.8146724576617322
+              }
+            }
+          ]
+        },
+        {
+          "frame": 192,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.03306293297035482,
+                "y": 0.042075730920843664,
+                "z": -0.998419044633088
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.09270896958512831,
+                "y": 0,
+                "z": -0.8684961601933122
+              }
+            }
+          ]
+        },
+        {
+          "frame": 216,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.10459964129376353,
+                "y": 0,
+                "z": -0.9269521820023806
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.1049999989805887,
+                "y": 0,
+                "z": -0.917777035317775
+              }
+            }
+          ]
+        },
+        {
+          "frame": 240,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": 0.2981112701001679,
+                "y": 0.04266143013958458,
+                "z": -1.4399870851073313
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.5001370842816206,
+                "y": 0,
+                "z": -1.3264334670841567
+              }
+            }
+          ]
+        },
+        {
+          "frame": 264,
+          "phase": "windup",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 288,
+          "phase": "attack",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 312,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 336,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 360,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 384,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "before-low",
+      "triangles": 3166,
+      "meshes": 24,
+      "bounds": {
+        "minY": 0,
+        "maxY": 2.1588171588945886,
+        "maxRadius": 0.4147517204830374,
+        "maxEyeError": 5.118345637852858e-16,
+        "maxStanceSlip": 2.237726045655905e-16
+      },
+      "contacts": [
+        {
+          "frame": 0,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 24,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 48,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.142900000000001
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.105,
+                "y": 0.014862557787982409,
+                "z": 0.8900498815597696
+              }
+            }
+          ]
+        },
+        {
+          "frame": 72,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.03060777319969137,
+                "z": 0.5118170985854712
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 0.3141500000000069
+              }
+            }
+          ]
+        },
+        {
+          "frame": 96,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.043000776260376336,
+                "z": -0.3142403601122931
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.23834999999999396
+              }
+            }
+          ]
+        },
+        {
+          "frame": 120,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.006706901977927704,
+                "z": -1.0142620235395667
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.7908499999999938
+              }
+            }
+          ]
+        },
+        {
+          "frame": 144,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.06607864106023284,
+                "y": 0,
+                "z": -0.9993919926196408
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.043553178055249636,
+                "y": 0.033075253601834796,
+                "z": -0.8319040606180594
+              }
+            }
+          ]
+        },
+        {
+          "frame": 168,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.000040995811781296965,
+                "y": 0,
+                "z": -1.022791658663532
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.019784557973285155,
+                "y": 0,
+                "z": -0.8146724576617322
+              }
+            }
+          ]
+        },
+        {
+          "frame": 192,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.03306293297035482,
+                "y": 0.042075730920843664,
+                "z": -0.998419044633088
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.09270896958512831,
+                "y": 0,
+                "z": -0.8684961601933122
+              }
+            }
+          ]
+        },
+        {
+          "frame": 216,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.10459964129376353,
+                "y": 0,
+                "z": -0.9269521820023806
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.1049999989805887,
+                "y": 0,
+                "z": -0.917777035317775
+              }
+            }
+          ]
+        },
+        {
+          "frame": 240,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": 0.2981112701001679,
+                "y": 0.04266143013958458,
+                "z": -1.4399870851073313
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.5001370842816206,
+                "y": 0,
+                "z": -1.3264334670841567
+              }
+            }
+          ]
+        },
+        {
+          "frame": 264,
+          "phase": "windup",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 288,
+          "phase": "attack",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 312,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 336,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 360,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 384,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "after-low",
+      "triangles": 6730,
+      "meshes": 20,
+      "bounds": {
+        "minY": 0,
+        "maxY": 2.151259139178851,
+        "maxRadius": 0.4040524566714947,
+        "maxEyeError": 5.118345637852858e-16,
+        "maxStanceSlip": 2.482534153247273e-16
+      },
+      "contacts": [
+        {
+          "frame": 0,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 24,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 1.5
+              }
+            }
+          ]
+        },
+        {
+          "frame": 48,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.105,
+                "y": 0,
+                "z": 1.142900000000001
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.105,
+                "y": 0.014862557787982409,
+                "z": 0.8900498815597696
+              }
+            }
+          ]
+        },
+        {
+          "frame": 72,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.03060777319969137,
+                "z": 0.5118170985854712
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": 0.3141500000000069
+              }
+            }
+          ]
+        },
+        {
+          "frame": 96,
+          "phase": "patrol",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.043000776260376336,
+                "z": -0.3142403601122931
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.23834999999999396
+              }
+            }
+          ]
+        },
+        {
+          "frame": 120,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.105,
+                "y": 0.006706901977927704,
+                "z": -1.0142620235395667
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.105,
+                "y": 0,
+                "z": -0.7908499999999938
+              }
+            }
+          ]
+        },
+        {
+          "frame": 144,
+          "phase": "notice",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.06607864106023284,
+                "y": 0,
+                "z": -0.9993919926196408
+              }
+            },
+            {
+              "stance": false,
+              "position": {
+                "x": 0.043553178055249636,
+                "y": 0.033075253601834796,
+                "z": -0.8319040606180594
+              }
+            }
+          ]
+        },
+        {
+          "frame": 168,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.000040995811781296965,
+                "y": 0,
+                "z": -1.022791658663532
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.019784557973285155,
+                "y": 0,
+                "z": -0.8146724576617322
+              }
+            }
+          ]
+        },
+        {
+          "frame": 192,
+          "phase": "search",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": -0.03306293297035482,
+                "y": 0.042075730920843664,
+                "z": -0.998419044633088
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.09270896958512831,
+                "y": 0,
+                "z": -0.8684961601933122
+              }
+            }
+          ]
+        },
+        {
+          "frame": 216,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": -0.10459964129376353,
+                "y": 0,
+                "z": -0.9269521820023806
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.1049999989805887,
+                "y": 0,
+                "z": -0.917777035317775
+              }
+            }
+          ]
+        },
+        {
+          "frame": 240,
+          "phase": "pursue",
+          "feet": [
+            {
+              "stance": false,
+              "position": {
+                "x": 0.2981112701001679,
+                "y": 0.04266143013958458,
+                "z": -1.4399870851073313
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.5001370842816206,
+                "y": 0,
+                "z": -1.3264334670841567
+              }
+            }
+          ]
+        },
+        {
+          "frame": 264,
+          "phase": "windup",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 288,
+          "phase": "attack",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 312,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 336,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 360,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        },
+        {
+          "frame": 384,
+          "phase": "idle",
+          "feet": [
+            {
+              "stance": true,
+              "position": {
+                "x": 0.7222083717022469,
+                "y": 0,
+                "z": -1.8705227804810916
+              }
+            },
+            {
+              "stance": true,
+              "position": {
+                "x": 0.8576002167628363,
+                "y": 0,
+                "z": -1.7071699841958774
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

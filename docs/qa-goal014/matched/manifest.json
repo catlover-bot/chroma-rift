@@ -1,0 +1,553 @@
+{
+  "method": "Visual-only matched reconstruction: baseline App state/camera/FOV/standard quality/intensity preserved; new transient stage clocks filled with settled values. These old positions are not a current controller playthrough. New05 poses explicitly separate. Baseline source and operation evidence remain in before/app-scene-replay.",
+  "sourceHashes": {
+    "src/rendering/firstPerson/ChapterScene.tsx": "24bb19ae91af5b81c8c944d1455c7693dafb5bb6f16874e2ea4c80482b2d8b0a",
+    "src/rendering/firstPerson/FacilityDetails.tsx": "33f779b3dc0c0f59ff86ff51bf307792066da694abcefedb1de8b0613c638680",
+    "src/rendering/firstPerson/facilitySignData.ts": "bf613df92d0cbc39f29f55972e3a6880b8b1f48d487d2ce7ebe352daae1b9e4f",
+    "src/rendering/firstPerson/PanelFixture.tsx": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+    "src/rendering/firstPerson/GlyphMark.tsx": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+    "src/rendering/firstPerson/TheatreScene.tsx": "b4115a86d746bd4e0412375890a27dc1eb159f489d1ef894ab3fb5df5f00b256",
+    "src/rendering/firstPerson/MechanicalDevices.tsx": "3c638ee6a4ab40d5d71019aea8956986d039e7d0f5f07e3ac3404125d9b67e27",
+    "src/rendering/firstPerson/segmentTransform.ts": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+    "src/domain/theatre/definition.ts": "920eaa717f54e146aeb5d99d8b246550adc57a26020cc0b44aa8c217efdc265f",
+    "src/domain/theatre/lightGate.ts": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+    "src/domain/theatre/projection.ts": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+    "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+    "src/domain/theatre/deviceStatus.ts": "05a2b6a762bab8719ccb525357b02fb49884bdffcb9c532af0e5193a2a5da352",
+    "src/domain/theatre/world.ts": "a6b3214575a433c162de21c677d665d96011ce5f35830f5f2fd42b1f5eb9c491",
+    "src/domain/theatre/environment.ts": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246",
+    "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
+    "src/rendering/firstPerson/GalleryActor.tsx": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f",
+    "src/rendering/firstPerson/actorArtRig.ts": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68",
+    "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+    "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+    "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+    "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+    "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+    "src/rendering/firstPerson/VaultScene.tsx": "7311cd0a1bfb5b182d9d6aced88e88e617cb5fba8f12e01f6df6eeb1ad233b75",
+    "src/domain/vault/definition.ts": "32a724fdde872d5d843a271012cd954f05957939564711e53d5efe186902dbb1",
+    "src/domain/vault/world.ts": "c1bba52ba4d3445d3429a136c73452d83ea229bf32f637202349795ae4f3fbae",
+    "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+    "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+    "src/rendering/firstPerson/VaultDevices.tsx": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+    "src/domain/vault/specs.ts": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+    "src/domain/vault/state.ts": "ad69f9ff9276a4b1e4b79e49aec9ce778383a7251437ffa57f2e20b85faf26e6",
+    "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+    "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+    "src/domain/stageKit/linearDrag.ts": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c",
+    "src/domain/vault/actor.ts": "f0d02a549d8f29087d87934f6d0362eefb464a700422cd20862663a0b1ea9b1e",
+    "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+    "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+    "src/domain/vault/actorPolicy.ts": "c2aa94afef48d5792a7e90106bcd6cc3db5f928a256ca45225cfc7957a868643",
+    "src/rendering/firstPerson/GalleryScene.tsx": "9ec05144ff9a08f8206ff6635cd53cc2c6403ca3afafd30e9b3c877a9793bcb7",
+    "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+    "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+    "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+    "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+    "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+    "src/domain/gallery/state.ts": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+    "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+    "src/domain/gallery/world.ts": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+    "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+    "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+    "src/domain/gallery/selectors.ts": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+    "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+    "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+    "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+    "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+    "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+    "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+    "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+    "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+    "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+    "src/domain/firstPerson/chapter.ts": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2",
+    "src/domain/stageKit/modules.ts": "a8528ad2f6c1e300f54c0299f409eb21fbb10f02d15de0d6b84d2a4f83202373",
+    "src/domain/stageKit/definitions.ts": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495",
+    "src/domain/theatre/runtime.ts": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f",
+    "src/domain/theatre/state.ts": "e3af183ca8bf7e28704ddf1c125388a582759f99c68b5989690daa5e0ed0e8c9",
+    "src/domain/theatre/actor.ts": "ae7e8395d27309e82512239704f896ecdc040b271c9b7c98d33fb3eda0aaf995",
+    "src/domain/theatre/selectors.ts": "c12cfa03f72bf261bac2e636e1d1142da12978160f8335695ee84a13df2e73c4",
+    "src/domain/theatre/checkpoint.ts": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e",
+    "src/domain/vault/runtime.ts": "5e0b7f0977ad4ccb8b56d9c451ccb538f0e52464d1c1f9092bbe306e740a84a8",
+    "src/domain/vault/selectors.ts": "4707ddd9bdf5bb3b3c4795eaa728396cc09b22c84bab9266ce84f7aa8b21eff6",
+    "src/domain/vault/checkpoint.ts": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+    "src/domain/gallery/hint.ts": "9c89e132711f80f349324a021b56eda4489822e0dbd3e76422f82c7aa6ac8f33",
+    "src/domain/stages/stage-kit-probe/binding.ts": "55604d78388632272df8a9d8fd5840c4541392642c90bae592dd70dcbeffb7a5",
+    "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
+    "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
+    "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+    "src/domain/stages/mirror-corridor-v1/binding.ts": "92e62dcbda4515943022e51edc5f66f1e97d77046a49f9937ef483ac74762e61",
+    "src/domain/stages/mirror-corridor-v1/definition.ts": "7f7dadba4731d7079a9ffde8640a296cd360517b6463df12a2131f1804f0ad73",
+    "src/domain/stages/mirror-corridor-v1/session.ts": "6af98dbb09c1b90124d7c4f9cd6b65ad00846fbac50b72e0f4bbcfe71b0c658e",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
+    "src/domain/stages/mirror-corridor-v1/actor.ts": "158eb0735cb982092c503c45c48162d4389de08ea69a2be2501c89de5c5998bf",
+    "src/domain/stages/mirror-corridor-v1/selectors.ts": "e8d0a45f0ae6125f8359ec3670e5e67ade0fae206ef5f4e0daad2e0d110c7ff5",
+    "src/domain/stages/departure-control-v1/binding.ts": "fc01b2c3832b9006f080bc54ddec117446584865d1231694801bd729c6cce33e",
+    "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+    "src/domain/stages/departure-control-v1/actor.ts": "97a55e1746b8d573a603209a5fe2b1a41935751e46e8c904d94b5af72ea83cf0",
+    "src/domain/stages/departure-control-v1/definition.ts": "9f88d963d83c8c4b29db19c547e2e735471e8fc0bf1ee1b511fd9a8a36b7ca2c",
+    "src/domain/stages/departure-control-v1/containmentDoor.ts": "4ccf1f954a1e16b6ccbf620c500091544fae21c914f8f0948aab0a96a1f87bb5",
+    "src/domain/stages/departure-control-v1/checkpoint.ts": "6175ccfd83e5b1e005c5bec979b7724511768318ad4ef93c4162e90d4e78ad73",
+    "src/domain/stages/departure-control-v1/selectors.ts": "47b7445d0b3e8dbdcfab2df726e80ce18ad2bab8030b7ddb6828cff880d0bbe1",
+    "src/domain/stages/departure-control-v1/session.ts": "ff118cfab5e570521b685eed545dee52017628f5c39cd0614d6684b397fbe8ad",
+    "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+    "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+    "src/rendering/firstPerson/stageSceneBindings.tsx": "cd175512d63cc1c546659be3f7420073e988a3c6f3fef40c940aee08d19c38bc",
+    "src/domain/stages/stage-kit-probe/scene.tsx": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "e5d720c9202476ec78a65acabc69057e3c84869f5b596bdd58fe10719b7985e4",
+    "src/domain/stages/isolationKeyGeometry.ts": "c110b5466ca6dfad377275a75d8c430dbb60b6340dee7850b6bae366b250e374",
+    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "src/domain/stages/departure-control-v1/scene.tsx": "a6a04c6cea8ab06f10f832a7778e7df9670a5b9b8492d68830c0f74da340b31c",
+    "src/rendering/firstPerson/resources.ts": "5d39708a8d9f7eb38cf49d096a9ea7e13e0a8bc9a552e41e46b547cab03d47e3",
+    "src/rendering/firstPerson/facilitySigns.ts": "3fb5ccb18f6b77764c43998f5985686f2e5761e9be07b241f83fb5cea2ed09dc",
+    "src/rendering/firstPerson/environmentArtResources.ts": "9b8e37cebc7e44c4563c35453cd43bd1ce67a9fa4ac73a917417c4476539e888",
+    "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
+    "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+    "src/rendering/firstPerson/galleryResources.ts": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20",
+    "src/rendering/firstPerson/actorArtResources.ts": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+    "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/firstPerson/destinationSigns.ts": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518",
+    "src/rendering/firstPerson/destinationSignData.ts": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097",
+    "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+    "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+    "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+    "src/domain/illusion/levels.ts": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+    "src/domain/illusion/projection.ts": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+    "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+    "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+    "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534"
+  },
+  "baselineRuntimeSha256": "5c4a7a7eb3939af4f1502b6e256ee28524d2b8fb5ecc9b8c47f5e18395c42358",
+  "baselineAnimationSha256": "c714350c0cac8d8393f5526061b70a7cdeca0269cca0a720716cf2230fb381da",
+  "cases": [
+    {
+      "id": "matched-0",
+      "frame": 0,
+      "camera": "b936706a-4cb9-4cf5-800e-65df7fb61a15",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 2
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-32",
+      "frame": 32,
+      "camera": "8f5a893a-8048-4256-8d7b-4b8a0187765d",
+      "pose": {
+        "position": {
+          "x": -1.740430988948594,
+          "y": 1.6,
+          "z": -9.767942534806847
+        },
+        "yaw": 1.7033478590915667,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-110",
+      "frame": 110,
+      "camera": "31089a18-0e99-47dd-9fa2-2e95719c21db",
+      "pose": {
+        "position": {
+          "x": 0.328333333333327,
+          "y": 1.6,
+          "z": -10
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-365",
+      "frame": 365,
+      "camera": "48de45a5-a39d-4c68-9f3b-9b42efd9bed2",
+      "pose": {
+        "position": {
+          "x": 6.299948304364817,
+          "y": 1.6,
+          "z": 18.789963345932385
+        },
+        "yaw": -3.1364420149717347,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-395",
+      "frame": 395,
+      "camera": "5bd40f18-fe13-479b-8f6f-6a049c7610d1",
+      "pose": {
+        "position": {
+          "x": 0.5807166145848371,
+          "y": 1.6,
+          "z": 2.761433229169675
+        },
+        "yaw": -2.677945044588986,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-465",
+      "frame": 465,
+      "camera": "add1ee9d-493d-4f5a-9d31-2d09d6a81838",
+      "pose": {
+        "position": {
+          "x": 3,
+          "y": 1.6,
+          "z": 21.895833333333318
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-505",
+      "frame": 505,
+      "camera": "7c79b159-2207-46ab-9545-7e780ea481d4",
+      "pose": {
+        "position": {
+          "x": 2,
+          "y": 1.6,
+          "z": 3.3583333333333316
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-540",
+      "frame": 540,
+      "camera": "d80b1f1b-13e3-4360-90e0-cc33b18db68b",
+      "pose": {
+        "position": {
+          "x": 1.7897895533920076,
+          "y": 1.6,
+          "z": 16.908685220637473
+        },
+        "yaw": 1.838706749218245,
+        "pitch": 0
+      },
+      "state": {},
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-565",
+      "frame": 565,
+      "camera": "4edfdf34-a1c1-4b3f-8055-eeeb5236fefd",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -2.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyTaken": false,
+        "practiced": false,
+        "ratchets": 0,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-568",
+      "frame": 568,
+      "camera": "cec990d4-8b1a-4443-b0ed-e34f1a3d9781",
+      "pose": {
+        "position": {
+          "x": 1.5797943709000866e-16,
+          "y": 1.6,
+          "z": -1.210000000000001
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyTaken": false,
+        "practiced": false,
+        "ratchets": 0,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-594",
+      "frame": 594,
+      "camera": "036d1c54-1f7c-4899-8198-6bccb8084b09",
+      "pose": {
+        "position": {
+          "x": -1.5,
+          "y": 1.6,
+          "z": 7.492500000000019
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyTaken": true,
+        "practiced": false,
+        "ratchets": 0,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-613",
+      "frame": 613,
+      "camera": "a6ba4f52-bab1-4daa-801b-2c58935dca3b",
+      "pose": {
+        "position": {
+          "x": -1.5,
+          "y": 1.6,
+          "z": 10.89666666666664
+        },
+        "yaw": 1.9722954204143246,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyTaken": true,
+        "practiced": true,
+        "ratchets": 1,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-633",
+      "frame": 633,
+      "camera": "4e46313f-229f-4b9b-8926-5fc17742ca61",
+      "pose": {
+        "position": {
+          "x": -1.5,
+          "y": 1.6,
+          "z": 10.89666666666664
+        },
+        "yaw": 1.9722954204143246,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyTaken": true,
+        "practiced": true,
+        "ratchets": 3,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-675",
+      "frame": 675,
+      "camera": "73d3b2d5-98e3-4324-b11f-47487b6aab52",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10
+        },
+        "yaw": 0.7853981633974483,
+        "pitch": -0.14048970175352035
+      },
+      "state": {
+        "keyInstalled": false,
+        "procedureRead": false,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-680",
+      "frame": 680,
+      "camera": "1d981ed5-8a82-47a3-9154-5a5e62d20ecc",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 10.14333333333333
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-706",
+      "frame": 706,
+      "camera": "854e7d3d-baa4-40ae-954c-caf8733d0aec",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.680833333333322
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-714",
+      "frame": 714,
+      "camera": "1ec9c2d5-e937-4940-9951-2258731ed522",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 12
+        },
+        "yaw": 1.5707963267948966,
+        "pitch": -0.16
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": true,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-717",
+      "frame": 717,
+      "camera": "9796dcc9-a2fd-4fbf-8675-629567500719",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 13.179166666666664
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": true,
+        "isolated": true,
+        "cleared": false
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "matched-739",
+      "frame": 739,
+      "camera": "7834ae89-1b5b-4c39-9af6-68bd0b7dd801",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 22.45
+        },
+        "yaw": -3.141592653589793,
+        "pitch": -0.07
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": true,
+        "isolated": true,
+        "cleared": true
+      },
+      "beforeCamera": "210f3ac9-ee74-435b-9963-295ee3fcd477"
+    },
+    {
+      "id": "new-control-spawn",
+      "camera": "d4f02337-f60d-4a8c-8ceb-365d8f21ca16",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.15,
+        "pitch": 0
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      }
+    },
+    {
+      "id": "new-key-entry",
+      "camera": "cde042e4-e8b5-4e2f-adf5-053d6db03924",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.994514298201391,
+        "pitch": -0.3382034312107085
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      }
+    },
+    {
+      "id": "new-console-side",
+      "camera": "c669159e-d11a-4ecd-8769-f89081c65a1d",
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.630122592345775,
+        "pitch": -0.22
+      },
+      "state": {
+        "keyInstalled": true,
+        "procedureRead": true,
+        "stopped": false,
+        "isolated": false,
+        "cleared": false
+      }
+    }
+  ]
+}

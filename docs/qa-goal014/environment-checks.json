@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "startedAtUTC": "2026-09-15T20:58:05.956434+00:00",
+  "boundary": "Read-only local dependency/environment checks; no install, audit fix, native generation or cloud build. npm doctor script may resolve its CLI in the npm cache, not project dependencies.",
+  "node": "v24.20.0",
+  "npm": "11.19.0",
+  "headAtStart": "3632675e5c42ac252cca433a5e6dd45bb028f8c5",
+  "protectedBefore": {
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  },
+  "checks": {
+    "npmLs": {
+      "arguments": [
+        "npm",
+        "ls",
+        "--depth=0",
+        "--json"
+      ],
+      "command": "npm ls --depth=0 --json",
+      "startedAtUTC": "2026-09-15T20:58:06.031622+00:00",
+      "finishedAtUTC": "2026-09-15T20:58:06.528137+00:00",
+      "elapsedSeconds": 0.497,
+      "exitCode": 0,
+      "stdout": {
+        "path": "/tmp/chroma-goal014-environment/npmLs.stdout",
+        "sha256": "e3b61d114861a30c92ba8803c0a7909cbad3de5db29f3bfdb915a052ca068e57",
+        "bytes": 4912
+      },
+      "stderr": {
+        "path": "/tmp/chroma-goal014-environment/npmLs.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "problems": [],
+      "extraneous": [],
+      "versions": {
+        "@react-native-async-storage/async-storage": "2.2.0",
+        "@react-three/fiber": "9.7.0",
+        "@shopify/react-native-skia": "2.6.2",
+        "@testing-library/react-native": "14.0.1",
+        "@types/jest": "29.5.14",
+        "@types/react": "19.2.18",
+        "@types/three": "0.185.4",
+        "eslint-config-expo": "57.0.2",
+        "eslint": "9.39.5",
+        "expo-asset": "57.0.17",
+        "expo-audio": "57.0.5",
+        "expo-clipboard": "57.0.2",
+        "expo-constants": "57.0.18",
+        "expo-dev-client": "57.0.19",
+        "expo-file-system": "57.0.7",
+        "expo-gl": "57.0.2",
+        "expo-haptics": "57.0.3",
+        "expo-splash-screen": "57.0.9",
+        "expo": "57.0.22",
+        "jest-expo": "57.0.5",
+        "react-native-gesture-handler": "2.32.0",
+        "react-native-reanimated": "4.5.1",
+        "react-native-safe-area-context": "5.7.0",
+        "react-native-worklets": "0.10.1",
+        "react-native": "0.86.3",
+        "react-test-renderer": "19.2.3",
+        "react": "19.2.3",
+        "three": "0.185.1",
+        "typescript": "6.0.3"
+      }
+    },
+    "expoDependencies": {
+      "arguments": [
+        "node",
+        "node_modules/expo/bin/cli",
+        "install",
+        "--check"
+      ],
+      "command": "node node_modules/expo/bin/cli install --check",
+      "startedAtUTC": "2026-09-15T20:58:06.032014+00:00",
+      "finishedAtUTC": "2026-09-15T20:58:07.769104+00:00",
+      "elapsedSeconds": 1.737,
+      "exitCode": 1,
+      "stdout": {
+        "path": "/tmp/chroma-goal014-environment/expoDependencies.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "/tmp/chroma-goal014-environment/expoDependencies.stderr",
+        "sha256": "77bf30c98e93f2dbb2f11d4ed8491f396bb0d6cb58fd398927454974764b8b72",
+        "bytes": 262
+      },
+      "output": "The following packages should be updated for best compatibility with the installed expo version:\n  expo@57.0.22 - expected version: ~57.0.23\nYour project may not work correctly until you install the expected versions of the packages.\nFound outdated dependencies"
+    },
+    "doctor": {
+      "arguments": [
+        "npm",
+        "run",
+        "doctor",
+        "--",
+        "--verbose"
+      ],
+      "command": "npm run doctor -- --verbose",
+      "startedAtUTC": "2026-09-15T20:58:06.032183+00:00",
+      "finishedAtUTC": "2026-09-15T20:58:24.035106+00:00",
+      "elapsedSeconds": 18.003,
+      "exitCode": 1,
+      "stdout": {
+        "path": "/tmp/chroma-goal014-environment/doctor.stdout",
+        "sha256": "b1d818db801c23474cc12233d8726ff587e70061794f349f27416962940292a8",
+        "bytes": 1771
+      },
+      "stderr": {
+        "path": "/tmp/chroma-goal014-environment/doctor.stderr",
+        "sha256": "08659c39dbfc8f39f2019930cd8f3597ee269b057e721847cf596aecd52f8f7d",
+        "bytes": 61
+      },
+      "output": "> chroma-rift@1.0.0 doctor\n> npx expo-doctor@latest --verbose\n\nexpo-doctor: v1.20.4\nRunning 21 checks on your project...\n✔ Check that local environment files are not committed\n✔ Check package.json for common issues\n✔ Check Expo config for common issues\n✔ Check for overridden dependencies\n✔ Check for Expo SDK versions affected by Hermes V1 regressions\n✔ Check if the project meets version requirements for submission to app stores\n✔ Check for lock file\n✔ Check dependencies for packages that should not be installed directly\n✔ Check for app config fields that may not be synced in a non-CNG project\n✔ Check for issues with Metro config\n✔ Check npm/yarn versions\n✔ Check native tooling versions\n✔ Check for common project setup issues\n✔ Check that native modules do not use incompatible support packages\n✔ Check that @expo/vector-icons package is not installed together with other potentially conflicting icon packages.\n✔ Check for legacy global CLI installed locally\n✔ Check Expo config (app.json/ app.config.js) schema\n✖ Check that packages match versions required by installed Expo SDK\n✔ Check that required peer dependencies are installed\n✔ Check that no duplicate dependencies are installed\n✔ Validate packages against React Native Directory package metadata\n\n20/21 checks passed. 1 checks failed. Possible issues detected:\n\n✖ Check that packages match versions required by installed Expo SDK\n\n🔧 Patch version mismatches\npackage  expected  found    \nexpo     ~57.0.23  57.0.22  \n\n\n\n1 package out of date.\nAdvice:\nUse 'npx expo install --check' to review and upgrade your dependencies.\nTo ignore specific packages, add them to \"expo.install.exclude\" in package.json. Learn more: https://expo.fyi/dependency-validation\n\n\n1 check failed, indicating possible issues with the project."
+    },
+    "npmAudit": {
+      "arguments": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "command": "npm audit --json",
+      "startedAtUTC": "2026-09-15T20:58:06.032422+00:00",
+      "finishedAtUTC": "2026-09-15T20:58:16.288764+00:00",
+      "elapsedSeconds": 10.256,
+      "exitCode": 1,
+      "stdout": {
+        "path": "/tmp/chroma-goal014-environment/npmAudit.stdout",
+        "sha256": "85098252e0d69fb31f632ad854b7633e8764544091b84b27c041193d5bfcaf3b",
+        "bytes": 6419
+      },
+      "stderr": {
+        "path": "/tmp/chroma-goal014-environment/npmAudit.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 11,
+        "high": 0,
+        "critical": 0,
+        "total": 11
+      },
+      "findings": {
+        "@expo/cli": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "<=0.0.0-canary-20231123-1b19f96-4 || >=0.0.1-canary-20231125-d600e44",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config",
+            "@expo/config-plugins",
+            "@expo/inline-modules",
+            "@expo/metro-config",
+            "@expo/prebuild-config"
+          ]
+        },
+        "@expo/config": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "<=0.0.1-canary-20240418-8d74597 || >=3.3.23-alpha.0",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config-plugins"
+          ]
+        },
+        "@expo/config-plugins": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "*",
+          "fixAvailable": {
+            "name": "expo-splash-screen",
+            "version": "55.0.25",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "xcode"
+          ]
+        },
+        "@expo/inline-modules": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": ">=0.0.2-canary-20260409-6fc2991",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config-plugins"
+          ]
+        },
+        "@expo/local-build-cache-provider": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "*",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config"
+          ]
+        },
+        "@expo/metro-config": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "<=0.0.1-canary-20240418-8d74597 || >=0.1.49-alpha.0",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config"
+          ]
+        },
+        "@expo/prebuild-config": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "*",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config",
+            "@expo/config-plugins"
+          ]
+        },
+        "expo": {
+          "severity": "moderate",
+          "isDirect": true,
+          "range": "40.0.0-alpha.0 - 40.0.0-beta.5 || >=41.0.0-alpha.0",
+          "fixAvailable": {
+            "name": "expo",
+            "version": "46.0.21",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/cli",
+            "@expo/config",
+            "@expo/config-plugins",
+            "@expo/local-build-cache-provider",
+            "@expo/metro-config"
+          ]
+        },
+        "expo-splash-screen": {
+          "severity": "moderate",
+          "isDirect": true,
+          "range": "55.0.10-canary-20260424-7bedc9d - 55.0.10-canary-20260429-a5e59cf || >=56.0.0-canary-20260212-4f61309",
+          "fixAvailable": {
+            "name": "expo-splash-screen",
+            "version": "55.0.25",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "@expo/config-plugins"
+          ]
+        },
+        "uuid": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": "<11.1.1",
+          "fixAvailable": {
+            "name": "expo-splash-screen",
+            "version": "55.0.25",
+            "isSemVerMajor": true
+          },
+          "via": [
+            {
+              "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+              "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+              "severity": "moderate"
+            }
+          ]
+        },
+        "xcode": {
+          "severity": "moderate",
+          "isDirect": false,
+          "range": ">=0.9.2",
+          "fixAvailable": {
+            "name": "expo-splash-screen",
+            "version": "55.0.25",
+            "isSemVerMajor": true
+          },
+          "via": [
+            "uuid"
+          ]
+        }
+      },
+      "fixApplied": false
+    }
+  },
+  "protectedAfter": {
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  },
+  "protectedFilesUnchanged": true,
+  "finishedAtUTC": "2026-09-15T20:58:24.036546+00:00",
+  "dependenciesChanged": false,
+  "fixesApplied": false,
+  "rawLogAvailabilityAfterReconnect": {
+    "checkedAtUTC": "2026-09-16T07:55:49.432811+00:00",
+    "status": "Original /tmp stdout/stderr files were lost when the execution environment reconnected. Recorded exit codes, byte hashes, parsed npm metadata, and embedded Doctor/Expo output are retained from the completed runs; no claim that original raw log files remain available.",
+    "rerunPerformed": false
+  }
+}

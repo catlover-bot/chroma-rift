@@ -1,0 +1,85 @@
+{
+  "verifiedAt": "2026-09-16T08:43:32.667907+00:00",
+  "boundary": "Hash verification of retained actor-only evidence; no new render, continuous human viewing, or native performance measurement. The historical extraction import list is not asserted to match the whole current application.",
+  "reuseReason": "GalleryActor creates its rig from resources.galleryResources.actorArt only; GalleryActor, actorArtResources, actorArtRig, galleryResources, root resource factory, actorMotion and all other loaded dependencies match. The two changed files supply environment/sign materials not attached to this standalone body inspection. The actual scene/sign integrations are separately recaptured from current source.",
+  "checks": {
+    "baselineSourceCount": 56,
+    "baselineSourceMismatch": [],
+    "loadedCurrentSourceCount": 60,
+    "unchangedLoadedSourceCount": 58,
+    "changedEnvironmentOnlySources": [
+      {
+        "file": "src/rendering/firstPerson/facilitySignData.ts",
+        "recordedSha256": "88604f7063de9271419f98512e027f5c0229631f9d85417b2831f3631216cae6",
+        "currentSha256": "bf613df92d0cbc39f29f55972e3a6880b8b1f48d487d2ce7ebe352daae1b9e4f"
+      },
+      {
+        "file": "src/rendering/firstPerson/environmentArtResources.ts",
+        "recordedSha256": "50c0caba1ca514aece6c8e67492c72ab75f5b2805bb2f2ef6ecad6d6e788b42d",
+        "currentSha256": "9b8e37cebc7e44c4563c35453cd43bd1ce67a9fa4ac73a917417c4476539e888"
+      }
+    ],
+    "actorSourceCount": 4,
+    "actorSourceMismatch": [],
+    "artifactCount": 10,
+    "artifactMismatch": [],
+    "toolHashMatches": true,
+    "extractionHashMatches": true,
+    "extractedDataHashMatches": true
+  },
+  "actorSourceHashes": {
+    "src/rendering/firstPerson/GalleryActor.tsx": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f",
+    "src/rendering/firstPerson/actorArtResources.ts": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd",
+    "src/rendering/firstPerson/actorArtRig.ts": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68",
+    "src/rendering/firstPerson/galleryResources.ts": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20"
+  },
+  "timelineSha256": "5989e15fbaaa9084d062233c14b8620a01af3e26e54108bb9a5e381557057476",
+  "timelineFrames": 408,
+  "timelineHashVerifiedAgainstRetainedData": true,
+  "reportHashes": {
+    "actor-art-extraction.json": "79fbe6eccf16c19ac762d93b4225d3287f8591fd9ebb2bcce33dc006a58861e4",
+    "actor-art-webgl.json": "cddeca98dda844266faf9cde6dbf80bee774afb2309fd94adc43828ad53769fe"
+  },
+  "artifacts": [
+    {
+      "file": "docs/qa-goal014/actor/turntable-standard-front.png",
+      "sha256": "3fd122ca53e987475f8ba83dac745a8044613907d04aeb329670dd3085ca0d57"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-standard-quarter.png",
+      "sha256": "650bcb9c15195abba1f5cfd0199c59a8e675258ef5d483dc65aede369e19140d"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-standard-side.png",
+      "sha256": "5cd7afc1c2d3eabe09c34b6facce791397993bc9470bcd897c18ddb2c1c32bd4"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-standard-back.png",
+      "sha256": "9d3df736fcb4b435b84d5df4ad219e46f263bcee7c93e43acae69b593c87a10a"
+    },
+    {
+      "file": "docs/qa-goal014/actor/motion-standard.mp4",
+      "sha256": "1a1a6e8ac39ee61b7465da33cff71e72210b7d31dfc32d8e35ccf528447d5ee1"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-low-front.png",
+      "sha256": "dd25957f0e94b3d46b462b6eb6e9235160cc9be695830962d4cd0453a4e07de5"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-low-quarter.png",
+      "sha256": "e6d0f5888246bc0f7efcc3ae4a8684d79120bc1ff5d4dc35059775cc4c46505c"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-low-side.png",
+      "sha256": "61bb219f97da3a6847d5aee02e878d50722f89eaec5800d09b4ccf6929b83e23"
+    },
+    {
+      "file": "docs/qa-goal014/actor/turntable-low-back.png",
+      "sha256": "c67cc372db371342c486c960f177911fedd574b0bfd9a12e618b01b931c72f19"
+    },
+    {
+      "file": "docs/qa-goal014/actor/motion-low.mp4",
+      "sha256": "9a505a9853b3077d3a133a3ce49e85070d0474e414f60955d95a76fa894d0430"
+    }
+  ]
+}

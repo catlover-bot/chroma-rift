@@ -1,0 +1,18 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "doctor"
+  ],
+  "recordedAtUTC": "2026-09-16T08:48:56.700814+00:00",
+  "elapsedSeconds": 14.019,
+  "exitCode": 1,
+  "stdout": {
+    "file": "environment-doctor.stdout.log.gz",
+    "uncompressedSha256": "6165073b4f637dbd22acefad5c9be01080563910e5c23252413a6bbc655145f0"
+  },
+  "stderr": {
+    "file": "environment-doctor.stderr.log.gz",
+    "uncompressedSha256": "08659c39dbfc8f39f2019930cd8f3597ee269b057e721847cf596aecd52f8f7d"
+  }
+}

@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "compositionOwnership": "Original material authored for this project. CC0 below describes the third-party isolated instrument samples, not an invented license declaration for the project.",
+  "assets": [
+    {
+      "kind": "music",
+      "path": "assets/audio/music/title_theme.m4a",
+      "sha256": "9ba7511f72304672ab7b9d3e406ab3af0df75b8ab3586d41c45dede876ab2005",
+      "bytes": 663542,
+      "durationSeconds": 54.0,
+      "origin": "Original four-note-theme composition and offline sample rendering",
+      "thirdPartySampleLicense": "CC0-1.0"
+    },
+    {
+      "kind": "music",
+      "path": "assets/audio/music/exploration.m4a",
+      "sha256": "b25cde7ed42c086b8e89e9b3c3b8b94d731089e7cdd7d46a4a1e8fad03af5920",
+      "bytes": 910932,
+      "durationSeconds": 88.0,
+      "origin": "Original four-note-theme composition and offline sample rendering",
+      "thirdPartySampleLicense": "CC0-1.0"
+    },
+    {
+      "kind": "music",
+      "path": "assets/audio/music/suspicion.m4a",
+      "sha256": "6ce0a86b75c0392818c99ccb2675400c9dc03a60b916b7fceff400019deef316",
+      "bytes": 500447,
+      "durationSeconds": 56.0,
+      "origin": "Original four-note-theme composition and offline sample rendering",
+      "thirdPartySampleLicense": "CC0-1.0"
+    },
+    {
+      "kind": "music",
+      "path": "assets/audio/music/pursuit.m4a",
+      "sha256": "84c4482a80b68907ca3335690de6a5a33afde370d2f8c75d2aae6846369d2aef",
+      "bytes": 454281,
+      "durationSeconds": 38.0,
+      "origin": "Original four-note-theme composition and offline sample rendering",
+      "thirdPartySampleLicense": "CC0-1.0"
+    },
+    {
+      "kind": "music",
+      "path": "assets/audio/music/release.m4a",
+      "sha256": "2e58f6389fa0f1060f6c77ba7eaef239b2bea1d24fff957c4b0627923b3c24a3",
+      "bytes": 100854,
+      "durationSeconds": 10.0,
+      "origin": "Original four-note-theme composition and offline sample rendering",
+      "thirdPartySampleLicense": "CC0-1.0"
+    },
+    {
+      "kind": "music",
+      "path": "assets/audio/music/chapter_end.m4a",
+      "sha256": "f5ccbb4d871e9a563e67aae95c7ddf1edaa82a09d0a225efdaec796be6f7e98e",
+      "bytes": 736149,
+      "durationSeconds": 62.0,
+      "origin": "Original four-note-theme composition and offline sample rendering",
+      "thirdPartySampleLicense": "CC0-1.0"
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/grip.wav",
+      "sha256": "a14b9dc4952e601213f42c23ac0b48573359550f05a3ae09ac457a7e7e4f3d7d",
+      "bytes": 31244,
+      "durationSeconds": 0.65,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/key.wav",
+      "sha256": "a51d2e1e89011f31de172067b48c762e0d250342780b216d655ab41e13a37b0a",
+      "bytes": 38444,
+      "durationSeconds": 0.8,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/ratchet.wav",
+      "sha256": "9449c6c9eb984d656dcdd302a319d434aff9d6e420155baf87b3056156c347b2",
+      "bytes": 60044,
+      "durationSeconds": 1.25,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/bell.wav",
+      "sha256": "b5b8a5ce35926b20d7e9c1a6e4a1f1af6d5fe37e725cc9b3e69380b9c964dc9e",
+      "bytes": 100844,
+      "durationSeconds": 2.1,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/isolation.wav",
+      "sha256": "58e57bc0b8736a9dfba8640354303b6c1752b577f97504add5f9a5aea8fc8ed4",
+      "bytes": 91244,
+      "durationSeconds": 1.9,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/power.wav",
+      "sha256": "13bde3489262833a9291a3126965f3621ff2ce977ecfcd9bff80d544c839eb59",
+      "bytes": 62444,
+      "durationSeconds": 1.3,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/step-a.wav",
+      "sha256": "bd5e96bf202875c6288a2d6506739a562661df5262bbeda91ec87554c36beeae",
+      "bytes": 17324,
+      "durationSeconds": 0.36,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/step-b.wav",
+      "sha256": "4663763ca5145d5ec240d17688e9aef1328f6a7029343b6fc272034088bd2bab",
+      "bytes": 20204,
+      "durationSeconds": 0.42,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/cloth-metal.wav",
+      "sha256": "6128dbd683537b11c605aab421458f2d8ca87dc94309367e8067e60f74e3d3c0",
+      "bytes": 34604,
+      "durationSeconds": 0.72,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/room-gallery.wav",
+      "sha256": "35193b9852d6a796471cb10b5f801458529486dd4bf0c8a0d1865e1f8ec08b95",
+      "bytes": 768044,
+      "durationSeconds": 16.0,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/room-vault.wav",
+      "sha256": "ee1659a3b0a6e610a729c9091cfc43a996cfde73972343f2725160d1e43884e6",
+      "bytes": 768044,
+      "durationSeconds": 16.0,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/room-theatre.wav",
+      "sha256": "a40e9c5039d8779a0acb5dcc5b71585f31a3afbcc1aac91cb3d6b2c65d677764",
+      "bytes": 768044,
+      "durationSeconds": 16.0,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/room-mirror.wav",
+      "sha256": "b70af022443182a340415ee1277329f6f2b0a3e310a75e4ae69b4a3bc06814a4",
+      "bytes": 768044,
+      "durationSeconds": 16.0,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/room-control.wav",
+      "sha256": "d1c594adff38c6b84bc54323ef2a98af4031a40c24b296ecac91c20d29c3395c",
+      "bytes": 768044,
+      "durationSeconds": 16.0,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    },
+    {
+      "kind": "physical/environment",
+      "path": "assets/audio/physical/outdoor.wav",
+      "sha256": "0de43e523fede5fc07ba088d7876799ab0ab82f1f2b6d8e09adcaccf04bfda4b",
+      "bytes": 768044,
+      "durationSeconds": 16.0,
+      "origin": "Original deterministic noise/modal physical model",
+      "thirdPartySampleLicense": null
+    }
+  ],
+  "sampleProvenance": {
+    "repository": "https://github.com/sgossner/VSCO-2-CE",
+    "sourceCommit": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+    "licenseUrl": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/LICENSE",
+    "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+    "acquiredDate": "2026-09-16",
+    "samples": [
+      {
+        "id": "piano_low",
+        "repositoryPath": "Keys/Upright Piano/Player_dyn1_rr1_014.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Piano/Player_dyn1_rr1_014.wav",
+        "rootMidi": 49,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 2270980,
+        "sha256": "f3d00b63bb178680fdd4d9ed7ea43d1df1cf29e00b567ccb022c2bd411a20607",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "piano_mid",
+        "repositoryPath": "Keys/Upright Piano/Player_dyn1_rr1_020.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Piano/Player_dyn1_rr1_020.wav",
+        "rootMidi": 61,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 3134164,
+        "sha256": "08242e8d1c865c8cdc794cc7921d3d9663bedb5a12bfefe0de13aaa86fd23133",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "piano_high",
+        "repositoryPath": "Keys/Upright Piano/Player_dyn1_rr1_024.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Piano/Player_dyn1_rr1_024.wav",
+        "rootMidi": 69,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 2222998,
+        "sha256": "916c3ec2d61fb421e74fb4866ef75d3ef17e9d88e9dc858da24159846489d33f",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "cello_low",
+        "repositoryPath": "Strings/Cello Section/susvib/susvib_C1_v1_1.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_C1_v1_1.wav",
+        "rootMidi": 36,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 2347376,
+        "sha256": "abdcea431f384e135c469b0f3e4ac2a437f282f521dc5bcbe22abc221536e8de",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "cello_mid",
+        "repositoryPath": "Strings/Cello Section/susvib/susvib_D2_v1_1.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_D2_v1_1.wav",
+        "rootMidi": 50,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 2550956,
+        "sha256": "e8640dec9febc6e39fcf06b19d2c95a85d5ff8c38f13c9879e69f551eaf38ab8",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "pizz",
+        "repositoryPath": "Strings/Cello Section/pizzT/pizzT_C1_v1_RR1.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/pizzT/pizzT_C1_v1_RR1.wav",
+        "rootMidi": 36,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 829634,
+        "sha256": "9032689650e38cb7a967616d15f3434bd52865637200e785bf89c3a1a88b29ce",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "harp",
+        "repositoryPath": "Strings/Harp/KSHarp_D4_mf.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D4_mf.wav",
+        "rootMidi": 62,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 1921690,
+        "sha256": "ebfde8aab4411019e37e3426f4dd88d6a52a38c2d0261d7f10ec63d8ff584dc7",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      },
+      {
+        "id": "metal",
+        "repositoryPath": "Percussion/Glock/glock_medium_C5.wav",
+        "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Glock/glock_medium_C5.wav",
+        "rootMidi": 72,
+        "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+        "bytes": 1271310,
+        "sha256": "635f898e0bcb6975b96b18efd9c896f6f1b97ff12174a339ada4814e49675660",
+        "license": "CC0-1.0",
+        "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+      }
+    ]
+  },
+  "licenseFile": {
+    "path": "scripts/audio/VSCO-CC0-LICENSE.txt",
+    "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+  },
+  "authoringInputs": {
+    "scripts/audio/chapter-one-score.json": "8dc2e8a8ad453f692356578046f96b8f0e943bcf279aeababf27f7035464502a",
+    "scripts/audio/compose-score.py": "b8328897bcdc9c9f1f3f354524d3ee0d988976ab51a3e1e953c0f6e4a22fa873",
+    "scripts/audio/render-chapter-music.py": "6671a6c6529ec118dce074cd9b8451adfcb7879f8fb459e701aa4fb23ae05d84",
+    "scripts/audio/render-physical-sounds.py": "34a75e0783ee1d58865854700db9a433003c4e90fa8d784ab31967e9097abb46"
+  },
+  "rawSamplesBundled": false,
+  "artisticListeningVerified": false
+}

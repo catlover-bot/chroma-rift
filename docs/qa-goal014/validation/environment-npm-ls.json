@@ -1,0 +1,19 @@
+{
+  "command": [
+    "npm",
+    "ls",
+    "--depth=0",
+    "--json"
+  ],
+  "recordedAtUTC": "2026-09-16T08:48:43.508925+00:00",
+  "elapsedSeconds": 0.782,
+  "exitCode": 0,
+  "stdout": {
+    "file": "environment-npm-ls.stdout.log.gz",
+    "uncompressedSha256": "e3b61d114861a30c92ba8803c0a7909cbad3de5db29f3bfdb915a052ca068e57"
+  },
+  "stderr": {
+    "file": "environment-npm-ls.stderr.log.gz",
+    "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "sourceHead": "f20801e",
+  "reports": [
+    {
+      "report": "scene-hud/report.json",
+      "key": "sourceHashes",
+      "count": 169,
+      "mismatches": []
+    },
+    {
+      "report": "scene-hud/signs/report.json",
+      "key": "sourceHashes",
+      "count": 136,
+      "mismatches": []
+    },
+    {
+      "report": "matched/manifest.json",
+      "key": "sourceHashes",
+      "count": 119,
+      "mismatches": []
+    },
+    {
+      "report": "native-framebuffer.json",
+      "key": "sourceHashes",
+      "count": 126,
+      "mismatches": []
+    },
+    {
+      "report": "video/after-video-report.json",
+      "key": "sourceHashes",
+      "count": 120,
+      "mismatches": []
+    },
+    {
+      "report": "ending/report.json",
+      "key": "sourceHashes",
+      "count": 7,
+      "mismatches": []
+    },
+    {
+      "report": "video/after-video-report.json",
+      "key": "host.sourceHashes",
+      "count": 220,
+      "mismatches": []
+    },
+    {
+      "report": "ending/report.json",
+      "key": "storyHost.sourceHashes",
+      "count": 220,
+      "mismatches": []
+    }
+  ],
+  "allMatchCurrent": true
+}

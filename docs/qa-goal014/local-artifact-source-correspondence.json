@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "label": "GOAL_014_POST_CAPTURE_COMMIT_CORRESPONDENCE",
+  "verifiedAtUTC": "2026-09-16T09:05:08.975769+00:00",
+  "verifiedCommit": "f20801e262235f9fc2a0180504fce1b80acdc94e",
+  "scope": "Post-capture read-only comparison of original evidence hashes, current working files and actual git blobs at the named commit. No export, controller run, audio capture or rendering is repeated or relabeled.",
+  "originalCaptureHeadsPreserved": {
+    "bundlesStart": "dcdf26f552a49a8d9444a744278aa03a3c2bfc8e",
+    "bundlesEnd": "dcdf26f552a49a8d9444a744278aa03a3c2bfc8e",
+    "audio": "3632675e5c42ac252cca433a5e6dd45bb028f8c5"
+  },
+  "groups": {
+    "bundles": {
+      "captureReport": {
+        "path": "docs/qa-goal014/bundles.json",
+        "sha256": "82672735651e171866b79cbccf0b68c0a27e84e46cc161f917796bff971b8326",
+        "bytes": 228745
+      },
+      "guardedInputs": 298,
+      "allRecordedInputsMatchCurrentBytes": true,
+      "allRecordedInputsMatchVerifiedCommit": true,
+      "recordedInputHashesSha256": "7d21dda40d3e0de870c4fe19bb250dec9c16829c82ba5fe6418e4994c2699266"
+    },
+    "audio": {
+      "captureReport": {
+        "path": "docs/qa-goal014/audio/controller-audio-report.json",
+        "sha256": "1725a6c1a7640fa90ee3714dfdec7944dd533e1d6f6ab6a6e4b7b8864ad77d83",
+        "bytes": 32146
+      },
+      "guardedInputs": 114,
+      "allRecordedInputsMatchCurrentBytes": true,
+      "allRecordedInputsMatchVerifiedCommit": true,
+      "recordedInputHashesSha256": "12c99a03119fa6d13bdc363e7c0e60040fa1709d46bde87f45d4d3d7ab80e18c"
+    },
+    "freshAppHost": {
+      "captureReport": {
+        "path": ".expo/goal014/after-final-r3/app-scene-replay/report.json",
+        "sha256": "c85e141f78f7840a6e67926f312aa5a1d3a95c0da6da6560aa3f7693b3ddf3a2",
+        "bytes": 36110
+      },
+      "guardedInputs": 220,
+      "allRecordedInputsMatchCurrentBytes": true,
+      "allRecordedInputsMatchVerifiedCommit": true,
+      "recordedInputHashesSha256": "0a061e41e0b408c84b164ee68c95661e750fcfedf90f64d7ab1a99d3f28fe72f"
+    }
+  },
+  "exportArtifacts": {
+    "preview-hbc": {
+      "bundleSha256": "98ccd752c31d923e8ef93569df35937191a3508395d2aba850cf1f2fb99fbd57",
+      "bundleBytes": 6554910,
+      "originalChecksUnchanged": true
+    },
+    "preview": {
+      "bundleSha256": "2e1406f8c5a76f150fe2d729be12e3c5450db4e885554af639c341a8d2410311",
+      "bundleBytes": 4815540,
+      "originalChecksUnchanged": true,
+      "mappedFirstPartyCount": 219,
+      "allMappedSourcesMatchCurrentAndCommit": true,
+      "sourceMapSha256": "a4e0ceb0f9f3bff4076ed2939ede07f66183f3e22775861b71c0d76929b38781"
+    },
+    "production": {
+      "bundleSha256": "d123e85d5ca3bfe9603c6db68f28db807deda1a3a9ded1001b058a8faca793bd",
+      "bundleBytes": 4815543,
+      "originalChecksUnchanged": true,
+      "mappedFirstPartyCount": 219,
+      "allMappedSourcesMatchCurrentAndCommit": true,
+      "sourceMapSha256": "b3bee9af43151a76b5c2878be6d53a00ea5ce2d1cdad712835eb27166adc436d"
+    },
+    "development": {
+      "bundleSha256": "d79ffee0f082a7167a72b3fd0b98f7d84702eaf7abf8e1d4e0594b0cbb470fb3",
+      "bundleBytes": 7052928,
+      "originalChecksUnchanged": true,
+      "mappedFirstPartyCount": 239,
+      "allMappedSourcesMatchCurrentAndCommit": true,
+      "sourceMapSha256": "e5da021c85a9ec0ec0411d9ca77a4906a8e01457f9bd0dc1d2c176632f8de2d6"
+    }
+  },
+  "audioAssetsMatchCurrentAndCommit": 28,
+  "audioExtractionToolMatchesCurrentAndCommit": true,
+  "retainedAudioArtifactIntegrity": {
+    "controller-route.m4a": {
+      "sha256": "a5e06b9676e287187460feb73e5d00c85c3752dce79fc21efa2e7fb3a8c1d1a0",
+      "bytes": 2433118
+    },
+    "listening-sequence.m4a": {
+      "sha256": "dda8be4983a5aa25762e042f18d7f21af6a4993e94d6ffc4a8841905358bf4bb",
+      "bytes": 1595970
+    },
+    "ending-intro.m4a": {
+      "sha256": "17bdb73a0d3134c2fbcff4ea36f92670e5a389593066c7c6bde73d44f5e881de",
+      "bytes": 243214
+    },
+    "mix-analysis.json": {
+      "sha256": "aee6ea625b34a77ffdc74a937dfce359127fca5c0fdb4155a242cb1d29cc3aa4",
+      "bytes": 24121
+    },
+    "route-video-aligned.m4a": {
+      "sha256": "8428d13c6ae7b31177d868d00b72f0724ea4b23a8917e02742f6debb5414e9c1",
+      "bytes": 2500053
+    },
+    "mix-video-analysis.json": {
+      "sha256": "a4502adb0ab1ba5f33d496f32c86953fa22653e3a6584551be020ea85d81fcad",
+      "bytes": 24668
+    }
+  },
+  "audioFinalUiReplayCorrespondence": {
+    "path": "docs/qa-goal014/audio/final-ui-replay-correspondence.json",
+    "sha256": "98019391fb45d01e09ebc937a2f83247873868f4531dba973a215ca82f0ac838",
+    "bytes": 18947
+  },
+  "uniqueCommittedInputBlobsCompared": 301,
+  "validation": {
+    "allRecordedSourceInputsMatchCommit": true,
+    "allMappedFirstPartySourcesMatchCommit": true,
+    "allCheckedArtifactBytesUnchanged": true,
+    "allAudioAlignmentTimestampsUnchanged": true
+  },
+  "captureIdentityPolicy": "Original reports retain their actual historical HEADs and sourceCommit/null fields. This new explicit verifiedCommit proves later source correspondence without rewriting capture history. Documentation and report blobs need not be included in this product/QA-tool commit.",
+  "limitations": [
+    "Local Metro/Hermes exports and offline reconstructed player-command audio are not installed binaries or native device audio.",
+    "No iPhone presentation, audio scheduling, artistic listening, EAS build identity or release readiness is inferred."
+  ],
+  "DEVICE_ACCEPTANCE": "PENDING",
+  "RELEASE_READY": false,
+  "verificationScript": {
+    "path": ".expo/goal014/logs/verify-final-artifact-commit.py",
+    "sha256": "d9aa485991908795e079bfb50ffbe884c4410310b63e52f5a54538200fcd0431"
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "copiedAtUTC": "2026-09-16T08:46:55.570517+00:00",
+  "sourceDirectory": ".expo/goal014/matched-scenes",
+  "images": [
+    {
+      "file": "matched-0.png",
+      "sha256": "6c17d06fabeee70e62458139e72791c2c70573d093aeb5816ab5017defe347a1",
+      "bytes": 232622
+    },
+    {
+      "file": "matched-110.png",
+      "sha256": "ba9d689b64e454f7b0247ab440e38fde3d6b3f36a5c037c15924b9dff46fe95e",
+      "bytes": 275821
+    },
+    {
+      "file": "matched-32.png",
+      "sha256": "7716f208028f4a2dd5e69571661971a609dda68b76ec64aef9faa7bd0cf019db",
+      "bytes": 281784
+    },
+    {
+      "file": "matched-365.png",
+      "sha256": "218a67549520a8c6651b6177d4cc4f39f58b3910ae44d7a509050ea208a1c1d5",
+      "bytes": 367994
+    },
+    {
+      "file": "matched-395.png",
+      "sha256": "66ee1ca0652585cd81c58696f31b7bb5a3945ffa014cc59eae8da18b33e162ab",
+      "bytes": 435073
+    },
+    {
+      "file": "matched-465.png",
+      "sha256": "9fd229b5a0d77ac676413a7be964962e0aa4880ff2b2cdd3ff069ac48fbe90de",
+      "bytes": 241866
+    },
+    {
+      "file": "matched-505.png",
+      "sha256": "8b2b823b286aa437a6f69f64caba2e0e73a55dd9f1f0f30b1d3de1e6470d4cdc",
+      "bytes": 281831
+    },
+    {
+      "file": "matched-540.png",
+      "sha256": "2910814daaa3b0992139b4a54b0a8ef0c9c44781402fb597869b8171c7ad707f",
+      "bytes": 291941
+    },
+    {
+      "file": "matched-565.png",
+      "sha256": "cf2dd20d06af6f607f6e8a00b494ba7eb38b30f6e8c2dadc1855704fbdffdc5f",
+      "bytes": 188675
+    },
+    {
+      "file": "matched-568.png",
+      "sha256": "10c88d6ef182941d5c03b7faf779d176b5ce0c2a6c0717df27f7803f316ea7fa",
+      "bytes": 121608
+    },
+    {
+      "file": "matched-594.png",
+      "sha256": "a579a60ea34d4a70c3969f3c9f6e21772641b7671babf0d30851035a26e0a712",
+      "bytes": 328946
+    },
+    {
+      "file": "matched-613.png",
+      "sha256": "4fc814d7644cf78aae86a16b49c08fef73c95ed344e78dc9df3fb5a601526d3d",
+      "bytes": 225605
+    },
+    {
+      "file": "matched-633.png",
+      "sha256": "ff15add05feebef645e15d7860a90f3b39fc5a3b3983dfb804d1fd5c3b40d348",
+      "bytes": 211364
+    },
+    {
+      "file": "matched-675.png",
+      "sha256": "caa5fb67280e063e1997faafe60e873fe0179b6b4b0b95615c0e216110e249c8",
+      "bytes": 362278
+    },
+    {
+      "file": "matched-680.png",
+      "sha256": "24df1a4dfffa4499ec1e09ca081093f4dde133b811c56def10c2b5acc0175c3b",
+      "bytes": 177662
+    },
+    {
+      "file": "matched-706.png",
+      "sha256": "5e64943a631aced20093494913004389e7de865374094f6e4591c190bf1800e1",
+      "bytes": 187163
+    },
+    {
+      "file": "matched-714.png",
+      "sha256": "3a07c67dff84a4184298ea2550f8c8d7a7f9982d84c70c4ab21680283d18b333",
+      "bytes": 241100
+    },
+    {
+      "file": "matched-717.png",
+      "sha256": "b7c958a8c236ad72beea95b3b102c831816c679be539e09845229a8a4e70771c",
+      "bytes": 227247
+    },
+    {
+      "file": "matched-739.png",
+      "sha256": "39c69e23558262cf94b6081d8bf762db280e39a87df7d7e54d9e2a4bfc186d3f",
+      "bytes": 139644
+    }
+  ]
+}

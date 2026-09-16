@@ -1,0 +1,51 @@
+{
+  "updatedAtUTC": "2026-09-16T08:40:15.543372+00:00",
+  "checks": [
+    {
+      "name": "ending-layout",
+      "command": [
+        "node",
+        "scripts/qa-chapter-ending-layout.cjs"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 14.342,
+      "log": ".expo/goal014/logs/final-ending-layout.log",
+      "logSha256": "deb86deb3e6de10b45cae8507d914a6c037ccdf434e3097df62ceb3e6016b91b"
+    },
+    {
+      "name": "matched-scenes",
+      "command": [
+        "node",
+        "scripts/qa-goal014-matched-scenes.cjs"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 35.939,
+      "log": ".expo/goal014/logs/final-matched-scenes.log",
+      "logSha256": "c59b93075d12b1a4b6064e5f5259a28f5fefa43f11718088c2750adf84128fdb"
+    },
+    {
+      "name": "native-framebuffer",
+      "command": [
+        "node",
+        "scripts/qa-native-default-framebuffer.cjs",
+        "--out=.expo/goal014/final-native-framebuffer",
+        "--report=docs/qa-goal014/native-framebuffer.json"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 12.967,
+      "log": ".expo/goal014/logs/final-native-framebuffer.log",
+      "logSha256": "f2a584ef9c518e516ae6c7ae66ed18ff56ddb425fd7e1c715fee6c3282613074"
+    },
+    {
+      "name": "stage-validator",
+      "command": [
+        "node",
+        "scripts/validate-stage-definitions.cjs"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 1.296,
+      "log": ".expo/goal014/logs/final-stage-validator.log",
+      "logSha256": "a7a1b122ecbe7d44984a0f866c2623159ddcd2e14f88e93498fb560949431158"
+    }
+  ]
+}

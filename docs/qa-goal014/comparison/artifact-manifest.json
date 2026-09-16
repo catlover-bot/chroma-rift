@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUTC": "2026-09-16T09:05:38.337673+00:00",
+  "currentProductRevision": "f20801e262235f9fc2a0180504fce1b80acdc94e",
+  "baselineRevision": "3632675e5c42ac252cca433a5e6dd45bb028f8c5",
+  "sourceAndAssetVerification": [
+    {
+      "label": "before",
+      "area": "04",
+      "sourceFiles": 129,
+      "assets": 7,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal014/comparison-final/baseline-source",
+      "currentSourceRoot": "/tmp/chroma-goal014-comparison-q8nwagrd/baseline-source",
+      "sharedTapeSha256": "dedd43a350a3c3dc5ff4202e97fce0bf6e932dd2963dbabc2f5d4062e7651602"
+    },
+    {
+      "label": "before",
+      "area": "05",
+      "sourceFiles": 129,
+      "assets": 7,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal014/comparison-final/baseline-source",
+      "currentSourceRoot": "/tmp/chroma-goal014-comparison-q8nwagrd/baseline-source",
+      "sharedTapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250"
+    },
+    {
+      "label": "after",
+      "area": "04",
+      "sourceFiles": 140,
+      "assets": 28,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "currentSourceRoot": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "sharedTapeSha256": "dedd43a350a3c3dc5ff4202e97fce0bf6e932dd2963dbabc2f5d4062e7651602"
+    },
+    {
+      "label": "after",
+      "area": "05",
+      "sourceFiles": 140,
+      "assets": 28,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "currentSourceRoot": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "sharedTapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250"
+    }
+  ],
+  "scope": "Controller/actual scene/offline owner audio comparison. Native presentation and ready/seek audio are explicit fixtures. No human play/listening or native device acceptance. Frozen matched-actor probe is separately identified.",
+  "files": [
+    {
+      "file": "tape-04.json.gz",
+      "source": ".expo/goal014/comparison-final/tape-04.json",
+      "bytes": 2213,
+      "sha256": "0d79c6a6e302625c389d20343c716597c3c00e2dfe0348b311fddf5de1eebcb1",
+      "uncompressedSha256": "dedd43a350a3c3dc5ff4202e97fce0bf6e932dd2963dbabc2f5d4062e7651602"
+    },
+    {
+      "file": "area-04-paired-silent.mp4",
+      "source": ".expo/goal014/comparison-final/area-04-paired-silent.mp4",
+      "bytes": 1127954,
+      "sha256": "83d50704bd536a1e7d7926d4a070601dfd3ff5fa1e6f3403e0b3dafbcb1ca6a2"
+    },
+    {
+      "file": "area-04-before-sound.mp4",
+      "source": ".expo/goal014/comparison-final/area-04-before-sound.mp4",
+      "bytes": 606495,
+      "sha256": "ea49db6cc5880f304304549d1956db0327706f96033564cdd7ac815b402b7bea"
+    },
+    {
+      "file": "before/04/report.json.gz",
+      "source": ".expo/goal014/comparison-final/before/04/report.json",
+      "bytes": 29076,
+      "sha256": "b4010601325a52ec779c5e04a618dd2d0a6792fb0da0ab5647ace00bff4ff0f6",
+      "uncompressedSha256": "8816609491b99d781a83625706d8588b42b92e1268ff7e5f66bb664d3fea8d5f"
+    },
+    {
+      "file": "before/04/recording.json.gz",
+      "source": ".expo/goal014/comparison-final/before/04/recording.json",
+      "bytes": 15136,
+      "sha256": "aa27bc4fa071a2f25916b2c39dfe400576fb103bbd0cb04107076010bec002d0",
+      "uncompressedSha256": "a9d754f126f83144e61765a589d161d461cdd130cded941993fadf11bf4ea2a1"
+    },
+    {
+      "file": "before/04/samples.json.gz",
+      "source": ".expo/goal014/comparison-final/before/04/samples.json",
+      "bytes": 38038,
+      "sha256": "29bb5e88aa8fa8c791c7547a8e794ae245132f834b92e4b524ddf47e76399e58",
+      "uncompressedSha256": "206e7c27ad296b0308b113e6fc2580ee7f31407ee3314bc6ab97228efa5e87fb"
+    },
+    {
+      "file": "before/04/animation.json.gz",
+      "source": ".expo/goal014/comparison-final/before/04/animation.json",
+      "bytes": 172056,
+      "sha256": "6c4ae5625209f4d40a044a15f728e62b9f74f2d3ada6cc13301c29a04e46f1d3",
+      "uncompressedSha256": "236c861270b5bddb8ba78282adb98cc47786de68fa47f399ce4a5a05350c20c2"
+    },
+    {
+      "file": "before/04/frame-map.json.gz",
+      "source": ".expo/goal014/comparison-final/before/04/frame-map.json",
+      "bytes": 884,
+      "sha256": "8e05bbbd6d9b47c2f569f92cb1153adbdbf7e15de11f2d51425de985510f0f27",
+      "uncompressedSha256": "d363a727c7c53f386341b11bc0082d396604c2ca05ab38d46501be89600d5788"
+    },
+    {
+      "file": "before/04/audio/route-video-aligned.m4a",
+      "source": ".expo/goal014/comparison-final/before/04/audio/route-video-aligned.m4a",
+      "bytes": 414184,
+      "sha256": "546fbdd44bd9237d6a1e144386d1c33dc7cdea013dbb8b76999690065ec5bf9b"
+    },
+    {
+      "file": "before/04/audio/mix-video-analysis.json",
+      "source": ".expo/goal014/comparison-final/before/04/audio/mix-video-analysis.json",
+      "bytes": 17286,
+      "sha256": "5c3d35584e8e2bc7d18c6d8d0abcc4d4f42bff66198ddd0a3d7cfa5067559f92"
+    },
+    {
+      "file": "area-04-after-sound.mp4",
+      "source": ".expo/goal014/comparison-final/area-04-after-sound.mp4",
+      "bytes": 1283634,
+      "sha256": "50525dab669eb48ce182da7a513155870a5ab96f425fdc176651a7bdfc46b8bb"
+    },
+    {
+      "file": "after/04/report.json.gz",
+      "source": ".expo/goal014/comparison-final/after/04/report.json",
+      "bytes": 36247,
+      "sha256": "0f4860a3f498c8881d76314b623938c24d08d32499e1a665cda4e42d023e5a95",
+      "uncompressedSha256": "4ed40256bd3ffdf4912396ab7585d3010f8b1272e62f421e61a46587609f1f44"
+    },
+    {
+      "file": "after/04/recording.json.gz",
+      "source": ".expo/goal014/comparison-final/after/04/recording.json",
+      "bytes": 22131,
+      "sha256": "b621623c74abfaafbb844fc4303e8b3c513c881723059861bf041a4e9be7ae70",
+      "uncompressedSha256": "1d444de720f9976d5be1bc97e1c6aac0c477d8f255ca1f036d8c78d84802ebd0"
+    },
+    {
+      "file": "after/04/samples.json.gz",
+      "source": ".expo/goal014/comparison-final/after/04/samples.json",
+      "bytes": 37069,
+      "sha256": "a17b3a1e341347a3f06cc07f127d32b00f4328d2e29428387a5f7d43222204bb",
+      "uncompressedSha256": "bea4542e402e2877efeffff08c4b0f2606b60efd5ea9bf8ff219afdd93b58bd6"
+    },
+    {
+      "file": "after/04/animation.json.gz",
+      "source": ".expo/goal014/comparison-final/after/04/animation.json",
+      "bytes": 191721,
+      "sha256": "9d3fc5c85fac563f1218f61d141b08db79ba1876327fc3603f56ca9d20089827",
+      "uncompressedSha256": "0654ac6e34b43d85673cbd220459f2dd698be1eeadb4035a6a026bbec6e2a0d9"
+    },
+    {
+      "file": "after/04/frame-map.json.gz",
+      "source": ".expo/goal014/comparison-final/after/04/frame-map.json",
+      "bytes": 884,
+      "sha256": "8e05bbbd6d9b47c2f569f92cb1153adbdbf7e15de11f2d51425de985510f0f27",
+      "uncompressedSha256": "d363a727c7c53f386341b11bc0082d396604c2ca05ab38d46501be89600d5788"
+    },
+    {
+      "file": "after/04/audio/route-video-aligned.m4a",
+      "source": ".expo/goal014/comparison-final/after/04/audio/route-video-aligned.m4a",
+      "bytes": 460604,
+      "sha256": "b6de21e958c8a8c2ed52579be8fd3f25d8e0e3092097edd60571ca081810a492"
+    },
+    {
+      "file": "after/04/audio/mix-video-analysis.json",
+      "source": ".expo/goal014/comparison-final/after/04/audio/mix-video-analysis.json",
+      "bytes": 18862,
+      "sha256": "6ac6235148713cf83acc875cd06090e8911ff6043c0a2b57fecb3707862c16cd"
+    },
+    {
+      "file": "tape-05.json.gz",
+      "source": ".expo/goal014/comparison-final/tape-05.json",
+      "bytes": 2023,
+      "sha256": "fc50f94106b4440f4e7f3a78ac649ddc3199c1b580efd0b62ef1eb79c7d86349",
+      "uncompressedSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250"
+    },
+    {
+      "file": "area-05-paired-silent.mp4",
+      "source": ".expo/goal014/comparison-final/area-05-paired-silent.mp4",
+      "bytes": 621808,
+      "sha256": "3a50d6ee51c7a599b9c371b3eda42a1e7ef43cdd1f070f7b278d9969a1d9d59b"
+    },
+    {
+      "file": "area-05-before-sound.mp4",
+      "source": ".expo/goal014/comparison-final/area-05-before-sound.mp4",
+      "bytes": 493563,
+      "sha256": "87b0a0f885f35f5e3640e5ec964bd9f5d6a9e585b553d52554c525cda7a5613e"
+    },
+    {
+      "file": "before/05/report.json.gz",
+      "source": ".expo/goal014/comparison-final/before/05/report.json",
+      "bytes": 20378,
+      "sha256": "9c748c72eea3af1def3a37c41c38ecec0d54c2422bb5b57cbc70e9122d4e106e",
+      "uncompressedSha256": "5b84ee470b0b22718db69ad4ca491e4c17102fead4b35d7eed829247fefa0ee4"
+    },
+    {
+      "file": "before/05/recording.json.gz",
+      "source": ".expo/goal014/comparison-final/before/05/recording.json",
+      "bytes": 11718,
+      "sha256": "4749fe4aa0b99aabe5e286b7169bc05ada84c9fcaae51f4f7d214bfb09a2b5f7",
+      "uncompressedSha256": "0b1f389d578690c1689332064e4792c06a7db23532e129a9181c29cac6cec616"
+    },
+    {
+      "file": "before/05/samples.json.gz",
+      "source": ".expo/goal014/comparison-final/before/05/samples.json",
+      "bytes": 14882,
+      "sha256": "1193bc5a7532bc0382f43c85381d82e374f66be8d7476e0ac2e8050a48ebdb5e",
+      "uncompressedSha256": "2c4d315edb19b505d5f521ca081ec3c2f11d86b872a35ea80bd4fcc3e8d5ae36"
+    },
+    {
+      "file": "before/05/animation.json.gz",
+      "source": ".expo/goal014/comparison-final/before/05/animation.json",
+      "bytes": 95046,
+      "sha256": "53d1ed36f8577d18b47a8ec81d108243ba6084dae7d8ee08ac94a220e417f385",
+      "uncompressedSha256": "6009df034a6ebc28ba7900541f047cb5804fa603fd09b6e5c0e497a79e0725c9"
+    },
+    {
+      "file": "before/05/frame-map.json.gz",
+      "source": ".expo/goal014/comparison-final/before/05/frame-map.json",
+      "bytes": 715,
+      "sha256": "c927b6510152992bb5bdcc72bda828d52d1f71fb38d292969e2547f25da1ce20",
+      "uncompressedSha256": "6680110777943056a8d9734e4cafb63d13e366f21073cd8f0d79e9b3051230f8"
+    },
+    {
+      "file": "before/05/audio/route-video-aligned.m4a",
+      "source": ".expo/goal014/comparison-final/before/05/audio/route-video-aligned.m4a",
+      "bytes": 366019,
+      "sha256": "ad326acf0ef2980cf73458aab7ae5b10eda3f7c4802dcba3ec29d738a0a4fad7"
+    },
+    {
+      "file": "before/05/audio/mix-video-analysis.json",
+      "source": ".expo/goal014/comparison-final/before/05/audio/mix-video-analysis.json",
+      "bytes": 17286,
+      "sha256": "082318e217e28cd5cc7ac346452a07fc5bafcfbc4989b3975609596b52617bcf"
+    },
+    {
+      "file": "area-05-after-sound.mp4",
+      "source": ".expo/goal014/comparison-final/area-05-after-sound.mp4",
+      "bytes": 888905,
+      "sha256": "8dd8db0ac0da61be1da79a7437438b6483af01b11a0c6561228d2bbce856fa15"
+    },
+    {
+      "file": "after/05/report.json.gz",
+      "source": ".expo/goal014/comparison-final/after/05/report.json",
+      "bytes": 27555,
+      "sha256": "039a080d1f6f661deee4914e3bc5e01c84b00132b63d314d2939520473b2785e",
+      "uncompressedSha256": "d90d554ccb96163b8d8d87532d789110f0e763692d1ef2361924e0fd2f13f79d"
+    },
+    {
+      "file": "after/05/recording.json.gz",
+      "source": ".expo/goal014/comparison-final/after/05/recording.json",
+      "bytes": 18427,
+      "sha256": "8eb2456876d933113507529fd2838d1acc84e5774ab7bddd2d3bdaf458d95beb",
+      "uncompressedSha256": "fdf20a7e18173e0a61da538dd8196369a190c02ba193fcc4c238d9dbde74b7ee"
+    },
+    {
+      "file": "after/05/samples.json.gz",
+      "source": ".expo/goal014/comparison-final/after/05/samples.json",
+      "bytes": 16098,
+      "sha256": "3278f5599d387d29c41505fa366fc12d13c14476f0ca7aba4b0b468abd0b0b81",
+      "uncompressedSha256": "972a0147823b79693220f86cd34092a97c0795bc7dc0713f2259bd2d4534cf52"
+    },
+    {
+      "file": "after/05/animation.json.gz",
+      "source": ".expo/goal014/comparison-final/after/05/animation.json",
+      "bytes": 139855,
+      "sha256": "89c0f1c32d4002f48bee590b8b6de1ef94302b05176eeba21f635fbf74afdebf",
+      "uncompressedSha256": "5f80084ee60fd9e6d7cd985a0f9d0eed8f816708b36f750eb632cd796a90cc2c"
+    },
+    {
+      "file": "after/05/frame-map.json.gz",
+      "source": ".expo/goal014/comparison-final/after/05/frame-map.json",
+      "bytes": 715,
+      "sha256": "c927b6510152992bb5bdcc72bda828d52d1f71fb38d292969e2547f25da1ce20",
+      "uncompressedSha256": "6680110777943056a8d9734e4cafb63d13e366f21073cd8f0d79e9b3051230f8"
+    },
+    {
+      "file": "after/05/audio/route-video-aligned.m4a",
+      "source": ".expo/goal014/comparison-final/after/05/audio/route-video-aligned.m4a",
+      "bytes": 402708,
+      "sha256": "ee2dc4bbf93d7027e40ee3c80a9873ef57808373c522d076f0b2a97e0f0a046a"
+    },
+    {
+      "file": "after/05/audio/mix-video-analysis.json",
+      "source": ".expo/goal014/comparison-final/after/05/audio/mix-video-analysis.json",
+      "bytes": 19312,
+      "sha256": "0bb6d0c2d75b8ec5d81ca25d7f0ed8f4359696c93d387e25565afe861374add2"
+    },
+    {
+      "file": "comparison-report.json",
+      "source": ".expo/goal014/comparison-final/comparison-report.json",
+      "bytes": 143017,
+      "sha256": "50b39a8d3e4527be27649d06de4f726b89c3c32ba9fdc7c73b71626f8b84a938"
+    },
+    {
+      "file": "audio-video-report.json",
+      "source": ".expo/goal014/comparison-final/audio-video-report.json",
+      "bytes": 19044,
+      "sha256": "ee2c2d57b90aa64e55a896aa8bf8c45f05aa0cc3ef723993c2d2b172e5859afa"
+    },
+    {
+      "file": "reflection-contribution.json",
+      "source": ".expo/goal014/comparison-final/reflection-contribution.json",
+      "bytes": 33643,
+      "sha256": "19be7035ad0ed38c5925549c50cd69c8d0fed4008c79dee9dd3f3a7e7f89a665"
+    },
+    {
+      "file": "matched-actor-probe/before.png",
+      "source": ".expo/goal014/comparison-final/matched-actor-probe/before.png",
+      "bytes": 32979,
+      "sha256": "0b44fdc53b1924a1c1c46c12147cb2680a7e6b5c37d4c88686bf86b7532d258b"
+    },
+    {
+      "file": "matched-actor-probe/after.png",
+      "source": ".expo/goal014/comparison-final/matched-actor-probe/after.png",
+      "bytes": 154470,
+      "sha256": "c12f700654cb02b92a653b655b5f3ec6dde3dfb8a35de0b018ee4c0588b68472"
+    },
+    {
+      "file": "matched-actor-probe/report.json",
+      "source": ".expo/goal014/comparison-final/matched-actor-probe/report.json",
+      "bytes": 18961,
+      "sha256": "73ce80e91ca97c7c84ee9e669d291f89db146f8ec806a78f89e5d9bead3f411b"
+    },
+    {
+      "file": "matched-actor-probe/before.json.gz",
+      "source": ".expo/goal014/comparison-final/matched-actor-probe/before.json",
+      "bytes": 80227,
+      "sha256": "fb641495e61a98bb3cb11b198eadb5d3a58bd5cbe37be8443ef1847418112da1",
+      "uncompressedSha256": "1eaf3a027a10eeca54cfc06f7b9187c14a0a352aa539125d761253e4739f1777"
+    },
+    {
+      "file": "matched-actor-probe/after.json.gz",
+      "source": ".expo/goal014/comparison-final/matched-actor-probe/after.json",
+      "bytes": 2168730,
+      "sha256": "2938514cdec3990259cb1799000d3ae03c6573a65af7110bd69a9cee89ca8eab",
+      "uncompressedSha256": "2b55adace8fac6a4546f46240333ec21bee72000589181d8dfdfb46b643a1e8f"
+    },
+    {
+      "file": "stills/area-04-frame-058.png",
+      "source": ".expo/goal014/comparison-final/paired-04/00058.png",
+      "bytes": 182278,
+      "sha256": "4b757455c83b425cb60933d80eaf565c4e157de09cd66562803d968f82506b48"
+    },
+    {
+      "file": "stills/area-04-frame-068.png",
+      "source": ".expo/goal014/comparison-final/paired-04/00068.png",
+      "bytes": 166969,
+      "sha256": "13bfea271e72ee9c637fbee9bc9b19612fda90e003162ab18d453524d550a8f8"
+    },
+    {
+      "file": "stills/area-04-frame-085.png",
+      "source": ".expo/goal014/comparison-final/paired-04/00085.png",
+      "bytes": 190155,
+      "sha256": "8ba4a206656d59d3632d43d5bb40472a12f0f55078c45341cb4e302169b6ca97"
+    },
+    {
+      "file": "stills/area-04-frame-098.png",
+      "source": ".expo/goal014/comparison-final/paired-04/00098.png",
+      "bytes": 157941,
+      "sha256": "f807e585d0df39fab28444be56c6d626a1d6a9d415b5d4a02b2459a03b46cc8f"
+    },
+    {
+      "file": "stills/area-05-frame-041.png",
+      "source": ".expo/goal014/comparison-final/paired-05/00041.png",
+      "bytes": 150686,
+      "sha256": "bcb1ee6fe44d26771fbfdf1e19895b7954d1ed0584375f63e683d4a502c3394c"
+    },
+    {
+      "file": "stills/area-05-frame-056.png",
+      "source": ".expo/goal014/comparison-final/paired-05/00056.png",
+      "bytes": 151172,
+      "sha256": "75715a3ce6be907db02a87e3ca47a8ee78e513c3736b84de669f097cc9add05f"
+    },
+    {
+      "file": "stills/area-05-frame-075.png",
+      "source": ".expo/goal014/comparison-final/paired-05/00075.png",
+      "bytes": 138196,
+      "sha256": "af683890c77bf1e8550c20423d9ae115c2306f720e9489bc9d944586fc797e69"
+    },
+    {
+      "file": "stills/area-05-frame-103.png",
+      "source": ".expo/goal014/comparison-final/paired-05/00103.png",
+      "bytes": 81146,
+      "sha256": "7101028c5e1b127cee8e4cd0f160dfef4a87121d66c995494a2039f88852112c"
+    },
+    {
+      "file": "stills/area-05-frame-110.png",
+      "source": ".expo/goal014/comparison-final/paired-05/00110.png",
+      "bytes": 76717,
+      "sha256": "2ff141c1bd8e1aead35e0c4075c911e1ba848ad67e2a10889d6e73b33ff7160f"
+    },
+    {
+      "file": "baseline-location.json",
+      "source": ".expo/goal014/comparison-final/baseline-location.json",
+      "bytes": 220,
+      "sha256": "68c5f8ff48b95806fd14fb62ccc4ca38ec6a5fc3a85659a9e61324119a202554"
+    },
+    {
+      "file": "validation/lint.log",
+      "source": ".expo/goal014/comparison-final/lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "validation/test-discovery.json",
+      "source": ".expo/goal014/comparison-final/test-discovery.json",
+      "bytes": 12728,
+      "sha256": "0c5ebafa72c3511c13b29c15e00fedd4af4bc6d595cef67c17c449b5c94f6684"
+    },
+    {
+      "file": "authoring/32c72f8afc490e17c2845c76f6eb49fde811ccde2730d7d64a4d7a1dbe13093a-mux-audio.py",
+      "bytes": 5121,
+      "sha256": "32c72f8afc490e17c2845c76f6eb49fde811ccde2730d7d64a4d7a1dbe13093a",
+      "boundary": "Exact historical QA audio mux script."
+    },
+    {
+      "file": "authoring/74e145ebfdceedcb07fd8ec75184e8f6625c845163b1a2cc8c14fa23b3538b27-probe-matched-actor.cjs.txt",
+      "bytes": 5643,
+      "sha256": "74e145ebfdceedcb07fd8ec75184e8f6625c845163b1a2cc8c14fa23b3538b27",
+      "boundary": "Exact historical authoring bytes; .txt extension prevents accidental tool execution/lint discovery."
+    },
+    {
+      "file": "authoring/7abe713f30b32c31cddd0d4526036b976c540b2f244fc7757ada97ffd5fab747-capture-common-tape.cjs.txt",
+      "bytes": 8778,
+      "sha256": "7abe713f30b32c31cddd0d4526036b976c540b2f244fc7757ada97ffd5fab747",
+      "boundary": "Exact historical authoring bytes; .txt extension prevents accidental tool execution/lint discovery."
+    },
+    {
+      "file": "authoring/7ec91c3bdc02ba56519a018a10ffae68b38fff84251bdd25ce003992e1098c47-probe-reflection.cjs.txt",
+      "bytes": 2885,
+      "sha256": "7ec91c3bdc02ba56519a018a10ffae68b38fff84251bdd25ce003992e1098c47",
+      "boundary": "Exact historical authoring bytes; .txt extension prevents accidental tool execution/lint discovery."
+    },
+    {
+      "file": "authoring/83914a45bfcaccdf7b331f9c4e3a851492653d57cb0c6e9ee0ccb17a3e0dc5d5-qa-common-tape.cjs.txt",
+      "bytes": 13475,
+      "sha256": "83914a45bfcaccdf7b331f9c4e3a851492653d57cb0c6e9ee0ccb17a3e0dc5d5",
+      "boundary": "Exact historical authoring bytes; .txt extension prevents accidental tool execution/lint discovery."
+    },
+    {
+      "file": "authoring/a2be1a3f2c34a81566ad86f2800e0dd27a321dfe2718dfa965af8cdd8bbdd93b-qa-common-tape.cjs.txt",
+      "bytes": 13473,
+      "sha256": "a2be1a3f2c34a81566ad86f2800e0dd27a321dfe2718dfa965af8cdd8bbdd93b",
+      "boundary": "Exact historical authoring bytes; .txt extension prevents accidental tool execution/lint discovery."
+    }
+  ],
+  "currentReproductionTools": {
+    "scripts/qa-goal014-common-tape.cjs": "de9c746a0db090094fb38007196420beb79aa6485ae4ec316ba1ebd6d65ca1e1",
+    "scripts/qa-goal014-common-tape-capture.cjs": "6e3f5faee8747aafde2102ec6aed0108f67bff4550f200e04d76cba6eb364724",
+    "scripts/qa-goal014-reflection-contribution.cjs": "c25c32f5e0df7da3f36ad40ea01ae234a3cb739b707b40d6b72df25a379355a6",
+    "scripts/qa-goal014-matched-actor.cjs": "63adceebb5559a5a1771f7a8078ddd5f84596a07889c576510ae831a3d78f414",
+    "scripts/audio/render-recorded-mix.py": "5f7089205e17ee2253d7e5594ea9f6cbe626e33bced302451799a6eea51a928c"
+  }
+}

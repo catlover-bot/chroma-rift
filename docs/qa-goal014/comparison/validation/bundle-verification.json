@@ -1,0 +1,70 @@
+{
+  "recordedAtUTC": "2026-09-16T09:08:44.920165+00:00",
+  "savedManifestFiles": 62,
+  "artifactHashesAndUncompressedHashesMatch": true,
+  "allCrossLinkedAudioInputsAndMoviesMatch": true,
+  "pairedReportReferencesMatch": true,
+  "loadedSourcesAndAudioAssetsMatch": [
+    {
+      "label": "before",
+      "area": "04",
+      "sourceFiles": 129,
+      "assets": 7,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal014/comparison-final/baseline-source",
+      "currentSourceRoot": "/tmp/chroma-goal014-comparison-q8nwagrd/baseline-source",
+      "sharedTapeSha256": "dedd43a350a3c3dc5ff4202e97fce0bf6e932dd2963dbabc2f5d4062e7651602"
+    },
+    {
+      "label": "before",
+      "area": "05",
+      "sourceFiles": 129,
+      "assets": 7,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal014/comparison-final/baseline-source",
+      "currentSourceRoot": "/tmp/chroma-goal014-comparison-q8nwagrd/baseline-source",
+      "sharedTapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250"
+    },
+    {
+      "label": "after",
+      "area": "04",
+      "sourceFiles": 140,
+      "assets": 28,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "currentSourceRoot": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "sharedTapeSha256": "dedd43a350a3c3dc5ff4202e97fce0bf6e932dd2963dbabc2f5d4062e7651602"
+    },
+    {
+      "label": "after",
+      "area": "05",
+      "sourceFiles": 140,
+      "assets": 28,
+      "allLoadedSourceAndAssetHashesMatch": true,
+      "archivePathAtCapture": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "currentSourceRoot": "/home/mhirotaka/workspace/chroma-rift-goal012",
+      "sharedTapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250"
+    }
+  ],
+  "baselineAndCurrentPlanarMirrorImplementationByteIdentical": true,
+  "allReadmeLocalLinksResolve": true,
+  "promotedQAToolsSyntaxCheck": "PASS (4 scripts)",
+  "promotedQAToolsLint": "PASS (zero warnings)",
+  "promotedTapeCheck": [
+    {
+      "area": "04",
+      "sha256": "dedd43a350a3c3dc5ff4202e97fce0bf6e932dd2963dbabc2f5d4062e7651602",
+      "promotedToolOutputExactlyMatchesRecordedTape": true
+    },
+    {
+      "area": "05",
+      "sha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250",
+      "promotedToolOutputExactlyMatchesRecordedTape": true
+    }
+  ],
+  "testDiscovery": {
+    "suites": 126,
+    "allWithinActualWorktreeSrc": true
+  },
+  "boundary": "Technical bundle validation only. Root owns final fullcheck and completion status."
+}

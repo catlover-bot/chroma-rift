@@ -1,0 +1,4532 @@
+{
+  "method": "Actual ChapterOneEndingScreen host and three transition overlay trees from one real five-area App host route. Each is drawn at 320×568/fontScale2, 390×844/1.5 and 430×932/1 using native styles translated to browser CSS. Ending top/bottom and transition action/text rectangles are captured. The App host used memory AsyncStorage and stub native Canvas/audio; this is not native Yoga, VoiceOver focus, safe-area or iPhone screenshot evidence.",
+  "toolHash": "22c49295c50fb538c325003588933a2aa60cc20c6d0cc9e801a6c6b305751aab",
+  "sourceHashes": {
+    "src/screens/ChapterOneEndingScreen.tsx": "ccc011b2b7e0195b82a49cd5bcf2d6adf3b02509e2fcb17f1da876877a2bca2d",
+    "src/components/Layout.tsx": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+    "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+    "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+    "src/domain/campaign/story.ts": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+    "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+    "src/content/illusionNotes.ts": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b"
+  },
+  "storyHost": {
+    "sha256": "5caa9859a818ba3e61173be42c40e45ed0fc4b128144e2421bf4b24a9f11e61f",
+    "file": "story-layout.json",
+    "beats": [
+      "emergency-circuit",
+      "containment-procedure",
+      "isolation-key"
+    ],
+    "route": [
+      {
+        "area": "chapter-1-area-01",
+        "stageId": "perception-gallery-v1",
+        "completedAreas": [
+          "chapter-1-area-01"
+        ],
+        "currentArea": "chapter-1-area-02",
+        "campaignCompleted": false,
+        "revision": 3,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-02",
+        "stageId": "uncanny-vault-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02"
+        ],
+        "currentArea": "chapter-1-area-03",
+        "campaignCompleted": false,
+        "revision": 5,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-03",
+        "stageId": "shadow-theatre-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02",
+          "chapter-1-area-03"
+        ],
+        "currentArea": "chapter-1-area-04",
+        "campaignCompleted": false,
+        "revision": 7,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-04",
+        "stageId": "mirror-corridor-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02",
+          "chapter-1-area-03",
+          "chapter-1-area-04"
+        ],
+        "currentArea": "chapter-1-area-05",
+        "campaignCompleted": false,
+        "revision": 8,
+        "canvasOwners": 1
+      },
+      {
+        "area": "chapter-1-area-05",
+        "stageId": "departure-control-v1",
+        "completedAreas": [
+          "chapter-1-area-01",
+          "chapter-1-area-02",
+          "chapter-1-area-03",
+          "chapter-1-area-04",
+          "chapter-1-area-05"
+        ],
+        "currentArea": "chapter-1-area-05",
+        "campaignCompleted": true,
+        "revision": 11,
+        "canvasOwners": 0
+      }
+    ],
+    "final": {
+      "currentArea": "chapter-1-area-05",
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02",
+        "chapter-1-area-03",
+        "chapter-1-area-04",
+        "chapter-1-area-05"
+      ],
+      "campaignCompleted": true,
+      "revision": 14,
+      "storyFired": [
+        "closing-interrupted",
+        "emergency-circuit",
+        "containment-procedure",
+        "isolation-key",
+        "containment-bell",
+        "attendance-identified",
+        "outdoor-exit"
+      ],
+      "storyPresented": [
+        "closing-interrupted",
+        "emergency-circuit",
+        "containment-procedure",
+        "isolation-key",
+        "containment-bell",
+        "attendance-identified",
+        "outdoor-exit"
+      ]
+    },
+    "maxActiveCanvasBoundaries": 1,
+    "activeCanvasBoundariesAfterUnmount": 0,
+    "motionTrace": {
+      "areas": 5,
+      "ticks": 9044,
+      "samples": 1533,
+      "validation": {
+        "maxPlayerStepMeters": 0.215,
+        "maxActorStepMeters": 0.235,
+        "playerStepLimitMeters": 0.25,
+        "sameAreaTimeAndTickMonotonic": true,
+        "finitePoseAndActorSteps": true
+      }
+    },
+    "sourceHashes": {
+      "src/rendering/firstPerson/runtimeController.ts": "55c86a16159cb7d3d8dfc9ef256a68bda96a644c7faf43d0bbecfcb66b68158b",
+      "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
+      "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+      "src/domain/firstPerson/chapter.ts": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2",
+      "src/domain/stageKit/modules.ts": "a8528ad2f6c1e300f54c0299f409eb21fbb10f02d15de0d6b84d2a4f83202373",
+      "src/domain/theatre/environment.ts": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246",
+      "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
+      "src/domain/stageKit/definitions.ts": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495",
+      "src/domain/theatre/runtime.ts": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f",
+      "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+      "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+      "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+      "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+      "src/domain/theatre/definition.ts": "920eaa717f54e146aeb5d99d8b246550adc57a26020cc0b44aa8c217efdc265f",
+      "src/domain/theatre/lightGate.ts": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+      "src/domain/theatre/projection.ts": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+      "src/domain/theatre/state.ts": "e3af183ca8bf7e28704ddf1c125388a582759f99c68b5989690daa5e0ed0e8c9",
+      "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+      "src/domain/stageKit/linearDrag.ts": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c",
+      "src/domain/theatre/actor.ts": "ae7e8395d27309e82512239704f896ecdc040b271c9b7c98d33fb3eda0aaf995",
+      "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+      "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+      "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+      "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+      "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+      "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+      "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+      "src/domain/vault/actorPolicy.ts": "c2aa94afef48d5792a7e90106bcd6cc3db5f928a256ca45225cfc7957a868643",
+      "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+      "src/domain/theatre/world.ts": "a6b3214575a433c162de21c677d665d96011ce5f35830f5f2fd42b1f5eb9c491",
+      "src/domain/theatre/deviceStatus.ts": "05a2b6a762bab8719ccb525357b02fb49884bdffcb9c532af0e5193a2a5da352",
+      "src/domain/theatre/selectors.ts": "c12cfa03f72bf261bac2e636e1d1142da12978160f8335695ee84a13df2e73c4",
+      "src/domain/theatre/checkpoint.ts": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e",
+      "src/domain/vault/runtime.ts": "5e0b7f0977ad4ccb8b56d9c451ccb538f0e52464d1c1f9092bbe306e740a84a8",
+      "src/domain/vault/definition.ts": "32a724fdde872d5d843a271012cd954f05957939564711e53d5efe186902dbb1",
+      "src/domain/vault/state.ts": "ad69f9ff9276a4b1e4b79e49aec9ce778383a7251437ffa57f2e20b85faf26e6",
+      "src/domain/vault/specs.ts": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+      "src/domain/vault/actor.ts": "f0d02a549d8f29087d87934f6d0362eefb464a700422cd20862663a0b1ea9b1e",
+      "src/domain/vault/world.ts": "c1bba52ba4d3445d3429a136c73452d83ea229bf32f637202349795ae4f3fbae",
+      "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+      "src/domain/vault/selectors.ts": "4707ddd9bdf5bb3b3c4795eaa728396cc09b22c84bab9266ce84f7aa8b21eff6",
+      "src/domain/vault/checkpoint.ts": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+      "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+      "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+      "src/domain/gallery/state.ts": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+      "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+      "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+      "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+      "src/domain/gallery/world.ts": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+      "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+      "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+      "src/domain/gallery/selectors.ts": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+      "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+      "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+      "src/domain/gallery/hint.ts": "9c89e132711f80f349324a021b56eda4489822e0dbd3e76422f82c7aa6ac8f33",
+      "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+      "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+      "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+      "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+      "src/domain/stages/stage-kit-probe/binding.ts": "55604d78388632272df8a9d8fd5840c4541392642c90bae592dd70dcbeffb7a5",
+      "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
+      "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
+      "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+      "src/domain/stages/mirror-corridor-v1/binding.ts": "92e62dcbda4515943022e51edc5f66f1e97d77046a49f9937ef483ac74762e61",
+      "src/domain/stages/mirror-corridor-v1/definition.ts": "7f7dadba4731d7079a9ffde8640a296cd360517b6463df12a2131f1804f0ad73",
+      "src/domain/stages/mirror-corridor-v1/session.ts": "6af98dbb09c1b90124d7c4f9cd6b65ad00846fbac50b72e0f4bbcfe71b0c658e",
+      "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
+      "src/domain/stages/mirror-corridor-v1/actor.ts": "158eb0735cb982092c503c45c48162d4389de08ea69a2be2501c89de5c5998bf",
+      "src/domain/stages/mirror-corridor-v1/selectors.ts": "e8d0a45f0ae6125f8359ec3670e5e67ade0fae206ef5f4e0daad2e0d110c7ff5",
+      "src/domain/stages/departure-control-v1/binding.ts": "fc01b2c3832b9006f080bc54ddec117446584865d1231694801bd729c6cce33e",
+      "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+      "src/domain/stages/departure-control-v1/actor.ts": "97a55e1746b8d573a603209a5fe2b1a41935751e46e8c904d94b5af72ea83cf0",
+      "src/domain/stages/departure-control-v1/definition.ts": "9f88d963d83c8c4b29db19c547e2e735471e8fc0bf1ee1b511fd9a8a36b7ca2c",
+      "src/domain/stages/departure-control-v1/containmentDoor.ts": "4ccf1f954a1e16b6ccbf620c500091544fae21c914f8f0948aab0a96a1f87bb5",
+      "src/domain/stages/departure-control-v1/checkpoint.ts": "6175ccfd83e5b1e005c5bec979b7724511768318ad4ef93c4162e90d4e78ad73",
+      "src/domain/stages/departure-control-v1/selectors.ts": "47b7445d0b3e8dbdcfab2df726e80ce18ad2bab8030b7ddb6828cff880d0bbe1",
+      "src/domain/stages/departure-control-v1/session.ts": "ff118cfab5e570521b685eed545dee52017628f5c39cd0614d6684b397fbe8ad",
+      "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+      "src/rendering/firstPerson/labRuntime.ts": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+      "src/rendering/firstPerson/controllerTransitionAudio.ts": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a",
+      "src/domain/theatre/cues.ts": "16b589ad3380f3dc3f3d01a106957deef6943a9a67c3d4a5efee6acb850dcc34",
+      "src/rendering/firstPerson/theatreController.ts": "19ed5d6e1f8558c06c285c71575f307b8d75161544d453a6de2ce42258708d30",
+      "src/rendering/firstPerson/manipulationProjection.ts": "3f2331d17bc37b2eaa2bb08f8489fae826ad956d79f376662579fe2d7ce6d593",
+      "src/rendering/firstPerson/touchInput.ts": "c9e040d39bb06b6879f3f9b0e8ed6c7b06a89a1a63d17eddc8cccf9caddd78b3",
+      "src/rendering/firstPerson/vaultController.ts": "2861e61847110c0c09173c7f64dc7d97e4fc5f70f4101f9e4807f0c054c4add6",
+      "src/rendering/firstPerson/notebookCamera.ts": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+      "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+      "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+      "src/rendering/firstPerson/galleryController.ts": "40ec0cf64831406cf94e8c2160e030d33bfe29444055e3a86e658ddd2717aab8",
+      "src/domain/firstPerson/runtime.ts": "64d4db9119eee640863d9816212302684345818434bf4c7fbc145e4e5629b874",
+      "src/domain/firstPerson/tutorial.ts": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+      "src/domain/firstPerson/interactionCue.ts": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+      "src/rendering/firstPerson/diagnostics.ts": "710622b8001ab70fd055976a0dc3c779298cd67b0b52d674514886f3a5727ea5",
+      "src/rendering/firstPerson/nativeGlObserver.ts": "d3ef9d422ce00d785a791e987cc93aea79f2055516c8a8ea36924ea6b9e8e177",
+      "src/platform/buildIdentity.ts": "9ef2ba5a91d9a5c0efc992c189b51625ae3930e2add7030b63cb8420c073491c",
+      "src/types/application.ts": "7f3236ea92c95dd961a70d13d8ce165dbead531d4f16ca0ce502b8761719dcf4",
+      "src/domain/calibration/types.ts": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+      "src/storage/applicationStorage.ts": "47d1492222a3ab05e1fa570999c6ce9f5934e6f02772461d887bc67718726f69",
+      "src/domain/calibration/quickSetup.ts": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba",
+      "src/storage/firstPersonStorage.ts": "08f927fb841f40d04b45c93f131795a81921d6ded3d55ab705fe6bc8d7fbf391",
+      "src/storage/stageJournalStorage.ts": "ecfe64c44c8bb1d1b13020074ceedb9e320f5108439de1e23e666a473735efa4",
+      "src/app/stages.ts": "3ba9050f798c9581d59f42342264eb62d4ccafb2891aedba5ac545a49b1836b7",
+      "src/storage/moduleStageStorage.ts": "18bfdac8522bc22e2f2d0af21af233414a45b323f1164efefc46e4d065638e22",
+      "src/storage/chapterOneStorage.ts": "6f239e6bb6ee13c5fc96847921a32e807229965b26c28e0ec88ab5b9229bb201",
+      "src/domain/campaign/checkpoint.ts": "e9dabb31bfe804a3377666ec4815c87a257274c0ad25315eb42016164338f365",
+      "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+      "src/domain/campaign/story.ts": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+      "src/domain/campaign/session.ts": "72cb704801eaa6abd6d01977a13492929566b1f00bf3404070217dd3f0b364ba",
+      "src/domain/campaign/discoveries.ts": "3f7e6eb88ce9e5eda5242cd1e668d67e40aef4cdc18e13b5aa56cf04d9a6e3a4",
+      "src/domain/stageKit/checkpointProgression.ts": "104adb05e5d016320f9f21b07841a036844040727c129271adfff4c3353f3583",
+      "src/domain/theatre/index.ts": "10314102ff75d4ab09d576b972aa01a59e4967685cfcfbcfab6ce5e6a03f7b2b",
+      "src/domain/theatre/types.ts": "35c19371e7b8c2a82e6335c1750e788e6238380244646f27825ee7c54e427e26",
+      "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+      "src/domain/firstPerson/index.ts": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+      "src/domain/firstPerson/types.ts": "7432c910570822fde4c33854e51c1d1a37cefe5c4cee4071e41c54dcbc971d05",
+      "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499",
+      "src/rendering/firstPerson/ChapterScene.tsx": "24bb19ae91af5b81c8c944d1455c7693dafb5bb6f16874e2ea4c80482b2d8b0a",
+      "src/rendering/firstPerson/FacilityDetails.tsx": "33f779b3dc0c0f59ff86ff51bf307792066da694abcefedb1de8b0613c638680",
+      "src/rendering/firstPerson/facilitySignData.ts": "bf613df92d0cbc39f29f55972e3a6880b8b1f48d487d2ce7ebe352daae1b9e4f",
+      "src/rendering/firstPerson/PanelFixture.tsx": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+      "src/rendering/firstPerson/GlyphMark.tsx": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+      "src/rendering/firstPerson/TheatreScene.tsx": "b4115a86d746bd4e0412375890a27dc1eb159f489d1ef894ab3fb5df5f00b256",
+      "src/rendering/firstPerson/MechanicalDevices.tsx": "3c638ee6a4ab40d5d71019aea8956986d039e7d0f5f07e3ac3404125d9b67e27",
+      "src/rendering/firstPerson/segmentTransform.ts": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+      "src/rendering/firstPerson/GalleryActor.tsx": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f",
+      "src/rendering/firstPerson/actorArtRig.ts": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68",
+      "src/rendering/firstPerson/VaultScene.tsx": "7311cd0a1bfb5b182d9d6aced88e88e617cb5fba8f12e01f6df6eeb1ad233b75",
+      "src/rendering/firstPerson/VaultDevices.tsx": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+      "src/rendering/firstPerson/GalleryScene.tsx": "9ec05144ff9a08f8206ff6635cd53cc2c6403ca3afafd30e9b3c877a9793bcb7",
+      "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+      "src/rendering/firstPerson/stageSceneBindings.tsx": "cd175512d63cc1c546659be3f7420073e988a3c6f3fef40c940aee08d19c38bc",
+      "src/domain/stages/stage-kit-probe/scene.tsx": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555",
+      "src/domain/stages/mirror-corridor-v1/scene.tsx": "e5d720c9202476ec78a65acabc69057e3c84869f5b596bdd58fe10719b7985e4",
+      "src/domain/stages/isolationKeyGeometry.ts": "c110b5466ca6dfad377275a75d8c430dbb60b6340dee7850b6bae366b250e374",
+      "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+      "src/domain/stages/departure-control-v1/scene.tsx": "a6a04c6cea8ab06f10f832a7778e7df9670a5b9b8492d68830c0f74da340b31c",
+      "src/rendering/firstPerson/resources.ts": "5d39708a8d9f7eb38cf49d096a9ea7e13e0a8bc9a552e41e46b547cab03d47e3",
+      "src/rendering/firstPerson/facilitySigns.ts": "3fb5ccb18f6b77764c43998f5985686f2e5761e9be07b241f83fb5cea2ed09dc",
+      "src/rendering/firstPerson/environmentArtResources.ts": "9b8e37cebc7e44c4563c35453cd43bd1ce67a9fa4ac73a917417c4476539e888",
+      "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
+      "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+      "src/rendering/firstPerson/galleryResources.ts": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20",
+      "src/rendering/firstPerson/actorArtResources.ts": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd",
+      "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+      "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+      "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+      "src/rendering/firstPerson/destinationSigns.ts": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518",
+      "src/rendering/firstPerson/destinationSignData.ts": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097",
+      "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+      "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+      "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+      "src/domain/illusion/levels.ts": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+      "src/domain/illusion/projection.ts": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+      "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+      "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+      "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+      "App.tsx": "2b0b834d9b737cae3463b7deca1eb71f66a16342679b7e76c70845ab4aabda8c",
+      "src/screens/ChapterMusic.tsx": "a1550a5ee9c53eafbda921cffad3a276d6c5b1edce766b711cc2910d4cfe1ecd",
+      "src/app/state.ts": "8583a76074912f1b6614e99357e5124e8f9567ad04354994074da25cdfe5fa17",
+      "src/domain/calibration/scoring.ts": "ab38eba62f6f5f2518ed237908607a736f550e13def18a92f8b0568b98af915c",
+      "src/domain/calibration/trials.ts": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e",
+      "src/app/chapterSummary.ts": "8939e0e948814e38cdbac53eca5d98a86a6490297989402c6483d98749220905",
+      "src/app/version.ts": "31214005bf401e138cade7af682f9c7a7e2f1acf4e33661bc00f8fae2df2b6e7",
+      "src/domain/campaign/areaEntry.ts": "63dcdf7f0a6515ecf3390bbb2c98ebd5d6683a71796508e31001b535e19f4c13",
+      "src/domain/campaign/migration.ts": "7668fc402eb329aaecca8d39f8108c643f8de94fb36d1e19ef13b89d56d0db72",
+      "src/screens/CalibrationInstructionsScreen.tsx": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c",
+      "src/components/Layout.tsx": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+      "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+      "src/screens/CalibrationResultScreen.tsx": "d4acb5811a325af6c08e3bff08e7e4d1b5c7de82a69d693502aa8538e978cb91",
+      "src/screens/CalibrationScreen.tsx": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000",
+      "src/rendering/CalibrationStimulus.tsx": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3",
+      "src/domain/calibration/stimulusGeometry.ts": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc",
+      "src/theme/stimulus.ts": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94",
+      "src/screens/DeveloperLabScreen.tsx": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe",
+      "src/screens/IllusionMazeScreen.tsx": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7",
+      "src/platform/haptics.ts": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+      "src/rendering/IllusionMazeCanvas.tsx": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7",
+      "src/rendering/IllusionMotion.ts": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026",
+      "src/screens/JourneyResultScreen.tsx": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49",
+      "src/screens/MicroMazeScreen.tsx": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6",
+      "src/domain/maze/geometry.ts": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a",
+      "src/domain/maze/level.ts": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6",
+      "src/domain/maze/scoring.ts": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b",
+      "src/rendering/MazeCanvas.tsx": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3",
+      "src/rendering/mazeGeometry.ts": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154",
+      "src/screens/NativeFirstPersonGate.tsx": "37bb22d05193312676fbcb85ffc3fd59277a843667f272877963a430204c810b",
+      "src/platform/native3D.ts": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e",
+      "src/screens/FirstPersonResultScreen.tsx": "f03eeda4e4b44a27509b29f16fbc5114d6bbbda0733702b060a54361e4a25790",
+      "src/components/FreshPressButton.tsx": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85",
+      "src/rendering/firstPerson/SceneActionButton.tsx": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+      "src/screens/PlayInstructionsScreen.tsx": "7dc7bcb83542dc448d68422dd2b8bb9d8cb2e9bf7d6e702e751e473a25be4ad0",
+      "src/screens/QuickSetupScreen.tsx": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246",
+      "src/screens/SettingsScreen.tsx": "ca03023f92463ede92101dcc0faca5415fb63b31c9aef03796534833a934c98f",
+      "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+      "src/content/illusionNotes.ts": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+      "src/content/illusionComparisons.ts": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+      "src/screens/StageResultScreen.tsx": "971fe826dc726b1ccec5614309cd4f4088550944af30c289d55055f99be83923",
+      "src/screens/StageSelectScreen.tsx": "70a7ecbb4288dea55c515a52de24aea746c855485b71af1fd215ebd57fb3a600",
+      "src/components/StageArtwork.tsx": "b26de99cc40129aab5cdaf16490fc58d6230b595d92d8e14bdbec9baf2d68d6d",
+      "src/screens/ChapterOneHomeScreen.tsx": "b003772a195341544f0fd23939a4be8eaa8814a2aab68791a7260b43f246cbcc",
+      "src/content/chapterOneDiscoveries.ts": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
+      "src/rendering/firstPerson/failureLedger.ts": "6ce6c51a41b815c10c210b8dab233281d593215e79014c7a1a608b0d5c601712",
+      "src/screens/ChapterOneEndingScreen.tsx": "ccc011b2b7e0195b82a49cd5bcf2d6adf3b02509e2fcb17f1da876877a2bca2d",
+      "src/storage/chapterOneLegacy.ts": "7807879fd04cc89961cb6618cc5810f7d7e08ac992b220eb2f381ff1e2736a5a",
+      "test-support/naturalChapterRoute.ts": "e4d5ad2b9f20c9f00be28fed82ae50d87762288c0b7c25e7faea3734a24ac156",
+      "src/screens/FirstPersonScreen.tsx": "5d0ab2a83327301d738a24368a75af1c9d8241853ac23897e8a0f2e199c94a58",
+      "src/screens/TheatreNotebook.tsx": "bd0e7bc84e4c30789c264c889b2181fd2e958a77a29ef903860ea97684b9ff29",
+      "src/content/theatreComparisons.ts": "8b598de2efd3557c73f6bffd93357c9346527191993849222ddc980102e09680",
+      "src/rendering/firstPerson/TheatreManipulation.tsx": "f1000f0bdf7bc7de27c9bde320a144dea220dcfb6494a9b7f785d3a507a81069",
+      "src/screens/VaultNotebook.tsx": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+      "src/content/vaultNotes.ts": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+      "src/content/vaultComparisons.ts": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+      "src/rendering/firstPerson/VaultManipulation.tsx": "59de760338f52a1f8cfa78aa61a36061f42b074444b0e967fe2fe53abf3c601b",
+      "src/rendering/firstPerson/controlLayout.ts": "f26bcc88190234188ac336406b8f2b2f1348afb79c623160d548377a41b6df2b",
+      "src/rendering/firstPerson/StageHoldButton.tsx": "27efbdd6d55fa30b48fae890ad9f39ba4da988485ae01446a85c217f552b73ae",
+      "src/rendering/firstPerson/GalleryManipulation.tsx": "513d863674af50bb64c414d4915675e30a3306c2c8ccd039dad7a2cc22ced366",
+      "src/rendering/firstPerson/TouchControls.tsx": "8bdd151a74dedebde2204edb0a8f37c092640b2125e5d828366895727e5d3e46",
+      "src/rendering/firstPerson/touchAdapter.ts": "ddfff276f545441dc160579dcc22ad6cdbdce228c852f7dd8fe7b6e437dab77c",
+      "src/screens/firstPersonControlMode.ts": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
+      "src/screens/CampaignStageNotebook.tsx": "948aa1f06eccc7e7149245d905f1e0b7b2a4ff383544b8950409aceca6b61f8f"
+    },
+    "toolHash": "b532dd6c166f38f5af808b509bb2f5cc0afb6693766c826112437354467e0ddf"
+  },
+  "results": [
+    {
+      "id": "intro-320-normal",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "top",
+      "file": "intro-320-normal-top.png",
+      "sha256": "345278fd46c56a81ee3625284e9bf0f70bc4ec922219806587e4bd07a2c0b62c",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 702,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 632.390625,
+              "right": 285,
+              "bottom": 684.390625,
+              "width": 265,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 632.390625,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 66,
+              "right": 285,
+              "bottom": 104.390625,
+              "width": 265,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 174.390625,
+              "right": 285,
+              "bottom": 402.390625,
+              "width": 265,
+              "height": 228
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 418.390625,
+              "right": 285,
+              "bottom": 568.390625,
+              "width": 265,
+              "height": 150
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 40.484375,
+              "top": 636.390625,
+              "right": 264.5,
+              "bottom": 680.390625,
+              "width": 224.015625,
+              "height": 44
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-320-normal",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "bottom",
+      "file": "intro-320-normal-bottom.png",
+      "sha256": "9262d060fe64b9a6a107cdfc965e653ba73c944796bab3c4f4b59c627ee23d9c",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 134,
+          "scrollHeight": 702,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 498.390625,
+              "right": 285,
+              "bottom": 550.390625,
+              "width": 265,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 498.390625,
+              "bottom": 550.390625
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": -68,
+              "right": 285,
+              "bottom": -29.609375,
+              "width": 265,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 40.390625,
+              "right": 285,
+              "bottom": 268.390625,
+              "width": 265,
+              "height": 228
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 284.390625,
+              "right": 285,
+              "bottom": 434.390625,
+              "width": 265,
+              "height": 150
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 40.484375,
+              "top": 502.390625,
+              "right": 264.5,
+              "bottom": 546.390625,
+              "width": 224.015625,
+              "height": 44
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-320-normal",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "top",
+      "file": "ending-320-normal-top.png",
+      "sha256": "204e2b5d0c300ab716b2d00a755c86b5dc927a83a1e454a84c3c686f65a71e7b",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 1674,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 1391.96875,
+              "right": 285,
+              "bottom": 1494.75,
+              "width": 265,
+              "height": 102.78125
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 1391.96875,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 1510.75,
+              "right": 285,
+              "bottom": 1575.140625,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 1510.75,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 1591.140625,
+              "right": 285,
+              "bottom": 1655.53125,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 1591.140625,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 285,
+              "bottom": 54,
+              "width": 265,
+              "height": 36
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 119,
+              "right": 285,
+              "bottom": 195.78125,
+              "width": 265,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 231.78125,
+              "right": 285,
+              "bottom": 541.78125,
+              "width": 265,
+              "height": 310
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 575.78125,
+              "right": 285,
+              "bottom": 834.96875,
+              "width": 265,
+              "height": 259.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 868.96875,
+              "right": 285,
+              "bottom": 1118.96875,
+              "width": 265,
+              "height": 250
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 1183.96875,
+              "right": 285,
+              "bottom": 1227.96875,
+              "width": 265,
+              "height": 44
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 1243.96875,
+              "right": 285,
+              "bottom": 1375.96875,
+              "width": 265,
+              "height": 132
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 37,
+              "top": 1404.96875,
+              "right": 268,
+              "bottom": 1481.75,
+              "width": 231,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 72.484375,
+              "top": 1523.75,
+              "right": 232.5,
+              "bottom": 1562.140625,
+              "width": 160.015625,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 56.96875,
+              "top": 1604.140625,
+              "right": 248.015625,
+              "bottom": 1642.53125,
+              "width": 191.046875,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-320-normal",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "bottom",
+      "file": "ending-320-normal-bottom.png",
+      "sha256": "90005c662d1429b19929e7910af4b778f0d8b2500bd29653a750376f0917fbc6",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 1106,
+          "scrollHeight": 1674,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 285.96875,
+              "right": 285,
+              "bottom": 388.75,
+              "width": 265,
+              "height": 102.78125
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 285.96875,
+              "bottom": 388.75
+            },
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 404.75,
+              "right": 285,
+              "bottom": 469.140625,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 404.75,
+              "bottom": 469.140625
+            },
+            "visibleHeight": 64.390625
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 485.140625,
+              "right": 285,
+              "bottom": 549.53125,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 485.140625,
+              "bottom": 549.53125
+            },
+            "visibleHeight": 64.390625
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": -1088,
+              "right": 285,
+              "bottom": -1052,
+              "width": 265,
+              "height": 36
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": -987,
+              "right": 285,
+              "bottom": -910.21875,
+              "width": 265,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": -874.21875,
+              "right": 285,
+              "bottom": -564.21875,
+              "width": 265,
+              "height": 310
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": -530.21875,
+              "right": 285,
+              "bottom": -271.03125,
+              "width": 265,
+              "height": 259.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": -237.03125,
+              "right": 285,
+              "bottom": 12.96875,
+              "width": 265,
+              "height": 250
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 77.96875,
+              "right": 285,
+              "bottom": 121.96875,
+              "width": 265,
+              "height": 44
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 137.96875,
+              "right": 285,
+              "bottom": 269.96875,
+              "width": 265,
+              "height": 132
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 37,
+              "top": 298.96875,
+              "right": 268,
+              "bottom": 375.75,
+              "width": 231,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 72.484375,
+              "top": 417.75,
+              "right": 232.5,
+              "bottom": 456.140625,
+              "width": 160.015625,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 56.96875,
+              "top": 498.140625,
+              "right": 248.015625,
+              "bottom": 536.53125,
+              "width": 191.046875,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-320-procedure",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "top",
+      "file": "intro-320-procedure-top.png",
+      "sha256": "345278fd46c56a81ee3625284e9bf0f70bc4ec922219806587e4bd07a2c0b62c",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 702,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 632.390625,
+              "right": 285,
+              "bottom": 684.390625,
+              "width": 265,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 632.390625,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 66,
+              "right": 285,
+              "bottom": 104.390625,
+              "width": 265,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 174.390625,
+              "right": 285,
+              "bottom": 402.390625,
+              "width": 265,
+              "height": 228
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 418.390625,
+              "right": 285,
+              "bottom": 568.390625,
+              "width": 265,
+              "height": 150
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 40.484375,
+              "top": 636.390625,
+              "right": 264.5,
+              "bottom": 680.390625,
+              "width": 224.015625,
+              "height": 44
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-320-procedure",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "bottom",
+      "file": "intro-320-procedure-bottom.png",
+      "sha256": "9262d060fe64b9a6a107cdfc965e653ba73c944796bab3c4f4b59c627ee23d9c",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 134,
+          "scrollHeight": 702,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 498.390625,
+              "right": 285,
+              "bottom": 550.390625,
+              "width": 265,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 498.390625,
+              "bottom": 550.390625
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": -68,
+              "right": 285,
+              "bottom": -29.609375,
+              "width": 265,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 40.390625,
+              "right": 285,
+              "bottom": 268.390625,
+              "width": 265,
+              "height": 228
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 284.390625,
+              "right": 285,
+              "bottom": 434.390625,
+              "width": 265,
+              "height": 150
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 40.484375,
+              "top": 502.390625,
+              "right": 264.5,
+              "bottom": 546.390625,
+              "width": 224.015625,
+              "height": 44
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-320-procedure",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "top",
+      "file": "ending-320-procedure-top.png",
+      "sha256": "915697d1d6e8bcc3d07260f21d936e8acaf0d4efa6eb7ded73a610d6ec672ecb",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 1934,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 1651.96875,
+              "right": 285,
+              "bottom": 1754.75,
+              "width": 265,
+              "height": 102.78125
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 1651.96875,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 1770.75,
+              "right": 285,
+              "bottom": 1835.140625,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 1770.75,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 1851.140625,
+              "right": 285,
+              "bottom": 1915.53125,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 1851.140625,
+              "bottom": 568
+            },
+            "visibleHeight": 0
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 285,
+              "bottom": 54,
+              "width": 265,
+              "height": 36
+            }
+          },
+          {
+            "content": "点検手順",
+            "rect": {
+              "left": 20,
+              "top": 119,
+              "right": 285,
+              "bottom": 163,
+              "width": 265,
+              "height": 44
+            }
+          },
+          {
+            "content": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
+            "rect": {
+              "left": 20,
+              "top": 163,
+              "right": 285,
+              "bottom": 363,
+              "width": 265,
+              "height": 200
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 379,
+              "right": 285,
+              "bottom": 455.78125,
+              "width": 265,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 491.78125,
+              "right": 285,
+              "bottom": 801.78125,
+              "width": 265,
+              "height": 310
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 835.78125,
+              "right": 285,
+              "bottom": 1094.96875,
+              "width": 265,
+              "height": 259.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 1128.96875,
+              "right": 285,
+              "bottom": 1378.96875,
+              "width": 265,
+              "height": 250
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 1443.96875,
+              "right": 285,
+              "bottom": 1487.96875,
+              "width": 265,
+              "height": 44
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 1503.96875,
+              "right": 285,
+              "bottom": 1635.96875,
+              "width": 265,
+              "height": 132
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 37,
+              "top": 1664.96875,
+              "right": 268,
+              "bottom": 1741.75,
+              "width": 231,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 72.484375,
+              "top": 1783.75,
+              "right": 232.5,
+              "bottom": 1822.140625,
+              "width": 160.015625,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 56.96875,
+              "top": 1864.140625,
+              "right": 248.015625,
+              "bottom": 1902.53125,
+              "width": 191.046875,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-320-procedure",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "bottom",
+      "file": "ending-320-procedure-bottom.png",
+      "sha256": "f6c27b6a0040b2205d43065aa6780710ee0fdb1e136614e49e3d6745d7ae1c7b",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 1366,
+          "scrollHeight": 1934,
+          "scrollWidth": 305,
+          "clientHeight": 568,
+          "clientWidth": 305
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 285.96875,
+              "right": 285,
+              "bottom": 388.75,
+              "width": 265,
+              "height": 102.78125
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 285.96875,
+              "bottom": 388.75
+            },
+            "visibleHeight": 102.78125
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 404.75,
+              "right": 285,
+              "bottom": 469.140625,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 404.75,
+              "bottom": 469.140625
+            },
+            "visibleHeight": 64.390625
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 485.140625,
+              "right": 285,
+              "bottom": 549.53125,
+              "width": 265,
+              "height": 64.390625
+            },
+            "visible": {
+              "left": 20,
+              "right": 285,
+              "top": 485.140625,
+              "bottom": 549.53125
+            },
+            "visibleHeight": 64.390625
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": -1348,
+              "right": 285,
+              "bottom": -1312,
+              "width": 265,
+              "height": 36
+            }
+          },
+          {
+            "content": "点検手順",
+            "rect": {
+              "left": 20,
+              "top": -1247,
+              "right": 285,
+              "bottom": -1203,
+              "width": 265,
+              "height": 44
+            }
+          },
+          {
+            "content": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
+            "rect": {
+              "left": 20,
+              "top": -1203,
+              "right": 285,
+              "bottom": -1003,
+              "width": 265,
+              "height": 200
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": -987,
+              "right": 285,
+              "bottom": -910.21875,
+              "width": 265,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": -874.21875,
+              "right": 285,
+              "bottom": -564.21875,
+              "width": 265,
+              "height": 310
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": -530.21875,
+              "right": 285,
+              "bottom": -271.03125,
+              "width": 265,
+              "height": 259.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": -237.03125,
+              "right": 285,
+              "bottom": 12.96875,
+              "width": 265,
+              "height": 250
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 77.96875,
+              "right": 285,
+              "bottom": 121.96875,
+              "width": 265,
+              "height": 44
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 137.96875,
+              "right": 285,
+              "bottom": 269.96875,
+              "width": 265,
+              "height": 132
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 37,
+              "top": 298.96875,
+              "right": 268,
+              "bottom": 375.75,
+              "width": 231,
+              "height": 76.78125
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 72.484375,
+              "top": 417.75,
+              "right": 232.5,
+              "bottom": 456.140625,
+              "width": 160.015625,
+              "height": 38.390625
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 56.96875,
+              "top": 498.140625,
+              "right": 248.015625,
+              "bottom": 536.53125,
+              "width": 191.046875,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-390-normal",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "top",
+      "file": "intro-390-normal-top.png",
+      "sha256": "9892670ec4ff87385d3a7735e165975f8cb08b627b9e0e2a29a0342c1758b541",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 504,
+          "scrollWidth": 390,
+          "clientHeight": 504,
+          "clientWidth": 390
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 433.796875,
+              "right": 370,
+              "bottom": 485.796875,
+              "width": 350,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 370,
+              "top": 433.796875,
+              "bottom": 485.796875
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 66,
+              "right": 370,
+              "bottom": 94.796875,
+              "width": 350,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 164.796875,
+              "right": 370,
+              "bottom": 278.796875,
+              "width": 350,
+              "height": 114
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 294.796875,
+              "right": 370,
+              "bottom": 369.796875,
+              "width": 350,
+              "height": 75
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 111,
+              "top": 443.296875,
+              "right": 279,
+              "bottom": 476.296875,
+              "width": 168,
+              "height": 33
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-390-normal",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "bottom",
+      "file": "intro-390-normal-bottom.png",
+      "sha256": "9892670ec4ff87385d3a7735e165975f8cb08b627b9e0e2a29a0342c1758b541",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 504,
+          "scrollWidth": 390,
+          "clientHeight": 504,
+          "clientWidth": 390
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 433.796875,
+              "right": 370,
+              "bottom": 485.796875,
+              "width": 350,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 370,
+              "top": 433.796875,
+              "bottom": 485.796875
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 66,
+              "right": 370,
+              "bottom": 94.796875,
+              "width": 350,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 164.796875,
+              "right": 370,
+              "bottom": 278.796875,
+              "width": 350,
+              "height": 114
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 294.796875,
+              "right": 370,
+              "bottom": 369.796875,
+              "width": 350,
+              "height": 75
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 111,
+              "top": 443.296875,
+              "right": 279,
+              "bottom": 476.296875,
+              "width": 168,
+              "height": 33
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-390-normal",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "top",
+      "file": "ending-390-normal-top.png",
+      "sha256": "f1c57e711c10f80fc5eb7cc50f74f52a505f5d11885da4c375b988a10e40bd8b",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 1002,
+          "scrollWidth": 375,
+          "clientHeight": 844,
+          "clientWidth": 375
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 787.984375,
+              "right": 355,
+              "bottom": 842.78125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 787.984375,
+              "bottom": 842.78125
+            },
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 858.78125,
+              "right": 355,
+              "bottom": 913.578125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 858.78125,
+              "bottom": 844
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 929.578125,
+              "right": 355,
+              "bottom": 984.375,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 929.578125,
+              "bottom": 844
+            },
+            "visibleHeight": 0
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 355,
+              "bottom": 45,
+              "width": 335,
+              "height": 27
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 110,
+              "right": 355,
+              "bottom": 138.796875,
+              "width": 335,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 174.796875,
+              "right": 355,
+              "bottom": 314.296875,
+              "width": 335,
+              "height": 139.5
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 348.296875,
+              "right": 355,
+              "bottom": 445.484375,
+              "width": 335,
+              "height": 97.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 479.484375,
+              "right": 355,
+              "bottom": 591.984375,
+              "width": 335,
+              "height": 112.5
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 656.984375,
+              "right": 355,
+              "bottom": 689.984375,
+              "width": 335,
+              "height": 33
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 705.984375,
+              "right": 355,
+              "bottom": 771.984375,
+              "width": 335,
+              "height": 66
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 91.5,
+              "top": 800.984375,
+              "right": 283.5,
+              "bottom": 829.78125,
+              "width": 192,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 127.5,
+              "top": 871.78125,
+              "right": 247.5,
+              "bottom": 900.578125,
+              "width": 120,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 115.859375,
+              "top": 942.578125,
+              "right": 259.140625,
+              "bottom": 971.375,
+              "width": 143.28125,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-390-normal",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "bottom",
+      "file": "ending-390-normal-bottom.png",
+      "sha256": "ff7f8406bcc3659b3ac0968efa20692973ce07dba5d5c665011f0042a4b6699a",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 158,
+          "scrollHeight": 1002,
+          "scrollWidth": 375,
+          "clientHeight": 844,
+          "clientWidth": 375
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 629.984375,
+              "right": 355,
+              "bottom": 684.78125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 629.984375,
+              "bottom": 684.78125
+            },
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 700.78125,
+              "right": 355,
+              "bottom": 755.578125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 700.78125,
+              "bottom": 755.578125
+            },
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 771.578125,
+              "right": 355,
+              "bottom": 826.375,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 771.578125,
+              "bottom": 826.375
+            },
+            "visibleHeight": 54.796875
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": -140,
+              "right": 355,
+              "bottom": -113,
+              "width": 335,
+              "height": 27
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": -48,
+              "right": 355,
+              "bottom": -19.203125,
+              "width": 335,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 16.796875,
+              "right": 355,
+              "bottom": 156.296875,
+              "width": 335,
+              "height": 139.5
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 190.296875,
+              "right": 355,
+              "bottom": 287.484375,
+              "width": 335,
+              "height": 97.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 321.484375,
+              "right": 355,
+              "bottom": 433.984375,
+              "width": 335,
+              "height": 112.5
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 498.984375,
+              "right": 355,
+              "bottom": 531.984375,
+              "width": 335,
+              "height": 33
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 547.984375,
+              "right": 355,
+              "bottom": 613.984375,
+              "width": 335,
+              "height": 66
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 91.5,
+              "top": 642.984375,
+              "right": 283.5,
+              "bottom": 671.78125,
+              "width": 192,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 127.5,
+              "top": 713.78125,
+              "right": 247.5,
+              "bottom": 742.578125,
+              "width": 120,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 115.859375,
+              "top": 784.578125,
+              "right": 259.140625,
+              "bottom": 813.375,
+              "width": 143.28125,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-390-procedure",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "top",
+      "file": "intro-390-procedure-top.png",
+      "sha256": "9892670ec4ff87385d3a7735e165975f8cb08b627b9e0e2a29a0342c1758b541",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 504,
+          "scrollWidth": 390,
+          "clientHeight": 504,
+          "clientWidth": 390
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 433.796875,
+              "right": 370,
+              "bottom": 485.796875,
+              "width": 350,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 370,
+              "top": 433.796875,
+              "bottom": 485.796875
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 66,
+              "right": 370,
+              "bottom": 94.796875,
+              "width": 350,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 164.796875,
+              "right": 370,
+              "bottom": 278.796875,
+              "width": 350,
+              "height": 114
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 294.796875,
+              "right": 370,
+              "bottom": 369.796875,
+              "width": 350,
+              "height": 75
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 111,
+              "top": 443.296875,
+              "right": 279,
+              "bottom": 476.296875,
+              "width": 168,
+              "height": 33
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-390-procedure",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "bottom",
+      "file": "intro-390-procedure-bottom.png",
+      "sha256": "9892670ec4ff87385d3a7735e165975f8cb08b627b9e0e2a29a0342c1758b541",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 504,
+          "scrollWidth": 390,
+          "clientHeight": 504,
+          "clientWidth": 390
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 433.796875,
+              "right": 370,
+              "bottom": 485.796875,
+              "width": 350,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 370,
+              "top": 433.796875,
+              "bottom": 485.796875
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 66,
+              "right": 370,
+              "bottom": 94.796875,
+              "width": 350,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 164.796875,
+              "right": 370,
+              "bottom": 278.796875,
+              "width": 350,
+              "height": 114
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 294.796875,
+              "right": 370,
+              "bottom": 369.796875,
+              "width": 350,
+              "height": 75
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 111,
+              "top": 443.296875,
+              "right": 279,
+              "bottom": 476.296875,
+              "width": 168,
+              "height": 33
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-390-procedure",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "top",
+      "file": "ending-390-procedure-top.png",
+      "sha256": "0c88333599403c148c07a173b9c128f403ee6b8405c87c60cc1cc7b670c4dc47",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 1164,
+          "scrollWidth": 375,
+          "clientHeight": 844,
+          "clientWidth": 375
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 949.484375,
+              "right": 355,
+              "bottom": 1004.28125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 949.484375,
+              "bottom": 844
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 1020.28125,
+              "right": 355,
+              "bottom": 1075.078125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 1020.28125,
+              "bottom": 844
+            },
+            "visibleHeight": 0
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 1091.078125,
+              "right": 355,
+              "bottom": 1145.875,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 1091.078125,
+              "bottom": 844
+            },
+            "visibleHeight": 0
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 355,
+              "bottom": 45,
+              "width": 335,
+              "height": 27
+            }
+          },
+          {
+            "content": "点検手順",
+            "rect": {
+              "left": 20,
+              "top": 110,
+              "right": 355,
+              "bottom": 143,
+              "width": 335,
+              "height": 33
+            }
+          },
+          {
+            "content": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
+            "rect": {
+              "left": 20,
+              "top": 143,
+              "right": 355,
+              "bottom": 255.5,
+              "width": 335,
+              "height": 112.5
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 271.5,
+              "right": 355,
+              "bottom": 300.296875,
+              "width": 335,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 336.296875,
+              "right": 355,
+              "bottom": 475.796875,
+              "width": 335,
+              "height": 139.5
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 509.796875,
+              "right": 355,
+              "bottom": 606.984375,
+              "width": 335,
+              "height": 97.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 640.984375,
+              "right": 355,
+              "bottom": 753.484375,
+              "width": 335,
+              "height": 112.5
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 818.484375,
+              "right": 355,
+              "bottom": 851.484375,
+              "width": 335,
+              "height": 33
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 867.484375,
+              "right": 355,
+              "bottom": 933.484375,
+              "width": 335,
+              "height": 66
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 91.5,
+              "top": 962.484375,
+              "right": 283.5,
+              "bottom": 991.28125,
+              "width": 192,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 127.5,
+              "top": 1033.28125,
+              "right": 247.5,
+              "bottom": 1062.078125,
+              "width": 120,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 115.859375,
+              "top": 1104.078125,
+              "right": 259.140625,
+              "bottom": 1132.875,
+              "width": 143.28125,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-390-procedure",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "bottom",
+      "file": "ending-390-procedure-bottom.png",
+      "sha256": "be23180dba6079dd4f5cc463f76f4b0775dec987138a889933cc916318af0a40",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 320,
+          "scrollHeight": 1164,
+          "scrollWidth": 375,
+          "clientHeight": 844,
+          "clientWidth": 375
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 629.484375,
+              "right": 355,
+              "bottom": 684.28125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 629.484375,
+              "bottom": 684.28125
+            },
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 700.28125,
+              "right": 355,
+              "bottom": 755.078125,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 700.28125,
+              "bottom": 755.078125
+            },
+            "visibleHeight": 54.796875
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 771.078125,
+              "right": 355,
+              "bottom": 825.875,
+              "width": 335,
+              "height": 54.796875
+            },
+            "visible": {
+              "left": 20,
+              "right": 355,
+              "top": 771.078125,
+              "bottom": 825.875
+            },
+            "visibleHeight": 54.796875
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": -302,
+              "right": 355,
+              "bottom": -275,
+              "width": 335,
+              "height": 27
+            }
+          },
+          {
+            "content": "点検手順",
+            "rect": {
+              "left": 20,
+              "top": -210,
+              "right": 355,
+              "bottom": -177,
+              "width": 335,
+              "height": 33
+            }
+          },
+          {
+            "content": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
+            "rect": {
+              "left": 20,
+              "top": -177,
+              "right": 355,
+              "bottom": -64.5,
+              "width": 335,
+              "height": 112.5
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": -48.5,
+              "right": 355,
+              "bottom": -19.703125,
+              "width": 335,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 16.296875,
+              "right": 355,
+              "bottom": 155.796875,
+              "width": 335,
+              "height": 139.5
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 189.796875,
+              "right": 355,
+              "bottom": 286.984375,
+              "width": 335,
+              "height": 97.1875
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 320.984375,
+              "right": 355,
+              "bottom": 433.484375,
+              "width": 335,
+              "height": 112.5
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 498.484375,
+              "right": 355,
+              "bottom": 531.484375,
+              "width": 335,
+              "height": 33
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 547.484375,
+              "right": 355,
+              "bottom": 613.484375,
+              "width": 335,
+              "height": 66
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 91.5,
+              "top": 642.484375,
+              "right": 283.5,
+              "bottom": 671.28125,
+              "width": 192,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 127.5,
+              "top": 713.28125,
+              "right": 247.5,
+              "bottom": 742.078125,
+              "width": 120,
+              "height": 28.796875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 115.859375,
+              "top": 784.078125,
+              "right": 259.140625,
+              "bottom": 812.875,
+              "width": 143.28125,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-430-normal",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "top",
+      "file": "intro-430-normal-top.png",
+      "sha256": "7203f9dc83e1780a40a2fa89d2af449d12d909e215bbb0e475116ca11e4dde16",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 454,
+          "scrollWidth": 430,
+          "clientHeight": 454,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 384,
+              "right": 410,
+              "bottom": 436,
+              "width": 390,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 384,
+              "bottom": 436
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 108.90625,
+              "right": 410,
+              "bottom": 128.09375,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 198.09375,
+              "right": 410,
+              "bottom": 236.09375,
+              "width": 390,
+              "height": 38
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 252.09375,
+              "right": 410,
+              "bottom": 277.09375,
+              "width": 390,
+              "height": 25
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 159,
+              "top": 399,
+              "right": 271,
+              "bottom": 421,
+              "width": 112,
+              "height": 22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-430-normal",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "bottom",
+      "file": "intro-430-normal-bottom.png",
+      "sha256": "7203f9dc83e1780a40a2fa89d2af449d12d909e215bbb0e475116ca11e4dde16",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 454,
+          "scrollWidth": 430,
+          "clientHeight": 454,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 384,
+              "right": 410,
+              "bottom": 436,
+              "width": 390,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 384,
+              "bottom": 436
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 108.90625,
+              "right": 410,
+              "bottom": 128.09375,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 198.09375,
+              "right": 410,
+              "bottom": 236.09375,
+              "width": 390,
+              "height": 38
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 252.09375,
+              "right": 410,
+              "bottom": 277.09375,
+              "width": 390,
+              "height": 25
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 159,
+              "top": 399,
+              "right": 271,
+              "bottom": 421,
+              "width": 112,
+              "height": 22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-430-normal",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "top",
+      "file": "ending-430-normal-top.png",
+      "sha256": "a78dd97ecaa652649cb41eae4209d978e735592326708c4611b15d15a3b1ca6e",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 704,
+          "scrollWidth": 430,
+          "clientHeight": 704,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 509.578125,
+              "right": 410,
+              "bottom": 557.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 509.578125,
+              "bottom": 557.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 573.578125,
+              "right": 410,
+              "bottom": 621.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 573.578125,
+              "bottom": 621.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 637.578125,
+              "right": 410,
+              "bottom": 685.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 637.578125,
+              "bottom": 685.578125
+            },
+            "visibleHeight": 48
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 410,
+              "bottom": 36,
+              "width": 390,
+              "height": 18
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 101,
+              "right": 410,
+              "bottom": 120.1875,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 156.1875,
+              "right": 410,
+              "bottom": 218.1875,
+              "width": 390,
+              "height": 62
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 252.1875,
+              "right": 410,
+              "bottom": 284.578125,
+              "width": 390,
+              "height": 32.390625
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 318.578125,
+              "right": 410,
+              "bottom": 368.578125,
+              "width": 390,
+              "height": 50
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 433.578125,
+              "right": 410,
+              "bottom": 455.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 471.578125,
+              "right": 410,
+              "bottom": 493.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 150.984375,
+              "top": 523.984375,
+              "right": 279,
+              "bottom": 543.171875,
+              "width": 128.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 174.984375,
+              "top": 587.984375,
+              "right": 255,
+              "bottom": 607.171875,
+              "width": 80.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 167.234375,
+              "top": 651.984375,
+              "right": 262.765625,
+              "bottom": 671.171875,
+              "width": 95.53125,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-430-normal",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": false,
+      "position": "bottom",
+      "file": "ending-430-normal-bottom.png",
+      "sha256": "a78dd97ecaa652649cb41eae4209d978e735592326708c4611b15d15a3b1ca6e",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 704,
+          "scrollWidth": 430,
+          "clientHeight": 704,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 509.578125,
+              "right": 410,
+              "bottom": 557.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 509.578125,
+              "bottom": 557.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 573.578125,
+              "right": 410,
+              "bottom": 621.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 573.578125,
+              "bottom": 621.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 637.578125,
+              "right": 410,
+              "bottom": 685.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 637.578125,
+              "bottom": 685.578125
+            },
+            "visibleHeight": 48
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 410,
+              "bottom": 36,
+              "width": 390,
+              "height": 18
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 101,
+              "right": 410,
+              "bottom": 120.1875,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 156.1875,
+              "right": 410,
+              "bottom": 218.1875,
+              "width": 390,
+              "height": 62
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 252.1875,
+              "right": 410,
+              "bottom": 284.578125,
+              "width": 390,
+              "height": 32.390625
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 318.578125,
+              "right": 410,
+              "bottom": 368.578125,
+              "width": 390,
+              "height": 50
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 433.578125,
+              "right": 410,
+              "bottom": 455.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 471.578125,
+              "right": 410,
+              "bottom": 493.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 150.984375,
+              "top": 523.984375,
+              "right": 279,
+              "bottom": 543.171875,
+              "width": 128.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 174.984375,
+              "top": 587.984375,
+              "right": 255,
+              "bottom": 607.171875,
+              "width": 80.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 167.234375,
+              "top": 651.984375,
+              "right": 262.765625,
+              "bottom": 671.171875,
+              "width": 95.53125,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-430-procedure",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "top",
+      "file": "intro-430-procedure-top.png",
+      "sha256": "7203f9dc83e1780a40a2fa89d2af449d12d909e215bbb0e475116ca11e4dde16",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 454,
+          "scrollWidth": 430,
+          "clientHeight": 454,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 384,
+              "right": 410,
+              "bottom": 436,
+              "width": 390,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 384,
+              "bottom": 436
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 108.90625,
+              "right": 410,
+              "bottom": 128.09375,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 198.09375,
+              "right": 410,
+              "bottom": 236.09375,
+              "width": 390,
+              "height": 38
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 252.09375,
+              "right": 410,
+              "bottom": 277.09375,
+              "width": 390,
+              "height": 25
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 159,
+              "top": 399,
+              "right": 271,
+              "bottom": 421,
+              "width": 112,
+              "height": 22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-430-procedure",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "bottom",
+      "file": "intro-430-procedure-bottom.png",
+      "sha256": "7203f9dc83e1780a40a2fa89d2af449d12d909e215bbb0e475116ca11e4dde16",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 454,
+          "scrollWidth": 430,
+          "clientHeight": 454,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "クレジットを表示",
+            "rect": {
+              "left": 20,
+              "top": 384,
+              "right": 410,
+              "bottom": 436,
+              "width": 390,
+              "height": 52
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 384,
+              "bottom": 436
+            },
+            "visibleHeight": 52
+          }
+        ],
+        "text": [
+          {
+            "content": "在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 108.90625,
+              "right": 410,
+              "bottom": 128.09375,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "外の空気が流れている。",
+            "rect": {
+              "left": 20,
+              "top": 198.09375,
+              "right": 410,
+              "bottom": 236.09375,
+              "width": 390,
+              "height": 38
+            }
+          },
+          {
+            "content": "閉館した建物は、もう追ってこない。",
+            "rect": {
+              "left": 20,
+              "top": 252.09375,
+              "right": 410,
+              "bottom": 277.09375,
+              "width": 390,
+              "height": 25
+            }
+          },
+          {
+            "content": "クレジットを表示",
+            "rect": {
+              "left": 159,
+              "top": 399,
+              "right": 271,
+              "bottom": 421,
+              "width": 112,
+              "height": 22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-430-procedure",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "top",
+      "file": "ending-430-procedure-top.png",
+      "sha256": "2afe5775217a416b6498d4f3a94859ccd54f0548328b81316c5d294c0de8d091",
+      "metrics": {
+        "position": "top",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 792,
+          "scrollWidth": 430,
+          "clientHeight": 792,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 597.578125,
+              "right": 410,
+              "bottom": 645.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 597.578125,
+              "bottom": 645.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 661.578125,
+              "right": 410,
+              "bottom": 709.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 661.578125,
+              "bottom": 709.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 725.578125,
+              "right": 410,
+              "bottom": 773.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 725.578125,
+              "bottom": 773.578125
+            },
+            "visibleHeight": 48
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 410,
+              "bottom": 36,
+              "width": 390,
+              "height": 18
+            }
+          },
+          {
+            "content": "点検手順",
+            "rect": {
+              "left": 20,
+              "top": 101,
+              "right": 410,
+              "bottom": 123,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
+            "rect": {
+              "left": 20,
+              "top": 123,
+              "right": 410,
+              "bottom": 173,
+              "width": 390,
+              "height": 50
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 189,
+              "right": 410,
+              "bottom": 208.1875,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 244.1875,
+              "right": 410,
+              "bottom": 306.1875,
+              "width": 390,
+              "height": 62
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 340.1875,
+              "right": 410,
+              "bottom": 372.578125,
+              "width": 390,
+              "height": 32.390625
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 406.578125,
+              "right": 410,
+              "bottom": 456.578125,
+              "width": 390,
+              "height": 50
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 521.578125,
+              "right": 410,
+              "bottom": 543.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 559.578125,
+              "right": 410,
+              "bottom": 581.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 150.984375,
+              "top": 611.984375,
+              "right": 279,
+              "bottom": 631.171875,
+              "width": 128.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 174.984375,
+              "top": 675.984375,
+              "right": 255,
+              "bottom": 695.171875,
+              "width": 80.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 167.234375,
+              "top": 739.984375,
+              "right": 262.765625,
+              "bottom": 759.171875,
+              "width": 95.53125,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending-430-procedure",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "ending",
+      "showProcedure": true,
+      "position": "bottom",
+      "file": "ending-430-procedure-bottom.png",
+      "sha256": "2afe5775217a416b6498d4f3a94859ccd54f0548328b81316c5d294c0de8d091",
+      "metrics": {
+        "position": "bottom",
+        "scroll": {
+          "scrollTop": 0,
+          "scrollHeight": 792,
+          "scrollWidth": 430,
+          "clientHeight": 792,
+          "clientWidth": 430
+        },
+        "buttons": [
+          {
+            "label": "エリアを振り返る",
+            "rect": {
+              "left": 20,
+              "top": 597.578125,
+              "right": 410,
+              "bottom": 645.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 597.578125,
+              "bottom": 645.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "発見の記録",
+            "rect": {
+              "left": 20,
+              "top": 661.578125,
+              "right": 410,
+              "bottom": 709.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 661.578125,
+              "bottom": 709.578125
+            },
+            "visibleHeight": 48
+          },
+          {
+            "label": "ホームへ戻る",
+            "rect": {
+              "left": 20,
+              "top": 725.578125,
+              "right": 410,
+              "bottom": 773.578125,
+              "width": 390,
+              "height": 48
+            },
+            "visible": {
+              "left": 20,
+              "right": 410,
+              "top": 725.578125,
+              "bottom": 773.578125
+            },
+            "visibleHeight": 48
+          }
+        ],
+        "text": [
+          {
+            "content": "CHROMA RIFT",
+            "rect": {
+              "left": 20,
+              "top": 18,
+              "right": 410,
+              "bottom": 36,
+              "width": 390,
+              "height": 18
+            }
+          },
+          {
+            "content": "点検手順",
+            "rect": {
+              "left": 20,
+              "top": 101,
+              "right": 410,
+              "bottom": 123,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。",
+            "rect": {
+              "left": 20,
+              "top": 123,
+              "right": 410,
+              "bottom": 173,
+              "width": 390,
+              "height": 50
+            }
+          },
+          {
+            "content": "在館反応 01 → 在館反応 00",
+            "rect": {
+              "left": 20,
+              "top": 189,
+              "right": 410,
+              "bottom": 208.1875,
+              "width": 390,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "もう一つの反応は巡回体だった。隔離と停止を確認した。",
+            "rect": {
+              "left": 20,
+              "top": 244.1875,
+              "right": 410,
+              "bottom": 306.1875,
+              "width": 390,
+              "height": 62
+            }
+          },
+          {
+            "content": "第一章「最後の退館者」 完",
+            "rect": {
+              "left": 20,
+              "top": 340.1875,
+              "right": 410,
+              "bottom": 372.578125,
+              "width": 390,
+              "height": 32.390625
+            }
+          },
+          {
+            "content": "閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。",
+            "rect": {
+              "left": 20,
+              "top": 406.578125,
+              "right": 410,
+              "bottom": 456.578125,
+              "width": 390,
+              "height": 50
+            }
+          },
+          {
+            "content": "素材クレジット",
+            "rect": {
+              "left": 20,
+              "top": 521.578125,
+              "right": 410,
+              "bottom": 543.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）",
+            "rect": {
+              "left": 20,
+              "top": 559.578125,
+              "right": 410,
+              "bottom": 581.578125,
+              "width": 390,
+              "height": 22
+            }
+          },
+          {
+            "content": "エリアを振り返る",
+            "rect": {
+              "left": 150.984375,
+              "top": 611.984375,
+              "right": 279,
+              "bottom": 631.171875,
+              "width": 128.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "発見の記録",
+            "rect": {
+              "left": 174.984375,
+              "top": 675.984375,
+              "right": 255,
+              "bottom": 695.171875,
+              "width": 80.015625,
+              "height": 19.1875
+            }
+          },
+          {
+            "content": "ホームへ戻る",
+            "rect": {
+              "left": 167.234375,
+              "top": 739.984375,
+              "right": 262.765625,
+              "bottom": 759.171875,
+              "width": 95.53125,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-emergency-circuit-320",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-emergency-circuit-320-overlay.png",
+      "sha256": "ec2c18741dd34e2d9b8b8b283ae81d52714ae7d211946276756ad1b1be22120a",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 320,
+            "bottom": 568,
+            "width": 320,
+            "height": 568
+          },
+          "scrollHeight": 568,
+          "clientHeight": 568,
+          "scrollWidth": 320,
+          "clientWidth": 320
+        },
+        "action": {
+          "left": 26,
+          "top": 428.390625,
+          "right": 294,
+          "bottom": 492.78125,
+          "width": 268,
+          "height": 64.390625
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 75.203125,
+              "right": 294,
+              "bottom": 130.390625,
+              "width": 268,
+              "height": 55.1875
+            }
+          },
+          {
+            "content": "非常回路が戻った。収蔵庫の職員通路へ進む。",
+            "rect": {
+              "left": 26,
+              "top": 160.390625,
+              "right": 294,
+              "bottom": 310.390625,
+              "width": 268,
+              "height": 150
+            }
+          },
+          {
+            "content": "非常灯が点く",
+            "rect": {
+              "left": 26,
+              "top": 344.390625,
+              "right": 294,
+              "bottom": 394.390625,
+              "width": 268,
+              "height": 50
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 63.984375,
+              "top": 441.390625,
+              "right": 256,
+              "bottom": 479.78125,
+              "width": 192.015625,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-emergency-circuit-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-emergency-circuit-390-overlay.png",
+      "sha256": "f1ae5ae26eacf383c315796925a65c6999236ac1d24b48ea40f8305da4597da3",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 390,
+            "bottom": 844,
+            "width": 390,
+            "height": 844
+          },
+          "scrollHeight": 844,
+          "clientHeight": 844,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        },
+        "action": {
+          "left": 26,
+          "top": 520.546875,
+          "right": 364,
+          "bottom": 575.34375,
+          "width": 338,
+          "height": 54.796875
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 268.65625,
+              "right": 364,
+              "bottom": 310.046875,
+              "width": 338,
+              "height": 41.390625
+            }
+          },
+          {
+            "content": "非常回路が戻った。収蔵庫の職員通路へ進む。",
+            "rect": {
+              "left": 26,
+              "top": 340.046875,
+              "right": 364,
+              "bottom": 415.046875,
+              "width": 338,
+              "height": 75
+            }
+          },
+          {
+            "content": "非常灯が点く",
+            "rect": {
+              "left": 26,
+              "top": 449.046875,
+              "right": 364,
+              "bottom": 486.546875,
+              "width": 338,
+              "height": 37.5
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 123,
+              "top": 533.546875,
+              "right": 267,
+              "bottom": 562.34375,
+              "width": 144,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-emergency-circuit-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-emergency-circuit-430-overlay.png",
+      "sha256": "c1b8bfb49c3caa19f0554711217bc7f6b3b90b37c74f830410822944ee0252ed",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 430,
+            "bottom": 932,
+            "width": 430,
+            "height": 932
+          },
+          "scrollHeight": 932,
+          "clientHeight": 932,
+          "scrollWidth": 430,
+          "clientWidth": 430
+        },
+        "action": {
+          "left": 26,
+          "top": 529.796875,
+          "right": 404,
+          "bottom": 577.796875,
+          "width": 378,
+          "height": 48
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 354.203125,
+              "right": 404,
+              "bottom": 381.796875,
+              "width": 378,
+              "height": 27.59375
+            }
+          },
+          {
+            "content": "非常回路が戻った。収蔵庫の職員通路へ進む。",
+            "rect": {
+              "left": 26,
+              "top": 411.796875,
+              "right": 404,
+              "bottom": 436.796875,
+              "width": 378,
+              "height": 25
+            }
+          },
+          {
+            "content": "非常灯が点く",
+            "rect": {
+              "left": 26,
+              "top": 470.796875,
+              "right": 404,
+              "bottom": 495.796875,
+              "width": 378,
+              "height": 25
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 166.984375,
+              "top": 544.203125,
+              "right": 263,
+              "bottom": 563.390625,
+              "width": 96.015625,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-containment-procedure-320",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-containment-procedure-320-overlay.png",
+      "sha256": "aa4f98ca51e2fc0e2ac324e116516d22d597038b9ad9feb502b5da7d0cffc053",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 320,
+            "bottom": 568,
+            "width": 320,
+            "height": 568
+          },
+          "scrollHeight": 568,
+          "clientHeight": 568,
+          "scrollWidth": 320,
+          "clientWidth": 320
+        },
+        "action": {
+          "left": 26,
+          "top": 453.390625,
+          "right": 294,
+          "bottom": 517.78125,
+          "width": 268,
+          "height": 64.390625
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 50.203125,
+              "right": 294,
+              "bottom": 105.390625,
+              "width": 268,
+              "height": 55.1875
+            }
+          },
+          {
+            "content": "閉館手順は中断されたまま。巡回体を収容区画へ戻す。",
+            "rect": {
+              "left": 26,
+              "top": 135.390625,
+              "right": 294,
+              "bottom": 335.390625,
+              "width": 268,
+              "height": 200
+            }
+          },
+          {
+            "content": "管理経路の標識",
+            "rect": {
+              "left": 26,
+              "top": 369.390625,
+              "right": 294,
+              "bottom": 419.390625,
+              "width": 268,
+              "height": 50
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 63.984375,
+              "top": 466.390625,
+              "right": 256,
+              "bottom": 504.78125,
+              "width": 192.015625,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-containment-procedure-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-containment-procedure-390-overlay.png",
+      "sha256": "e2e4fa0a7f51aa8d285ecebeccc39faa7c2c5bd33ddaf64210ba0fceb4187093",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 390,
+            "bottom": 844,
+            "width": 390,
+            "height": 844
+          },
+          "scrollHeight": 844,
+          "clientHeight": 844,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        },
+        "action": {
+          "left": 26,
+          "top": 520.546875,
+          "right": 364,
+          "bottom": 575.34375,
+          "width": 338,
+          "height": 54.796875
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 268.65625,
+              "right": 364,
+              "bottom": 310.046875,
+              "width": 338,
+              "height": 41.390625
+            }
+          },
+          {
+            "content": "閉館手順は中断されたまま。巡回体を収容区画へ戻す。",
+            "rect": {
+              "left": 26,
+              "top": 340.046875,
+              "right": 364,
+              "bottom": 415.046875,
+              "width": 338,
+              "height": 75
+            }
+          },
+          {
+            "content": "管理経路の標識",
+            "rect": {
+              "left": 26,
+              "top": 449.046875,
+              "right": 364,
+              "bottom": 486.546875,
+              "width": 338,
+              "height": 37.5
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 123,
+              "top": 533.546875,
+              "right": 267,
+              "bottom": 562.34375,
+              "width": 144,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-containment-procedure-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-containment-procedure-430-overlay.png",
+      "sha256": "a5d86872f3faf177f1ad4bc9eb590bd3d3661893de89c3f2fd990ab0d570b0c3",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 430,
+            "bottom": 932,
+            "width": 430,
+            "height": 932
+          },
+          "scrollHeight": 932,
+          "clientHeight": 932,
+          "scrollWidth": 430,
+          "clientWidth": 430
+        },
+        "action": {
+          "left": 26,
+          "top": 542.296875,
+          "right": 404,
+          "bottom": 590.296875,
+          "width": 378,
+          "height": 48
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 341.703125,
+              "right": 404,
+              "bottom": 369.296875,
+              "width": 378,
+              "height": 27.59375
+            }
+          },
+          {
+            "content": "閉館手順は中断されたまま。巡回体を収容区画へ戻す。",
+            "rect": {
+              "left": 26,
+              "top": 399.296875,
+              "right": 404,
+              "bottom": 449.296875,
+              "width": 378,
+              "height": 50
+            }
+          },
+          {
+            "content": "管理経路の標識",
+            "rect": {
+              "left": 26,
+              "top": 483.296875,
+              "right": 404,
+              "bottom": 508.296875,
+              "width": 378,
+              "height": 25
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 166.984375,
+              "top": 556.703125,
+              "right": 263,
+              "bottom": 575.890625,
+              "width": 96.015625,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-isolation-key-320",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-isolation-key-320-overlay.png",
+      "sha256": "6cac5eab92537acb7e8315c52f291de590edeca26de505d129f2445e0861f8f0",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 320,
+            "bottom": 568,
+            "width": 320,
+            "height": 568
+          },
+          "scrollHeight": 568,
+          "clientHeight": 568,
+          "scrollWidth": 320,
+          "clientWidth": 320
+        },
+        "action": {
+          "left": 26,
+          "top": 428.390625,
+          "right": 294,
+          "bottom": 492.78125,
+          "width": 268,
+          "height": 64.390625
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 75.203125,
+              "right": 294,
+              "bottom": 130.390625,
+              "width": 268,
+              "height": 55.1875
+            }
+          },
+          {
+            "content": "顔と顔の間にも、輪郭がある。",
+            "rect": {
+              "left": 26,
+              "top": 160.390625,
+              "right": 294,
+              "bottom": 260.390625,
+              "width": 268,
+              "height": 100
+            }
+          },
+          {
+            "content": "中央の部品だけが取れる",
+            "rect": {
+              "left": 26,
+              "top": 294.390625,
+              "right": 294,
+              "bottom": 394.390625,
+              "width": 268,
+              "height": 100
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 63.984375,
+              "top": 441.390625,
+              "right": 256,
+              "bottom": 479.78125,
+              "width": 192.015625,
+              "height": 38.390625
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-isolation-key-390",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1.5,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-isolation-key-390-overlay.png",
+      "sha256": "fa2bfe1e7454a4369d0ef5d97f331b711552f039ba0619a06fb3a8b7d9d59a9d",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 390,
+            "bottom": 844,
+            "width": 390,
+            "height": 844
+          },
+          "scrollHeight": 844,
+          "clientHeight": 844,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        },
+        "action": {
+          "left": 26,
+          "top": 501.796875,
+          "right": 364,
+          "bottom": 556.59375,
+          "width": 338,
+          "height": 54.796875
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 287.40625,
+              "right": 364,
+              "bottom": 328.796875,
+              "width": 338,
+              "height": 41.390625
+            }
+          },
+          {
+            "content": "顔と顔の間にも、輪郭がある。",
+            "rect": {
+              "left": 26,
+              "top": 358.796875,
+              "right": 364,
+              "bottom": 396.296875,
+              "width": 338,
+              "height": 37.5
+            }
+          },
+          {
+            "content": "中央の部品だけが取れる",
+            "rect": {
+              "left": 26,
+              "top": 430.296875,
+              "right": 364,
+              "bottom": 467.796875,
+              "width": 338,
+              "height": 37.5
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 123,
+              "top": 514.796875,
+              "right": 267,
+              "bottom": 543.59375,
+              "width": 144,
+              "height": 28.796875
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-isolation-key-430",
+      "width": 430,
+      "height": 932,
+      "fontScale": 1,
+      "type": "story",
+      "position": "overlay",
+      "file": "story-isolation-key-430-overlay.png",
+      "sha256": "6b3f951d83b13e96959fd52d6bf8f89b9f735bbca36e862c236f478898f46d85",
+      "metrics": {
+        "position": "overlay",
+        "overlay": {
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 430,
+            "bottom": 932,
+            "width": 430,
+            "height": 932
+          },
+          "scrollHeight": 932,
+          "clientHeight": 932,
+          "scrollWidth": 430,
+          "clientWidth": 430
+        },
+        "action": {
+          "left": 26,
+          "top": 529.796875,
+          "right": 404,
+          "bottom": 577.796875,
+          "width": 378,
+          "height": 48
+        },
+        "text": [
+          {
+            "content": "点検記録",
+            "rect": {
+              "left": 26,
+              "top": 354.203125,
+              "right": 404,
+              "bottom": 381.796875,
+              "width": 378,
+              "height": 27.59375
+            }
+          },
+          {
+            "content": "顔と顔の間にも、輪郭がある。",
+            "rect": {
+              "left": 26,
+              "top": 411.796875,
+              "right": 404,
+              "bottom": 436.796875,
+              "width": 378,
+              "height": 25
+            }
+          },
+          {
+            "content": "中央の部品だけが取れる",
+            "rect": {
+              "left": 26,
+              "top": 470.796875,
+              "right": 404,
+              "bottom": 495.796875,
+              "width": 378,
+              "height": 25
+            }
+          },
+          {
+            "content": "点検を続ける",
+            "rect": {
+              "left": 166.984375,
+              "top": 544.203125,
+              "right": 263,
+              "bottom": 563.390625,
+              "width": 96.015625,
+              "height": 19.1875
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "browserErrors": []
+}

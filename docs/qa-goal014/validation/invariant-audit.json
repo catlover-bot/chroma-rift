@@ -1,0 +1,105 @@
+{
+  "reviewedAtUTC": "2026-09-16T09:07:31.253871+00:00",
+  "baseline": "3632675",
+  "implementation": "f20801e",
+  "unchangedSourceObjects": [
+    {
+      "path": "src/domain/gallery",
+      "baselineGitObject": "7c0582959ef4af52f00d7f981d1ea9df77c90174",
+      "currentGitObject": "7c0582959ef4af52f00d7f981d1ea9df77c90174",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/domain/vault",
+      "baselineGitObject": "a4f422e58b1416be195bc57527fc7f275a10ffb7",
+      "currentGitObject": "a4f422e58b1416be195bc57527fc7f275a10ffb7",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/domain/theatre",
+      "baselineGitObject": "3d4329c5e39f5e74e102d83cf7e2caf35712741a",
+      "currentGitObject": "3d4329c5e39f5e74e102d83cf7e2caf35712741a",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/domain/illusion",
+      "baselineGitObject": "3e96e8560abe0f4dc7d93df097d58814a48d07af",
+      "currentGitObject": "3e96e8560abe0f4dc7d93df097d58814a48d07af",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/domain/actorMotion",
+      "baselineGitObject": "c9b0077f265da6e701251bd4fbcb7b37f8a5ec24",
+      "currentGitObject": "c9b0077f265da6e701251bd4fbcb7b37f8a5ec24",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/domain/firstPerson",
+      "baselineGitObject": "a6f8fde8b26c4c4eff865dd3dcbcb7e7c3caf494",
+      "currentGitObject": "a6f8fde8b26c4c4eff865dd3dcbcb7e7c3caf494",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/domain/campaign",
+      "baselineGitObject": "4a6d975db55a33a621ad2825cf6a46806505bc1e",
+      "currentGitObject": "4a6d975db55a33a621ad2825cf6a46806505bc1e",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/storage",
+      "baselineGitObject": "06db2f9526f522c49834bb91bbc6a17718192fd9",
+      "currentGitObject": "06db2f9526f522c49834bb91bbc6a17718192fd9",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/content",
+      "baselineGitObject": "f7952fe0fcadd3283d14174fbd8472e6d5e87bad",
+      "currentGitObject": "f7952fe0fcadd3283d14174fbd8472e6d5e87bad",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/types",
+      "baselineGitObject": "83572a60560476bd0f717e2fd1112a5878a585b3",
+      "currentGitObject": "83572a60560476bd0f717e2fd1112a5878a585b3",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/app/stages.ts",
+      "baselineGitObject": "5fed745aeb5337c02ea13549e04008d336354aea",
+      "currentGitObject": "5fed745aeb5337c02ea13549e04008d336354aea",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/rendering/firstPerson/FirstPersonCanvas.tsx",
+      "baselineGitObject": "0c112839bcdc73e3fecda457381537d1adefbd11",
+      "currentGitObject": "0c112839bcdc73e3fecda457381537d1adefbd11",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/rendering/firstPerson/perceptualResources.ts",
+      "baselineGitObject": "9de48645f911e6c435008ab756727f13c0ae5b37",
+      "currentGitObject": "9de48645f911e6c435008ab756727f13c0ae5b37",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/rendering/firstPerson/vaultResources.ts",
+      "baselineGitObject": "78caae1d75aaa78c8cf1fa4bfe3e8e8609f8f68f",
+      "currentGitObject": "78caae1d75aaa78c8cf1fa4bfe3e8e8609f8f68f",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/rendering/firstPerson/theatreResources.ts",
+      "baselineGitObject": "d689591a019d776f09b855e744fcb27373caf985",
+      "currentGitObject": "d689591a019d776f09b855e744fcb27373caf985",
+      "byteIdentical": true
+    }
+  ],
+  "intentionalExceptions": [
+    "04 practice refuge/mechanism solids and figure/key target placement;0.9-second shared gate animation, unchanged ratchet requirements",
+    "05 console/spawn/interaction target placement; glass/steel LOS matching;1.2-second staff door,1.6-second shutdown,4-second movable aftermath; no actor perception after confirmed isolation",
+    "Stage04/05 save keys/schema unchanged;05 legacy checkpoint poses retained;new animation clocks restore settled",
+    "Environment volume inherits previous music volume including explicit zero",
+    "Shared enlarged-text action and touch bounds reserve three lines"
+  ],
+  "evidenceBoundary": "Git object equality proves unchanged source, complemented by the final full invariant/controller/storage suites. Changed art and lighting do not prove identical human perception; device and participant acceptance remain pending."
+}
