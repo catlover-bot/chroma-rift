@@ -10,6 +10,7 @@ import type { FirstPersonInput } from './touchInput';
 import type { FirstPersonDiagnostics } from './diagnostics';
 import type { NotebookMaskPreview } from './notebookCamera';
 import type { TheatreCue } from '../../domain/theatre/cues';
+import type { StageTargetPresentation } from '../../domain/stageKit/presentation';
 
 /** Controller state contracts have no runtime imports or initialization. */
 export type RuntimeController = {
@@ -34,6 +35,8 @@ export type RuntimeController = {
   commandSequence: number;
   lastReceivedSequence: number;
   feedbackMessage: string;
+  presentationFeedbackSequence: number;
+  pendingPresentationFeedback: { session: number; sequence: number; callback: () => void }[];
   lastCommand?: { type: string; accepted: boolean; reason: string };
   lastCompareMs: number;
   input: FirstPersonInput;
@@ -47,4 +50,4 @@ export type RuntimeController = {
   diagnostics: FirstPersonDiagnostics;
   metrics: { frames: number; elapsed: number; drawCalls: number; geometries: number; textures: number };
 };
-export type RuntimeSnapshot = { acquisition?: DeviceAcquisition; actorNotice?: { sequence: number; text: string }; equipmentInvestigationSequence?: number; runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };
+export type RuntimeSnapshot = { stageTarget?: StageTargetPresentation; feedbackScope: string; acquisition?: DeviceAcquisition; actorNotice?: { sequence: number; text: string }; equipmentInvestigationSequence?: number; runtime: ChapterRuntime; tutorial: TutorialMilestones; target: InteractableDefinition | undefined; cue: ReturnType<typeof interactionCue>; objective: string; direction: string; key: string };

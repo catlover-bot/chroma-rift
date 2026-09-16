@@ -1,3 +1,4 @@
+import { ChapterMusic } from './src/screens/ChapterMusic';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -133,6 +134,7 @@ export default function App() {
   const [campaignSessionOnly, setCampaignSessionOnly] = useState(false);
   const campaignSessionOnlyRef = useRef(false);
   const campaignSaveTail = useRef<Promise<void>>(Promise.resolve());
+  const campaignCompletionSave = useRef<{ candidate: ChapterOneSession; lease: number; result: Promise<boolean> } | undefined>(undefined);
 
   useEffect(() => {
     let active = true;
@@ -229,8 +231,19 @@ export default function App() {
     dispatch({ type: 'NAVIGATE', screen: 'welcome' });
   };
   const queueCampaignSave = (session: ChapterOneSession, lease: number) => {
+    // The outdoor frame and the end of its visual tail share one immutable
+    // completion. Reuse that write; storage must still reject stale revisions.
+    const completion = campaignCompletionSave.current;
+    if (session.campaignCompleted && completion?.candidate === session && completion.lease === lease)
+      return completion.result;
     const operation = saveChapterOneSession(session, lease);
     campaignSaveTail.current = operation.then(() => undefined, () => undefined);
+    if (session.campaignCompleted) {
+      const pending = { candidate: session, lease, result: operation };
+      campaignCompletionSave.current = pending;
+      const forgetFailure = () => { if (campaignCompletionSave.current === pending) campaignCompletionSave.current = undefined; };
+      void operation.then(saved => { if (!saved) forgetFailure(); }, forgetFailure);
+    }
     return operation;
   };
   const showCampaignCheckpointSave = (pending: PendingCampaignCheckpointSave | undefined) => {
@@ -684,7 +697,23 @@ export default function App() {
             if (verified.progress.cleared) campaignCleared.current = verified;
             return;
           }
-          if (checkpoint.progress.cleared) { campaignCleared.current = checkpoint; return; }
+          if (checkpoint.progress.cleared) {
+            campaignCleared.current = checkpoint;
+            // Save the outdoor crossing on its first accepted presentation.
+            // The four-second courtyard tail and credits never delay durability.
+            const before = campaignRef.current;
+            if (run.areaId === 'chapter-1-area-05' && before && !before.campaignCompleted) {
+              const completion = completeCampaignArea(before, run.areaId, checkpoint);
+              if (completion.accepted) {
+                campaignRef.current = completion.session;
+                setCampaign(completion.session);
+                if (!campaignSessionOnlyRef.current) void queueCampaignSave(completion.session, run.lease).then(saved => {
+                  recordCampaignSaveResult(saved, completion.session, run.lease);
+                });
+              }
+            }
+            return;
+          }
           const previous = campaignRef.current;
           if (!previous) return;
           const update = recordCampaignCheckpoint(previous, run.areaId, checkpoint);
@@ -709,7 +738,8 @@ export default function App() {
           if (!previous) return;
           const next = nextCampaignArea(run.areaId);
           const entry = next ? createCampaignAreaEntry(next.id, previous, cleared) : undefined;
-          const transition = completeCampaignArea(previous, run.areaId, cleared, entry);
+          const transition = previous.campaignCompleted && run.areaId === 'chapter-1-area-05'
+            ? { accepted: true as const, session: previous } : completeCampaignArea(previous, run.areaId, cleared, entry);
           if (!transition.accepted) { setCampaignMessage('次のエリアへの経路を確認できませんでした。現在の記録を保持しています。'); return; }
           const pending: PendingCampaignTransition = { candidate: transition.session, fromArea: run.areaId,
             lease: run.lease, token: run.token, status: 'saving' };
@@ -896,6 +926,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      {(state.screen === 'welcome' || state.screen === 'campaignEnding') && <ChapterMusic state={state.screen === 'campaignEnding' ? 'chapter_end' : 'title_theme'} preferences={state.settings.audio}/>}
       <View style={styles.application}>
         {screen}
         {journalMessage ? <Text accessibilityRole="alert" style={styles.notice}>{journalMessage}</Text> : null}

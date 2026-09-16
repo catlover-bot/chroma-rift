@@ -31,7 +31,9 @@ describe('first-person native scene resources', () => {
   it('releases every scene-owned geometry, material and texture across ten replay mounts', () => {
     for (let replay = 0; replay < 10; replay += 1) {
       const resources = createSceneResources(replay % 2 === 0);
-      const values: unknown[] = Object.values(resources);
+      const materials = Object.values(resources.art).filter(value => value instanceof THREE.Material);
+      const values: unknown[] = [...new Set([...Object.values(resources), ...Object.values(resources.art),
+        ...materials.flatMap(material => Object.values(material).filter(value => value instanceof THREE.Texture))])];
       const owned = values.filter((value): value is THREE.BufferGeometry | THREE.Material | THREE.Texture => value instanceof THREE.BufferGeometry || value instanceof THREE.Material || value instanceof THREE.Texture);
       const disposeEvents = new Map<object, number>();
       for (const resource of owned) resource.addEventListener('dispose', () => disposeEvents.set(resource, (disposeEvents.get(resource) ?? 0) + 1));

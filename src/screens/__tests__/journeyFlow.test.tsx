@@ -15,7 +15,7 @@ import type { IllusionMazeCanvasProps } from '../../rendering/IllusionMazeCanvas
 import { APPLICATION_STORAGE_KEY, createDefaultApplication } from '../../storage/applicationStorage';
 import { FIRST_PERSON_CHECKPOINT_KEY, FIRST_PERSON_CONTROLS_KEY, FIRST_PERSON_ONBOARDING_KEY, FIRST_PERSON_PRE_EMBLEM_KEY, GALLERY_CHECKPOINT_KEY, GALLERY_BACKUP_KEY, GALLERY_V1_CHECKPOINT_KEY, GALLERY_V1_BACKUP_KEY, GALLERY_PRE_V2_KEY, GALLERY_V2_CHECKPOINT_KEY, GALLERY_V2_BACKUP_KEY, GALLERY_PRE_V3_KEY, VAULT_CHECKPOINT_KEY, VAULT_BACKUP_KEY, THEATRE_CHECKPOINT_KEY, THEATRE_BACKUP_KEY, STAGE_JOURNAL_KEY, resetAllApplicationStorage } from '../../storage/firstPersonStorage';
 import type { FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
-import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
+import { advanceController, commandController, controllerSnapshot, flushControllerPresentationFeedback, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { createGalleryRuntime } from '../../domain/gallery';
 import { createCheckpoint, createInitialRuntime, MOVE_SPEED, VERTICAL_FOV, type InteractableId } from '../../domain/firstPerson';
 import { createSealStimulus, GLYPHS } from '../../domain/emblem';
@@ -234,7 +234,10 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await view.findByTestId('first-person-native-canvas');
     const camera = new PerspectiveCamera(VERTICAL_FOV, 390 / 844, 0.08, 60);
     const scene = () => mockFirstPersonCanvasProps!;
-    const publish = () => scene().onSnapshot(controllerSnapshot(scene().controller));
+    const publish = () => {
+      scene().onSnapshot(controllerSnapshot(scene().controller));
+      flushControllerPresentationFeedback(scene().controller);
+    };
 
     // Feed the real controller frame deltas and stick input. Position, collision,
     // ray interactions, progress, checkpoints and camera matrices are never mocked.
@@ -275,13 +278,15 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
       expect(controllerSnapshot(scene().controller).target?.id).toBe(id);
       expect(view.getByTestId('interact')).toBeEnabled();
       await fireEvent.press(view.getByTestId('interact'));
+      // This Canvas substitute explicitly accepts the action's next frame.
+      await act(() => { advanceController(scene().controller, 1 / 60, camera); publish(); });
     };
 
     expect(view.getByTestId('interact')).toBeDisabled();
     await walk(0, -6);
     await walk(1.6, -6);
     await inspect('emblem-panel');
-    expect(view.getByTestId('current-objective')).toHaveTextContent('触れた指は、壁で止まる。');
+    expect(view.getByText('触れた指は、壁で止まる。')).toBeTruthy();
     await waitFor(() => expect(view.getByTestId('current-objective')).toHaveTextContent('切れずにつながる輪郭を探す'), { timeout: 6000 });
     expect(scene().controller.runtime.emblem.phase).toBe('observing');
     const seed = scene().controller.runtime.emblem.seed;
@@ -558,7 +563,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(second).not.toBe(initial); expect(second.runtime.progress.vault!.seed).toBe(firstSeed);
     expect(await AsyncStorage.getItem(FIRST_PERSON_CHECKPOINT_KEY)).toBe(old);
     expect(await AsyncStorage.getItem(GALLERY_CHECKPOINT_KEY)).toBe(gallery);
-    expect(JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings.audio).toEqual(defaults.settings.audio);
+    expect(JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings.audio).toEqual({ ...defaults.settings.audio, environmentVolume: defaults.settings.audio.musicVolume });
     // An old mounted run cannot write or complete after its lease was replaced.
     const current = await AsyncStorage.getItem(VAULT_CHECKPOINT_KEY);
     initial.runtime.progress.cleared = true;

@@ -5,6 +5,7 @@ import { DEPARTURE_COPY } from './copy';
 import { advanceContainmentActor } from './actor';
 import { parseStageCheckpoint } from './checkpoint';
 import { CONTROL_SAFE, STAGE_ID, stageWorld, type TargetId } from './definition';
+import { selectDepartureAction, selectDeparturePresentation } from './selectors';
 import { advanceStage, checkpointStage, commandStage, createStageSession, isStageSession,
   type StageCommand, type StageSession } from './session';
 
@@ -43,29 +44,38 @@ function command(runtime: ChapterRuntime, packet: StageCommand,
   if (!live || runtime.paused || !context.rendererReady || !context.foreground || context.targetId !== packet.targetId)
     return { runtime, accepted: false, stopInput: false, message: '' };
   const result = commandStage({ ...live, pose: runtime.pose }, packet);
+  const action = selectDepartureAction({ ...live, pose: runtime.pose }, packet.targetId);
   return { runtime: { ...runtime, progress: { ...runtime.progress, cleared: result.session.cleared },
     pose: result.session.pose, stageSession: { stageId: STAGE_ID, value: result.session } },
-    accepted: result.accepted, stopInput: false, message: message(packet, result.reason, result.accepted) };
+    accepted: result.accepted, stopInput: false, message: action.state !== 'ready' && result.reason !== 'tooFar'
+      ? action.message : message(packet, result.reason, result.accepted) };
 }
 
 export const stageBinding: StageModule<StageCommand, ReturnType<typeof command>> = {
   id: STAGE_ID, create,
   advance: (runtime, dt) => {
     const live = session(runtime);
-    return live ? { ...runtime, stageSession: { stageId: STAGE_ID, value: advanceStage({ ...live, pose: runtime.pose }, dt) } } : runtime;
+    if (!live) return runtime;
+    const next = advanceStage({ ...live, pose: runtime.pose }, dt);
+    return { ...runtime, progress: { ...runtime.progress, cleared: next.cleared }, stageSession: { stageId: STAGE_ID, value: next } };
   },
   world: runtime => {
     const live = session(runtime);
     return stageWorld(live?.doorProgress ?? 0, live?.staffDoorOpened ?? false, live?.actor.motion.position,
-      live?.keyInstalled ?? false, live?.stopped ?? false);
+      live?.keyInstalled ?? false, live?.stopped ?? false, live?.staffDoorProgress);
   },
   present: runtime => {
     const live = session(runtime);
-    const objective = live?.cleared ? '閉館処理が完了した。' : live?.stopped ? '職員出口から屋外へ出る。' :
-      live?.isolated ? '隔離を確認し、閉館制御を停止する。' : !live?.keyInstalled ? '隔離キーを制御盤へ差す。' :
-      !live.procedureRead ? '収容手順を読む。' : '巡回体を収容区画へ誘導する。';
-    return { objective, hint: { text: live?.stopped ? DEPARTURE_COPY.attendance01 : DEPARTURE_COPY.containmentInstruction } };
+    return live ? selectDeparturePresentation(live) : { objective: '退館制御室を確かめる。', hint: { text: '' } };
   },
+  targetPresentation: (runtime, targetId) => {
+    const live = session(runtime); if (!live) return;
+    const target = stageWorld(live.doorProgress, live.staffDoorOpened, undefined, live.keyInstalled, live.stopped)
+      .interactables.find(item => item.id === targetId);
+    return target ? selectDepartureAction({ ...live, pose: runtime.pose }, target.id) : undefined;
+  },
+  completionTail: runtime => session(runtime)?.exitAftermathSeconds ?? 0,
+  completionTailMovement: true,
   command,
   interactResult: (runtime, targetId: InteractableId) => {
     const live = session(runtime);
@@ -118,5 +128,5 @@ export const stageBinding: StageModule<StageCommand, ReturnType<typeof command>>
       (!old.staffDoorOpened || fresh.staffDoorOpened) && (!old.cleared || fresh.cleared) &&
       (!old.isolated || fresh.isolated || !old.stopped);
   },
-  renderKind: 'simple', inputPolicy: () => ({ move: true, look: true, pointer: 'none', dangerAdvances: true, end: 'release' }),
+  renderKind: 'simple', inputPolicy: runtime => ({ move: true, look: true, pointer: 'none', dangerAdvances: !session(runtime)?.isolated && !session(runtime)?.stopped, end: 'release' }),
 };

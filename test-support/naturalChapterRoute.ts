@@ -6,8 +6,9 @@ import { VAULT_EXIT_FIXTURE, VAULT_PARTITION_FIXTURE, vaultFixture } from '../sr
 import { LENGTH_SPEC, ROD_SPEC } from '../src/domain/vault/specs';
 import { THEATRE_CURTAIN_FIXTURE, THEATRE_LIGHT_FIXTURE } from '../src/domain/theatre/definition';
 import { lightHandlePoint } from '../src/domain/theatre/lightGate';
-import { actorFullyContained, doorSweepClear } from '../src/domain/stages/departure-control-v1/definition';
+import { actorFullyContained, CONTROL_TARGETS, doorSweepClear } from '../src/domain/stages/departure-control-v1/definition';
 import { isStageSession as isControlSession } from '../src/domain/stages/departure-control-v1/session';
+import { FIGURE_CENTER, KEY_CENTER, PRACTICE_CENTER } from '../src/domain/stages/mirror-corridor-v1/definition';
 import { isStageSession as isMirrorSession } from '../src/domain/stages/mirror-corridor-v1/session';
 import { advanceController, beginStageHoldController, commandController, controllerSnapshot,
   createController, endStageHoldController, interactController, syncCamera, type RuntimeController } from '../src/rendering/firstPerson/runtimeController';
@@ -19,7 +20,7 @@ import type { ChapterOneSession } from '../src/domain/campaign/session';
 
 const WIDTH = 390, HEIGHT = 844;
 export type Run = { controller: RuntimeController; camera: THREE.PerspectiveCamera;
-  onAdvance?: (run: Run, dt: number) => void };
+  onAdvance?: (run: Run, dt: number) => void; onCommand?: (run: Run, targetId: string) => void };
 export function attachNaturalRun(controller: RuntimeController): Run {
   const camera = new THREE.PerspectiveCamera(65, WIDTH / HEIGHT, .08, 60);
   controller.viewport = { width: WIDTH, height: HEIGHT };
@@ -60,6 +61,7 @@ function press(run: Run, id: Parameters<typeof interactController>[1], target: V
   aim(run, target);
   expect(controllerSnapshot(run.controller).target?.id).toBe(id);
   expect(interactController(run.controller, id)).toBe(true);
+  run.onCommand?.(run, id);
 }
 function devicePoint(run: Run, center: Vec3, normal: Vec3, right: Vec3, x: number, y: number) {
   const up = { x: normal.y * right.z - normal.z * right.y,
@@ -179,29 +181,29 @@ function finishMirror(run: Run) {
   const walkZ = (z: number) => { turn(Math.PI); walk(run, c.runtime.pose.position.x, z); };
   const walkX = (x: number) => { turn(Math.PI / 2); walk(run, x, c.runtime.pose.position.z); };
   walkZ(-1);
-  turn(Math.PI, .1); expect(interactController(c, 'mirror-corridor-figure')).toBe(true);
-  turn(Math.PI, -.16); expect(interactController(c, 'mirror-corridor-key')).toBe(true);
-  walkZ(7.5); walkX(-1.5);
-  turn(Math.PI / 2, -.16);
+  aim(run, FIGURE_CENTER); expect(interactController(c, 'mirror-corridor-figure')).toBe(true);
+  aim(run, KEY_CENTER); expect(interactController(c, 'mirror-corridor-key')).toBe(true);
+  walkZ(5.9); walkX(-2.16); walkZ(6.9);
+  aim(run, PRACTICE_CENTER);
   expect(beginStageHoldController(c, 'mirror-corridor-practice', 3)).toBe(true);
   for (let i = 0; i < 40; i++) advanceRun(run, 1 / 60);
   expect(state().practiced).toBe(true);
   expect(endStageHoldController(c, 'mirror-corridor-practice', 3)).toBe(true);
-  walkZ(10.9);
+  walkZ(5.9); walkX(-1.1); walkZ(9.6); walkX(-2.45);
   const aimWinch = () => { const p = c.runtime.pose.position;
     turn(Math.atan2(-(-2.45 - p.x), -(11.3 - p.z)), -.16); };
   aimWinch(); expect(beginStageHoldController(c, 'mirror-corridor-winch', 4)).toBe(true);
   for (let i = 0; i < 120; i++) advanceRun(run, 1 / 60);
   expect(state().ratchets).toBe(1); expect(endStageHoldController(c, 'mirror-corridor-winch', 4)).toBe(true);
   if (c.horrorIntensity === 'subdued') {
-    walkZ(8.5);
+    walkZ(8.9);
     for (let i = 0; i < 30; i++) advanceRun(run, 1 / 60);
-    walkZ(10.9); aimWinch();
+    walkZ(9.6); aimWinch();
   }
   expect(beginStageHoldController(c, 'mirror-corridor-winch', 5)).toBe(true);
   for (let i = 0; i < 240; i++) advanceRun(run, 1 / 60);
   expect(state().ratchets).toBe(3); expect(endStageHoldController(c, 'mirror-corridor-winch', 5)).toBe(true);
-  walkZ(8.5); walkX(0); walkZ(22);
+  walkZ(8.9); walkX(0); walkZ(22);
   turn(Math.PI, -.06); expect(interactController(c, 'mirror-corridor-exit')).toBe(true);
   expect(c.runtime.progress.cleared).toBe(true);
 }
@@ -214,28 +216,40 @@ function finishControl(run: Run, onStopped: () => void) {
     syncCamera(c, run.camera);
   };
   const walkZ = (z: number) => { turn(Math.PI); walk(run, c.runtime.pose.position.x, z); };
-  const pressPanel = (id: Parameters<typeof interactController>[1], yaw = Math.PI / 2, pitch = -.16) => {
-    turn(yaw, pitch); expect(controllerSnapshot(c).target?.id).toBe(id); expect(interactController(c, id)).toBe(true); };
-  walkZ(9); pressPanel('departure-key');
-  walkZ(10); pressPanel('departure-procedure');
-  walkZ(11); pressPanel('departure-bell');
+  press(run,'departure-key',CONTROL_TARGETS.key);
+  press(run,'departure-procedure',CONTROL_TARGETS.procedure);
+  press(run,'departure-bell',CONTROL_TARGETS.bell);
   let frames = 0;
   while (!(actorFullyContained(state().actor.motion.position) && doorSweepClear(state().actor.motion.position)) && frames < 780) {
     advanceRun(run, 1 / 60); frames++;
   }
   expect(frames).toBeLessThan(780);
-  walkZ(12); pressPanel('departure-door');
+  press(run,'departure-door',CONTROL_TARGETS.isolation);
   for (let i = 0; i < 90; i++) advanceRun(run, 1 / 60);
   expect(state().isolated).toBe(true);
-  walkZ(13); pressPanel('departure-stop');
+  press(run,'departure-stop',CONTROL_TARGETS.power);
   expect(state().stopped).toBe(true);
   onStopped();
-  pressPanel('departure-staff-door', Math.PI, -.07);
+  press(run,'departure-staff-door',{x:-3.7,y:1.5,z:13.42});
+  for(let i=0;i<80;i++) advanceRun(run,1/60);
   walkZ(22.45);
-  const outdoorApproach = { ...c.runtime.pose.position };
-  pressPanel('departure-outdoor', Math.PI, -.07);
-  expect(c.runtime.pose.position).toEqual(outdoorApproach);
+  expect(c.runtime.pose.position.z).toBeGreaterThanOrEqual(22.35);
+  // The same physical crossing commits automatically; it never teleports.
   expect(c.runtime.progress.cleared).toBe(true);
+  const settled = createCheckpoint(c.runtime), outdoorStart = c.runtime.pose.position.z;
+  // A fresh movement input keeps the quiet aftermath playable. The authored
+  // paving edge still blocks movement normally; no pose is injected here.
+  c.input.forward = 1;
+  for(let i=0;i<120;i++) {
+    const before = c.runtime.pose.position;
+    advanceRun(run,1/60);
+    const after = c.runtime.pose.position;
+    expect(Math.hypot(after.x-before.x,after.z-before.z)).toBeLessThanOrEqual(MOVE_SPEED/60+.002);
+  }
+  expect(c.runtime.pose.position.z).toBeGreaterThan(outdoorStart+1);
+  expect(createCheckpoint(c.runtime)).toEqual(settled);
+  c.input.forward = 0;
+  for(let i=0;i<130;i++) advanceRun(run,1/60);
 }
 
 /** Drive the actual mounted controller, never injecting a solved flag or pose. */

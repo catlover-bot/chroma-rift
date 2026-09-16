@@ -1,3 +1,4 @@
+import { presentChapterAudio } from './chapterAudio';
 import type { RootState } from '@react-three/fiber/native';
 import * as THREE from 'three';
 import { Platform } from 'react-native';
@@ -10,7 +11,7 @@ import type { CanvasLifecycle } from './canvasLifecycle';
 import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, recordFailureFrameContext, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
-import { advanceController, flushControllerAudioFrame, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
+import { advanceController, flushControllerAudioFrame, flushControllerPresentationFeedback, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
 import { syncCamera, worldForController } from './controllerContext';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
@@ -254,9 +255,18 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
             if (!lifecycle.ready && sampledFrame) diagnostics.readiness = { ...gates, valid };
             if (lifecycle.markReady(valid && sampledFrame)) onReady();
             if (lifecycle.ready && pendingPublish) {
-              flushControllerAudioFrame(controller);
+              // Audio follows a successful presentation and cannot undo it.
+              // Keep backend failures in diagnostics without rolling back an
+              // already visible puzzle result or suppressing its checkpoint.
+              try {
+                presentChapterAudio(controller, lastDelta);
+                flushControllerAudioFrame(controller);
+              } catch (error) {
+                recordDiagnosticEvent(diagnostics, `audio-presentation-failed: ${String(error)}`);
+              }
               const next = controllerSnapshot(controller);
               if (next.key !== lastKey) { lastKey = next.key; pendingPublish(next); }
+              flushControllerPresentationFeedback(controller);
             }
             previousRuntime = undefined;
             previousTutorial = undefined;

@@ -1,13 +1,18 @@
 import { Shape, ShapeGeometry } from 'three';
 
-/** The same physical key silhouette is lifted from area 04 and installed in 05. */
+/** The inner edge of the left profile also IS the key's left contour.
+ * No image substitution or alternate solved outline exists. */
+export const ISOLATION_KEY_PROFILE: readonly (readonly [number, number])[] = [
+  [-.20, -.35], [-.22, -.24], [-.13, -.14], [-.10, -.06],
+  [-.18, -.022], [-.14, .015], [-.21, .08], [-.18, .16], [-.28, .28], [-.28, .35],
+];
+
 export function isolationKeyGeometry(): ShapeGeometry {
   const key = new Shape();
-  key.moveTo(-.05, .09);
-  key.bezierCurveTo(-.16, .11, -.16, .29, 0, .29);
-  key.bezierCurveTo(.16, .29, .16, .11, .05, .09);
-  key.lineTo(.05, -.07); key.lineTo(.12, -.07); key.lineTo(.12, -.13);
-  key.lineTo(.05, -.13); key.lineTo(.05, -.18); key.lineTo(.11, -.18);
-  key.lineTo(.11, -.24); key.lineTo(-.05, -.24); key.closePath();
+  const [first, ...rest] = ISOLATION_KEY_PROFILE;
+  key.moveTo(first![0], first![1]);
+  rest.forEach(([x, y]) => key.lineTo(x, y));
+  [...ISOLATION_KEY_PROFILE].reverse().forEach(([x, y]) => key.lineTo(-x, y));
+  key.closePath();
   return new ShapeGeometry(key);
 }

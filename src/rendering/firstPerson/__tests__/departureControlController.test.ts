@@ -36,18 +36,23 @@ test('registered final-area controller follows a real bell, latch, stop and outd
   expect(worldForController(controller).chapterId).toBe('departure-control-v1');
   syncCamera(controller, view);
   expect(controllerSnapshot(controller).target?.id).toBe('departure-key');
-  const facePanel = (z: number) => {
-    controller.runtime.pose = { position: { x: -3.75, y: 1.6, z }, yaw: Math.PI / 2, pitch: -.16 };
+  const facePanel = (id: Parameters<typeof interactController>[1]) => {
+    const target = worldForController(controller).interactables.find(item => item.id === id);
+    if (!target) throw new Error(`Missing physical target ${id}`);
+    const position = controller.runtime.pose.position;
+    const dx = target.center.x - position.x, dz = target.center.z - position.z;
+    controller.runtime.pose = { position, yaw: Math.atan2(-dx, -dz), pitch: Math.atan2(target.center.y - position.y, Math.hypot(dx, dz)) };
     syncCamera(controller, view);
+    expect(controllerSnapshot(controller).target?.id).toBe(id);
   };
-  facePanel(9);
+  facePanel('departure-key');
   expect(controllerSnapshot(controller).target?.id).toBe('departure-key');
   expect(interactController(controller, 'departure-key')).toBe(true);
   expect(state(controller).keyInstalled).toBe(true);
-  facePanel(10);
+  facePanel('departure-procedure');
   expect(interactController(controller, 'departure-procedure')).toBe(true);
   expect(controller.feedbackMessage).toContain('全身が入ってから');
-  facePanel(11);
+  facePanel('departure-bell');
   expect(interactController(controller, 'departure-bell')).toBe(true);
   expect(state(controller).noise?.position).toMatchObject({ x: 2.45, z: 18.1 });
   commandController(controller, { type: 'step', forward: 0 });
@@ -58,12 +63,12 @@ test('registered final-area controller follows a real bell, latch, stop and outd
     contained = actorFullyContained(state(controller).actor.motion.position) && doorSweepClear(state(controller).actor.motion.position);
   }
   expect(contained).toBe(true);
-  facePanel(12);
+  facePanel('departure-door');
   expect(interactController(controller, 'departure-door')).toBe(true);
   for (let frame = 0; frame < 90; frame += 1) advanceController(controller, 1 / 60, view);
   expect(state(controller).isolated).toBe(true);
   expect(worldForController(controller).solids.find(s => s.id === 'containment-door')?.min.y).toBe(0);
-  facePanel(13);
+  facePanel('departure-stop');
   expect(interactController(controller, 'departure-stop')).toBe(true);
   expect(state(controller).actor.phase).toBe('stopped');
   expect(controller.runtime.progress.cleared).toBe(false);
@@ -77,17 +82,19 @@ test('registered final-area controller follows a real bell, latch, stop and outd
   expect(campaign.keyLocation).toBe('installed');
   expect(campaign.finale).toMatchObject({ contained: true, isolated: true, stopped: true, outdoorExited: false });
   expect(parseChapterOneSession(campaign)).toBeDefined();
-  controller.runtime.pose = { position: { x: -3.7, y: 1.6, z: 12.25 }, yaw: Math.PI, pitch: -.07 };
-  syncCamera(controller, view);
+  facePanel('departure-staff-door');
   expect(controllerSnapshot(controller).target?.id).toBe('departure-staff-door');
   expect(interactController(controller, 'departure-staff-door')).toBe(true);
+  commandController(controller, { type: 'turn', yaw: Math.PI - controller.runtime.pose.yaw, pitch: -controller.runtime.pose.pitch });
   controller.input.forward = 1;
-  for (let frame = 0; frame < 430 && controller.runtime.pose.position.z < 22.5; frame += 1)
+  for (let frame = 0; frame < 430 && !controller.runtime.progress.cleared; frame += 1)
     advanceController(controller, 1 / 60, view);
   controller.input.forward = 0;
   expect(controller.runtime.pose.position.z).toBeGreaterThan(22.35);
   syncCamera(controller, view);
-  expect(interactController(controller, 'departure-outdoor')).toBe(true);
+  // The actual outdoor crossing now commits before any redundant button press.
+  expect(controller.runtime.progress.cleared).toBe(true);
+  expect(interactController(controller, 'departure-outdoor')).toBe(false);
   expect(controller.runtime.progress.cleared).toBe(true);
   const outdoorCheckpoint = createCheckpoint(controller.runtime);
   expect(outdoorCheckpoint.stageData).toMatchObject({ stopped: true, staffDoorOpened: true, cleared: true });
@@ -125,19 +132,26 @@ test('final-area equipment remains reachable after an early closure refusal and 
     expect(frames).toBeLessThan(500);
     expect(Math.abs(controller.runtime.pose.position.z - z)).toBeLessThan(.08);
   };
-  const press = (id: Parameters<typeof interactController>[1], yaw = Math.PI / 2, pitch = -.16) => {
-    turn(yaw, pitch);
+  const aim = (id: Parameters<typeof interactController>[1]) => {
+    const target = worldForController(controller).interactables.find(item => item.id === id);
+    if (!target) throw new Error(`Missing physical target ${id}`);
+    const position = controller.runtime.pose.position;
+    const dx = target.center.x - position.x, dz = target.center.z - position.z;
+    turn(Math.atan2(-dx, -dz), Math.atan2(target.center.y - position.y, Math.hypot(dx, dz)));
+  };
+  const press = (id: Parameters<typeof interactController>[1]) => {
+    aim(id);
     expect(controllerSnapshot(controller).target?.id).toBe(id);
     expect(interactController(controller, id)).toBe(true);
   };
 
-  walkTo(9); press('departure-key');
-  walkTo(10); press('departure-procedure');
-  walkTo(12); turn(Math.PI / 2, -.16);
+  walkTo(11.6); press('departure-key');
+  walkTo(11.8); press('departure-procedure');
+  walkTo(11.9); aim('departure-door');
   expect(controllerSnapshot(controller).target?.id).toBe('departure-door');
   expect(interactController(controller, 'departure-door')).toBe(false);
   expect(state(controller)).toMatchObject({ doorProgress: 0, isolated: false, stopped: false });
-  walkTo(11); press('departure-bell');
+  walkTo(11.7); press('departure-bell');
   let frames = 0;
   while (!(actorFullyContained(state(controller).actor.motion.position) &&
     doorSweepClear(state(controller).actor.motion.position)) && frames < 780) {
@@ -145,7 +159,7 @@ test('final-area equipment remains reachable after an early closure refusal and 
     frames += 1;
   }
   expect(frames).toBeLessThan(780);
-  walkTo(12); press('departure-door');
+  walkTo(11.9); press('departure-door');
   advanceController(controller, 1 / 60, view);
   expect(state(controller).doorProgress).toBeGreaterThan(0);
   press('departure-reopen');
@@ -156,7 +170,7 @@ test('final-area equipment remains reachable after an early closure refusal and 
   expect(module.restore(createCheckpoint(controller.runtime))?.checkpoint.stageData).toMatchObject({
     keyInstalled: true, procedureRead: true, isolated: false, stopped: false,
   });
-  walkTo(11);
+  walkTo(11.7);
   for (let frame = 0; frame < 390 && state(controller).bellCooldown > 0; frame += 1)
     advanceController(controller, 1 / 60, view);
   expect(state(controller).bellCooldown).toBe(0);
@@ -168,12 +182,21 @@ test('final-area equipment remains reachable after an early closure refusal and 
     frames += 1;
   }
   expect(frames).toBeLessThan(780);
-  walkTo(12); press('departure-door');
+  walkTo(11.9); press('departure-door');
   for (let frame = 0; frame < 90; frame += 1) advanceController(controller, 1 / 60, view);
   expect(state(controller).isolated).toBe(true);
-  walkTo(13); press('departure-stop');
-  press('departure-staff-door', Math.PI, -.07);
-  walkTo(22.45); press('departure-outdoor', Math.PI, -.07);
+  walkTo(12); press('departure-stop');
+  press('departure-staff-door');
+  turn(Math.PI);
+  frames = 0;
+  while (!controller.runtime.progress.cleared && frames < 500) {
+    controller.input.forward = 1;
+    advanceController(controller, 1 / 60, view);
+    frames++;
+  }
+  controller.input.forward = 0;
+  expect(frames).toBeLessThan(500);
+  expect(controller.runtime.pose.position.z).toBeGreaterThanOrEqual(22.35);
   expect(controller.runtime.progress.cleared).toBe(true);
   expect(state(controller)).toMatchObject({ stopped: true, cleared: true });
 });

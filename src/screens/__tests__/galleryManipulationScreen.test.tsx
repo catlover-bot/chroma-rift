@@ -11,7 +11,7 @@ import { createContourSpec, createGalleryRuntime, createShadowSpec, fixtureForPu
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import * as appBuild from '../../platform/buildIdentity';
 import { recordFirstFailure } from '../../rendering/firstPerson/diagnostics';
-import { advanceController, commandController, controllerSnapshot, flushControllerAudioFrame, worldForController } from '../../rendering/firstPerson/runtimeController';
+import { advanceController, commandController, controllerSnapshot, flushControllerAudioFrame, flushControllerPresentationFeedback, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
 import { originalV1 } from '../../storage/testFixtures/galleryV1';
 import { originalV2 } from '../../storage/testFixtures/galleryV2';
@@ -467,9 +467,9 @@ it('publishes real actor notices only after presentation and stops the actor acr
   await act(() => { advanceController(controller, .05, camera); scene().onSnapshot(controllerSnapshot(controller)); });
   expect(controller.runtime.progress.gallery!.story.foreshadowed).toBe(true);
   expect(controller.pendingActorEvents).toEqual(['crossing']);
-  expect(view.queryByText('格子の向こうを、展示体が横切る。')).toBeNull();
+  expect(view.queryByText('格子の向こうを、巡回体が横切る。')).toBeNull();
   await act(() => { flushControllerAudioFrame(controller); scene().onSnapshot(controllerSnapshot(controller)); });
-  expect(view.getByText('格子の向こうを、展示体が横切る。')).toBeTruthy();
+  expect(view.getByText('格子の向こうを、巡回体が横切る。')).toBeTruthy();
   expect(controller.actorNotice?.sequence).toBe(1); expect(controller.pendingActorEvents).toEqual([]);
   const callbacks = listener.mock.calls.filter(([event]) => event === 'change').map(([, callback]) => callback);
   await act(() => callbacks.forEach(callback => callback('background')));
@@ -480,10 +480,10 @@ it('publishes real actor notices only after presentation and stops the actor acr
   expect(controller.runtime.paused).toBe(true);
   await fireEvent.press(view.getByRole('button', { name: '再開する' }));
   expect(controller.runtime.gallery!.actor.startupGrace).toBeGreaterThanOrEqual(2.75);
-  expect(view.queryByText('格子の向こうを、展示体が横切る。')).toBeNull();
+  expect(view.queryByText('格子の向こうを、巡回体が横切る。')).toBeNull();
   await act(() => { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); scene().onSnapshot(controllerSnapshot(controller)); });
   expect(controller.actorNotice?.sequence).toBe(1);
-  expect(view.queryByText('格子の向こうを、展示体が横切る。')).toBeNull();
+  expect(view.queryByText('格子の向こうを、巡回体が横切る。')).toBeNull();
   const last = scene(); await view.unmount(); jest.mocked(original.onCheckpoint).mockClear();
   const retiredActor = JSON.stringify(controller.runtime.gallery!.actor);
   await act(() => { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); last.onSnapshot(controllerSnapshot(controller)); });
@@ -496,8 +496,8 @@ it('resumes migrated story progress without replaying its introductory or warnin
   const controller = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
   await act(() => { for (let frame = 0; frame < 80; frame++) { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); } scene().onSnapshot(controllerSnapshot(controller)); });
   expect(controller.runtime.progress.gallery!.story).toEqual({ foreshadowed: true, absence: true, serviceWarned: true, resolved: false, crossingStarted: true, crossingPresented: true });
-  expect(controller.actorNotice?.text).toBe('格子の向こうを、展示体が横切る。'); expect(controller.pendingActorEvents).toEqual([]);
-  expect(view.queryByText('格子の奥に、展示体が立っている。')).toBeNull();
+  expect(controller.actorNotice?.text).toBe('格子の向こうを、巡回体が横切る。'); expect(controller.pendingActorEvents).toEqual([]);
+  expect(view.queryByText('格子の奥に、巡回体が立っている。')).toBeNull();
   expect(view.queryByText('通路に何かいる。棚の陰でやり過ごそう。')).toBeNull();
   expect(view.getByTestId('gallery-power-stock').props.accessibilityLabel).toBe('予備電源 2/2 接続済み');
 });
@@ -676,22 +676,22 @@ it('keeps the real audio owner active through one presented closing impact and s
   await act(async () => { await controller.audio!.whenReady(); });
   const camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
   await act(() => { advanceController(controller, 0, camera); scene().onSnapshot(controllerSnapshot(controller)); });
-  expect(controller.audio!.getDiagnostics()).toMatchObject({ active: true, ready: true, players: 10 }); expect(h.player('ambience').play).toHaveBeenCalledTimes(1);
-  const ambientBeforeClose = h.player('ambience').pause.mock.calls.length;
+  expect(controller.audio!.getDiagnostics()).toMatchObject({ active: true, ready: true, players: 10 }); expect(h.player('room-gallery').play).toHaveBeenCalledTimes(1);
+  const ambientBeforeClose = h.player('room-gallery').pause.mock.calls.length;
   await fireEvent.press(view.getByRole('button', { name: '扉を閉める' }));
-  expect(h.player('ambience').pause.mock.calls.length).toBeGreaterThan(ambientBeforeClose);
+  expect(h.player('room-gallery').pause.mock.calls.length).toBeGreaterThan(ambientBeforeClose);
   expect(controller.runtime.progress.cleared).toBe(true); expect(controller.audio!.getDiagnostics().active).toBe(true);
   expect(h.player('door-impact').seekTo).not.toHaveBeenCalled(); expect(h.player('door-impact').play).not.toHaveBeenCalled(); expect(props.onComplete).not.toHaveBeenCalled();
-  const ambientStops = h.player('ambience').pause.mock.calls.length;
+  const ambientStops = h.player('room-gallery').pause.mock.calls.length;
   await act(() => { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); scene().onSnapshot(controllerSnapshot(controller)); });
-  expect(h.player('ambience').pause.mock.calls.length).toBeGreaterThan(ambientStops);
+  expect(h.player('room-gallery').pause.mock.calls.length).toBeGreaterThan(ambientStops);
   expect(h.player('door-impact').seekTo).toHaveBeenCalledTimes(1); expect(h.player('door-impact').play).not.toHaveBeenCalled();
   await act(async () => { h.releaseImpact(); await Promise.resolve(); }); expect(h.player('door-impact').play).toHaveBeenCalledTimes(1);
   const impactStops = h.player('door-impact').pause.mock.calls.length;
   await act(() => { for (let frame = 0; frame < 14; frame++) { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); scene().onSnapshot(controllerSnapshot(controller)); } });
   expect(controller.runtime.gallery!.exitClosureSeconds).toBe(0); expect(controller.audio!.getDiagnostics().active).toBe(false);
   expect(h.player('door-impact').pause.mock.calls.length).toBeGreaterThan(impactStops); expect(h.player('door-impact').play).toHaveBeenCalledTimes(1);
-  expect(h.player('ambience').play).toHaveBeenCalledTimes(1); expect(props.onComplete).toHaveBeenCalledTimes(1); expect(h.players).toHaveLength(10);
+  expect(h.player('room-gallery').play).toHaveBeenCalledTimes(1); expect(props.onComplete).toHaveBeenCalledTimes(1); expect(h.players).toHaveLength(10);
   await view.unmount(); expect(h.players.every(player => player.release.mock.calls.length === 1)).toBe(true);
 });
 
@@ -702,9 +702,9 @@ it.each(['background', 'failure'] as const)('cancels a pending real closing impa
   const props = screenProps('shadow', { checkpoint });
   const view = await render(<FirstPersonScreen {...props} />), controller = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
   await act(async () => { await controller.audio!.whenReady(); advanceController(controller, 0, camera); scene().onSnapshot(controllerSnapshot(controller)); });
-  const ambientBeforeClose = h.player('ambience').pause.mock.calls.length;
+  const ambientBeforeClose = h.player('room-gallery').pause.mock.calls.length;
   await fireEvent.press(view.getByRole('button', { name: '扉を閉める' }));
-  expect(h.player('ambience').pause.mock.calls.length).toBeGreaterThan(ambientBeforeClose);
+  expect(h.player('room-gallery').pause.mock.calls.length).toBeGreaterThan(ambientBeforeClose);
   await act(() => { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); scene().onSnapshot(controllerSnapshot(controller)); });
   expect(h.player('door-impact').seekTo).toHaveBeenCalledTimes(1);
   await act(() => {
@@ -725,9 +725,9 @@ it('discards an unpresented real closing impact across background and explicit r
   const props = screenProps('shadow', { checkpoint });
   const view = await render(<FirstPersonScreen {...props} />), controller = scene().controller, camera = new PerspectiveCamera(VERTICAL_FOV, viewport.width / viewport.height, .08, 60);
   await act(async () => { await controller.audio!.whenReady(); advanceController(controller, 0, camera); scene().onSnapshot(controllerSnapshot(controller)); });
-  const ambientStarts = h.player('ambience').play.mock.calls.length, ambientBeforeClose = h.player('ambience').pause.mock.calls.length;
+  const ambientStarts = h.player('room-gallery').play.mock.calls.length, ambientBeforeClose = h.player('room-gallery').pause.mock.calls.length;
   await fireEvent.press(view.getByRole('button', { name: '扉を閉める' })); expect(controller.pendingExitImpact).toBe(true);
-  expect(h.player('ambience').pause.mock.calls.length).toBeGreaterThan(ambientBeforeClose);
+  expect(h.player('room-gallery').pause.mock.calls.length).toBeGreaterThan(ambientBeforeClose);
   const callbacks = listener.mock.calls.filter(([event]) => event === 'change').map(([, callback]) => callback);
   await act(() => callbacks.forEach(callback => callback('background')));
   expect(controller.runtime.progress).toMatchObject({ cleared: true, gallery: { finalDoorClosed: true } }); expect(controller.pendingExitImpact).toBe(false);
@@ -736,7 +736,7 @@ it('discards an unpresented real closing impact across background and explicit r
   await act(() => { advanceController(controller, .05, camera); flushControllerAudioFrame(controller); scene().onSnapshot(controllerSnapshot(controller)); });
   await act(async () => { h.releaseImpact(); await Promise.resolve(); });
   expect(h.player('door-impact').seekTo).not.toHaveBeenCalled(); expect(h.player('door-impact').play).not.toHaveBeenCalled();
-  expect(h.player('ambience').play).toHaveBeenCalledTimes(ambientStarts);
+  expect(h.player('room-gallery').play).toHaveBeenCalledTimes(ambientStarts);
   expect(controller.runtime.progress).toMatchObject({ cleared: true, gallery: { finalDoorClosed: true } }); await view.unmount();
 });
 
@@ -771,6 +771,8 @@ it('offers an observed hybrid structural comparison from the normal HUD while re
   await fireEvent.press(view.getByTestId('interact'));
   expect(c.runtime.progress.gallery!.discoveries.hybrid).toBe(true);
   expect(view.getByTestId('current-objective').props.children).toEqual(objective);
+  // A local success notice follows this fixture's accepted native frame.
+  await act(() => { scene().onSnapshot(controllerSnapshot(c)); flushControllerPresentationFeedback(c); });
   expect(view.getByText('発見メモで大きい成分と細部を比べられます。')).toBeTruthy();
   await fireEvent.press(view.getByRole('button', { name: '構造をメモで比べる' }));
   expect(view.getByTestId('notebook-hybrid-image')).toBeTruthy();

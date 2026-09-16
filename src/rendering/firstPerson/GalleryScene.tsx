@@ -1,3 +1,4 @@
+import { FacilityFloor, FacilityPlaque } from './FacilityDetails';
 /* eslint-disable react/no-unknown-property -- R3F scene intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
@@ -108,15 +109,17 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
     ...[8, 10, 12, 14, 16, 18, 20, 22].map(z => ({ position: [4.75, .017, z], scale: [.1, .025, .3] } as Block)),
   ];
   return <group name="closed-gallery" dispose={null}>
+    <FacilityPlaque id="gallery" resources={resources} position={[0,2.7,5.7]} yaw={Math.PI} width={1.8}/>
     <PerceptualGalleryExhibits runtime={runtime} resources={resources} />
     <GalleryActor runtime={runtime} resources={resources} reducedMotion={reducedMotion} {...(onFrameError ? { onFrameError } : {})} />
-    <ambientLight intensity={1.4} /><directionalLight intensity={1.35} position={[2, 6, 3]} />
+    <ambientLight intensity={.85} /><directionalLight intensity={1.7} position={[2, 6, 3]} /><directionalLight intensity={.26} position={[-4,3,19]}/>
     <InstancedBlocks name="gallery-floors" blocks={floorBlocks} resources={resources} material={resources.floor} />
+    {world.floors.map(f => <FacilityFloor key={f.id} resources={resources} x={(f.minX+f.maxX)/2} z={(f.minZ+f.maxZ)/2} width={f.maxX-f.minX} depth={f.maxZ-f.minZ}/>)}
     <InstancedBlocks name="gallery-ceilings" blocks={ceilings} resources={resources} material={resources.ceiling} />
-    {[r.roomA, r.roomB, r.roomC, r.roomD].map((material, i) => <InstancedBlocks key={i} name={'gallery-walls-' + i} resources={resources} material={material}
+    {[resources.art.paint, resources.art.paint, resources.art.paint, resources.art.paint].map((material, i) => <InstancedBlocks key={i} name={'gallery-walls-' + i} resources={resources} material={material}
       blocks={walls.filter(s => (s.min.z > 5 ? 3 : s.max.x < -3 ? 1 : s.min.x > 5 && s.min.z < 0 ? 2 : 0) === i).map(boxBlock)} />)}
     <InstancedBlocks name="gallery-floor-edges" blocks={walls.map(s => { const b = boxBlock(s); return { position: [b.position[0], .08, b.position[2]], scale: [b.scale[0] + .015, .16, b.scale[2] + .015] } as Block; })} resources={resources} material={resources.trim} />
-    <InstancedBlocks name="gallery-wall-panels" resources={resources} material={resources.trim} blocks={walls.map(s => {
+    <InstancedBlocks name="gallery-wall-panels" resources={resources} material={resources.art.enamel} blocks={walls.map(s => {
       const b = boxBlock(s); return { position: [b.position[0], .65, b.position[2]], scale: [b.scale[0] + .009, 1.0, b.scale[2] + .009] } as Block;
     })} />
     <InstancedBlocks name="gallery-wall-joints" resources={resources} material={r.shelf} blocks={walls.flatMap(s => {
@@ -128,7 +131,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
     })} />
     <InstancedBlocks name="gallery-route-lights" resources={resources} material={gp.emergencyLit ? r.selected : r.shelf} blocks={pathLights} />
     {world.solids.filter(s => s.kind === 'door' || s.id === 'mask-window-body').map(s => { const b = boxBlock(s); return <mesh key={s.id} name={s.id} ref={m => { doors.current[s.id] = m; }} geometry={resources.box} material={resources.door} position={b.position} scale={b.scale} />; })}
-    <InstancedBlocks name="gallery-retreat-shelves" resources={resources} material={resources.device} blocks={world.solids.filter(s => s.id.includes('shelf')).map(boxBlock)} />
+    <InstancedBlocks name="gallery-retreat-shelves" resources={resources} material={resources.art.timber} blocks={world.solids.filter(s => s.id.includes('shelf')).map(boxBlock)} />
     <InstancedBlocks name="gallery-mask-cabinet" resources={resources} material={resources.trim} blocks={world.solids.filter(s => s.id.startsWith('gallery-mask-')).map(boxBlock)} />
     <mesh ref={maskWindowHandle} name="gallery-mask-window-handle" geometry={resources.box} material={r.outline} position={[GALLERY_MASK_WINDOW_FIXTURE.center.x, GALLERY_MASK_WINDOW_FIXTURE.center.y + (gp.maskWindowOpen ? 1.6 : 0), GALLERY_MASK_WINDOW_FIXTURE.center.z + .025]} scale={[.26, .055, .09]} />
     <mesh name="gallery-empty-plinth" geometry={resources.box} material={r.shelf} position={[GALLERY_DISPLAY_POSITION.x, .025, GALLERY_DISPLAY_POSITION.z]} scale={[.8, .05, .75]} />

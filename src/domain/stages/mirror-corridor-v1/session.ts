@@ -1,12 +1,13 @@
 import { updatePlayer } from '../../firstPerson/geometry';
 import type { MovementInput, PlayerPose } from '../../firstPerson/types';
-import { EXIT, KEY_SAFE, POST_GATE, RATCHET_COUNT, RATCHET_SECONDS, SPAWN, STAGE_ID, WINCH_CENTER, WINCH_SAFE, stageWorld, type TargetId } from './definition';
+import { EXIT, KEY_SAFE, POST_GATE, RATCHET_COUNT, RATCHET_SECONDS, SPAWN, STAGE_ID, WINCH_CENTER, WINCH_SAFE, grateY, stageWorld, type TargetId } from './definition';
 import { parseStageCheckpoint, type StageCheckpoint } from './checkpoint';
 import { createMirrorActor, isMirrorActor, type MirrorActor, type MirrorNoise } from './actor';
+import { selectMirrorAction } from './selectors';
 
 export type StageSession = { stageId: typeof STAGE_ID; sessionId: string; lastSeq: number; pose: PlayerPose;
   figureInspected: boolean; mirrorInspected: boolean; keyTaken: boolean; practiced: boolean; ratchets: number;
-  holding: 'practice' | 'winch' | null; holdSeconds: number; cleared: boolean;
+  holding: 'practice' | 'winch' | null; holdSeconds: number; gateLift: number; cleared: boolean;
   actor: MirrorActor; noiseSequence: number; noise?: MirrorNoise | undefined; footstepDistance: number };
 export type StageCommand = { sessionId: string; seq: number; targetId: TargetId; type: 'inspect' | 'take-key' | 'start-hold' | 'release-hold' | 'exit' };
 export type CommandResult = { session: StageSession; accepted: boolean; reason: 'ready' | 'stale' | 'tooFar' | 'prerequisiteMissing' | 'wrong-target' };
@@ -21,6 +22,7 @@ export function isStageSession(value: unknown): value is StageSession {
     typeof value.holdSeconds !== 'number' || !Number.isFinite(value.holdSeconds) || value.holdSeconds < 0 || value.holdSeconds > RATCHET_SECONDS ||
     !isMirrorActor(value.actor) || !Number.isSafeInteger(value.noiseSequence) || Number(value.noiseSequence) < 0 ||
     typeof value.footstepDistance !== 'number' || !Number.isFinite(value.footstepDistance) || value.footstepDistance < 0 || value.footstepDistance >= .65 ||
+    typeof value.gateLift !== 'number' || !Number.isFinite(value.gateLift) || value.gateLift < 0 || value.gateLift > grateY(Number(value.ratchets)) ||
     typeof value.cleared !== 'boolean' || value.ratchets !== 0 && (!value.keyTaken || !value.practiced) ||
     value.cleared && value.ratchets !== RATCHET_COUNT) return false;
   const pose = value.pose as Record<string, unknown>, position = pose.position as Record<string, unknown>;
@@ -37,18 +39,25 @@ export function createStageSession(sessionId: string, raw?: unknown): StageSessi
     figureInspected: checkpoint?.figureInspected ?? false, mirrorInspected: checkpoint?.mirrorInspected ?? false,
     keyTaken: checkpoint?.keyTaken ?? false,
     practiced: checkpoint?.practiced ?? false, ratchets: checkpoint?.ratchets ?? 0,
-    holding: null, holdSeconds: 0, cleared: checkpoint?.cleared ?? false,
+    holding: null, holdSeconds: 0, gateLift: grateY(checkpoint?.ratchets ?? 0), cleared: checkpoint?.cleared ?? false,
     actor: createMirrorActor(), noiseSequence: 0, footstepDistance: 0 };
 }
 export function stepStage(session: StageSession, input: MovementInput, dt: number): StageSession {
   if (session.cleared || session.holding || !Number.isFinite(dt) || dt <= 0) return session;
-  const pose = updatePlayer(session.pose, input, dt, stageWorld(session.ratchets, session.keyTaken, session.practiced, session.holding, session.actor.motion.position));
+  const pose = updatePlayer(session.pose, input, dt, stageWorld(session.ratchets, session.keyTaken, session.practiced, session.holding, session.actor.motion.position, session.gateLift));
   return { ...session, pose };
 }
 /** Frame-clock progress only. Release/cancel keeps completed teeth and drops
  * just the unfinished fraction. This owns no timer, pointer or renderer. */
 export function advanceStage(session: StageSession, dt: number): StageSession {
-  if (!session.holding || session.cleared || !Number.isFinite(dt) || dt <= 0 || dt > .1) return session;
+  if (session.cleared || !Number.isFinite(dt) || dt <= 0 || dt > .1) return session;
+  // The committed tooth owns both the physical and visible 0.9-second lift.
+  // Releasing the handle drops only its unfinished hold, never this motion.
+  const target = grateY(session.ratchets);
+  const speed = (target - grateY(Math.max(0, session.ratchets - 1))) / .9;
+  const gateLift = Math.min(target, session.gateLift + speed * dt);
+  if (gateLift !== session.gateLift) session = { ...session, gateLift };
+  if (!session.holding) return session;
   const seconds = session.holdSeconds + dt;
   if (session.holding === 'practice') return session.practiced ? session : seconds >= .55
     ? { ...session, practiced: true, holdSeconds: 0 }
@@ -77,6 +86,9 @@ export function commandStage(session: StageSession, command: StageCommand): Comm
   if (!target) return { session: consumed, accepted: false, reason: 'wrong-target' };
   if (Math.hypot(session.pose.position.x - target.center.x, session.pose.position.z - target.center.z) > target.maxDistance)
     return { session: consumed, accepted: false, reason: 'tooFar' };
+  const action = selectMirrorAction(session, command.targetId);
+  if (action.state === 'locked' || action.state === 'operating')
+    return { session: consumed, accepted: false, reason: 'prerequisiteMissing' };
   if (command.type === 'inspect' && command.targetId === 'mirror-corridor-figure')
     return { session: { ...consumed, figureInspected: true }, accepted: true, reason: 'ready' };
   if (command.type === 'inspect' && command.targetId === 'mirror-corridor-mirror')

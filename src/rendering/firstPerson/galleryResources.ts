@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import { createExhibitCoatGeometry } from './exhibitSculpture';
+import { createActorArtResources } from './actorArtResources';
 import { createPerceptualResources } from './perceptualResources';
 import { CONTOUR_BACKGROUND, CONTOUR_DISC_RADIUS, CONTOUR_INK, CONTOUR_WEDGE_ANGLE } from '../../domain/gallery';
 import { createChromaticExhibitSurface } from './chromaticExhibit';
 import { galleryRaster } from './galleryGraphics';
-export function createGalleryResources() {
+export function createGalleryResources(lowQuality = false) {
   const perceptual = createPerceptualResources();
   const chromaticSurface = createChromaticExhibitSurface();
   const materials: THREE.Material[] = [], geometries: THREE.BufferGeometry[] = [], textures: THREE.Texture[] = [];
@@ -32,13 +32,7 @@ export function createGalleryResources() {
   }
   shape.closePath();
   const inducer = new THREE.ShapeGeometry(shape); geometries.push(inducer);
-  const actorCoat = createExhibitCoatGeometry(); geometries.push(actorCoat);
-  const actorBody = new THREE.IcosahedronGeometry(1, 0), actorHead = new THREE.IcosahedronGeometry(1, 1);
-  geometries.push(actorBody, actorHead);
-  const actorPorcelain = new THREE.MeshLambertMaterial({ color: '#C6C2AF' });
-  const actorCloth = new THREE.MeshLambertMaterial({ color: '#434846', flatShading: true });
-  const actorDark = new THREE.MeshLambertMaterial({ color: '#303937', flatShading: true });
-  materials.push(actorPorcelain, actorCloth, actorDark);
+  const actorArt = createActorArtResources(lowQuality, perceptual.convexControlGeometry);
   const warm = basic('#AA8466'), bright = basic(CONTOUR_BACKGROUND), ink = basic(CONTOUR_INK), guide = basic('#8A6540');
   const exitSign = basic('#477965');
   const shelf = basic('#707070'), outline = basic('#D4C9AA'), selected = basic('#F2D38B');
@@ -48,9 +42,9 @@ export function createGalleryResources() {
   const roomD = new THREE.MeshLambertMaterial({ color: '#777F8B' });
   materials.push(roomA, roomB, roomC, roomD);
   let closed = false;
-  return { perceptual, actorCoat, actorDark, actorBody, actorHead, actorPorcelain, actorCloth, chromaticSurface, exitSign, shadowPanel, sampleMaterials, inducer, warm, bright, ink, guide, shelf, outline, selected, roomA, roomB, roomC, roomD,
+  return { perceptual, actorArt, chromaticSurface, exitSign, shadowPanel, sampleMaterials, inducer, warm, bright, ink, guide, shelf, outline, selected, roomA, roomB, roomC, roomD,
     setComparison(compare: boolean) { if (!closed) shadowPanel.map = compare ? neutralMap : colorMap; },
-    dispose() { if (closed) return; closed = true; perceptual.dispose(); chromaticSurface.dispose(); materials.forEach(m => m.dispose()); geometries.forEach(g => g.dispose()); textures.forEach(t => t.dispose()); },
+    dispose() { if (closed) return; closed = true; actorArt.dispose(); perceptual.dispose(); chromaticSurface.dispose(); materials.forEach(m => m.dispose()); geometries.forEach(g => g.dispose()); textures.forEach(t => t.dispose()); },
   };
 }
 export type GalleryResources = ReturnType<typeof createGalleryResources>;

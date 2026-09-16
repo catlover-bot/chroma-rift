@@ -10,7 +10,8 @@ import { VaultDeviceHeading, VaultDeviceControls, VaultTouchLayer } from '../ren
 import { vaultAction, vaultPanelTarget, vaultDeviceScreenBounds, canCloseVaultExitController } from '../rendering/firstPerson/vaultController';
 import { chapterCompletionSummary } from '../app/chapterSummary';
 import { stageDefinition } from '../domain/stageKit/definitions';
-import { stageModule } from '../domain/stageKit/modules';
+import { stageCompletionTailMovement, stageModule } from '../domain/stageKit/modules';
+import { isStageSession as isMirrorSession } from '../domain/stages/mirror-corridor-v1/session';
 import { canCloseGalleryExit, galleryPowerCount } from '../domain/gallery';
 import * as Clipboard from 'expo-clipboard';
 import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
@@ -27,7 +28,7 @@ import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
 import { rememberFailureSnapshot } from '../rendering/firstPerson/failureLedger';
 import { serializeDiagnostics, serializeFailureDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
-import { attachControllerAudio, prepareControllerNotebook, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, beginStageHoldController, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, endStageHoldController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
+import { attachControllerAudio, prepareControllerNotebook, queueControllerPresentationFeedback, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, beginStageHoldController, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, endStageHoldController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
 import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
 import { controlLayout } from '../rendering/firstPerson/controlLayout';
 import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
@@ -105,7 +106,12 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const [error, setError] = useState<string | undefined>();
   const [menu, setMenu] = useState<'pause' | 'hints' | 'settings'>('pause');
   const [reader, setReader] = useState(false);
-  const [notice, setNotice] = useState('');
+  const [noticeRecord, setNoticeRecord] = useState<{ text: string; scope: string; target: InteractableId | undefined }>();
+  const setNotice = useCallback((text: string) => {
+    const current = controllerSnapshot(controller);
+    setNoticeRecord(text ? { text, scope: current.feedbackScope, target: current.target?.id } : undefined);
+  }, [controller]);
+  const notice = noticeRecord?.scope === snapshot.feedbackScope && noticeRecord.target === snapshot.target?.id ? noticeRecord.text : '';
   const [visibleStoryBeat, setVisibleStoryBeat] = useState<ChapterOneBeatId>();
   const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
@@ -125,6 +131,17 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const lastProgress = useRef(checkpointIdentity(snapshot.runtime));
   const lastAnnounced = useRef('');
   const lastGalleryHaptic = useRef(-1);
+  const initialMirror = controller.runtime.stageSession?.value;
+  const lastPresentedRatchets = useRef({ session: controller.runtime.session, count: isMirrorSession(initialMirror) ? initialMirror.ratchets : 0 });
+  const queueSuccessFeedback = (text: string, haptic = false) => {
+    const current = controllerSnapshot(controller);
+    const record = text ? { text, scope: current.feedbackScope, target: current.target?.id } : undefined;
+    queueControllerPresentationFeedback(controller, () => {
+      if (!mounted.current || failed.current) return;
+      if (record) setNoticeRecord(record);
+      if (haptic) void playSelectionHaptic(settings.haptics);
+    });
+  };
   const lastActorNotice = useRef(-1);
   const theatreNoiseReported = useRef(false);
   const tutorialSaved = useRef(onboarding.tutorialCompleted);
@@ -154,14 +171,16 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
   const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
   const blocked = showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
+  const movementBlocked = showDiagnostics || paused || !appActive || !ready || !!error ||
+    snapshot.runtime.progress.cleared && !stageCompletionTailMovement(snapshot.runtime) || renderMode !== 'chapter';
   // Input stops at semantic completion, while the presented closing tail still
   // owns its one impact sound. Pause/background/failure stop both immediately.
-  const closingTail = (gallery?.exitClosureSeconds ?? 0) > 0 || (vault?.exitClosureSeconds ?? 0) > 0;
+  const closingTail = (gallery?.exitClosureSeconds ?? 0) > 0 || (vault?.exitClosureSeconds ?? 0) > 0 || (stageModule(chapterId)?.completionTail?.(snapshot.runtime) ?? 0) > 0;
   const audioActive = !showDiagnostics && !paused && appActive && ready && !error && renderMode === 'chapter' && (!snapshot.runtime.progress.cleared || closingTail);
 
   useEffect(() => {
     if (scene !== 'chapter' || renderMode !== 'chapter') return;
-    const owner = createGalleryAudio({ sessionId: String(controller.runtime.session) });
+    const owner = createGalleryAudio({ sessionId: String(controller.runtime.session), areaId: controller.runtime.chapterId ?? CHAPTER_ID });
     return attachControllerAudio(controller, owner);
   }, [controller, renderMode, scene]);
   useEffect(() => { setControllerViewport(controller, sceneWidth, sceneHeight); }, [controller, sceneWidth, sceneHeight]);
@@ -181,6 +200,18 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     if (!mounted.current || failed.current || next.runtime !== controller.runtime) return;
     setSnapshot(next);
     if (renderMode !== 'chapter') return;
+    const mirror = next.runtime.stageSession?.value;
+    if (isMirrorSession(mirror)) {
+      const previous = lastPresentedRatchets.current;
+      lastPresentedRatchets.current = { session: next.runtime.session, count: mirror.ratchets };
+      if (previous.session === next.runtime.session && mirror.ratchets > previous.count) {
+        for (let count = previous.count; count < mirror.ratchets; count++) {
+          queueControllerPresentationFeedback(controller, () => {
+            if (mounted.current && !failed.current) void playSelectionHaptic(settings.haptics);
+          });
+        }
+      }
+    }
     if (scene === 'chapter' && next.tutorial.complete && !tutorialSaved.current) {
       tutorialSaved.current = true;
       onOnboardingChange?.({ ...onboardingRef.current, tutorialCompleted: true });
@@ -209,11 +240,11 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       theatreNoiseReported.current = true;
       onCampaignNoiseObserved?.();
     }
-    if (!reviewOnly && scene === 'chapter' && next.runtime.progress.cleared && (!next.runtime.gallery || next.runtime.gallery.exitClosureSeconds <= 0) && (!next.runtime.vault || next.runtime.vault.exitClosureSeconds <= 0) && !completed.current) {
+    if (!reviewOnly && scene === 'chapter' && next.runtime.progress.cleared && (!next.runtime.gallery || next.runtime.gallery.exitClosureSeconds <= 0) && (!next.runtime.vault || next.runtime.vault.exitClosureSeconds <= 0) && (stageModule(next.runtime.chapterId)?.completionTail?.(next.runtime) ?? 0) <= 0 && !completed.current) {
       completed.current = true;
       onComplete(chapterCompletionSummary(chapterId, controller.runtime.progress));
     }
-  }, [chapterId, controller, onCampaignNoiseObserved, onCheckpoint, onComplete, onOnboardingChange, renderMode, reviewOnly, scene, settings.reducedMotion]);
+  }, [chapterId, controller, onCampaignNoiseObserved, onCheckpoint, onComplete, onOnboardingChange, renderMode, reviewOnly, scene, setNotice, settings.haptics, settings.reducedMotion]);
   const pause = useCallback(() => {
     if (!mounted.current || failed.current) return;
     if (controller.runtime.gallery || controller.runtime.vault || controller.runtime.theatre) prepareControllerNotebook(controller);
@@ -347,16 +378,16 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     AccessibilityInfo.announceForAccessibility(message);
   }, [notice, paused, reader, snapshot.objective, snapshot.target, snapshot.acquisition, snapshot.cue, snapshot.runtime.theatre]);
   useEffect(() => {
-    if (failed.current || reviewOnly || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || (snapshot.runtime.gallery && snapshot.runtime.gallery.exitClosureSeconds > 0) || (snapshot.runtime.vault && snapshot.runtime.vault.exitClosureSeconds > 0) || completed.current) return;
+    if (failed.current || reviewOnly || scene !== 'chapter' || renderMode !== 'chapter' || !snapshot.runtime.progress.cleared || closingTail || completed.current) return;
     completed.current = true;
     onComplete(chapterCompletionSummary(chapterId, snapshot.runtime.progress));
-  }, [chapterId, onComplete, renderMode, reviewOnly, scene, snapshot.runtime.gallery, snapshot.runtime.vault, snapshot.runtime.progress]);
+  }, [chapterId, closingTail, onComplete, renderMode, reviewOnly, scene, snapshot.runtime.progress]);
 
   useEffect(() => {
     if (!notice || paused) return;
     const timer = setTimeout(() => setNotice(''), 4500);
     return () => clearTimeout(timer);
-  }, [notice, paused]);
+  }, [notice, paused, setNotice]);
 
   const changeMode = (movementMode: FirstPersonControls['movementMode']) => {
     if (!mounted.current || failed.current) return;
@@ -372,24 +403,24 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     publish(controllerSnapshot(controller));
     if (independentChapter) {
       const structure = snapshot.target.id === 'mask-exhibit' || snapshot.target.id === 'mask-window' ? '凹面の構造は、発見メモで正面と横から比べられます。' : snapshot.target.id === 'hybrid-exhibit' ? '発見メモで大きい成分と細部を比べられます。' : undefined;
-      setNotice(changed ? structure||controller.feedbackMessage||'操作しました。' : controller.feedbackMessage || freshCue.reason || '装置が見える位置へ近づこう。');
-      if (changed) void playSelectionHaptic(settings.haptics);
+      if (changed) queueSuccessFeedback(structure || controller.feedbackMessage || controllerSnapshot(controller).objective, true);
+      else setNotice(controller.feedbackMessage || freshCue.reason || '装置が見える位置へ近づこう。');
     } else if (snapshot.target.id.startsWith('emblem-')) {
       const description = reader && snapshot.target.id === 'emblem-panel' && controller.runtime.emblem.phase !== 'unexamined'
         ? ' ' + sealDescription(controller.runtime.emblem.seed) : '';
-      setNotice((controller.feedbackMessage || freshCue.reason || '壁の近くで、印に照準を合わせよう。') + description);
-      if (changed && controller.runtime.progress.sealA && !previous.progress.sealA) void playSelectionHaptic(settings.haptics);
+      const text = (controller.feedbackMessage || freshCue.reason || '壁の近くで、印に照準を合わせよう。') + description;
+      if (changed) queueSuccessFeedback(text, controller.runtime.progress.sealA && !previous.progress.sealA);
+      else setNotice(text);
     } else if (changed) {
-      setNotice(controller.runtime.progress.exitDoorOpen && !previous.progress.exitDoorOpen ? '扉が開きます。自分で外へ歩こう。' : controller.runtime.progress.sealB && !previous.progress.sealB ? '鍵が重なりました。入口へ戻ろう。' : '調べました。');
-      void playSelectionHaptic(settings.haptics);
+      queueSuccessFeedback(controller.runtime.progress.exitDoorOpen && !previous.progress.exitDoorOpen ? '扉が開きます。自分で外へ歩こう。' : controller.runtime.progress.sealB && !previous.progress.sealB ? '鍵が重なりました。入口へ戻ろう。' : '調べました。', true);
     } else setNotice(freshCue.reason ?? '立つ場所と視線を確かめよう。');
   };
   const step = (forward: number) => {
-    if (!mounted.current || failed.current || blocked) return;
+    if (!mounted.current || failed.current || movementBlocked) return;
     commandController(controller, { type: 'step', forward });
   };
   const turn = (yaw: number, pitch = 0) => {
-    if (!mounted.current || failed.current || blocked) return;
+    if (!mounted.current || failed.current || movementBlocked) return;
     commandController(controller, { type: 'turn', yaw, pitch });
     publish(controllerSnapshot(controller));
   };
@@ -401,7 +432,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     }
     if (scene === 'chapter') {
       publish(controllerSnapshot(controller));
-      setNotice(controller.feedbackMessage);
+      queueSuccessFeedback(controller.feedbackMessage);
     } else {
       onColorChange(!neutralColors);
       setNotice(neutralColors ? '色模様を戻しました。' : '色を外して比べます。形とカメラは同じです。');
@@ -446,8 +477,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const hint = hintForRuntime(snapshot.runtime);
   const cue = snapshot.cue;
   const acquisitionBlocked = !!snapshot.acquisition && snapshot.acquisition.kind !== 'ready';
-  const interactionBlocked = acquisitionBlocked || !!theatre && cue.kind === 'locked';
-  const targetLabel = acquisitionBlocked ? snapshot.acquisition!.message : theatre && cue.kind === 'locked' ? cue.reason ?? cue.target.label : snapshot.target?.label ?? (cue.kind === 'approach' ? `${cue.target?.label}に、もう少し近づこう。` : cue.kind === 'aim' ? cue.target?.id === 'guide' && simple ? simpleGuideAimInstruction(snapshot.runtime.pose, cue.target.center) : `${cue.target?.label}に中央の照準を合わせよう。` : '近くの目印に中央の照準を合わせよう。');
+  const interactionBlocked = acquisitionBlocked || (!!theatre || !!snapshot.stageTarget) && cue.kind === 'locked';
+  const targetLabel = acquisitionBlocked ? snapshot.acquisition!.message : (theatre || snapshot.stageTarget) && cue.kind === 'locked' ? cue.reason ?? cue.target.label : snapshot.target?.label ?? (cue.kind === 'approach' ? `${cue.target?.label}に、もう少し近づこう。` : cue.kind === 'aim' ? cue.target?.id === 'guide' && simple ? simpleGuideAimInstruction(snapshot.runtime.pose, cue.target.center) : `${cue.target?.label}に中央の照準を合わせよう。` : '近くの目印に中央の照準を合わせよう。');
   const progress = snapshot.runtime.progress;
   const emblem = snapshot.runtime.emblem;
   const shortObjective = independentChapter ? snapshot.objective : progress.cleared ? '脱出しました' : progress.exitDoorOpen ? '扉の外へ歩く' : progress.sealB ? '入口へ戻る' : progress.sealA ? '欠けた鍵を探す' : emblem.phase === 'unexamined' ? '壁の紋章を調べる' : '切れずにつながる輪郭を探す';
@@ -470,7 +501,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const projectorReadout = !manipulating && projectorStatus && (projectorStatus.phase !== 'idle' || snapshot.target?.id === 'theatre-projector') ? projectorStatus.message : undefined;
   const explorationReadout = projectorReadout && (snapshot.target?.id === 'theatre-projector' || !visibleContextLabel)
     ? projectorReadout : visibleContextLabel;
-  const visibleReadout = notice === explorationReadout ? undefined : explorationReadout;
+  const visibleReadout = compact && notice ? notice : notice === explorationReadout ? undefined : explorationReadout;
   const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete;
   const moveSide = controls.handedness === 'right' ? '左' : '右';
   const lookSide = controls.handedness === 'right' ? '右' : '左';
@@ -508,12 +539,12 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   </ScrollView>{diagnostics}</SafeAreaView>;
 
   const simpleButtons = <View style={styles.simpleControls} testID="button-movement-controls">
-    <GameButton sessionKey={controlSessionKey} label="左を向く" onPress={() => turn(Math.PI / 8)} disabled={blocked} />
-    <GameButton sessionKey={controlSessionKey} label="前へ一歩" onPress={() => step(1)} disabled={blocked} testID="step-forward" />
-    <GameButton sessionKey={controlSessionKey} label="右を向く" onPress={() => turn(-Math.PI / 8)} disabled={blocked} />
-    <GameButton sessionKey={controlSessionKey} label="上を見る" onPress={() => turn(0, 0.15)} disabled={blocked} />
-    <GameButton sessionKey={controlSessionKey} label="後ろへ一歩" onPress={() => step(-1)} disabled={blocked} />
-    <GameButton sessionKey={controlSessionKey} label="下を見る" onPress={() => turn(0, -0.15)} disabled={blocked} />
+    <GameButton sessionKey={controlSessionKey} label="左を向く" onPress={() => turn(Math.PI / 8)} disabled={movementBlocked} />
+    <GameButton sessionKey={controlSessionKey} label="前へ一歩" onPress={() => step(1)} disabled={movementBlocked} testID="step-forward" />
+    <GameButton sessionKey={controlSessionKey} label="右を向く" onPress={() => turn(-Math.PI / 8)} disabled={movementBlocked} />
+    <GameButton sessionKey={controlSessionKey} label="上を見る" onPress={() => turn(0, 0.15)} disabled={movementBlocked} />
+    <GameButton sessionKey={controlSessionKey} label="後ろへ一歩" onPress={() => step(-1)} disabled={movementBlocked} />
+    <GameButton sessionKey={controlSessionKey} label="下を見る" onPress={() => turn(0, -0.15)} disabled={movementBlocked} />
   </View>;
   const accessibleTargets = reader && !independentChapter ? accessibleEmblemTargets(controller) : [];
   const accessibleObjects = reader && accessibleTargets.length ? <View accessible accessibilityRole="text" testID="accessible-emblem-objects"
@@ -523,16 +554,20 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       if (blocked || failed.current || !mounted.current) return;
       const changed = interactAccessibleEmblem(controller, event.nativeEvent.actionName as InteractableId);
       publish(controllerSnapshot(controller));
-      setNotice(controller.feedbackMessage + (controller.runtime.emblem.phase !== 'unexamined' ? ' ' + sealDescription(controller.runtime.emblem.seed) : ''));
-      if (changed && controller.runtime.emblem.phase === 'released') void playSelectionHaptic(settings.haptics);
+      const text = controller.feedbackMessage + (controller.runtime.emblem.phase !== 'unexamined' ? ' ' + sealDescription(controller.runtime.emblem.seed) : '');
+      if (changed) queueSuccessFeedback(text, controller.runtime.emblem.phase === 'released');
+      else setNotice(text);
     }} style={styles.accessibleObjects}><Text style={styles.contextText}>近くの紋章と印を調べる</Text></View> : null;
   const deviceChanged = () => {
     if (!mounted.current || failed.current) return;
     const next = controllerSnapshot(controller);
     publish(next);
-    if (controller.feedbackMessage) setNotice(controller.feedbackMessage);
     const feedback = next.runtime.theatre?.feedback ?? next.runtime.vault?.feedback ?? next.runtime.gallery?.feedback;
-    if (feedback?.correct && feedback.sequence !== lastGalleryHaptic.current) { lastGalleryHaptic.current = feedback.sequence; void playSelectionHaptic(settings.haptics); }
+    if (feedback?.correct) {
+      const haptic = feedback.sequence !== lastGalleryHaptic.current;
+      lastGalleryHaptic.current = feedback.sequence;
+      queueSuccessFeedback(controller.feedbackMessage, haptic);
+    } else if (controller.feedbackMessage) setNotice(controller.feedbackMessage);
   };
   const deviceBounds = manipulating ? theatre ? theatreDeviceScreenBounds(controller) : vault ? vaultDeviceScreenBounds(controller) : galleryDeviceScreenBounds(controller) : undefined;
   const deviceControlsHeight = Math.max(48, Math.min(sceneHeight * .45, sceneHeight - (deviceBounds?.bottom ?? sceneHeight * .72) - 18));
@@ -552,8 +587,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const hold = stageModule(snapshot.runtime.chapterId)?.hold;
   const stageHoldTarget = hold?.activeTarget(snapshot.runtime) ?? (snapshot.target && hold?.targets.includes(snapshot.target.id) ? snapshot.target.id : undefined);
   const holding = !!stageHoldTarget && hold?.activeTarget(snapshot.runtime) === stageHoldTarget;
-  const holdAction = stageHoldTarget ? <StageHoldButton sessionKey={controlSessionKey} label={holding ? '保持中。もう一度押すと放す' : actionLabel}
-    holding={holding} disabled={blocked || interactionBlocked} testID="interact" style={({ pressed }) => [styles.gameButton, blocked && styles.disabled, pressed && styles.pressed]}
+  const holdComplete = holding && snapshot.stageTarget?.state === 'completed';
+  const holdAction = stageHoldTarget ? <StageHoldButton sessionKey={controlSessionKey} label={holdComplete ? `${actionLabel}。もう一度押すと放す` : holding ? '保持中。もう一度押すと放す' : actionLabel}
+    holding={holding} disabled={blocked || interactionBlocked && !holding} testID="interact" style={({ pressed }) => [styles.gameButton, blocked && styles.disabled, pressed && styles.pressed]}
     onBegin={pointerId => {
       if (!mounted.current || failed.current || blocked) return false;
       const accepted = beginStageHoldController(controller, stageHoldTarget, pointerId);
@@ -564,7 +600,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     onEnd={pointerId => {
       endStageHoldController(controller, stageHoldTarget, pointerId);
       if (mounted.current && !failed.current) publish(controllerSnapshot(controller));
-    }}><Text pointerEvents="none" style={styles.buttonText}>{holding ? '指を離して止める' : actionLabel}</Text></StageHoldButton> : null;
+    }}><Text pointerEvents="none" style={styles.buttonText}>{holdComplete ? `${actionLabel} · 指を離す` : holding ? '指を離して止める' : actionLabel}</Text></StageHoldButton> : null;
   const actions = <View style={styles.actions}>
     {structureNote ? <GameButton sessionKey={controlSessionKey} label="構造をメモで比べる" onPress={openStructureNotes} disabled={blocked} /> : null}
     {compareAvailable ? <GameButton sessionKey={controlSessionKey} label={colorLabel} onPress={toggleColor} disabled={blocked} /> : null}
@@ -575,7 +611,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
     <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
       {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused || showDiagnostics} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} emblemPalette={settings.emblemPalette ?? 'baseline'} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
-      {!simple && !manipulating && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!blocked} handedness={controls.handedness} layout={layout} showMovementLabel={!snapshot.tutorial.moved} /> : null}
+      {!simple && !manipulating && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!movementBlocked} handedness={controls.handedness} layout={layout} showMovementLabel={!snapshot.tutorial.moved} /> : null}
       {manipulating && !simple && theatre ? <TheatreTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : manipulating && !simple && vault ? <VaultTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : manipulating && !simple ? <GalleryTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : null}
       <View pointerEvents="box-none" style={[styles.hudSlot, layout.pause]}>
         <SceneActionButton label="一時停止" sessionKey={controlSessionKey} onPress={() => openMenu('pause')} style={({ pressed }) => [styles.pauseButton, pressed && styles.pressed]} testID="pause-control">
@@ -585,7 +621,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       <View pointerEvents="none" style={[styles.hudSlot, layout.goal]}>
         {theatre && manipulating ? <TheatreDeviceHeading controller={controller} /> : null}
         {vault && vault.mode !== 'explore' ? <VaultDeviceHeading puzzle={vault.mode} /> : null}
-        {!manipulating ? <Text testID="current-objective" style={styles.objective}>{compact && notice ? notice : objectiveCopy}</Text> : null}
+        {!manipulating ? <Text testID="current-objective" style={styles.objective}>{objectiveCopy}</Text> : null}
         {gallery && progress.gallery ? <View style={styles.powerStock} testID="gallery-power-stock" accessible accessibilityLabel={`予備電源 ${galleryPowerCount(progress.gallery)}/2${progress.gallery.powerConnected ? ' 接続済み' : ''}`}>
           <Text style={styles.powerText}>電源</Text>{(['shadow', 'contour'] as const).map(puzzle => <View key={puzzle} style={[styles.powerCell, progress.gallery!.powerTaken[puzzle] && styles.powerCellTaken]}><Text style={styles.powerText}>{progress.gallery!.powerTaken[puzzle] ? '✓' : ''}</Text></View>)}
           {progress.gallery.powerConnected ? <Text style={styles.powerText}>接続済み</Text> : null}
@@ -677,8 +713,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
               </ChoiceRow>
             </> : null}
             {independentChapter ? <>
-              <SettingSwitch label="音" description="環境音と効果音を再生します。" value={settings.audio?.enabled ?? true} onValueChange={enabled => onSettingsChange({ ...settings, audio: { enabled, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled: settings.audio?.illusionEnabled ?? true } })} />
-              <SettingSwitch label="演出音" description="任意の短い音の錯覚。控えめな怖さでは鳴りません。" value={settings.audio?.illusionEnabled ?? true} onValueChange={illusionEnabled => onSettingsChange({ ...settings, audio: { enabled: settings.audio?.enabled ?? true, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled } })} />
+              <SettingSwitch label="音" description="音楽・環境音・効果音を再生します。" value={settings.audio?.enabled ?? true} onValueChange={enabled => onSettingsChange({ ...settings, audio: { ...settings.audio, enabled, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled: settings.audio?.illusionEnabled ?? true } })} />
+              <SettingSwitch label="演出音" description="任意の短い音の錯覚。控えめな怖さでは鳴りません。" value={settings.audio?.illusionEnabled ?? true} onValueChange={illusionEnabled => onSettingsChange({ ...settings, audio: { ...settings.audio, enabled: settings.audio?.enabled ?? true, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled } })} />
             </> : null}
             <Body>現在の操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}。理由：{effectiveControls.reason}。</Body>
             <SettingSwitch label="ボタン操作" description="一歩ずつ進む・向きを変えるボタンを使います。オフにするとドラッグ操作になります。" value={controls.movementMode === 'simple'} onValueChange={(value) => changeMode(value ? 'simple' : 'standard')} />

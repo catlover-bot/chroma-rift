@@ -16,6 +16,7 @@ export function targetChangedTouches<T extends { identifier: PointerId }>(change
 }
 export type FirstPersonInput = {
   releaseBarrier: PointerId[];
+  releaseBarrierMode: 'all' | 'owners';
   stickPointer: PointerId | null;
   lookPointer: PointerId | null;
   right: number;
@@ -30,24 +31,32 @@ export type FirstPersonInput = {
   lastLookY: number;
 };
 export function createTouchInput(): FirstPersonInput {
-  return { releaseBarrier: [], stickPointer: null, lookPointer: null, right: 0, forward: 0, lookX: 0, lookY: 0, stickOriginX: 0, stickOriginY: 0, stickOffsetX: 0, stickOffsetY: 0, lastLookX: 0, lastLookY: 0 };
+  return { releaseBarrier: [], releaseBarrierMode: 'all', stickPointer: null, lookPointer: null, right: 0, forward: 0, lookX: 0, lookY: 0, stickOriginX: 0, stickOriginY: 0, stickOffsetX: 0, stickOffsetY: 0, lastLookX: 0, lastLookY: 0 };
 }
 export function clearTouchInput(input: FirstPersonInput): void {
-  const releaseBarrier = input.releaseBarrier;
-  Object.assign(input, createTouchInput(), { releaseBarrier });
+  const { releaseBarrier, releaseBarrierMode } = input;
+  Object.assign(input, createTouchInput(), { releaseBarrier, releaseBarrierMode });
 }
 /** Contact recovery keeps former owners suppressed until every finger lifts.
  * A newly started finger joins that barrier instead of gaining fresh control. */
 export function requireAllPointersReleased(input: FirstPersonInput): void {
   const ids = [input.stickPointer, input.lookPointer].filter((id): id is PointerId => id !== null);
   input.releaseBarrier = [...new Set([...input.releaseBarrier, ...ids])];
+  input.releaseBarrierMode = 'all';
   clearTouchInput(input);
 }
+/** A normal lever release retires old contacts, but does not make a newly
+ * placed retreat finger wait for an unrelated old look contact. */
+export function finishHeldRelease(input: FirstPersonInput): void {
+  input.releaseBarrierMode = 'owners';
+}
 export function observeReleaseBarrier(input: FirstPersonInput, activeIds: readonly PointerId[]): void {
-  if (input.releaseBarrier.length) input.releaseBarrier = [...new Set(activeIds)];
+  if (input.releaseBarrier.length) input.releaseBarrier = input.releaseBarrierMode === 'owners'
+    ? input.releaseBarrier.filter(id => activeIds.includes(id)) : [...new Set(activeIds)];
 }
 function suppressedStart(input: FirstPersonInput, id: PointerId): boolean {
   if (!input.releaseBarrier.length) return false;
+  if (input.releaseBarrierMode === 'owners') return input.releaseBarrier.includes(id);
   if (validPointer(id) && !input.releaseBarrier.includes(id)) input.releaseBarrier.push(id);
   return true;
 }

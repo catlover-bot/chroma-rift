@@ -25,14 +25,20 @@ import type { GalleryCommand } from '../gallery/types';
 import { stageBinding as stageKitProbe } from '../stages/stage-kit-probe/binding';
 import { stageBinding as mirrorCorridor } from '../stages/mirror-corridor-v1/binding';
 import { stageBinding as departureControl } from '../stages/departure-control-v1/binding';
+import type { StageTargetPresentation } from './presentation';
 
-export type StagePresentation = { objective: string; hint: { text: string; target?: Vec3 } };
+export type StagePresentation = { objective: string; hint: { text: string; target?: Vec3 }; feedbackRevision?: string };
 export type StageModule<C, R> = Readonly<{
   id: StageId;
   create(checkpoint?: CheckpointState, session?: number): ChapterRuntime;
   advance(runtime: ChapterRuntime, dt: number): ChapterRuntime;
   world(runtime: ChapterRuntime): WorldGeometry;
   present(runtime: ChapterRuntime): StagePresentation;
+  targetPresentation?(runtime: ChapterRuntime, targetId: InteractableId): StageTargetPresentation | undefined;
+  /** A settled completion may retain a presented, harmless aftermath. */
+  completionTail?(runtime: ChapterRuntime): number;
+  /** Keep free movement during a harmless completion tail; actions stay closed. */
+  completionTailMovement?: boolean;
   command(runtime: ChapterRuntime, command: C, context: { rendererReady: boolean; foreground: boolean; targetId: string | null }): R;
   checkpoint(runtime: ChapterRuntime): CheckpointState;
   restore(value: unknown): { checkpoint: CheckpointState; recovered: boolean } | undefined;
@@ -104,6 +110,10 @@ export function stageModule(id: unknown): (typeof STAGE_MODULES)[ModuleStageId] 
 }
 export function stageInputPolicy(runtime: ChapterRuntime): InputPolicy {
   return stageModule(runtime.chapterId)?.inputPolicy(runtime)??explorePolicy;
+}
+export function stageCompletionTailMovement(runtime: ChapterRuntime): boolean {
+  const module = stageModule(runtime.chapterId);
+  return runtime.progress.cleared && module?.completionTailMovement === true && (module.completionTail?.(runtime) ?? 0) > 0;
 }
 export function validateStageModules(): string[] {
   const errors: string[] = [];

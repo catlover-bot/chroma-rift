@@ -66,7 +66,7 @@ test('whole-body and sweep checks govern closing; latch, stop and outdoor exit a
   expect(doorSweepClear(nearDoor)).toBe(false);
   expect(actorFullyContained({ x: BELL_RECEIVER.x, y: 0, z: BELL_RECEIVER.z })).toBe(true);
   const body = { ...session.actor, motion: { ...session.actor.motion, position: { x: BELL_RECEIVER.x, y: 0, z: BELL_RECEIVER.z } } };
-  session = { ...session, actor: body, pose: { ...CONTROL_SAFE, position: { x: -3.75, y: 1.6, z: 11 } } };
+  session = { ...session, actor: body, pose: { ...CONTROL_SAFE, position: { x: -3.75, y: 1.6, z: 11.6 } } };
   const close = commandStage(session, { sessionId: 'latch', seq: 3, targetId: 'departure-door', type: 'close-door' });
   expect(close.accepted).toBe(true);
   session = close.session;

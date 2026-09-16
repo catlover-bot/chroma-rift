@@ -99,10 +99,10 @@ export function SettingsScreen({
         <SettingSwitch label="演出音" description="短い音の錯覚を使います。控えめな怖さでは再生しません。" value={audio.illusionEnabled ?? true} onValueChange={(illusionEnabled) => set('audio', { ...audio, illusionEnabled })} />
         {audioAvailability === 'missing-native' ? <Body muted>音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。</Body> : null}
         {audioAvailability === 'unavailable' ? <Body muted>音を再生できません。音なしで探索を続けられます。</Body> : null}
-        {(['musicVolume', 'effectsVolume'] as const).map((field) => <Panel key={field}>
-          <Body>{field === 'musicVolume' ? '環境音' : '効果音'} {Math.round(audio[field] * 100)}%</Body>
+        {(['musicVolume', 'environmentVolume', 'effectsVolume'] as const).map((field) => <Panel key={field}>
+          <Body>{field === 'musicVolume' ? '音楽' : field === 'environmentVolume' ? '環境音' : '効果音'} {Math.round((audio[field] ?? 0) * 100)}%</Body>
           <ChoiceRow>{[0, 0.25, 0.5, 0.75, 1].map((volume) => <ActionButton key={volume}
-            label={`${field === 'musicVolume' ? '環境音' : '効果音'} ${Math.round(volume * 100)}%${audio[field] === volume ? '（選択中）' : ''}`}
+            label={`${field === 'musicVolume' ? '音楽' : field === 'environmentVolume' ? '環境音' : '効果音'} ${Math.round(volume * 100)}%${audio[field] === volume ? '（選択中）' : ''}`}
             onPress={() => set('audio', { ...audio, [field]: volume })} />)}</ChoiceRow>
         </Panel>)}
       </Panel>

@@ -3,22 +3,22 @@ import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { DoubleSide, Frustum, Matrix4, MeshBasicMaterial, Shape, ShapeGeometry, type Group, type Mesh } from 'three';
 import type { ChapterRuntime, WorldGeometry } from '../../firstPerson/types';
-import { isolationKeyGeometry } from '../isolationKeyGeometry';
+import { ISOLATION_KEY_PROFILE, isolationKeyGeometry } from '../isolationKeyGeometry';
 import { createPlanarMirror, type OffscreenDraw } from '../../../rendering/firstPerson/planarMirror';
 import { GalleryActor } from '../../../rendering/firstPerson/GalleryActor';
 import type { SceneResources } from '../../../rendering/firstPerson/resources';
-import { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, MIRROR_YAW, WINCH_CENTER, grateY } from './definition';
+import { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, MIRROR_YAW, PRACTICE_CENTER, WINCH_CENTER, GATE_Z } from './definition';
 import { isStageSession } from './session';
+import { FacilityFloor, FacilityPlaque } from '../../../rendering/firstPerson/FacilityDetails';
+import { Cable, WinchModel } from '../../../rendering/firstPerson/MechanicalDevices';
 
 /** Original symmetric profile. The pale central void is left by the same two
  * fixed silhouettes, rather than toggled after gaze/time or replaced by art. */
 function profileGeometry() {
   const face = new Shape();
-  face.moveTo(-1.35, -0.95);
-  face.lineTo(-0.55, -0.95); face.lineTo(-0.6, -0.64); face.lineTo(-0.36, -0.38);
-  face.lineTo(-0.27, -0.16); face.lineTo(-0.49, -0.06); face.lineTo(-0.39, 0.04);
-  face.lineTo(-0.57, 0.22); face.lineTo(-0.5, 0.44); face.lineTo(-0.76, 0.75);
-  face.lineTo(-1.35, 0.95); face.closePath();
+  face.moveTo(-.69, -.35);
+  ISOLATION_KEY_PROFILE.forEach(([x,y]) => face.lineTo(x,y));
+  face.lineTo(-.69,.35); face.closePath();
   return new ShapeGeometry(face);
 }
 
@@ -31,13 +31,13 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
   const winchKeyVisual=useRef<{initialized:boolean;travel:number}>({initialized:false,travel:0});
   const mirror=useMemo(()=>createPlanarMirror(),[]);
   const mirrorFrustum=useMemo(()=>new Frustum(),[]),projectionView=useMemo(()=>new Matrix4(),[]);
-  const shape=useMemo(()=>profileGeometry(),[]),faceMaterial=useMemo(()=>new MeshBasicMaterial({color:'#bebfb4',side:DoubleSide}),[]);
-  const keyShape=useMemo(()=>isolationKeyGeometry(),[]),keyMaterial=useMemo(()=>new MeshBasicMaterial({color:'#edf3e5',side:DoubleSide}),[]);
+  const shape=useMemo(()=>profileGeometry(),[]),faceMaterial=useMemo(()=>new MeshBasicMaterial({color:'#bebfb4',side:DoubleSide,toneMapped:false,fog:false}),[]);
+  const keyShape=useMemo(()=>isolationKeyGeometry(),[]),keyMaterial=useMemo(()=>new MeshBasicMaterial({color:'#edf3e5',side:DoubleSide,toneMapped:false,fog:false}),[]);
   useEffect(()=>()=>{shape.dispose();faceMaterial.dispose();keyShape.dispose();keyMaterial.dispose();mirror.dispose();},[shape,faceMaterial,keyShape,keyMaterial,mirror]);
   useFrame((_,delta)=>{
     const raw=runtime.current.stageSession?.value;
     if(!isStageSession(raw))return;
-    if(gate.current)gate.current.position.y=grateY(raw.ratchets)+1.75;
+    if(gate.current)gate.current.position.y=raw.gateLift+1.75;
     if(key.current){
       const visual=keyVisual.current;
       if(visual.wasTaken===null){visual.wasTaken=raw.keyTaken;visual.elapsed=raw.keyTaken ? .3 : 0;}
@@ -77,13 +77,16 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
     }
   },-.25);
   return <group name="mirror-corridor-v1" dispose={null}>
-    <ambientLight intensity={1.15}/><directionalLight intensity={1.1} position={[2,4,3]}/>
-    {world.floors.map(f=><mesh key={f.id} geometry={resources.box} material={resources.floor} position={[(f.minX+f.maxX)/2,-.1,(f.minZ+f.maxZ)/2]} scale={[f.maxX-f.minX,.2,f.maxZ-f.minZ]}/>)}
-    {world.solids.filter(s=>s.id!=='mirror-actor-body').map(s=><mesh name={s.id} key={s.id} {...(s.id==='isolation-grate'?{ref:gate}:{})} geometry={resources.box}
+    <FacilityPlaque id="mirror" resources={resources} position={[0,2.65,.3]} yaw={Math.PI} width={1.5}/>
+    <FacilityPlaque id="practice" resources={resources} position={[-2.225,2.12,8.32]} yaw={Math.PI} width={1.05}/>
+    <FacilityPlaque id="winch" resources={resources} position={[-2.2,2.76,10.7]} yaw={Math.PI} width={.8}/>
+    <ambientLight intensity={.72}/><directionalLight intensity={1.55} position={[2,4,3]}/><directionalLight intensity={.32} position={[-3,3,18]}/>
+    {world.floors.map(f=><FacilityFloor key={f.id} resources={resources} x={(f.minX+f.maxX)/2} z={(f.minZ+f.maxZ)/2} width={f.maxX-f.minX} depth={f.maxZ-f.minZ}/>)}
+    {world.solids.filter(s=>!['mirror-actor-body','practice-bench-core','winch-core'].includes(s.id)).map(s=><mesh name={s.id} key={s.id} {...(s.id==='isolation-grate'?{ref:gate}:{})} geometry={resources.box}
       material={s.kind==='door'?resources.door:resources.wall} position={[(s.min.x+s.max.x)/2,(s.min.y+s.max.y)/2,(s.min.z+s.max.z)/2]}
       scale={[s.max.x-s.min.x,s.max.y-s.min.y,s.max.z-s.min.z]}/>)}
-    <group name="fixed-figure-ground" position={[FIGURE_CENTER.x,FIGURE_CENTER.y,FIGURE_CENTER.z]} rotation={[0,Math.PI,0]}>
-      <mesh geometry={resources.plane} material={resources.dark} scale={[3.1,2.2,1]}/>
+    <group name="fixed-figure-ground" position={[0,KEY_CENTER.y,FIGURE_CENTER.z]} rotation={[0,Math.PI,0]}>
+      <mesh geometry={resources.plane} material={resources.dark} scale={[1.6,1.02,1]}/>
       <mesh name="left-profile" geometry={shape} material={faceMaterial} position={[0,0,.02]}/>
       <mesh name="right-profile" geometry={shape} material={faceMaterial} position={[0,0,.02]} scale={[-1,1,1]}/>
     </group>
@@ -91,7 +94,7 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
       <mesh name="isolation-key-silhouette" geometry={keyShape} material={keyMaterial}/>
       <mesh name="isolation-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
     </group>
-    <group name="winch-key" ref={winchKey} visible={false} position={[WINCH_CENTER.x+.35,WINCH_CENTER.y+.12,WINCH_CENTER.z]} rotation={[0,Math.PI/2,0]}>
+    <group name="winch-key" ref={winchKey} visible={false} position={[WINCH_CENTER.x+.35,WINCH_CENTER.y-.65,WINCH_CENTER.z+.15]} rotation={[0,Math.PI/2,0]} scale={[.32,.32,.32]}>
       <mesh name="winch-key-silhouette" geometry={keyShape} material={keyMaterial}/>
       <mesh name="winch-key-knob" geometry={resources.box} material={resources.trim} position={[0,0,-.025]} scale={[.08,.09,.03]}/>
     </group>
@@ -116,6 +119,23 @@ export function StageScene({world,resources,runtime,renderOffscreen,onFrameError
     <mesh name="control-vestibule-sign" geometry={resources.box} material={resources.device} position={[-2.1,2.2,31.35]} scale={[.8,.25,.035]}/>
     <GalleryActor name="mirror-corridor-actor" runtime={runtime} resources={resources} reducedMotion={false} framePriority={-.4}
       actorSource={()=>{const raw=runtime.current.stageSession?.value;return isStageSession(raw)?raw.actor:undefined;}} onFrameError={onFrameError}/>
-    {world.interactables.filter(t=>t.id!=='mirror-corridor-figure'&&t.id!=='mirror-corridor-key'&&t.id!=='mirror-corridor-mirror'&&t.id!=='mirror-corridor-exit').map(t=><mesh key={t.id} name={t.id} geometry={resources.box} material={resources.device} position={[t.center.x,t.center.y,t.center.z]} scale={[.25,.25,.12]}/>)}
+    {[true,false].map(practice => <group key={String(practice)} position={[
+      practice ? PRACTICE_CENTER.x : WINCH_CENTER.x, practice ? PRACTICE_CENTER.y : WINCH_CENTER.y,
+      practice ? PRACTICE_CENTER.z : WINCH_CENTER.z]}>
+      <WinchModel resources={resources} practice={practice} state={() => {
+        const raw=runtime.current.stageSession?.value;
+        return isStageSession(raw) ? { holding:raw.holding===(practice?'practice':'winch'),
+          progress: practice ? raw.holdSeconds / .55 : raw.holdSeconds / 2, ratchets:raw.ratchets,
+          complete:practice?raw.practiced:raw.ratchets===3 } : {holding:false,progress:0,ratchets:0,complete:false};
+      }}/>
+    </group>)}
+    <Cable resources={resources} points={[
+      {x:WINCH_CENTER.x-.22,y:WINCH_CENTER.y+.93,z:WINCH_CENTER.z},
+      {x:-2.85,y:3.15,z:WINCH_CENTER.z},{x:-2.85,y:3.15,z:GATE_Z},
+      {x:0,y:3.15,z:GATE_Z},{x:0,y:3.45,z:GATE_Z},
+    ]}/>
+    <mesh name="winch-worklight" geometry={resources.art.beveled} material={resources.art.glow} position={[-2.7,2.8,10.8]} scale={[.12,.045,.62]}/>
+    <mesh name="practice-worklight" geometry={resources.art.beveled} material={resources.art.glow} position={[-2.88,2.45,7.5]} scale={[.08,.045,.42]}/>
+
   </group>;
 }

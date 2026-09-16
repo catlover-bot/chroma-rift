@@ -7,9 +7,9 @@ test('area-04 guidance follows key, safe practice, and settled winch progress', 
   let runtime = stageBinding.create();
   expect(stageBinding.present(runtime).objective).toContain('隔離キー');
   runtime = { ...runtime, pose: KEY_SAFE };
-  runtime = stageBinding.interact!(runtime, 'mirror-corridor-key');
-  expect(stageBinding.present(runtime)).toMatchObject({ objective: '淡い壁印の先で、練習レバーを保持する。',
-    hint: { text: '壁沿いの淡い印が練習レバーの方へ続く。' } });
+  runtime = stageBinding.interactResult!(runtime, 'mirror-corridor-key').runtime;
+  expect(stageBinding.present(runtime)).toMatchObject({ objective: '前室の練習レバーを一度保持する。',
+    hint: { text: '低い台の短い取っ手が練習用。本機へ進む前に一度試す。' } });
   runtime = { ...runtime, pose: { position: { x: -2, y: 1.6, z: 7.5 }, yaw: Math.PI, pitch: 0 } };
   runtime = stageBinding.hold!.start(runtime, 'mirror-corridor-practice');
   for (let frame = 0; frame < 36; frame += 1) runtime = stageBinding.advance(runtime, 1 / 60);

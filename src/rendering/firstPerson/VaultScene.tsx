@@ -1,3 +1,4 @@
+import { FacilityFloor, FacilityPlaque } from './FacilityDetails';
 /* eslint-disable react/no-unknown-property -- R3F Three.js intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
@@ -94,15 +95,17 @@ export function VaultScene({ world, runtime, resources, reducedMotion, onFrameEr
     } catch (error) { if (onFrameError) onFrameError(error); else throw error; }
   });
   return <group name="uncanny-vault" dispose={null}>
-    <ambientLight intensity={1.25} /><directionalLight intensity={1.1} position={[-1, 5, 3]} />
-    <Blocks name="vault-floors" blocks={floors} resources={resources} material={r.floor} />
+    <FacilityPlaque id="vault" resources={resources} position={[-1.15,3,3.49]} yaw={Math.PI} width={1.7}/>
+    <ambientLight intensity={.8} /><directionalLight intensity={1.55} position={[-1, 5, 3]} /><directionalLight intensity={.3} position={[4,3,26]}/>
+    <Blocks name="vault-floors" blocks={floors} resources={resources} material={resources.art.floor} />
+    {world.floors.map(f => <FacilityFloor key={f.id} resources={resources} x={(f.minX+f.maxX)/2} z={(f.minZ+f.maxZ)/2} width={f.maxX-f.minX} depth={f.maxZ-f.minZ}/>)}
     <Blocks name="vault-ceilings" blocks={ceilings} resources={resources} material={resources.ceiling} />
-    <Blocks name="vault-solid-walls-and-shelves" blocks={walls} resources={resources} material={r.wall} />
+    <Blocks name="vault-solid-walls-and-shelves" blocks={walls} resources={resources} material={resources.art.paint} />
     <Blocks name="vault-covered-inventory" blocks={rackBodies} resources={resources} material={r.cloth} />
-    <Blocks name="vault-distinct-shelf-endcaps" blocks={landmarkEnds} resources={resources} material={r.board} />
+    <Blocks name="vault-distinct-shelf-endcaps" blocks={landmarkEnds} resources={resources} material={resources.art.timber} />
     <Blocks name="vault-tall-wall-frame" blocks={tallFrame} resources={resources} material={r.guide} />
     <Blocks name="vault-floor-junctions-and-observation-area" blocks={floorBreaks} resources={resources} material={resources.quiet} />
-    <Blocks name="vault-shelf-ledges" blocks={rackFaces} resources={resources} material={r.rack} />
+    <Blocks name="vault-shelf-ledges" blocks={rackFaces} resources={resources} material={resources.art.metal} />
     <Blocks name="vault-physical-metal-floor" blocks={metal} resources={resources} material={r.rack} />
     <Blocks name="vault-work-lamps" blocks={lights} resources={resources} material={resources.neutral} />
     <Blocks name="vault-gate-frames" blocks={gateFrames} resources={resources} material={resources.trim} />

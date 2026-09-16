@@ -9,8 +9,8 @@ export const KEY_SAFE: PlayerPose = { position: { x: 0, y: 1.6, z: 2.5 }, yaw: M
 export const WINCH_SAFE: PlayerPose = { position: { x: -1.8, y: 1.6, z: 10 }, yaw: Math.PI, pitch: 0 };
 export const POST_GATE: PlayerPose = { position: { x: 0, y: 1.6, z: 19 }, yaw: Math.PI, pitch: 0 };
 export const EXIT: PlayerPose = { position: { x: 0, y: 1.6, z: 22.5 }, yaw: Math.PI, pitch: 0 };
-export const FIGURE_CENTER = { x: 0, y: 1.95, z: 0.4 } as const;
-export const KEY_CENTER = { x: 0, y: 1.35, z: 0.43 } as const;
+export const FIGURE_CENTER = { x: -.5, y: 1.6, z: 0.4 } as const;
+export const KEY_CENTER = { x: 0, y: 1.6, z: 0.43 } as const;
 export const PRACTICE_CENTER = { x: -2.45, y: 1.4, z: 7.5 } as const;
 export const WINCH_CENTER = { x: -2.45, y: 1.4, z: 11.3 } as const;
 // Beside the winch, in the same forward view while its hold pointer owns look.
@@ -32,14 +32,20 @@ const wall = (id: string, minX: number, maxX: number, minZ: number, maxZ: number
 
 /** One gate volume supplies the visible grate, collision and sight occlusion. */
 export function stageWorld(ratchets: number, keyTaken = false, practiced = false, holding: 'practice' | 'winch' | null = null,
-  actorPosition?: Vec3): WorldGeometry<TargetId> {
-  const gateY = grateY(ratchets);
+  actorPosition?: Vec3, gateLift = grateY(ratchets)): WorldGeometry<TargetId> {
+  const gateY = gateLift;
   return { chapterId: STAGE_ID, variant: 'entrance',
     floors: [{ id: 'main-corridor', minX: -3, maxX: 3, minZ: -3, maxZ: 24 },
       { id: 'short-shelter', minX: -4.7, maxX: -3, minZ: 9.4, maxZ: 12.7 }],
     solids: [wall('west-entry', -3.15, -3, -3, 9.4), wall('west-after-shelter', -3.15, -3, 12.7, 24),
+      wall('practice-screen', -1.6, -1.45, 6.5, 8.35),
+      wall('practice-north', -3, -1.45, 8.35, 8.5),
+      wall('practice-south-left', -3, -2.55, 6.35, 6.5),
+      wall('practice-south-right', -1.84, -1.45, 6.35, 6.5),
       wall('west-shelter', -4.85, -4.7, 9.4, 12.7), wall('shelter-south', -4.7, -3, 9.25, 9.4),
       wall('shelter-north', -4.7, -3, 12.7, 12.85),
+      { id:'practice-bench-core',min:{x:-2.85,y:.74,z:7.175},max:{x:-2.37,y:.89,z:7.825},kind:'wall',opaque:true },
+      { id:'winch-core',min:{x:-2.85,y:.05,z:10.975},max:{x:-2.37,y:1.33,z:11.625},kind:'wall',opaque:true },
       // Both ends remain passable; the central rack physically blocks a direct
       // line into the recess rather than granting a hidden safe-state flag.
       wall('shelter-rack', -3.4, -2.8, 10.35, 11.75), wall('east', 3, 3.15, -3, 24),

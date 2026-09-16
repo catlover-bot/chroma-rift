@@ -20,7 +20,7 @@ import { THEATRE_BELLS } from '../../domain/theatre/environment';
 import { attachNaturalRun, playNaturalArea } from '../../../test-support/naturalChapterRoute';
 import { createCheckpoint } from '../../domain/firstPerson';
 import type { CheckpointState } from '../../domain/firstPerson/types';
-import { EXIT } from '../../domain/stages/mirror-corridor-v1/definition';
+import { EXIT, FIGURE_CENTER, KEY_CENTER } from '../../domain/stages/mirror-corridor-v1/definition';
 import { OUTDOOR } from '../../domain/stages/departure-control-v1/definition';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../domain/stages/mirror-corridor-v1/checkpoint';
 import { parseStageCheckpoint as parseDepartureCheckpoint } from '../../domain/stages/departure-control-v1/checkpoint';
@@ -213,6 +213,9 @@ test.each([
   }
   if (cold) { expect(entryCount).toBe(15); expect(coldRestores).toBe(4);
     expect(reentries).toHaveLength(10); expect(coldTransitions).toHaveLength(4); }
+  const credits = await view.findByRole('button', { name: 'クレジットを表示' });
+  await fireEvent(credits, 'pressIn');
+  await fireEvent.press(credits);
   expect(await view.findByText('第一章「最後の退館者」 完')).toBeTruthy();
   expect(view.getByText(CHAPTER_ONE_COPY.containmentInstruction)).toBeTruthy();
   expect(view.getByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
@@ -226,6 +229,9 @@ test.each([
   expect(resumed.getByRole('button', { name: '第一章をはじめから' })).toBeTruthy();
   const completedRaw = await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY);
   await fireEvent.press(resumed.getByRole('button', { name: 'エンディングを見る' }));
+  const replayCredits = await resumed.findByRole('button', { name: 'クレジットを表示' });
+  await fireEvent(replayCredits, 'pressIn');
+  await fireEvent.press(replayCredits);
   expect(await resumed.findByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
   expect(resumed.queryByText(CHAPTER_ONE_COPY.containmentInstruction)).toBeNull();
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(completedRaw);
@@ -627,6 +633,9 @@ test('verified area-03 through area-05 host callbacks survive a cold exit before
   expect(await resumed.findByRole('button', { name: 'エンディングを見る' })).toBeTruthy();
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(completedRaw);
   await fireEvent.press(resumed.getByRole('button', { name: 'エンディングを見る' }));
+  const restoredCredits = await resumed.findByRole('button', { name: 'クレジットを表示' });
+  await fireEvent(restoredCredits, 'pressIn');
+  await fireEvent.press(restoredCredits);
   expect(await resumed.findByText(CHAPTER_ONE_COPY.containmentInstruction)).toBeTruthy();
   expect(await resumed.findByText(CHAPTER_ONE_COPY.attendanceIdentified)).toBeTruthy();
   await waitFor(async () => expect(JSON.parse((await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY))!).storyPresented)
@@ -662,14 +671,17 @@ test('area-04 render retries and a cold home continue retain the accepted isolat
   }
   controller.input.forward = 0;
   expect(controller.runtime.pose.position.z).toBeGreaterThan(-1.1);
-  let pose = controller.runtime.pose;
-  commandController(controller, { type: 'turn', yaw: Math.PI - pose.yaw, pitch: .1 - pose.pitch });
-  syncCamera(controller, camera);
+  const aimAt = (target: { x: number; y: number; z: number }) => {
+    const pose = controller.runtime.pose, dx = target.x - pose.position.x,
+      dy = target.y - pose.position.y, dz = target.z - pose.position.z;
+    commandController(controller, { type: 'turn', yaw: Math.atan2(-dx, -dz) - pose.yaw,
+      pitch: Math.atan2(dy, Math.hypot(dx, dz)) - pose.pitch });
+    syncCamera(controller, camera);
+  };
+  aimAt(FIGURE_CENTER);
   expect(controllerSnapshot(controller).target?.id).toBe('mirror-corridor-figure');
   expect(interactController(controller, 'mirror-corridor-figure')).toBe(true);
-  pose = controller.runtime.pose;
-  commandController(controller, { type: 'turn', yaw: Math.PI - pose.yaw, pitch: -.16 - pose.pitch });
-  syncCamera(controller, camera);
+  aimAt(KEY_CENTER);
   expect(controllerSnapshot(controller).target?.id).toBe('mirror-corridor-key');
   expect(interactController(controller, 'mirror-corridor-key')).toBe(true);
   await act(() => first.onSnapshot(controllerSnapshot(controller)));

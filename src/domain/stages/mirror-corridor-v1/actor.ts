@@ -76,7 +76,7 @@ function nearestPatrol(point: Vec3): number {
 export function advanceMirrorActor(session: StageSession, dt: number, options: { intensity: 'standard' | 'subdued'; movedDistance: number }): MirrorActorStep {
   const unchanged: MirrorActorStep = { session, caught: false, movedDistance: 0, footPlants: [], events: [], soundSources: [] };
   if (session.cleared || !Number.isFinite(dt) || dt <= 0) return unchanged;
-  const elapsed = Math.min(dt, .05), world = stageWorld(session.ratchets, session.keyTaken, session.practiced, session.holding);
+  const elapsed = Math.min(dt, .05), world = stageWorld(session.ratchets, session.keyTaken, session.practiced, session.holding, undefined, session.gateLift);
   const player = session.pose.position, events: MirrorActorStep['events'] = [], soundSources: Vec3[] = [];
   let actor: MirrorActor = { ...session.actor, phaseTime: session.actor.phaseTime + elapsed,
     startupGrace: Math.max(0, session.actor.startupGrace - elapsed), contactCooldown: Math.max(0, session.actor.contactCooldown - elapsed) };

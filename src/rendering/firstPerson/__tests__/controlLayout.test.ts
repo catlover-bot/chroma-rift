@@ -41,4 +41,12 @@ describe('safe-area scene control layout', () => {
     expect(left.action.left).toBe(large.color.left);
     expect(left.movement.left).toBe(large.look.left);
   });
+  it('reserves three enlarged lines for the actual long stage action labels', () => {
+    const layout = controlLayout(320, 548, 2);
+    expect(layout.action.height).toBeGreaterThanOrEqual(18 * 2 * 3 + 24);
+    expect(layout.action.top + layout.action.height).toBe(548 - 12);
+    expect(overlap(layout.look, layout.action)).toBe(false);
+    expect(overlap(layout.movement, layout.action)).toBe(false);
+    expect(controlLayout(320, 548, 1).action.height).toBe(64);
+  });
 });

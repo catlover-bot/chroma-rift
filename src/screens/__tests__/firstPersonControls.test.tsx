@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 import { FirstPersonCanvas, type FirstPersonCanvasProps } from '../../rendering/firstPerson/FirstPersonCanvas';
 import * as diagnostics from '../../rendering/firstPerson/diagnostics';
-import { advanceController, commandController, controllerSnapshot, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
+import { advanceController, commandController, controllerSnapshot, flushControllerPresentationFeedback, stopController, worldForController } from '../../rendering/firstPerson/runtimeController';
 import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING, DEFAULT_SETTINGS } from '../../types/application';
 import { FirstPersonScreen, type FirstPersonScreenProps } from '../FirstPersonScreen';
 import { createCheckpoint, MOVE_SPEED, VERTICAL_FOV, type InteractableId } from '../../domain/firstPerson';
@@ -38,6 +38,17 @@ async function frame() {
     const current = scene();
     advanceController(current.controller, 1 / 60, new THREE.PerspectiveCamera(65, 390 / 740, 0.08, 60));
     current.onSnapshot(controllerSnapshot(current.controller));
+  });
+}
+
+// This screen fixture explicitly accepts a presented snapshot; it does not
+// substitute a button press or a React render for the native frame boundary.
+async function presentAcceptedFrame() {
+  await act(() => {
+    expect(mockSubmittedFrame).toBe(true);
+    const current = scene();
+    current.onSnapshot(controllerSnapshot(current.controller));
+    flushControllerPresentationFeedback(current.controller);
   });
 }
 
@@ -74,7 +85,10 @@ async function approachEmblem(view: Awaited<ReturnType<typeof render>>, inspect 
   await walkTo(0, -6);
   await walkTo(1.6, -6);
   await aimAt('emblem-panel');
-  if (inspect) await fireEvent.press(view.getByRole('button', { name: '紋章を調べる' }));
+  if (inspect) {
+    await fireEvent.press(view.getByRole('button', { name: '紋章を調べる' }));
+    await presentAcceptedFrame();
+  }
 }
 
 describe('first-person control surface and lifecycle', () => {
@@ -174,6 +188,8 @@ describe('first-person control surface and lifecycle', () => {
     expect(controller.runtime.progress.sealA).toBe(false);
     expect(controller.input.forward).toBe(0);
     expect(controller.input.lookX).toBe(0);
+    expect(view.queryByText('色だけを外した。輪郭も、壁も変わっていない。')).toBeNull();
+    await presentAcceptedFrame();
     expect(view.getByText('色だけを外した。輪郭も、壁も変わっていない。')).toBeTruthy();
     expect(original.onCheckpoint).toHaveBeenCalledTimes(1);
     await fireEvent.press(view.getByRole('button', { name: '色を戻す' }));
@@ -436,6 +452,7 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent.press(view.getByRole('button', { name: GLYPH_LABELS[wrong] + 'の印を押す' }));
     expect(scene().controller.runtime.emblem.attempts).toBe(1);
     expect(scene().controller.runtime.progress.sealA).toBe(false);
+    await presentAcceptedFrame();
     expect(view.getByText('印は戻った。色ではなく、切れ目を確かめよう。')).toBeTruthy();
     await aimAt(`emblem-${answer}`);
     await fireEvent.press(view.getByRole('button', { name: GLYPH_LABELS[answer] + 'の印を押す' }));

@@ -1,3 +1,5 @@
+import { PhysicalBell } from './MechanicalDevices';
+import { FacilityFloor, FacilityPlaque } from './FacilityDetails';
 /* eslint-disable react/no-unknown-property -- R3F Three.js intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
@@ -95,9 +97,11 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
   });
   const source=opticalWorldPoint(lightSource(runtime.current.theatre?.rail??0));
   return <group name="shadow-theatre" dispose={null}>
-    <ambientLight intensity={1.15}/><directionalLight intensity={.8} position={[-2,5,1]}/>
-    <Blocks name="theatre-collider-architecture" blocks={architecture} resources={resources} material={t.wall}/>
-    <Blocks name="theatre-supported-floors" blocks={floors} resources={resources} material={t.floor}/>
+    <FacilityPlaque id="theatre" resources={resources} position={[-1.4,2.98,3.89]} yaw={Math.PI} width={1.7}/>
+    <ambientLight intensity={.75}/><directionalLight intensity={1.25} position={[-2,5,1]}/><directionalLight intensity={.3} position={[2,3,22]}/>
+    <Blocks name="theatre-collider-architecture" blocks={architecture} resources={resources} material={resources.art.paint}/>
+    <Blocks name="theatre-supported-floors" blocks={floors} resources={resources} material={resources.art.floor}/>
+    {world.floors.map(f => <FacilityFloor key={f.id} resources={resources} x={(f.minX+f.maxX)/2} z={(f.minZ+f.maxZ)/2} width={f.maxX-f.minX} depth={f.maxZ-f.minZ}/>)}
     <Blocks name="theatre-ceilings" blocks={ceilings} resources={resources} material={t.wall}/>
     <Blocks name="theatre-floor-cable-covers" blocks={cableCovers} resources={resources} material={t.dark}/>
     <Blocks name="theatre-emergency-practicals" blocks={practicalLights} resources={resources} material={t.amber}/>
@@ -108,11 +112,11 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
     {THEATRE_BELLS.map(bell=><group key={bell.instanceId} name={bell.instanceId}>
       <group name={`${bell.instanceId}-panel`} position={[bell.fixture.center.x,bell.fixture.center.y,bell.fixture.center.z]} rotation={[0,Math.atan2(bell.fixture.normal.x,bell.fixture.normal.z),0]}>
         <mesh geometry={resources.box} material={t.dark} scale={[.47,.53,.075]}/>
-        <mesh geometry={resources.ring} material={t.amber} position={[0,-.04,-.055]} scale={[.38,.38,1]}/>
+        <group position={[0,-.04,-.065]} rotation={[Math.PI/2,0,0]}><PhysicalBell resources={resources} name={`${bell.instanceId}-push-bell`}/></group>
         {Array.from({length:bell.number},(_,i)=><mesh key={i} geometry={resources.box} material={t.label} position={[(i-(bell.number-1)/2)*.09,.16,-.055]} scale={[.035,.13,.012]}/>)}
       </group>
       <group name={`${bell.instanceId}-receiver`} position={[bell.receiver.x,bell.receiver.y,bell.receiver.z]}>
-        <mesh geometry={resources.box} material={t.metal} scale={[.24,.30,.20]}/>
+        <mesh geometry={resources.art.bell} material={resources.art.brass} rotation={[Math.PI/2,0,0]} scale={[.7,.7,.7]}/>
         <mesh ref={mesh=>{bellIndicators.current[bell.instanceId]=mesh;}} geometry={resources.box} material={t.dark} position={[0,.11,-.11]} scale={[.13,.06,.02]}/>
         {Array.from({length:bell.number},(_,i)=><mesh key={i} geometry={resources.box} material={t.label} position={[(i-(bell.number-1)/2)*.09,-.04,-.11]} scale={[.035,.11,.02]}/>)}
       </group>

@@ -79,6 +79,16 @@ export function advanceContainmentActor(session: StageSession, dt: number,
   const unchanged: ContainmentActorStep = { session, caught: false, movedDistance: 0, footPlants: [], events: [], soundSources: [] };
   if (session.cleared || session.stopped || !Number.isFinite(dt) || dt <= 0) return unchanged;
   const elapsed = Math.min(dt, .05), world = stageWorld(session.doorProgress, session.staffDoorOpened);
+  if (session.isolated) {
+    // Confirmed isolation ends perception and pursuit. The same body settles
+    // inside its real enclosure; no player location enters this quiet pose.
+    const settled = advanceActorMotion(session.actor.motion, {
+      maxSpeed: 0, gait: 'recover', lookTarget: { x: BELL_RECEIVER.x, y: 1.6, z: 15 },
+    }, elapsed, (from, to) => vaultActorEdgeOpen(from, to, world));
+    return { ...unchanged, session: { ...session, noise: undefined, footstepDistance: 0,
+      actor: { ...session.actor, motion: settled.state, phase: 'investigate', recognition: 0,
+        searchSeconds: 0, phaseTime: session.actor.phaseTime + elapsed } } };
+  }
   const player = session.pose.position, events: ContainmentActorStep['events'] = [], soundSources: Vec3[] = [];
   let actor: ContainmentActor = { ...session.actor, phaseTime: session.actor.phaseTime + elapsed,
     startupGrace: Math.max(0, session.actor.startupGrace - elapsed),

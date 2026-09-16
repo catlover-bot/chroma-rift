@@ -29,8 +29,10 @@ it('adjusts independent audio preferences without changing visual or accessibili
   expect(view.getAllByText(/音の再生には新しいDevelopment Build/)).toHaveLength(1);
   await fireEvent(view.getByRole('switch', { name: 'サウンド' }), 'valueChange', false);
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, enabled: false } });
-  await fireEvent.press(view.getByText('環境音 25%'));
+  await fireEvent.press(view.getByText('音楽 25%'));
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, musicVolume: 0.25 } });
+  await fireEvent.press(view.getByText('環境音 25%'));
+  expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, environmentVolume: 0.25 } });
   await fireEvent(view.getByRole('switch', { name: '演出音' }), 'valueChange', false);
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, illusionEnabled: false } });
   await fireEvent.press(view.getByText('効果音 0%'));

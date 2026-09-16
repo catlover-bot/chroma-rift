@@ -1,3 +1,6 @@
+import { createFacilitySign } from './facilitySigns';
+import type { FacilitySignId } from './facilitySignData';
+import { createEnvironmentArtResources } from './environmentArtResources';
 import { createTheatreResources } from './theatreResources';
 import { createVaultResources } from './vaultResources';
 import * as THREE from 'three';
@@ -10,22 +13,24 @@ import { createEmblemSurface, DEFAULT_EMBLEM_APPEARANCE, type EmblemAppearance }
 
 /** Explicitly owned by one scene mount; no geometries or materials are made in useFrame. */
 export function createSceneResources(lowQuality: boolean, emblemAppearance: EmblemAppearance | null = DEFAULT_EMBLEM_APPEARANCE, gallery = false, vault = false, theatre = false) {
+  const art = createEnvironmentArtResources(lowQuality);
+  const facilitySigns = new Map<FacilitySignId, ReturnType<typeof createFacilitySign>>();
   const destinationSigns = new Map<DestinationSignId, ReturnType<typeof createDestinationSign>>();
   const theatreResources = theatre ? createTheatreResources() : undefined;
   const vaultResources = vault ? createVaultResources() : undefined;
-  const galleryResources = gallery ? createGalleryResources() : undefined;
+  const galleryResources = gallery ? createGalleryResources(lowQuality) : undefined;
   const emblemSurface = emblemAppearance ? createEmblemSurface(lowQuality ? 256 : 512, emblemAppearance) : undefined;
   const box = new THREE.BoxGeometry(1, 1, 1);
   const plane = new THREE.PlaneGeometry(1, 1);
   const cylinder = new THREE.CylinderGeometry(1, 1, 1, lowQuality ? 5 : 8);
   const ring = new THREE.RingGeometry(0.34, 0.39, lowQuality ? 24 : 48);
   const basic = (color: string) => new THREE.MeshBasicMaterial({ color, fog: false, toneMapped: false });
-  const wall = new THREE.MeshLambertMaterial({ color: '#87938B', flatShading: true });
-  const floor = new THREE.MeshLambertMaterial({ color: '#52645D', flatShading: true });
-  const door = new THREE.MeshLambertMaterial({ color: '#344A42', flatShading: true });
+  const wall = art.paint;
+  const floor = art.floor;
+  const door = art.enamel;
   const ceiling = new THREE.MeshLambertMaterial({ color: '#6B7B70', flatShading: true });
-  const trim = new THREE.MeshLambertMaterial({ color: '#465C50', flatShading: true });
-  const device = new THREE.MeshLambertMaterial({ color: '#D0CDBB', flatShading: true });
+  const trim = art.metal;
+  const device = art.enamel;
   const neutral = basic('#E0DDC9');
   const quiet = basic('#899993');
   const dark = basic('#293B39');
@@ -57,20 +62,27 @@ export function createSceneResources(lowQuality: boolean, emblemAppearance: Embl
   };
   updatePalette('neutral', false, 'medium');
   return {
-    theatreResources, vaultResources, galleryResources, box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
+    art, theatreResources, vaultResources, galleryResources, box, plane, cylinder, ring, wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel, texture, updatePalette, emblemSurface,
+    facilitySign(id: FacilitySignId) {
+      let sign = facilitySigns.get(id);
+      if (!sign) { sign = createFacilitySign(id); facilitySigns.set(id, sign); }
+      return sign.material;
+    },
     destinationSign(id: DestinationSignId) {
       let sign = destinationSigns.get(id);
       if (!sign) { sign = createDestinationSign(id); destinationSigns.set(id, sign); }
       return sign.material;
     },
     dispose() {
+      art.dispose();
+      facilitySigns.forEach(sign => sign.dispose()); facilitySigns.clear();
       destinationSigns.forEach(sign => sign.dispose()); destinationSigns.clear();
       emblemSurface?.dispose();
       galleryResources?.dispose();
       vaultResources?.dispose();
       theatreResources?.dispose();
       box.dispose(); plane.dispose(); cylinder.dispose(); ring.dispose(); texture.dispose();
-      [wall, floor, door, ceiling, trim, device, neutral, quiet, dark, key, panel].forEach((material) => material.dispose());
+      [ceiling, neutral, quiet, dark, key, panel].forEach((material) => material.dispose());
     },
   };
 }

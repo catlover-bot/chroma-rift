@@ -21,7 +21,12 @@ export function createTouchAdapter(input: FirstPersonInput, enabled = true, sess
       return (event: NativeTouchBatch): void => {
         if (!active || token !== generation) return;
         const changed = Array.isArray(event.changedTouches) ? event.changedTouches.filter((point) => point && validPointer(point.identifier)) : [];
-        if (input.releaseBarrier.length) {
+        if (input.releaseBarrierMode === 'owners') {
+          if (phase === 'end' || phase === 'cancel') for (const point of changed)
+            if (input.releaseBarrier.includes(point.identifier)) endPointer(input, point.identifier);
+          if (Array.isArray(event.touches)) observeReleaseBarrier(input, event.touches.filter(point => point && validPointer(point.identifier)).map(point => point.identifier));
+        }
+        if (input.releaseBarrier.length && input.releaseBarrierMode === 'all') {
           if (Array.isArray(event.touches)) observeReleaseBarrier(input, event.touches.filter(point => point && validPointer(point.identifier)).map(point => point.identifier));
           else if (phase === 'start') observeReleaseBarrier(input, [...input.releaseBarrier, ...changed.map(point => point.identifier)]);
           if (phase === 'end' || phase === 'cancel') for (const point of changed) endPointer(input, point.identifier);

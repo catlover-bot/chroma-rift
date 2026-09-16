@@ -19,7 +19,9 @@ export function controlLayout(width: number, height: number, fontScale = 1, hand
   const pauseWidth = 48;
   const pauseHeight = 48;
   const headerBottom = Math.min(height * 0.32, Math.max(82, 50 * scale + 28));
-  const actionHeight = Math.max(64, 40 * scale + 24);
+  // Authored stage labels wrap to three lines on a narrow screen with enlarged
+  // text. Reserve their line height and padding in the shared HUD/touch layout.
+  const actionHeight = Math.max(64, 40 * scale + 24, scale > 1 ? 18 * scale * 3 + 24 : 0);
   const colorHeight = Math.max(48, 40 * scale + 12);
   const railTop = height - margin - actionHeight;
   const dragBottom = railTop - 12;

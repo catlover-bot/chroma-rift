@@ -151,8 +151,8 @@ test('standard patrol capture cancels a held winch without losing its key or set
     }
     throw new Error(`Recovered route blocked before ${x},${z}`);
   };
-  walkTo(-1.8, 8.5);
-  walkTo(0, 8.5);
+  walkTo(-1.8, 9.1);
+  walkTo(0, 9.1);
   walkTo(0, 22.5);
   const pose = resumed.runtime.pose;
   commandController(resumed, { type: 'turn', yaw: Math.PI - pose.yaw, pitch: -.06 - pose.pitch });

@@ -5,6 +5,7 @@ import { SPAWN, STAGE_ID, stageWorld, type TargetId } from './definition';
 import { advanceStage, cancelStageHold, checkpointStage, commandStage, createStageSession, isStageSession, type StageCommand, type StageSession } from './session';
 import { parseStageCheckpoint } from './checkpoint';
 import { advanceMirrorActor } from './actor';
+import { selectMirrorAction, selectMirrorPresentation } from './selectors';
 
 const record=(value:unknown):value is Record<string,unknown>=>typeof value==='object'&&value!==null&&!Array.isArray(value);
 function session(runtime:ChapterRuntime):StageSession|undefined {
@@ -13,7 +14,7 @@ function session(runtime:ChapterRuntime):StageSession|undefined {
 }
 function holdMessage(action:'start'|'release',targetId:InteractableId):string {
   if(targetId==='mirror-corridor-winch')return action==='start'?'隔離キーを差し、レバーを保持する。':'隔離キーを戻した。確定した歯止めは残る。';
-  return action==='start'?'練習レバーを保持する。':'練習を終えた。';
+  return action==='start'?'練習レバーを保持する。':'練習レバーを離した。';
 }
 function create(checkpoint?:CheckpointState,number?:number):ChapterRuntime {
   if(checkpoint&&checkpoint.chapterId!==STAGE_ID)throw new RangeError('Foreign stage checkpoint');
@@ -25,27 +26,32 @@ function command(runtime:ChapterRuntime,packet:StageCommand,context:{rendererRea
   const live=session(runtime);
   if(!live||runtime.paused||!context.rendererReady||!context.foreground||context.targetId!==packet.targetId)return {runtime,accepted:false,stopInput:false,message:''};
   const result=commandStage({...live,pose:runtime.pose},packet);
-  const message = result.accepted ? packet.type === 'inspect' ? packet.targetId === 'mirror-corridor-mirror'
-    ? '鏡には背後の通路が映る。' : '顔と顔の間にも、輪郭がある。' : packet.type === 'take-key' ? '隔離キーを取った。' : packet.type === 'start-hold' ? holdMessage('start',packet.targetId) : packet.type === 'release-hold' ? holdMessage('release',packet.targetId) : '制御室への前室へ進む。'
-    : result.reason === 'tooFar' ? '近づいてから操作する。' : result.reason === 'prerequisiteMissing' ? '隔離キーと練習を確認する。' : '';
+  const message = result.accepted ? packet.type === 'inspect' ? selectMirrorAction(result.session, packet.targetId).message
+    : packet.type === 'take-key' ? '隔離キーを取った。前室の練習レバーへ。' : packet.type === 'start-hold' ? holdMessage('start',packet.targetId) : packet.type === 'release-hold' ? holdMessage('release',packet.targetId) : '制御室への前室へ進む。'
+    : result.reason === 'tooFar' ? '近づいてから操作する。' : selectMirrorAction(live, packet.targetId).message;
   return {runtime:{...runtime,progress:{...runtime.progress,cleared:result.session.cleared},stageSession:{stageId:STAGE_ID,value:result.session}},accepted:result.accepted,stopInput:false,message};
 }
 export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
   id:STAGE_ID,create,
   advance:(runtime,dt)=>{const live=session(runtime);return live?{...runtime,stageSession:{stageId:STAGE_ID,value:advanceStage({...live,pose:{...runtime.pose,position:{...runtime.pose.position}}},dt)}}:runtime;},
   world:runtime=>stageWorld(session(runtime)?.ratchets??0,session(runtime)?.keyTaken??false,session(runtime)?.practiced??false,session(runtime)?.holding??null,
-    session(runtime)?.actor.motion.position),
-  present:runtime=>{const live=session(runtime);return {objective:live?.cleared?'制御室への前室に着いた。':!live?.keyTaken?'隔離キーを取り、巻き上げ位置へ進む。':!live.practiced?'淡い壁印の先で、練習レバーを保持する。':live.ratchets<3?`レバーを保持し、格子を巻き上げる。歯止め ${live.ratchets}/3。`:'開いた格子の先へ進む。',hint:{text:!live?.keyTaken?'中央の鍵形を狙える。':!live.practiced?'壁沿いの淡い印が練習レバーの方へ続く。':'歯止めは離しても残る。'}};},
-  command,
-  interact:(runtime,targetId:InteractableId)=>{
-    const live=session(runtime);if(!live)return runtime;
+    session(runtime)?.actor.motion.position,session(runtime)?.gateLift),
+  present:runtime=>{const live=session(runtime);return live?selectMirrorPresentation(live):{objective:'鏡の回廊を確かめる。',hint:{text:''}};},
+  targetPresentation:(runtime,targetId)=>{
+    const live=session(runtime);if(!live)return;
     const target=stageWorld(live.ratchets,live.keyTaken,live.practiced,live.holding).interactables.find(item=>item.id===targetId);
-    if(!target)return runtime;
-    if(target.id==='mirror-corridor-practice'||target.id==='mirror-corridor-winch')return runtime;
+    return target?selectMirrorAction({...live,pose:runtime.pose},target.id):undefined;
+  },
+  command,
+  interactResult:(runtime,targetId:InteractableId)=>{
+    const live=session(runtime);if(!live)return {runtime,message:''};
+    const target=stageWorld(live.ratchets,live.keyTaken,live.practiced,live.holding).interactables.find(item=>item.id===targetId);
+    if(!target)return {runtime,message:''};
+    if(target.id==='mirror-corridor-practice'||target.id==='mirror-corridor-winch')return {runtime,message:selectMirrorAction(live,target.id).message};
     const type:StageCommand['type']=target.id==='mirror-corridor-figure'||target.id==='mirror-corridor-mirror'?'inspect':target.id==='mirror-corridor-key'?'take-key':'exit';
     const packet:StageCommand={sessionId:live.sessionId,seq:live.lastSeq+1,targetId:target.id as TargetId,type};
     const result=command(runtime,packet,{rendererReady:true,foreground:true,targetId:target.id});
-    return result.accepted?result.runtime:runtime;
+    return {runtime:result.accepted?result.runtime:runtime,message:result.message};
   },
   hold:{
     targets:['mirror-corridor-practice','mirror-corridor-winch'],
