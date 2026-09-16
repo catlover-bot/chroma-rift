@@ -1,0 +1,97 @@
+{
+  "repository": "https://github.com/sgossner/VSCO-2-CE",
+  "sourceCommit": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+  "licenseUrl": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/LICENSE",
+  "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+  "acquiredDate": "2026-09-16",
+  "samples": [
+    {
+      "id": "piano_low",
+      "repositoryPath": "Keys/Upright Piano/Player_dyn1_rr1_014.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Piano/Player_dyn1_rr1_014.wav",
+      "rootMidi": 49,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 2270980,
+      "sha256": "f3d00b63bb178680fdd4d9ed7ea43d1df1cf29e00b567ccb022c2bd411a20607",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "piano_mid",
+      "repositoryPath": "Keys/Upright Piano/Player_dyn1_rr1_020.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Piano/Player_dyn1_rr1_020.wav",
+      "rootMidi": 61,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 3134164,
+      "sha256": "08242e8d1c865c8cdc794cc7921d3d9663bedb5a12bfefe0de13aaa86fd23133",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "piano_high",
+      "repositoryPath": "Keys/Upright Piano/Player_dyn1_rr1_024.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Piano/Player_dyn1_rr1_024.wav",
+      "rootMidi": 69,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 2222998,
+      "sha256": "916c3ec2d61fb421e74fb4866ef75d3ef17e9d88e9dc858da24159846489d33f",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "cello_low",
+      "repositoryPath": "Strings/Cello Section/susvib/susvib_C1_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_C1_v1_1.wav",
+      "rootMidi": 36,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 2347376,
+      "sha256": "abdcea431f384e135c469b0f3e4ac2a437f282f521dc5bcbe22abc221536e8de",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "cello_mid",
+      "repositoryPath": "Strings/Cello Section/susvib/susvib_D2_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_D2_v1_1.wav",
+      "rootMidi": 50,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 2550956,
+      "sha256": "e8640dec9febc6e39fcf06b19d2c95a85d5ff8c38f13c9879e69f551eaf38ab8",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "pizz",
+      "repositoryPath": "Strings/Cello Section/pizzT/pizzT_C1_v1_RR1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/pizzT/pizzT_C1_v1_RR1.wav",
+      "rootMidi": 36,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 829634,
+      "sha256": "9032689650e38cb7a967616d15f3434bd52865637200e785bf89c3a1a88b29ce",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "harp",
+      "repositoryPath": "Strings/Harp/KSHarp_D4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D4_mf.wav",
+      "rootMidi": 62,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 1921690,
+      "sha256": "ebfde8aab4411019e37e3426f4dd88d6a52a38c2d0261d7f10ec63d8ff584dc7",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    },
+    {
+      "id": "metal",
+      "repositoryPath": "Percussion/Glock/glock_medium_C5.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Glock/glock_medium_C5.wav",
+      "rootMidi": 72,
+      "rootNoteEvidence": "SFZ branch mapping at 6dd651d55dde97fd4028699be9d4481f26917891",
+      "bytes": 1271310,
+      "sha256": "635f898e0bcb6975b96b18efd9c896f6f1b97ff12174a339ada4814e49675660",
+      "license": "CC0-1.0",
+      "originalCreators": "Sam Gossner / Versilian Studios and Simon Dalzell / Ivy Audio; sample editing Elan Hickler / Soundemote"
+    }
+  ]
+}

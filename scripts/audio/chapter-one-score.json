@@ -1,0 +1,2331 @@
+{
+  "schemaVersion": 1,
+  "title": "CHROMA RIFT — 最後の退館者",
+  "composition": "Original Goal014 composition; no borrowed melody, MIDI or musical loops.",
+  "theme": {
+    "midi": [
+      62,
+      69,
+      64,
+      65
+    ],
+    "notes": [
+      "D4",
+      "A4",
+      "E4",
+      "F4"
+    ],
+    "endingAnswer": [
+      62,
+      69,
+      66,
+      62
+    ]
+  },
+  "render": {
+    "sampleRate": 44100,
+    "channels": 2,
+    "targetIntegratedLufs": -22,
+    "truePeakCeilingDbtp": -2,
+    "sampleSet": "instrument-sources.json",
+    "reverb": "offline short asymmetric tapped room; no phase-sensitive runtime stems"
+  },
+  "artisticListeningVerified": false,
+  "tracks": {
+    "title_theme": {
+      "bpm": 72,
+      "durationSeconds": 54,
+      "meter": "4/4",
+      "form": "A: solo call / A2: cello answer / B: displaced harmony / A3: thinning return",
+      "phraseRestBars": [
+        3,
+        7,
+        11,
+        15
+      ],
+      "notes": [
+        {
+          "instrument": "piano",
+          "beat": 0,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.6,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 1.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.486,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 3,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.54,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 5.25,
+          "midi": 65,
+          "durationBeats": 1.4,
+          "velocity": 0.45599999999999996,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 8,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.53,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 9.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.42930000000000007,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 11,
+          "midi": 65,
+          "durationBeats": 1.7,
+          "velocity": 0.47700000000000004,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 13.25,
+          "midi": 64,
+          "durationBeats": 1.4,
+          "velocity": 0.40280000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 16,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.64,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 16.35,
+          "midi": 41,
+          "durationBeats": 5,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 17.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.5184000000000001,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 19,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.5760000000000001,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 21.25,
+          "midi": 65,
+          "durationBeats": 1.4,
+          "velocity": 0.4864,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 24,
+          "midi": 60,
+          "durationBeats": 1.3,
+          "velocity": 0.52,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 24.35,
+          "midi": 36,
+          "durationBeats": 5,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 25.5,
+          "midi": 67,
+          "durationBeats": 1.2,
+          "velocity": 0.4212,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 27,
+          "midi": 62,
+          "durationBeats": 1.7,
+          "velocity": 0.468,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 27.75,
+          "midi": 60,
+          "durationBeats": 2,
+          "velocity": 0.25,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 29.25,
+          "midi": 64,
+          "durationBeats": 1.4,
+          "velocity": 0.3952,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 32,
+          "midi": 65,
+          "durationBeats": 1.3,
+          "velocity": 0.53,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 32.35,
+          "midi": 34,
+          "durationBeats": 5,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 33.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.42930000000000007,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 35,
+          "midi": 67,
+          "durationBeats": 1.7,
+          "velocity": 0.47700000000000004,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 37.25,
+          "midi": 62,
+          "durationBeats": 1.4,
+          "velocity": 0.40280000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 40,
+          "midi": 64,
+          "durationBeats": 1.3,
+          "velocity": 0.47,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 40.35,
+          "midi": 36,
+          "durationBeats": 5,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 41.5,
+          "midi": 67,
+          "durationBeats": 1.2,
+          "velocity": 0.3807,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 43,
+          "midi": 62,
+          "durationBeats": 1.7,
+          "velocity": 0.423,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 43.75,
+          "midi": 60,
+          "durationBeats": 2,
+          "velocity": 0.25,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 45.25,
+          "midi": 60,
+          "durationBeats": 1.4,
+          "velocity": 0.35719999999999996,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 48,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.51,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 48.35,
+          "midi": 38,
+          "durationBeats": 5,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 49.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.4131,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 51,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.459,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 51.75,
+          "midi": 62,
+          "durationBeats": 2,
+          "velocity": 0.25,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 53.25,
+          "midi": 65,
+          "durationBeats": 1.4,
+          "velocity": 0.3876,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 56,
+          "midi": 74,
+          "durationBeats": 3,
+          "velocity": 0.12,
+          "pan": 0.12
+        }
+      ]
+    },
+    "exploration": {
+      "bpm": 56,
+      "durationSeconds": 88,
+      "meter": "4/4",
+      "form": "Five rooms: statement / plucked answer / high fragment / open fifth / tonic rest",
+      "phraseRestBars": [
+        3,
+        7,
+        11,
+        15,
+        19
+      ],
+      "notes": [
+        {
+          "instrument": "cello",
+          "beat": 0.2,
+          "midi": 38,
+          "durationBeats": 5.5,
+          "velocity": 0.23,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 1,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.4,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 2.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.32400000000000007,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 4,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.36000000000000004,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 6.25,
+          "midi": 65,
+          "durationBeats": 1.4,
+          "velocity": 0.30400000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 8,
+          "midi": 38,
+          "durationBeats": 1,
+          "velocity": 0.2,
+          "pan": -0.1
+        },
+        {
+          "instrument": "harp",
+          "beat": 9.5,
+          "midi": 57,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.15
+        },
+        {
+          "instrument": "metal",
+          "beat": 10.5,
+          "midi": 76,
+          "durationBeats": 1.5,
+          "velocity": 0.075,
+          "pan": 0.1
+        },
+        {
+          "instrument": "cello",
+          "beat": 16.2,
+          "midi": 34,
+          "durationBeats": 5.5,
+          "velocity": 0.23,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 17,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.4,
+          "pan": 0.18
+        },
+        {
+          "instrument": "harp",
+          "beat": 18.5,
+          "midi": 65,
+          "durationBeats": 1.2,
+          "velocity": 0.32400000000000007,
+          "pan": 0.18
+        },
+        {
+          "instrument": "harp",
+          "beat": 20,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.36000000000000004,
+          "pan": 0.18
+        },
+        {
+          "instrument": "harp",
+          "beat": 22.25,
+          "midi": 69,
+          "durationBeats": 1.4,
+          "velocity": 0.30400000000000005,
+          "pan": 0.18
+        },
+        {
+          "instrument": "pizz",
+          "beat": 24,
+          "midi": 34,
+          "durationBeats": 1,
+          "velocity": 0.2,
+          "pan": -0.1
+        },
+        {
+          "instrument": "harp",
+          "beat": 25.5,
+          "midi": 53,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.15
+        },
+        {
+          "instrument": "cello",
+          "beat": 32.2,
+          "midi": 41,
+          "durationBeats": 5.5,
+          "velocity": 0.23,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 33,
+          "midi": 65,
+          "durationBeats": 1.3,
+          "velocity": 0.4,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 34.5,
+          "midi": 72,
+          "durationBeats": 1.2,
+          "velocity": 0.32400000000000007,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 36,
+          "midi": 67,
+          "durationBeats": 1.7,
+          "velocity": 0.36000000000000004,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 38.25,
+          "midi": 69,
+          "durationBeats": 1.4,
+          "velocity": 0.30400000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 40,
+          "midi": 41,
+          "durationBeats": 1,
+          "velocity": 0.2,
+          "pan": -0.1
+        },
+        {
+          "instrument": "harp",
+          "beat": 41.5,
+          "midi": 60,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.15
+        },
+        {
+          "instrument": "metal",
+          "beat": 42.5,
+          "midi": 79,
+          "durationBeats": 1.5,
+          "velocity": 0.075,
+          "pan": 0.1
+        },
+        {
+          "instrument": "cello",
+          "beat": 48.2,
+          "midi": 36,
+          "durationBeats": 5.5,
+          "velocity": 0.23,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 49,
+          "midi": 60,
+          "durationBeats": 1.3,
+          "velocity": 0.4,
+          "pan": 0.18
+        },
+        {
+          "instrument": "harp",
+          "beat": 50.5,
+          "midi": 67,
+          "durationBeats": 1.2,
+          "velocity": 0.32400000000000007,
+          "pan": 0.18
+        },
+        {
+          "instrument": "harp",
+          "beat": 52,
+          "midi": 62,
+          "durationBeats": 1.7,
+          "velocity": 0.36000000000000004,
+          "pan": 0.18
+        },
+        {
+          "instrument": "harp",
+          "beat": 54.25,
+          "midi": 65,
+          "durationBeats": 1.4,
+          "velocity": 0.30400000000000005,
+          "pan": 0.18
+        },
+        {
+          "instrument": "pizz",
+          "beat": 56,
+          "midi": 36,
+          "durationBeats": 1,
+          "velocity": 0.2,
+          "pan": -0.1
+        },
+        {
+          "instrument": "harp",
+          "beat": 57.5,
+          "midi": 55,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.15
+        },
+        {
+          "instrument": "cello",
+          "beat": 64.2,
+          "midi": 38,
+          "durationBeats": 5.5,
+          "velocity": 0.23,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 65,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.4,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 66.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.32400000000000007,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 68,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.36000000000000004,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 70.25,
+          "midi": 62,
+          "durationBeats": 1.4,
+          "velocity": 0.30400000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 72,
+          "midi": 38,
+          "durationBeats": 1,
+          "velocity": 0.2,
+          "pan": -0.1
+        },
+        {
+          "instrument": "harp",
+          "beat": 73.5,
+          "midi": 57,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.15
+        },
+        {
+          "instrument": "metal",
+          "beat": 74.5,
+          "midi": 76,
+          "durationBeats": 1.5,
+          "velocity": 0.075,
+          "pan": 0.1
+        }
+      ]
+    },
+    "suspicion": {
+      "bpm": 54,
+      "durationSeconds": 56,
+      "meter": "3/4",
+      "form": "Four three-beat phrases: question / semitone shadow / metal echo / withdrawal",
+      "phraseRestBars": [
+        3,
+        7,
+        11,
+        15
+      ],
+      "notes": [
+        {
+          "instrument": "cello",
+          "beat": 0,
+          "midi": 38,
+          "durationBeats": 4.8,
+          "velocity": 0.28,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 0.5,
+          "midi": 38,
+          "durationBeats": 0.55,
+          "velocity": 0.31,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 1.0,
+          "midi": 62,
+          "durationBeats": 1.105,
+          "velocity": 0.3,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 2,
+          "midi": 45,
+          "durationBeats": 0.55,
+          "velocity": 0.335,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 2.275,
+          "midi": 69,
+          "durationBeats": 1.02,
+          "velocity": 0.243,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 3.55,
+          "midi": 64,
+          "durationBeats": 1.4449999999999998,
+          "velocity": 0.27,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 4.5,
+          "midi": 40,
+          "durationBeats": 0.55,
+          "velocity": 0.36,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 5.4625,
+          "midi": 65,
+          "durationBeats": 1.19,
+          "velocity": 0.22799999999999998,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 7,
+          "midi": 41,
+          "durationBeats": 0.55,
+          "velocity": 0.385,
+          "pan": -0.08
+        },
+        {
+          "instrument": "cello",
+          "beat": 12,
+          "midi": 39,
+          "durationBeats": 4.8,
+          "velocity": 0.28,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 12.5,
+          "midi": 38,
+          "durationBeats": 0.55,
+          "velocity": 0.31,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 13.0,
+          "midi": 62,
+          "durationBeats": 1.105,
+          "velocity": 0.3,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 14,
+          "midi": 45,
+          "durationBeats": 0.55,
+          "velocity": 0.335,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 14.275,
+          "midi": 69,
+          "durationBeats": 1.02,
+          "velocity": 0.243,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 15.55,
+          "midi": 63,
+          "durationBeats": 1.4449999999999998,
+          "velocity": 0.27,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 16.5,
+          "midi": 40,
+          "durationBeats": 0.55,
+          "velocity": 0.36,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 17.4625,
+          "midi": 65,
+          "durationBeats": 1.19,
+          "velocity": 0.22799999999999998,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 19,
+          "midi": 41,
+          "durationBeats": 0.55,
+          "velocity": 0.385,
+          "pan": -0.08
+        },
+        {
+          "instrument": "cello",
+          "beat": 24,
+          "midi": 38,
+          "durationBeats": 4.8,
+          "velocity": 0.28,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 24.5,
+          "midi": 50,
+          "durationBeats": 0.55,
+          "velocity": 0.31,
+          "pan": -0.08
+        },
+        {
+          "instrument": "metal",
+          "beat": 25.0,
+          "midi": 62,
+          "durationBeats": 1.105,
+          "velocity": 0.3,
+          "pan": 0.18
+        },
+        {
+          "instrument": "pizz",
+          "beat": 26,
+          "midi": 57,
+          "durationBeats": 0.55,
+          "velocity": 0.335,
+          "pan": -0.08
+        },
+        {
+          "instrument": "metal",
+          "beat": 26.275,
+          "midi": 69,
+          "durationBeats": 1.02,
+          "velocity": 0.243,
+          "pan": 0.18
+        },
+        {
+          "instrument": "metal",
+          "beat": 27.55,
+          "midi": 64,
+          "durationBeats": 1.4449999999999998,
+          "velocity": 0.27,
+          "pan": 0.18
+        },
+        {
+          "instrument": "pizz",
+          "beat": 28.5,
+          "midi": 52,
+          "durationBeats": 0.55,
+          "velocity": 0.36,
+          "pan": -0.08
+        },
+        {
+          "instrument": "metal",
+          "beat": 29.4625,
+          "midi": 65,
+          "durationBeats": 1.19,
+          "velocity": 0.22799999999999998,
+          "pan": 0.18
+        },
+        {
+          "instrument": "pizz",
+          "beat": 31,
+          "midi": 53,
+          "durationBeats": 0.55,
+          "velocity": 0.385,
+          "pan": -0.08
+        },
+        {
+          "instrument": "cello",
+          "beat": 36,
+          "midi": 39,
+          "durationBeats": 4.8,
+          "velocity": 0.28,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 36.5,
+          "midi": 38,
+          "durationBeats": 0.55,
+          "velocity": 0.31,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 37.0,
+          "midi": 62,
+          "durationBeats": 1.105,
+          "velocity": 0.3,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 38,
+          "midi": 45,
+          "durationBeats": 0.55,
+          "velocity": 0.335,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 38.275,
+          "midi": 69,
+          "durationBeats": 1.02,
+          "velocity": 0.243,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 39.55,
+          "midi": 63,
+          "durationBeats": 1.4449999999999998,
+          "velocity": 0.27,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 40.5,
+          "midi": 40,
+          "durationBeats": 0.55,
+          "velocity": 0.36,
+          "pan": -0.08
+        },
+        {
+          "instrument": "piano",
+          "beat": 41.4625,
+          "midi": 65,
+          "durationBeats": 1.19,
+          "velocity": 0.22799999999999998,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 43,
+          "midi": 41,
+          "durationBeats": 0.55,
+          "velocity": 0.385,
+          "pan": -0.08
+        }
+      ]
+    },
+    "pursuit": {
+      "bpm": 108,
+      "durationSeconds": 38,
+      "meter": "4/4",
+      "form": "Four compressed cells with off-beat metal; two-beat releases keep footsteps legible",
+      "phraseRestBars": [
+        3.5,
+        7.5,
+        11.5,
+        15.5
+      ],
+      "notes": [
+        {
+          "instrument": "pizz",
+          "beat": 0.0,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 0.999,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 1.0,
+          "midi": 62,
+          "durationBeats": 1.04,
+          "velocity": 0.45,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 1.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 1.998,
+          "midi": 45,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 2.2,
+          "midi": 69,
+          "durationBeats": 0.96,
+          "velocity": 0.36450000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 2.997,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 3.4,
+          "midi": 64,
+          "durationBeats": 1.36,
+          "velocity": 0.405,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 3.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 3.996,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 4.995,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 5.2,
+          "midi": 65,
+          "durationBeats": 1.1199999999999999,
+          "velocity": 0.342,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 5.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 5.994,
+          "midi": 45,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 6.993,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 7.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 7.992,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "cello",
+          "beat": 8,
+          "midi": 38,
+          "durationBeats": 3.4,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 8.991,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 9.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 9.99,
+          "midi": 45,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 10.989,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 11.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 11.988,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 12.987,
+          "midi": 38,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 13.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 16.0,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 16.999,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 17.0,
+          "midi": 62,
+          "durationBeats": 1.04,
+          "velocity": 0.45,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 17.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 17.998,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 18.2,
+          "midi": 69,
+          "durationBeats": 0.96,
+          "velocity": 0.36450000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 18.997,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 19.4,
+          "midi": 64,
+          "durationBeats": 1.36,
+          "velocity": 0.405,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 19.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 19.996,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 20.995,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 21.2,
+          "midi": 65,
+          "durationBeats": 1.1199999999999999,
+          "velocity": 0.342,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 21.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 21.994,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 22.993,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 23.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 23.992,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "cello",
+          "beat": 24,
+          "midi": 34,
+          "durationBeats": 3.4,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 24.991,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 25.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 25.99,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 26.989,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 27.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 27.988,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 28.987,
+          "midi": 34,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 29.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 32.0,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 32.999,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 33.0,
+          "midi": 74,
+          "durationBeats": 1.04,
+          "velocity": 0.45,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 33.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 33.998,
+          "midi": 48,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 34.2,
+          "midi": 81,
+          "durationBeats": 0.96,
+          "velocity": 0.36450000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 34.997,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 35.4,
+          "midi": 76,
+          "durationBeats": 1.36,
+          "velocity": 0.405,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 35.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 35.996,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 36.995,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 37.2,
+          "midi": 77,
+          "durationBeats": 1.1199999999999999,
+          "velocity": 0.342,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 37.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 37.994,
+          "midi": 48,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 38.993,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 39.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 39.992,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "cello",
+          "beat": 40,
+          "midi": 41,
+          "durationBeats": 3.4,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 40.991,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 41.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 41.99,
+          "midi": 48,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 42.989,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 43.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 43.988,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 44.987,
+          "midi": 41,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 45.52,
+          "midi": 75,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 48.0,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 48.999,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 49.0,
+          "midi": 62,
+          "durationBeats": 1.04,
+          "velocity": 0.45,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 49.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 49.998,
+          "midi": 43,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 50.2,
+          "midi": 69,
+          "durationBeats": 0.96,
+          "velocity": 0.36450000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "pizz",
+          "beat": 50.997,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 51.4,
+          "midi": 64,
+          "durationBeats": 1.36,
+          "velocity": 0.405,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 51.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 51.996,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 52.995,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "piano",
+          "beat": 53.2,
+          "midi": 65,
+          "durationBeats": 1.1199999999999999,
+          "velocity": 0.342,
+          "pan": -0.12
+        },
+        {
+          "instrument": "metal",
+          "beat": 53.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 53.994,
+          "midi": 43,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 54.993,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 55.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 55.992,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "cello",
+          "beat": 56,
+          "midi": 36,
+          "durationBeats": 3.4,
+          "velocity": 0.32,
+          "pan": -0.15
+        },
+        {
+          "instrument": "pizz",
+          "beat": 56.991,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 57.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 57.99,
+          "midi": 43,
+          "durationBeats": 0.36,
+          "velocity": 0.28,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 58.989,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 59.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        },
+        {
+          "instrument": "pizz",
+          "beat": 59.988,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.5,
+          "pan": -0.13
+        },
+        {
+          "instrument": "pizz",
+          "beat": 60.987,
+          "midi": 36,
+          "durationBeats": 0.36,
+          "velocity": 0.38,
+          "pan": -0.13
+        },
+        {
+          "instrument": "metal",
+          "beat": 61.52,
+          "midi": 74,
+          "durationBeats": 0.38,
+          "velocity": 0.085,
+          "pan": 0.1
+        }
+      ]
+    },
+    "release": {
+      "bpm": 60,
+      "durationSeconds": 10,
+      "meter": "4/4",
+      "form": "A short answered call, open fifth and long air after the cadence",
+      "phraseRestBars": [
+        1.6
+      ],
+      "notes": [
+        {
+          "instrument": "piano",
+          "beat": 0.0,
+          "midi": 62,
+          "durationBeats": 1.105,
+          "velocity": 0.57,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 0.35,
+          "midi": 38,
+          "durationBeats": 4.6,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "piano",
+          "beat": 1.275,
+          "midi": 69,
+          "durationBeats": 1.02,
+          "velocity": 0.4617,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 1.9,
+          "midi": 57,
+          "durationBeats": 3,
+          "velocity": 0.31,
+          "pan": 0.16
+        },
+        {
+          "instrument": "harp",
+          "beat": 2.15,
+          "midi": 66,
+          "durationBeats": 3,
+          "velocity": 0.23,
+          "pan": 0.16
+        },
+        {
+          "instrument": "piano",
+          "beat": 2.55,
+          "midi": 66,
+          "durationBeats": 1.4449999999999998,
+          "velocity": 0.513,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 4.4625,
+          "midi": 62,
+          "durationBeats": 1.19,
+          "velocity": 0.4332,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 5.1,
+          "midi": 50,
+          "durationBeats": 1.2,
+          "velocity": 0.32,
+          "pan": -0.12
+        }
+      ]
+    },
+    "chapter_end": {
+      "bpm": 68,
+      "durationSeconds": 62,
+      "meter": "4/4",
+      "form": "Unanswered title / widening daylight / D-major answer / decaying final chord / silence",
+      "phraseRestBars": [
+        15
+      ],
+      "notes": [
+        {
+          "instrument": "piano",
+          "beat": 0,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.42,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 0.4,
+          "midi": 38,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 1.1,
+          "midi": 50,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 1.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.3402,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 3,
+          "midi": 64,
+          "durationBeats": 1.7,
+          "velocity": 0.378,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 3.1,
+          "midi": 57,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 5.25,
+          "midi": 65,
+          "durationBeats": 1.4,
+          "velocity": 0.3192,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 8,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.48,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 8.4,
+          "midi": 43,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 9.1,
+          "midi": 55,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 9.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.38880000000000003,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 11,
+          "midi": 67,
+          "durationBeats": 1.7,
+          "velocity": 0.432,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 11.1,
+          "midi": 62,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 13.25,
+          "midi": 64,
+          "durationBeats": 1.4,
+          "velocity": 0.3648,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 16,
+          "midi": 66,
+          "durationBeats": 1.3,
+          "velocity": 0.46,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 16.4,
+          "midi": 47,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 17.1,
+          "midi": 59,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 17.5,
+          "midi": 73,
+          "durationBeats": 1.2,
+          "velocity": 0.37260000000000004,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 19,
+          "midi": 69,
+          "durationBeats": 1.7,
+          "velocity": 0.41400000000000003,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 19.1,
+          "midi": 66,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 21.25,
+          "midi": 67,
+          "durationBeats": 1.4,
+          "velocity": 0.3496,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 24,
+          "midi": 64,
+          "durationBeats": 1.3,
+          "velocity": 0.47,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 24.4,
+          "midi": 45,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 25.1,
+          "midi": 57,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 25.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.3807,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 27,
+          "midi": 66,
+          "durationBeats": 1.7,
+          "velocity": 0.423,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 27.1,
+          "midi": 64,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 29.25,
+          "midi": 64,
+          "durationBeats": 1.4,
+          "velocity": 0.35719999999999996,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 32,
+          "midi": 67,
+          "durationBeats": 1.3,
+          "velocity": 0.5,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 32.4,
+          "midi": 43,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 33.1,
+          "midi": 55,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 33.5,
+          "midi": 74,
+          "durationBeats": 1.2,
+          "velocity": 0.405,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 35,
+          "midi": 69,
+          "durationBeats": 1.7,
+          "velocity": 0.45,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 35.1,
+          "midi": 62,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 37.25,
+          "midi": 66,
+          "durationBeats": 1.4,
+          "velocity": 0.38,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 40,
+          "midi": 64,
+          "durationBeats": 1.3,
+          "velocity": 0.47,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 40.4,
+          "midi": 45,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 41.1,
+          "midi": 57,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 41.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.3807,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 43,
+          "midi": 66,
+          "durationBeats": 1.7,
+          "velocity": 0.423,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 43.1,
+          "midi": 64,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 45.25,
+          "midi": 62,
+          "durationBeats": 1.4,
+          "velocity": 0.35719999999999996,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 48,
+          "midi": 62,
+          "durationBeats": 1.3,
+          "velocity": 0.44,
+          "pan": -0.12
+        },
+        {
+          "instrument": "cello",
+          "beat": 48.4,
+          "midi": 38,
+          "durationBeats": 5.8,
+          "velocity": 0.3,
+          "pan": -0.15
+        },
+        {
+          "instrument": "harp",
+          "beat": 49.1,
+          "midi": 50,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 49.5,
+          "midi": 69,
+          "durationBeats": 1.2,
+          "velocity": 0.35640000000000005,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 51,
+          "midi": 66,
+          "durationBeats": 1.7,
+          "velocity": 0.396,
+          "pan": -0.12
+        },
+        {
+          "instrument": "harp",
+          "beat": 51.1,
+          "midi": 57,
+          "durationBeats": 2,
+          "velocity": 0.24,
+          "pan": 0.18
+        },
+        {
+          "instrument": "piano",
+          "beat": 53.25,
+          "midi": 62,
+          "durationBeats": 1.4,
+          "velocity": 0.33440000000000003,
+          "pan": -0.12
+        },
+        {
+          "instrument": "piano",
+          "beat": 56,
+          "midi": 50,
+          "durationBeats": 3.7,
+          "velocity": 0.35,
+          "pan": -0.1
+        },
+        {
+          "instrument": "piano",
+          "beat": 56.12,
+          "midi": 57,
+          "durationBeats": 3.7,
+          "velocity": 0.28,
+          "pan": -0.1
+        },
+        {
+          "instrument": "piano",
+          "beat": 56.24,
+          "midi": 66,
+          "durationBeats": 3.7,
+          "velocity": 0.24,
+          "pan": -0.1
+        },
+        {
+          "instrument": "piano",
+          "beat": 58,
+          "midi": 62,
+          "durationBeats": 3.7,
+          "velocity": 0.37,
+          "pan": -0.1
+        },
+        {
+          "instrument": "harp",
+          "beat": 58.3,
+          "midi": 74,
+          "durationBeats": 2.1,
+          "velocity": 0.2,
+          "pan": 0.15
+        }
+      ]
+    }
+  }
+}

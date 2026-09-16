@@ -28,9 +28,9 @@ const flush = async () => { await Promise.resolve(); await Promise.resolve(); };
 
 it('normalizes old/malformed preferences without changing valid explicit zero or mute', () => {
   expect(normalizeAudioPreferences(undefined)).toEqual(DEFAULT_AUDIO_PREFERENCES);
-  expect(normalizeAudioPreferences({ enabled: false, musicVolume: 0, effectsVolume: 0 })).toEqual({ enabled: false, illusionEnabled: true, musicVolume: 0, effectsVolume: 0 });
+  expect(normalizeAudioPreferences({ enabled: false, musicVolume: 0, effectsVolume: 0 })).toEqual({ enabled: false, illusionEnabled: true, musicVolume: 0, environmentVolume: 0, effectsVolume: 0 });
   expect(normalizeAudioPreferences({ enabled: 'yes', musicVolume: Infinity, effectsVolume: -2 })).toEqual({ ...DEFAULT_AUDIO_PREFERENCES, effectsVolume: 0 });
-  expect(normalizeAudioPreferences({ musicVolume: 2, effectsVolume: 0.25 })).toEqual({ ...DEFAULT_AUDIO_PREFERENCES, musicVolume: 1, effectsVolume: 0.25 });
+  expect(normalizeAudioPreferences({ musicVolume: 2, effectsVolume: 0.25 })).toEqual({ ...DEFAULT_AUDIO_PREFERENCES, musicVolume: 1, environmentVolume: 1, effectsVolume: 0.25 });
 });
 
 it('owns exactly ten reusable players with one loop, without allocation on movement/HUD/settings updates', async () => {
@@ -39,7 +39,7 @@ it('owns exactly ten reusable players with one loop, without allocation on movem
   h.audio.setActive(true);
   await h.audio.whenReady();
   expect(h.players).toHaveLength(10);
-  for (const source of Object.keys(AUDIO_POOL_SIZE) as AudioSourceId[]) expect(h.of(source)).toHaveLength(AUDIO_POOL_SIZE[source]);
+  for (const source of Object.keys(AUDIO_POOL_SIZE) as (keyof typeof AUDIO_POOL_SIZE)[]) expect(h.of(source)).toHaveLength(AUDIO_POOL_SIZE[source]);
   expect(h.players.filter((p) => p.loop)).toEqual(h.of('ambience'));
   for (let frame = 0; frame < 120; frame += 1) {
     h.audio.setActive(true);

@@ -1,12 +1,15 @@
 import type { AudioPreferences } from './preferences';
 
 export type AudioAvailability = 'available' | 'missing-native' | 'unavailable';
-export type AudioSourceId = 'footstep' | 'interaction' | 'mechanism' | 'ambience' | 'cloth' | 'door-impact' | 'shepard';
+export type AudioEffectBus = 'footstep' | 'interaction' | 'mechanism' | 'ambience' | 'cloth' | 'door-impact' | 'shepard';
+export type MusicState = 'silent' | 'title_theme' | 'exploration' | 'suspicion' | 'pursuit' | 'release' | 'chapter_end';
+export type PhysicalSound = 'grip' | 'key' | 'ratchet' | 'bell' | 'isolation' | 'power';
+export type AudioSourceId = AudioEffectBus | Exclude<MusicState, 'silent'> | PhysicalSound | 'step-a' | 'step-b' | 'cloth-metal' | 'outdoor' | 'room-gallery' | 'room-vault' | 'room-theatre' | 'room-mirror' | 'room-control';
 export type AudioPosition = Readonly<{ x: number; y: number; z: number }>;
 export type GallerySoundEvent = {
   sessionId: string;
   sequence: number;
-  type: 'interaction' | 'unlock' | 'door' | 'door-close' | 'actor-plant';
+  type: 'interaction' | 'unlock' | 'door' | 'door-close' | 'actor-plant' | PhysicalSound;
   /** Taken from the same world fixture/door definition used for drawing and collision. */
   position?: AudioPosition;
 };
@@ -27,6 +30,10 @@ export type AudioBackend = {
 export type GalleryAudioOptions = {
   sessionId: string;
   preferences?: AudioPreferences;
+  /** Area-specific prepared effect variants; no extra voices. */
+  areaId?: string;
+  /** Title/credits owner allocates only the two music voices. */
+  musicOnly?: boolean;
   onAvailability?: (availability: AudioAvailability) => void;
 };
 export type GalleryAudio = {
@@ -34,6 +41,10 @@ export type GalleryAudio = {
   setActive(active: boolean): void;
   /** Paused notebook playback uses the same pool, without ambient/game sounds. */
   setPreviewActive(active: boolean): void;
+  setMusicState(state: MusicState, sessionId: string): void;
+  advanceMusic(deltaSeconds: number, sessionId: string): void;
+  duckMusic(seconds: number, gain: number): void;
+  setEnvironment(environment: 'indoor' | 'outdoor' | 'silent'): void;
   /** Returns request acceptance; onStarted follows a successful native play request, never proof of hearing. */
   playIllusion(sessionId: string, intensity: 'standard' | 'subdued', onStarted?: () => void): boolean;
   stopIllusion(): void;
@@ -49,5 +60,5 @@ export type GalleryAudio = {
   setListenerPosition(position: AudioPosition): void;
   dispose(): void;
   whenReady(): Promise<void>;
-  getDiagnostics(): { availability: AudioAvailability; active: boolean; ready: boolean; players: number; playedEvents: number; droppedEvents: number };
+  getDiagnostics(): { availability: AudioAvailability; active: boolean; ready: boolean; players: number; playedEvents: number; droppedEvents: number; musicPlayers: number; musicState: MusicState };
 };

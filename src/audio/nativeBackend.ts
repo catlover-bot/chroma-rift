@@ -5,7 +5,7 @@ import type { AudioMode } from 'expo-audio';
 import { AUDIO_SOURCES } from './sources';
 import type { AudioAvailability, AudioBackend } from './types';
 
-// Confirmed against installed expo-audio 57.0.4/src/AudioModule.ts.
+// Confirmed against installed expo-audio 57.0.5/src/AudioModule.ts.
 // expo publicly re-exports requireOptionalNativeModule from expo-modules-core.
 export const EXPO_AUDIO_NATIVE_MODULE_NAME = 'ExpoAudio';
 export const GALLERY_AUDIO_MODE: Readonly<Partial<AudioMode>> = Object.freeze({

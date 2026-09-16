@@ -4,6 +4,9 @@ import type { GalleryAudio, GalleryAudioOptions } from './types';
 
 export { DEFAULT_AUDIO_PREFERENCES, normalizeAudioPreferences } from './preferences';
 export type { AudioPreferences } from './preferences';
+export { selectChapterMusicState } from './musicState';
+export type { ChapterMusicContext } from './musicState';
+export type { MusicState } from './types';
 export { getGalleryAudioAvailability } from './nativeBackend';
 export type { AudioAvailability, AudioPosition, GalleryAudio, GalleryAudioOptions, GallerySoundEvent } from './types';
 
