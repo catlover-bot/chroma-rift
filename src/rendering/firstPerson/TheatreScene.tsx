@@ -1,4 +1,4 @@
-import { PhysicalBell } from './MechanicalDevices';
+import { Cable, PhysicalBell } from './MechanicalDevices';
 import { FacilityFloor, FacilityPlaque } from './FacilityDetails';
 /* eslint-disable react/no-unknown-property -- R3F Three.js intrinsics. */
 import { useFrame } from '@react-three/fiber/native';
@@ -166,6 +166,9 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
       <mesh name="light-emitter" geometry={resources.box} material={t.amber} scale={[.075,.075,.025]}/>
       <mesh name="light-housing" geometry={resources.cylinder} material={t.metal} rotation={[Math.PI/2,0,0]} position={[0,0,-.075]} scale={[.12,.13,.12]}/>
       <mesh name="light-drag-handle" geometry={resources.ring} material={t.amber} quaternion={handleRotation} scale={[.41,.41,1]}/>
+      <mesh name="light-carriage-grip" geometry={resources.art.beveled} material={resources.art.rubber} position={[0,-.2,-.075]} scale={[.25,.075,.09]}/>
+      {[-1,1].map(side => <mesh key={side} name="light-carriage-arm" geometry={resources.art.beveled} material={t.metal}
+        position={[side*.09,-.12,-.075]} scale={[.035,.17,.045]}/>)}
     </group>
     {LIGHT_WINDOWS.map(window=>{
       const cx=(window.minX+window.maxX)/2,cy=(window.minY+window.maxY)/2, p=opticalWorldPoint({x:cx,y:cy,z:LIGHT_RECEIVER.point.z});
@@ -193,6 +196,11 @@ export function TheatreScene({ world, runtime, resources, reducedMotion, onFrame
         </group>
       </group>;
     })}
+    {/* A conduit leaves the physical receiver outside every optical sample,
+        then reaches the same gate header. It never draws a target shadow. */}
+    <Cable name="receiver-to-light-gate-conduit" resources={resources} material={resources.art.metal} width={.025}
+      points={[{x:-1.4,y:2.63,z:3.24},{x:-1.4,y:3.13,z:3.24},{x:-1.4,y:3.13,z:4.08}]}/>
+    <mesh name="light-gate-latch-housing" geometry={resources.art.beveled} material={t.metal} position={[-1.4,2.67,3.27]} scale={[.43,.19,.045]}/>
     <mesh name="light-gate-lock" ref={latch} geometry={resources.box} material={t.amber} position={[-1.4,2.63,3.24]} scale={[.35,.07,.05]}/>
     <group name="fixed-distorted-room-exhibit">
       <mesh name="ames-skewed-walls-floor-ceiling" geometry={t.room} material={t.receiver}/>

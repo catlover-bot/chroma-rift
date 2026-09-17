@@ -27,7 +27,7 @@ import { createSceneResources } from '../resources';
 import { MIRROR_TARGET_SIZE } from '../planarMirror';
 import { stageModule } from '../../../domain/stageKit/modules';
 import { parseStageCheckpoint as parseMirrorCheckpoint } from '../../../domain/stages/mirror-corridor-v1/checkpoint';
-import { KEY_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
+import { KEY_SAFE, MIRROR_CENTER, MIRROR_RECTANGLE } from '../../../domain/stages/mirror-corridor-v1/definition';
 import { carriedKeyEntry } from '../../../domain/stages/departure-control-v1/session';
 import { commandController, prepareControllerNotebook, setControllerNotebookPreview, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, interactController, syncCamera } from '../runtimeController';
 import * as runtimeControllerModule from '../runtimeController';
@@ -475,7 +475,14 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await submitFrame(renderer);
       expect(surface.material).toBeInstanceOf(THREE.ShaderMaterial);
       expect(controller.diagnostics.offscreenPasses).toBe(1);
-      controller.runtime.pose = { position: { x: -2.45, y: 1.6, z: 7.5 }, yaw: Math.PI, pitch: -.08 };
+      // The mirror is angled toward the legal work positions. This corridor
+      // point is on its actual back side; the former booth point is now front.
+      const behind = { x: -2.45, y: 1.6, z: 13 };
+      const dx = MIRROR_CENTER.x - behind.x, dz = MIRROR_CENTER.z - behind.z;
+      expect((behind.x - MIRROR_CENTER.x) * MIRROR_RECTANGLE.normal.x +
+        (behind.z - MIRROR_CENTER.z) * MIRROR_RECTANGLE.normal.z).toBeLessThan(0);
+      controller.runtime.pose = { position: behind, yaw: Math.atan2(-dx, -dz),
+        pitch: Math.atan2(MIRROR_CENTER.y - behind.y, Math.hypot(dx, dz)) };
       await submitFrame(renderer, 2);
       expect(surface.material).toBeInstanceOf(THREE.MeshBasicMaterial);
       expect(controller.diagnostics.offscreenPasses).toBe(1);

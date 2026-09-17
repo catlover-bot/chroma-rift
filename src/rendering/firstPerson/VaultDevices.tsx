@@ -36,7 +36,7 @@ function Fin({ from, to, resources }: { from: { x: number; y: number; z: number 
 }
 export function VaultLengthDevice({ runtime, resources, onFrameError }: Props) {
   const variable = useRef<THREE.Mesh>(null), rightFins = useRef<THREE.Group>(null), decorations = useRef<THREE.Group>(null),
-    handle = useRef<THREE.Mesh>(null), guide = useRef<THREE.Group>(null), latch = useRef<THREE.Mesh>(null);
+    handle = useRef<THREE.Group>(null), guide = useRef<THREE.Group>(null), latch = useRef<THREE.Group>(null), comparison = useRef<THREE.Group>(null);
   const rotation = useMemo(() => orientation(lengthFixture), []);
   const m = resources.vaultResources!, l = runtime.current.vault?.length ?? LENGTH_SPEC.initialLength;
   useDeviceFrame(() => {
@@ -47,7 +47,8 @@ export function VaultLengthDevice({ runtime, resources, onFrameError }: Props) {
     if (handle.current) handle.current.position.x = LENGTH_SPEC.left + v.length;
     if (decorations.current) decorations.current.visible = !p.aids.finsHidden;
     if (guide.current) guide.current.visible = p.aids.lengthGuide;
-    if (latch.current) latch.current.position.z = .065 - .08 * v.lengthGateOpen;
+    if (latch.current) latch.current.rotation.x = -.75 * (1-v.lengthGateOpen);
+    if (comparison.current) comparison.current.rotation.z = p.aids.finsHidden ? Math.PI/2 : 0;
   }, onFrameError);
   return <group name="vault-length-device" dispose={null}>
     <PanelFixture name="vault-length" fixture={lengthFixture} box={resources.box} plane={resources.plane} surface={m.board} backing={resources.dark} frame={resources.trim} />
@@ -62,13 +63,29 @@ export function VaultLengthDevice({ runtime, resources, onFrameError }: Props) {
         {movingFins.slice(0, 2).map((segment, i) => <Fin key={'left-' + i} {...segment} resources={resources} />)}
         <group ref={rightFins} position={[l, 0, 0]}>{movingFins.slice(2).map((segment, i) => <Fin key={'right-' + i} {...segment} resources={resources} />)}</group>
       </group>
-      <mesh name="vault-length-handle" ref={handle} geometry={resources.ring} material={resources.galleryResources!.warm}
-        position={[LENGTH_SPEC.left + l, LENGTH_SPEC.sliderY, .05]} scale={[.41, .41, 1]} />
+      <group name="vault-length-handle" ref={handle} position={[LENGTH_SPEC.left+l,LENGTH_SPEC.sliderY,.05]}>
+        <mesh geometry={resources.ring} material={resources.art.brass} scale={[.41,.41,1]}/>
+        <mesh name="vault-slider-finger-grip" geometry={resources.art.beveled} material={resources.art.rubber} position={[0,-.12,.045]} scale={[.18,.08,.09]}/>
+        <mesh name="vault-slider-stem" geometry={resources.box} material={resources.art.metal} position={[0,-.065,.025]} scale={[.035,.13,.035]}/>
+      </group>
+      <group name="vault-fixed-reference-mount" position={[LENGTH_SPEC.left+LENGTH_SPEC.targetLength/2,LENGTH_SPEC.referenceY+.15,.03]}>
+        <mesh geometry={resources.art.beveled} material={resources.art.metal} scale={[.18,.11,.035]}/>
+        {[-1,1].map(side => <mesh key={side} name="vault-reference-fastener" geometry={resources.cylinder} material={resources.art.brass}
+          position={[side*.055,0,.03]} rotation={[Math.PI/2,0,0]} scale={[.018,.025,.018]}/>)}
+      </group>
       <group ref={guide} name="vault-length-measurement-guide" visible={!!runtime.current.progress.vault?.aids.lengthGuide}>
         {[LENGTH_SPEC.left, LENGTH_SPEC.left + LENGTH_SPEC.targetLength].map(x => <mesh key={x} geometry={resources.box} material={m.guide} position={[x, 0, .055]} scale={[.012, 1.05, .005]} />)}
       </group>
       <mesh name="vault-length-slot" geometry={resources.box} material={resources.dark} position={[0, -.65, .02]} scale={[.34, .10, .08]} />
-      <mesh name="vault-length-lock" ref={latch} geometry={resources.box} material={resources.galleryResources!.warm} position={[0, -.65, .065]} scale={[.24, .05, .08]} />
+      <group name="vault-length-lock" ref={latch} position={[0,-.69,.055]}>
+        <mesh name="vault-confirm-clamp-arm" geometry={resources.art.beveled} material={resources.art.metal} position={[0,.07,.045]} scale={[.045,.15,.045]}/>
+        <mesh name="vault-confirm-clamp-grip" geometry={resources.art.beveled} material={resources.art.rubber} position={[0,.14,.065]} scale={[.28,.07,.08]}/>
+      </group>
+      <group name="vault-comparison-folding-control" ref={comparison} position={[-.88,-.65,.035]}>
+        <mesh name="vault-comparison-pivot" geometry={resources.cylinder} material={resources.art.metal} rotation={[Math.PI/2,0,0]} scale={[.045,.05,.045]}/>
+        {[-1,1].map(side => <mesh key={side} name="vault-comparison-leaf" geometry={resources.art.beveled} material={resources.art.brass}
+          position={[side*.065,.025,.035]} rotation={[0,0,side*Math.PI/4]} scale={[.11,.055,.035]}/>)}
+      </group>
     </group>
   </group>;
 }

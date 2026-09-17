@@ -37,8 +37,8 @@ function Segment({ from, to, width, material, resources, name }: { from: Vec3; t
 }
 function SquareFrame({ resources, material, size, name }: { resources: SceneResources; material: THREE.Material; size: number; name: string }) {
   return <group name={name}>{[-1, 1].flatMap(sign => [
-    <mesh key={'h' + sign} geometry={resources.box} material={material} position={[0, sign * size / 2, 0]} scale={[size + .025, .025, .006]} />,
-    <mesh key={'v' + sign} geometry={resources.box} material={material} position={[sign * size / 2, 0, 0]} scale={[.025, size, .006]} />,
+    <mesh key={'h' + sign} geometry={resources.box} material={material} position={[0, sign * size / 2, 0]} scale={[size + .025, .025, .025]} />,
+    <mesh key={'v' + sign} geometry={resources.box} material={material} position={[sign * size / 2, 0, 0]} scale={[.025, size, .025]} />,
   ])}</group>;
 }
 function setFrame(group: THREE.Group | null | undefined, material: THREE.Material) {
@@ -52,6 +52,7 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
   const samples = useRef<Partial<Record<SampleId, THREE.Group | null>>>({});
   const sampleFrames = useRef<Partial<Record<SampleId, THREE.Group | null>>>({});
   const trays = useRef<Partial<Record<SocketId, THREE.Group | null>>>({});
+  const trayLatches = useRef<Partial<Record<SocketId, THREE.Group | null>>>({});
   const discs = useRef<(THREE.Mesh | null)[]>([]), discNotches = useRef<(THREE.Mesh | null)[]>([]);
   const maskWindowHandle = useRef<THREE.Mesh>(null);
   const drawerB = useRef<THREE.Group>(null), drawerC = useRef<THREE.Group>(null);
@@ -76,7 +77,11 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       }
       const drag = g.activeDrag;
       const candidate = drag?.kind === 'shadow' ? shadowSlotAt(drag.point) : null;
-      for (const slot of ['socket-left', 'socket-right'] as const) setFrame(trays.current[slot], candidate === slot ? r.selected : r.outline);
+      for (const slot of ['socket-left', 'socket-right'] as const) {
+        setFrame(trays.current[slot], candidate === slot ? r.selected : r.outline);
+        const latch = trayLatches.current[slot];
+        if (latch) latch.rotation.x = Object.values(state.progress.gallery!.shadow.assignments).includes(slot) ? 0 : -.9;
+      }
       for (const sample of shadow.samples) {
         const mesh = samples.current[sample.id];
         if (!mesh) continue;
@@ -168,15 +173,22 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
       </group>;
     })}
     <group name="shadow-panel" position={[GALLERY_SHADOW_FIXTURE.center.x, GALLERY_SHADOW_FIXTURE.center.y, GALLERY_SHADOW_FIXTURE.center.z]}>
-      {(['socket-left', 'socket-right'] as const).map(slot => <group ref={m => { trays.current[slot] = m; }} name={slot} key={slot} position={[SHADOW_SLOT_POSITIONS[slot].x, SHADOW_SLOT_POSITIONS[slot].y, .005]}>
-        <SquareFrame name={slot + '-square-tray'} size={.5} resources={resources} material={r.outline} />
+      {(['socket-left', 'socket-right'] as const).map(slot => <group name={slot} key={slot} position={[SHADOW_SLOT_POSITIONS[slot].x, SHADOW_SLOT_POSITIONS[slot].y, .005]}>
+        <group ref={m => { trays.current[slot] = m; }}><SquareFrame name={slot + '-square-tray'} size={SHADOW_SAMPLE_SIZE + .08} resources={resources} material={r.outline} /></group>
+        <group name={slot+'-docking-latch'} ref={m => { trayLatches.current[slot] = m; }} position={[0,-.26,.035]}>
+          <mesh geometry={resources.art.beveled} material={resources.art.metal} position={[0,.035,0]} scale={[.18,.07,.035]}/>
+          {[-1,1].map(side => <mesh key={side} name="tray-hinge" geometry={resources.cylinder} material={resources.art.brass}
+            position={[side*.11,0,0]} rotation={[0,0,Math.PI/2]} scale={[.025,.035,.025]}/>)}
+        </group>
       </group>)}
       {shadow.samples.map(sample => {
         const point = SHADOW_SLOT_POSITIONS[gp.shadow.assignments[sample.id]];
         return <group key={sample.id} name={sample.id} ref={m => { samples.current[sample.id] = m; }} position={[point.x, point.y, .013]}>
           <group ref={m => { sampleFrames.current[sample.id] = m; }}>
             <SquareFrame name={sample.id + '-outer-frame'} size={SHADOW_SAMPLE_SIZE + .04} resources={resources} material={r.outline} />
-            <mesh name={sample.id + '-handle'} geometry={resources.box} material={r.outline} position={[0, .24, 0]} scale={[.14, .05, .01]} />
+            <mesh name={sample.id + '-handle'} geometry={resources.art.beveled} material={r.outline} position={[0,.24,.055]} scale={[.16,.05,.035]} />
+            {[-1,1].map(side => <mesh key={side} name={sample.id+'-handle-foot'} geometry={resources.box} material={r.outline}
+              position={[side*.06,.22,.025]} scale={[.025,.05,.06]}/>)}
           </group>
           <mesh name={sample.id + '-interior'} geometry={resources.plane} material={r.sampleMaterials[sample.color as keyof typeof r.sampleMaterials]} scale={[SHADOW_SAMPLE_SIZE, SHADOW_SAMPLE_SIZE, 1]} />
         </group>;
@@ -187,6 +199,12 @@ export function GalleryScene({ world, runtime, progress, resources, reducedMotio
         <mesh name={'contour-notch-' + disc.id} ref={m => { discNotches.current[disc.id] = m; }} geometry={resources.box} material={r.shelf}
           position={[-Math.cos(disc.targetAngle) * (disc.radius + .025), -Math.sin(disc.targetAngle) * (disc.radius + .025), 0]} rotation={[0, 0, disc.targetAngle]} scale={[.03, .018, .006]} />
         <mesh name={'contour-disc-' + disc.id} ref={m => { discs.current[disc.id] = m; }} geometry={r.inducer} material={r.ink} rotation={[0, 0, runtime.current.gallery!.contourAngles[disc.id]]} position={[0, 0, .004]} />
+        {/* A central axle supplies the physical pivot; it does not mark any
+            target angle or join the absent contour between the discs. */}
+        <mesh name={'contour-pivot-' + disc.id} geometry={resources.cylinder} material={resources.art.metal}
+          position={[0,0,.015]} rotation={[Math.PI/2,0,0]} scale={[.017,.025,.017]}/>
+        <mesh name={'contour-pivot-slot-' + disc.id} geometry={resources.box} material={r.ink}
+          position={[0,0,.029]} scale={[.021,.004,.003]}/>
       </group>)}
       <group ref={guide} name="contour-guide-only" visible={runtime.current.gallery!.contourGuide}>
         {contour.discs.flatMap((disc, i) => {

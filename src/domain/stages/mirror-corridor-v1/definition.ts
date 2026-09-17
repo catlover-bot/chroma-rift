@@ -22,8 +22,8 @@ export const WINCH_CENTER = { x: -2.45, y: 1.4, z: 11.3 } as const;
 // Beside the winch, in the same forward view while its hold pointer owns look.
 // The east-facing plane reflects the north corridor behind that work surface.
 export const MIRROR_CENTER = { x: -2.65, y: 1.9, z: 11.4 } as const;
-export const MIRROR_YAW = 1.32;
-export const MIRROR_SIZE = { width: 1.12, height: 1.12 } as const;
+export const MIRROR_YAW = 1.78;
+export const MIRROR_SIZE = { width: 1.4, height: 1.2 } as const;
 export const MIRROR_RECTANGLE = {
   width: MIRROR_SIZE.width - .08, height: MIRROR_SIZE.height - .08,
   normal: { x: Math.sin(MIRROR_YAW), y: 0, z: Math.cos(MIRROR_YAW) },

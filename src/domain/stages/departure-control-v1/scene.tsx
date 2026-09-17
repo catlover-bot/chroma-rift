@@ -119,6 +119,15 @@ export function StageScene({ world, resources, runtime, onFrameError }: { world:
     <group position={[CONTROL_TARGETS.bell.x,CONTROL_TARGETS.bell.y,CONTROL_TARGETS.bell.z]}><PhysicalBell resources={resources} name="containment-call-bell"/></group>
     <group ref={isolationLever} position={[CONTROL_TARGETS.isolation.x,CONTROL_TARGETS.isolation.y,CONTROL_TARGETS.isolation.z]}><GuardedLever resources={resources}/></group>
     <group ref={powerLever} position={[CONTROL_TARGETS.power.x,CONTROL_TARGETS.power.y,CONTROL_TARGETS.power.z]}><GuardedLever resources={resources} power/></group>
+    <Cable name="isolation-lever-to-door-conduit" resources={resources} width={.032} material={resources.art.metal}
+      points={[CONTROL_TARGETS.isolation,{x:CONTROL_TARGETS.isolation.x,y:1.08,z:CONTROL_TARGETS.isolation.z},
+        {x:-2.55,y:1.08,z:13.18},{x:-2.55,y:3.4,z:13.18},{x:2.55,y:3.4,z:13.18},{x:2.55,y:3.4,z:CONTAINMENT_DOOR_Z}]}/>
+    <group name="power-disconnect-cabinet" position={[CONTROL_TARGETS.power.x,CONTROL_TARGETS.power.y-.08,CONTROL_TARGETS.power.z]}>
+      <mesh name="disconnect-backing" geometry={resources.art.beveled} material={resources.art.enamel} position={[0,0,.08]} scale={[.42,.20,.38]}/>
+      {[-1,1].map(side => <mesh key={side} name="disconnect-insulator" geometry={resources.cylinder} material={resources.art.paper}
+        position={[side*.105,.11,.08]} scale={[.045,.09,.045]}/>)}
+      <mesh name="disconnect-terminal-bridge" geometry={resources.art.beveled} material={resources.art.brass} position={[0,.16,.08]} scale={[.27,.035,.05]}/>
+    </group>
     <Cable resources={resources} width={.022} points={[CONTROL_TARGETS.bell,{x:-2.57,y:1.05,z:12.72},{x:-2.57,y:3.05,z:12.72},{x:2.45,y:3.05,z:12.72},{x:2.45,y:3.05,z:18.1},BELL_RECEIVER]}/>
     <group name="containment-bell-receiver" ref={receiver} position={[BELL_RECEIVER.x,BELL_RECEIVER.y,BELL_RECEIVER.z]} rotation={[Math.PI,0,0]}>
       <mesh name="receiver-cast-bell" geometry={resources.art.bell} material={resources.art.brass}/>
