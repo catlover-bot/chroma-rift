@@ -81,7 +81,11 @@ export function advanceStage(session: StageSession, dt: number): StageSession {
   if (seconds + 1e-9 < RATCHET_SECONDS) return { ...session, holdSeconds: seconds };
   const ratchets = Math.min(RATCHET_COUNT, session.ratchets + 1);
   const noiseSequence = session.noiseSequence + 1;
-  return { ...session, ratchets, holding: ratchets === RATCHET_COUNT ? null : session.holding, holdSeconds: 0, noiseSequence,
+  // A frame may cross a tooth boundary partway through its delta. Keep that
+  // work for the next tooth so the same elapsed hold works at every frame rate.
+  const remainder = Math.max(0, seconds - RATCHET_SECONDS);
+  const holdSeconds = ratchets === RATCHET_COUNT || remainder < 1e-9 ? 0 : remainder;
+  return { ...session, ratchets, holding: ratchets === RATCHET_COUNT ? null : session.holding, holdSeconds, noiseSequence,
     noise: { sequence: noiseSequence, position: { ...WINCH_CENTER }, strength: 1.2, kind: 'mechanism' } };
 }
 export function cancelStageHold(session: StageSession): StageSession {

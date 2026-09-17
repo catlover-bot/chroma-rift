@@ -2,7 +2,7 @@ import { isSafePose, segmentOccluded, updatePlayer } from '../../firstPerson/geo
 import { stepRuntime } from '../../firstPerson/runtime';
 import type { PlayerPose } from '../../firstPerson/types';
 import { stageBinding } from './binding';
-import { EXIT, GATE_Z, KEY_SAFE, LEGACY_EXIT, MIRROR_LAYOUT, POST_GATE, SHELTER_SAFE, SPAWN, WINCH_SAFE, stageWorld } from './definition';
+import { EXIT, GATE_Z, KEY_SAFE, LEGACY_EXIT, LEGACY_SHELTER_SAFE, MIRROR_LAYOUT, POST_GATE, SHELTER_SAFE, SPAWN, WINCH_SAFE, stageWorld } from './definition';
 import { parseStageCheckpoint } from './checkpoint';
 import { advanceStage, checkpointStage, createStageSession, isStageSession } from './session';
 
@@ -45,6 +45,21 @@ test('the third tooth ends holding once while the committed physical lift contin
   for (let frame = 0; frame < 18; frame += 1) live = advanceStage(live, .05);
   expect(live.gateLift).toBeCloseTo(3.6);
   expect(live.cleared).toBe(false);
+});
+
+test.each([
+  ['30Hz divided wait', [6.05 / 182]],
+  ['60Hz', [1 / 60]],
+  ['variable delta', [.012, .027, .019, .041]],
+] as const)('six seconds of continuous work preserve fractional progress at %s', (_label, deltas) => {
+  let live = { ...createStageSession('timing'), pose: WINCH_SAFE, keyTaken: true, practiced: true,
+    holding: 'winch' as const } as ReturnType<typeof createStageSession>;
+  let elapsed = 0, frame = 0;
+  while (elapsed < 6.05 - 1e-9) {
+    const dt = Math.min(deltas[frame++ % deltas.length]!, 6.05 - elapsed);
+    live = advanceStage(live, dt); elapsed += dt;
+  }
+  expect(live).toMatchObject({ ratchets: 3, holding: null, holdSeconds: 0 });
 });
 
 test('the actor square corner cannot trap a separated circular player body', () => {
@@ -111,6 +126,22 @@ test.each([SPAWN, KEY_SAFE, WINCH_SAFE, POST_GATE, LEGACY_EXIT])('schema-1 check
   const cold = createStageSession('cold', raw);
   expect(cold.pose).toEqual(oldPose);
   expect(isSafePose(cold.pose, stageWorld(cold.ratchets, cold.keyTaken, cold.practiced, null, cold.actor.motion.position))).toBe(true);
+});
+
+test('new shelter recovery faces its physical opening and the prior yaw remains readable', () => {
+  const work = { ...createStageSession('shelter-view'), keyTaken: true, practiced: true, ratchets: 1, gateLift: .9 };
+  const checkpoint = checkpointStage(work);
+  expect(checkpoint.pose).toEqual(SHELTER_SAFE);
+  expect(SHELTER_SAFE.yaw).toBeCloseTo(Math.atan2(-.95, .85), 10);
+  let walking = SHELTER_SAFE;
+  const world = stageWorld(1, true, true);
+  for (let frame = 0; frame < 18; frame++) walking = updatePlayer(walking, { forward: 1, strafe: 0 }, 1 / 60, world);
+  expect(isSafePose(walking, world)).toBe(true);
+  expect(walking.position.x).toBeGreaterThan(SHELTER_SAFE.position.x + .4);
+  expect(walking.position.z).toBeLessThan(SHELTER_SAFE.position.z - .4);
+  const legacy = { ...checkpoint, pose: LEGACY_SHELTER_SAFE };
+  expect(parseStageCheckpoint(legacy)?.pose).toEqual(LEGACY_SHELTER_SAFE);
+  expect(createStageSession('old-shelter-view', legacy).pose).toEqual(LEGACY_SHELTER_SAFE);
 });
 
 test('work resumes behind the shelf and far-side progress is earned and monotonic', () => {

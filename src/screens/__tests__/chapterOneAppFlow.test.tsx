@@ -577,7 +577,7 @@ test('verified area-03 through area-05 host callbacks survive a cold exit before
   const mirror = parseMirrorCheckpoint(mirrorGate.checkpoint!.stageData)!;
   const clearedMirror = { ...mirrorGate.checkpoint!, pose: EXIT,
     progress: { ...mirrorGate.checkpoint!.progress, cleared: true }, stageData: { ...mirror, keyTaken: true,
-    practiced: true, ratchets: 3, cleared: true, pose: EXIT } };
+    practiced: true, ratchets: 3, gateCrossed: true, cleared: true, pose: EXIT } };
   await act(() => {
     mirrorGate.onCheckpoint(clearedMirror);
     mirrorGate.onComplete(chapterCompletionSummary('mirror-corridor-v1', { ...clearedMirror.progress, cleared: true }));

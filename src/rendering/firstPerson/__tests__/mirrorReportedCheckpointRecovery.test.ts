@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import reportedFailure from '../../../../docs/qa-goal013-1/r7-device-build2-first-failure.json';
 import { createCheckpoint } from '../../../domain/firstPerson/checkpoint';
-import { KEY_SAFE, WINCH_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
+import { KEY_SAFE, SHELTER_SAFE, WINCH_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
 import { parseStageCheckpoint } from '../../../domain/stages/mirror-corridor-v1/checkpoint';
 import { stageModule } from '../../../domain/stageKit/modules';
 import { createCanvasLifecycle } from '../canvasLifecycle';
@@ -48,7 +48,7 @@ test('a settled winch tooth survives a GL failure during the next hold and repea
   for (let frame = 0; frame < 120; frame++) advanceController(controller, 1 / 60, camera);
   expect(endStageHoldController(controller, 'mirror-corridor-winch', 31)).toBe(true);
   const accepted = createCheckpoint(controller.runtime);
-  expect(accepted.stageData).toMatchObject({ keyTaken: true, practiced: true, ratchets: 1, pose: WINCH_SAFE });
+  expect(accepted.stageData).toMatchObject({ keyTaken: true, practiced: true, ratchets: 1, pose: SHELTER_SAFE });
   expect(beginStageHoldController(controller, 'mirror-corridor-winch', 32)).toBe(true);
   for (let frame = 0; frame < 30; frame++) advanceController(controller, 1 / 60, camera);
   expect(controller.runtime.stageSession?.value).toMatchObject({ holding: 'winch', ratchets: 1 });
@@ -76,7 +76,7 @@ test('a settled winch tooth survives a GL failure during the next hold and repea
       if (!recovered) throw new Error(`Validated ${recovery} checkpoint rejected`);
       const next = createController(recovered, false, true, 'mirror-corridor-v1');
       expect(next.runtime.session).not.toBe(controller.runtime.session);
-      expect(next.runtime.pose).toEqual(WINCH_SAFE);
+      expect(next.runtime.pose).toEqual(SHELTER_SAFE);
       expect(next.runtime.stageSession?.value).toMatchObject({ holding: null, holdSeconds: 0, keyTaken: true, practiced: true, ratchets: 1 });
       expect(next.diagnostics.firstFailure).toBeNull();
       saved = createCheckpoint(next.runtime);

@@ -586,6 +586,11 @@ export function attachControllerAudio(controller: RuntimeController, owner: NonN
 
 export function setControllerViewport(controller: RuntimeController, width: number, height: number): void {
   if (controller.retired || ![width, height].every(Number.isFinite) || width <= 0 || height <= 0) return;
+  if (controller.viewport && (controller.viewport.width !== width || controller.viewport.height !== height) &&
+    stageModule(controller.runtime.chapterId)?.hold?.activeTarget(controller.runtime)) {
+    stopController(controller);
+    finishHeldRelease(controller.input);
+  }
   controller.viewport = { width, height };
 }
 export function setControllerHorrorIntensity(controller: RuntimeController, intensity: 'standard' | 'subdued'): void {

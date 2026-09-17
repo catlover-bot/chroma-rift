@@ -8,10 +8,11 @@ import { THEATRE_CURTAIN_FIXTURE, THEATRE_LIGHT_FIXTURE } from '../src/domain/th
 import { lightHandlePoint } from '../src/domain/theatre/lightGate';
 import { actorFullyContained, CONTROL_TARGETS, doorSweepClear } from '../src/domain/stages/departure-control-v1/definition';
 import { isStageSession as isControlSession } from '../src/domain/stages/departure-control-v1/session';
-import { FIGURE_CENTER, KEY_CENTER, PRACTICE_CENTER } from '../src/domain/stages/mirror-corridor-v1/definition';
+import { FIGURE_CENTER, KEY_CENTER, MIRROR_LAYOUT, PRACTICE_CENTER } from '../src/domain/stages/mirror-corridor-v1/definition';
 import { isStageSession as isMirrorSession } from '../src/domain/stages/mirror-corridor-v1/session';
+import { isSafePose } from '../src/domain/firstPerson/geometry';
 import { advanceController, beginStageHoldController, commandController, controllerSnapshot,
-  createController, endStageHoldController, interactController, syncCamera, type RuntimeController } from '../src/rendering/firstPerson/runtimeController';
+  createController, endStageHoldController, interactController, presentControllerRecovery, syncCamera, worldForController, type RuntimeController } from '../src/rendering/firstPerson/runtimeController';
 import { galleryAction } from '../src/rendering/firstPerson/galleryController';
 import { vaultAction, vaultPointer } from '../src/rendering/firstPerson/vaultController';
 import { theatreAction, theatrePointer } from '../src/rendering/firstPerson/theatreController';
@@ -25,6 +26,7 @@ export function attachNaturalRun(controller: RuntimeController): Run {
   const camera = new THREE.PerspectiveCamera(65, WIDTH / HEIGHT, .08, 60);
   controller.viewport = { width: WIDTH, height: HEIGHT };
   syncCamera(controller, camera);
+  expect(isSafePose(controller.runtime.pose, worldForController(controller))).toBe(true);
   return { controller, camera };
 }
 export function openNaturalRun(session: ChapterOneSession, intensity: 'standard' | 'subdued'): Run {
@@ -37,6 +39,9 @@ export function openNaturalRun(session: ChapterOneSession, intensity: 'standard'
 function advanceRun(run: Run, dt: number) {
   advanceController(run.controller, dt, run.camera);
   run.onAdvance?.(run, dt);
+  // The route fixture explicitly models one accepted presentation per tick.
+  // Native failure/pause/background timing is covered by the host regressions.
+  presentControllerRecovery(run.controller, dt);
 }
 function aim({ controller, camera }: Run, target: Vec3) {
   const pose = controller.runtime.pose, dx = target.x - pose.position.x, dz = target.z - pose.position.z;
@@ -202,9 +207,12 @@ function finishMirror(run: Run) {
   }
   expect(beginStageHoldController(c, 'mirror-corridor-winch', 5)).toBe(true);
   for (let i = 0; i < 240; i++) advanceRun(run, 1 / 60);
-  expect(state().ratchets).toBe(3); expect(endStageHoldController(c, 'mirror-corridor-winch', 5)).toBe(true);
-  walkZ(8.9); walkX(0); walkZ(22);
-  turn(Math.PI, -.06); expect(interactController(c, 'mirror-corridor-exit')).toBe(true);
+  expect(state().ratchets).toBe(3); expect(state().holding).toBeNull();
+  // Third tooth already ended the hold; a late finger-up cannot act again.
+  expect(endStageHoldController(c, 'mirror-corridor-winch', 5)).toBe(false);
+  walkZ(8.9); walkX(0); walkZ(MIRROR_LAYOUT.doorway.thresholdZ + .2);
+  expect(state().gateCrossed).toBe(true);
+  expect(c.runtime.pose.position.z).toBeGreaterThanOrEqual(MIRROR_LAYOUT.doorway.thresholdZ);
   expect(c.runtime.progress.cleared).toBe(true);
 }
 function finishControl(run: Run, onStopped: () => void) {

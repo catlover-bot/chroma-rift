@@ -10,7 +10,9 @@ export const KEY_SAFE: PlayerPose = { position: { x: 0, y: 1.6, z: 2.5 }, yaw: M
 export const WINCH_SAFE: PlayerPose = { position: { x: -1.8, y: 1.6, z: 10 }, yaw: Math.PI, pitch: 0 };
 // The historic work checkpoint remains readable. New work checkpoints use the
 // actual shelf recess, facing its southern opening rather than the machinery.
-export const SHELTER_SAFE: PlayerPose = { position: { x: -4.05, y: 1.6, z: 10.7 }, yaw: 0, pitch: 0 };
+export const LEGACY_SHELTER_SAFE: PlayerPose = { position: { x: -4.05, y: 1.6, z: 10.7 }, yaw: 0, pitch: 0 };
+export const SHELTER_SAFE: PlayerPose = { ...LEGACY_SHELTER_SAFE,
+  position: { ...LEGACY_SHELTER_SAFE.position }, yaw: Math.atan2(-.95, .85) };
 export const POST_GATE: PlayerPose = { position: { x: 0, y: 1.6, z: 19 }, yaw: Math.PI, pitch: 0 };
 export const LEGACY_EXIT: PlayerPose = { position: { x: 0, y: 1.6, z: 22.5 }, yaw: Math.PI, pitch: 0 };
 export const FIGURE_CENTER = { x: -.5, y: 1.6, z: 0.4 } as const;
@@ -33,6 +35,7 @@ export const GATE_Z = 17.2;
 export const MIRROR_LAYOUT = {
   corridor: { minX: -3, maxX: 3, minZ: -3, maxZ: 24 },
   vestibule: { minX: -3, maxX: 3, minZ: 24, maxZ: 32.2 },
+  shelterRack: { minX: -3.4, maxX: -2.8, minZ: 10.15, maxZ: 11.95 },
   doorway: { z: 31.38, thresholdZ: 31.5, halfWidth: .75, height: 3.2, depth: .16 },
   gate: { z: GATE_Z, halfWidth: 1.08, depth: .18, height: 3.5, guideTop: 7.2, pulleyY: 7.3,
     barWidth: .065, barCount: 9, railHeight: .08 },
@@ -89,9 +92,10 @@ export function stageWorld(ratchets: number, keyTaken = false, practiced = false
       wall('shelter-north', -4.7, -3, 12.7, 12.85),
       { id:'practice-bench-core',min:{x:-2.85,y:.74,z:7.175},max:{x:-2.37,y:.89,z:7.825},kind:'wall',opaque:true },
       { id:'winch-core',min:{x:-2.85,y:.05,z:10.975},max:{x:-2.37,y:1.33,z:11.625},kind:'wall',opaque:true },
-      // Both ends remain passable; the central rack physically blocks a direct
-      // line into the recess rather than granting a hidden safe-state flag.
-      wall('shelter-rack', -3.4, -2.8, 10.35, 11.75), wall('east', 3, 3.15, -3, MIRROR_LAYOUT.vestibule.maxZ),
+      // Both .75m end openings admit the .48m player, but not the .88m actor.
+      // The same visible rack blocks sight; there is no hidden safe-state flag.
+      wall('shelter-rack', MIRROR_LAYOUT.shelterRack.minX, MIRROR_LAYOUT.shelterRack.maxX,
+        MIRROR_LAYOUT.shelterRack.minZ, MIRROR_LAYOUT.shelterRack.maxZ), wall('east', 3, 3.15, -3, MIRROR_LAYOUT.vestibule.maxZ),
       wall('gate-west', -3, -MIRROR_LAYOUT.gate.halfWidth, GATE_Z, GATE_Z + MIRROR_LAYOUT.gate.depth),
       wall('gate-east', MIRROR_LAYOUT.gate.halfWidth, 3, GATE_Z, GATE_Z + MIRROR_LAYOUT.gate.depth),
       { id: 'isolation-grate', min: { x: -MIRROR_LAYOUT.gate.halfWidth, y: gateY, z: GATE_Z },

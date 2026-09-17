@@ -33,6 +33,7 @@ import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
 import { controlLayout } from '../rendering/firstPerson/controlLayout';
 import { SceneActionButton } from '../rendering/firstPerson/SceneActionButton';
 import { StageHoldButton } from '../rendering/firstPerson/StageHoldButton';
+import { observeSceneTouchRelease } from '../rendering/firstPerson/touchAdapter';
 import { GalleryDeviceControls, GalleryTouchLayer } from '../rendering/firstPerson/GalleryManipulation';
 import { galleryAction, galleryPanelTarget, galleryDeviceScreenBounds } from '../rendering/firstPerson/galleryController';
 import { TouchControls } from '../rendering/firstPerson/TouchControls';
@@ -172,7 +173,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const hasThreatChapter=hasActorChapter||!!stageModule(chapterId)?.actor;
   const independentChapter = hasActorChapter || simpleStage;
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
-  const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
+  const controlSessionKey = [notesOpen, simple, controls.handedness, sceneWidth, sceneHeight, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
   const blocked = !!snapshot.recovering || showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
   const movementBlocked = showDiagnostics || paused || !appActive || !ready || !!error ||
     snapshot.runtime.progress.cleared && !stageCompletionTailMovement(snapshot.runtime) || renderMode !== 'chapter';
@@ -618,7 +619,16 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     {holdAction ?? <GameButton sessionKey={controlSessionKey} label={actionLabel} onPress={examine} disabled={blocked || interactionBlocked || !snapshot.target} testID="interact" />}
   </View>;
   return <SafeAreaView style={styles.screen} edges={['top', 'right', 'bottom', 'left']}>
-    <View style={styles.sceneArea} onLayout={(event) => { const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout; if (nextWidth > 0 && nextHeight > 0) setSceneSize((previous) => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight }); }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
+    <View style={styles.sceneArea} onTouchEnd={event => observeSceneTouchRelease(controller.input, event.nativeEvent)}
+      onTouchCancel={event => observeSceneTouchRelease(controller.input, event.nativeEvent)}
+      onLayout={(event) => {
+        const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout;
+        if (nextWidth <= 0 || nextHeight <= 0) return;
+        const before = controller.runtime;
+        setControllerViewport(controller, nextWidth, nextHeight);
+        if (controller.runtime !== before) setSnapshot(controllerSnapshot(controller));
+        setSceneSize(previous => previous?.width === nextWidth && previous.height === nextHeight ? previous : { width: nextWidth, height: nextHeight });
+      }} testID="first-person-play" accessibilityElementsHidden={paused || showDiagnostics} importantForAccessibility={paused || showDiagnostics ? 'no-hide-descendants' : 'auto'}>
       {renderMode === 'raw-gl' ? <RawGLProof diagnostics={controller.diagnostics} appActive={appActive} onComplete={canvasReady} onError={fail} /> : <FirstPersonCanvas controller={controller} snapshot={snapshot} paused={paused || showDiagnostics} appActive={appActive} sceneMode={renderMode} neutralColors={neutralColors} preferredColor={preferredColor} effectStrength={settings.effectStrength} emblemPalette={settings.emblemPalette ?? 'baseline'} assist={settings.depthAssist} reducedMotion={settings.reducedMotion} quality={controls.quality} onSnapshot={publish} onReady={canvasReady} onError={fail} />}
       {!simple && !manipulating && renderMode === 'chapter' ? <TouchControls input={controller.input} enabled={!movementBlocked} handedness={controls.handedness} layout={layout} showMovementLabel={!snapshot.tutorial.moved} /> : null}
       {manipulating && !simple && theatre ? <TheatreTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : manipulating && !simple && vault ? <VaultTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : manipulating && !simple ? <GalleryTouchLayer controller={controller} enabled={!blocked} width={sceneWidth} height={sceneHeight} onChange={deviceChanged} onPause={pause} /> : null}

@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 
 import { createCheckpoint } from '../../../domain/firstPerson';
-import { MIRROR_CENTER, WINCH_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
+import { MIRROR_CENTER, SHELTER_SAFE, WINCH_SAFE } from '../../../domain/stages/mirror-corridor-v1/definition';
 import { parseStageCheckpoint } from '../../../domain/stages/mirror-corridor-v1/checkpoint';
 import { isStageSession } from '../../../domain/stages/mirror-corridor-v1/session';
 import { observedCampaignDiscoveries } from '../../../domain/campaign/discoveries';
 import { stageModule } from '../../../domain/stageKit/modules';
-import { beginStageHoldController, commandController, advanceController, controllerSnapshot, createController, endStageHoldController, interactController, syncCamera } from '../runtimeController';
+import { beginStageHoldController, commandController, advanceController, controllerSnapshot, createController, endStageHoldController, interactController, presentControllerRecovery, syncCamera } from '../runtimeController';
 import { endPointer } from '../touchInput';
 
 const camera = () => new THREE.PerspectiveCamera(65, 390 / 844, .08, 60);
@@ -77,7 +77,7 @@ test('mirror winch uses current ray, held pointer barrier, frame time, and settl
   expect(endStageHoldController(controller, 'mirror-corridor-winch', 4)).toBe(false);
 });
 
-test('standard patrol capture cancels a held winch without losing its key or settled tooth on cold restart', () => {
+test('standard patrol capture after work preserves the key and settled teeth on cold restart', () => {
   const module = stageModule('mirror-corridor-v1')!;
   const fresh = module.checkpoint(module.create());
   const data = parseStageCheckpoint(fresh.stageData)!;
@@ -124,10 +124,14 @@ test('standard patrol capture cancels a held winch without losing its key or set
   expect(live).toMatchObject({ holding: null, holdSeconds: 0, keyTaken: true, practiced: true });
   if (!isStageSession(live)) throw new Error('Mirror session missing after capture');
   expect(live.ratchets).toBeGreaterThanOrEqual(1);
-  expect(controller.runtime.pose.position).toEqual(WINCH_SAFE.position);
+  expect(controller.runtime.pose).toEqual(SHELTER_SAFE);
+  expect(live.actor.recoveryPending).toBe(true);
   expect(controller.input.releaseBarrier).toContain(8);
   expect(endStageHoldController(controller, 'mirror-corridor-winch', 8)).toBe(false);
   expect(controller.input.releaseBarrier).not.toContain(8);
+  // Simulated accepted host presentations, not real device timing.
+  for (let frame = 0; frame < 74; frame++) presentControllerRecovery(controller, 1 / 60);
+  expect(controller.runtime.stageSession?.value).toMatchObject({ actor: { recoveryPending: false, startupGrace: 3 } });
   const checkpoint = createCheckpoint(controller.runtime);
   expect(module.restore(checkpoint)?.checkpoint.stageData).toMatchObject({
     keyTaken: true, practiced: true, ratchets: live.ratchets, cleared: false,
@@ -143,7 +147,7 @@ test('standard patrol capture cancels a held winch without losing its key or set
   const walkTo = (x: number, z: number) => {
     for (let frame = 0; frame < 900; frame += 1) {
       const pose = resumed.runtime.pose, distance = Math.hypot(x - pose.position.x, z - pose.position.z);
-      if (distance < .06) { resumed.input.forward = 0; return; }
+      if (distance < .06 || resumed.runtime.progress.cleared) { resumed.input.forward = 0; return; }
       const desired = Math.atan2(-(x - pose.position.x), -(z - pose.position.z));
       commandController(resumed, { type: 'turn', yaw: desired - pose.yaw, pitch: -pose.pitch });
       resumed.input.forward = 1;
@@ -151,13 +155,9 @@ test('standard patrol capture cancels a held winch without losing its key or set
     }
     throw new Error(`Recovered route blocked before ${x},${z}`);
   };
-  walkTo(-1.8, 9.1);
-  walkTo(0, 9.1);
-  walkTo(0, 22.5);
-  const pose = resumed.runtime.pose;
-  commandController(resumed, { type: 'turn', yaw: Math.PI - pose.yaw, pitch: -.06 - pose.pitch });
-  syncCamera(resumed, resumedView);
-  expect(controllerSnapshot(resumed).target?.id).toBe('mirror-corridor-exit');
-  expect(interactController(resumed, 'mirror-corridor-exit')).toBe(true);
+  walkTo(SHELTER_SAFE.position.x, 9.85);
+  walkTo(-1.8, 9.85);
+  walkTo(0, 9.85);
+  walkTo(0, 31.7);
   expect(resumed.runtime.progress.cleared).toBe(true);
 });

@@ -4,7 +4,7 @@ import type { StageModule } from '../../stageKit/modules';
 import { SPAWN, STAGE_ID, stageWorld, type TargetId } from './definition';
 import { advanceStage, cancelStageHold, checkpointStage, commandStage, createStageSession, isStageSession, type StageCommand, type StageSession } from './session';
 import { parseStageCheckpoint } from './checkpoint';
-import { advanceMirrorActor } from './actor';
+import { advanceMirrorActor, resumeMirrorRecovery } from './actor';
 import { selectMirrorAction, selectMirrorPresentation } from './selectors';
 
 const record=(value:unknown):value is Record<string,unknown>=>typeof value==='object'&&value!==null&&!Array.isArray(value);
@@ -81,7 +81,14 @@ export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
     const cancelled=cancelStageHold(live);
     return cancelled===live?runtime:{...runtime,stageSession:{stageId:STAGE_ID,value:cancelled}};
   },
-  actor:{usesGalleryBody:true,advance:(runtime,dt,context)=>{
+  actor:{usesGalleryBody:true,recovery:{
+    pending:runtime=>session(runtime)?.actor.recoveryPending===true,
+    resume:runtime=>{
+      const live=session(runtime);if(!live)return runtime;
+      const resumed=resumeMirrorRecovery(live);
+      return resumed===live?runtime:{...runtime,pose:resumed.pose,stageSession:{stageId:STAGE_ID,value:resumed}};
+    },
+  },advance:(runtime,dt,context)=>{
     const live=session(runtime);
     if(!live)return {runtime,caught:false,movedDistance:0,footPlants:[],events:[],soundSources:[]};
     const result=advanceMirrorActor({...live,pose:{...runtime.pose,position:{...runtime.pose.position}}},dt,context);

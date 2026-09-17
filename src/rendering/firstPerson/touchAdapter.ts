@@ -5,6 +5,15 @@ export type TouchPhase = 'start' | 'move' | 'end' | 'cancel';
 export type TouchPoint = { identifier: PointerId; pageX: number; pageY: number };
 export type NativeTouchBatch = { changedTouches?: readonly TouchPoint[]; targetTouches?: readonly TouchPoint[]; touches?: readonly TouchPoint[] };
 
+/** The stable scene ancestor also observes releases when an action view was
+ * replaced by completion/capture. This never acquires a pointer or adds motion. */
+export function observeSceneTouchRelease(input: FirstPersonInput, event: NativeTouchBatch): void {
+  if (Array.isArray(event.touches)) observeReleaseBarrier(input,
+    event.touches.filter(point => point && validPointer(point.identifier)).map(point => point.identifier));
+  if (Array.isArray(event.changedTouches)) for (const point of event.changedTouches)
+    if (point && validPointer(point.identifier) && input.releaseBarrier.includes(point.identifier)) endPointer(input, point.identifier);
+}
+
 /** JS-only adapter for the installed RN 0.86 native touch emitter.
  * RCTSurfaceTouchHandler owns each touch's original emitter for its lifetime.
  * TouchEventEmitter.cpp exposes globally batched changedTouches; the primary

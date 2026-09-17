@@ -2,10 +2,14 @@ import { createActorMotion } from '../../actorMotion';
 import { isSafePose, segmentOccluded } from '../../firstPerson/geometry';
 import { vaultActorEdgeOpen } from '../../vault/actorPolicy';
 import { advanceMirrorActor, MIRROR_PATROL } from './actor';
-import { RATCHET_COUNT, WINCH_CENTER, stageWorld } from './definition';
+import { RATCHET_COUNT, SHELTER_SAFE, WINCH_CENTER, stageWorld } from './definition';
 import { advanceStage, checkpointStage, commandStage, createStageSession } from './session';
 
-const atWinch = { position: { x: -2.45, y: 1.6, z: 11.3 }, yaw: Math.PI, pitch: 0 };
+const atWinch = { position: { x: -2.45, y: 1.6, z: 9.6 }, yaw: Math.PI, pitch: 0 };
+
+beforeEach(() => {
+  expect(isSafePose(atWinch, stageWorld(0, true, true))).toBe(true);
+});
 
 test('the same embodied patrol hears the real winch source, turns and moves toward it', () => {
   let session = createStageSession('hear');
@@ -78,14 +82,14 @@ test('closed grate blocks the actor body and the final raised height opens the s
 test('the shelf recess has a walkable entrance and physically occludes a hidden player', () => {
   const world = stageWorld(0, true, true);
   for (const position of [
-    { x: -2.45, y: 1.6, z: 12.15 }, { x: -3.05, y: 1.6, z: 12.15 },
-    { x: -3.75, y: 1.6, z: 12.15 }, { x: -3.75, y: 1.6, z: 11.15 },
+    { x: -2.45, y: 1.6, z: 12.3 }, { x: -3.05, y: 1.6, z: 12.3 },
+    { x: -3.75, y: 1.6, z: 12.3 }, { x: -3.75, y: 1.6, z: 11.15 },
   ]) expect(isSafePose({ position, yaw: 0, pitch: 0 }, world)).toBe(true);
   expect(segmentOccluded({ x: -.9, y: 1.95, z: 13.1 }, { x: -3.75, y: 1.6, z: 11.15 }, world)).toBe(true);
   expect(vaultActorEdgeOpen({ x: -.9, y: 0, z: 13.1 }, { x: -3.75, y: 0, z: 11.15 }, world)).toBe(false);
 });
 
-test('a caught standard-mode hold returns to the safe winch pose without erasing settled teeth', () => {
+test('a caught standard-mode hold returns behind the shelf without erasing settled teeth', () => {
   let session = createStageSession('caught');
   session = { ...session, pose: atWinch, keyTaken: true, practiced: true };
   session = commandStage(session, { sessionId: 'caught', seq: 1, targetId: 'mirror-corridor-winch', type: 'start-hold' }).session;
@@ -99,6 +103,6 @@ test('a caught standard-mode hold returns to the safe winch pose without erasing
   expect(caught).toBe(true);
   expect(session).toMatchObject({ holding: null, holdSeconds: 0, keyTaken: true, practiced: true });
   expect(session.ratchets).toBeGreaterThan(0);
-  expect(session.pose.position).toEqual({ x: -1.8, y: 1.6, z: 10 });
+  expect(session.pose).toEqual(SHELTER_SAFE);
   expect(session.actor.contactCooldown).toBeGreaterThan(0);
 });

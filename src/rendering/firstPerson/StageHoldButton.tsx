@@ -60,6 +60,8 @@ export function StageHoldButton({ label, holding, disabled = false, testID, sess
     else onBegin();
   };
   return <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityHint="押すと保持を始め、もう一度押すと放します。" accessibilityState={{ disabled }}
+    accessibilityActions={[{ name: 'activate', label }]} onAccessibilityTap={activate}
+    onAccessibilityAction={event => { if (event.nativeEvent.actionName === 'activate') activate(); }}
     disabled={disabled} testID={testID} style={style}
     onTouchStart={event => touch('start', event)} onTouchMove={event => touch('move', event)}
     onTouchEnd={event => touch('end', event)} onTouchCancel={event => touch('cancel', event)}
