@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "packagedAt": "2026-09-17T10:59:35.973042+00:00",
+  "report": {
+    "file": "report.json",
+    "sha256": "dea71665f2228f5f8c355f8bab0d36157ec07444886148965c0090ecd28883ed"
+  },
+  "script": {
+    "file": "scripts/qa-player-ui-comparison.cjs",
+    "sha256": "83b16d496fd6381b7b94f84c564ffa12589f024b9ead63de42381e890e37a8b0"
+  },
+  "commands": [
+    {
+      "command": "node node_modules/eslint/bin/eslint.js scripts/qa-player-ui-comparison.cjs",
+      "exitCode": 0,
+      "log": "lint.log.gz"
+    },
+    {
+      "command": "node scripts/qa-player-ui-comparison.cjs",
+      "exitCode": 0,
+      "log": "capture.log.gz"
+    }
+  ],
+  "logs": [
+    {
+      "file": "lint.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "originalPath": ".expo/goal014-1/player-ui-comparison-lint.log"
+    },
+    {
+      "file": "capture.log.gz",
+      "sha256": "53b5062c3cbfcdd3c98a7ef072a1061b26c0af002f2706738f81f8a1405bc409",
+      "originalSha256": "9d1ac9cd2d2918573f864cba899ccb509840b843a1bda6485f92b3f63d5e3651",
+      "originalPath": ".expo/goal014-1/player-ui-comparison-capture.log"
+    },
+    {
+      "file": "chromium.log.gz",
+      "sha256": "8a191b91311de03d14d7df70c3e6e5806fd001d269f5ae5db99d908b164d8e91",
+      "originalSha256": "6897ebf374826de762c2ae1a6de63eaedf31c7501af4e8bff96f661992c70d4c",
+      "originalPath": ".expo/goal014-1/player-ui-comparison/chromium.log"
+    },
+    {
+      "file": "host-trees.json.gz",
+      "sha256": "39695ecf3c27993fb265410afef75497eb4cff7baed95dbab5308e4a1fe3136b",
+      "originalSha256": "5c2a5599fda98f19cb481fe1012d547b60ea80fb5071232b9a3455db9c4ec786",
+      "originalPath": ".expo/goal014-1/player-ui-comparison/host-trees.json"
+    },
+    {
+      "file": "attempt-01-lint-warning.log.gz",
+      "sha256": "b2056b8fad56c73a4e5d84a3398c2db5d32a80bff192fa52ee42fca980ca4b97",
+      "originalSha256": "14f84e035388df8de15aeb48ace9a72b4e44b7ec5a4556eb88b35a8a65fe5bdb",
+      "originalPath": ".expo/goal014-1/player-ui-comparison/attempt-01/lint.log"
+    }
+  ],
+  "nativeExecuted": false,
+  "browserErrors": [],
+  "sourceInputsStable": true,
+  "guardedInputCount": 450,
+  "beforeModuleCount": 51,
+  "currentModuleCount": 55,
+  "pngCount": 8,
+  "pngBytes": 656794,
+  "visualReview": {
+    "inspectedEveryPng": true,
+    "files": [
+      "home-title-320-font2.png",
+      "settings-vibration-320-font2.png",
+      "settings-audio-320-font2.png",
+      "settings-missing-native-failure-320-font2.png",
+      "home-title-390-font1.png",
+      "settings-vibration-390-font1.png",
+      "settings-audio-390-font1.png",
+      "settings-missing-native-failure-390-font1.png"
+    ],
+    "firstAttemptPixelsIdentical": true,
+    "finding": "Old home identity fully visible, after normal home lacks code/profile/build. Old haptics/audio/Development Build wording and new Japanese are legible in both sizes. Current target text fully visible and no horizontal overflow in checked cases. Baseline enlarged settings retain their historical horizontal overflow; no correction to baseline source/style is hidden."
+  },
+  "retainedAttempt": {
+    "location": ".expo/goal014-1/player-ui-comparison/attempt-01",
+    "reason": "first capture succeeded; unused __filename ESLint warning then removed; all screenshot bytes unchanged"
+  },
+  "interpretation": "Targeted before/after normal UI comparison only. Support details closed. React/CSS native host fixtures and conditional missing-native case are labeled in report; no device, App transition or sound claim."
+}

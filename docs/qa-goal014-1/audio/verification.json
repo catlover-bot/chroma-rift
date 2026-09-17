@@ -1,0 +1,671 @@
+{
+  "schemaVersion": 1,
+  "task": "Goal014.1 audio lifecycle",
+  "createdAt": "2026-09-17T10:40:09.967275+00:00",
+  "headAtPackaging": "393e58e59d73a65455b423d3aba9fdefe6c6d8de",
+  "branch": "fix/goal-014-1-audio-and-player-ui",
+  "implementationState": "uncommitted audio draft frozen after focused tests; parent owns final full-check/commit correspondence",
+  "deviceAcceptance": "PENDING",
+  "releaseReady": false,
+  "nativeAudioExecuted": false,
+  "hearingVerified": false,
+  "authority": {
+    "installedExpoAudio": "57.0.5",
+    "officialDocs": "https://docs.expo.dev/versions/latest/sdk/audio/",
+    "localSources": [
+      {
+        "file": {
+          "path": "node_modules/expo-audio/ios/AudioModule.swift",
+          "sha256": "988bad3ed7eadf2b79d0de2a02529862e7e04cf5d52c9e8ddb65b55acb133e52",
+          "bytes": 24810
+        },
+        "findings": [
+          {
+            "lines": [
+              122,
+              140
+            ],
+            "finding": "constructor applies keepAudioSessionActive and skips finite-completion deactivation when true"
+          },
+          {
+            "lines": [
+              211,
+              215
+            ],
+            "finding": "individual play activates the AVAudioSession"
+          },
+          {
+            "lines": [
+              243,
+              250
+            ],
+            "finding": "individual pause schedules deactivation only when keepAudioSessionActive is false"
+          },
+          {
+            "lines": [
+              590,
+              637
+            ],
+            "finding": "interruption end activates; only shouldResume resumes; oldDeviceUnavailable pauses all"
+          },
+          {
+            "lines": [
+              695,
+              710
+            ],
+            "finding": "pauseAll preserves wasPlaying; native foreground resumes those players"
+          },
+          {
+            "lines": [
+              741,
+              752
+            ],
+            "finding": "global false pauses all, then sets session active state"
+          },
+          {
+            "lines": [
+              827,
+              843
+            ],
+            "finding": "individual deactivation is delayed 100ms and rechecks no registry playable is playing"
+          }
+        ]
+      },
+      {
+        "file": {
+          "path": "node_modules/expo-audio/ios/AudioPlayer.swift",
+          "sha256": "ec25a72a075180123437450350e7eed1ab7ef669645ebed901c4470c039ee41c",
+          "bytes": 13789
+        },
+        "findings": [
+          {
+            "lines": [
+              86,
+              107
+            ],
+            "finding": "loaded and playing read AVPlayer state; play sets looping and time observers"
+          },
+          {
+            "lines": [
+              133,
+              174
+            ],
+            "finding": "currentStatus has error:nil and didJustFinish:false; updateStatus merges event-only fields"
+          },
+          {
+            "lines": [
+              214,
+              223
+            ],
+            "finding": "failed item status emits localized error via updateStatus"
+          },
+          {
+            "lines": [
+              430,
+              474
+            ],
+            "finding": "finite end emits completion; loop uses next queued item"
+          }
+        ]
+      },
+      {
+        "file": {
+          "path": "node_modules/expo-audio/src/Audio.types.ts",
+          "sha256": "d5782c755dcdf2164a15ee48b2ad250f42aa69198d5419555928e52295300dce",
+          "bytes": 24867
+        },
+        "findings": [
+          {
+            "lines": [
+              109,
+              129
+            ],
+            "finding": "documented keepAudioSessionActive playback option; no recording option needed"
+          }
+        ]
+      },
+      {
+        "file": {
+          "path": "node_modules/expo-audio/src/AudioModule.types.ts",
+          "sha256": "fc581e960ba8ab5f9085abd3119caa30f2b48c25334a898944ca25025af9bc13",
+          "bytes": 14619
+        },
+        "findings": [
+          {
+            "lines": [
+              1,
+              370
+            ],
+            "finding": "public player fields/currentStatus and playbackStatusUpdate listener contract"
+          }
+        ]
+      }
+    ]
+  },
+  "confirmedCodeDefects": [
+    "baseline music error/deadline escalates to owner unavailable and releases healthy environment/effects",
+    "incoming play request was treated as playback and could fade out healthy music while incoming was buffering",
+    "currentStatus polling can mask the event-only native item error",
+    "Screen recovery called before setActive can reject explicit resume; parent Screen regression demonstrates ordering"
+  ],
+  "conditionalHypothesis": "An old keepAudioSessionActive:false player can schedule global deactivation in a 100ms no-playing window while its replacement buffers. The installed native guard prevents this if any sibling is already playing. Fixture supports the conditional mechanism, not attribution of the reported iPhone silence.",
+  "fixes": {
+    "session": "shared serialized lease coordinator; all managed native players keepAudioSessionActive:true; last active lease false, new readiness waits repair true",
+    "isolation": "music failure retires only its voice; healthy ambience/effects remain; explicit partial music recovery preserves those player identities",
+    "recovery": "foreground/user intent only; concurrent recovery coalesces; max2 actual repairs per owner; healthy calls do not spend budget; no frame-driven route restart",
+    "clock": "wall-clock load deadline for active lifetime; background/disabled owner retires voice; finite completion uses native currentTime/status where available",
+    "resources": {
+      "effectPool": 10,
+      "maximumMusicPlayers": 2,
+      "maximumPerActiveOwner": 12,
+      "ownerTimersAdded": 0,
+      "diagnosticEventLimit": 64,
+      "diagnosticValueTextLimit": 160
+    },
+    "preferences": "existing silent-switch respecting mode, recording/background off, gain normalization, music/environment/effect/illusion preferences unchanged"
+  },
+  "limits": [
+    "No AVFoundation, real output device, acoustic listening, iPhone route interruption or actual decoder exercised.",
+    "Shared-native harness matches audited session semantics but simplifies asset buffering and most finite effect durations to one second; music durations and Shepard12s are modeled.",
+    "Synchronous seeks are enabled only for the long App route; controlled deferred seek tests cover asynchronous completion separately.",
+    "Generic effect/environment allocation/play/seek exceptions conservatively stop the owner pool and retain exact failure phase; they are not classified as proven native-wide failures or isolated per effect asset.",
+    "Missing optional native module records availability:missing-native without inventing an exception; actual probe/import exceptions are retained with ownerId0 because no owner exists yet.",
+    "Initial red and intermediate logs retain their historical assertion outcomes. Source hashes below are packaging-time inventory after frozen audio focused runs; final all-project guard and exports belong to parent final verification.",
+    "Historical Goal014 mixed/attached soundtrack videos are composition evidence, not native playback acceptance."
+  ],
+  "runs": [
+    {
+      "log": "red-session-contract.log.gz",
+      "result": "2 failed /1 passed",
+      "stage": "before audio implementation",
+      "negativeControl": "effect completion does not deactivate already playing music"
+    },
+    {
+      "log": "green-initial.log.gz",
+      "result": "57 passed /2 failed",
+      "stage": "intermediate",
+      "remaining": "legacy keepAudioSessionActive:false and simulation-only load timeout expectations"
+    },
+    {
+      "log": "red-recovery.log.gz",
+      "result": "6 passed /3 failed",
+      "stage": "regressions against first draft"
+    },
+    {
+      "log": "green-recovery-01.log.gz",
+      "result": "75 assertions passed;1 empty helper suite failed discovery",
+      "stage": "intermediate",
+      "fix": "moved test helper outside __tests__, without changing Jest config"
+    },
+    {
+      "log": "green-recovery-02.log.gz",
+      "result": "10 suites /100 passed",
+      "stage": "intermediate"
+    },
+    {
+      "log": "green-recovery-03.log.gz",
+      "result": "105 passed /1 failed",
+      "stage": "intermediate",
+      "fix": "new rapid pause/resume test expected1 native call; actual correct serialized true/false/true is asserted instead of requiring unsafe operation coalescing"
+    },
+    {
+      "log": "green-recovery-04.log.gz",
+      "result": "11 suites /106 passed",
+      "stage": "intermediate"
+    },
+    {
+      "log": "red-event-only-status.log.gz",
+      "result": "14 passed /1 failed",
+      "stage": "native status regression"
+    },
+    {
+      "log": "green-final.log.gz",
+      "result": "11 suites /107 passed",
+      "stage": "final focused audio and2 controller suites",
+      "command": "node node_modules/jest/bin/jest.js src/audio/__tests__ src/rendering/firstPerson/__tests__/actorController.test.ts src/rendering/firstPerson/__tests__/galleryController.test.ts --runInBand",
+      "exitCode": 0
+    },
+    {
+      "log": "lint-final.log.gz",
+      "result": "PASS",
+      "command": "node node_modules/eslint/bin/eslint.js src/audio src/rendering/firstPerson/__tests__/actorController.test.ts src/rendering/firstPerson/__tests__/galleryController.test.ts",
+      "exitCode": 0
+    },
+    {
+      "log": "typecheck-final.log.gz",
+      "result": "PASS",
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exitCode": 0
+    },
+    {
+      "log": "focused-screen-recovery-order-red.log.gz",
+      "result": "Screen explicit-resume ordering regression failed before fix",
+      "stage": "parent focused integration"
+    },
+    {
+      "log": "focused-root-screen-r4.log.gz",
+      "result": "2 suites /31 passed",
+      "stage": "parent focused integration; not final whole-source freeze proof"
+    }
+  ],
+  "focusedAppTrace": {
+    "original": {
+      "path": ".expo/goal014-1/app-audio-expanded.json",
+      "sha256": "f3f1c5d69af16527a29780f4088124f3a8e8db168f05e1e392522776283496b5",
+      "bytes": 1171332
+    },
+    "archived": {
+      "path": "docs/qa-goal014-1/audio/focused-app-audio-expanded.json.gz",
+      "sha256": "d308c847b99fd3311fac0ea94ed4ac825d95a06f4e33543ecbd715e3b9dac204",
+      "bytes": 43084
+    },
+    "screenEntries": 19,
+    "snapshotCount": 20,
+    "simulationSeconds": 214.13412931638504,
+    "scope": "real App/Gate/Screen/controller/audio ownership; substitute successful GL boundary and shared native audio contract; parent final full-check re-executes tests"
+  },
+  "sourceHashesAtPackaging": {
+    "src/audio/__tests__/assets.test.ts": "6ea5416ccbd1cdf1adb5723347be26875619327c576ea9aa7af649d14e946352",
+    "src/audio/__tests__/audioRecovery.test.ts": "06ba725932963e693d65484b72f96124cfc3c317948b929c4c7b336373c55042",
+    "src/audio/__tests__/audioSessionContract.test.ts": "5f35daa691719d7ec0581cab6fb2a3b47d8ebd47d0dbed83958e2a6c07ed558c",
+    "src/audio/__tests__/diagnostics.test.ts": "befcb087e2326c2524cc967c96155eea7633200c47b9602b9c869970567e64d7",
+    "src/audio/__tests__/musicDirector.test.ts": "442ea01702f129ac9c665feecee21911fa19e71697b6c37f1848ca25893ecf39",
+    "src/audio/__tests__/nativeBackend.test.ts": "e1b6569bf7f7ebb1f03221e318bb304ad6afc27a241df1912c1d16b1b19caa23",
+    "src/audio/__tests__/owner.test.ts": "feb521ca4bce0c6adf51be4ac7a2a1ab14258770d7a6f6508b8cf914c02ad6d3",
+    "src/audio/__tests__/perceptualAssets.test.ts": "6ae307adfd9e2547c34852203c1a9c19f064c3bfed86d21ccdf12bb74bcf5bc2",
+    "src/audio/__tests__/preparedMusicAssets.test.ts": "12a6f4aa94bd822345d13d679f549c5cb14146af909de83f41d4be537d9b5335",
+    "src/audio/diagnostics.ts": "179daa85f1245530c308e5a9a74e18b893420d6b7fb23c9fdad8d8120f11af41",
+    "src/audio/index.ts": "a0ffb6b96f81a383f8132487fa29f57565b539d029fb8ee5b8c26d8b0b968cf5",
+    "src/audio/musicDirector.ts": "9cc56f6060ec3a5b95898d86694b627f1faa1c9d061cde192eb60945013efe65",
+    "src/audio/musicState.ts": "daf58b0d4127fbc5789be24f7454fb2efc2e2cc456c7b336680f060c28a84a37",
+    "src/audio/nativeBackend.ts": "27e8edca07f1677849324b54f221c2f3f3d44600739c2279739c86dbe5806892",
+    "src/audio/nativeSession.ts": "03770654b6119571658f5d37eda532d6ec3e7eb0e601bb64142d0c2dd910c027",
+    "src/audio/owner.ts": "db532142153b076830dd63f67911750e425b6b4e94ccdc8683fa00efd5bde1a8",
+    "src/audio/preferences.ts": "972ee7f67e77b9f916e1b17fbc4f7181a5243c687f41276cdd488c67b8ca525a",
+    "src/audio/sources.ts": "c18a2b14e666e49ee6afa83cb3756a29acd0c13639e05933c5c11a5478792a3c",
+    "src/audio/testFixtures/sharedNativeAudio.ts": "7eece382d7379be1f51b3f6df806880dfc9f9d2f332cf4b30ef86d8a101349d5",
+    "src/audio/types.ts": "a9a9cf5aa0ad53ec07392f181053d4df24a263124199837695b16b754063dd29"
+  },
+  "assetsAndAuthoring": {
+    "count": 37,
+    "changed": [],
+    "files": {
+      "assets/audio/ambience.wav": {
+        "baseline": "50406f566d9f94c46f45bfc038e43a0eed48eb4cad2c83e554b4382b53f4e847",
+        "current": "50406f566d9f94c46f45bfc038e43a0eed48eb4cad2c83e554b4382b53f4e847"
+      },
+      "assets/audio/analysis.json": {
+        "baseline": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17",
+        "current": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17"
+      },
+      "assets/audio/cloth.wav": {
+        "baseline": "9ca8d101577af92b6fa2be1dea6b989a475a0a1a3e911f1607454e49df71b0cb",
+        "current": "9ca8d101577af92b6fa2be1dea6b989a475a0a1a3e911f1607454e49df71b0cb"
+      },
+      "assets/audio/door-impact.wav": {
+        "baseline": "ad517be84d5b421691f9b41fb0eb43e4efe82fc3b3eff3315a35371236a06c77",
+        "current": "ad517be84d5b421691f9b41fb0eb43e4efe82fc3b3eff3315a35371236a06c77"
+      },
+      "assets/audio/footstep.wav": {
+        "baseline": "ec4366dcddfe8800292b57917ac129d68b1f0f0f029be4c9fafc9a68328cec87",
+        "current": "ec4366dcddfe8800292b57917ac129d68b1f0f0f029be4c9fafc9a68328cec87"
+      },
+      "assets/audio/interaction.wav": {
+        "baseline": "477a1ce825fdf4bd9d6a4dbe9b98184ba29084e3027853ffefbfc54ed57db149",
+        "current": "477a1ce825fdf4bd9d6a4dbe9b98184ba29084e3027853ffefbfc54ed57db149"
+      },
+      "assets/audio/mechanism.wav": {
+        "baseline": "38a08a0805920e63f3a0408597b8d4e15178826841b789fcb8d4bd2e13249db2",
+        "current": "38a08a0805920e63f3a0408597b8d4e15178826841b789fcb8d4bd2e13249db2"
+      },
+      "assets/audio/music/chapter_end.m4a": {
+        "baseline": "f5ccbb4d871e9a563e67aae95c7ddf1edaa82a09d0a225efdaec796be6f7e98e",
+        "current": "f5ccbb4d871e9a563e67aae95c7ddf1edaa82a09d0a225efdaec796be6f7e98e"
+      },
+      "assets/audio/music/exploration.m4a": {
+        "baseline": "b25cde7ed42c086b8e89e9b3c3b8b94d731089e7cdd7d46a4a1e8fad03af5920",
+        "current": "b25cde7ed42c086b8e89e9b3c3b8b94d731089e7cdd7d46a4a1e8fad03af5920"
+      },
+      "assets/audio/music/pursuit.m4a": {
+        "baseline": "84c4482a80b68907ca3335690de6a5a33afde370d2f8c75d2aae6846369d2aef",
+        "current": "84c4482a80b68907ca3335690de6a5a33afde370d2f8c75d2aae6846369d2aef"
+      },
+      "assets/audio/music/release.m4a": {
+        "baseline": "2e58f6389fa0f1060f6c77ba7eaef239b2bea1d24fff957c4b0627923b3c24a3",
+        "current": "2e58f6389fa0f1060f6c77ba7eaef239b2bea1d24fff957c4b0627923b3c24a3"
+      },
+      "assets/audio/music/suspicion.m4a": {
+        "baseline": "6ce0a86b75c0392818c99ccb2675400c9dc03a60b916b7fceff400019deef316",
+        "current": "6ce0a86b75c0392818c99ccb2675400c9dc03a60b916b7fceff400019deef316"
+      },
+      "assets/audio/music/title_theme.m4a": {
+        "baseline": "9ba7511f72304672ab7b9d3e406ab3af0df75b8ab3586d41c45dede876ab2005",
+        "current": "9ba7511f72304672ab7b9d3e406ab3af0df75b8ab3586d41c45dede876ab2005"
+      },
+      "assets/audio/perceptual-analysis.json": {
+        "baseline": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c",
+        "current": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c"
+      },
+      "assets/audio/physical/bell.wav": {
+        "baseline": "b5b8a5ce35926b20d7e9c1a6e4a1f1af6d5fe37e725cc9b3e69380b9c964dc9e",
+        "current": "b5b8a5ce35926b20d7e9c1a6e4a1f1af6d5fe37e725cc9b3e69380b9c964dc9e"
+      },
+      "assets/audio/physical/cloth-metal.wav": {
+        "baseline": "6128dbd683537b11c605aab421458f2d8ca87dc94309367e8067e60f74e3d3c0",
+        "current": "6128dbd683537b11c605aab421458f2d8ca87dc94309367e8067e60f74e3d3c0"
+      },
+      "assets/audio/physical/grip.wav": {
+        "baseline": "a14b9dc4952e601213f42c23ac0b48573359550f05a3ae09ac457a7e7e4f3d7d",
+        "current": "a14b9dc4952e601213f42c23ac0b48573359550f05a3ae09ac457a7e7e4f3d7d"
+      },
+      "assets/audio/physical/isolation.wav": {
+        "baseline": "58e57bc0b8736a9dfba8640354303b6c1752b577f97504add5f9a5aea8fc8ed4",
+        "current": "58e57bc0b8736a9dfba8640354303b6c1752b577f97504add5f9a5aea8fc8ed4"
+      },
+      "assets/audio/physical/key.wav": {
+        "baseline": "a51d2e1e89011f31de172067b48c762e0d250342780b216d655ab41e13a37b0a",
+        "current": "a51d2e1e89011f31de172067b48c762e0d250342780b216d655ab41e13a37b0a"
+      },
+      "assets/audio/physical/outdoor.wav": {
+        "baseline": "0de43e523fede5fc07ba088d7876799ab0ab82f1f2b6d8e09adcaccf04bfda4b",
+        "current": "0de43e523fede5fc07ba088d7876799ab0ab82f1f2b6d8e09adcaccf04bfda4b"
+      },
+      "assets/audio/physical/power.wav": {
+        "baseline": "13bde3489262833a9291a3126965f3621ff2ce977ecfcd9bff80d544c839eb59",
+        "current": "13bde3489262833a9291a3126965f3621ff2ce977ecfcd9bff80d544c839eb59"
+      },
+      "assets/audio/physical/ratchet.wav": {
+        "baseline": "9449c6c9eb984d656dcdd302a319d434aff9d6e420155baf87b3056156c347b2",
+        "current": "9449c6c9eb984d656dcdd302a319d434aff9d6e420155baf87b3056156c347b2"
+      },
+      "assets/audio/physical/room-control.wav": {
+        "baseline": "d1c594adff38c6b84bc54323ef2a98af4031a40c24b296ecac91c20d29c3395c",
+        "current": "d1c594adff38c6b84bc54323ef2a98af4031a40c24b296ecac91c20d29c3395c"
+      },
+      "assets/audio/physical/room-gallery.wav": {
+        "baseline": "35193b9852d6a796471cb10b5f801458529486dd4bf0c8a0d1865e1f8ec08b95",
+        "current": "35193b9852d6a796471cb10b5f801458529486dd4bf0c8a0d1865e1f8ec08b95"
+      },
+      "assets/audio/physical/room-mirror.wav": {
+        "baseline": "b70af022443182a340415ee1277329f6f2b0a3e310a75e4ae69b4a3bc06814a4",
+        "current": "b70af022443182a340415ee1277329f6f2b0a3e310a75e4ae69b4a3bc06814a4"
+      },
+      "assets/audio/physical/room-theatre.wav": {
+        "baseline": "a40e9c5039d8779a0acb5dcc5b71585f31a3afbcc1aac91cb3d6b2c65d677764",
+        "current": "a40e9c5039d8779a0acb5dcc5b71585f31a3afbcc1aac91cb3d6b2c65d677764"
+      },
+      "assets/audio/physical/room-vault.wav": {
+        "baseline": "ee1659a3b0a6e610a729c9091cfc43a996cfde73972343f2725160d1e43884e6",
+        "current": "ee1659a3b0a6e610a729c9091cfc43a996cfde73972343f2725160d1e43884e6"
+      },
+      "assets/audio/physical/step-a.wav": {
+        "baseline": "bd5e96bf202875c6288a2d6506739a562661df5262bbeda91ec87554c36beeae",
+        "current": "bd5e96bf202875c6288a2d6506739a562661df5262bbeda91ec87554c36beeae"
+      },
+      "assets/audio/physical/step-b.wav": {
+        "baseline": "4663763ca5145d5ec240d17688e9aef1328f6a7029343b6fc272034088bd2bab",
+        "current": "4663763ca5145d5ec240d17688e9aef1328f6a7029343b6fc272034088bd2bab"
+      },
+      "assets/audio/shepard.wav": {
+        "baseline": "bfc15c3aaaafc00a9b9856cbc79ed75d4c94ca1d409ba55ee5aaf5fc391281b2",
+        "current": "bfc15c3aaaafc00a9b9856cbc79ed75d4c94ca1d409ba55ee5aaf5fc391281b2"
+      },
+      "scripts/audio/VSCO-CC0-LICENSE.txt": {
+        "baseline": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+        "current": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+      },
+      "scripts/audio/chapter-one-score.json": {
+        "baseline": "8dc2e8a8ad453f692356578046f96b8f0e943bcf279aeababf27f7035464502a",
+        "current": "8dc2e8a8ad453f692356578046f96b8f0e943bcf279aeababf27f7035464502a"
+      },
+      "scripts/audio/compose-score.py": {
+        "baseline": "b8328897bcdc9c9f1f3f354524d3ee0d988976ab51a3e1e953c0f6e4a22fa873",
+        "current": "b8328897bcdc9c9f1f3f354524d3ee0d988976ab51a3e1e953c0f6e4a22fa873"
+      },
+      "scripts/audio/instrument-sources.json": {
+        "baseline": "9fa88cc72372444f39104717fd1d89aeb48ad1aae243c7710ee79323820409f1",
+        "current": "9fa88cc72372444f39104717fd1d89aeb48ad1aae243c7710ee79323820409f1"
+      },
+      "scripts/audio/render-chapter-music.py": {
+        "baseline": "6671a6c6529ec118dce074cd9b8451adfcb7879f8fb459e701aa4fb23ae05d84",
+        "current": "6671a6c6529ec118dce074cd9b8451adfcb7879f8fb459e701aa4fb23ae05d84"
+      },
+      "scripts/audio/render-physical-sounds.py": {
+        "baseline": "34a75e0783ee1d58865854700db9a433003c4e90fa8d784ab31967e9097abb46",
+        "current": "34a75e0783ee1d58865854700db9a433003c4e90fa8d784ab31967e9097abb46"
+      },
+      "scripts/audio/render-recorded-mix.py": {
+        "baseline": "5f7089205e17ee2253d7e5594ea9f6cbe626e33bced302451799a6eea51a928c",
+        "current": "5f7089205e17ee2253d7e5594ea9f6cbe626e33bced302451799a6eea51a928c"
+      }
+    }
+  },
+  "protectedConfiguration": {
+    "package.json": {
+      "baseline": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+      "current": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942"
+    },
+    "package-lock.json": {
+      "baseline": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+      "current": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037"
+    },
+    "app.json": {
+      "baseline": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+      "current": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4"
+    },
+    "eas.json": {
+      "baseline": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+      "current": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd"
+    },
+    "metro.config.js": {
+      "baseline": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+      "current": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55"
+    },
+    "metro/withNativeThree.js": {
+      "baseline": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "current": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+    },
+    "metro/withReleaseComposition.js": {
+      "baseline": "f5a8b75fa050963ba063dc602df8e80b597f9ce94786a2a8f9d07fffb3225de8",
+      "current": "f5a8b75fa050963ba063dc602df8e80b597f9ce94786a2a8f9d07fffb3225de8"
+    },
+    "metro/releaseDevStubs.js": {
+      "baseline": "50322d482f5c226c0ef93696a5a109db6605cecc6104f0f57933744aef873d22",
+      "current": "50322d482f5c226c0ef93696a5a109db6605cecc6104f0f57933744aef873d22"
+    }
+  },
+  "logs": [
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/green-final.log",
+        "sha256": "cc7122f42614d0d274649e7bfbcf123b24c36df96cbe8a0aae7e5d0c74728fd5",
+        "bytes": 865
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/green-final.log.gz",
+        "sha256": "2a3cf0b0e70edf1ba79ad6f7e03c4a488d0821db2854f03f2fbe1954cf744b28",
+        "bytes": 304
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/green-initial.log",
+        "sha256": "ddb22c215ec16bb8d95eb4f59dcb246e1af99edf87c4dd7ceb59c7945b08c34e",
+        "bytes": 2689
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/green-initial.log.gz",
+        "sha256": "69dd05c055e3b0962893572f86f9b79293bcecbead351a6e7112e3392477e085",
+        "bytes": 1105
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/green-recovery-01.log",
+        "sha256": "5db6746111fcbce87eed5a52e0c9aa9eb544db93effa8a2d565da3b965da7dd3",
+        "bytes": 988
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/green-recovery-01.log.gz",
+        "sha256": "8fb31f1ae50c1c195ff6a136f67e2e21af91879fca00e4d24b4483fa1cd79ea0",
+        "bytes": 441
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/green-recovery-02.log",
+        "sha256": "415f0476d1e153d7b87b0a98917dd0ebd7de10e1aef04c4545a043b58d2b766a",
+        "bytes": 805
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/green-recovery-02.log.gz",
+        "sha256": "78770922f856cebafb7564b23b85644f17dc8dfe906e951b151b02b0bd7f263d",
+        "bytes": 285
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/green-recovery-03.log",
+        "sha256": "39e803b7a1eaba7db3163c49762711bb02bedc5edb46dee39ba9c3119997cfda",
+        "bytes": 1911
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/green-recovery-03.log.gz",
+        "sha256": "6353e6bbe6769b9b429793209df8f63ed14a04cd5e8dcb23c017020ef8c28d6f",
+        "bytes": 770
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/green-recovery-04.log",
+        "sha256": "0b2029dbe42dcb6627063cc388d4bd99edebc8008c592c6868ba8b3645132ed1",
+        "bytes": 866
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/green-recovery-04.log.gz",
+        "sha256": "c5600d3e4fc9efb4f8bef62cb4fe3c95e911ddcf6eb133f2ef6839af359874b7",
+        "bytes": 303
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/lint-02.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/lint-02.log.gz",
+        "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+        "bytes": 20
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/lint-final.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/lint-final.log.gz",
+        "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+        "bytes": 20
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/red-event-only-status.log",
+        "sha256": "866c3deb5ca4f652a3386512406cf71a58f90049e7cb26e5349c24b27f2caeed",
+        "bytes": 2877
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/red-event-only-status.log.gz",
+        "sha256": "10644467f3c6505ed120660834328e824095d68c57f0651b49b8b3c68ed1a90f",
+        "bytes": 1322
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/red-recovery.log",
+        "sha256": "111c0e0d3c6e04fe13c43ea72897828e2e9ccab2815280c1cba9746fcf9d240c",
+        "bytes": 4509
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/red-recovery.log.gz",
+        "sha256": "2e2daf899ee692b2c199556c5abee8542c8442cb39aaa03cdd7493032727c633",
+        "bytes": 1528
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/red-session-contract.log",
+        "sha256": "35083305e13b109656dd524e110b86bac9ebc90f1d015f6e64151c6f21fb89f6",
+        "bytes": 2594
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/red-session-contract.log.gz",
+        "sha256": "eb7217d600f5830b828706a1ada4bc878c6477b16f7a42385fa256d37462f6af",
+        "bytes": 987
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/typecheck-02.log",
+        "sha256": "7a1ff4305cc8e1d1179046ccc785ca3dee381e919b7fffa7b7935a45e24770b4",
+        "bytes": 3639
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/typecheck-02.log.gz",
+        "sha256": "06288cbf2add572caf137462a5d339bd046347a45c2f3c148640c124ca71c8d7",
+        "bytes": 741
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/typecheck-final.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/typecheck-final.log.gz",
+        "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+        "bytes": 20
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/audio/typecheck-initial.log",
+        "sha256": "11328e690e998ce2a210d4f5f4805fa152f44eb4549a7ba3ae5b70536b3771dc",
+        "bytes": 4018
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/typecheck-initial.log.gz",
+        "sha256": "e054b40241c1e626de1fca8fe220700bf3c3ad14b69fa85955b8f3db0ae4bf66",
+        "bytes": 760
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/root-screen-r4.log",
+        "sha256": "c93f36bb61795d4e2d107aab9521a366357317d5302d5f015d240850563a984e",
+        "bytes": 382
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/focused-root-screen-r4.log.gz",
+        "sha256": "11a1db0cad5cd27cf01cb158342d7f8c1f407c12f6c1b88d49d91114da47fc26",
+        "bytes": 203
+      }
+    },
+    {
+      "original": {
+        "path": ".expo/goal014-1/screen-recovery-order-red.log",
+        "sha256": "a390f76229b775198aeb8f809f2025692426123193dcf793f5144496beed5535",
+        "bytes": 1724
+      },
+      "archived": {
+        "path": "docs/qa-goal014-1/audio/focused-screen-recovery-order-red.log.gz",
+        "sha256": "ecbb7a97f8ed890c0111666ac78d7703d75506238320bb6a943e31c6ccafa563",
+        "bytes": 765
+      }
+    }
+  ]
+}

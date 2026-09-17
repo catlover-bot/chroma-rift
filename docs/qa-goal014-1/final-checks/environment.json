@@ -1,0 +1,51 @@
+{
+  "checkedAtUTC": "2026-09-17T10:39:52.209035+00:00",
+  "checks": {
+    "npm-ls": {
+      "command": [
+        "npm",
+        "ls",
+        "--depth=0",
+        "--json"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.529,
+      "log": ".expo/goal014-1/final-checks/npm-ls.log",
+      "sha256": "e3b61d114861a30c92ba8803c0a7909cbad3de5db29f3bfdb915a052ca068e57"
+    },
+    "expo-install-check": {
+      "command": [
+        "npx",
+        "expo",
+        "install",
+        "--check"
+      ],
+      "exitCode": 1,
+      "elapsedSeconds": 1.073,
+      "log": ".expo/goal014-1/final-checks/expo-install-check.log",
+      "sha256": "77bf30c98e93f2dbb2f11d4ed8491f396bb0d6cb58fd398927454974764b8b72"
+    },
+    "doctor": {
+      "command": [
+        "npm",
+        "run",
+        "doctor"
+      ],
+      "exitCode": 1,
+      "elapsedSeconds": 4.132,
+      "log": ".expo/goal014-1/final-checks/doctor.log",
+      "sha256": "ea7c5900d45d907660661ce509ac82e7de08ec29fc3523d457d685b33e1df129"
+    },
+    "audit": {
+      "command": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "exitCode": 1,
+      "elapsedSeconds": 5.473,
+      "log": ".expo/goal014-1/final-checks/audit.log",
+      "sha256": "85098252e0d69fb31f632ad854b7633e8764544091b84b27c041193d5bfcaf3b"
+    }
+  }
+}

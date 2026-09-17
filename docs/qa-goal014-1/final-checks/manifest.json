@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "archivedAtUTC": "2026-09-17T10:55:19.223770+00:00",
+  "purpose": "Raw full check, environment, assets, cycles, actual App audio contract trace and failed/intermediate runs. Captured source hashes are authoritative; capture HEAD predates the two implementation commits.",
+  "nativeAudioExecuted": false,
+  "DEVICE_ACCEPTANCE": "PENDING",
+  "RELEASE_READY": false,
+  "artifacts": [
+    {
+      "path": "docs/qa-goal014-1/final-checks/app-audio.json.gz",
+      "source": ".expo/goal014-1/final-checks/app-audio.json",
+      "phase": "final-checks",
+      "bytes": 43023,
+      "sha256": "689b42d8f21fae808fa670a0d6e4f30a189c90ab332eddbadb146d6555d25d5c",
+      "uncompressedSha256": "44764a5130d02f37b8be3232204ac6f9ccd6ebc1a841feb6d0be7e5f791416eb"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/asset-preservation.json",
+      "source": ".expo/goal014-1/final-checks/asset-preservation.json",
+      "phase": "final-checks",
+      "bytes": 1622,
+      "sha256": "2e8bca49f42b30a8902da1e45c0c4b385cffef2141a306aee1322ad79df89499",
+      "uncompressedSha256": "2e8bca49f42b30a8902da1e45c0c4b385cffef2141a306aee1322ad79df89499"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/audio-assets.log.gz",
+      "source": ".expo/goal014-1/final-checks/audio-assets.log",
+      "phase": "final-checks",
+      "bytes": 662,
+      "sha256": "bb37ab475cbf427df3daf8cf6380ee7e8b2ee9d090f33219304b03f6bf7e0a1a",
+      "uncompressedSha256": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/audit.log.gz",
+      "source": ".expo/goal014-1/final-checks/audit.log",
+      "phase": "final-checks",
+      "bytes": 1091,
+      "sha256": "8db3d4241485c97158e6edd6117e7938248035b5e3ffad1e0e1a003abcc6d5e6",
+      "uncompressedSha256": "85098252e0d69fb31f632ad854b7633e8764544091b84b27c041193d5bfcaf3b"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/check-attempt-01.json",
+      "source": ".expo/goal014-1/final-checks/check-attempt-01.json",
+      "phase": "final-checks",
+      "bytes": 61168,
+      "sha256": "d159ab91d946ab9fe457e0db179709d353628c98f0aa8926c3f34292abca2982",
+      "uncompressedSha256": "d159ab91d946ab9fe457e0db179709d353628c98f0aa8926c3f34292abca2982"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/check-attempt-01.log.gz",
+      "source": ".expo/goal014-1/final-checks/check-attempt-01.log",
+      "phase": "final-checks",
+      "bytes": 6456,
+      "sha256": "9caeb41ca067f1d53e38e77ddc516905b666eb50c024cfab6b6c2534af6c95e5",
+      "uncompressedSha256": "e285d83a6289127f2b00ca48988d9f67e11d42dd0f46e768ec190cbfbb335af1"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/destination-signs.log.gz",
+      "source": ".expo/goal014-1/final-checks/destination-signs.log",
+      "phase": "final-checks",
+      "bytes": 102,
+      "sha256": "98f144d4b0f8652599ca270f59e975a7c6503107fbbf090d5cfbe6ef670e6857",
+      "uncompressedSha256": "de7d33f807619159aa4d11adb0cf163fe9a4f9892e002a4c8f1ddcdc2c51f42a"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/doctor.log.gz",
+      "source": ".expo/goal014-1/final-checks/doctor.log",
+      "phase": "final-checks",
+      "bytes": 433,
+      "sha256": "5d34d3ac9a5b5c0346c5ba8ffe993ccb2a91cdda149760ddbf6772e76e80fc09",
+      "uncompressedSha256": "ea7c5900d45d907660661ce509ac82e7de08ec29fc3523d457d685b33e1df129"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/environment.json",
+      "source": ".expo/goal014-1/final-checks/environment.json",
+      "phase": "final-checks",
+      "bytes": 1296,
+      "sha256": "301e38fd4a0d840e05dff41d816523bd0d44d50650da14333ff5604da033d027",
+      "uncompressedSha256": "301e38fd4a0d840e05dff41d816523bd0d44d50650da14333ff5604da033d027"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/environment.py.gz",
+      "source": ".expo/goal014-1/final-checks/environment.py",
+      "phase": "final-checks",
+      "bytes": 571,
+      "sha256": "59fd22df55605ea0552216e6ddfca5252e1dafa0b53a131f74ee9220ead28a9c",
+      "uncompressedSha256": "77de73ffb599716ce38968c44c1dbf577b2024629e9a5bda701512ac7742f89a"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/expo-install-check.log.gz",
+      "source": ".expo/goal014-1/final-checks/expo-install-check.log",
+      "phase": "final-checks",
+      "bytes": 191,
+      "sha256": "88d205f9aaf26a8ed6e62540364ab867fee0083c3b5eeb30f567d49bcc24a2b1",
+      "uncompressedSha256": "77bf30c98e93f2dbb2f11d4ed8491f396bb0d6cb58fd398927454974764b8b72"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/facility-signs.log.gz",
+      "source": ".expo/goal014-1/final-checks/facility-signs.log",
+      "phase": "final-checks",
+      "bytes": 197,
+      "sha256": "07e40db788be8ab734b56250f0c9db75c5be6ee16b44f3730112c435a2653039",
+      "uncompressedSha256": "d44c4336d1b9cc44baa3af28f0ba1c45d3baa98411f4c25f66005523569082e0"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/npm-ls.log.gz",
+      "source": ".expo/goal014-1/final-checks/npm-ls.log",
+      "phase": "final-checks",
+      "bytes": 752,
+      "sha256": "ab04befed723c1a47a04087ecc3b360d5c91e772eeef4c583548027a0a86e908",
+      "uncompressedSha256": "e3b61d114861a30c92ba8803c0a7909cbad3de5db29f3bfdb915a052ca068e57"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/perceptual-audio.log.gz",
+      "source": ".expo/goal014-1/final-checks/perceptual-audio.log",
+      "phase": "final-checks",
+      "bytes": 974,
+      "sha256": "2ec5fc8900753977908bb8a9a0b2b0743bd0382d372ecf7ba74e85f1fd017f35",
+      "uncompressedSha256": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/run-check.py.gz",
+      "source": ".expo/goal014-1/final-checks/run-check.py",
+      "phase": "final-checks",
+      "bytes": 827,
+      "sha256": "966d97b254c5b87d976208509005b2a5e6ee1ab89d3a7e0bcde96e194a9f1aab",
+      "uncompressedSha256": "dee6ab9c7b2c3dad59d299939ebb78c1204dfd820e831d2c9a904a3e7842f206"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/runtime-cycles.json.gz",
+      "source": ".expo/goal014-1/final-checks/runtime-cycles.json",
+      "phase": "final-checks",
+      "bytes": 188992,
+      "sha256": "4f7fb98b2b81e7d1072d61a70c845e526044ce11cdccc098f74df5b174f45afe",
+      "uncompressedSha256": "b31af79e25cf43ce7a9249ce2d332dddc288d3d8a8505ad73a5a88bce92b646a"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/runtime-cycles.log.gz",
+      "source": ".expo/goal014-1/final-checks/runtime-cycles.log",
+      "phase": "final-checks",
+      "bytes": 97,
+      "sha256": "e43c03f5c7a5b6d9a4d92b4961cc30a7e51f548bb62f40c6e1d9a50f1aeb2a95",
+      "uncompressedSha256": "3701f59cbb532082852c90216fa086696d657834c59d8ab5e33163ab7fbe8e9c"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-app-audio-initial.log.gz",
+      "source": ".expo/goal014-1/app-audio-initial.log",
+      "phase": "root-history",
+      "bytes": 715,
+      "sha256": "eea8f8f13ea17c6f0de0b801bc03a7bf92508f3d1f7255be9be4b8c50306c656",
+      "uncompressedSha256": "dc1e05c92931b79cba1af2b5fde4204db77b4d73edf709dd21e360b9c9850add"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-root-screen-r2.log.gz",
+      "source": ".expo/goal014-1/root-screen-r2.log",
+      "phase": "root-history",
+      "bytes": 1118,
+      "sha256": "f06d7cc547c6523efd5f4a44fa5471d71bc046bc95a25863ae3c23e1ed27840b",
+      "uncompressedSha256": "3cf29918ad9b71f602f67fbbb01e395d1140dd27bb1a6bd36b3db2b36552cbf3"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-root-screen-r3.log.gz",
+      "source": ".expo/goal014-1/root-screen-r3.log",
+      "phase": "root-history",
+      "bytes": 213,
+      "sha256": "af90c2c313401c63394639c4957827b4266677c24f8af80a3e2cde713338d02c",
+      "uncompressedSha256": "8b02f9dda52c8b194bfbded435dd63351fb82e5961ce7e52d279d2ab199e812f"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-root-screen-r4.log.gz",
+      "source": ".expo/goal014-1/root-screen-r4.log",
+      "phase": "root-history",
+      "bytes": 203,
+      "sha256": "11a1db0cad5cd27cf01cb158342d7f8c1f407c12f6c1b88d49d91114da47fc26",
+      "uncompressedSha256": "c93f36bb61795d4e2d107aab9521a366357317d5302d5f015d240850563a984e"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-app-audio-expanded-r1.log.gz",
+      "source": ".expo/goal014-1/app-audio-expanded-r1.log",
+      "phase": "root-history",
+      "bytes": 571,
+      "sha256": "ce9d0cdead6c488d2e6925006b422d4c8f4a24a6ca77c6e0dfa361ab1d49404b",
+      "uncompressedSha256": "dc45379930f83b533a33894e532fc3acc3b3226b8efa698d64540d126348ccc0"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-app-audio-expanded-r2.log.gz",
+      "source": ".expo/goal014-1/app-audio-expanded-r2.log",
+      "phase": "root-history",
+      "bytes": 1361,
+      "sha256": "751aced440aaad564fc5228d9e6bc5f215e5a70376469450850013ffb20a54f6",
+      "uncompressedSha256": "1fd2682ac31f8aee936797f7a83398ab9ca2f6d6db607555bf388452af097d19"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-app-audio-expanded-r3.log.gz",
+      "source": ".expo/goal014-1/app-audio-expanded-r3.log",
+      "phase": "root-history",
+      "bytes": 257,
+      "sha256": "8e9477264b0cc38b539cdf7fa20b9925c1d92a4ff8f07d7a126f28d82652b7a1",
+      "uncompressedSha256": "717e250e017dc9d46c173bedd6548e055f6ae7ed0e481d1c11422c4d413fdaa6"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-root-lint-final.log.gz",
+      "source": ".expo/goal014-1/root-lint-final.log",
+      "phase": "root-history",
+      "bytes": 20,
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-screen-recovery-order-red.log.gz",
+      "source": ".expo/goal014-1/screen-recovery-order-red.log",
+      "phase": "root-history",
+      "bytes": 765,
+      "sha256": "ecbb7a97f8ed890c0111666ac78d7703d75506238320bb6a943e31c6ccafa563",
+      "uncompressedSha256": "a390f76229b775198aeb8f809f2025692426123193dcf793f5144496beed5535"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-screen-support-red.log.gz",
+      "source": ".expo/goal014-1/screen-support-red.log",
+      "phase": "root-history",
+      "bytes": 2439,
+      "sha256": "a1fe52a14e6658fed1f363adf5465345fd013102efe8f8c052ac84f2ad87885b",
+      "uncompressedSha256": "7164c08af441c193ac99063f2d167c7923dad57ce64ec7dc6318bd1b4b88140a"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-typecheck-mid.log.gz",
+      "source": ".expo/goal014-1/typecheck-mid.log",
+      "phase": "root-history",
+      "bytes": 514,
+      "sha256": "63b2a57e059c12773aee6c409d12f1b5e6be95c3a77794e349a4130c760fd277",
+      "uncompressedSha256": "08b6e4422db5e38330c20fb2bc1a6ca7a15efb5368df31817f2c6d9cf274a4a7"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/history-typecheck-mid-r2.log.gz",
+      "source": ".expo/goal014-1/typecheck-mid-r2.log",
+      "phase": "root-history",
+      "bytes": 67,
+      "sha256": "449b37b2d84fc619ba6db9e99515dd0750ee458c581fb4353221da9166c9a877",
+      "uncompressedSha256": "a13e098ee30ba8fa3bf4d250cab64a72da8fd4ebd9bda4466baee4d3d4ecee32"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-application-tests.log.gz",
+      "source": ".expo/goal014-1/domain-text/application-tests.log",
+      "phase": "domain-text",
+      "bytes": 1198,
+      "sha256": "b72bcb47cf7771ac1afff0bc07d01cc6dd32a23f53d744bf209fc69d68319906",
+      "uncompressedSha256": "b518784d0c4c4a922c983f5dba2e7c16e6a8b25fa53a4fa9416fa63003643099"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-destination-signs.log.gz",
+      "source": ".expo/goal014-1/domain-text/destination-signs.log",
+      "phase": "domain-text",
+      "bytes": 102,
+      "sha256": "98f144d4b0f8652599ca270f59e975a7c6503107fbbf090d5cfbe6ef670e6857",
+      "uncompressedSha256": "de7d33f807619159aa4d11adb0cf163fe9a4f9892e002a4c8f1ddcdc2c51f42a"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-eslint.log.gz",
+      "source": ".expo/goal014-1/domain-text/eslint.log",
+      "phase": "domain-text",
+      "bytes": 20,
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-facility-signs.log.gz",
+      "source": ".expo/goal014-1/domain-text/facility-signs.log",
+      "phase": "domain-text",
+      "bytes": 197,
+      "sha256": "07e40db788be8ab734b56250f0c9db75c5be6ee16b44f3730112c435a2653039",
+      "uncompressedSha256": "d44c4336d1b9cc44baa3af28f0ba1c45d3baa98411f4c25f66005523569082e0"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-final-owned-lint.log.gz",
+      "source": ".expo/goal014-1/domain-text/final-owned-lint.log",
+      "phase": "domain-text",
+      "bytes": 20,
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-focused-tests.log.gz",
+      "source": ".expo/goal014-1/domain-text/focused-tests.log",
+      "phase": "domain-text",
+      "bytes": 282,
+      "sha256": "8bfb1d383081cfc85d6c7290fd1c96258568587b30b60e008ccad21999d7859b",
+      "uncompressedSha256": "c0c2405a8db48a8c980e41e05b532cb8cf450325ab7f21628029e7072e0e338d"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-reset-wording-tests.log.gz",
+      "source": ".expo/goal014-1/domain-text/reset-wording-tests.log",
+      "phase": "domain-text",
+      "bytes": 255,
+      "sha256": "be5ee173c858ec82693b7ef2997f17f5ce34ff9835274b287ce4e450d71e8a4c",
+      "uncompressedSha256": "ca4283c32aa4282f64ef6e11721d2655677692b874a052f83f8f324c9f9a35cf"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-screen-native-after.log.gz",
+      "source": ".expo/goal014-1/domain-text/screen-native-after.log",
+      "phase": "domain-text",
+      "bytes": 3020,
+      "sha256": "3fd1ab443840b82f72dbe6c60ead7d1e6f4082293e6dd9361d21c0e0b0612271",
+      "uncompressedSha256": "8e63230c8ce0ae9e3f1a3b01d7eb5e5a7446182f9ed6f56140192bef4066c49e"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-screen-native-before.log.gz",
+      "source": ".expo/goal014-1/domain-text/screen-native-before.log",
+      "phase": "domain-text",
+      "bytes": 6137,
+      "sha256": "a9d0f4ad96af59767512cbbe9405c908441337e90f8db7d6252fc0af6ee06ec2",
+      "uncompressedSha256": "90d6b2adee40640e9d252001b5e106f0cacbc9e9d21e15f3bb5766400ab4d4c9"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/domain-structure-check.json",
+      "source": ".expo/goal014-1/domain-text/structure-check.json",
+      "phase": "domain-text",
+      "bytes": 710,
+      "sha256": "4f366dfbbcfb6c2cccc9e52dcf4bcb356727a8b4e7686444e80a792d9f1b537d",
+      "uncompressedSha256": "4f366dfbbcfb6c2cccc9e52dcf4bcb356727a8b4e7686444e80a792d9f1b537d"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/final-qa-lint.log.gz",
+      "source": ".expo/goal014-1/final-checks/final-qa-lint.log",
+      "phase": "final-qa-lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 29.991,
+      "bytes": 55,
+      "sha256": "3a4703d623131eebadf0f5a8fd6e0d0576c687169a77680512e732b3e692e499",
+      "uncompressedSha256": "7bbae30402b0b3cd52fb7d0770ebe48fc8014e66a3c76654e2636c5c06accc56"
+    },
+    {
+      "path": "docs/qa-goal014-1/final-checks/finalize-source-record.py.gz",
+      "source": ".expo/goal014-1/finalize-source-record.py",
+      "phase": "final-source-correspondence",
+      "bytes": 1511,
+      "sha256": "cca936240d2131445b1389b61da477018ff881eedddb58fcabc5d60449cfb288",
+      "uncompressedSha256": "5ca8f47db763c7107efb5793f47a652808d10154af65d5cdd04b835cea3308e0"
+    }
+  ]
+}

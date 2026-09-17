@@ -1,0 +1,10 @@
+{
+  "sha256": "1a5cca1435348dd999b35d47e54bd3e42946a9e66af3bb77d7c601b548b5474e",
+  "key": "chroma-rift.campaign.chapter-1.v1",
+  "runId": "chapter-one-1789643169695",
+  "currentArea": "chapter-1-area-02",
+  "completedAreas": [
+    "chapter-1-area-01"
+  ],
+  "revision": 21
+}

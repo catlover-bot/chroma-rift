@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "audio-assets": {
+      "command": [
+        "node",
+        "scripts/generate-audio.cjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.073,
+      "log": ".expo/goal014-1/final-checks/audio-assets.log",
+      "sha256": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17"
+    },
+    "perceptual-audio": {
+      "command": [
+        "node",
+        "scripts/generate-perceptual-audio.cjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.224,
+      "log": ".expo/goal014-1/final-checks/perceptual-audio.log",
+      "sha256": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c"
+    },
+    "facility-signs": {
+      "command": [
+        "node",
+        "scripts/generate-facility-signs.cjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.708,
+      "log": ".expo/goal014-1/final-checks/facility-signs.log",
+      "sha256": "d44c4336d1b9cc44baa3af28f0ba1c45d3baa98411f4c25f66005523569082e0"
+    },
+    "destination-signs": {
+      "command": [
+        "node",
+        "scripts/generate-destination-signs.cjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.584,
+      "log": ".expo/goal014-1/final-checks/destination-signs.log",
+      "sha256": "de7d33f807619159aa4d11adb0cf163fe9a4f9892e002a4c8f1ddcdc2c51f42a"
+    }
+  },
+  "protected": {
+    "package.json": true,
+    "package-lock.json": true,
+    "app.json": true,
+    "eas.json": true,
+    "metro.config.js": true,
+    "metro/withNativeThree.js": true
+  },
+  "assetFilesChecked": 42,
+  "assetFilesChanged": []
+}

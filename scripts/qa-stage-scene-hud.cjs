@@ -7,8 +7,12 @@ const fs = require('node:fs'), path = require('node:path'), ts = require('typesc
 require('./lib/qa-native-metadata.cjs');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
 const { installNativeHudBridge, browserStyles, browserHelpers } = require('./lib/native-hud-qa.cjs');
-if (process.argv.length !== 2) throw Error('usage: node scripts/qa-stage-scene-hud.cjs');
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal014/stage-scene-hud');
+const args = process.argv.slice(2);
+if (args.length > 1 || args.some(arg => !arg.startsWith('--out=') || !arg.slice(6)))
+  throw Error('usage: node scripts/qa-stage-scene-hud.cjs [--out=directory]');
+const root = path.resolve(__dirname, '..'), out = path.resolve(args[0]?.slice(6) || path.join(root, '.expo/goal014/stage-scene-hud'));
+const toolHashes = Object.fromEntries(['scripts/qa-stage-scene-hud.cjs', 'scripts/lib/native-hud-qa.cjs',
+  'scripts/lib/three-scene-qa.cjs', 'scripts/lib/qa-native-metadata.cjs'].map(file => [file, sha256(fs.readFileSync(path.join(root, file)))]));
 fs.mkdirSync(out, { recursive: true });
 const sizes = [[320, 568, 2], [390, 844, 1.5], [430, 932, 1]];
 const bridge = installSourceBridge(root), context = { width: 320, height: 568, fontScale: 2, bindController: false };
@@ -255,8 +259,10 @@ async function main() {
         records.push(...await extract(stageId, width, height, fontScale, quality));
   bridge.verify();
   const rendered = await render(records); bridge.verify();
+  for (const [file, hash] of Object.entries(toolHashes))
+    if (sha256(fs.readFileSync(path.join(root, file))) !== hash) throw Error('QA helper changed during capture: ' + file);
   const report = { boundary: 'All five actual ChapterScene/FirstPersonScreen/controller integrations, standard and low quality, three paired portrait/font configurations. Initial state and device-ready/operating views share a controller, with 04/05 validated checkpoints and explicit safe camera placement for gallery shadow and mirror entry/winch: these are viewpoint fixtures, not a natural route. Actual HUD presses enter the 01/02/03 devices and perform 04 hold/05 key/procedure actions. The live mirror target is recreated from planarMirror.ts after serialization. Native Canvas readiness/audio/build metadata are fixtures; browser SwiftShader/CSS is not EXGL/Yoga, native touch, iPhone readability or performance acceptance.',
-    sizes, toolHash: sha256(fs.readFileSync(__filename)),
+    sizes, toolHash: sha256(fs.readFileSync(__filename)), toolHashes,
     sourceHashes: Object.fromEntries(bridge.hashes), ...rendered };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ cases: rendered.results.length, disposed: rendered.disposed, out }));

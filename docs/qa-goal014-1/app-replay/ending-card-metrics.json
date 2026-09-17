@@ -1,0 +1,110 @@
+[
+  {
+    "frame": 779,
+    "kind": "ending-card",
+    "stage": "ending-intro",
+    "hud": {
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": null,
+      "pause": null,
+      "objective": null,
+      "heading": null,
+      "controls": null,
+      "buttons": [
+        {
+          "label": "クレジットを表示",
+          "disabled": false,
+          "left": 20,
+          "top": 433.796875,
+          "right": 370,
+          "bottom": 485.796875,
+          "width": 350,
+          "height": 52,
+          "visible": {
+            "left": 20,
+            "right": 370,
+            "top": 433.796875,
+            "bottom": 485.796875
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": null
+    },
+    "text": "在館反応 00外の空気が流れている。閉館した建物は、もう追ってこない。クレジットを表示"
+  },
+  {
+    "frame": 794,
+    "kind": "ending-card",
+    "stage": "ending-credits",
+    "hud": {
+      "boundary": "Actual component host styles translated to browser CSS, not native Yoga/text metrics",
+      "panel": null,
+      "pause": null,
+      "objective": null,
+      "heading": null,
+      "controls": null,
+      "buttons": [
+        {
+          "label": "エリアを振り返る",
+          "disabled": false,
+          "left": 20,
+          "top": 949.484375,
+          "right": 355,
+          "bottom": 1004.28125,
+          "width": 335,
+          "height": 54.796875,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 949.484375,
+            "bottom": 844
+          }
+        },
+        {
+          "label": "発見の記録",
+          "disabled": false,
+          "left": 20,
+          "top": 1020.28125,
+          "right": 355,
+          "bottom": 1075.078125,
+          "width": 335,
+          "height": 54.796875,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 1020.28125,
+            "bottom": 844
+          }
+        },
+        {
+          "label": "ホームへ戻る",
+          "disabled": false,
+          "left": 20,
+          "top": 1091.078125,
+          "right": 355,
+          "bottom": 1145.875,
+          "width": 335,
+          "height": 54.796875,
+          "visible": {
+            "left": 20,
+            "right": 355,
+            "top": 1091.078125,
+            "bottom": 844
+          }
+        }
+      ],
+      "buttonsAtLeast44": true,
+      "pauseOverlapsObjective": false,
+      "pauseOverlapsHeading": false,
+      "controlsOverlapPanel": false,
+      "buttonOverlapsPanel": [],
+      "scroll": null
+    },
+    "text": "CHROMA RIFT点検手順呼び鈴で収容区画へ誘導し、全身が入ってから隔離扉を閉じる。在館反応 01 → 在館反応 00もう一つの反応は巡回体だった。隔離と停止を確認した。第一章「最後の退館者」 完閉館処理 完了。最後の職員は屋外へ出た。巡回体は収容区画で隔離・停止済み。素材クレジット凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）エリアを振り返る発見の記録ホームへ戻る"
+  }
+]

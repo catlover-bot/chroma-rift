@@ -1,0 +1,241 @@
+{
+  "kind": "software-css-player-ui",
+  "fixture": "QA_FIXTURE; no device failure or heard audio claims",
+  "metrics": {
+    "cases": 32,
+    "images": 26,
+    "measuredText": 1840,
+    "buttonScrollChecks": 928,
+    "minimumVisibleButtonHeight": 50,
+    "loadedSourceFiles": 55,
+    "toolAndConfigFiles": 7
+  },
+  "artifacts": [
+    {
+      "file": "report.json",
+      "bytes": 208708,
+      "sha256": "ce1780930d5faa3d2e0995545d7771957de864725ad910a2dc1a52efb36831e3"
+    },
+    {
+      "file": "preview-home-320-top.png",
+      "bytes": 28600,
+      "sha256": "2ca3e6360b2faa7125bf3d1017254f35f3087b82f01fda4eb662f179ed5f2056"
+    },
+    {
+      "file": "preview-home-320-bottom.png",
+      "bytes": 33959,
+      "sha256": "3e5f7db6f2cb6fe06ceb370fd2f6c35b7b77a16d2e2c84dc46c519a7c3c318cd"
+    },
+    {
+      "file": "preview-home-migration-320-top.png",
+      "bytes": 28597,
+      "sha256": "c35687d3089f746f3373ea3d3662d62071d7d6ef824f2d898a8bffc96cf2bf08"
+    },
+    {
+      "file": "preview-home-migration-320-bottom.png",
+      "bytes": 33957,
+      "sha256": "d8699525f8f0c44aaeb65461f2ae15149890761bc6b6f81b15a4f9488bdc41b6"
+    },
+    {
+      "file": "preview-settings-320-top.png",
+      "bytes": 39792,
+      "sha256": "00d5eac6d5d0777d476b03c3e07f91d8909b5f9a90094a2534a9587dff68b467"
+    },
+    {
+      "file": "preview-settings-320-controls.png",
+      "bytes": 32070,
+      "sha256": "d41825c15d0a6c9ac79dc023d7dc992d052c7545b7790b60693bb80bf740c4f5"
+    },
+    {
+      "file": "preview-settings-320-bottom.png",
+      "bytes": 28012,
+      "sha256": "b7b2722fe31091c5a78119b8fe66b39a0086a87f8c260b4652d7685fb207304d"
+    },
+    {
+      "file": "preview-support-closed-320-support.png",
+      "bytes": 36098,
+      "sha256": "d92ca7423b31f1191a2c2edea3fda8208076c5b76821f62f6816716beb83a7f2"
+    },
+    {
+      "file": "preview-support-open-320-support.png",
+      "bytes": 36006,
+      "sha256": "79c213da7e7a91abbe506a4b500b4c2c9b56e711446fe6b6ca0e8c807653a0ba"
+    },
+    {
+      "file": "preview-support-open-320-record.png",
+      "bytes": 37820,
+      "sha256": "97b7b0f0c0be50db867c20802060c7ec020298fdb6c2260533c87508d9ac24c7"
+    },
+    {
+      "file": "preview-settings-audio-failure-320-top.png",
+      "bytes": 39792,
+      "sha256": "00d5eac6d5d0777d476b03c3e07f91d8909b5f9a90094a2534a9587dff68b467"
+    },
+    {
+      "file": "preview-settings-audio-failure-320-controls.png",
+      "bytes": 32070,
+      "sha256": "d41825c15d0a6c9ac79dc023d7dc992d052c7545b7790b60693bb80bf740c4f5"
+    },
+    {
+      "file": "preview-settings-audio-failure-320-bottom.png",
+      "bytes": 28012,
+      "sha256": "b7b2722fe31091c5a78119b8fe66b39a0086a87f8c260b4652d7685fb207304d"
+    },
+    {
+      "file": "production-home-320-top.png",
+      "bytes": 28600,
+      "sha256": "2ca3e6360b2faa7125bf3d1017254f35f3087b82f01fda4eb662f179ed5f2056"
+    },
+    {
+      "file": "production-home-320-bottom.png",
+      "bytes": 33959,
+      "sha256": "3e5f7db6f2cb6fe06ceb370fd2f6c35b7b77a16d2e2c84dc46c519a7c3c318cd"
+    },
+    {
+      "file": "production-home-migration-320-top.png",
+      "bytes": 28597,
+      "sha256": "c35687d3089f746f3373ea3d3662d62071d7d6ef824f2d898a8bffc96cf2bf08"
+    },
+    {
+      "file": "production-home-migration-320-bottom.png",
+      "bytes": 33957,
+      "sha256": "d8699525f8f0c44aaeb65461f2ae15149890761bc6b6f81b15a4f9488bdc41b6"
+    },
+    {
+      "file": "production-settings-320-top.png",
+      "bytes": 39792,
+      "sha256": "00d5eac6d5d0777d476b03c3e07f91d8909b5f9a90094a2534a9587dff68b467"
+    },
+    {
+      "file": "production-settings-320-controls.png",
+      "bytes": 32070,
+      "sha256": "d41825c15d0a6c9ac79dc023d7dc992d052c7545b7790b60693bb80bf740c4f5"
+    },
+    {
+      "file": "production-settings-320-bottom.png",
+      "bytes": 28012,
+      "sha256": "b7b2722fe31091c5a78119b8fe66b39a0086a87f8c260b4652d7685fb207304d"
+    },
+    {
+      "file": "production-support-closed-320-support.png",
+      "bytes": 36098,
+      "sha256": "d92ca7423b31f1191a2c2edea3fda8208076c5b76821f62f6816716beb83a7f2"
+    },
+    {
+      "file": "production-support-open-320-support.png",
+      "bytes": 36009,
+      "sha256": "3cf0e7a38230ab2b625ba73960268212bfb59ea8bcb34f832c5d5e4793d50dfa"
+    },
+    {
+      "file": "production-support-open-320-record.png",
+      "bytes": 37883,
+      "sha256": "920c2a52b2831f191b9376e9ec343e0e9d7f5279155228799727c53d54d39012"
+    },
+    {
+      "file": "production-settings-audio-failure-320-top.png",
+      "bytes": 39792,
+      "sha256": "00d5eac6d5d0777d476b03c3e07f91d8909b5f9a90094a2534a9587dff68b467"
+    },
+    {
+      "file": "production-settings-audio-failure-320-controls.png",
+      "bytes": 32070,
+      "sha256": "d41825c15d0a6c9ac79dc023d7dc992d052c7545b7790b60693bb80bf740c4f5"
+    },
+    {
+      "file": "production-settings-audio-failure-320-bottom.png",
+      "bytes": 28012,
+      "sha256": "b7b2722fe31091c5a78119b8fe66b39a0086a87f8c260b4652d7685fb207304d"
+    },
+    {
+      "file": "player-support-red.log.gz",
+      "phase": "regression-red-original-3-failures",
+      "bytes": 1097,
+      "sha256": "94c8694104580315fdf2470a1f78e17f2a6351f13718932de48cfb1f06b897a4",
+      "uncompressedSha256": "773d42394b55105a40fd3228c099022a571071aebb1bcf62b99de5f02cef70c0"
+    },
+    {
+      "file": "player-focused.log.gz",
+      "phase": "first-expanded-run-59-pass-4-stale-test-failures",
+      "bytes": 4076,
+      "sha256": "ed5390a55a274ca4c0c103119b4eae44de03ffe6ce47aff14d957e3bec43148f",
+      "uncompressedSha256": "f0d689e5cb4760d0087c7c7e8db41264f0a0ccc892b7c3ec57a0ed2f52c0173b"
+    },
+    {
+      "file": "player-focused-final.log.gz",
+      "phase": "eight-suites-67-pass-before-width-fix",
+      "bytes": 297,
+      "sha256": "58fd0725153d869e721b8c1808aa26b2e77ba2431307a6f7315cf9f0dbc7df13",
+      "uncompressedSha256": "515524f47ecd3ddb2418618c2446bf96d50e6664021ecca589dfe5fee0ea966d"
+    },
+    {
+      "file": "player-button-test.log.gz",
+      "phase": "after-width-fix-ten-pass",
+      "bytes": 677,
+      "sha256": "da5f61ea547a9cae945bf8f057972a9fbbcf01e34bcfff31bc5bc436b3eff371",
+      "uncompressedSha256": "11e24f38c25f440ef4afa6e1252188fdcb277a5e0a3f17b344604c6f9ef60e87"
+    },
+    {
+      "file": "player-audit-r2.log.gz",
+      "phase": "static-and-rendered-four-suites-15-pass",
+      "bytes": 222,
+      "sha256": "a3ef2b66ae3c2323f94c95a6e511a932d1a6b5cecd089d0ec243a750a25e0fe2",
+      "uncompressedSha256": "e88b52be889fcf01ace647d9fdac625fb22a43d91355db1d3204e80d35e49a8c"
+    },
+    {
+      "file": "player-layout.log.gz",
+      "phase": "bridge-linebox-false-positive",
+      "bytes": 1123,
+      "sha256": "3eef65be661a6f2834926317ade81aa03fbafdd2cbd00da5e0036894fc46d34d",
+      "uncompressedSha256": "cb8713a7c69b7b6f8bd1f84e8e1ccc41ede6a732e17158aea60a3c95ad54a815"
+    },
+    {
+      "file": "player-layout-r2.log.gz",
+      "phase": "real-choice-button-overflow-before-fix",
+      "bytes": 888,
+      "sha256": "43005e4b7ea5e53ffed085d6f694e2a12ba8f6d6ef3d1604f299a68588a316dd",
+      "uncompressedSha256": "dd2125246d172ced0f3433372dda84c55cb572770d200ac8277e0ed1e7406c4d"
+    },
+    {
+      "file": "player-layout-r3.log.gz",
+      "phase": "bridge-textbox-overhang-within-button",
+      "bytes": 946,
+      "sha256": "f11ad2f229b6b262fe8b4dde0104b81316e6d2cc350504356f42d32f53954fa8",
+      "uncompressedSha256": "0028f183004dcca489ca547c860c66f236bc43597af85690637da4a3a861cb9b"
+    },
+    {
+      "file": "player-layout-r4.log.gz",
+      "phase": "bridge-hanging-whitespace-false-positive",
+      "bytes": 3430,
+      "sha256": "a981c3204ff93e8fa7da56ae0f248a7b43cab24544b08888fb78586d5a6583dd",
+      "uncompressedSha256": "7ee29f1c0e893e575f00bb42e0f50f3be498c7151ba3012bbb955cb04311adb9"
+    },
+    {
+      "file": "player-layout-final.log.gz",
+      "phase": "final-32-cases-pass",
+      "bytes": 190,
+      "sha256": "e0af986ff7c1c90ac1f35008d6d8bb7784b7271f4e1e614abe62107ae47e3558",
+      "uncompressedSha256": "98aeccf61d038e47907d0416bdfe6514035044eecff356ffaab24b8e15d0514b"
+    },
+    {
+      "file": "player-lint-final.log.gz",
+      "phase": "owned-production-and-tests-lint-pass",
+      "bytes": 20,
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "player-layout-lint-final.log.gz",
+      "phase": "final-layout-and-tool-lint-pass",
+      "bytes": 20,
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "player-types-r3.log.gz",
+      "phase": "typecheck-pass",
+      "bytes": 20,
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

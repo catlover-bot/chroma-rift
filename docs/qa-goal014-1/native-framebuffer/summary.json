@@ -1,0 +1,384 @@
+{
+  "method": "Real Chromium WebGL2/ANGLE SwiftShader with a fixture-owned RGBA8+depth FBO replacing logical default framebuffer binds. Fresh authored area04 StageScene export, installed Three renderer and current planarMirror/adapter/nativeGlObserver source. Not an Expo binary, iPhone GPU, native Canvas scheduling or endFrameEXP presentation.",
+  "cases": 19,
+  "freshReentries": 10,
+  "checks": {
+    "realInvalidOperationOnRestore": true,
+    "beforeReflectionClean": true,
+    "fixedPhasesClean": true,
+    "fixedNativeBACKRemoved": true,
+    "traceIsOptionalAndBounded": true,
+    "fixedFrontReflection": true,
+    "fixedBackSkipped": true,
+    "oneMainAndFixturePresentation": true,
+    "traceDoesNotChangeOutput": true,
+    "actualObserverTraceCostRecorded": true,
+    "successfulObserverTraceReleased": true,
+    "allOwnersDisposed": true,
+    "tenFreshEntries": true,
+    "browserExceptionsAbsent": true
+  },
+  "sourceFiles": 127,
+  "installedThreeFiles": 2,
+  "reportSha256": "041dc385064b20f28447048c119c29934bcd951088fa2c179a3ac0bb8e8b8b83",
+  "observed": [
+    {
+      "name": "before-front",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [
+        {
+          "phase": "restore",
+          "errors": [
+            "0x502"
+          ]
+        }
+      ],
+      "logicalDefaultDrawBuffers": [
+        [
+          "BACK"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "fixed-front",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "fixed-front-trace",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "before-supplied-r7",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [
+        {
+          "phase": "restore",
+          "errors": [
+            "0x502"
+          ]
+        }
+      ],
+      "logicalDefaultDrawBuffers": [
+        [
+          "BACK"
+        ]
+      ],
+      "pixelHash": "9f642591",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "fixed-supplied-r7",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "9f642591",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "fixed-supplied-r7-trace",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "9f642591",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "before-back",
+      "reflection": 0,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [],
+      "pixelHash": "f8e7935d",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "fixed-back",
+      "reflection": 0,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [],
+      "pixelHash": "f8e7935d",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "fixed-back-trace",
+      "reflection": 0,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [],
+      "pixelHash": "f8e7935d",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-1",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-2",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-3",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-4",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-5",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-6",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-7",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-8",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-9",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    },
+    {
+      "name": "entry-10",
+      "reflection": 1,
+      "main": 1,
+      "fixturePresentation": 1,
+      "errors": [],
+      "logicalDefaultDrawBuffers": [
+        [
+          "COLOR_ATTACHMENT0"
+        ]
+      ],
+      "pixelHash": "a2b97303",
+      "disposedThreeMemoryBeforeRendererDispose": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "allTrackedOwnersZero": true
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "report.json",
+      "bytes": 186716,
+      "sha256": "041dc385064b20f28447048c119c29934bcd951088fa2c179a3ac0bb8e8b8b83"
+    },
+    {
+      "file": "run.log.gz",
+      "bytes": 568,
+      "sha256": "48e239b9c894e88cb9074c40d8dda4ec176d223fdedeb3c1671df59ec9ad0955"
+    }
+  ],
+  "DEVICE_ACCEPTANCE": "PENDING",
+  "RELEASE_READY": false
+}

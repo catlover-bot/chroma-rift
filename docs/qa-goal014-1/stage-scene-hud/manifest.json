@@ -1,0 +1,1214 @@
+{
+  "command": "node scripts/qa-stage-scene-hud.cjs --out=.expo/goal014-1/stage-scene-hud",
+  "allCases": 102,
+  "selectedImages": 28,
+  "sourceAndToolHashesVerifiedAtPackaging": true,
+  "artifacts": [
+    {
+      "file": "report.json",
+      "bytes": 425146,
+      "sha256": "3cdf4d811bd5bec466ff2585c628f8fecf51f9a892df981269ed24b752986015",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/report.json"
+    },
+    {
+      "file": "gallery-entry-standard-320.png",
+      "bytes": 94365,
+      "sha256": "62b1122af70fc279050eec49923746a88ee9fd5b442f09f187175c65e6c26b16",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/gallery-entry-standard-320.png"
+    },
+    {
+      "file": "gallery-shadow-ready-standard-320.png",
+      "bytes": 83260,
+      "sha256": "236e102476c3cfb9fec99683560a03b7705396482f50c490fb1e117354c596ed",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/gallery-shadow-ready-standard-320.png"
+    },
+    {
+      "file": "gallery-shadow-operating-standard-320.png",
+      "bytes": 70657,
+      "sha256": "2b4aa2546a8e1c25b6fe4551ec240ba8db56e9a3760b1a4b41b2399ddfbb6b42",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/gallery-shadow-operating-standard-320.png"
+    },
+    {
+      "file": "vault-entry-standard-320.png",
+      "bytes": 91515,
+      "sha256": "398b83cb080027f6a7094c31a4b0b30f07c8d740a22ccac728947c23910e49d5",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/vault-entry-standard-320.png"
+    },
+    {
+      "file": "vault-length-ready-standard-320.png",
+      "bytes": 88579,
+      "sha256": "a80e236a3a30bf6236c6cc2bad106b72d44c70ed8bebea627dd11c73b2b23573",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/vault-length-ready-standard-320.png"
+    },
+    {
+      "file": "vault-length-operating-standard-320.png",
+      "bytes": 63854,
+      "sha256": "4d766138bfdc808015fc3c5b6a553bd0608745511ba7c0dc4031e2edbabc3094",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/vault-length-operating-standard-320.png"
+    },
+    {
+      "file": "theatre-entry-standard-320.png",
+      "bytes": 98230,
+      "sha256": "3d7666ea6d02bc3e6ac2c1b8ec5957a5e19c23fbc025e50bb20a6116f31f40dd",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/theatre-entry-standard-320.png"
+    },
+    {
+      "file": "theatre-light-ready-standard-320.png",
+      "bytes": 108058,
+      "sha256": "e58fd70328d82d8d46aa917653b127bf26c1b639e018f605b37b85d778d96b26",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/theatre-light-ready-standard-320.png"
+    },
+    {
+      "file": "theatre-light-operating-standard-320.png",
+      "bytes": 90699,
+      "sha256": "9fbce84a105bd71e19f2627046ca3213f5a7de8df0c1623ef850e0dee675c320",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/theatre-light-operating-standard-320.png"
+    },
+    {
+      "file": "mirror-entry-standard-320.png",
+      "bytes": 101975,
+      "sha256": "d1a22c72ec9332ce03b45b42ed8ba8e367d6a704b2e513d567a48d4a0c78dcbc",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/mirror-entry-standard-320.png"
+    },
+    {
+      "file": "mirror-winch-ready-standard-320.png",
+      "bytes": 107178,
+      "sha256": "437e00ec954adf20c1db8a8cab03e97358828aeff726dd254630758c7bf63eb7",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/mirror-winch-ready-standard-320.png"
+    },
+    {
+      "file": "mirror-winch-holding-standard-320.png",
+      "bytes": 119016,
+      "sha256": "c6baef224d599e7ff27d6a8cdcfeea8996f739537134162759b3ea58a9ece030",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/mirror-winch-holding-standard-320.png"
+    },
+    {
+      "file": "departure-key-ready-standard-320.png",
+      "bytes": 82806,
+      "sha256": "563e2bdac2ce45d8af4c687f3843cc0e32b876869a1ac2d322c66afb256c7b9d",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-key-ready-standard-320.png"
+    },
+    {
+      "file": "departure-key-installed-standard-320.png",
+      "bytes": 95208,
+      "sha256": "533955d844ddfda7f04e92c23dd6e3baec4b87e203a5d186f44022ba523a322e",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-key-installed-standard-320.png"
+    },
+    {
+      "file": "departure-stop-locked-standard-320.png",
+      "bytes": 85704,
+      "sha256": "914fc8702fdbaacfb8843768ae585973fd9096a05e85e003fc99a2b66722c2f6",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-stop-locked-standard-320.png"
+    },
+    {
+      "file": "departure-procedure-ready-standard-320.png",
+      "bytes": 88575,
+      "sha256": "f64d43142dd907f3eec6442fa7896a2266bda9769aedec8fce65614e213f6fa4",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-procedure-ready-standard-320.png"
+    },
+    {
+      "file": "departure-bell-ready-standard-320.png",
+      "bytes": 112127,
+      "sha256": "4f980fcddc642f6d67b76bf3c5dc32ac291a6abf102f8a88daca21a13735b796",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-bell-ready-standard-320.png"
+    },
+    {
+      "file": "gallery-entry-standard-390.png",
+      "bytes": 136658,
+      "sha256": "bd4f9e96f900e1718e0647a1443e22ccdda77e7b66fd53bbf624343218d7e30f",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/gallery-entry-standard-390.png"
+    },
+    {
+      "file": "vault-entry-standard-390.png",
+      "bytes": 131007,
+      "sha256": "2ceb269ffa682f9d0e7d24450b6e7825f087c01351f5dec50a5c2cfab10d15ed",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/vault-entry-standard-390.png"
+    },
+    {
+      "file": "theatre-entry-standard-390.png",
+      "bytes": 155377,
+      "sha256": "a6643b29f3afd4c927b75a59d072070afd147555e75fa8d6a4f729f9366376fa",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/theatre-entry-standard-390.png"
+    },
+    {
+      "file": "mirror-entry-standard-390.png",
+      "bytes": 127603,
+      "sha256": "4bc1c30ac95a4a0c32a51d3dbdd51dc10e3c0484aa700bdf1e61e36cde8f27a8",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/mirror-entry-standard-390.png"
+    },
+    {
+      "file": "departure-key-ready-standard-390.png",
+      "bytes": 129153,
+      "sha256": "eed33d3883815ef1339cc13b8e46d7eba6858e5086190aabc6577789c616c460",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-key-ready-standard-390.png"
+    },
+    {
+      "file": "gallery-entry-standard-430.png",
+      "bytes": 160848,
+      "sha256": "3c28214469520e9467bdaf2b1f2df5d57dd0497c73fe12c1fd0fcc7fb1ba7ed3",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/gallery-entry-standard-430.png"
+    },
+    {
+      "file": "vault-entry-standard-430.png",
+      "bytes": 154011,
+      "sha256": "82aeb6aa1b945daae5537df9c40ed6853c81640782afe71127ba0576ad4806c4",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/vault-entry-standard-430.png"
+    },
+    {
+      "file": "theatre-entry-standard-430.png",
+      "bytes": 181707,
+      "sha256": "66addccb63d3d6b735b5633bad1394f4f502211a5ef4809dae442fb052053f93",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/theatre-entry-standard-430.png"
+    },
+    {
+      "file": "mirror-entry-standard-430.png",
+      "bytes": 140196,
+      "sha256": "f20a95ce518f91f19f4ef6fccd619e26836f269c3e35874c3f2e6e17af57778d",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/mirror-entry-standard-430.png"
+    },
+    {
+      "file": "departure-key-ready-standard-430.png",
+      "bytes": 153568,
+      "sha256": "0d772c49288450cfa39b3a8f66aae5c0b5a6afd2c4d7c097eace90ad4092824e",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/departure-key-ready-standard-430.png"
+    },
+    {
+      "file": "mirror-winch-holding-low-320.png",
+      "bytes": 122794,
+      "sha256": "32533c9bb7e23573dcdb36389558778796ad73126b77fc4528e15063788bbe4c",
+      "rawSource": ".expo/goal014-1/stage-scene-hud/mirror-winch-holding-low-320.png"
+    },
+    {
+      "file": "capture.log.gz",
+      "bytes": 953,
+      "sha256": "04327a40288e2f8775916af4da928c1a4ad1a479804a2614ab4491968ae779ef",
+      "uncompressedSha256": "5935756287b68133677565c3b7066dee021ea5d20a1a8cd8d8be692db29005de",
+      "rawSource": ".expo/goal014-1/capture-logs/stage-scene-hud.log"
+    }
+  ],
+  "rawEvidence": {
+    "directory": ".expo/goal014-1/stage-scene-hud",
+    "files": [
+      {
+        "file": "departure-bell-ready-low-320-scene.json",
+        "bytes": 15637983,
+        "sha256": "cbc97aa2db6bacbbf785ab5ddc5c013d638f61550995fe4f4eb54bf376e22b8d"
+      },
+      {
+        "file": "departure-bell-ready-low-320.png",
+        "bytes": 114970,
+        "sha256": "a1b6dec023d4f8603db86dba5fa8ce6f99dd1479e2589e788546f47a857780a3"
+      },
+      {
+        "file": "departure-bell-ready-low-390-scene.json",
+        "bytes": 15637984,
+        "sha256": "f1c2820604ef70f2f5715b064bd75436becc90e81cecec0c27b9884546848e5c"
+      },
+      {
+        "file": "departure-bell-ready-low-390.png",
+        "bytes": 193745,
+        "sha256": "718cb43c2220f1b1ebc6329ecd2385bf508356b10347e3f24c8c4f86c683dadd"
+      },
+      {
+        "file": "departure-bell-ready-low-430-scene.json",
+        "bytes": 15637983,
+        "sha256": "82f638a9b75ebca2aa884f202998b7bcebf27c688699b78d2e08aa198c313810"
+      },
+      {
+        "file": "departure-bell-ready-low-430.png",
+        "bytes": 224747,
+        "sha256": "2cb3127adf440a45904a21f33d43e883098d04bcad448d517a7282e337e16287"
+      },
+      {
+        "file": "departure-bell-ready-standard-320-scene.json",
+        "bytes": 41535469,
+        "sha256": "265e6194c31a65ee4c1b796884b635d5ac3426660c3952122d545eedfbdbed53"
+      },
+      {
+        "file": "departure-bell-ready-standard-320.png",
+        "bytes": 112127,
+        "sha256": "4f980fcddc642f6d67b76bf3c5dc32ac291a6abf102f8a88daca21a13735b796"
+      },
+      {
+        "file": "departure-bell-ready-standard-390-scene.json",
+        "bytes": 41535470,
+        "sha256": "88d53bbc1f10fcf870ebae9908969d0c7b07dd2fa3f337b9b8a5811d18909575"
+      },
+      {
+        "file": "departure-bell-ready-standard-390.png",
+        "bytes": 178496,
+        "sha256": "c289cf2e5a2bb51ecb236f171be41805fe0ce80a9b773eba8d4b308e7a7f60f1"
+      },
+      {
+        "file": "departure-bell-ready-standard-430-scene.json",
+        "bytes": 41535469,
+        "sha256": "862020623e5a381ab0ced8177506ad65b2285f3fe487761523dba0ac18339c75"
+      },
+      {
+        "file": "departure-bell-ready-standard-430.png",
+        "bytes": 203149,
+        "sha256": "a6939424f8e0beb0a16668757b1e34fb32cfbf283a7505122d868c4f1855b488"
+      },
+      {
+        "file": "departure-key-installed-low-320-scene.json",
+        "bytes": 15637982,
+        "sha256": "3d73c3cfab792e81aacd687d353add4887d3f3050ba3dac12c2b3874984afa7d"
+      },
+      {
+        "file": "departure-key-installed-low-320.png",
+        "bytes": 101999,
+        "sha256": "88e0d1f01c0f4322e1872cbfc6eca3810f5a02237f6beadaecf9e88318105ba0"
+      },
+      {
+        "file": "departure-key-installed-low-390-scene.json",
+        "bytes": 15637983,
+        "sha256": "44574fbcc5565ca4f2bdb41a61f269c354b967d64f121651396bff8f19ecc93a"
+      },
+      {
+        "file": "departure-key-installed-low-390.png",
+        "bytes": 157911,
+        "sha256": "3392591a36071422a3125e28a317f09246dc8c05459ddd4ffb7b6e594cc52c46"
+      },
+      {
+        "file": "departure-key-installed-low-430-scene.json",
+        "bytes": 15637982,
+        "sha256": "bff5a19e013138b7339444015b1e8b5555712b008cee5594eecee237005ca713"
+      },
+      {
+        "file": "departure-key-installed-low-430.png",
+        "bytes": 179114,
+        "sha256": "f80f015a1792115f178e8a94acc378ce454b398570574a3f0884e619c6bdb995"
+      },
+      {
+        "file": "departure-key-installed-standard-320-scene.json",
+        "bytes": 41535468,
+        "sha256": "0fa671420bb3a37ecc888b650e2fac8d790c3f906e0aac3b1d26bfb3cf8983b7"
+      },
+      {
+        "file": "departure-key-installed-standard-320.png",
+        "bytes": 95208,
+        "sha256": "533955d844ddfda7f04e92c23dd6e3baec4b87e203a5d186f44022ba523a322e"
+      },
+      {
+        "file": "departure-key-installed-standard-390-scene.json",
+        "bytes": 41535469,
+        "sha256": "6ec20648fc65b0ea38c7ac142ed2e1f01a5ea5f406cace466dcf5a10fe3f55f1"
+      },
+      {
+        "file": "departure-key-installed-standard-390.png",
+        "bytes": 139682,
+        "sha256": "790c75a8e6e1096bf1503448e445037b808f15a48602bb9fd03c843196dbcd29"
+      },
+      {
+        "file": "departure-key-installed-standard-430-scene.json",
+        "bytes": 41535468,
+        "sha256": "1160b760444c71d2c56daf7bebaa4fcd5fc742efa202711a592f6f2e42f92806"
+      },
+      {
+        "file": "departure-key-installed-standard-430.png",
+        "bytes": 163730,
+        "sha256": "b61c8efadb0c7ffdc27ef3eaaf0099030c6f993f4f2665b70e5593a8f9c39af7"
+      },
+      {
+        "file": "departure-key-ready-low-320-scene.json",
+        "bytes": 15637855,
+        "sha256": "9b57f9ea0f6a92917306aa391a98b31de1db9305a12b80ff1568f103315015b0"
+      },
+      {
+        "file": "departure-key-ready-low-320.png",
+        "bytes": 92732,
+        "sha256": "260f26950f13033927263eda05c5ede35c344a90d9fe73df12b233dc92cdf261"
+      },
+      {
+        "file": "departure-key-ready-low-390-scene.json",
+        "bytes": 15637856,
+        "sha256": "e8f5e7dcdf928b0dd9d5682c2c2907881eb7e22f288244ea5f7898637ed2127f"
+      },
+      {
+        "file": "departure-key-ready-low-390.png",
+        "bytes": 147726,
+        "sha256": "208bb372c9cfac4684cc2cb56068969049f3e25d6747011595b7974db01bb2be"
+      },
+      {
+        "file": "departure-key-ready-low-430-scene.json",
+        "bytes": 15637855,
+        "sha256": "5234d26bd69573f788412baec4812da6325f7f0fb8405482a522de9be919fb65"
+      },
+      {
+        "file": "departure-key-ready-low-430.png",
+        "bytes": 169855,
+        "sha256": "f54c1a9bf02ae431ae1e9ba3ded89208b217aa744951a30d82a0625a82b7683b"
+      },
+      {
+        "file": "departure-key-ready-standard-320-scene.json",
+        "bytes": 41535341,
+        "sha256": "6b479433542f6ba12bf3c433e70ac8c5f9ccbf6bc597e55b954b9494ec8f15d3"
+      },
+      {
+        "file": "departure-key-ready-standard-320.png",
+        "bytes": 82806,
+        "sha256": "563e2bdac2ce45d8af4c687f3843cc0e32b876869a1ac2d322c66afb256c7b9d"
+      },
+      {
+        "file": "departure-key-ready-standard-390-scene.json",
+        "bytes": 41535342,
+        "sha256": "e2cf4901021bde785544c810c84cc305dab7602166b9f258be30b69fd8fc9a91"
+      },
+      {
+        "file": "departure-key-ready-standard-390.png",
+        "bytes": 129153,
+        "sha256": "eed33d3883815ef1339cc13b8e46d7eba6858e5086190aabc6577789c616c460"
+      },
+      {
+        "file": "departure-key-ready-standard-430-scene.json",
+        "bytes": 41535341,
+        "sha256": "a07e1101ee54eac51ec7207d98afb341defb31d936908ebbcbbd1b4d2c8d7f3a"
+      },
+      {
+        "file": "departure-key-ready-standard-430.png",
+        "bytes": 153568,
+        "sha256": "0d772c49288450cfa39b3a8f66aae5c0b5a6afd2c4d7c097eace90ad4092824e"
+      },
+      {
+        "file": "departure-procedure-ready-low-320-scene.json",
+        "bytes": 15637981,
+        "sha256": "bb5c36d162b2fde011d930ac49b1372609b5caf7e915c1aad50de53456e3cfc3"
+      },
+      {
+        "file": "departure-procedure-ready-low-320.png",
+        "bytes": 98873,
+        "sha256": "6c15c93433f24c7e5cac14522cca76088d35b03d45733e34b57e095acbd90500"
+      },
+      {
+        "file": "departure-procedure-ready-low-390-scene.json",
+        "bytes": 15637982,
+        "sha256": "898eabb7ee26e3fa2a4fd6e64c834feca95ce7cc97d12a022f2ab1a0e938d47f"
+      },
+      {
+        "file": "departure-procedure-ready-low-390.png",
+        "bytes": 171241,
+        "sha256": "01d067daf03ad7b7d35e6feec2d62b023abff9fa1914da90b0eff4787b94c2f7"
+      },
+      {
+        "file": "departure-procedure-ready-low-430-scene.json",
+        "bytes": 15637981,
+        "sha256": "be6f8706138e8c745da176bd1738fd6c717b1200f887d65f930e42d855773168"
+      },
+      {
+        "file": "departure-procedure-ready-low-430.png",
+        "bytes": 199698,
+        "sha256": "ae7c1fa5a1bfb64b7da2a29a0c3148d538fea3be521379e06c1bbb4ec9b0da30"
+      },
+      {
+        "file": "departure-procedure-ready-standard-320-scene.json",
+        "bytes": 41535467,
+        "sha256": "2fbfc643fbcd76fc6b02d87373a0be5dabcb7e89ab9d667852bb350488abb915"
+      },
+      {
+        "file": "departure-procedure-ready-standard-320.png",
+        "bytes": 88575,
+        "sha256": "f64d43142dd907f3eec6442fa7896a2266bda9769aedec8fce65614e213f6fa4"
+      },
+      {
+        "file": "departure-procedure-ready-standard-390-scene.json",
+        "bytes": 41535468,
+        "sha256": "0854fc02c786841516163a5ccdb92c2f32e904a8695fabc6691646017fe2f8cf"
+      },
+      {
+        "file": "departure-procedure-ready-standard-390.png",
+        "bytes": 147427,
+        "sha256": "f2f31536b918453af880e0b718012a9d5407b068886915e98f606b0c25e041e0"
+      },
+      {
+        "file": "departure-procedure-ready-standard-430-scene.json",
+        "bytes": 41535467,
+        "sha256": "ddef33d689279421c62a48b11f06e875b7b432f3b178bb1ae5e39957a25011bf"
+      },
+      {
+        "file": "departure-procedure-ready-standard-430.png",
+        "bytes": 174330,
+        "sha256": "3d1e109d7e778222d934cb0960c9013551a1b3185264343065d69dd7db492efd"
+      },
+      {
+        "file": "departure-stop-locked-low-320-scene.json",
+        "bytes": 15637984,
+        "sha256": "6e5ea80e2fb606b39acf888a6f87e1aae442715688d99064fab2be73e7ef626c"
+      },
+      {
+        "file": "departure-stop-locked-low-320.png",
+        "bytes": 96747,
+        "sha256": "afcd6ae74de2efd3d13775e5a2a024722e4c8594c1f5fe9a12640ec4c787d230"
+      },
+      {
+        "file": "departure-stop-locked-low-390-scene.json",
+        "bytes": 15637985,
+        "sha256": "94d0b52d10e262f68c3ab79e5cd263e0680bdde342ea24e45e254b7696149d48"
+      },
+      {
+        "file": "departure-stop-locked-low-390.png",
+        "bytes": 153758,
+        "sha256": "273fb54578e26d7736230b25e5e3ec295313d4a0e8057ae6bfbd904a3f36f1f5"
+      },
+      {
+        "file": "departure-stop-locked-low-430-scene.json",
+        "bytes": 15637984,
+        "sha256": "1f79c17be1406a9577bae1edd0d228ab4af6a1d92f230be2c13d7dc257eb25e4"
+      },
+      {
+        "file": "departure-stop-locked-low-430.png",
+        "bytes": 171562,
+        "sha256": "d53a0afdeafc36d7cd7f383584f752a72371f1839b0893895ce45233c92026ca"
+      },
+      {
+        "file": "departure-stop-locked-standard-320-scene.json",
+        "bytes": 41535470,
+        "sha256": "898210847fd4fe83cdd025a7c4c0d051d95e2e2c663769006fc7fdbb03a2cc05"
+      },
+      {
+        "file": "departure-stop-locked-standard-320.png",
+        "bytes": 85704,
+        "sha256": "914fc8702fdbaacfb8843768ae585973fd9096a05e85e003fc99a2b66722c2f6"
+      },
+      {
+        "file": "departure-stop-locked-standard-390-scene.json",
+        "bytes": 41535471,
+        "sha256": "b657c2a21410f64d06e528db1a2518fa9350af83dd959fd1f90ce9a6932e6ad2"
+      },
+      {
+        "file": "departure-stop-locked-standard-390.png",
+        "bytes": 131315,
+        "sha256": "3883408fb5a347c6206a50fe7aa61c6ed9b76b4e0b77af1df1f3e28fad907cca"
+      },
+      {
+        "file": "departure-stop-locked-standard-430-scene.json",
+        "bytes": 41535470,
+        "sha256": "77781dba9ef71b7c093aea569fa1d976dd5adea642f0828210abdc72ccc674ca"
+      },
+      {
+        "file": "departure-stop-locked-standard-430.png",
+        "bytes": 149470,
+        "sha256": "99496438f33e5787b685c06e0eb7f660030af0f4700ea7371701a27f3a8e83b1"
+      },
+      {
+        "file": "gallery-entry-low-320-scene.json",
+        "bytes": 18190835,
+        "sha256": "f6e289f4b97567b4f609f033be3368975e8d5867c3a8fd688a8fedddc98f96f5"
+      },
+      {
+        "file": "gallery-entry-low-320.png",
+        "bytes": 96169,
+        "sha256": "3305ed5bcff20ff28c4b2dd16872966c4d68b7d7b8d27fb453fcb70cd7d0e29d"
+      },
+      {
+        "file": "gallery-entry-low-390-scene.json",
+        "bytes": 18190836,
+        "sha256": "8792a565d67a3cce45c0aa99eaa8ba76a340b062008d98a1542b6b34afbbfada"
+      },
+      {
+        "file": "gallery-entry-low-390.png",
+        "bytes": 131718,
+        "sha256": "491dbfde8fcd9692e11c12d5d6e94356ac996a249fc5e1b3ba3f5c25ff1a9ebf"
+      },
+      {
+        "file": "gallery-entry-low-430-scene.json",
+        "bytes": 18190835,
+        "sha256": "2c8d153f4687c63c719c0f8a803d2e87510fa848362a28b9865694470cf7eb6a"
+      },
+      {
+        "file": "gallery-entry-low-430.png",
+        "bytes": 152073,
+        "sha256": "a0a9dfd51b14d47a3d90cc4803e359ebfac771ac6c271374ec340198238ee543"
+      },
+      {
+        "file": "gallery-entry-standard-320-scene.json",
+        "bytes": 44088321,
+        "sha256": "dd8524a8544268fa93b03bd11c190c70b38e03897c54dad26e2ae82f1d7f15f7"
+      },
+      {
+        "file": "gallery-entry-standard-320.png",
+        "bytes": 94365,
+        "sha256": "62b1122af70fc279050eec49923746a88ee9fd5b442f09f187175c65e6c26b16"
+      },
+      {
+        "file": "gallery-entry-standard-390-scene.json",
+        "bytes": 44088322,
+        "sha256": "7ce48cbe2eb8b9da4252fca31e8fab1e4943bf8e2711cf1d267fb93165e5da05"
+      },
+      {
+        "file": "gallery-entry-standard-390.png",
+        "bytes": 136658,
+        "sha256": "bd4f9e96f900e1718e0647a1443e22ccdda77e7b66fd53bbf624343218d7e30f"
+      },
+      {
+        "file": "gallery-entry-standard-430-scene.json",
+        "bytes": 44088321,
+        "sha256": "9733f694a5c24dfd15e1effabc8dfb5b9c95aef7005e1fb1d3564f09979a1b87"
+      },
+      {
+        "file": "gallery-entry-standard-430.png",
+        "bytes": 160848,
+        "sha256": "3c28214469520e9467bdaf2b1f2df5d57dd0497c73fe12c1fd0fcc7fb1ba7ed3"
+      },
+      {
+        "file": "gallery-shadow-operating-low-320-scene.json",
+        "bytes": 18190868,
+        "sha256": "cbd4bc47ffe20b014dbd686dbfacca09f2ba1e49242f96172a5f82d7ce475e7a"
+      },
+      {
+        "file": "gallery-shadow-operating-low-320.png",
+        "bytes": 72230,
+        "sha256": "1a1efa2c7a89c85b4f4ba51c4102b864f34e0ead129973965e86adb9a323d7cd"
+      },
+      {
+        "file": "gallery-shadow-operating-low-390-scene.json",
+        "bytes": 18190869,
+        "sha256": "2a441716427c9bcf47f8d57b1809e33096b5a3a8abe8da949f4c3b517e8eb240"
+      },
+      {
+        "file": "gallery-shadow-operating-low-390.png",
+        "bytes": 85425,
+        "sha256": "8a9c81baa7148155444f2c24d7b3b90c6e2d428673711653ddda607b4aeadfe4"
+      },
+      {
+        "file": "gallery-shadow-operating-low-430-scene.json",
+        "bytes": 18190868,
+        "sha256": "04780b065714ef4e83cc80a6872c8bee29139179520f65c1f284c5005b6d10be"
+      },
+      {
+        "file": "gallery-shadow-operating-low-430.png",
+        "bytes": 104061,
+        "sha256": "fc875b49128123faf1378b3271190e481f4e954ee2d72dccdcaf7dc373156cee"
+      },
+      {
+        "file": "gallery-shadow-operating-standard-320-scene.json",
+        "bytes": 44088354,
+        "sha256": "ff023807d7c2b374b6682c98ac1851a405c2e6abc072b163d4c9ebfc2aadd838"
+      },
+      {
+        "file": "gallery-shadow-operating-standard-320.png",
+        "bytes": 70657,
+        "sha256": "2b4aa2546a8e1c25b6fe4551ec240ba8db56e9a3760b1a4b41b2399ddfbb6b42"
+      },
+      {
+        "file": "gallery-shadow-operating-standard-390-scene.json",
+        "bytes": 44088355,
+        "sha256": "66b50ca550f1fd99502f93f97ba1df918505fb73e707e9b70dd179fd7a40c904"
+      },
+      {
+        "file": "gallery-shadow-operating-standard-390.png",
+        "bytes": 94779,
+        "sha256": "4ef14f9fa96a897f03ff9dda37184a7ddc64126924ee3f09f54c293b74739054"
+      },
+      {
+        "file": "gallery-shadow-operating-standard-430-scene.json",
+        "bytes": 44088354,
+        "sha256": "207398c001bcd95d52bbb7d8fd9b8ef3b2ad1840602bba4ac7ef7c2494248b4c"
+      },
+      {
+        "file": "gallery-shadow-operating-standard-430.png",
+        "bytes": 123511,
+        "sha256": "f285760c94e187158001fe490575ce8be9b305daf5dd3d9cfbc4f01eaaa2d595"
+      },
+      {
+        "file": "gallery-shadow-ready-low-320-scene.json",
+        "bytes": 18190868,
+        "sha256": "cbd4bc47ffe20b014dbd686dbfacca09f2ba1e49242f96172a5f82d7ce475e7a"
+      },
+      {
+        "file": "gallery-shadow-ready-low-320.png",
+        "bytes": 85060,
+        "sha256": "6aa8a4545e940a4b081000930c20153cdcf808bccaa37023a634f62ecaa3f734"
+      },
+      {
+        "file": "gallery-shadow-ready-low-390-scene.json",
+        "bytes": 18190869,
+        "sha256": "2a441716427c9bcf47f8d57b1809e33096b5a3a8abe8da949f4c3b517e8eb240"
+      },
+      {
+        "file": "gallery-shadow-ready-low-390.png",
+        "bytes": 110912,
+        "sha256": "f58302eaf57eda6880efc4f5c328d6a77a848a0d37b60dc18dcd6a14e9e8d250"
+      },
+      {
+        "file": "gallery-shadow-ready-low-430-scene.json",
+        "bytes": 18190868,
+        "sha256": "04780b065714ef4e83cc80a6872c8bee29139179520f65c1f284c5005b6d10be"
+      },
+      {
+        "file": "gallery-shadow-ready-low-430.png",
+        "bytes": 126035,
+        "sha256": "b3d908b9d5982d2ee85b62e2a622c01c0674c057e89881bd40292bdc2407e87b"
+      },
+      {
+        "file": "gallery-shadow-ready-standard-320-scene.json",
+        "bytes": 44088354,
+        "sha256": "ff023807d7c2b374b6682c98ac1851a405c2e6abc072b163d4c9ebfc2aadd838"
+      },
+      {
+        "file": "gallery-shadow-ready-standard-320.png",
+        "bytes": 83260,
+        "sha256": "236e102476c3cfb9fec99683560a03b7705396482f50c490fb1e117354c596ed"
+      },
+      {
+        "file": "gallery-shadow-ready-standard-390-scene.json",
+        "bytes": 44088355,
+        "sha256": "66b50ca550f1fd99502f93f97ba1df918505fb73e707e9b70dd179fd7a40c904"
+      },
+      {
+        "file": "gallery-shadow-ready-standard-390.png",
+        "bytes": 126355,
+        "sha256": "06ef710698a482340d991297862d5008711826b2cc3b8c95c4c8aa93fcb82ea6"
+      },
+      {
+        "file": "gallery-shadow-ready-standard-430-scene.json",
+        "bytes": 44088354,
+        "sha256": "207398c001bcd95d52bbb7d8fd9b8ef3b2ad1840602bba4ac7ef7c2494248b4c"
+      },
+      {
+        "file": "gallery-shadow-ready-standard-430.png",
+        "bytes": 150049,
+        "sha256": "2a92642562f0d6fd17610c55eea4cbfba9dd7e2904edd172c05e1224274dfa7e"
+      },
+      {
+        "file": "mirror-entry-low-320-scene.json",
+        "bytes": 10993017,
+        "sha256": "16602dd606a4e2a46ac9e0774e219d92c0cda275771d73a5bd175c72aa17549f"
+      },
+      {
+        "file": "mirror-entry-low-320.png",
+        "bytes": 94966,
+        "sha256": "b34976ed988259eaa41061cc5ccc201c03620fc57428780e26c513a3e23e3ead"
+      },
+      {
+        "file": "mirror-entry-low-390-scene.json",
+        "bytes": 10993018,
+        "sha256": "64f541d9d7bd735e618fb1e5cf7f9e76bb061cf7c1de51b6de7533b7b9e22dab"
+      },
+      {
+        "file": "mirror-entry-low-390.png",
+        "bytes": 110765,
+        "sha256": "669a51be2e91b9775ebfeb7ca2cf0ebe4578ba6d2481b0c02edb3ca725efe6c8"
+      },
+      {
+        "file": "mirror-entry-low-430-scene.json",
+        "bytes": 10993017,
+        "sha256": "cec9e6086b5dd3c1989da3529b842f69f59f4581cc5c57e91e15a3831d7639e2"
+      },
+      {
+        "file": "mirror-entry-low-430.png",
+        "bytes": 118290,
+        "sha256": "e149fa4f8c57764d6b63d54c80af60610f1f7df1623bb6657f0f9ffbf11988ae"
+      },
+      {
+        "file": "mirror-entry-standard-320-scene.json",
+        "bytes": 36890503,
+        "sha256": "bf216ce17e49156eb331ee832f12b475bda91b31e86e70b8e720aae713ff8ed7"
+      },
+      {
+        "file": "mirror-entry-standard-320.png",
+        "bytes": 101975,
+        "sha256": "d1a22c72ec9332ce03b45b42ed8ba8e367d6a704b2e513d567a48d4a0c78dcbc"
+      },
+      {
+        "file": "mirror-entry-standard-390-scene.json",
+        "bytes": 36890504,
+        "sha256": "8d4c7edf27beeea3e15513d253df98e51dda905d984726038a3a5fabfc73c4c9"
+      },
+      {
+        "file": "mirror-entry-standard-390.png",
+        "bytes": 127603,
+        "sha256": "4bc1c30ac95a4a0c32a51d3dbdd51dc10e3c0484aa700bdf1e61e36cde8f27a8"
+      },
+      {
+        "file": "mirror-entry-standard-430-scene.json",
+        "bytes": 36890503,
+        "sha256": "f60a2d609148358400b87d8bb70c76873c7f060d1349b205a59b1d2587382d20"
+      },
+      {
+        "file": "mirror-entry-standard-430.png",
+        "bytes": 140196,
+        "sha256": "f20a95ce518f91f19f4ef6fccd619e26836f269c3e35874c3f2e6e17af57778d"
+      },
+      {
+        "file": "mirror-winch-holding-low-320-scene.json",
+        "bytes": 10993093,
+        "sha256": "4622f758d482a834c8c03bfdf97e04ce8c2b75129b36f17334fa63d4e96e8da0"
+      },
+      {
+        "file": "mirror-winch-holding-low-320.png",
+        "bytes": 122794,
+        "sha256": "32533c9bb7e23573dcdb36389558778796ad73126b77fc4528e15063788bbe4c"
+      },
+      {
+        "file": "mirror-winch-holding-low-390-scene.json",
+        "bytes": 10993094,
+        "sha256": "ae507f8000c7123cd635d5611b28b317587a82a1da8bf382cb9187cb8a40b609"
+      },
+      {
+        "file": "mirror-winch-holding-low-390.png",
+        "bytes": 178445,
+        "sha256": "eb2ca5ef15741d72fe01920fd4dfe836d79ff0ebe0748120468c8a26fa38c833"
+      },
+      {
+        "file": "mirror-winch-holding-low-430-scene.json",
+        "bytes": 10993093,
+        "sha256": "a0a69788f5ddf4a93c0c8e2b58fa86c6200747dc503ca1d7badc509de481908a"
+      },
+      {
+        "file": "mirror-winch-holding-low-430.png",
+        "bytes": 198019,
+        "sha256": "eac32c95113406dce96913d558083315a9f18d5dfa72c1d2d798cff0a29e07be"
+      },
+      {
+        "file": "mirror-winch-holding-standard-320-scene.json",
+        "bytes": 36890579,
+        "sha256": "a26192eeb6922a13d2a023492e1a6c5b914667cf548794ae82d16ece50ec2fad"
+      },
+      {
+        "file": "mirror-winch-holding-standard-320.png",
+        "bytes": 119016,
+        "sha256": "c6baef224d599e7ff27d6a8cdcfeea8996f739537134162759b3ea58a9ece030"
+      },
+      {
+        "file": "mirror-winch-holding-standard-390-scene.json",
+        "bytes": 36890580,
+        "sha256": "35bbeaad11592a428851f4e207104ac5b247cbc8c34f3cc4871052470f8676d5"
+      },
+      {
+        "file": "mirror-winch-holding-standard-390.png",
+        "bytes": 176829,
+        "sha256": "c9adc9c304208f267da03e0185e36c92cf39cc9d33d3cffdb07e44fd4d48bfbd"
+      },
+      {
+        "file": "mirror-winch-holding-standard-430-scene.json",
+        "bytes": 36890579,
+        "sha256": "9c25da5e51f6212c7b05ec1e81d1b12a680867942ba479717248c3cd7cb88b26"
+      },
+      {
+        "file": "mirror-winch-holding-standard-430.png",
+        "bytes": 194594,
+        "sha256": "05014e6ecd7499c6fa41077940b8fc53e1e891bc1e25a8f837e47d14ab2e11a3"
+      },
+      {
+        "file": "mirror-winch-ready-low-320-scene.json",
+        "bytes": 10993115,
+        "sha256": "f3fba31e177499712ce26e4979648b96c8fe423e221980625bc77892d2371359"
+      },
+      {
+        "file": "mirror-winch-ready-low-320.png",
+        "bytes": 112509,
+        "sha256": "78e3fbac4b573fa4eed9ce3b8feb724c4916e9a24d5e4fcefeaa70f7cb79baae"
+      },
+      {
+        "file": "mirror-winch-ready-low-390-scene.json",
+        "bytes": 10993116,
+        "sha256": "fd8b65516abfb8c2b6c50e8c817b1f89e6f771e3cb5e89b3eea49d806d499f81"
+      },
+      {
+        "file": "mirror-winch-ready-low-390.png",
+        "bytes": 170117,
+        "sha256": "ab724cf7a327ed014405b9985501088a32e63c7a08e0959c7c1359ea19fbd431"
+      },
+      {
+        "file": "mirror-winch-ready-low-430-scene.json",
+        "bytes": 10993115,
+        "sha256": "38536b1453f4b3f480d91a6e610dd54493c9e438bfd1ffc3616f28befc82fcdc"
+      },
+      {
+        "file": "mirror-winch-ready-low-430.png",
+        "bytes": 193030,
+        "sha256": "0def57dc6bcd35dc56a97501eadde83f2a66c01646d974e1111bb5597099351d"
+      },
+      {
+        "file": "mirror-winch-ready-standard-320-scene.json",
+        "bytes": 36890601,
+        "sha256": "30237acf0057f83fcf775b25b949c77fa49980938298f1de5b3f4f96878e24f5"
+      },
+      {
+        "file": "mirror-winch-ready-standard-320.png",
+        "bytes": 107178,
+        "sha256": "437e00ec954adf20c1db8a8cab03e97358828aeff726dd254630758c7bf63eb7"
+      },
+      {
+        "file": "mirror-winch-ready-standard-390-scene.json",
+        "bytes": 36890602,
+        "sha256": "9228827b9bbf7a633901e8c56cac4a17375ed95d9a60149d1e945fdb41e36dea"
+      },
+      {
+        "file": "mirror-winch-ready-standard-390.png",
+        "bytes": 166981,
+        "sha256": "8d4c6d3d7e065cfd8f6a73ab6aa0efc66bfff2c254c8c61cfb6ea7c4d22472d6"
+      },
+      {
+        "file": "mirror-winch-ready-standard-430-scene.json",
+        "bytes": 36890601,
+        "sha256": "0748bb075cc7b1997ce13269c442ae159b60ccf3538404c02647f6b0eba5e7a4"
+      },
+      {
+        "file": "mirror-winch-ready-standard-430.png",
+        "bytes": 189130,
+        "sha256": "b5c76a9e9b6677c888208f3681a31c969c0f97ab0f19b6a87cdd8ab14963c9c1"
+      },
+      {
+        "file": "theatre-entry-low-320-scene.json",
+        "bytes": 9944142,
+        "sha256": "46e1b6c7e564ec567b5752e0a039633d3451e5cdbe3ad8ac955605daf03f9957"
+      },
+      {
+        "file": "theatre-entry-low-320.png",
+        "bytes": 99739,
+        "sha256": "cff27c7ee1701b0a254366b09ec30ba18dbbcb5e63acf576905467959eb5fada"
+      },
+      {
+        "file": "theatre-entry-low-390-scene.json",
+        "bytes": 9944143,
+        "sha256": "d196cfca19d8b79156ef5c3e52dcbbb9de4bc832a801e7a1947c630971a6c710"
+      },
+      {
+        "file": "theatre-entry-low-390.png",
+        "bytes": 151014,
+        "sha256": "03292754d5c461d942bef14a02775f4c9630f2da3ef8c8a6e204199cf68d8a1f"
+      },
+      {
+        "file": "theatre-entry-low-430-scene.json",
+        "bytes": 9944142,
+        "sha256": "aa1fefe9520f1fff0e826fde6285646a481b1afbdf03e96a32909ef8c9ecd53e"
+      },
+      {
+        "file": "theatre-entry-low-430.png",
+        "bytes": 169022,
+        "sha256": "7f33acb17e1bfe40b79794669f6b6adcae6004ac4ce344953c00d70cfa10caad"
+      },
+      {
+        "file": "theatre-entry-standard-320-scene.json",
+        "bytes": 35841628,
+        "sha256": "2a8ca88eda194d47b277ef18eb93d9880d123abe61d09f44784c6caaf0d8a078"
+      },
+      {
+        "file": "theatre-entry-standard-320.png",
+        "bytes": 98230,
+        "sha256": "3d7666ea6d02bc3e6ac2c1b8ec5957a5e19c23fbc025e50bb20a6116f31f40dd"
+      },
+      {
+        "file": "theatre-entry-standard-390-scene.json",
+        "bytes": 35841629,
+        "sha256": "531491bfb3bafbf31ff1d233a2b2e8760a7c8f6b5db54d3603fa05bfe7446201"
+      },
+      {
+        "file": "theatre-entry-standard-390.png",
+        "bytes": 155377,
+        "sha256": "a6643b29f3afd4c927b75a59d072070afd147555e75fa8d6a4f729f9366376fa"
+      },
+      {
+        "file": "theatre-entry-standard-430-scene.json",
+        "bytes": 35841628,
+        "sha256": "c1dd2e6e872dec92341f281ee212e663260e932a620b06fc4de211eca945e67b"
+      },
+      {
+        "file": "theatre-entry-standard-430.png",
+        "bytes": 181707,
+        "sha256": "66addccb63d3d6b735b5633bad1394f4f502211a5ef4809dae442fb052053f93"
+      },
+      {
+        "file": "theatre-light-operating-low-320-scene.json",
+        "bytes": 9944231,
+        "sha256": "95eb6654842dcac88c9eede4307bda6d06e70ec33ca5492ec30af694f906bdce"
+      },
+      {
+        "file": "theatre-light-operating-low-320.png",
+        "bytes": 94410,
+        "sha256": "2d844a1d5f8b184f0bb8ff71934786e37bbad3f5dbd43d8503cf20a03149735a"
+      },
+      {
+        "file": "theatre-light-operating-low-390-scene.json",
+        "bytes": 9944232,
+        "sha256": "25323c39d86cffa974710a88702812000b1e9beb93e1b27df02b3283f41c5ed5"
+      },
+      {
+        "file": "theatre-light-operating-low-390.png",
+        "bytes": 141195,
+        "sha256": "b434e463ba3c5a2a1590b56402ad0156a56f0120fe0b5f92eacc66d841373a3d"
+      },
+      {
+        "file": "theatre-light-operating-low-430-scene.json",
+        "bytes": 9944231,
+        "sha256": "ff72bbc88f35b6f0cb145c9922f6ca373af1a522468203ec4c0e6d48d7707b1c"
+      },
+      {
+        "file": "theatre-light-operating-low-430.png",
+        "bytes": 166239,
+        "sha256": "338645cdb555c3afe602fa82641340ef9ac7196eb3a8c7bd8fcd2425eed438ae"
+      },
+      {
+        "file": "theatre-light-operating-standard-320-scene.json",
+        "bytes": 35841717,
+        "sha256": "41488fd114803def792fac2c47f7eab8b113433fcabe433ef0a16acebbec5b5f"
+      },
+      {
+        "file": "theatre-light-operating-standard-320.png",
+        "bytes": 90699,
+        "sha256": "9fbce84a105bd71e19f2627046ca3213f5a7de8df0c1623ef850e0dee675c320"
+      },
+      {
+        "file": "theatre-light-operating-standard-390-scene.json",
+        "bytes": 35841718,
+        "sha256": "dda89ea770b5a6443b26258c980d83df2351799ac960a4747c51ace14f645ab3"
+      },
+      {
+        "file": "theatre-light-operating-standard-390.png",
+        "bytes": 141861,
+        "sha256": "7172216a4d0b479ac754b228af4113b9996f8fd1edaad772240a56d28ab231d9"
+      },
+      {
+        "file": "theatre-light-operating-standard-430-scene.json",
+        "bytes": 35841717,
+        "sha256": "afa7711aa188de9c222387cc37a38671c405a30da79d17ad2eea4da2e03124f5"
+      },
+      {
+        "file": "theatre-light-operating-standard-430.png",
+        "bytes": 180038,
+        "sha256": "e5bc292f2e49e1e3ede56f0a4ccbb8d592791d93fc2206336d295990a652318a"
+      },
+      {
+        "file": "theatre-light-ready-low-320-scene.json",
+        "bytes": 9944231,
+        "sha256": "95eb6654842dcac88c9eede4307bda6d06e70ec33ca5492ec30af694f906bdce"
+      },
+      {
+        "file": "theatre-light-ready-low-320.png",
+        "bytes": 107919,
+        "sha256": "88f9794a909b8acb6d736aa278f013ace945855e6b110c9cd8da58954a9ef499"
+      },
+      {
+        "file": "theatre-light-ready-low-390-scene.json",
+        "bytes": 9944232,
+        "sha256": "25323c39d86cffa974710a88702812000b1e9beb93e1b27df02b3283f41c5ed5"
+      },
+      {
+        "file": "theatre-light-ready-low-390.png",
+        "bytes": 162590,
+        "sha256": "74ba93c7f4624754163d06da2b2e297b3a27d86a614f9eb0c5fbff3ee72b0683"
+      },
+      {
+        "file": "theatre-light-ready-low-430-scene.json",
+        "bytes": 9944231,
+        "sha256": "ff72bbc88f35b6f0cb145c9922f6ca373af1a522468203ec4c0e6d48d7707b1c"
+      },
+      {
+        "file": "theatre-light-ready-low-430.png",
+        "bytes": 183499,
+        "sha256": "438fc13b09d7bb70d777e5d38316100d80a01f5bb45e0d52fccdafd347bbbc29"
+      },
+      {
+        "file": "theatre-light-ready-standard-320-scene.json",
+        "bytes": 35841717,
+        "sha256": "41488fd114803def792fac2c47f7eab8b113433fcabe433ef0a16acebbec5b5f"
+      },
+      {
+        "file": "theatre-light-ready-standard-320.png",
+        "bytes": 108058,
+        "sha256": "e58fd70328d82d8d46aa917653b127bf26c1b639e018f605b37b85d778d96b26"
+      },
+      {
+        "file": "theatre-light-ready-standard-390-scene.json",
+        "bytes": 35841718,
+        "sha256": "dda89ea770b5a6443b26258c980d83df2351799ac960a4747c51ace14f645ab3"
+      },
+      {
+        "file": "theatre-light-ready-standard-390.png",
+        "bytes": 171755,
+        "sha256": "17ed287f3767186d3fe83d26c6624b2278e408e885898085e224ff98d56d43e4"
+      },
+      {
+        "file": "theatre-light-ready-standard-430-scene.json",
+        "bytes": 35841717,
+        "sha256": "afa7711aa188de9c222387cc37a38671c405a30da79d17ad2eea4da2e03124f5"
+      },
+      {
+        "file": "theatre-light-ready-standard-430.png",
+        "bytes": 200402,
+        "sha256": "15e20a39254be55dc4880df1f25fa6e0d4abd6a8a266053fb43a9a2e8a53c077"
+      },
+      {
+        "file": "vault-entry-low-320-scene.json",
+        "bytes": 9954913,
+        "sha256": "0912a9fa84e045c3681e39b680fbb556fdba004001c5dea8e3d8fec28391ce70"
+      },
+      {
+        "file": "vault-entry-low-320.png",
+        "bytes": 90607,
+        "sha256": "2a6e5d7d2aac5a4bc4c4b98e61237aeeff7124f23d99e230ab333805c7bc795b"
+      },
+      {
+        "file": "vault-entry-low-390-scene.json",
+        "bytes": 9954914,
+        "sha256": "5bb7f62d8a282f0acc87021d334362f26feced36daba4a0c374cca6c4625987b"
+      },
+      {
+        "file": "vault-entry-low-390.png",
+        "bytes": 116060,
+        "sha256": "aea767bee287fc94048dbaf5bd650c5883acce9c9ee50d142e63094918f950f6"
+      },
+      {
+        "file": "vault-entry-low-430-scene.json",
+        "bytes": 9954913,
+        "sha256": "077a9f91d7da8b54439a18847586606e34a5b5bdfc87caa7b11b294dd76a84e0"
+      },
+      {
+        "file": "vault-entry-low-430.png",
+        "bytes": 130032,
+        "sha256": "6fccf24a39b41ca6c437230cfb6379e8a4e7d8afdb478ff853f943a74528a482"
+      },
+      {
+        "file": "vault-entry-standard-320-scene.json",
+        "bytes": 35852399,
+        "sha256": "66145ad923a00dc1896b0e3550425a76b30af7884ddd0b1d7563c0b312391224"
+      },
+      {
+        "file": "vault-entry-standard-320.png",
+        "bytes": 91515,
+        "sha256": "398b83cb080027f6a7094c31a4b0b30f07c8d740a22ccac728947c23910e49d5"
+      },
+      {
+        "file": "vault-entry-standard-390-scene.json",
+        "bytes": 35852400,
+        "sha256": "2f4180895d3dee2bb0303fb18232299b74298fa380f8ad900c3ed63a7bad9e6f"
+      },
+      {
+        "file": "vault-entry-standard-390.png",
+        "bytes": 131007,
+        "sha256": "2ceb269ffa682f9d0e7d24450b6e7825f087c01351f5dec50a5c2cfab10d15ed"
+      },
+      {
+        "file": "vault-entry-standard-430-scene.json",
+        "bytes": 35852399,
+        "sha256": "bd0bdbe6a0090c7075b1f4f8e130d7a351bf37c44ce3c93e953dc55fde0e867a"
+      },
+      {
+        "file": "vault-entry-standard-430.png",
+        "bytes": 154011,
+        "sha256": "82aeb6aa1b945daae5537df9c40ed6853c81640782afe71127ba0576ad4806c4"
+      },
+      {
+        "file": "vault-length-operating-low-320-scene.json",
+        "bytes": 9955009,
+        "sha256": "acb41559278028dd0c248262cf69695283e0231ad1efbfa6041ea2914b685569"
+      },
+      {
+        "file": "vault-length-operating-low-320.png",
+        "bytes": 65157,
+        "sha256": "3deaeadee69c7532b1d71d1109469b07b4def41b802734a515ad9bea35f79ea3"
+      },
+      {
+        "file": "vault-length-operating-low-390-scene.json",
+        "bytes": 9955010,
+        "sha256": "3f05f76fa4b707444d05d0ed18c6959308969552961aad54acf03cf7fe9a29b7"
+      },
+      {
+        "file": "vault-length-operating-low-390.png",
+        "bytes": 101168,
+        "sha256": "30b59d66368c4fea62b190f8c950267b1b36602a7bd8467893fb4a5f2d1d5fd1"
+      },
+      {
+        "file": "vault-length-operating-low-430-scene.json",
+        "bytes": 9955009,
+        "sha256": "aaf6d137b962cd1ba59e7e41bc5cb17f53cd7c92c590161763e42c73654c6372"
+      },
+      {
+        "file": "vault-length-operating-low-430.png",
+        "bytes": 110296,
+        "sha256": "45d9123c7eab5071ee8bffa478c432b9d96d4a04f2378480b162c98344514b9f"
+      },
+      {
+        "file": "vault-length-operating-standard-320-scene.json",
+        "bytes": 35852495,
+        "sha256": "b2ff1fec04e91210348261877dd3d7dda59761970b5074616392258db78ec776"
+      },
+      {
+        "file": "vault-length-operating-standard-320.png",
+        "bytes": 63854,
+        "sha256": "4d766138bfdc808015fc3c5b6a553bd0608745511ba7c0dc4031e2edbabc3094"
+      },
+      {
+        "file": "vault-length-operating-standard-390-scene.json",
+        "bytes": 35852496,
+        "sha256": "d7024fe553da9957264673443cac02367c06e130a95e6ff01b0514acb9b0767b"
+      },
+      {
+        "file": "vault-length-operating-standard-390.png",
+        "bytes": 116855,
+        "sha256": "fa9c67d64fe0a629d1030b3e868931fb19cd37f70c78ac8217d9f0807cba68b0"
+      },
+      {
+        "file": "vault-length-operating-standard-430-scene.json",
+        "bytes": 35852495,
+        "sha256": "b685b01ca023df7996329b1910552669f67b6bea7ee60abc66b53ce2d260c2cf"
+      },
+      {
+        "file": "vault-length-operating-standard-430.png",
+        "bytes": 131921,
+        "sha256": "c6e8f51d372d0e47bf7f5e49ee933347ca72b4e8abd7458e47de31f58975e81d"
+      },
+      {
+        "file": "vault-length-ready-low-320-scene.json",
+        "bytes": 9955009,
+        "sha256": "acb41559278028dd0c248262cf69695283e0231ad1efbfa6041ea2914b685569"
+      },
+      {
+        "file": "vault-length-ready-low-320.png",
+        "bytes": 88682,
+        "sha256": "84e990d759969847549da9ad7ce9a1e5fa7f413ad6b710596e6273cd4af5339b"
+      },
+      {
+        "file": "vault-length-ready-low-390-scene.json",
+        "bytes": 9955010,
+        "sha256": "3f05f76fa4b707444d05d0ed18c6959308969552961aad54acf03cf7fe9a29b7"
+      },
+      {
+        "file": "vault-length-ready-low-390.png",
+        "bytes": 112614,
+        "sha256": "61e296558d88bdde35db643272a95c74c5dea26b318711cb885378e2b8ba9e45"
+      },
+      {
+        "file": "vault-length-ready-low-430-scene.json",
+        "bytes": 9955009,
+        "sha256": "aaf6d137b962cd1ba59e7e41bc5cb17f53cd7c92c590161763e42c73654c6372"
+      },
+      {
+        "file": "vault-length-ready-low-430.png",
+        "bytes": 126204,
+        "sha256": "0cd568b16c84cf4be305930ab0f0d2eed9e48abc0fcd89f286b92086a9309caa"
+      },
+      {
+        "file": "vault-length-ready-standard-320-scene.json",
+        "bytes": 35852495,
+        "sha256": "b2ff1fec04e91210348261877dd3d7dda59761970b5074616392258db78ec776"
+      },
+      {
+        "file": "vault-length-ready-standard-320.png",
+        "bytes": 88579,
+        "sha256": "a80e236a3a30bf6236c6cc2bad106b72d44c70ed8bebea627dd11c73b2b23573"
+      },
+      {
+        "file": "vault-length-ready-standard-390-scene.json",
+        "bytes": 35852496,
+        "sha256": "d7024fe553da9957264673443cac02367c06e130a95e6ff01b0514acb9b0767b"
+      },
+      {
+        "file": "vault-length-ready-standard-390.png",
+        "bytes": 126247,
+        "sha256": "b63571455fa8c4f24562d7eaf526b492b06437bdf4d75240e5c07da4bd5923b2"
+      },
+      {
+        "file": "vault-length-ready-standard-430-scene.json",
+        "bytes": 35852495,
+        "sha256": "b685b01ca023df7996329b1910552669f67b6bea7ee60abc66b53ce2d260c2cf"
+      },
+      {
+        "file": "vault-length-ready-standard-430.png",
+        "bytes": 149164,
+        "sha256": "c5227909921448592b0e6a8d87ce04fe4a24ba0e892b30c0187b947b8ff9649a"
+      }
+    ]
+  }
+}

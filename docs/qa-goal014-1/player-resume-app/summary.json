@@ -1,0 +1,184 @@
+{
+  "gates": {
+    "natural01to02": true,
+    "natural02to03": true,
+    "actualPauseResume": true,
+    "genuineColdSave": true,
+    "separateProcess": true,
+    "sourceGuard": true
+  },
+  "video": {
+    "file": "player-resume-app.mp4",
+    "frames": 92,
+    "fps": 5,
+    "durationSeconds": 18.4,
+    "viewport": [
+      390,
+      844
+    ],
+    "qaCaptionHeight": 48,
+    "audioTrack": false
+  },
+  "captureHead": "6186a5e5c22718ffd9af57b8236e8ffbf89867cb",
+  "sourceGuard": {
+    "loadedTypescript": 235,
+    "assets": 28,
+    "toolsAndConfig": 9
+  },
+  "processes": [
+    {
+      "phase": "fresh",
+      "pid": 401113,
+      "simulatedSeconds": 111.58464220585884,
+      "canvasEntries": 4,
+      "peakCanvasOwners": 1,
+      "peakFixturePlayers": 12,
+      "final": {
+        "canvasOwners": 0,
+        "rafCallbacks": 0,
+        "appStateSubscriptions": 0,
+        "nativePlayers": 0,
+        "nativeSubscriptions": 0
+      },
+      "finalAudio": {
+        "liveOwners": 0,
+        "livePlayers": 0,
+        "session": {
+          "generation": 19,
+          "desiredActive": false,
+          "appliedActive": false,
+          "leases": 0,
+          "pendingOperations": 0
+        },
+        "firstAudioFailure": null
+      }
+    },
+    {
+      "phase": "cold",
+      "pid": 401163,
+      "simulatedSeconds": 5.049999999999987,
+      "canvasEntries": 1,
+      "peakCanvasOwners": 1,
+      "peakFixturePlayers": 11,
+      "final": {
+        "canvasOwners": 0,
+        "rafCallbacks": 0,
+        "appStateSubscriptions": 0,
+        "nativePlayers": 0,
+        "nativeSubscriptions": 0
+      },
+      "finalAudio": {
+        "liveOwners": 0,
+        "livePlayers": 0,
+        "session": {
+          "generation": 4,
+          "desiredActive": false,
+          "appliedActive": false,
+          "leases": 0,
+          "pendingOperations": 0
+        },
+        "firstAudioFailure": null
+      }
+    }
+  ],
+  "actualTransitions": [
+    {
+      "from": "chapter-1-area-01",
+      "to": "chapter-1-area-02",
+      "fromSession": 12,
+      "routeSeconds": 77.44691822563792,
+      "saveSha256": "1a5cca1435348dd999b35d47e54bd3e42946a9e66af3bb77d7c601b548b5474e",
+      "completedAreas": [
+        "chapter-1-area-01"
+      ],
+      "retired": true,
+      "callback": "FirstPersonScreen.publish -> App.onComplete, no manual gate completion"
+    },
+    {
+      "from": "chapter-1-area-02",
+      "to": "chapter-1-area-03",
+      "fromSession": 53,
+      "routeSeconds": 20.487723980221546,
+      "saveSha256": "199ace6f06603ed2d3a150d9dc931f2e4c3ef62ddb97602fb55ecbccbc0556d6",
+      "completedAreas": [
+        "chapter-1-area-01",
+        "chapter-1-area-02"
+      ],
+      "retired": true,
+      "callback": "FirstPersonScreen.publish -> App.onComplete, no manual gate completion"
+    }
+  ],
+  "coldSave": {
+    "sha256": "1a5cca1435348dd999b35d47e54bd3e42946a9e66af3bb77d7c601b548b5474e",
+    "key": "chroma-rift.campaign.chapter-1.v1",
+    "runId": "chapter-one-1789643169695",
+    "currentArea": "chapter-1-area-02",
+    "completedAreas": [
+      "chapter-1-area-01"
+    ],
+    "revision": 21
+  },
+  "coldInputHash": "1a5cca1435348dd999b35d47e54bd3e42946a9e66af3bb77d7c601b548b5474e",
+  "compressedExactArtifacts": {
+    "fresh-report.json.gz": {
+      "uncompressedFile": "fresh-report.json",
+      "uncompressedBytes": 1005776,
+      "uncompressedSha256": "9b628fadee1cd8e490966ad85a3c3c2dab9608d040ee44005e8450fb6ab1a23e"
+    },
+    "cold-report.json.gz": {
+      "uncompressedFile": "cold-report.json",
+      "uncompressedBytes": 177440,
+      "uncompressedSha256": "7081b3f4794c597321941782b76019bf4f7cacd2c420be22604570554137e798"
+    },
+    "fresh-storage.json.gz": {
+      "uncompressedFile": "fresh-storage.json",
+      "uncompressedBytes": 2784,
+      "uncompressedSha256": "d7cabe2e10a997b19906a131649bddb8a1ae11f2b98ba8669d12862418706266"
+    },
+    "fresh-animation.json.gz": {
+      "uncompressedFile": "fresh-animation.json",
+      "uncompressedBytes": 2779821,
+      "uncompressedSha256": "69369deef0f554991cede93488d30acfdfb5fbfdcff64609319e2c7423e7f543"
+    },
+    "cold-animation.json.gz": {
+      "uncompressedFile": "cold-animation.json",
+      "uncompressedBytes": 690268,
+      "uncompressedSha256": "e6e94a389c80b566a0bc6c82c113ee044842b0e28e4a27d6199b7fc5ee22d768"
+    },
+    "run.log.gz": {
+      "uncompressedFile": "run.log",
+      "uncompressedBytes": 3405,
+      "uncompressedSha256": "c6b58a386c29f3ddef3c330e6bf7f87d396fbdd48fb1748b831f136c5e9a440b"
+    }
+  },
+  "selectedImages": [
+    {
+      "frame": 21,
+      "file": "01-to-02.png"
+    },
+    {
+      "frame": 36,
+      "file": "02-paused.png"
+    },
+    {
+      "frame": 44,
+      "file": "02-resumed.png"
+    },
+    {
+      "frame": 54,
+      "file": "home-after-save.png"
+    },
+    {
+      "frame": 66,
+      "file": "02-to-03.png"
+    },
+    {
+      "frame": 84,
+      "file": "cold-02-restored.png"
+    },
+    {
+      "frame": 91,
+      "file": "cold-02-movement.png"
+    }
+  ]
+}

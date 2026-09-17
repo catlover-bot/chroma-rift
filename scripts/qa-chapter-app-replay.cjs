@@ -4,11 +4,18 @@ require('./lib/qa-native-metadata.cjs');
 /* global __dirname, __filename, Buffer */
 // One real App host route supplies sampled runtime states. Replaying those
 // states through ChapterScene gives intervening visual evidence, but does not
-// record the App's native Canvas, HUD, audio, or a human's continuous play.
+// record the App's native Canvas, audio, or a human's continuous play. Two
+// serialized actual-App ending cards are appended as declared static holds.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), ts = require('typescript');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
-if (process.argv.slice(2).some(arg=>!arg.startsWith('--out='))) throw Error('usage: node scripts/qa-chapter-app-replay.cjs [--out=directory]');
-const root = path.resolve(__dirname, '..'), out = path.resolve(process.argv.find(arg=>arg.startsWith('--out='))?.slice(6) || path.join(root, '.expo/goal014/after/app-scene-replay'));
+const { browserStyles, browserHelpers } = require('./lib/native-hud-qa.cjs');
+const args = process.argv.slice(2);
+if (args.length > 1 || args.some(arg => !arg.startsWith('--out=') || !arg.slice(6)))
+  throw Error('usage: node scripts/qa-chapter-app-replay.cjs [--out=directory]');
+const root = path.resolve(__dirname, '..'), out = path.resolve(args[0]?.slice(6) || path.join(root, '.expo/goal014/after/app-scene-replay'));
+const toolHashes = Object.fromEntries(['scripts/qa-chapter-app-replay.cjs', 'scripts/preview-chapter-reentry.cjs',
+  'scripts/lib/native-hud-qa.cjs', 'scripts/lib/three-scene-qa.cjs', 'scripts/lib/qa-native-metadata.cjs']
+  .map(file => [file, sha256(fs.readFileSync(path.join(root, file)))]));
 fs.mkdirSync(out, { recursive: true });
 const bridge = installSourceBridge(root), React = require('react'), THREE = require('three');
 const { actorFullyContained } = require('../src/domain/stages/departure-control-v1/definition.ts');
@@ -16,7 +23,7 @@ const { CHAPTER_ONE } = require('../src/domain/campaign/definition.ts');
 const { getWorld } = require('../src/domain/firstPerson/chapter.ts');
 const { ChapterScene } = require('../src/rendering/firstPerson/ChapterScene.tsx');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
-const FPS = 5;
+const FPS = 5, ENDING_HOLD_SECONDS = 3;
 
 function sceneKey(sample) {
   const runtime = sample.runtime, data = runtime.stageSession?.value;
@@ -74,6 +81,15 @@ async function extract() {
   const runtimeFile = path.join(out, 'scene-replay-runtimes.json');
   const data = JSON.parse(fs.readFileSync(runtimeFile, 'utf8'));
   const host = JSON.parse(fs.readFileSync(path.join(out, 'report.json'), 'utf8'));
+  const hostAnimationBytes = fs.readFileSync(path.join(out, 'animation.json'));
+  fs.writeFileSync(path.join(out, 'host-animation.json'), hostAnimationBytes);
+  const hostAnimation = JSON.parse(hostAnimationBytes.toString('utf8'));
+  const endingCards = ['ending-intro', 'ending-credits'].map(stage => {
+    const matching = hostAnimation.frames.filter(frame => frame.stage === stage);
+    if (matching.length !== 1 || !hostAnimation.hudTrees[matching[0].hud])
+      throw Error('Actual App ending card missing or duplicated: ' + stage);
+    return { stage, hud: matching[0].hud, fontScale: 1.5, holdSeconds: ENDING_HOLD_SECONDS };
+  });
   const motion = JSON.parse(fs.readFileSync(path.join(out, 'motion-trace.json'), 'utf8'));
   if (data.runId !== motion.runId || motion.samples.length !== host.motionTrace.samples)
     throw Error('Scene samples and App motion log came from different routes');
@@ -146,8 +162,14 @@ async function extract() {
     }
   } finally { await clear(); }
   bridge.verify();
-  fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames }));
-  return { host, runtimeFile, frames, scenes, events, milestones };
+  const sceneFrames = frames.length;
+  for (const card of endingCards) {
+    card.firstFrame = frames.length;
+    for (let i = 0; i < ENDING_HOLD_SECONDS * FPS; i++) frames.push({ kind: 'ending-card', ...card });
+  }
+  fs.writeFileSync(path.join(out, 'animation.json'), JSON.stringify({ frames, hudTrees: hostAnimation.hudTrees }));
+  return { host, runtimeFile, frames, sceneFrames, endingCards, scenes, events, milestones,
+    hostAnimation: { file: 'host-animation.json', sha256: sha256(hostAnimationBytes) } };
 }
 
 async function capture(frameCount) {
@@ -157,15 +179,16 @@ async function capture(frameCount) {
   const transpiled = ts.transpileModule(fs.readFileSync(mirrorPath, 'utf8'), { fileName: mirrorPath,
     compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
   fs.writeFileSync(path.join(out, 'planarMirror.js'), transpiled.replace("from 'three'", "from './three.module.js'"));
-  fs.writeFileSync(path.join(out, 'index.html'), '<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#080a0d}canvas{display:block}#caption{position:absolute;left:8px;right:8px;top:8px;padding:7px 9px;color:#f4f3e9;background:#081015c9;border:1px solid #8999a5;border-radius:5px;font:13px/1.4 sans-serif;white-space:pre-line}</style><div id="caption"></div><script type="module" src="./viewer.js"></script>');
+  fs.writeFileSync(path.join(out, 'index.html'), '<!doctype html><meta charset="utf-8"><style>' + browserStyles + 'html,body{background:#080a0d}#ending{position:absolute;inset:0;display:none;flex-direction:column}#caption{position:absolute;left:8px;right:8px;top:8px;padding:7px 9px;color:#f4f3e9;background:#081015c9;border:1px solid #8999a5;border-radius:5px;font:13px/1.4 sans-serif;white-space:pre-line}</style><div id="caption"></div><div id="ending"></div><script type="module" src="./viewer.js"></script>');
   fs.writeFileSync(path.join(out, 'viewer.js'), `import * as THREE from './three.module.js';
 import {createPlanarMirror,MIRROR_TARGET_SIZE} from './planarMirror.js';
+${browserHelpers}
 const data=await(await fetch('./animation.json')).json();
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
 renderer.setPixelRatio(1);renderer.setSize(390,844);renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.NoToneMapping;document.body.prepend(renderer.domElement);
-const caption=document.getElementById('caption');
-let scene,sceneId,objects=new Map(),materials=new Map(),last=-1,mirror,surface,transportMaterial;
+const caption=document.getElementById('caption'),ending=document.getElementById('ending');
+let scene,sceneId,objects=new Map(),materials=new Map(),last=-1,mirror,surface,transportMaterial,lastEnding;
 const frustum=new THREE.Frustum(),projectionView=new THREE.Matrix4();
 function dispose(){if(!scene)return;
  if(mirror){surface.material=transportMaterial;mirror.dispose();mirror=undefined;surface=undefined;transportMaterial=undefined;}
@@ -175,7 +198,14 @@ function dispose(){if(!scene)return;
  gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();
  renderer.renderLists.dispose();scene=null;}
 window.draw=async index=>{if(index!==last+1)throw Error('Sequential App replay frames required');
- const f=data.frames[index],sceneChanged=f.scene!==sceneId,loadStart=performance.now();let sceneLoadMs=0;
+ const f=data.frames[index];
+ if(f.kind==='ending-card'){
+  dispose();renderer.domElement.style.display='none';caption.style.display='none';ending.style.display='flex';
+  if(lastEnding!==f.stage){ending.replaceChildren(hudDOM(data.hudTrees[f.hud],f.fontScale,document.createElement('div')));lastEnding=f.stage;}
+  await document.fonts.ready;await new Promise(r=>requestAnimationFrame(r));last=index;
+  return{kind:f.kind,stage:f.stage,hud:auditHUD(ending,null),text:ending.textContent};
+ }
+ const sceneChanged=f.scene!==sceneId,loadStart=performance.now();let sceneLoadMs=0;
  if(sceneChanged){dispose();sceneId=f.scene;
   scene=await new THREE.ObjectLoader().parseAsync(await(await fetch(sceneId)).json());
   objects=new Map();materials=new Map();scene.traverse(o=>{objects.set(o.uuid,o);
@@ -203,14 +233,14 @@ window.draw=async index=>{if(index!==last+1)throw Error('Sequential App replay f
  return{calls:renderer.info.render.calls,offscreenCalls,offscreenTriangles,reflected,cpuSubmitMs,sceneChanged,sceneLoadMs,
   triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,
   textures:renderer.info.memory.textures,rtSize:MIRROR_TARGET_SIZE};};
-window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.memory.geometries,
+window.finish=()=>{dispose();caption.remove();ending.replaceChildren();return{geometries:renderer.info.memory.geometries,
  textures:renderer.info.memory.textures,renderers:1};};window.ready=true;`);
   const browser = await openBrowser(out), dir = path.join(out, 'frames');
   fs.mkdirSync(dir, { recursive: true });
   let maxCalls = 0, maxOffscreenCalls = 0, maxTotalCalls = 0;
   let maxTriangles = 0, maxOffscreenTriangles = 0, maxTotalTriangles = 0;
   const reflectedFrameIndices = [];
-  const cpuSamples = [], perFrame = [];
+  const cpuSamples = [], perFrame = [], endingMetrics = [];
   try {
     await browser.send('Emulation.setDeviceMetricsOverride', {
       width: 390, height: 844, deviceScaleFactor: 1, mobile: false });
@@ -221,15 +251,24 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
     if (!await browser.evaluate('window.ready===true')) throw Error('App replay viewer did not load');
     for (let frame = 0; frame < frameCount; frame++) {
       const stats = await browser.evaluate(`window.draw(${frame})`);
-      maxCalls = Math.max(maxCalls, stats.calls); maxTriangles = Math.max(maxTriangles, stats.triangles);
-      maxOffscreenCalls = Math.max(maxOffscreenCalls, stats.offscreenCalls);
-      maxOffscreenTriangles = Math.max(maxOffscreenTriangles, stats.offscreenTriangles);
-      maxTotalCalls = Math.max(maxTotalCalls, stats.calls + stats.offscreenCalls);
-      maxTotalTriangles = Math.max(maxTotalTriangles, stats.triangles + stats.offscreenTriangles);
-      if (stats.reflected) reflectedFrameIndices.push(frame);
-      cpuSamples.push(stats.cpuSubmitMs);perFrame.push({frame,...stats});
+      if (stats.kind === 'ending-card') {
+        const expected = stats.stage === 'ending-intro' ? 'クレジットを表示' : 'ホームへ戻る';
+        if (!stats.hud.buttonsAtLeast44 || !stats.hud.buttons.some(button => button.label === expected && !button.disabled))
+          throw Error('Actual App ending card controls missing or too small: ' + stats.stage);
+        if (!endingMetrics.some(card => card.stage === stats.stage)) endingMetrics.push({ frame, ...stats });
+      } else {
+        maxCalls = Math.max(maxCalls, stats.calls); maxTriangles = Math.max(maxTriangles, stats.triangles);
+        maxOffscreenCalls = Math.max(maxOffscreenCalls, stats.offscreenCalls);
+        maxOffscreenTriangles = Math.max(maxOffscreenTriangles, stats.offscreenTriangles);
+        maxTotalCalls = Math.max(maxTotalCalls, stats.calls + stats.offscreenCalls);
+        maxTotalTriangles = Math.max(maxTotalTriangles, stats.triangles + stats.offscreenTriangles);
+        if (stats.reflected) reflectedFrameIndices.push(frame);
+        cpuSamples.push(stats.cpuSubmitMs);perFrame.push({frame,...stats});
+      }
       const shot = await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
       fs.writeFileSync(path.join(dir, `${String(frame).padStart(6, '0')}.png`), Buffer.from(shot.data, 'base64'));
+      if (endingMetrics.some(card => card.frame === frame))
+        fs.writeFileSync(path.join(out, stats.stage + '.png'), Buffer.from(shot.data, 'base64'));
       if (frame % 100 === 0) console.log(`app replay capture ${frame}/${frameCount}`);
     }
     const disposed = await browser.evaluate('window.finish()');
@@ -237,6 +276,7 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
     const percentile = fraction => Number(cpuSamples[Math.floor((cpuSamples.length - 1) * fraction)].toFixed(3));
     const distribution=values=>{const sorted=values.sort((a,b)=>a-b);const p=f=>Number(sorted[Math.floor((sorted.length-1)*f)].toFixed(3));return {samples:sorted.length,p50Ms:p(.5),p95Ms:p(.95),maxMs:p(1)};};
     fs.writeFileSync(path.join(out,'render-frame-metrics.json'),JSON.stringify(perFrame));
+    fs.writeFileSync(path.join(out,'ending-card-metrics.json'),JSON.stringify(endingMetrics,null,2)+'\n');
     const webgl = { maxCalls, maxOffscreenCalls, maxTotalCalls,
       maxTriangles, maxOffscreenTriangles, maxTotalTriangles,
       reflectedFrames: reflectedFrameIndices.length, reflectedFrameIndices,
@@ -250,7 +290,7 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
       disposed, errors: browser.errors };
     fs.writeFileSync(path.join(out, 'webgl.json'), JSON.stringify(webgl, null, 2) + '\n');
     // Three0.185 PBR keeps its renderer-owned16x16 DFG LUT (1KiB), outside scene asset ownership.
-    if (!reflectedFrameIndices.length || disposed.geometries || disposed.textures !== 1 || browser.errors.length)
+    if (!reflectedFrameIndices.length || endingMetrics.length !== 2 || disposed.geometries || disposed.textures !== 1 || browser.errors.length)
       throw Error('App replay browser resource/error gate failed');
   } finally { await browser.close(); }
   const video = path.join(out, 'chapter-one-app-scene-replay.mp4');
@@ -270,13 +310,17 @@ window.finish=()=>{dispose();caption.remove();return{geometries:renderer.info.me
 async function main() {
   const extracted = await extract(), captured = await capture(extracted.frames.length);
   bridge.verify();
-  const report = { method: 'One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear and every committed interaction. Interaction evidence frames add no simulation time; each occupies one 5Hz video frame, and the audio frame map explicitly retains repeated simulation timestamps. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live HUD; audio and native input are absent. The underlying App host uses memory AsyncStorage and stub native Canvas/audio.',
+  for (const [file, hash] of Object.entries(toolHashes))
+    if (sha256(fs.readFileSync(path.join(root, file))) !== hash) throw Error('QA helper changed during capture: ' + file);
+  const report = { method: 'One actual App host mount supplies deep-copied runtime states from five naturally played controllers at every twelfth simulation update plus entry/clear and every committed interaction. Interaction evidence frames add no simulation time; each occupies one 5Hz video frame. These states are replayed at 5 fps through the actual ChapterScene frame callbacks and camera, with scene remounts when static progress changes. The area-04 surface uses the actual planarMirror.ts offscreen pass and the same scene actor when visible. The MP4 is one sampled offline render of that route, not a direct continuous App or native R3F recording. QA captions replace the live gameplay HUD. Two actual App ending trees follow as authored three-second static holds rendered with browser CSS at font scale 1.5; this does not exercise the native afterglow timer. Audio and native input are absent. The underlying App host uses memory AsyncStorage, stub native Canvas/audio and manually invoked validated-entry/checkpoint/completion gate callbacks with naturally reached checkpoints.',
     fps: FPS, frames: extracted.frames.length, duration: extracted.frames.length / FPS,
+    sceneFrames: extracted.sceneFrames, endingFrames: extracted.frames.length - extracted.sceneFrames,
+    endingCards: extracted.endingCards, hostAnimation: extracted.hostAnimation,
     sequence: CHAPTER_ONE.areas.map(area => ({ area: area.id, stageId: area.stageId,
       samples: extracted.frames.filter(frame => frame.area === area.id).length })),
     sceneRebuilds: extracted.scenes.length, events: extracted.events,
     milestones: extracted.milestones,
-    host: { route: extracted.host.route, final: extracted.host.final,
+    host: { route: extracted.host.route, final: extracted.host.final, substitutions: extracted.host.substitutions,
       maxActiveCanvasBoundaries: extracted.host.maxActiveCanvasBoundaries,
       activeCanvasBoundariesAfterUnmount: extracted.host.activeCanvasBoundariesAfterUnmount,
       simulationTicks: extracted.host.motionTrace.ticks,
@@ -284,7 +328,7 @@ async function main() {
       sourceHashes: extracted.host.sourceHashes,
       toolHash: extracted.host.toolHash },
     runtimeSamplesSha256: sha256(fs.readFileSync(extracted.runtimeFile)),
-    sourceHashes: Object.fromEntries(bridge.hashes), toolHash: sha256(fs.readFileSync(__filename)),
+    sourceHashes: Object.fromEntries(bridge.hashes), toolHash: sha256(fs.readFileSync(__filename)), toolHashes,
     ...captured, webgl: JSON.parse(fs.readFileSync(path.join(out, 'webgl.json'), 'utf8')) };
   fs.writeFileSync(path.join(out, 'video-report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ frames: report.frames, sceneRebuilds: report.sceneRebuilds,

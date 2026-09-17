@@ -1,0 +1,1443 @@
+{
+  "schemaVersion": 1,
+  "profile": "preview",
+  "dev": false,
+  "nativeExecuted": false,
+  "sourceCorrespondence": {
+    "before": {
+      "revision": "393e58e59d73a65455b423d3aba9fdefe6c6d8de",
+      "modules": {
+        "src/screens/ChapterOneHomeScreen.tsx": {
+          "sha256": "b003772a195341544f0fd23939a4be8eaa8814a2aab68791a7260b43f246cbcc",
+          "blob": "d137d623adf95c431beae9203eda3853cc8d71ef"
+        },
+        "src/components/Layout.tsx": {
+          "sha256": "683468b2c0f9d995954c9cebbd47bd5d92d3f249c9310c7c29fb1997205aaaff",
+          "blob": "4f4b5c7a12e5795c3ef16bd11b623b066be6aeee"
+        },
+        "src/theme/ui.ts": {
+          "sha256": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+          "blob": "b8783fe95992d12b863de802b974fd47f07f8af3"
+        },
+        "src/content/chapterOneDiscoveries.ts": {
+          "sha256": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
+          "blob": "7c392485558d0ad49b8b9823e0791a6a0204d581"
+        },
+        "src/domain/campaign/definition.ts": {
+          "sha256": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+          "blob": "516d9ce3deeccf4315f8f58213f12693f57cf825"
+        },
+        "src/domain/campaign/story.ts": {
+          "sha256": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+          "blob": "dd4099660d3eb70c077952fa86c8a0dc9ca1bed2"
+        },
+        "src/domain/stages/departure-control-v1/copy.ts": {
+          "sha256": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+          "blob": "f8716f6ecd85f62275199d48234a80a92d0ef749"
+        },
+        "src/platform/buildIdentity.ts": {
+          "sha256": "9ef2ba5a91d9a5c0efc992c189b51625ae3930e2add7030b63cb8420c073491c",
+          "blob": "398aa6de3cfcb54dcf2688f9700b4edf296092a5"
+        },
+        "app.json": {
+          "sha256": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+          "blob": "028ab4d2ee5929877a3ea22bfe7be6a0fbdaa320"
+        },
+        "src/rendering/firstPerson/failureLedger.ts": {
+          "sha256": "6ce6c51a41b815c10c210b8dab233281d593215e79014c7a1a608b0d5c601712",
+          "blob": "af63f6e3c0756602e95fa40305ca475f2a3a71c4"
+        },
+        "src/screens/SettingsScreen.tsx": {
+          "sha256": "ca03023f92463ede92101dcc0faca5415fb63b31c9aef03796534833a934c98f",
+          "blob": "90619db92f135294c57496127b0a82ec80adeb3a"
+        },
+        "src/screens/DiscoveryNotebook.tsx": {
+          "sha256": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+          "blob": "519691f807f65bb277154ffc739d4b868163edac"
+        },
+        "src/content/illusionNotes.ts": {
+          "sha256": "2e9940dbb461f9739c8f900dd56b637c0f7936335a1855d6d29e3f799b69a96b",
+          "blob": "c4b7104e38d67636b66422a28c38c29f8969be5e"
+        },
+        "src/content/illusionComparisons.ts": {
+          "sha256": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+          "blob": "bb4381ce7ea65de79c506c3f7e3a05f7cca3779d"
+        },
+        "src/domain/gallery/index.ts": {
+          "sha256": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+          "blob": "9a29fba6feb00f93ad463750cbad8d90136655d7"
+        },
+        "src/domain/gallery/types.ts": {
+          "sha256": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+          "blob": "cb1dfa334b8e69cadd04584fca48a7509062d14a"
+        },
+        "src/domain/gallery/definition.ts": {
+          "sha256": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+          "blob": "c18964a3b671547060f2f0789d473286584fc703"
+        },
+        "src/domain/gallery/shadow.ts": {
+          "sha256": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+          "blob": "243ae8ede6fd49c2dcff4156cc648b6c44e431c5"
+        },
+        "src/domain/gallery/contour.ts": {
+          "sha256": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+          "blob": "aa5432fbdd7e17949761d6a552fa84e69faea2aa"
+        },
+        "src/domain/gallery/state.ts": {
+          "sha256": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+          "blob": "0e818d11f03181437e6abe94a453b3a4341cdd76"
+        },
+        "src/domain/gallery/actor.ts": {
+          "sha256": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+          "blob": "4156837d64d0a2c1cd2e2e928cbef141ce71482e"
+        },
+        "src/domain/actorMotion/index.ts": {
+          "sha256": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+          "blob": "d99c981e8877306a8d1cbf267c7949a90356ecf4"
+        },
+        "src/domain/actorMotion/types.ts": {
+          "sha256": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+          "blob": "0e83b43c9ca57869ea32bad141849a491e3a12f5"
+        },
+        "src/domain/actorMotion/config.ts": {
+          "sha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+          "blob": "955a5e45574721dbc25101734c3e8f47e0b0cc65"
+        },
+        "src/domain/actorMotion/locomotion.ts": {
+          "sha256": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+          "blob": "722f94f804b15cf6d8f322b0f84c94fba9fb4b25"
+        },
+        "src/domain/actorMotion/pose.ts": {
+          "sha256": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+          "blob": "934e131fe01850d5009cdc44bb3fb229c8417024"
+        },
+        "src/domain/gallery/world.ts": {
+          "sha256": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+          "blob": "0520a520daf79300f0edc69605a0ed3464d1b39a"
+        },
+        "src/domain/firstPerson/panelFixture.ts": {
+          "sha256": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+          "blob": "3b8aa90dd6befb76b4ec5b7b9cf02e7793ff78b1"
+        },
+        "src/domain/firstPerson/boundaryWalls.ts": {
+          "sha256": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+          "blob": "0ecd9711447b811a8364d27c154bbcb53f45bf0c"
+        },
+        "src/domain/actorMotion/envelope.ts": {
+          "sha256": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+          "blob": "e9a5372458d87f498be13ea4cf01d2aacbca4230"
+        },
+        "src/domain/firstPerson/alignment.ts": {
+          "sha256": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+          "blob": "91bc52608a2fe169dfddc3a47619ae48c0d9bbbf"
+        },
+        "src/domain/firstPerson/legacyDefinition.ts": {
+          "sha256": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+          "blob": "9e0d395635799b208cf85ee0674f2020e5cc29a5"
+        },
+        "src/domain/firstPerson/constants.ts": {
+          "sha256": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+          "blob": "c4777ada87e3ac1a365b34612d9911759660687b"
+        },
+        "src/domain/firstPerson/geometry.ts": {
+          "sha256": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+          "blob": "50f4f85bddc33accbb0868f7028d7c5316b0c770"
+        },
+        "src/domain/firstPerson/occlusion.ts": {
+          "sha256": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+          "blob": "2cf4c38344e75964655c7ec98ae11d8b2e6c1d28"
+        },
+        "src/domain/gallery/selectors.ts": {
+          "sha256": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+          "blob": "b2a0b6ae95db0e50f4f409e64bdf4888893605a4"
+        },
+        "src/domain/firstPerson/interaction.ts": {
+          "sha256": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+          "blob": "ff6c51f770eb780796c2af21c1c46bfdf44b63f0"
+        },
+        "src/domain/gallery/wiring.ts": {
+          "sha256": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+          "blob": "a0fff3c039d8e1b29d2158cdd3aeea528a03a4a0"
+        },
+        "src/domain/gallery/runtime.ts": {
+          "sha256": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+          "blob": "66f81a7d5f9b842aeecca1d296bc9e247063fe14"
+        },
+        "src/domain/firstPerson/baseRuntime.ts": {
+          "sha256": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+          "blob": "d23e74d821a940e63672d4ab4942ef028be028cd"
+        },
+        "src/domain/emblem/puzzle.ts": {
+          "sha256": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+          "blob": "128a544b93569c7551fcd3feaa977e95448e30b5"
+        },
+        "src/domain/emblem/stimulus.ts": {
+          "sha256": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+          "blob": "1ea0b9b4cb535e7c7cae927152cd94edfffa4101"
+        },
+        "src/domain/emblem/color.ts": {
+          "sha256": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+          "blob": "8c00db5002ffa9fe0f2c73ab45210c8d33e4e30d"
+        },
+        "src/domain/gallery/checkpoint.ts": {
+          "sha256": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+          "blob": "c1331f21cca3f56ad389227defbcc4c78deabc4c"
+        },
+        "src/domain/emblem/index.ts": {
+          "sha256": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+          "blob": "65a5eee593b916a2576af1ea1cdcfd7383d809c0"
+        },
+        "src/domain/emblem/presentation.ts": {
+          "sha256": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+          "blob": "f3901b7c864e811ad52434da8b48a1c4309d3589"
+        },
+        "src/domain/emblem/surfaceOwner.ts": {
+          "sha256": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+          "blob": "27937a9d9aaf68d53570dd29dad6c75878ae765e"
+        },
+        "src/rendering/firstPerson/chromaticExhibit.ts": {
+          "sha256": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+          "blob": "387f898ddc49d832a86fffa86c238bb853cb752d"
+        },
+        "src/app/version.ts": {
+          "sha256": "31214005bf401e138cade7af682f9c7a7e2f1acf4e33661bc00f8fae2df2b6e7",
+          "blob": "0c8f2b8b80b985200606da05c3c3befbb26d6390"
+        },
+        "src/types/application.ts": {
+          "sha256": "7f3236ea92c95dd961a70d13d8ce165dbead531d4f16ca0ce502b8761719dcf4",
+          "blob": "82be4fa1657b8f4d7a8186c19e3a146753d684b0"
+        },
+        "src/domain/calibration/types.ts": {
+          "sha256": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+          "blob": "d1f0c8b5128c2200f0d3ae7d2ec4228e750874ed"
+        }
+      }
+    },
+    "after": {
+      "head": "6186a5e5c22718ffd9af57b8236e8ffbf89867cb",
+      "modules": {
+        "src/screens/ChapterOneHomeScreen.tsx": "9c554fa97cafef554cd09936ac26104dc7226efeb7196795559653afe67788c8",
+        "src/components/Layout.tsx": "e6bcd4bed398d38c5027996ea89bda50f344edf892cbf3e0a1e0830bd58e8da7",
+        "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+        "src/content/chapterOneDiscoveries.ts": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
+        "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+        "src/domain/campaign/story.ts": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+        "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+        "src/screens/SettingsScreen.tsx": "f605f5f3038459ec8cf7d52d5a567e7bd5b6fbbbc09bc410271acbb41ddc48f0",
+        "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+        "src/content/illusionNotes.ts": "6b8cc38707c0e8d91f1f14aa4520711b4738d81c66bd188c06bd8c3258c515f4",
+        "src/content/illusionComparisons.ts": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+        "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+        "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+        "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+        "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+        "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+        "src/domain/gallery/state.ts": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+        "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+        "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+        "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+        "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+        "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+        "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+        "src/domain/gallery/world.ts": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+        "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+        "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+        "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+        "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+        "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+        "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+        "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+        "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+        "src/domain/gallery/selectors.ts": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+        "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+        "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+        "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+        "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+        "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+        "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+        "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+        "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+        "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+        "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+        "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+        "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+        "src/app/version.ts": "31214005bf401e138cade7af682f9c7a7e2f1acf4e33661bc00f8fae2df2b6e7",
+        "src/app/playerText.ts": "0ece0057a64c8526c0d4242596c904b316247f1d735a142ad80cdf6cceb1833e",
+        "src/screens/SupportInformation.tsx": "f3c9b3a19ec7f1b704abf8237f2391c5a3ceb20f182a6319f0b5a3f89143794f",
+        "src/platform/supportDiagnostics.ts": "4a360a642fe8b4343dd2ef26f6a60ccdfde4fb2df0db867dca89dcdb046e5f05",
+        "src/audio/diagnostics.ts": "179daa85f1245530c308e5a9a74e18b893420d6b7fb23c9fdad8d8120f11af41",
+        "src/platform/diagnosticText.ts": "a6b0709b571d35755a81ab3bb81ede24ab91567210b7d2d19141b890da637131",
+        "src/rendering/firstPerson/failureLedger.ts": "6ce6c51a41b815c10c210b8dab233281d593215e79014c7a1a608b0d5c601712",
+        "src/platform/buildIdentity.ts": "4679639f0c309ce0d5dc96cb9417a855124feaca45d654c84a9ccdbd266a9d88",
+        "src/types/application.ts": "7f3236ea92c95dd961a70d13d8ce165dbead531d4f16ca0ce502b8761719dcf4",
+        "src/domain/calibration/types.ts": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e"
+      },
+      "state": "Current filesystem bytes; source hashes define identity independently of commit status."
+    }
+  },
+  "guardedCurrentInputs": {
+    "App.tsx": "9a8d0878f36acdb7e4d1d95f68165f9ddfee78da9b14615c6afd4562a9960d52",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "assets/audio/ambience.wav": "50406f566d9f94c46f45bfc038e43a0eed48eb4cad2c83e554b4382b53f4e847",
+    "assets/audio/analysis.json": "62ea8b7cbf33498b4adeed03b2192a57cef4c5bbfa13ff01275b863c20660c17",
+    "assets/audio/cloth.wav": "9ca8d101577af92b6fa2be1dea6b989a475a0a1a3e911f1607454e49df71b0cb",
+    "assets/audio/door-impact.wav": "ad517be84d5b421691f9b41fb0eb43e4efe82fc3b3eff3315a35371236a06c77",
+    "assets/audio/footstep.wav": "ec4366dcddfe8800292b57917ac129d68b1f0f0f029be4c9fafc9a68328cec87",
+    "assets/audio/interaction.wav": "477a1ce825fdf4bd9d6a4dbe9b98184ba29084e3027853ffefbfc54ed57db149",
+    "assets/audio/mechanism.wav": "38a08a0805920e63f3a0408597b8d4e15178826841b789fcb8d4bd2e13249db2",
+    "assets/audio/music/chapter_end.m4a": "f5ccbb4d871e9a563e67aae95c7ddf1edaa82a09d0a225efdaec796be6f7e98e",
+    "assets/audio/music/exploration.m4a": "b25cde7ed42c086b8e89e9b3c3b8b94d731089e7cdd7d46a4a1e8fad03af5920",
+    "assets/audio/music/pursuit.m4a": "84c4482a80b68907ca3335690de6a5a33afde370d2f8c75d2aae6846369d2aef",
+    "assets/audio/music/release.m4a": "2e58f6389fa0f1060f6c77ba7eaef239b2bea1d24fff957c4b0627923b3c24a3",
+    "assets/audio/music/suspicion.m4a": "6ce0a86b75c0392818c99ccb2675400c9dc03a60b916b7fceff400019deef316",
+    "assets/audio/music/title_theme.m4a": "9ba7511f72304672ab7b9d3e406ab3af0df75b8ab3586d41c45dede876ab2005",
+    "assets/audio/perceptual-analysis.json": "7704ec0ee7f4459cc27c4ee91eaaa6e76d08ecf133274322c97e1533cc93045c",
+    "assets/audio/physical/bell.wav": "b5b8a5ce35926b20d7e9c1a6e4a1f1af6d5fe37e725cc9b3e69380b9c964dc9e",
+    "assets/audio/physical/cloth-metal.wav": "6128dbd683537b11c605aab421458f2d8ca87dc94309367e8067e60f74e3d3c0",
+    "assets/audio/physical/grip.wav": "a14b9dc4952e601213f42c23ac0b48573359550f05a3ae09ac457a7e7e4f3d7d",
+    "assets/audio/physical/isolation.wav": "58e57bc0b8736a9dfba8640354303b6c1752b577f97504add5f9a5aea8fc8ed4",
+    "assets/audio/physical/key.wav": "a51d2e1e89011f31de172067b48c762e0d250342780b216d655ab41e13a37b0a",
+    "assets/audio/physical/outdoor.wav": "0de43e523fede5fc07ba088d7876799ab0ab82f1f2b6d8e09adcaccf04bfda4b",
+    "assets/audio/physical/power.wav": "13bde3489262833a9291a3126965f3621ff2ce977ecfcd9bff80d544c839eb59",
+    "assets/audio/physical/ratchet.wav": "9449c6c9eb984d656dcdd302a319d434aff9d6e420155baf87b3056156c347b2",
+    "assets/audio/physical/room-control.wav": "d1c594adff38c6b84bc54323ef2a98af4031a40c24b296ecac91c20d29c3395c",
+    "assets/audio/physical/room-gallery.wav": "35193b9852d6a796471cb10b5f801458529486dd4bf0c8a0d1865e1f8ec08b95",
+    "assets/audio/physical/room-mirror.wav": "b70af022443182a340415ee1277329f6f2b0a3e310a75e4ae69b4a3bc06814a4",
+    "assets/audio/physical/room-theatre.wav": "a40e9c5039d8779a0acb5dcc5b71585f31a3afbcc1aac91cb3d6b2c65d677764",
+    "assets/audio/physical/room-vault.wav": "ee1659a3b0a6e610a729c9091cfc43a996cfde73972343f2725160d1e43884e6",
+    "assets/audio/physical/step-a.wav": "bd5e96bf202875c6288a2d6506739a562661df5262bbeda91ec87554c36beeae",
+    "assets/audio/physical/step-b.wav": "4663763ca5145d5ec240d17688e9aef1328f6a7029343b6fc272034088bd2bab",
+    "assets/audio/shepard.wav": "bfc15c3aaaafc00a9b9856cbc79ed75d4c94ca1d409ba55ee5aaf5fc391281b2",
+    "assets/branding/icon.png": "f12a4fafbf122569d2a777e93c7c401ba5cd41b8d013a6e3cc60de040b1103f4",
+    "assets/branding/splash-icon.png": "bad36d0324a1f26f213d8510e99fd3034108b05d5c93636b0ce80053ea791472",
+    "assets/perceptual/hollow-mask.json": "8669760878aed7164dc4c79f15d795a9d117875d77d4e884e1d0835a01fc1453",
+    "assets/perceptual/hybrid-composite.png": "22ba6c8b7eb68c52843fa6f07c26d4063f758c390c563ebf4f85498cf9082ffa",
+    "assets/perceptual/hybrid-high-pass.png": "0e248f74cd51f8b48e2a607bc4bbbc15d7890706f55a8a6dc2b7033223eb1df1",
+    "assets/perceptual/hybrid-low-pass.png": "80ad4bc90e4fd61caac8ea584c71444766bf5f7288f4ccfc6df6e115e482d2ca",
+    "assets/perceptual/hybrid-source-high.png": "c6e309d19ec06d58c69ff0c3e069f1dba786038a88c6ce378fe592fde43b5e7b",
+    "assets/perceptual/hybrid-source-low.png": "e14d41a15a79dde142e73bfd4e6c773c42f6e3740e4141e87d5e5c036e7bbd1b",
+    "assets/perceptual/hybrid-texture.json": "685b0dbf28658c2b1989a1127468dcc6c1b781da7b24c850b550332ebdd33207",
+    "assets/perceptual/manifest.json": "e69988a3798ff5f4b1b9609cdbb9373ad6311c22a359d24a4d8bc01265fcfa8a",
+    "assets/perceptual/source/acquisition.json": "c9bb915b7690783850647e8c46f1b7deb9b68f0665fc638a9794e41d8d1653fd",
+    "assets/perceptual/source/hollow-face-original.stl": "3ab98617f246ff0b3616cec9656aecdcd670ce43e8c96d66a7e1acaa8a8a5a75",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "index.tsx": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/releaseDevStubs.js": "50322d482f5c226c0ef93696a5a109db6605cecc6104f0f57933744aef873d22",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+    "metro/withReleaseComposition.js": "f5a8b75fa050963ba063dc602df8e80b597f9ce94786a2a8f9d07fffb3225de8",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "scripts/lib/native-hud-qa.cjs": "4bc17b273594ab4c6c09305c574acf65b5c0278dc910889fbf4ee1fdf7e5011c",
+    "scripts/lib/qa-native-metadata.cjs": "e866db18c86c9b8ec7b03e0b9f23fe5f7d3830a5b1c6b4c4b19eb439a0d3c527",
+    "scripts/lib/three-scene-qa.cjs": "d33722b60d8f38eb4d888c38ef6494a125a37a52faac1d35e442b1650c4bc419",
+    "scripts/qa-player-ui-comparison.cjs": "83b16d496fd6381b7b94f84c564ffa12589f024b9ead63de42381e890e37a8b0",
+    "src/app/__tests__/state.test.ts": "f36fd0f48153f39a79ad30a5e98a4c14c60112e3985cd27703469384eb0ce679",
+    "src/app/chapterSummary.ts": "8939e0e948814e38cdbac53eca5d98a86a6490297989402c6483d98749220905",
+    "src/app/playerText.ts": "0ece0057a64c8526c0d4242596c904b316247f1d735a142ad80cdf6cceb1833e",
+    "src/app/stages.ts": "3ba9050f798c9581d59f42342264eb62d4ccafb2891aedba5ac545a49b1836b7",
+    "src/app/state.ts": "8583a76074912f1b6614e99357e5124e8f9567ad04354994074da25cdfe5fa17",
+    "src/app/version.ts": "31214005bf401e138cade7af682f9c7a7e2f1acf4e33661bc00f8fae2df2b6e7",
+    "src/audio/__tests__/assets.test.ts": "6ea5416ccbd1cdf1adb5723347be26875619327c576ea9aa7af649d14e946352",
+    "src/audio/__tests__/audioRecovery.test.ts": "06ba725932963e693d65484b72f96124cfc3c317948b929c4c7b336373c55042",
+    "src/audio/__tests__/audioSessionContract.test.ts": "5f35daa691719d7ec0581cab6fb2a3b47d8ebd47d0dbed83958e2a6c07ed558c",
+    "src/audio/__tests__/diagnostics.test.ts": "befcb087e2326c2524cc967c96155eea7633200c47b9602b9c869970567e64d7",
+    "src/audio/__tests__/musicDirector.test.ts": "442ea01702f129ac9c665feecee21911fa19e71697b6c37f1848ca25893ecf39",
+    "src/audio/__tests__/nativeBackend.test.ts": "e1b6569bf7f7ebb1f03221e318bb304ad6afc27a241df1912c1d16b1b19caa23",
+    "src/audio/__tests__/owner.test.ts": "feb521ca4bce0c6adf51be4ac7a2a1ab14258770d7a6f6508b8cf914c02ad6d3",
+    "src/audio/__tests__/perceptualAssets.test.ts": "6ae307adfd9e2547c34852203c1a9c19f064c3bfed86d21ccdf12bb74bcf5bc2",
+    "src/audio/__tests__/preparedMusicAssets.test.ts": "12a6f4aa94bd822345d13d679f549c5cb14146af909de83f41d4be537d9b5335",
+    "src/audio/diagnostics.ts": "179daa85f1245530c308e5a9a74e18b893420d6b7fb23c9fdad8d8120f11af41",
+    "src/audio/index.ts": "a0ffb6b96f81a383f8132487fa29f57565b539d029fb8ee5b8c26d8b0b968cf5",
+    "src/audio/musicDirector.ts": "9cc56f6060ec3a5b95898d86694b627f1faa1c9d061cde192eb60945013efe65",
+    "src/audio/musicState.ts": "daf58b0d4127fbc5789be24f7454fb2efc2e2cc456c7b336680f060c28a84a37",
+    "src/audio/nativeBackend.ts": "27e8edca07f1677849324b54f221c2f3f3d44600739c2279739c86dbe5806892",
+    "src/audio/nativeSession.ts": "03770654b6119571658f5d37eda532d6ec3e7eb0e601bb64142d0c2dd910c027",
+    "src/audio/owner.ts": "db532142153b076830dd63f67911750e425b6b4e94ccdc8683fa00efd5bde1a8",
+    "src/audio/preferences.ts": "972ee7f67e77b9f916e1b17fbc4f7181a5243c687f41276cdd488c67b8ca525a",
+    "src/audio/sources.ts": "c18a2b14e666e49ee6afa83cb3756a29acd0c13639e05933c5c11a5478792a3c",
+    "src/audio/testFixtures/sharedNativeAudio.ts": "7eece382d7379be1f51b3f6df806880dfc9f9d2f332cf4b30ef86d8a101349d5",
+    "src/audio/types.ts": "a9a9cf5aa0ad53ec07392f181053d4df24a263124199837695b16b754063dd29",
+    "src/components/FreshPressButton.tsx": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85",
+    "src/components/Layout.tsx": "e6bcd4bed398d38c5027996ea89bda50f344edf892cbf3e0a1e0830bd58e8da7",
+    "src/components/StageArtwork.tsx": "b26de99cc40129aab5cdaf16490fc58d6230b595d92d8e14bdbec9baf2d68d6d",
+    "src/content/__tests__/illusionComparisons.test.ts": "0adacb508158d87ab2a46be2e60dc762edea598bb9291e61a671a6dc00592e74",
+    "src/content/__tests__/vaultComparisons.test.ts": "21e88a65ceb398382f40899076acccef6980843b10e8de704a567bc390d08516",
+    "src/content/chapterOneDiscoveries.ts": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4",
+    "src/content/illusionComparisons.ts": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0",
+    "src/content/illusionNotes.ts": "6b8cc38707c0e8d91f1f14aa4520711b4738d81c66bd188c06bd8c3258c515f4",
+    "src/content/theatreComparisons.ts": "8b598de2efd3557c73f6bffd93357c9346527191993849222ddc980102e09680",
+    "src/content/vaultComparisons.ts": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9",
+    "src/content/vaultNotes.ts": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d",
+    "src/domain/__tests__/goal014SafetyCompatibility.test.tsx": "6f549eadedcacf7332d8fabd558c13d531087752c25c48c62185666e91eb0cf8",
+    "src/domain/actorMotion/__tests__/motion.test.ts": "64f62925c86926a74cd8ce1cebb43945008715f8abce98ef86ae1968002ac38d",
+    "src/domain/actorMotion/config.ts": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664",
+    "src/domain/actorMotion/envelope.ts": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb",
+    "src/domain/actorMotion/index.ts": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7",
+    "src/domain/actorMotion/locomotion.ts": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98",
+    "src/domain/actorMotion/pose.ts": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576",
+    "src/domain/actorMotion/types.ts": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774",
+    "src/domain/calibration/__tests__/quickSetup.test.ts": "24fd9a554aed143d1cc592ab33cc2bb1c5b6f0d2b5fd80a272bfdf7b514af24a",
+    "src/domain/calibration/__tests__/scoring.test.ts": "bdcd18113514fbc8f580043b5e0644ce1a99324cbfd6fea21882fda9a1aae278",
+    "src/domain/calibration/__tests__/trials.test.ts": "10f49bc22f856b28016caef25167ce05de6944a9e32a4970059ec02521edb699",
+    "src/domain/calibration/quickSetup.ts": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba",
+    "src/domain/calibration/scoring.ts": "2c2f0d5bcb724514387de628ab7b72069c561773d7adbfd3c72c362974bbe675",
+    "src/domain/calibration/stimulusGeometry.ts": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc",
+    "src/domain/calibration/trials.ts": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e",
+    "src/domain/calibration/types.ts": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e",
+    "src/domain/campaign/__tests__/areaEntry.test.ts": "fa82d37deb2e9900a4084b515d71095231b1eff65a16e94534132c5c093c8c17",
+    "src/domain/campaign/__tests__/migration.test.ts": "930c3eba7d46bade64e48efc7a57474152e164b9d72aed69b1deeb27c13ed023",
+    "src/domain/campaign/__tests__/naturalChapterRoute.test.ts": "90720ec13f8c98d9f8c42f846b1313a1b2973a05de54eee2b1bf25f09b755f38",
+    "src/domain/campaign/__tests__/session.test.ts": "fb39d055cc5b11bb805b8d368c40494df5157d2f051586444615799269cd582d",
+    "src/domain/campaign/areaEntry.ts": "63dcdf7f0a6515ecf3390bbb2c98ebd5d6683a71796508e31001b535e19f4c13",
+    "src/domain/campaign/checkpoint.ts": "e9dabb31bfe804a3377666ec4815c87a257274c0ad25315eb42016164338f365",
+    "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+    "src/domain/campaign/discoveries.ts": "3f7e6eb88ce9e5eda5242cd1e668d67e40aef4cdc18e13b5aa56cf04d9a6e3a4",
+    "src/domain/campaign/migration.ts": "7668fc402eb329aaecca8d39f8108c643f8de94fb36d1e19ef13b89d56d0db72",
+    "src/domain/campaign/session.ts": "72cb704801eaa6abd6d01977a13492929566b1f00bf3404070217dd3f0b364ba",
+    "src/domain/campaign/story.ts": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+    "src/domain/emblem/__tests__/emblem.test.ts": "a752b8923946d5053a538ab030ae6d252be9e69918e6a4c1ede06967ec3da6e2",
+    "src/domain/emblem/__tests__/kitContracts.test.ts": "bc5729a41f3162f853f7281442ea03aad12b8a27d6755e155c6a23e1a405b59d",
+    "src/domain/emblem/__tests__/preview-goldens.json": "a5adf6166a1c81515b952074e1ebf89bb84c698d556a29a9e48ed9484f4c0455",
+    "src/domain/emblem/color.ts": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c",
+    "src/domain/emblem/index.ts": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02",
+    "src/domain/emblem/presentation.ts": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9",
+    "src/domain/emblem/puzzle.ts": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61",
+    "src/domain/emblem/stimulus.ts": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5",
+    "src/domain/emblem/surfaceOwner.ts": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef",
+    "src/domain/firstPerson/__tests__/emblemIntegration.test.ts": "44c1d71a6ba58204810de88efe0ebe401c2a9f6ca9240ed7cbd561a00ca02220",
+    "src/domain/firstPerson/__tests__/firstPerson.test.ts": "ab1893387be97d77a78c12994974726c87b93ad329733a91edb368f3173a5f20",
+    "src/domain/firstPerson/__tests__/interaction.test.ts": "6b6f11ee95edc67d99df9cd257532b29a4ac4166ad8f96f3fe7944c7a0cde182",
+    "src/domain/firstPerson/__tests__/rectangleInteraction.test.ts": "909a901b6e89990ca58517284104e9de3ddb07e4c649c802067017252298583c",
+    "src/domain/firstPerson/__tests__/startupGeometry.test.ts": "d6aa962ecbc7d3f486db7b621217e4c98deb433478e7eb5a71256e0531499f8a",
+    "src/domain/firstPerson/alignment.ts": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0",
+    "src/domain/firstPerson/baseRuntime.ts": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78",
+    "src/domain/firstPerson/boundaryWalls.ts": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8",
+    "src/domain/firstPerson/chapter.ts": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2",
+    "src/domain/firstPerson/checkpoint.ts": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499",
+    "src/domain/firstPerson/constants.ts": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2",
+    "src/domain/firstPerson/emblemFixture.ts": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334",
+    "src/domain/firstPerson/geometry.ts": "8ba440af000cde95235b0156298f546178831ad70f4d155787c44610921b3d2f",
+    "src/domain/firstPerson/index.ts": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292",
+    "src/domain/firstPerson/interaction.ts": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe",
+    "src/domain/firstPerson/interactionCue.ts": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b",
+    "src/domain/firstPerson/legacyDefinition.ts": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f",
+    "src/domain/firstPerson/occlusion.ts": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71",
+    "src/domain/firstPerson/panelFixture.ts": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7",
+    "src/domain/firstPerson/runtime.ts": "64d4db9119eee640863d9816212302684345818434bf4c7fbc145e4e5629b874",
+    "src/domain/firstPerson/tutorial.ts": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2",
+    "src/domain/firstPerson/types.ts": "7432c910570822fde4c33854e51c1d1a37cefe5c4cee4071e41c54dcbc971d05",
+    "src/domain/gallery/__tests__/actor.test.ts": "8b6a6cdf35c2c35d6145e77a84442c734283d87df9af83a30cb2cbb08bf66f0a",
+    "src/domain/gallery/__tests__/gallery.test.ts": "2c38d7986bab7930dd3b48daf4f330ed0663c816a6169f303f1b8cf74a5c450c",
+    "src/domain/gallery/__tests__/wiring.test.ts": "30ee6ef337fb67e066e9ba9b3c842d137efaa244302012451eb6145eb4488bea",
+    "src/domain/gallery/actor.ts": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9",
+    "src/domain/gallery/checkpoint.ts": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073",
+    "src/domain/gallery/contour.ts": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6",
+    "src/domain/gallery/definition.ts": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e",
+    "src/domain/gallery/hint.ts": "9c89e132711f80f349324a021b56eda4489822e0dbd3e76422f82c7aa6ac8f33",
+    "src/domain/gallery/index.ts": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0",
+    "src/domain/gallery/runtime.ts": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3",
+    "src/domain/gallery/selectors.ts": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1",
+    "src/domain/gallery/shadow.ts": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82",
+    "src/domain/gallery/state.ts": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64",
+    "src/domain/gallery/types.ts": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b",
+    "src/domain/gallery/wiring.ts": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077",
+    "src/domain/gallery/world.ts": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f",
+    "src/domain/illusion/__tests__/illusion.test.ts": "8182f3c3b488faf665e27c8cc9294a808c1af3e41b6058e14ac134cefd8dd87b",
+    "src/domain/illusion/index.ts": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565",
+    "src/domain/illusion/levels.ts": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4",
+    "src/domain/illusion/projection.ts": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467",
+    "src/domain/illusion/reachability.ts": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7",
+    "src/domain/illusion/state.ts": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a",
+    "src/domain/illusion/types.ts": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14",
+    "src/domain/maze/__tests__/maze.test.ts": "d2d03bb484ebca5f7e3ad5ea2588b62948f622ac13423ab301dccb3fb9fa54a8",
+    "src/domain/maze/geometry.ts": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a",
+    "src/domain/maze/level.ts": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6",
+    "src/domain/maze/scoring.ts": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b",
+    "src/domain/maze/types.ts": "cd477f5d1591ea6b0df9f47d3cb360257f7cb5e8d8dd892bb54863c074028b6e",
+    "src/domain/stageKit/__tests__/validateDefinitions.test.ts": "0da70741e21662641e59036a0f35f1448b2e00d4eed0d01f64b5d7286290c075",
+    "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
+    "src/domain/stageKit/checkpointProgression.ts": "104adb05e5d016320f9f21b07841a036844040727c129271adfff4c3353f3583",
+    "src/domain/stageKit/definitions.ts": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495",
+    "src/domain/stageKit/linearDrag.ts": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c",
+    "src/domain/stageKit/modules.ts": "a8528ad2f6c1e300f54c0299f409eb21fbb10f02d15de0d6b84d2a4f83202373",
+    "src/domain/stageKit/presentation.ts": "e2795d2d59b7fcf58a3a36bc2ea7abc3fcf6ca03feae8532306f563102178340",
+    "src/domain/stageKit/validateDefinitions.ts": "dc43026a084c0f73b8256aa19ec3c091222f3f1de6624903bd0b192202cb7dc8",
+    "src/domain/stages/departure-control-v1/actor.test.ts": "18394075d6acc1d5b56e962cad81322ba76fe22ba0d4423380f30ddbbf07cec3",
+    "src/domain/stages/departure-control-v1/actor.ts": "97a55e1746b8d573a603209a5fe2b1a41935751e46e8c904d94b5af72ea83cf0",
+    "src/domain/stages/departure-control-v1/binding.ts": "32bb48d4a0f6c8feefde472b0c2d1b6e1f7794146f6af10906cbb44782d20945",
+    "src/domain/stages/departure-control-v1/checkpoint.ts": "6175ccfd83e5b1e005c5bec979b7724511768318ad4ef93c4162e90d4e78ad73",
+    "src/domain/stages/departure-control-v1/containmentDoor.ts": "4ccf1f954a1e16b6ccbf620c500091544fae21c914f8f0948aab0a96a1f87bb5",
+    "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+    "src/domain/stages/departure-control-v1/definition.ts": "9f88d963d83c8c4b29db19c547e2e735471e8fc0bf1ee1b511fd9a8a36b7ca2c",
+    "src/domain/stages/departure-control-v1/doorScene.test.tsx": "7d6f170662bdb665d2c293f16d74755a952133c003234cd0e18e0e1dd9b8cd1e",
+    "src/domain/stages/departure-control-v1/doorVisibility.test.ts": "9e742c6cb075d2cb798492850ebe43a9f1176e06ec4a42e9d21e964482957926",
+    "src/domain/stages/departure-control-v1/scene.tsx": "a6a04c6cea8ab06f10f832a7778e7df9670a5b9b8492d68830c0f74da340b31c",
+    "src/domain/stages/departure-control-v1/selectors.ts": "f004c5ca00930aa85e61262c451313de067977dcab3dbcd5c55b9afbd07990cf",
+    "src/domain/stages/departure-control-v1/session.ts": "ff118cfab5e570521b685eed545dee52017628f5c39cd0614d6684b397fbe8ad",
+    "src/domain/stages/departure-control-v1/stage.test.ts": "d1174c8fb39e49ef59e4d5f7411c57e6ff011271675b77708003746de48fb34a",
+    "src/domain/stages/isolationKeyGeometry.ts": "c110b5466ca6dfad377275a75d8c430dbb60b6340dee7850b6bae366b250e374",
+    "src/domain/stages/mirror-corridor-v1/README.md": "5b1206cac7be903c021b2c3ce82a25fafd6f839feaff5890febabc3b8e34523c",
+    "src/domain/stages/mirror-corridor-v1/actor.test.ts": "d7bdfba91aa57253883d5487f951ae7e2f68ef0e97b9c88da0bd46858a56d60b",
+    "src/domain/stages/mirror-corridor-v1/actor.ts": "158eb0735cb982092c503c45c48162d4389de08ea69a2be2501c89de5c5998bf",
+    "src/domain/stages/mirror-corridor-v1/binding.ts": "92e62dcbda4515943022e51edc5f66f1e97d77046a49f9937ef483ac74762e61",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "ce43a667966bb905fba2f9c81d8ad9598eac10c1a016d322ff525a4497ceb51c",
+    "src/domain/stages/mirror-corridor-v1/definition.ts": "7f7dadba4731d7079a9ffde8640a296cd360517b6463df12a2131f1804f0ad73",
+    "src/domain/stages/mirror-corridor-v1/gateMotion.test.ts": "5f4e086670eedb80b1b56fce4474906bec9b62a9ac30fc373e9a5d98cc326e8d",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "e5d720c9202476ec78a65acabc69057e3c84869f5b596bdd58fe10719b7985e4",
+    "src/domain/stages/mirror-corridor-v1/selectors.ts": "e8d0a45f0ae6125f8359ec3670e5e67ade0fae206ef5f4e0daad2e0d110c7ff5",
+    "src/domain/stages/mirror-corridor-v1/session.ts": "6af98dbb09c1b90124d7c4f9cd6b65ad00846fbac50b72e0f4bbcfe71b0c658e",
+    "src/domain/stages/mirror-corridor-v1/stage.test.ts": "225b08397d82a20f358002216408abbd468a0409c96257e4102354b8841c6f04",
+    "src/domain/stages/stage-kit-probe/README.md": "11deed7894f393045ec010994e1a58ec3fa70de6bcac7d214f148beffc25298e",
+    "src/domain/stages/stage-kit-probe/binding.ts": "55604d78388632272df8a9d8fd5840c4541392642c90bae592dd70dcbeffb7a5",
+    "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+    "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
+    "src/domain/stages/stage-kit-probe/scene.tsx": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555",
+    "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
+    "src/domain/stages/stage-kit-probe/stage.test.ts": "71d48326fe9d93b51a4e90b0511b3da7d04cf89d9fa0dc173d07923ffbf0a5aa",
+    "src/domain/theatre/__tests__/actor.test.ts": "2ec521beb3358289b723d4ed555484a9e051ca7e904af3d96d35bf7c38ceb50a",
+    "src/domain/theatre/__tests__/deviceStatus.test.ts": "d11d3b4e4c49644316bd0df1ad9d384a25f2d2e13a86c4b0aeca85e6c6584806",
+    "src/domain/theatre/__tests__/optics.test.ts": "5a729e3de4a8ef6f6124a045df662c7477caf086ae7723f2c61cfe9179e21341",
+    "src/domain/theatre/__tests__/perspectiveExhibit.test.ts": "c70f2c09d5e8af37400b83954b0fcb97467a35962ba3764c21d8f6d100f54ad1",
+    "src/domain/theatre/__tests__/state.test.ts": "0dc808b56def179ec9e1c685ba2e333c72af9aa65cf15e92fab7a25ed1996c1e",
+    "src/domain/theatre/actor.ts": "ae7e8395d27309e82512239704f896ecdc040b271c9b7c98d33fb3eda0aaf995",
+    "src/domain/theatre/checkpoint.ts": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e",
+    "src/domain/theatre/cues.ts": "16b589ad3380f3dc3f3d01a106957deef6943a9a67c3d4a5efee6acb850dcc34",
+    "src/domain/theatre/definition.ts": "920eaa717f54e146aeb5d99d8b246550adc57a26020cc0b44aa8c217efdc265f",
+    "src/domain/theatre/deviceStatus.ts": "05a2b6a762bab8719ccb525357b02fb49884bdffcb9c532af0e5193a2a5da352",
+    "src/domain/theatre/environment.ts": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246",
+    "src/domain/theatre/index.ts": "10314102ff75d4ab09d576b972aa01a59e4967685cfcfbcfab6ce5e6a03f7b2b",
+    "src/domain/theatre/lightGate.ts": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145",
+    "src/domain/theatre/perspectiveExhibit.ts": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472",
+    "src/domain/theatre/projection.ts": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250",
+    "src/domain/theatre/runtime.ts": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f",
+    "src/domain/theatre/selectors.ts": "c12cfa03f72bf261bac2e636e1d1142da12978160f8335695ee84a13df2e73c4",
+    "src/domain/theatre/state.ts": "e3af183ca8bf7e28704ddf1c125388a582759f99c68b5989690daa5e0ed0e8c9",
+    "src/domain/theatre/types.ts": "35c19371e7b8c2a82e6335c1750e788e6238380244646f27825ee7c54e427e26",
+    "src/domain/theatre/world.ts": "a6b3214575a433c162de21c677d665d96011ce5f35830f5f2fd42b1f5eb9c491",
+    "src/domain/vault/__tests__/actor.test.ts": "8c6a23094fd912063743db0587e9641b4ff918e94191d62227726953790c4ed3",
+    "src/domain/vault/__tests__/checkpoint.test.ts": "5b1165f6b228ff3d0b3cbb3487be79d7b8b879a178f3bbacc4b5c93d4cc170a7",
+    "src/domain/vault/__tests__/devices.test.ts": "1a18de1e4efc66e9c579fc43829f5d6d9868718a36ab9779eea5cdd715e09be2",
+    "src/domain/vault/actor.ts": "f0d02a549d8f29087d87934f6d0362eefb464a700422cd20862663a0b1ea9b1e",
+    "src/domain/vault/actorPolicy.ts": "c2aa94afef48d5792a7e90106bcd6cc3db5f928a256ca45225cfc7957a868643",
+    "src/domain/vault/checkpoint.ts": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b",
+    "src/domain/vault/definition.ts": "32a724fdde872d5d843a271012cd954f05957939564711e53d5efe186902dbb1",
+    "src/domain/vault/runtime.ts": "5e0b7f0977ad4ccb8b56d9c451ccb538f0e52464d1c1f9092bbe306e740a84a8",
+    "src/domain/vault/selectors.ts": "4707ddd9bdf5bb3b3c4795eaa728396cc09b22c84bab9266ce84f7aa8b21eff6",
+    "src/domain/vault/specs.ts": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068",
+    "src/domain/vault/state.ts": "ad69f9ff9276a4b1e4b79e49aec9ce778383a7251437ffa57f2e20b85faf26e6",
+    "src/domain/vault/types.ts": "db5dc58b3f737f31d65dbaae3f030ce0852ac95a6465236e0b8c3b8e4bba8c0f",
+    "src/domain/vault/world.ts": "c1bba52ba4d3445d3429a136c73452d83ea229bf32f637202349795ae4f3fbae",
+    "src/platform/__tests__/native3D.test.ts": "b9d9b035ddef089ef2b4d3433330bb61a78cffb584adb78dbcf0933dcc54cfe3",
+    "src/platform/__tests__/runtimeDependencyGraph.test.ts": "4e9e751087e816e109445f6535e27b7de91209c7ded1e587e02740bc43b2639a",
+    "src/platform/__tests__/stageEntryOrder.test.ts": "2ac5b8fd4e63ea96a09660358b318673e8cdd7e977fa0ba010f95ca7e25dfada",
+    "src/platform/__tests__/threeResolver.test.ts": "f0945fbc84cab086a5616c763a7eceb5363e5f63e6a7b3388dda79e65b3f20f3",
+    "src/platform/buildIdentity.ts": "4679639f0c309ce0d5dc96cb9417a855124feaca45d654c84a9ccdbd266a9d88",
+    "src/platform/diagnosticText.ts": "a6b0709b571d35755a81ab3bb81ede24ab91567210b7d2d19141b890da637131",
+    "src/platform/haptics.ts": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5",
+    "src/platform/native3D.ts": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e",
+    "src/platform/supportDiagnostics.ts": "4a360a642fe8b4343dd2ef26f6a60ccdfde4fb2df0db867dca89dcdb046e5f05",
+    "src/rendering/CalibrationStimulus.tsx": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3",
+    "src/rendering/IllusionMazeCanvas.tsx": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7",
+    "src/rendering/IllusionMotion.ts": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026",
+    "src/rendering/IllusionPalette.ts": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a",
+    "src/rendering/MazeCanvas.tsx": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3",
+    "src/rendering/__tests__/IllusionMotion.test.ts": "3641dd4f8dc3863323a5ac4e7573d1c6a3b2d4dbb497defd076200283c518bb4",
+    "src/rendering/firstPerson/CanvasFailureBoundary.tsx": "e84bf0b6de838260e48cefe251e6e0d55b503a1b15b5804ec7ee0e3668da8c67",
+    "src/rendering/firstPerson/ChapterScene.tsx": "24bb19ae91af5b81c8c944d1455c7693dafb5bb6f16874e2ea4c80482b2d8b0a",
+    "src/rendering/firstPerson/FacilityDetails.tsx": "33f779b3dc0c0f59ff86ff51bf307792066da694abcefedb1de8b0613c638680",
+    "src/rendering/firstPerson/FirstPersonCanvas.tsx": "11f283d74c9b06881eee1ff6099b01285ab533156ed231b27afb2a3d7cad7d07",
+    "src/rendering/firstPerson/GalleryActor.tsx": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f",
+    "src/rendering/firstPerson/GalleryManipulation.tsx": "513d863674af50bb64c414d4915675e30a3306c2c8ccd039dad7a2cc22ced366",
+    "src/rendering/firstPerson/GalleryScene.tsx": "9ec05144ff9a08f8206ff6635cd53cc2c6403ca3afafd30e9b3c877a9793bcb7",
+    "src/rendering/firstPerson/GlyphMark.tsx": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252",
+    "src/rendering/firstPerson/MechanicalDevices.tsx": "3c638ee6a4ab40d5d71019aea8956986d039e7d0f5f07e3ac3404125d9b67e27",
+    "src/rendering/firstPerson/NotebookMaskScene.tsx": "9d4aef1faafeee22362bb318aa0d22bcfc8030f744ac00df642824c1361c031c",
+    "src/rendering/firstPerson/PanelFixture.tsx": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229",
+    "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13",
+    "src/rendering/firstPerson/ProofScene.tsx": "9fd7ecb09cb3225a3b8f95bbd8aa2bdcf175b915bfc30ba28d7a2bda42d05258",
+    "src/rendering/firstPerson/RawGLProof.tsx": "520a8e0ea9346c0112cf5479c2030b707b7bbf6e1eae737c51c385517ccbe47f",
+    "src/rendering/firstPerson/SceneActionButton.tsx": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd",
+    "src/rendering/firstPerson/StageHoldButton.tsx": "27efbdd6d55fa30b48fae890ad9f39ba4da988485ae01446a85c217f552b73ae",
+    "src/rendering/firstPerson/TheatreManipulation.tsx": "f1000f0bdf7bc7de27c9bde320a144dea220dcfb6494a9b7f785d3a507a81069",
+    "src/rendering/firstPerson/TheatreScene.tsx": "b4115a86d746bd4e0412375890a27dc1eb159f489d1ef894ab3fb5df5f00b256",
+    "src/rendering/firstPerson/TouchControls.tsx": "8bdd151a74dedebde2204edb0a8f37c092640b2125e5d828366895727e5d3e46",
+    "src/rendering/firstPerson/VaultDevices.tsx": "cc3aa8cd7d5d07890f0ee47eafb8e59344e5586541b23464ef3773de622dc1e5",
+    "src/rendering/firstPerson/VaultManipulation.tsx": "59de760338f52a1f8cfa78aa61a36061f42b074444b0e967fe2fe53abf3c601b",
+    "src/rendering/firstPerson/VaultScene.tsx": "7311cd0a1bfb5b182d9d6aced88e88e617cb5fba8f12e01f6df6eeb1ad233b75",
+    "src/rendering/firstPerson/__tests__/PanelFixture.test.tsx": "b4583e69407c1fbf185eb7d65f5712d98a207976a90989ab27de70d55b7f4706",
+    "src/rendering/firstPerson/__tests__/SceneActionButton.test.tsx": "c7a6146ea609498c2fe9bfa76bff367fbcf82a66a021d674cb63799c17de656b",
+    "src/rendering/firstPerson/__tests__/StageHoldButton.test.tsx": "657e817336063aca79265383f0ea9e7e3bbf86f9adef0e1e1a98b7dd09fc69c4",
+    "src/rendering/firstPerson/__tests__/TouchControls.test.tsx": "6d6ff91c9c61d4537200107fcad43cc65ea7f708fdb42e0fa34be6f2f56cbe9a",
+    "src/rendering/firstPerson/__tests__/actorArt.test.ts": "9929c2bdb51d3ad42339843f2674841f7fad0290dddd53e8d89919af0b66f57a",
+    "src/rendering/firstPerson/__tests__/actorController.test.ts": "239125f11fa32a2c6d83a94c3be2663231ceff8f0acd83c4cd2bea0b0f8413f9",
+    "src/rendering/firstPerson/__tests__/actorFrameBoundary.test.tsx": "e4d43b916957a981d691ad1814d1845bed4682f09bafdcbf1c0fbf9b6645abe1",
+    "src/rendering/firstPerson/__tests__/apparatusAcquisition.test.ts": "2043c29435ef57e2d096dc05e0e56864d95a666a93ae4e6dd18b3b34a13f3006",
+    "src/rendering/firstPerson/__tests__/canvasLifecycle.test.ts": "7cbfd1466e48a59a7fd7199068ccb1813bea09005b69e0689047df71c19f5cf6",
+    "src/rendering/firstPerson/__tests__/chapterAudio.test.ts": "648bc737cdf6022e9376b25e7bf24bd60a190134228f90f27bfed770887861f9",
+    "src/rendering/firstPerson/__tests__/chromaticExhibit.test.ts": "38021c6b0915df81d7687921a2425c3e79e3646b447a5944fb40b014fa512b02",
+    "src/rendering/firstPerson/__tests__/controlLayout.test.ts": "a7f1b9c72206baef7bab07f27dfe1d76b6836398bfa9b5d1221ee03953a10223",
+    "src/rendering/firstPerson/__tests__/departureControlController.test.ts": "80e3ce63ab0008b74280f024a756fdd5ca17ba7325b0e3f25ce42e473bfac902",
+    "src/rendering/firstPerson/__tests__/diagnostics.test.ts": "f217586ddbd7ae70e35cbbbdedda959b7ad067809ebcd86e44aa9ea278ec174a",
+    "src/rendering/firstPerson/__tests__/emblemController.test.ts": "f4f4d91e3ecdd1488ce8ee7ac245d258451f90643911fd9f61ac278fc05446c5",
+    "src/rendering/firstPerson/__tests__/emblemSurface.test.ts": "dc81c51a236bbea1b51b0a5445ddc5b46e0f5e1f64b018832246d28a6537bcd2",
+    "src/rendering/firstPerson/__tests__/exhibitSculpture.test.ts": "576bffabaaebeee5718eae464390d86db11f218e054fbaa18d26ad46882bc002",
+    "src/rendering/firstPerson/__tests__/galleryController.test.ts": "603cf2f5856406e7cd9b90512dc8e7e1b94521229f75b7a6215b177f1e793203",
+    "src/rendering/firstPerson/__tests__/galleryRouteController.test.ts": "d2dffd4cec68462284d59a6206aac15d20531f17309322dbbfd621cd7e11f04f",
+    "src/rendering/firstPerson/__tests__/mirrorCorridorHoldController.test.ts": "b20a400cf9fca7cba183848d723027b427dde9c6e38d12481710d53620a4d727",
+    "src/rendering/firstPerson/__tests__/mirrorReportedCheckpointRecovery.test.ts": "db0a0cba2fedc508a1d3234b72e3da839c463f47a305747d5a657d32333d8062",
+    "src/rendering/firstPerson/__tests__/nativeCanvasLifecycle.test.tsx": "33105669e9bf3b6d78510af7c5c29ea6724b85379046b77a8919d99d5718f276",
+    "src/rendering/firstPerson/__tests__/nativeDefaultFramebuffer.test.ts": "837427f82a06b9e2fafb52a2e341f45cf1cc861f29db32de2d86148014e01367",
+    "src/rendering/firstPerson/__tests__/nativeGlObserver.test.ts": "0774a676cb5044b1759c35dbb99a86d1edcb6604ffe5b8599d1b1a8963957480",
+    "src/rendering/firstPerson/__tests__/nativeRendererFactory.test.ts": "efb6553dd2a97b81441ba1778c2a2e377dc02c1f3792b416b2985e11d2dee9eb",
+    "src/rendering/firstPerson/__tests__/notebookCamera.test.ts": "6cd3484b87ff8e93325ff9edb4c3006c76a9c3f26419e5be9482d1b72a56eab7",
+    "src/rendering/firstPerson/__tests__/perceptualResources.test.ts": "98abd8c3e03945c342192e8b17f96ce841e77f524ccd2ec1729dfa77eb56ac0c",
+    "src/rendering/firstPerson/__tests__/planarMirror.test.ts": "a5f51f9149875354ec9d79697a65e4eef8de77c734d7599ce020ce78b0beed13",
+    "src/rendering/firstPerson/__tests__/presentationFeedback.test.ts": "3f2c60ab4eeab2815a8fe27fc58fb73d51fb06a68295fa51df07574af33520c5",
+    "src/rendering/firstPerson/__tests__/rawGLProof.test.tsx": "a66dad96396a958408146c78041625f847ebaf5331141b22e271e1eb166e40eb",
+    "src/rendering/firstPerson/__tests__/resources.test.ts": "5225726704773e7b10e6a4e18c8a6f7d5a7ef47895e3f09b49bddec954d36ea2",
+    "src/rendering/firstPerson/__tests__/runtimeController.test.ts": "d249ff8e00d51b497d1ce1c1a657049a1bc52fcdef8160e184ca6c398beb258f",
+    "src/rendering/firstPerson/__tests__/segmentBoundary.test.tsx": "d112d5eb514e21c883333dc968e5aed3688e98f5982120d597b510df89ed6291",
+    "src/rendering/firstPerson/__tests__/segmentModuleIdentity.node.cjs": "4e08500b85616842e8b3c3dcbb6da6c05b35dc146ad34e75c16614b1e96d7fed",
+    "src/rendering/firstPerson/__tests__/segmentModuleIdentity.test.ts": "41ef51bfff635d336d0eea66ba07959a53ce43582d651ba62bd2927e478ff7eb",
+    "src/rendering/firstPerson/__tests__/segmentTransform.test.ts": "247d48c313d4b1e424c9e615e564ccd6f8ecab313fb1d0a840edafcf6ee6984b",
+    "src/rendering/firstPerson/__tests__/stageClarityController.test.ts": "83bc76d0cd1d810b5cee3dc26a36c107109185b99c9a28445ce2028ae846d97b",
+    "src/rendering/firstPerson/__tests__/stageKitProbeController.test.ts": "d512cc51df94865af53efeeb7bb26f5e4eaf8aae04e555f53d9a16fa07494a41",
+    "src/rendering/firstPerson/__tests__/theatreEnvironment.test.ts": "a60b55deab74ace0c379f0a6cd3cb359720ea9b662c8c17bd68060fed73cd944",
+    "src/rendering/firstPerson/__tests__/theatreResources.test.ts": "9e114863ed60762019ecadcde9c640976e4bba3988cf55c6f2c06c148cadc383",
+    "src/rendering/firstPerson/__tests__/theatreRouteController.test.ts": "0f0a22234ac11205411dea6dbf387d34add67463c8da54263090d7d8f5a390d1",
+    "src/rendering/firstPerson/__tests__/touchInput.test.ts": "9e0da43ab61d51fa0fbe123ca1212c31b739ecc106c1444955ee7356a585189b",
+    "src/rendering/firstPerson/__tests__/vaultRouteController.test.ts": "630025e0ac7ba4fe295b1bc77e85a3182c36d106caba63417798bd4b0c7f7fd6",
+    "src/rendering/firstPerson/actorArtResources.ts": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd",
+    "src/rendering/firstPerson/actorArtRig.ts": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68",
+    "src/rendering/firstPerson/canvasLifecycle.ts": "3c6d57848eadc382e93a0b26baeb63e6e150a2feb41068c3afbc82f6434d01a8",
+    "src/rendering/firstPerson/chapterAudio.ts": "b3399a80ce78dbd8fdd8a50dc7198c88bb9d50520f0e081831ba0e7b6a2708cb",
+    "src/rendering/firstPerson/chromaticExhibit.ts": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2",
+    "src/rendering/firstPerson/controlLayout.ts": "f26bcc88190234188ac336406b8f2b2f1348afb79c623160d548377a41b6df2b",
+    "src/rendering/firstPerson/controllerContext.ts": "95b5dfe06fb6dddf40a4ea577269aceea8f02c6d29110b50360f644e5450bdf8",
+    "src/rendering/firstPerson/controllerTransitionAudio.ts": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a",
+    "src/rendering/firstPerson/controllerTypes.ts": "8c8ef4d75e56ecd380e632a1bbb49b67655e199d001822df8941f0c1c4d25237",
+    "src/rendering/firstPerson/destinationSignData.ts": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097",
+    "src/rendering/firstPerson/destinationSigns.ts": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518",
+    "src/rendering/firstPerson/diagnostics.ts": "3b24469e024f5385e8335bb63e44bd0d59473eb163e39a212b4e83bd2fc8918f",
+    "src/rendering/firstPerson/emblemSurface.ts": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534",
+    "src/rendering/firstPerson/environmentArtResources.ts": "9b8e37cebc7e44c4563c35453cd43bd1ce67a9fa4ac73a917417c4476539e888",
+    "src/rendering/firstPerson/exhibitSculpture.ts": "0c13e8af8b16c6d63966d60bab59f979040c731e264f23c22d2dab93e2b8e534",
+    "src/rendering/firstPerson/facilitySignData.ts": "bf613df92d0cbc39f29f55972e3a6880b8b1f48d487d2ce7ebe352daae1b9e4f",
+    "src/rendering/firstPerson/facilitySigns.ts": "3fb5ccb18f6b77764c43998f5985686f2e5761e9be07b241f83fb5cea2ed09dc",
+    "src/rendering/firstPerson/failureLedger.ts": "6ce6c51a41b815c10c210b8dab233281d593215e79014c7a1a608b0d5c601712",
+    "src/rendering/firstPerson/galleryController.ts": "40ec0cf64831406cf94e8c2160e030d33bfe29444055e3a86e658ddd2717aab8",
+    "src/rendering/firstPerson/galleryGraphics.ts": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc",
+    "src/rendering/firstPerson/galleryResources.ts": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20",
+    "src/rendering/firstPerson/labRuntime.ts": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c",
+    "src/rendering/firstPerson/manipulationProjection.ts": "3f2331d17bc37b2eaa2bb08f8489fae826ad956d79f376662579fe2d7ce6d593",
+    "src/rendering/firstPerson/nativeDefaultFramebuffer.ts": "8e0439c0cf89dcc5c790e357121061f6de27e85e579fa5cb0afb1f4c5605379d",
+    "src/rendering/firstPerson/nativeGlObserver.ts": "d3ef9d422ce00d785a791e987cc93aea79f2055516c8a8ea36924ea6b9e8e177",
+    "src/rendering/firstPerson/nativeGlSession.ts": "d9a3a6a4a71726727d3fa131ba7597e236983d09c8cdfc3039d2d1c4168b4457",
+    "src/rendering/firstPerson/nativeRendererFactory.ts": "e0201f5c963b24a98c7939f00c8be902f10429d243443af89bee23b0819bf52e",
+    "src/rendering/firstPerson/nativeSceneSession.ts": "3753037e207f65a264f71ecbc1d1de87f5b8af28860d3f3fd2b97677e78cf9ba",
+    "src/rendering/firstPerson/notebookCamera.ts": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e",
+    "src/rendering/firstPerson/perceptualResources.ts": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7",
+    "src/rendering/firstPerson/planarMirror.ts": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+    "src/rendering/firstPerson/rawGLTriangle.ts": "029eaf7b1640af3771350bbed16efcad39ef2eab08864f65516e5426280d8ddb",
+    "src/rendering/firstPerson/resources.ts": "5d39708a8d9f7eb38cf49d096a9ea7e13e0a8bc9a552e41e46b547cab03d47e3",
+    "src/rendering/firstPerson/runtimeController.ts": "55c86a16159cb7d3d8dfc9ef256a68bda96a644c7faf43d0bbecfcb66b68158b",
+    "src/rendering/firstPerson/segmentTransform.ts": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2",
+    "src/rendering/firstPerson/stageSceneBindings.tsx": "cd175512d63cc1c546659be3f7420073e988a3c6f3fef40c940aee08d19c38bc",
+    "src/rendering/firstPerson/theatreController.ts": "19ed5d6e1f8558c06c285c71575f307b8d75161544d453a6de2ce42258708d30",
+    "src/rendering/firstPerson/theatreResources.ts": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622",
+    "src/rendering/firstPerson/touchAdapter.ts": "ddfff276f545441dc160579dcc22ad6cdbdce228c852f7dd8fe7b6e437dab77c",
+    "src/rendering/firstPerson/touchInput.ts": "c9e040d39bb06b6879f3f9b0e8ed6c7b06a89a1a63d17eddc8cccf9caddd78b3",
+    "src/rendering/firstPerson/vaultController.ts": "2861e61847110c0c09173c7f64dc7d97e4fc5f70f4101f9e4807f0c054c4add6",
+    "src/rendering/firstPerson/vaultResources.ts": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076",
+    "src/rendering/mazeGeometry.ts": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154",
+    "src/screens/CalibrationInstructionsScreen.tsx": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c",
+    "src/screens/CalibrationResultScreen.tsx": "6d64fa67d4dd32579e2290330a8a67f5ba09b084775b6935a00e8713158396cd",
+    "src/screens/CalibrationScreen.tsx": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000",
+    "src/screens/CampaignStageNotebook.tsx": "948aa1f06eccc7e7149245d905f1e0b7b2a4ff383544b8950409aceca6b61f8f",
+    "src/screens/ChapterMusic.tsx": "6a7a7bb6b7b6f0721d013c7e1e1b423ec52e8e3e981b2e9a4e75e25be1cbda0f",
+    "src/screens/ChapterOneEndingScreen.tsx": "ccc011b2b7e0195b82a49cd5bcf2d6adf3b02509e2fcb17f1da876877a2bca2d",
+    "src/screens/ChapterOneHomeScreen.tsx": "9c554fa97cafef554cd09936ac26104dc7226efeb7196795559653afe67788c8",
+    "src/screens/DeveloperLabScreen.tsx": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe",
+    "src/screens/DiscoveryNotebook.tsx": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc",
+    "src/screens/FirstPersonResultScreen.tsx": "f03eeda4e4b44a27509b29f16fbc5114d6bbbda0733702b060a54361e4a25790",
+    "src/screens/FirstPersonScreen.tsx": "6fc5dd86e47d0f1cf8d5c0725eceede645b8eb10643845e473016309f8e4ae7c",
+    "src/screens/IllusionMazeScreen.tsx": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7",
+    "src/screens/JourneyResultScreen.tsx": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49",
+    "src/screens/MicroMazeScreen.tsx": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6",
+    "src/screens/NativeFirstPersonGate.tsx": "73ec1438e32d0347df0b78052848a9c397bf0320fc27875d30c49e2d1a2d7c98",
+    "src/screens/PlayInstructionsScreen.tsx": "ed7783e6f7718f52ce17a3fc9abcbd73c4d0fbc01bf6d878d08a81b2c5513f13",
+    "src/screens/QuickSetupScreen.tsx": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246",
+    "src/screens/SettingsScreen.tsx": "f605f5f3038459ec8cf7d52d5a567e7bd5b6fbbbc09bc410271acbb41ddc48f0",
+    "src/screens/StageResultScreen.tsx": "84a8a9d43580d3108b520014baa3072fad1e7c6fa967248d9305d5ad1257b0a4",
+    "src/screens/StageSelectScreen.tsx": "70a7ecbb4288dea55c515a52de24aea746c855485b71af1fd215ebd57fb3a600",
+    "src/screens/SupportInformation.tsx": "f3c9b3a19ec7f1b704abf8237f2391c5a3ceb20f182a6319f0b5a3f89143794f",
+    "src/screens/TheatreNotebook.tsx": "bd0e7bc84e4c30789c264c889b2181fd2e958a77a29ef903860ea97684b9ff29",
+    "src/screens/VaultNotebook.tsx": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc",
+    "src/screens/WelcomeScreen.tsx": "97411d81640980450d7d30da4ba2300c43f686c9d3f89b510d6680d40875687a",
+    "src/screens/__tests__/PlayInstructionsScreen.test.tsx": "92cf874fd73d86beaf7c94f7c40106224919cfb441edf8d90d9ac79df1c99ca9",
+    "src/screens/__tests__/QuickSetupScreen.test.tsx": "c4300f006682f25b396bc301f31a82e637ddadff8028a0fc91592f7a13113076",
+    "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx": "ea9e6373d52701401ef26a0cbd12350d77f8ff2f0af3603b385e403f0a41ecc0",
+    "src/screens/__tests__/chapterOneAppFlow.test.tsx": "4337b57a71b47172bcc8668de3abc616f8f08ecd2f0c21418c08c15778002ba6",
+    "src/screens/__tests__/chapterOneEndingTiming.test.tsx": "ce33bb8172315e50ed87a3c8feb6db71225403a2bb96dd4489a83c3b724a2aac",
+    "src/screens/__tests__/chapterOneImmediateCompletion.test.tsx": "d9a15967018265d98f3c641106a878a22bc6aaaba80ceae043a14c1a5527438d",
+    "src/screens/__tests__/chapterOneStageMenu.test.tsx": "3d612d79f3484a2fc32d5c4ecb0ff0c398fe7f66518c789cc643505db7b772a4",
+    "src/screens/__tests__/discoveryNotebook.test.tsx": "23ab6dd11be8bd302c96421736c24e201b7696c95c161204208ea5f20212a50c",
+    "src/screens/__tests__/firstPersonControlMode.test.ts": "ddbccfdd555a57055e7a73b867265c6c3066c8186aa140026a1ebcd1ea62931c",
+    "src/screens/__tests__/firstPersonControls.test.tsx": "10773aa576809de374500bbc7011a31eee489b31bf7c191d391c298ba4c55114",
+    "src/screens/__tests__/flow.test.tsx": "f5b31b5b8fb6058b910860f5fccbcb5a89137292ae923a767fe5862ba3af0c1f",
+    "src/screens/__tests__/galleryManipulationScreen.test.tsx": "d80a99399ce1e0cca8e76ae104b9a1eb21138c632a742c527cbf20abe72dda29",
+    "src/screens/__tests__/galleryMenus.test.tsx": "e9eca1a8bcbfc21a6cc8dfcb1b89933a47a1cc3e3a76ecdc6685b45643340af3",
+    "src/screens/__tests__/illusionMaze.test.tsx": "082521cd8a0059c1c3f4739483008a315f202d992cea14176630c10386a2737f",
+    "src/screens/__tests__/journeyFlow.test.tsx": "208c4841272878571d0f1d291a16a89d8acca01c3bcafa320d79a4e797cda5ee",
+    "src/screens/__tests__/nativeGateSupport.test.tsx": "28b88661679c61ae98a6218b1525e0171fbf10fbd7b487d764bf6e7ba19e35dc",
+    "src/screens/__tests__/playerSupport.test.tsx": "f5d653b2640aacec829b38423aa9e2b7c6c573b64b0c9ba871b5d8dc3bbab8ac",
+    "src/screens/__tests__/playerTextAudit.test.tsx": "0dde7190f632fc0523d5b0adbac2cdd1a7e6560962eda357c13f504177640666",
+    "src/screens/__tests__/playerTextStaticAudit.test.ts": "830bd79213ae9a50b63355c58a155d1dadc0ca523ccf6fbbf9eeaa947e92ba49",
+    "src/screens/__tests__/resultFreshPress.test.tsx": "f4923b7da0eb0efbb26120702d8244be3cf9883fb661f38f33a57547768ebed3",
+    "src/screens/__tests__/stageClarityScreen.test.tsx": "10bb4eb49bd971755a9a64b63193fadc1bb19c84c72d8fcd00a33303cc6193cd",
+    "src/screens/__tests__/stageFlow.test.tsx": "5b6b6163e1d9dceb248e837b6f79659d7f5d213ea415198203bd345be7b605c7",
+    "src/screens/__tests__/theatreNotebook.test.tsx": "b2a932f77cab412981a4af041be4e6fdae383e672aa4952ef04e274eda4a4e66",
+    "src/screens/__tests__/theatreScreen.test.tsx": "dbef58a9a69a71b7a9ed6405a856a12268ab09cc90a9eaafd0e31f9fd3a7dfd2",
+    "src/screens/__tests__/vaultManipulationScreen.test.tsx": "ccaac9f88d26aa895ef06922236abe2d84db2d90658f08ce34cb5eff9ae644c3",
+    "src/screens/__tests__/vaultNotebook.test.tsx": "90748fe910379d9475d1095892ca0079b6b1fa6d0c20535b7b9923b0b6f523df",
+    "src/screens/firstPersonControlMode.ts": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1",
+    "src/storage/__tests__/applicationStorage.test.ts": "c1cbf08f34db2d7f0ee0c6a580dc0f5a363ebd31fd6c51506e7ac02dc58a9580",
+    "src/storage/__tests__/chapterOneStorage.test.ts": "14d191e0162e5d824e4700174263137add388198541e752f0542f75aadc285b2",
+    "src/storage/__tests__/emblemMigration.test.ts": "6df503117c0ea98cbb64de9b7e28d6771e4da9b30813d9cf66a454b2c7f85e81",
+    "src/storage/__tests__/firstPersonStorage.test.ts": "87aed55de69e2ec0d10de7085b3fbc45a2a4c4d941e88d43a44e2fd69785d2c6",
+    "src/storage/__tests__/galleryStorage.test.ts": "b28c1cc94eb258b01b7339daaf4f8118848e7c71a2d6ecd3bbc1bd204ce57fb8",
+    "src/storage/__tests__/galleryV2Migration.test.ts": "a30ed206652867186679982d22bbfc1172d0397be832161ca9abf6cefbdc0508",
+    "src/storage/__tests__/galleryV3Migration.test.ts": "cbc846bbb39e3db9d4ce8233c53b4b083498be297e960fe00e8c06e5b961f71b",
+    "src/storage/__tests__/moduleStageStorage.test.ts": "ede06148dd95682cdf3677a6c896880d9ae161c480453d3178897076d79c6aea",
+    "src/storage/__tests__/stageJournalStorage.test.ts": "1727282b822b5544e9f944e73afffc8fd8271bac4720ecaaf9b5e3a1e21f10c7",
+    "src/storage/__tests__/theatreStorage.test.ts": "7f970df5c6280da18c68b8caeb7caab0d04bff49c3181c50e9fa9de7e8156259",
+    "src/storage/__tests__/vaultStorage.test.ts": "37b48933b4a25072441c15e58cdf169b6bdda31e0de467657621b8f42ed1a89f",
+    "src/storage/applicationStorage.ts": "7052d00cdf61fbad917969fc36aae8831e9171f4fafac50a9d17a3028f3d7685",
+    "src/storage/chapterOneLegacy.ts": "7807879fd04cc89961cb6618cc5810f7d7e08ac992b220eb2f381ff1e2736a5a",
+    "src/storage/chapterOneStorage.ts": "ea7713e7f990011a83738868cca832a0a73163597abbf069e2398108fa643653",
+    "src/storage/firstPersonStorage.ts": "a3a269a18524df6d6596ae22ecda5854889797f0db69b202fbf1310bda6e8caf",
+    "src/storage/moduleStageStorage.ts": "be9812f9076d8ba537d3806f092bfb8f9335b84c4fd32feb3438ab010a0ef0dd",
+    "src/storage/stageJournalStorage.ts": "68d83100a6d10c4c4d6e19636b94fac68080e3eb57b559b74f38b8eb90cd4aab",
+    "src/storage/testFixtures/galleryV1.ts": "62b9388bfffbc3f86431940416ed4da96d6155494254be211746244a13a8a477",
+    "src/storage/testFixtures/galleryV2.ts": "8b813d4cb3ee48f9ac9568a1b5f1a8ef6180fb5d526bdc6adf5924a9a1bdc30d",
+    "src/storage/testFixtures/theatre.ts": "04e411ef41c6b7691bda9191e7cb376f00b307f49eef5cb8c220b21a28faa879",
+    "src/storage/testFixtures/vault.ts": "857538df502f36d5ebb77743f4e33210bd80692f2538d143930714279a1f4054",
+    "src/theme/stimulus.ts": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94",
+    "src/theme/ui.ts": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5",
+    "src/types/application.ts": "7f3236ea92c95dd961a70d13d8ce165dbead531d4f16ca0ce502b8761719dcf4"
+  },
+  "sourceInputsStable": true,
+  "method": "Actual ChapterOneHomeScreen/SettingsScreen React hosts. Every relative baseline first-party dependency is loaded from the immutable 393e58e git blob closure in its own module cache; current dependencies use the source bridge. Both use identical installed React, explicit native fixtures and browser CSS translation. No checkout or product changes.",
+  "fixtures": {
+    "nativeConstants": {},
+    "nativeBuild": "unknown",
+    "safeAreaInsets": {
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "audio": "available for normal settings, missing-native only for the labeled conditional message case; inert owner/no playback",
+    "audioPreferences": {
+      "enabled": true,
+      "musicVolume": 0.18,
+      "environmentVolume": 0.2,
+      "effectsVolume": 0.35,
+      "illusionEnabled": true
+    },
+    "switches": "approximate 51x31 static CSS track",
+    "home": "new chapter, no saved progress/import/failure",
+    "support": "information and details remain closed; no clicks to open support",
+    "previewMeaning": "Source-level __DEV__false and EXPO_PUBLIC_CHROMA_BUILD_PROFILE=preview. This is not an emitted native preview binary."
+  },
+  "limits": [
+    "CSS software screenshots are not native Yoga/text shaping/safe-area/VoiceOver or iPhone operation.",
+    "No App navigation, native audio, persisted user state or device build identity is exercised by this comparison.",
+    "QA captions above the authored screen identify before/after; captured content comes from actual component host trees.",
+    "Current support details have independent open/copy/close evidence in player-ui; this comparison intentionally shows only normal closed state."
+  ],
+  "records": [
+    {
+      "id": "before-home-320",
+      "version": "before",
+      "state": "home",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "   CHROMA RIFT   第一章  最後の退館者   コード goal-014-polish-r1 / preview / iOS build unknown / release-js  閉館点検中、在館表示は02で止まった。非常灯と職員経路をたどり、閉館処理を終える。 第一章をはじめる  第一章をはじめる エリアを振り返る  エリアを振り返る 発見の記録  発見の記録 設定  設定   第二章  今後のアップデートで追加予定  現在のバージョンではプレイできません。  知覚展示館　閉館点検記録",
+      "treeSha256": "f6af5a8c4fe1933261859d6c624a2fe75f0e78a0a98925c77aedd7fe0b4730fc"
+    },
+    {
+      "id": "before-settings-320",
+      "version": "before",
+      "state": "settings",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    ハプティクス  仕掛けを解いたときなどに、軽い触覚で知らせます。  オン ハプティクス   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     サウンド  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン サウンド    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "958b48978aa04a6913d4e770d3d7263052d0bb071e873866261b34d2967b52cf"
+    },
+    {
+      "id": "before-settings-missing-native-320",
+      "version": "before",
+      "state": "settings-missing-native",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "profile": "preview",
+      "dev": false,
+      "availability": "missing-native",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    ハプティクス  仕掛けを解いたときなどに、軽い触覚で知らせます。  オン ハプティクス   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     サウンド  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン サウンド    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音  音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "c27b5a8d6a0c6318d7d5dfb981df3d213cd808d4c4765671b71cf4bcb934e7de"
+    },
+    {
+      "id": "after-home-320",
+      "version": "after",
+      "state": "home",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "   CHROMA RIFT   第一章  最後の退館者  閉館点検中、在館表示は02で止まった。非常灯と職員経路をたどり、閉館処理を終える。 第一章をはじめる  第一章をはじめる エリアを振り返る  エリアを振り返る 発見の記録  発見の記録 設定  設定   第二章  今後のアップデートで追加予定  現在のバージョンではプレイできません。  知覚展示館　閉館点検記録",
+      "treeSha256": "3bfeb72aacf06d0192098399df8d7ea928ceba3b4694a65659c42be5c573a4a6"
+    },
+    {
+      "id": "after-settings-320",
+      "version": "after",
+      "state": "settings",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    振動  仕掛けを解いたときなどに、軽い振動で知らせます。  オン 振動   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     音  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン 音    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "4b5c3137afb8b723769145fa20747e8c7a7fe1f71c2c01bbb8fecfa105a3527a"
+    },
+    {
+      "id": "after-settings-missing-native-320",
+      "version": "after",
+      "state": "settings-missing-native",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "profile": "preview",
+      "dev": false,
+      "availability": "missing-native",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    振動  仕掛けを解いたときなどに、軽い振動で知らせます。  オン 振動   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     音  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン 音    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音  音を再生できませんでした。音なしで探索を続けられます。   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "d7c5c5d5852410e1df231f56491de20989887446969fa3ec04b213aae8019c17"
+    },
+    {
+      "id": "before-home-390",
+      "version": "before",
+      "state": "home",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "   CHROMA RIFT   第一章  最後の退館者   コード goal-014-polish-r1 / preview / iOS build unknown / release-js  閉館点検中、在館表示は02で止まった。非常灯と職員経路をたどり、閉館処理を終える。 第一章をはじめる  第一章をはじめる エリアを振り返る  エリアを振り返る 発見の記録  発見の記録 設定  設定   第二章  今後のアップデートで追加予定  現在のバージョンではプレイできません。  知覚展示館　閉館点検記録",
+      "treeSha256": "f6af5a8c4fe1933261859d6c624a2fe75f0e78a0a98925c77aedd7fe0b4730fc"
+    },
+    {
+      "id": "before-settings-390",
+      "version": "before",
+      "state": "settings",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    ハプティクス  仕掛けを解いたときなどに、軽い触覚で知らせます。  オン ハプティクス   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     サウンド  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン サウンド    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "958b48978aa04a6913d4e770d3d7263052d0bb071e873866261b34d2967b52cf"
+    },
+    {
+      "id": "before-settings-missing-native-390",
+      "version": "before",
+      "state": "settings-missing-native",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "profile": "preview",
+      "dev": false,
+      "availability": "missing-native",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    ハプティクス  仕掛けを解いたときなどに、軽い触覚で知らせます。  オン ハプティクス   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     サウンド  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン サウンド    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音  音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "c27b5a8d6a0c6318d7d5dfb981df3d213cd808d4c4765671b71cf4bcb934e7de"
+    },
+    {
+      "id": "after-home-390",
+      "version": "after",
+      "state": "home",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "   CHROMA RIFT   第一章  最後の退館者  閉館点検中、在館表示は02で止まった。非常灯と職員経路をたどり、閉館処理を終える。 第一章をはじめる  第一章をはじめる エリアを振り返る  エリアを振り返る 発見の記録  発見の記録 設定  設定   第二章  今後のアップデートで追加予定  現在のバージョンではプレイできません。  知覚展示館　閉館点検記録",
+      "treeSha256": "3bfeb72aacf06d0192098399df8d7ea928ceba3b4694a65659c42be5c573a4a6"
+    },
+    {
+      "id": "after-settings-390",
+      "version": "after",
+      "state": "settings",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "profile": "preview",
+      "dev": false,
+      "availability": "available",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    振動  仕掛けを解いたときなどに、軽い振動で知らせます。  オン 振動   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     音  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン 音    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "4b5c3137afb8b723769145fa20747e8c7a7fe1f71c2c01bbb8fecfa105a3527a"
+    },
+    {
+      "id": "after-settings-missing-native-390",
+      "version": "after",
+      "state": "settings-missing-native",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "profile": "preview",
+      "dev": false,
+      "availability": "missing-native",
+      "supportDetailsOpen": false,
+      "text": "    設定     補助表示  通れる床と観察の印を中立色で見つけやすくします。  オン 補助表示    動きを減らす  飾りの動きを抑えます。ドラッグで歩く・見回す操作はそのまま使えます。  オフ 動きを減らす    振動  仕掛けを解いたときなどに、軽い振動で知らせます。  オン 振動   操作  右手で見回す  右手で見回す 左手で見回す  左手で見回す    簡単なボタン操作  ドラッグと同じ仕掛けを、個別の操作ボタンでも調整できます。  オフ 簡単なボタン操作  視点の感度  ゆっくり  ゆっくり 標準  標準 速め  速め  上下の感度  上下の感度：控えめ  上下の感度：控えめ 上下の感度：同じ  上下の感度：同じ  怖さ   標準は巡回と接近があります。控えめは気配を残し、追尾と接触によるやり直しをなくします。  標準の怖さ  標準の怖さ 控えめな怖さ  控えめな怖さ  謎と出口条件は同じです。音や動きの設定は変えません。  音     音  無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。  オン 音    演出音  短い音の錯覚を使います。控えめな怖さでは再生しません。  オン 演出音  音を再生できませんでした。音なしで探索を続けられます。   音楽   18 %  音楽 0%  音楽 0% 音楽 25%  音楽 25% 音楽 50%  音楽 50% 音楽 75%  音楽 75% 音楽 100%  音楽 100%   環境音   20 %  環境音 0%  環境音 0% 環境音 25%  環境音 25% 環境音 50%  環境音 50% 環境音 75%  環境音 75% 環境音 100%  環境音 100%   効果音   35 %  効果音 0%  効果音 0% 効果音 25%  効果音 25% 効果音 50%  効果音 50% 効果音 75%  効果音 75% 効果音 100%  効果音 100%  色の展示  見え方を比べて選べます。奥行きの強さに決まった順序はありません。  表示A（選択中）  表示A（選択中） 控えめ  控えめ 表示B  表示B 簡単に調整する（3問）  簡単に調整する（3問） 詳しく調整する  詳しく調整する  調整は表示のための目安です。見え方を診断するものではありません。 第一章だけを最初から  第一章だけを最初から 保存データをリセット  保存データをリセット  アプリ情報 このアプリについて  このアプリについて 出典と素材クレジット  出典と素材クレジット プライバシー  プライバシー サポート  サポート ホームへ戻る  ホームへ戻る",
+      "treeSha256": "d7c5c5d5852410e1df231f56491de20989887446969fa3ec04b213aae8019c17"
+    }
+  ],
+  "results": [
+    {
+      "file": "home-title-320-font2.png",
+      "sha256": "41083c64ccf5a8e525cee9139ba19042c6a612ec12b41b846a1be58b2de7b2ca",
+      "bytes": 77412,
+      "state": "home",
+      "anchor": "title",
+      "widthPerScreen": 320,
+      "heightPerScreen": 568,
+      "fontScale": 2,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 267,
+            "width": 305,
+            "height": 568,
+            "contentWidth": 305,
+            "contentHeight": 1962
+          },
+          "target": {
+            "text": "最後の退館者",
+            "rect": {
+              "left": 24,
+              "top": 36,
+              "right": 281,
+              "bottom": 216,
+              "width": 257,
+              "height": 180
+            },
+            "fullyVisible": true
+          },
+          "identity": {
+            "text": "コード goal-014-polish-r1 / preview / iOS build unknown / release-js",
+            "rect": {
+              "left": 37,
+              "top": 243,
+              "right": 268,
+              "bottom": 453,
+              "width": 231,
+              "height": 210
+            },
+            "fullyVisible": true
+          }
+        },
+        "after": {
+          "scroll": {
+            "top": 267,
+            "width": 305,
+            "height": 568,
+            "contentWidth": 305,
+            "contentHeight": 1712
+          },
+          "target": {
+            "text": "最後の退館者",
+            "rect": {
+              "left": 344,
+              "top": 36,
+              "right": 601,
+              "bottom": 216,
+              "width": 257,
+              "height": 180
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-home-320",
+        "after-home-320"
+      ]
+    },
+    {
+      "file": "settings-vibration-320-font2.png",
+      "sha256": "b24292b83bf69dc361765218f5138a8e17ece5576e82e97d990017f3dfee4199",
+      "bytes": 70983,
+      "state": "settings",
+      "anchor": "vibration",
+      "widthPerScreen": 320,
+      "heightPerScreen": 568,
+      "fontScale": 2,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 544,
+            "width": 305,
+            "height": 553,
+            "contentWidth": 359,
+            "contentHeight": 7271
+          },
+          "target": {
+            "text": "ハプティクス",
+            "rect": {
+              "left": 37,
+              "top": 263,
+              "right": 205,
+              "bottom": 361,
+              "width": 168,
+              "height": 98
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        },
+        "after": {
+          "scroll": {
+            "top": 512,
+            "width": 305,
+            "height": 568,
+            "contentWidth": 305,
+            "contentHeight": 7682
+          },
+          "target": {
+            "text": "振動",
+            "rect": {
+              "left": 357,
+              "top": 295,
+              "right": 525,
+              "bottom": 344,
+              "width": 168,
+              "height": 49
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-settings-320",
+        "after-settings-320"
+      ]
+    },
+    {
+      "file": "settings-audio-320-font2.png",
+      "sha256": "39e8d1e09f614a0a1be4119aff31157bff3956303e2695874561f8efad042ce0",
+      "bytes": 49027,
+      "state": "settings",
+      "anchor": "audio",
+      "widthPerScreen": 320,
+      "heightPerScreen": 568,
+      "fontScale": 2,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 3150,
+            "width": 305,
+            "height": 553,
+            "contentWidth": 359,
+            "contentHeight": 7271
+          },
+          "target": {
+            "text": "音",
+            "rect": {
+              "left": 20,
+              "top": 36,
+              "right": 285,
+              "bottom": 91,
+              "width": 265,
+              "height": 55
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        },
+        "after": {
+          "scroll": {
+            "top": 3193,
+            "width": 305,
+            "height": 568,
+            "contentWidth": 305,
+            "contentHeight": 7682
+          },
+          "target": {
+            "text": "音",
+            "rect": {
+              "left": 340,
+              "top": 36,
+              "right": 605,
+              "bottom": 91,
+              "width": 265,
+              "height": 55
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-settings-320",
+        "after-settings-320"
+      ]
+    },
+    {
+      "file": "settings-missing-native-failure-320-font2.png",
+      "sha256": "b91a31c508cc009aa3a2524ebd7ea394ed24008f593617a1c62ddd6aaa98395b",
+      "bytes": 91628,
+      "state": "settings-missing-native",
+      "anchor": "failure",
+      "widthPerScreen": 320,
+      "heightPerScreen": 568,
+      "fontScale": 2,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 3784,
+            "width": 305,
+            "height": 553,
+            "contentWidth": 359,
+            "contentHeight": 7681
+          },
+          "target": {
+            "text": "音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。",
+            "rect": {
+              "left": 37,
+              "top": 112,
+              "right": 268,
+              "bottom": 512,
+              "width": 231,
+              "height": 400
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        },
+        "after": {
+          "scroll": {
+            "top": 3744,
+            "width": 305,
+            "height": 568,
+            "contentWidth": 305,
+            "contentHeight": 7942
+          },
+          "target": {
+            "text": "音を再生できませんでした。音なしで探索を続けられます。",
+            "rect": {
+              "left": 357,
+              "top": 195,
+              "right": 588,
+              "bottom": 445,
+              "width": 231,
+              "height": 250
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-settings-missing-native-320",
+        "after-settings-missing-native-320"
+      ]
+    },
+    {
+      "file": "home-title-390-font1.png",
+      "sha256": "b0da2df12010f12f32447ce2ecb3080c010aa82eb61d88dfeaa8bd56622b4eae",
+      "bytes": 105124,
+      "state": "home",
+      "anchor": "title",
+      "widthPerScreen": 390,
+      "heightPerScreen": 844,
+      "fontScale": 1,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 0,
+            "width": 390,
+            "height": 843,
+            "contentWidth": 390,
+            "contentHeight": 843
+          },
+          "target": {
+            "text": "最後の退館者",
+            "rect": {
+              "left": 24,
+              "top": 178,
+              "right": 366,
+              "bottom": 223,
+              "width": 342,
+              "height": 45
+            },
+            "fullyVisible": true
+          },
+          "identity": {
+            "text": "コード goal-014-polish-r1 / preview / iOS build unknown / release-js",
+            "rect": {
+              "left": 37,
+              "top": 250,
+              "right": 353,
+              "bottom": 292,
+              "width": 316,
+              "height": 42
+            },
+            "fullyVisible": true
+          }
+        },
+        "after": {
+          "scroll": {
+            "top": 0,
+            "width": 390,
+            "height": 761,
+            "contentWidth": 390,
+            "contentHeight": 761
+          },
+          "target": {
+            "text": "最後の退館者",
+            "rect": {
+              "left": 414,
+              "top": 178,
+              "right": 756,
+              "bottom": 223,
+              "width": 342,
+              "height": 45
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-home-390",
+        "after-home-390"
+      ]
+    },
+    {
+      "file": "settings-vibration-390-font1.png",
+      "sha256": "055100c68cc84202e1576a8bdd892d8221c87cc6fcb1dbcc65f46a8776d5c54e",
+      "bytes": 85853,
+      "state": "settings",
+      "anchor": "vibration",
+      "widthPerScreen": 390,
+      "heightPerScreen": 844,
+      "fontScale": 1,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 0,
+            "width": 375,
+            "height": 844,
+            "contentWidth": 375,
+            "contentHeight": 3171
+          },
+          "target": {
+            "text": "ハプティクス",
+            "rect": {
+              "left": 37,
+              "top": 327,
+              "right": 275,
+              "bottom": 352,
+              "width": 238,
+              "height": 25
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        },
+        "after": {
+          "scroll": {
+            "top": 0,
+            "width": 375,
+            "height": 844,
+            "contentWidth": 375,
+            "contentHeight": 3171
+          },
+          "target": {
+            "text": "振動",
+            "rect": {
+              "left": 427,
+              "top": 327,
+              "right": 665,
+              "bottom": 352,
+              "width": 238,
+              "height": 25
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-settings-390",
+        "after-settings-390"
+      ]
+    },
+    {
+      "file": "settings-audio-390-font1.png",
+      "sha256": "3ed4516bdcc5fd297bbec0568167422467bea03eee56ed3cc7274671f47b5fc1",
+      "bytes": 71051,
+      "state": "settings",
+      "anchor": "audio",
+      "widthPerScreen": 390,
+      "heightPerScreen": 844,
+      "fontScale": 1,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 1197,
+            "width": 375,
+            "height": 844,
+            "contentWidth": 375,
+            "contentHeight": 3171
+          },
+          "target": {
+            "text": "音",
+            "rect": {
+              "left": 20,
+              "top": 36,
+              "right": 355,
+              "bottom": 63,
+              "width": 335,
+              "height": 27
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        },
+        "after": {
+          "scroll": {
+            "top": 1197,
+            "width": 375,
+            "height": 844,
+            "contentWidth": 375,
+            "contentHeight": 3171
+          },
+          "target": {
+            "text": "音",
+            "rect": {
+              "left": 410,
+              "top": 36,
+              "right": 745,
+              "bottom": 63,
+              "width": 335,
+              "height": 27
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-settings-390",
+        "after-settings-390"
+      ]
+    },
+    {
+      "file": "settings-missing-native-failure-390-font1.png",
+      "sha256": "59f11bbf0c1c0b068450d91af611183eccad74b5e9fbcf28aee878f918a52682",
+      "bytes": 105716,
+      "state": "settings-missing-native",
+      "anchor": "failure",
+      "widthPerScreen": 390,
+      "heightPerScreen": 844,
+      "fontScale": 1,
+      "comparisonAlignment": "Same semantic text anchor within each actual ScrollView; scroll offsets recorded, no text or geometry replacement.",
+      "metrics": {
+        "before": {
+          "scroll": {
+            "top": 1069,
+            "width": 375,
+            "height": 844,
+            "contentWidth": 375,
+            "contentHeight": 3256
+          },
+          "target": {
+            "text": "音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。",
+            "rect": {
+              "left": 37,
+              "top": 420,
+              "right": 338,
+              "bottom": 495,
+              "width": 301,
+              "height": 75
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        },
+        "after": {
+          "scroll": {
+            "top": 1056,
+            "width": 375,
+            "height": 844,
+            "contentWidth": 375,
+            "contentHeight": 3231
+          },
+          "target": {
+            "text": "音を再生できませんでした。音なしで探索を続けられます。",
+            "rect": {
+              "left": 427,
+              "top": 433,
+              "right": 728,
+              "bottom": 483,
+              "width": 301,
+              "height": 50
+            },
+            "fullyVisible": true
+          },
+          "identity": null
+        }
+      },
+      "records": [
+        "before-settings-missing-native-390",
+        "after-settings-missing-native-390"
+      ]
+    }
+  ],
+  "browserErrors": []
+}

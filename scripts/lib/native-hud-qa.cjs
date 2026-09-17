@@ -35,7 +35,7 @@ function installNativeHudBridge(context) {
   const audio = { DEFAULT_AUDIO_PREFERENCES: { enabled: false, musicVolume: .18, effectsVolume: .35, illusionEnabled: true },
     normalizeAudioPreferences: preferences => ({ enabled: false, musicVolume: .18, effectsVolume: .35, illusionEnabled: true, ...preferences }),
     getGalleryAudioAvailability: () => 'unavailable',
-    createGalleryAudio: () => context.audio ?? { beginEnding() {}, stopMovement() {}, setActive() {}, setPreviewActive() {}, setMusicState() {}, advanceMusic() {}, duckMusic() {}, setEnvironment() {}, setListenerPosition() {}, playIllusion() { return false; }, stopIllusion() {}, updatePreferences() {}, event() { return false; }, movement() {}, actorMovement() {}, dispose() {}, whenReady: () => Promise.resolve(), getDiagnostics: () => ({ availability: 'unavailable', active: false, ready: false, players: 0, playedEvents: 0, droppedEvents: 0 }) } };
+    createGalleryAudio: () => context.audio ?? { beginEnding() {}, stopMovement() {}, setActive() {}, setPreviewActive() {}, setMusicState() {}, advanceMusic() {}, duckMusic() {}, setEnvironment() {}, setListenerPosition() {}, playIllusion() { return false; }, stopIllusion() {}, updatePreferences() {}, event() { return false; }, movement() {}, actorMovement() {}, dispose() {}, whenReady: () => Promise.resolve(), recover: () => Promise.resolve(false), getDiagnostics: () => ({ availability: 'unavailable', active: false, ready: false, players: 0, playedEvents: 0, droppedEvents: 0 }) } };
   const load = Module._load;
   Module._load = function (name, ...args) {
     if (name === 'react-native') return RN;

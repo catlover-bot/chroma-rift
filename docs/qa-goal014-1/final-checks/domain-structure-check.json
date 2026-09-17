@@ -1,0 +1,16 @@
+{
+  "baseline": "393e58e59d73a65455b423d3aba9fdefe6c6d8de",
+  "status": "PASS",
+  "boundary": "AST equality after replacing only Japanese-bearing StringLiteral nodes and source location/comments; internal ASCII strings, identifiers, operators, numeric values and all behavior nodes retained.",
+  "files": [
+    "src/domain/calibration/scoring.ts",
+    "src/domain/stages/departure-control-v1/binding.ts",
+    "src/domain/stages/departure-control-v1/selectors.ts",
+    "src/content/illusionNotes.ts",
+    "src/storage/applicationStorage.ts",
+    "src/storage/firstPersonStorage.ts",
+    "src/storage/chapterOneStorage.ts",
+    "src/storage/moduleStageStorage.ts",
+    "src/storage/stageJournalStorage.ts"
+  ]
+}

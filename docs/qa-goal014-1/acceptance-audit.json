@@ -1,0 +1,606 @@
+{
+  "schemaVersion": 1,
+  "checkedAtUTC": "2026-09-17T11:10:25.137785+00:00",
+  "scope": "Independent bounded read-only product/tool audit; only acceptance reports were written. No tests/export/capture rerun. Completed supplementary UI comparison and resume video independently checked.",
+  "specSha256": "b079e8d3d712b95d990c8ad5ef756cf3fd0be4e25063124de2b8213e4e64144e",
+  "worktree": "/home/mhirotaka/workspace/chroma-rift-goal012",
+  "headAtAudit": "6186a5e5c22718ffd9af57b8236e8ffbf89867cb",
+  "branch": "fix/goal-014-1-audio-and-player-ui",
+  "deviceAcceptance": "PENDING",
+  "releaseReady": false,
+  "newProductDefectsFound": [],
+  "sourceCorrespondence": {
+    "checks": {
+      "final-check": {
+        "record": "docs/qa-goal014-1/final-checks/check-attempt-01.json",
+        "recordSha256": "d159ab91d946ab9fe457e0db179709d353628c98f0aa8926c3f34292abca2982",
+        "counts": {
+          "sourceHashes": 530
+        }
+      },
+      "exports": {
+        "record": "docs/qa-goal014-1/exports/bundles.json",
+        "recordSha256": "69502cd149a69ffe37ce908eeaad02498dd38dc612c0b3f03e3950dab15380d3",
+        "counts": {
+          "sourceHashes": 448,
+          "toolHashes": 6
+        }
+      },
+      "audio": {
+        "record": "docs/qa-goal014-1/audio/verification.json",
+        "recordSha256": "601561f5e148040205045928fcde8772dfb152acb851945c10a9d8080b65b26b",
+        "counts": {
+          "sourceHashesAtPackaging": 20
+        }
+      },
+      "player-ui": {
+        "record": "docs/qa-goal014-1/player-ui/report.json",
+        "recordSha256": "ce1780930d5faa3d2e0995545d7771957de864725ad910a2dc1a52efb36831e3",
+        "counts": {
+          "sourceHashes": 55,
+          "toolHashes": 7
+        }
+      },
+      "r8": {
+        "record": "docs/qa-goal014-1/native-framebuffer/report.json",
+        "recordSha256": "041dc385064b20f28447048c119c29934bcd951088fa2c179a3ac0bb8e8b8b83",
+        "counts": {
+          "sourceHashes": 127
+        }
+      },
+      "hud": {
+        "record": "docs/qa-goal014-1/stage-scene-hud/report.json",
+        "recordSha256": "3cdf4d811bd5bec466ff2585c628f8fecf51f9a892df981269ed24b752986015",
+        "counts": {
+          "sourceHashes": 174,
+          "toolHashes": 4
+        }
+      },
+      "replay": {
+        "record": "docs/qa-goal014-1/app-replay/video-report.json",
+        "recordSha256": "164fb8f8fb5deff1fb13e79d312451f9518a8b9ae301b632fb7622a5952481c4",
+        "counts": {
+          "sourceHashes": 120,
+          "toolHashes": 5
+        }
+      },
+      "ui-comparison": {
+        "record": "docs/qa-goal014-1/player-ui-comparison/report.json",
+        "recordSha256": "dea71665f2228f5f8c355f8bab0d36157ec07444886148965c0090ecd28883ed",
+        "counts": {
+          "currentInputs": 450,
+          "baselineModules": 51,
+          "images": 8,
+          "compressedLogs": 5
+        },
+        "mismatches": []
+      },
+      "player-resume-app": {
+        "record": "docs/qa-goal014-1/player-resume-app/report.json",
+        "recordSha256": "3296ae646c714d36c01c2dbc979e568be1b4052dc6f21c77b216d8a61f261419",
+        "counts": {
+          "sourceHashes": 235,
+          "assetHashes": 28,
+          "toolHashes": 9,
+          "packagedArtifacts": 20,
+          "exactCompressedArtifacts": 6
+        },
+        "phaseHashesVerifiedIndependently": true,
+        "mismatches": [],
+        "manifestSha256": "309076b2202d6163cb3f8c706d443d0201b86be30c371a32d127be7c17077812",
+        "scriptSha256": "843cabca4903ea1e1f576f34678c67d061d68952d6bcf60e57086dc192623157"
+      }
+    },
+    "mismatches": [],
+    "indexedVerification": {
+      "record": "docs/qa-goal014-1/source-correspondence.json",
+      "recordSha256": "e32f607b9143e819f3a441ffc41191454917a2e46224695eab6eec1785c5e2f2",
+      "workingAndIndexBlobs": 532,
+      "unchangedFullCheckInputs": 530,
+      "additionalQAOnlyTools": 2,
+      "committedProductFiles": 455,
+      "productCommit": "6186a5e5c22718ffd9af57b8236e8ffbf89867cb",
+      "baselineProtectedFiles": 6,
+      "baselineAssets": 42,
+      "baseline": "393e58e",
+      "mismatches": []
+    }
+  },
+  "finalAppTrace": {
+    "simulationSeconds": 214.13412931638504,
+    "snapshots": 20,
+    "nativeEvents": 4159,
+    "nativeExecution": false
+  },
+  "requirements": [
+    {
+      "requirement": "0",
+      "title": "開始点・保護対象",
+      "status": "LOCAL_PASS",
+      "finding": "指定worktree/branchで393e58e以後を保持。素材・保護設定の維持、5エリア・r8・保存回帰を確認。別Goal012 worktreeは監査対象外。",
+      "evidence": [
+        "docs/qa-goal014-1/baseline.json",
+        "docs/qa-goal014-1/final-checks/asset-preservation.json",
+        "docs/qa-goal014-1/final-checks/check-attempt-01.json"
+      ]
+    },
+    {
+      "requirement": "1.1–1.2",
+      "title": "事実と仮説の区別",
+      "status": "LOCAL_PASS",
+      "finding": "報告を音楽だけに狭めず、端末音量を原因と断定していない。採用expo-audio57.0.5のSwiftと旧コードから確認した条件を分離。",
+      "evidence": [
+        "docs/AUDIO-TRANSITION-VERIFICATION.md",
+        "docs/qa-goal014-1/audio/verification.json"
+      ],
+      "limit": "実機での直接原因は未確定。"
+    },
+    {
+      "requirement": "2.1",
+      "title": "実Appの全経路",
+      "status": "LOCAL_PASS",
+      "finding": "App/Gate/Screen/controller/owner/director/backend/coordinatorを通す。自然な01→05と結末、保存02–05、設定/ノート/off-on/背景/再開/振り返りを確認。最終実行の時刻は214.134秒、19Screen entry。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz"
+      ],
+      "limit": "GL提示成功とexpo-audio native moduleのみ代替。経路fixtureのseekは即時完了。"
+    },
+    {
+      "requirement": "2.2.1",
+      "title": "共有iOSセッション",
+      "status": "LOCAL_PASS",
+      "finding": "個別pause/終了の100ms後に再生中playerなしなら停止する採用Swiftの条件をfakeで再現。再生中兄弟がある負の対照もある。",
+      "evidence": [
+        "src/audio/__tests__/audioSessionContract.test.ts",
+        "src/audio/testFixtures/sharedNativeAudio.ts",
+        "docs/qa-goal014-1/audio/verification.json"
+      ]
+    },
+    {
+      "requirement": "2.2.2",
+      "title": "古い非同期完了",
+      "status": "LOCAL_PASS",
+      "finding": "旧prepare/seek/fade・逆順・pause/dispose中完了を制御可能なPromiseで検査。epoch/token/generationとleaseの直列操作を確認。",
+      "evidence": [
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/nativeSession.ts",
+        "src/audio/owner.ts"
+      ]
+    },
+    {
+      "requirement": "2.2.3",
+      "title": "同曲再開とnative状態",
+      "status": "LOCAL_PASS",
+      "finding": "同曲IDのみで復旧を断定せずplaying/currentTime/イベントerrorを読む。経路切断後は毎frame再起動せず、明示された復旧で再開する。",
+      "evidence": [
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/musicDirector.ts",
+        "src/audio/nativeBackend.ts"
+      ]
+    },
+    {
+      "requirement": "2.2.4",
+      "title": "完了・保存待ち・次エリア",
+      "status": "LOCAL_PASS",
+      "finding": "actual Appテストはgate.onCompleteの直接呼出しで遷移を代用せず、提示hook・closing tail・保存とScreen cleanupを通る。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz",
+        "src/screens/__tests__/chapterOneAppFlow.test.tsx"
+      ]
+    },
+    {
+      "requirement": "2.2.5",
+      "title": "曲失敗と全音停止の分離",
+      "status": "LOCAL_PASS",
+      "finding": "5秒実時間ロード期限、背景復帰、新しい前景voice、単曲失敗中の環境音/効果音を検査。旧波及と修復順序のRED記録を保持。",
+      "evidence": [
+        "src/audio/__tests__/audioSessionContract.test.ts",
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "docs/qa-goal014-1/audio/red-session-contract.log.gz",
+        "docs/qa-goal014-1/audio/focused-screen-recovery-order-red.log.gz"
+      ]
+    },
+    {
+      "requirement": "2.2.6",
+      "title": "音源IDとsessionの対応",
+      "status": "LOCAL_PASS",
+      "finding": "fixtureは実際の静的28ファイルを個別IDへ対応させ、Jest標準asset=1の混同を防ぐ。Appのstage/campaignArea/runtimeSessionを各入場で検査。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "src/audio/testFixtures/sharedNativeAudio.ts",
+        "src/audio/sources.ts",
+        "docs/qa-goal014-1/exports/bundles.json"
+      ]
+    },
+    {
+      "requirement": "2.2.7",
+      "title": "オフライン同梱",
+      "status": "LOCAL_PASS",
+      "finding": "4exportsで28音源すべてのbytesをmetadata内assetと照合。JS225/225/245 first-party sourceとThree/profileを検査。",
+      "evidence": [
+        "docs/qa-goal014-1/exports/bundles.json"
+      ],
+      "limit": "Hermes/native decoderの実行や聴取の証明ではない。"
+    },
+    {
+      "requirement": "2.2.8",
+      "title": "fade/duck/ending残留",
+      "status": "LOCAL_PASS",
+      "finding": "停止でrequested/completed/duckを戻し、旧ownerのfade/設定更新を拒否。次曲が実際にplayingになるまで旧曲を残す。",
+      "evidence": [
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/__tests__/musicDirector.test.ts",
+        "src/audio/musicDirector.ts"
+      ]
+    },
+    {
+      "requirement": "2.3",
+      "title": "共有セッションの責務と設定尊重",
+      "status": "LOCAL_PASS",
+      "finding": "global操作はcoordinatorに限定、全playerはkeepAudioSessionActive=true。最後のlease、背景、mute/全音量0、disposeで停止。消音尊重、録音/背景再生offを維持。",
+      "evidence": [
+        "src/audio/nativeSession.ts",
+        "src/audio/nativeBackend.ts",
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/__tests__/nativeBackend.test.ts"
+      ]
+    },
+    {
+      "requirement": "2.4",
+      "title": "部分障害とbounded recovery",
+      "status": "LOCAL_PASS",
+      "finding": "単曲voiceの失敗を隔離。owner修復は実修復2回まで・並行呼出しを集約。最大10pool+2music。古い一発音をキューへ蓄積せず設定を保持。",
+      "evidence": [
+        "src/audio/owner.ts",
+        "src/audio/musicDirector.ts",
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/__tests__/owner.test.ts",
+        "src/audio/__tests__/musicDirector.test.ts"
+      ],
+      "limit": "分類不能なSE/環境音API例外はpoolを安全停止して復旧する。asset別の一般的な故障判別まで実装したとは主張しない。"
+    },
+    {
+      "requirement": "2.5",
+      "title": "診断と実聴の区別",
+      "status": "LOCAL_PASS",
+      "finding": "64イベント、160文字、owner/session/generation/source/native status/停止理由/fade/duckを記録。firstAudioFailureはowner破棄後も保持しGL FIRST_FAILUREとは別。buildはsupport wrapperで付加。",
+      "evidence": [
+        "src/audio/diagnostics.ts",
+        "src/platform/supportDiagnostics.ts",
+        "src/audio/__tests__/diagnostics.test.ts",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz"
+      ],
+      "limit": "hearingVerified=false。マイク計測なし。"
+    },
+    {
+      "requirement": "3.1",
+      "title": "実際の文字の棚卸し",
+      "status": "LOCAL_PASS",
+      "finding": "Text/a11y/Alert、動的reason/保存通知、3Dマスク、preview/productionと内部・権利の区分を旧→新の出典表で記録。",
+      "evidence": [
+        "docs/PLAYER-TEXT-AUDIT.md",
+        "src/screens/__tests__/playerTextAudit.test.tsx",
+        "src/screens/__tests__/playerTextStaticAudit.test.ts"
+      ]
+    },
+    {
+      "requirement": "3.2",
+      "title": "日本語と状態の意味",
+      "status": "LOCAL_PASS",
+      "finding": "PLAYER_TEXTと既存typed selectorへ整理。振動/音/保存再開の表現を修正。拒否・成功の具体性を維持。storageの変更は表示文字でcodec/鍵/数値を変えない。",
+      "evidence": [
+        "src/app/playerText.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/storage/applicationStorage.ts",
+        "docs/PLAYER-TEXT-AUDIT.md",
+        "docs/qa-goal014-1/final-checks/check-attempt-01.json"
+      ]
+    },
+    {
+      "requirement": "3.3",
+      "title": "通常導線と開発導線の分離",
+      "status": "LOCAL_PASS",
+      "finding": "ホームmarkerを除去。Development Build説明を通常画面から除き、devToolsはDEVの明示support経路だけ。未提供の連絡先・公開準備を捏造しない。",
+      "evidence": [
+        "src/screens/ChapterOneHomeScreen.tsx",
+        "src/screens/SettingsScreen.tsx",
+        "App.tsx",
+        "src/screens/__tests__/playerSupport.test.tsx",
+        "docs/qa-goal014-1/exports/bundles.json"
+      ]
+    },
+    {
+      "requirement": "3.4",
+      "title": "例外・3D文字・保存識別子",
+      "status": "LOCAL_PASS",
+      "finding": "ロゴ、VoiceOver、権利正式名/URL、明示診断だけを文脈例外にする。18施設掲示+3行先マスクは日本語で生成一致。保存enum/testID/正解は保持。",
+      "evidence": [
+        "docs/PLAYER-TEXT-AUDIT.md",
+        "src/rendering/firstPerson/facilitySignData.ts",
+        "src/rendering/firstPerson/destinationSignData.ts",
+        "docs/qa-goal014-1/final-checks/domain-facility-signs.log.gz",
+        "docs/qa-goal014-1/final-checks/domain-destination-signs.log.gz"
+      ]
+    },
+    {
+      "requirement": "4",
+      "title": "明示サポート・保持・privacy",
+      "status": "LOCAL_PASS",
+      "finding": "設定→サポート→詳しい情報→コピー。初期closed、copy時refresh、closeでraw Textをunmount。previewのDEV=falseも有効、productionは要約。再試行上限後→ホーム→設定で最初のGL失敗と保存進行を保持。URL/credential/email/user path/UUIDをsanitizeし送信しない。",
+      "evidence": [
+        "src/screens/__tests__/playerSupport.test.tsx",
+        "src/screens/__tests__/chapterOneAppFlow.test.tsx",
+        "src/screens/__tests__/nativeGateSupport.test.tsx",
+        "src/platform/diagnosticText.ts",
+        "src/platform/supportDiagnostics.ts",
+        "src/screens/SupportInformation.tsx",
+        "src/audio/__tests__/diagnostics.test.ts"
+      ],
+      "limit": "失敗記録は同じapp process内のboundedメモリー保持。アプリ終了後の永続ログとは主張しない。"
+    },
+    {
+      "requirement": "5.1.1",
+      "title": "全5エリアの3音種",
+      "status": "LOCAL_PASS",
+      "finding": "実Appの各entryで音楽/室内音、自然経路で効果音、05屋外、結末を別assert。ホーム54秒境界も超える。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz"
+      ]
+    },
+    {
+      "requirement": "5.1.2",
+      "title": "02–05直接保存再開",
+      "status": "LOCAL_PASS",
+      "finding": "自然runが作った保存を隔離storageへ再読込し実Appの続きから入場。各音楽/環境音と実touch移動の足音を確認。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz"
+      ]
+    },
+    {
+      "requirement": "5.1.3",
+      "title": "実App遷移とcleanup",
+      "status": "LOCAL_PASS",
+      "finding": "次controllerをtest側で作る代用をしない。Screen unmount後の旧player解放と次owner一つを検査。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz"
+      ]
+    },
+    {
+      "requirement": "5.1.4",
+      "title": "非同期順序",
+      "status": "LOCAL_PASS",
+      "finding": "旧prepare、seek逆順、pause/dispose中完了、旧fade更新、global false→trueを制御して検査。",
+      "evidence": [
+        "src/audio/__tests__/audioRecovery.test.ts"
+      ]
+    },
+    {
+      "requirement": "5.1.5",
+      "title": "共有native契約fake",
+      "status": "LOCAL_PASS",
+      "finding": "全player registry、100msの条件付きsession停止、buffering、global操作、OS interruption/routeをモデル化。採用Swiftとの対応を文書化。",
+      "evidence": [
+        "src/audio/__tests__/audioSessionContract.test.ts",
+        "src/audio/testFixtures/sharedNativeAudio.ts",
+        "docs/AUDIO-TRANSITION-VERIFICATION.md"
+      ],
+      "limit": "常時成功のno-opではないがAVFoundationの実行ではない。"
+    },
+    {
+      "requirement": "5.1.6",
+      "title": "SE終了と曲変更",
+      "status": "LOCAL_PASS",
+      "finding": "SE終了時にplaying siblingが残る負の対照、音楽失敗/変更中に正常poolが使えるassertを保持。",
+      "evidence": [
+        "src/audio/__tests__/audioSessionContract.test.ts",
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/__tests__/musicDirector.test.ts"
+      ]
+    },
+    {
+      "requirement": "5.1.7",
+      "title": "単曲失敗・backend障害",
+      "status": "LOCAL_PASS",
+      "finding": "ロード期限で曲だけ解放しpool10/音楽0を検査。backend失敗は停止・2回制限・最初の原因保持を検査。",
+      "evidence": [
+        "src/audio/__tests__/audioSessionContract.test.ts",
+        "src/audio/__tests__/audioRecovery.test.ts"
+      ]
+    },
+    {
+      "requirement": "5.1.8",
+      "title": "メニュー・背景・音off/on",
+      "status": "LOCAL_PASS",
+      "finding": "実Appメニューの停止/再開と保存維持、ownerの遅い一発音無効化、重複voiceと設定初期化なしを検査。",
+      "evidence": [
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/__tests__/owner.test.ts",
+        "src/screens/__tests__/galleryManipulationScreen.test.tsx"
+      ]
+    },
+    {
+      "requirement": "5.1.9",
+      "title": "独立音量・控えめ",
+      "status": "LOCAL_PASS",
+      "finding": "音楽0/環境音0/効果音0/全offの独立性、既存zero移行、控えめ/illusion off、無音を障害扱いしない表示を検査。",
+      "evidence": [
+        "src/audio/__tests__/musicDirector.test.ts",
+        "src/audio/__tests__/owner.test.ts",
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/screens/__tests__/playerSupport.test.tsx"
+      ]
+    },
+    {
+      "requirement": "5.1.10",
+      "title": "曲終端・壁の足音",
+      "status": "LOCAL_PASS",
+      "finding": "探索88秒×2超の180秒、ending62秒超、buffering fadeを検査。壁押し移動0/teleport/stale sessionで足音なし。",
+      "evidence": [
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/audio/__tests__/owner.test.ts",
+        "src/rendering/firstPerson/__tests__/galleryController.test.ts"
+      ]
+    },
+    {
+      "requirement": "5.1.11",
+      "title": "全audio asset同梱",
+      "status": "LOCAL_PASS",
+      "finding": "preview Hermes/preview JS/production JS/development JSの全28 static audioのhash照合。",
+      "evidence": [
+        "docs/qa-goal014-1/exports/bundles.json"
+      ]
+    },
+    {
+      "requirement": "5.1.12",
+      "title": "10回超の解放",
+      "status": "LOCAL_PASS",
+      "finding": "独立owner12回＋実App19entry。player最大12、終了時owner/player/subscription/lease/pending operation/RAF/AppState listener0。",
+      "evidence": [
+        "src/audio/__tests__/audioRecovery.test.ts",
+        "src/screens/__tests__/chapterAudioAppLifecycle.test.tsx",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz"
+      ]
+    },
+    {
+      "requirement": "5.2",
+      "title": "日本語・公開UI回帰",
+      "status": "LOCAL_PASS",
+      "finding": "AST静的検査と実Text/a11y/Alert採集を併用。preview/production、4調整結果、正常/故障/移行/結末、5エリアHUD102条件、設定32条件を検査。small/font2でbutton範囲・wrap・scrollを測定。",
+      "evidence": [
+        "docs/PLAYER-TEXT-AUDIT.md",
+        "src/screens/__tests__/playerTextStaticAudit.test.ts",
+        "src/screens/__tests__/playerTextAudit.test.tsx",
+        "docs/qa-goal014-1/player-ui/report.json",
+        "docs/qa-goal014-1/stage-scene-hud/report.json",
+        "docs/qa-goal014-1/final-checks/check-attempt-01.json"
+      ],
+      "limit": "CSS/React host測定はnative Yoga/VoiceOverの実機評価を代替しない。全状態を静的deny一つで網羅したとも主張しない。"
+    },
+    {
+      "requirement": "5.3",
+      "title": "基盤・全体check・依存",
+      "status": "LOCAL_PASS",
+      "finding": "134suites/1327tests、lint/type/iOS export成功。530入力不変。3platform253modules/764edges、cycles/errors0。Three単一/profile/r8/保存/完結/replay分離を確認。npm ls成功。Doctor20/21はExpo57.0.22→~57.0.23の1patch、auditはmoderate11件を残す。",
+      "evidence": [
+        "docs/qa-goal014-1/final-checks/check-attempt-01.json",
+        "docs/qa-goal014-1/final-checks/runtime-cycles.json.gz",
+        "docs/qa-goal014-1/final-checks/environment.json",
+        "docs/qa-goal014-1/native-framebuffer/report.json",
+        "docs/qa-goal014-1/exports/bundles.json"
+      ],
+      "limit": "Doctor/auditは未合格。これらを全合格と表記しない。"
+    },
+    {
+      "requirement": "6.1",
+      "title": "01→02→03・音owner記録・UI比較",
+      "status": "LOCAL_PASS",
+      "finding": "実App音声traceと5エリアreplayのsource一致。393e58eの51-module git blob closureと現在55moduleの実Home/Settingsを同幅・同文字倍率・preview/DEV=falseで比較した8画像が完成。450現在入力、51基準module、8画像、5圧縮ログを再照合し一致。",
+      "evidence": [
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz",
+        "docs/qa-goal014-1/app-replay/video-report.json",
+        "docs/PLAYER-TEXT-AUDIT.md",
+        "docs/qa-goal014-1/player-ui-comparison/report.json",
+        "docs/qa-goal014-1/player-ui-comparison/verification.json"
+      ],
+      "limit": "比較は実componentのCSS代替でApp navigation/native Yogaではない。replay動画の手動gate境界と音声testの実App境界を区別。"
+    },
+    {
+      "requirement": "6.2",
+      "title": "04→05→退館・結末、pause/直接再開",
+      "status": "LOCAL_PASS",
+      "finding": "04→05→屋外→実App終了カードの46.4秒clipを保持。追加の18.4秒/92frameは実Appの自然01→02→03、一時停止/再開/ホーム、実保存02の別process再開。直接完了callbackなし。235source/28asset/9tool、20成果物、6展開JSON/logを独立照合し一致。pause12frameでカメラ不変・行列更新0・再生0、再開後同じcontroller/owner。",
+      "evidence": [
+        "docs/qa-goal014-1/app-replay/04-to-05-to-ending.mp4",
+        "docs/qa-goal014-1/final-checks/app-audio.json.gz",
+        "docs/qa-goal014-1/player-resume-app/README.md",
+        "docs/qa-goal014-1/player-resume-app/report.json",
+        "docs/qa-goal014-1/player-resume-app/summary.json",
+        "docs/qa-goal014-1/player-resume-app/manifest.json"
+      ],
+      "limit": "追加動画は116.635秒のsimulationから探索を省略した抽出映像。GL/CSS・native音状態fixtureで、無音。元のending2カードは3秒ずつの明示static hold。"
+    },
+    {
+      "requirement": "6.3–6.4",
+      "title": "通常UIとsupport・小画面",
+      "status": "LOCAL_PASS",
+      "finding": "preview/productionの閉→開→copy/closeはtestと32case画像。HUD102caseのfont2/small表示を含む。",
+      "evidence": [
+        "docs/qa-goal014-1/player-ui/report.json",
+        "docs/qa-goal014-1/stage-scene-hud/report.json",
+        "src/screens/__tests__/playerSupport.test.tsx"
+      ]
+    },
+    {
+      "requirement": "7",
+      "title": "成果物・引き渡し・判定",
+      "status": "LOCAL_PASS",
+      "finding": "必須3文書・QA・現行marker/branch/手動supportのiPhone手順を確認。530全検証入力不変、追加2QA toolは個別lint/capture済み。532ファイルをworking bytesとGit index blobで独立照合、製品455ファイルは6186a5e、保護6ファイルと素材42件は393e58eと一致。",
+      "evidence": [
+        "docs/GOAL-014-1.md",
+        "docs/AUDIO-TRANSITION-VERIFICATION.md",
+        "docs/PLAYER-TEXT-AUDIT.md",
+        "docs/IPHONE_VALIDATION.md",
+        "docs/qa-goal014-1/source-correspondence.json"
+      ],
+      "limit": "DEVICE_ACCEPTANCE=PENDING / RELEASE_READY=false。最終QA manifest生成・文書commit・clean HEAD検証はrootの最終処理で、この監査時点の完了とは主張しない。新しい同梱JSを届けるpreview更新が必要。"
+    },
+    {
+      "requirement": "8",
+      "title": "採用版の一次出典",
+      "status": "LOCAL_PASS",
+      "finding": "native pause/deactivateSession/currentStatus/updateStatusを採用Swiftで照合。検証記録のSwift source hashは現在node_modulesとも一致。",
+      "evidence": [
+        "src/audio/nativeBackend.ts",
+        "docs/qa-goal014-1/audio/verification.json"
+      ],
+      "limit": "採用版sourceと契約fixtureの対応であり、インストール済み端末binaryを検証したものではない。"
+    }
+  ],
+  "openItems": [],
+  "resumeVideoAudit": {
+    "method": "Read actual authoring script and compressed phase reports/animations; hash source maps independently before merging; inspect selected images; no capture rerun.",
+    "manualGateCompletion": false,
+    "processIds": [
+      401113,
+      401163
+    ],
+    "totalSimulatedSeconds": 116.63464220585882,
+    "videoSeconds": 18.4,
+    "videoFrames": 92,
+    "fps": 5,
+    "omittedExplorationDisclosed": true,
+    "coldInputCampaignSha256": "1a5cca1435348dd999b35d47e54bd3e42946a9e66af3bb77d7c601b548b5474e",
+    "coldCheckpoint": "Snapshot of actual fresh App area02 save before that process later completed02 to03.",
+    "pausedInStageFrames": 12,
+    "pausedCameraMatrixUnchanged": true,
+    "pausedMatrixUpdateCount": 0,
+    "pausedPlayingFixturePlayers": 0,
+    "sameControllerAndAudioOwnerAfterResumeAsserted": true,
+    "peakFixturePlayers": [
+      12,
+      11
+    ],
+    "imagesInspected": [
+      "player-resume-app/02-paused.png",
+      "player-resume-app/cold-02-restored.png",
+      "player-resume-app/02-to-03.png"
+    ],
+    "boundary": "Successful GL readiness/presentation substituted; actual Three scene and React hosts replayed with SwiftShader/CSS. Shared native audio status fixture with immediate seek; movie silent, no native Yoga/AVFoundation/hearing evidence.",
+    "explicitPausedPoseAndPlayerBoundGuards": true
+  },
+  "finalPackagingByRoot": {
+    "statusAtAudit": "PENDING",
+    "actions": [
+      "Generate overall QA manifest including these acceptance reports.",
+      "Commit QA/documentation.",
+      "Verify final HEAD, manifest and clean worktree read-only."
+    ],
+    "reason": "Avoid a self-reference cycle: this report records current indexed source bytes and known implementation commits; final packaging identity is reported by root after commit."
+  }
+}
