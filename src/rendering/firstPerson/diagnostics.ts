@@ -1,3 +1,4 @@
+import { boundedDiagnosticText } from '../../platform/diagnosticText';
 import * as THREE from 'three';
 import type { NativeDefaultFramebufferAdapter } from './nativeDefaultFramebuffer';
 import { createGlTraceRecord, createNativeGlObserver, type GlTraceRecord, type NativeGlObserver } from './nativeGlObserver';
@@ -9,6 +10,7 @@ import { stageInputPolicy } from '../../domain/stageKit/modules';
 import type { PlayerPose, WorldGeometry } from '../../domain/firstPerson/types';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
+export { boundedDiagnosticText } from '../../platform/diagnosticText';
 export { DIAGNOSTIC_REVISION } from '../../platform/buildIdentity';
 
 export type DiagnosticSceneMode = 'chapter' | 'lab' | 'proof' | 'raw-gl';
@@ -79,20 +81,6 @@ export function createFirstPersonDiagnostics(sceneMode: DiagnosticSceneMode = 'c
   };
 }
 
-/** Diagnostics contain authored scene coordinates, counters and bounded logs.
- * Do not copy process/env/native identifiers into this document. */
-export function boundedDiagnosticText(value: unknown, maxLength = 1600): string {
-  return String(value ?? '')
-    .replace(/[a-z][a-z0-9+.-]*:\/\/[^\s)]+/gi, '[url]')
-    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '[email]')
-    .replace(/[A-Z]:[\\/]Users[\\/][^\\/\s]+/gi, '[user]')
-    .replace(/\/home\/[^/\s]+/g, '[user]')
-    .replace(/\/Users\/[^/\s]+/g, '[user]')
-    .replace(/\/var\/mobile\/[^\s)]+/g, '[device-path]')
-    .replace(/\b(?:Bearer|token|api[_-]?key)\s*[:= ]\s*[^\s,;]+/gi, '[credential]')
-    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '[identifier]')
-    .slice(0, maxLength);
-}
 export function recordDiagnosticError(record: FirstPersonDiagnostics, error: unknown, phase: string, componentStack?: string | null): void {
   if (record.lastError) return;
   record.lastError = {

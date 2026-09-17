@@ -34,7 +34,7 @@ it('checks the installed module name before importing the package and requests p
   expect(mockOptionalModule.mock.invocationCallOrder[0]).toBeLessThan(mockAudioImport.mock.invocationCallOrder[0]!);
   await backend.prepare(); backend.createPlayer('interaction');
   expect(mockSetAudioMode).toHaveBeenCalledWith({ playsInSilentMode: false, allowsRecording: false, allowsBackgroundRecording: false, shouldPlayInBackground: false, shouldRouteThroughEarpiece: false, interruptionMode: 'mixWithOthers' });
-  expect(mockCreatePlayer).toHaveBeenCalledWith(expect.anything(), { updateInterval: 1000, keepAudioSessionActive: false });
+  expect(mockCreatePlayer).toHaveBeenCalledWith(expect.anything(), { updateInterval: 1000, keepAudioSessionActive: true });
 });
 
 it('turns a failed probe into an unavailable audio backend without throwing or importing it', () => {

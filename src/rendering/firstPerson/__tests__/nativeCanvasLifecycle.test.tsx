@@ -602,7 +602,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       const native = rendererRoot(renderer).store.getState();
       jest.spyOn(native.clock, 'getDelta').mockReturnValue(.05);
       const event = jest.fn();
-      controller.audio = { event, setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), beginEnding: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), movement: jest.fn(), setActive: jest.fn(), dispose: jest.fn() } as unknown as NonNullable<typeof controller.audio>;
+      controller.audio = { event, setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), beginEnding: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), movement: jest.fn(), setActive: jest.fn(), recover: jest.fn().mockResolvedValue(false), dispose: jest.fn() } as unknown as NonNullable<typeof controller.audio>;
       expect(theatreAction(controller, { type: 'lower-curtain' })).toBe(true);
       expect(createCheckpoint(controller.runtime).progress.theatre).toMatchObject({ curtainAccepted: true, passageSealed: false, completed: false });
       const curtain = native.scene.getObjectByName('theatre-fire-curtain')!;
@@ -670,7 +670,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
 
   it.each(['success', 'render failure', 'presentation failure'] as const)('saves the vault exit immediately and presents its shared gate travel before one impact: %s', async outcome => {
     const controller = createController(vaultCheckpoint('rod', 109, 'exit'));
-    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), recover: jest.fn().mockResolvedValue(false), getDiagnostics: jest.fn() };
     controller.audio = audio;
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
     const view = await render(<FirstPersonCanvas {...current} />);
@@ -1643,7 +1643,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     controller.runtime.pose = { position: { x: 0, y: 1.6, z: 7 }, yaw: Math.PI, pitch: 0 };
     controller.runtime.gallery!.serviceDoorOpen = 1;
     Object.assign(controller.runtime.gallery!.actor, { position: { x: 4, y: 0, z: 14 }, phase: 'patrol', routeIndex: 3, startupGrace: 0, contactCooldown: 0, visible: true });
-    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), recover: jest.fn().mockResolvedValue(false), getDiagnostics: jest.fn() };
     controller.audio = audio;
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
     const view = await render(<FirstPersonCanvas {...current} />);
@@ -1720,7 +1720,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     Object.assign(g.story, { crossingStarted: true, crossingPresented: true, serviceWarned: true });
     controller.runtime.pose = { position: { x: 4, y: 1.6, z: 24 }, yaw: 0, pitch: 0 };
     controller.runtime.gallery!.wiringDoorOpen = controller.runtime.gallery!.serviceDoorOpen = controller.runtime.doorExitOpen = 1;
-    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+    const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), recover: jest.fn().mockResolvedValue(false), getDiagnostics: jest.fn() };
     controller.audio = audio;
     const current = { ...props(), controller, snapshot: controllerSnapshot(controller) };
     const view = await render(<FirstPersonCanvas {...current} />);

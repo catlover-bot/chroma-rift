@@ -20,10 +20,12 @@ export function ChapterMusic({ state, preferences }: { state: Extract<MusicState
       audio.advanceMusic(last === undefined ? 0 : Math.max(0, Math.min(.05, (time - last) / 1000)), session);
       last = time; frame = requestAnimationFrame(tick);
     };
-    audio.setActive(active);
+    audio.setActive(active, active ? 'active' : 'background');
     if (active) frame = requestAnimationFrame(tick);
     const sub = AppState.addEventListener('change', next => {
-      active = next === 'active'; audio.setActive(active);
+      if (!mounted) return;
+      active = next === 'active'; audio.setActive(active, active ? 'active' : 'background');
+      if (active) void audio.recover('foreground');
       if (frame !== undefined) cancelAnimationFrame(frame);
       frame = undefined; last = undefined;
       if (active && mounted) frame = requestAnimationFrame(tick);

@@ -8,6 +8,8 @@ export { selectChapterMusicState } from './musicState';
 export type { ChapterMusicContext } from './musicState';
 export type { MusicState } from './types';
 export { getGalleryAudioAvailability } from './nativeBackend';
+export { getAudioSupportSnapshot } from './diagnostics';
+export type { AudioFailure, AudioDiagnosticEvent } from './diagnostics';
 export type { AudioAvailability, AudioPosition, GalleryAudio, GalleryAudioOptions, GallerySoundEvent } from './types';
 
 export function createGalleryAudio(options: GalleryAudioOptions): GalleryAudio {

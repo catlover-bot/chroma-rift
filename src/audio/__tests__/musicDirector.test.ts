@@ -66,12 +66,14 @@ it('does not start an unloaded music voice late after disposal or queue a seek c
 });
 
 it('times out unloaded sources and owns players before a native setter throws', () => {
+  let now = 1000; const clock = jest.spyOn(Date, 'now').mockImplementation(() => now);
   const h = harness(); h.music.setState('exploration');
   (h.backend.createPlayer as jest.Mock).mockImplementationOnce(() => {
     const player = { isLoaded: false, volume: 0, loop: false, play: jest.fn(), pause: jest.fn(), release: jest.fn(), seekTo: jest.fn() };
     h.players.push({ ...player, source: 'exploration' }); return h.players[h.players.length - 1];
   });
-  h.advance(6); expect(h.failed).toHaveBeenCalledTimes(1); expect(h.live()).toHaveLength(0);
+  h.advance(6); expect(h.failed).not.toHaveBeenCalled();
+  now += 5001; h.music.advance(0); clock.mockRestore(); expect(h.failed).toHaveBeenCalledTimes(1); expect(h.live()).toHaveLength(0);
   const broken = harness(); const release = jest.fn();
   (broken.backend.createPlayer as jest.Mock).mockReturnValue({ set volume(_value: number) { throw new Error('native setter'); }, pause: jest.fn(), release });
   broken.music.setState('title_theme'); broken.advance(.1);

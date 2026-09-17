@@ -15,7 +15,7 @@ function setup() {
   c.runtime.pose = { position: { x: 4, y: 1.6, z: 15.8 }, yaw: Math.PI, pitch: 0 };
   Object.assign(c.runtime.gallery!.actor, { position: { x: 4, y: 0, z: 16.3 }, phase: 'approach', routeIndex: 5, startupGrace: 0, contactCooldown: 0, visible: true, yaw: 0 });
   syncCamera(c, camera);
-  const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
+  const audio = { event: jest.fn(), dispose: jest.fn(), setActive: jest.fn(), recover: jest.fn().mockResolvedValue(true), setPreviewActive: jest.fn(), setMusicState: jest.fn(), advanceMusic: jest.fn(), duckMusic: jest.fn(), setEnvironment: jest.fn(), playIllusion: jest.fn(), stopIllusion: jest.fn(), beginEnding: jest.fn(), updatePreferences: jest.fn(), movement: jest.fn(), actorMovement: jest.fn(), stopMovement: jest.fn(), setListenerPosition: jest.fn(), whenReady: jest.fn().mockResolvedValue(undefined), getDiagnostics: jest.fn() };
   c.audio = audio;
   return { c, camera, audio };
 }
