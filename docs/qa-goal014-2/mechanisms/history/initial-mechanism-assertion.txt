@@ -1,0 +1,27 @@
+FAIL src/rendering/firstPerson/__tests__/readableMechanisms.test.tsx
+  ● rendered grate steel matches collision/LOS parts and its lift cable stays attached at every opening height
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 7.3
+    Received: 7.300000000000001
+
+      70 |       const cable = named(root,'grate-moving-lift-cable'), attachment = new Box3().setFromObject(named(root,'grate-cable-attachment'));
+      71 |       expect(attachment.expandByScalar(1e-6).containsPoint(endpoint(cable,1))).toBe(true);
+    > 72 |       expect(endpoint(cable,-1).y).toBe(MIRROR_LAYOUT.gate.pulleyY);
+         |                                    ^
+      73 |       expect(stageWorld(ratchets!,true,true,null,undefined,lift).solids.find(solid => solid.id==='isolation-grate')?.opaque).toBe(false);
+      74 |     }
+      75 |     state.ratchets=2; state.gateLift=1.8; state.holding='winch'; state.holdSeconds=1; update(root);
+
+      at Object.toBe (src/rendering/firstPerson/__tests__/readableMechanisms.test.tsx:72:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS src/domain/__tests__/goal014SafetyCompatibility.test.tsx
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 failed, 24 passed, 25 total
+Snapshots:   0 total
+Time:        3.458 s
+Ran all test suites within paths "src/rendering/firstPerson/__tests__/readableMechanisms.test.tsx", "src/domain/__tests__/goal014SafetyCompatibility.test.tsx".

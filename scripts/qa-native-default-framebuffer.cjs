@@ -26,9 +26,13 @@ const RC = require('../src/rendering/firstPerson/runtimeController.ts');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
 const { StageScene } = require('../src/domain/stages/mirror-corridor-v1/scene.tsx');
 const { MIRROR_CENTER } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
+const { isSafePose } = require('../src/domain/firstPerson/geometry.ts');
+const BACK_CAMERA_POSITION = { x: -2.45, y: 1.6, z: 13 };
 
 async function extractScene() {
   const controller = RC.createController(undefined, false, true, 'mirror-corridor-v1');
+  if (!isSafePose({ position: BACK_CAMERA_POSITION, yaw: 0, pitch: 0 }, RC.worldForController(controller)))
+    throw Error('Backside fixture camera is not physically legal');
   const camera = new NodeThree.PerspectiveCamera(65, 390 / 844, .08, 60);
   RC.syncCamera(controller, camera);
   const runtime = { current: controller.runtime }, resources = createSceneResources(false, null, true);
@@ -149,7 +153,7 @@ function browserProgram() {
       if (pose === 'supplied-r7') {
         camera.position.set(0, 1.6, 2.5); camera.rotation.set(0, Math.PI, 0, 'YXZ');
       } else {
-        const [x, z] = pose === 'front' ? [-1.433, 10.866] : [-2.45, 7.5];
+        const [x, z] = pose === 'front' ? [-1.433, 10.866] : [config.backCameraPosition.x, config.backCameraPosition.z];
         const dx = config.mirrorCenter.x - x, dz = config.mirrorCenter.z - z;
         camera.position.set(x, 1.6, z);
         camera.rotation.set(Math.atan2(config.mirrorCenter.y - 1.6, Math.hypot(dx, dz)), Math.atan2(-dx, -dz), 0, 'YXZ');
@@ -157,6 +161,11 @@ function browserProgram() {
       camera.aspect = width / height; camera.updateProjectionMatrix(); camera.updateMatrixWorld(true); scene.updateMatrixWorld(true);
       const frustum = new THREE.Frustum().setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
       const visible = frustum.intersectsObject(surface);
+      // Measure the actual rendered plane. An old booth fixture moved to the
+      // front side when the mirror was angled toward legal work positions.
+      const planeNormal = new THREE.Vector3(0, 0, 1).transformDirection(surface.matrixWorld);
+      const planeSide = new THREE.Vector3().subVectors(camera.position, surface.getWorldPosition(new THREE.Vector3())).dot(planeNormal);
+      if (pose === 'back') assert(planeSide < -.02 && visible, 'Back fixture must face the visible back of the actual mirror plane');
       phase = 'reflection';
       const reflected = visible && mirror.render(renderer, scene, camera, surface, (r, s, c) => {
         counts.reflection += 1; r.render(s, c); sample('reflection'); phase = 'restore';
@@ -182,7 +191,7 @@ function browserProgram() {
       rawBind.call(gl, gl.DRAW_FRAMEBUFFER, logicalDraw === null ? fixtureFbo : logicalDraw);
       counts.presentationReturns += 1; sample('presentation');
       result = { name, fixed, trace, pose, setup, camera: { position: camera.position.toArray(), yaw: camera.rotation.y, pitch: camera.rotation.x },
-        visible, reflected, material: surface.material.name, target: { width: mirror.target.width, height: mirror.target.height,
+        visible, planeSide, reflected, material: surface.material.name, target: { width: mirror.target.width, height: mirror.target.height,
           samples: mirror.target.samples, type: mirror.target.texture.type, format: mirror.target.texture.format },
         counts, samples, nativeCalls, traceEvents, adapterSnapshot: adapter?.snapshot(),
         observerEvidence: { fixture: 'Minimal diagnostic record: real createGlTraceRecord(), empty glErrors, frameSequence=1',
@@ -242,7 +251,7 @@ async function main() {
     const compiled = ts.transpileModule(source, { fileName: filename, compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
     fs.writeFileSync(path.join(out, name + '.js'), compiled.replace("from 'three'", "from './three.module.js'"));
   }
-  fs.writeFileSync(path.join(out, 'config.json'), JSON.stringify({ mirrorCenter: MIRROR_CENTER }));
+  fs.writeFileSync(path.join(out, 'config.json'), JSON.stringify({ mirrorCenter: MIRROR_CENTER, backCameraPosition: BACK_CAMERA_POSITION }));
   fs.writeFileSync(path.join(out, 'index.html'), '<!doctype html><meta charset="utf-8"><style>body{margin:0}canvas{display:block}</style><script type="module">\n' +
     "import * as THREE from './three.module.js';\nimport {createPlanarMirror} from './planarMirror.js';\nimport * as adapterModule from './nativeDefaultFramebuffer.js';\nimport * as observerModule from './nativeGlObserver.js';\n" +
     '(' + browserProgram.toString() + ')();\n</script>');
@@ -277,7 +286,7 @@ async function main() {
       ? result.traceEvents.length === Math.min(64, 2 * (result.adapterSnapshot.bindCalls + result.adapterSnapshot.drawBuffersCalls))
       : result.traceEvents.length === 0),
     fixedFrontReflection: fixed.filter(result => result.pose === 'front').every(result => result.reflected && result.counts.reflection === 1),
-    fixedBackSkipped: fixed.filter(result => result.pose === 'back').every(result => !result.reflected && result.counts.reflection === 0 && result.material === 'chroma-rift-mirror-unavailable'),
+    fixedBackSkipped: fixed.filter(result => result.pose === 'back').every(result => result.planeSide < -.02 && !result.reflected && result.counts.reflection === 0 && result.material === 'chroma-rift-mirror-unavailable'),
     oneMainAndFixturePresentation: results.every(result => result.counts.main === 1 && result.counts.presentation === 1 && result.counts.presentationReturns === 1),
     traceDoesNotChangeOutput: ['front', 'supplied-r7', 'back'].every(pose => {
       const [off, on] = fixed.filter(result => result.pose === pose && result.name.startsWith('fixed-'));

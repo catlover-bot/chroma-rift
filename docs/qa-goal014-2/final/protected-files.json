@@ -1,0 +1,19 @@
+{
+  "baseline": {
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  },
+  "final": {
+    "package.json": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+    "package-lock.json": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+    "app.json": "9bcb622faba8f02aae5b1036bee4193873ea965ef1a3961deebf12b24508c2f4",
+    "eas.json": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+    "metro.config.js": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+    "metro/withNativeThree.js": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+  },
+  "allSixByteEqual": true
+}

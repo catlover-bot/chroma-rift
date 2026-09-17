@@ -1,0 +1,12 @@
+{
+  "command": "npm run check",
+  "exitCode": 0,
+  "elapsedSeconds": 634.6741912549915,
+  "sourceFileCount": 538,
+  "sourcesUnchanged": false,
+  "changedFiles": [
+    "scripts/qa-goal014-common-tape-capture.cjs",
+    "scripts/qa-native-default-framebuffer.cjs",
+    "scripts/qa-goal014-common-tape.cjs"
+  ]
+}

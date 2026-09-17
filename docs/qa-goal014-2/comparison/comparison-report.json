@@ -1,0 +1,6006 @@
+{
+  "schemaVersion": 1,
+  "scope": "Same authored byte-for-byte literal controller operations, checkpoint start, standard quality, subdued intensity, viewport and FOV. Current/baseline controller successes and refusals are retained. Actual ChapterScene/actor/mirror rendering in software WebGL; no native UI, GL presentation or human play/listening claim.",
+  "baselineRevision": "5bd34f26b65558e8da1cffd9d22ee93c0db78258",
+  "mirrorSourceSha256": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5",
+  "captureScriptSha256": "003f1d3a50eeaa71affeb4bc49d4de58c6066c2708a60e4edb7b222a6dcb2889",
+  "sourceGuardPassed": true,
+  "reports": [
+    {
+      "area": "04",
+      "frames": 166,
+      "videoSeconds": 33.2,
+      "tapeSha256": "794cce1de8abbbd5c28eb0484670206bfcb5f49a9d44ad8a141885e118c8b944",
+      "beforeReportSha256": "1614b41b4d2dd39dec0a607f7abd0e8228dd3f9706e5c961322e15474c009afa",
+      "afterReportSha256": "de79d03aa9927c02ee82757bc1c6056b1177b24ad2ff41e9ad1cc7371a94dc4a",
+      "cameraPoseDifferences": [
+        {
+          "frame": 144,
+          "seconds": 28.806201550387243,
+          "positionDistance": 0.3583333333333272,
+          "angleRadians": 0
+        },
+        {
+          "frame": 145,
+          "seconds": 29.00620155038723,
+          "positionDistance": 0.7883333333333198,
+          "angleRadians": 0
+        },
+        {
+          "frame": 146,
+          "seconds": 29.20620155038722,
+          "positionDistance": 1.2183333333333124,
+          "angleRadians": 0
+        },
+        {
+          "frame": 147,
+          "seconds": 29.40620155038721,
+          "positionDistance": 1.648333333333305,
+          "angleRadians": 0
+        },
+        {
+          "frame": 148,
+          "seconds": 29.606201550387198,
+          "positionDistance": 2.0783333333332976,
+          "angleRadians": 0
+        },
+        {
+          "frame": 149,
+          "seconds": 29.806201550387186,
+          "positionDistance": 2.5083333333332902,
+          "angleRadians": 0
+        },
+        {
+          "frame": 150,
+          "seconds": 30.006201550387175,
+          "positionDistance": 2.938333333333283,
+          "angleRadians": 0
+        },
+        {
+          "frame": 151,
+          "seconds": 30.206201550387163,
+          "positionDistance": 3.3683333333332754,
+          "angleRadians": 0
+        },
+        {
+          "frame": 152,
+          "seconds": 30.406201550387152,
+          "positionDistance": 3.798333333333268,
+          "angleRadians": 0
+        },
+        {
+          "frame": 153,
+          "seconds": 30.60620155038714,
+          "positionDistance": 4.228333333333261,
+          "angleRadians": 0
+        },
+        {
+          "frame": 154,
+          "seconds": 30.80620155038713,
+          "positionDistance": 4.658333333333253,
+          "angleRadians": 0
+        },
+        {
+          "frame": 155,
+          "seconds": 31.006201550387118,
+          "positionDistance": 5.088333333333246,
+          "angleRadians": 0
+        },
+        {
+          "frame": 156,
+          "seconds": 31.206201550387107,
+          "positionDistance": 5.5183333333332385,
+          "angleRadians": 0
+        },
+        {
+          "frame": 157,
+          "seconds": 31.406201550387095,
+          "positionDistance": 5.948333333333231,
+          "angleRadians": 0
+        },
+        {
+          "frame": 158,
+          "seconds": 31.606201550387084,
+          "positionDistance": 6.378333333333224,
+          "angleRadians": 0
+        },
+        {
+          "frame": 159,
+          "seconds": 31.806201550387073,
+          "positionDistance": 6.808333333333216,
+          "angleRadians": 0
+        },
+        {
+          "frame": 160,
+          "seconds": 32.00620155038706,
+          "positionDistance": 7.238333333333209,
+          "angleRadians": 0
+        },
+        {
+          "frame": 161,
+          "seconds": 32.20620155038705,
+          "positionDistance": 7.6683333333332016,
+          "angleRadians": 0
+        },
+        {
+          "frame": 162,
+          "seconds": 32.41085271317763,
+          "positionDistance": 7.765833333333429,
+          "angleRadians": 0
+        },
+        {
+          "frame": 163,
+          "seconds": 32.61085271317762,
+          "positionDistance": 7.765833333333429,
+          "angleRadians": 0
+        },
+        {
+          "frame": 164,
+          "seconds": 32.81085271317761,
+          "positionDistance": 7.765833333333429,
+          "angleRadians": 0
+        },
+        {
+          "frame": 165,
+          "seconds": 32.84418604651094,
+          "positionDistance": 7.765833333333429,
+          "angleRadians": 0
+        }
+      ],
+      "cameraComparisonBoundary": "Same literal controls and starting pose. Actual camera divergence from each revision’s collision, held-action and completion rules is retained. Frames before the first difference have numerically equal cameras; later frames are same-input outcomes, not same-pose art comparisons.",
+      "actorComparisonBoundary": "Actor simulation runs independently against each authored world. Actor poses can differ as a consequence of changed collision/LOS and control timing; this is not an equal-actor-pose turntable.",
+      "disposed": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "metrics": [
+        [
+          {
+            "reflected": false,
+            "mainCalls": 112,
+            "offscreenCalls": 0,
+            "totalCalls": 112,
+            "mainTriangles": 27406,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 193,
+            "offscreenCalls": 135,
+            "totalCalls": 328,
+            "mainTriangles": 41242,
+            "offscreenTriangles": 33440,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 112,
+            "offscreenCalls": 0,
+            "totalCalls": 112,
+            "mainTriangles": 27406,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 193,
+            "offscreenCalls": 135,
+            "totalCalls": 328,
+            "mainTriangles": 41242,
+            "offscreenTriangles": 33440,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 111,
+            "offscreenCalls": 0,
+            "totalCalls": 111,
+            "mainTriangles": 27286,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 192,
+            "offscreenCalls": 134,
+            "totalCalls": 326,
+            "mainTriangles": 41122,
+            "offscreenTriangles": 33320,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 111,
+            "offscreenCalls": 0,
+            "totalCalls": 111,
+            "mainTriangles": 27286,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 192,
+            "offscreenCalls": 133,
+            "totalCalls": 325,
+            "mainTriangles": 41122,
+            "offscreenTriangles": 33308,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 111,
+            "offscreenCalls": 0,
+            "totalCalls": 111,
+            "mainTriangles": 27286,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 192,
+            "offscreenCalls": 133,
+            "totalCalls": 325,
+            "mainTriangles": 41122,
+            "offscreenTriangles": 33308,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 107,
+            "offscreenCalls": 0,
+            "totalCalls": 107,
+            "mainTriangles": 26582,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 184,
+            "offscreenCalls": 133,
+            "totalCalls": 317,
+            "mainTriangles": 40290,
+            "offscreenTriangles": 33308,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 104,
+            "offscreenCalls": 0,
+            "totalCalls": 104,
+            "mainTriangles": 26326,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 177,
+            "offscreenCalls": 130,
+            "totalCalls": 307,
+            "mainTriangles": 38082,
+            "offscreenTriangles": 31036,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 87,
+            "offscreenCalls": 0,
+            "totalCalls": 87,
+            "mainTriangles": 7114,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 159,
+            "offscreenCalls": 163,
+            "totalCalls": 322,
+            "mainTriangles": 19740,
+            "offscreenTriangles": 38548,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 105,
+            "offscreenCalls": 0,
+            "totalCalls": 105,
+            "mainTriangles": 26358,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 179,
+            "offscreenCalls": 132,
+            "totalCalls": 311,
+            "mainTriangles": 38562,
+            "offscreenTriangles": 33296,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 105,
+            "offscreenCalls": 0,
+            "totalCalls": 105,
+            "mainTriangles": 26358,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 179,
+            "offscreenCalls": 132,
+            "totalCalls": 311,
+            "mainTriangles": 38562,
+            "offscreenTriangles": 33296,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 104,
+            "offscreenCalls": 0,
+            "totalCalls": 104,
+            "mainTriangles": 26520,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 179,
+            "offscreenCalls": 133,
+            "totalCalls": 312,
+            "mainTriangles": 39172,
+            "offscreenTriangles": 33308,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 103,
+            "offscreenCalls": 0,
+            "totalCalls": 103,
+            "mainTriangles": 26416,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 176,
+            "offscreenCalls": 133,
+            "totalCalls": 309,
+            "mainTriangles": 38172,
+            "offscreenTriangles": 33416,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 101,
+            "offscreenCalls": 0,
+            "totalCalls": 101,
+            "mainTriangles": 26284,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 174,
+            "offscreenCalls": 131,
+            "totalCalls": 305,
+            "mainTriangles": 37860,
+            "offscreenTriangles": 33284,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 99,
+            "offscreenCalls": 0,
+            "totalCalls": 99,
+            "mainTriangles": 25900,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 170,
+            "offscreenCalls": 131,
+            "totalCalls": 301,
+            "mainTriangles": 37252,
+            "offscreenTriangles": 33284,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 98,
+            "offscreenCalls": 0,
+            "totalCalls": 98,
+            "mainTriangles": 25796,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 167,
+            "offscreenCalls": 132,
+            "totalCalls": 299,
+            "mainTriangles": 36924,
+            "offscreenTriangles": 33404,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25270,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 160,
+            "offscreenCalls": 131,
+            "totalCalls": 291,
+            "mainTriangles": 36206,
+            "offscreenTriangles": 33284,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 89,
+            "offscreenCalls": 58,
+            "totalCalls": 147,
+            "mainTriangles": 24874,
+            "offscreenTriangles": 4636,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 157,
+            "offscreenCalls": 126,
+            "totalCalls": 283,
+            "mainTriangles": 35810,
+            "offscreenTriangles": 32684,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 87,
+            "offscreenCalls": 49,
+            "totalCalls": 136,
+            "mainTriangles": 24870,
+            "offscreenTriangles": 3988,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 155,
+            "offscreenCalls": 117,
+            "totalCalls": 272,
+            "mainTriangles": 35806,
+            "offscreenTriangles": 28528,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 87,
+            "offscreenCalls": 46,
+            "totalCalls": 133,
+            "mainTriangles": 24870,
+            "offscreenTriangles": 3412,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 155,
+            "offscreenCalls": 108,
+            "totalCalls": 263,
+            "mainTriangles": 35806,
+            "offscreenTriangles": 27890,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 87,
+            "offscreenCalls": 44,
+            "totalCalls": 131,
+            "mainTriangles": 24870,
+            "offscreenTriangles": 3218,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 154,
+            "offscreenCalls": 103,
+            "totalCalls": 257,
+            "mainTriangles": 35358,
+            "offscreenTriangles": 25042,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 85,
+            "offscreenCalls": 43,
+            "totalCalls": 128,
+            "mainTriangles": 24390,
+            "offscreenTriangles": 3026,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 142,
+            "offscreenCalls": 85,
+            "totalCalls": 227,
+            "mainTriangles": 33086,
+            "offscreenTriangles": 21098,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 39,
+            "totalCalls": 117,
+            "mainTriangles": 23936,
+            "offscreenTriangles": 2322,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 130,
+            "offscreenCalls": 79,
+            "totalCalls": 209,
+            "mainTriangles": 31256,
+            "offscreenTriangles": 19250,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 35,
+            "totalCalls": 104,
+            "mainTriangles": 22748,
+            "offscreenTriangles": 2284,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 120,
+            "offscreenCalls": 78,
+            "totalCalls": 198,
+            "mainTriangles": 29876,
+            "offscreenTriangles": 19058,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 67,
+            "offscreenCalls": 34,
+            "totalCalls": 101,
+            "mainTriangles": 22544,
+            "offscreenTriangles": 2092,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 112,
+            "offscreenCalls": 71,
+            "totalCalls": 183,
+            "mainTriangles": 28680,
+            "offscreenTriangles": 16844,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 64,
+            "offscreenCalls": 31,
+            "totalCalls": 95,
+            "mainTriangles": 22158,
+            "offscreenTriangles": 1706,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 110,
+            "offscreenCalls": 69,
+            "totalCalls": 179,
+            "mainTriangles": 28486,
+            "offscreenTriangles": 14894,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 58,
+            "offscreenCalls": 28,
+            "totalCalls": 86,
+            "mainTriangles": 21536,
+            "offscreenTriangles": 1290,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 103,
+            "offscreenCalls": 67,
+            "totalCalls": 170,
+            "mainTriangles": 27512,
+            "offscreenTriangles": 15170,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 55,
+            "offscreenCalls": 27,
+            "totalCalls": 82,
+            "mainTriangles": 21490,
+            "offscreenTriangles": 1258,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 102,
+            "offscreenCalls": 67,
+            "totalCalls": 169,
+            "mainTriangles": 27500,
+            "offscreenTriangles": 15170,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 12,
+            "offscreenCalls": 9,
+            "totalCalls": 21,
+            "mainTriangles": 1042,
+            "offscreenTriangles": 986,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 13,
+            "offscreenCalls": 17,
+            "totalCalls": 30,
+            "mainTriangles": 1294,
+            "offscreenTriangles": 1502,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 12,
+            "offscreenCalls": 9,
+            "totalCalls": 21,
+            "mainTriangles": 1042,
+            "offscreenTriangles": 986,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 13,
+            "offscreenCalls": 17,
+            "totalCalls": 30,
+            "mainTriangles": 1294,
+            "offscreenTriangles": 1502,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 11,
+            "offscreenCalls": 9,
+            "totalCalls": 20,
+            "mainTriangles": 1010,
+            "offscreenTriangles": 986,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 12,
+            "offscreenCalls": 16,
+            "totalCalls": 28,
+            "mainTriangles": 1262,
+            "offscreenTriangles": 1310,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1010,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 12,
+            "offscreenCalls": 14,
+            "totalCalls": 26,
+            "mainTriangles": 1262,
+            "offscreenTriangles": 1276,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 10,
+            "offscreenCalls": 0,
+            "totalCalls": 10,
+            "mainTriangles": 998,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 11,
+            "offscreenCalls": 13,
+            "totalCalls": 24,
+            "mainTriangles": 1250,
+            "offscreenTriangles": 1274,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 99,
+            "offscreenCalls": 0,
+            "totalCalls": 99,
+            "mainTriangles": 26504,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 176,
+            "offscreenCalls": 133,
+            "totalCalls": 309,
+            "mainTriangles": 40212,
+            "offscreenTriangles": 33308,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25982,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 168,
+            "offscreenCalls": 133,
+            "totalCalls": 301,
+            "mainTriangles": 38186,
+            "offscreenTriangles": 33416,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3808,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 88,
+            "totalCalls": 166,
+            "mainTriangles": 10104,
+            "offscreenTriangles": 8930,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3808,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 88,
+            "totalCalls": 166,
+            "mainTriangles": 10104,
+            "offscreenTriangles": 8930,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3808,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 88,
+            "totalCalls": 166,
+            "mainTriangles": 10104,
+            "offscreenTriangles": 8930,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3808,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 88,
+            "totalCalls": 166,
+            "mainTriangles": 10104,
+            "offscreenTriangles": 8930,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3808,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 88,
+            "totalCalls": 166,
+            "mainTriangles": 10104,
+            "offscreenTriangles": 8930,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3808,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 78,
+            "offscreenCalls": 88,
+            "totalCalls": 166,
+            "mainTriangles": 10104,
+            "offscreenTriangles": 8930,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1024,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 15,
+            "offscreenCalls": 15,
+            "totalCalls": 30,
+            "mainTriangles": 1276,
+            "offscreenTriangles": 1714,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 13,
+            "offscreenCalls": 0,
+            "totalCalls": 13,
+            "mainTriangles": 1012,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 13,
+            "totalCalls": 27,
+            "mainTriangles": 1264,
+            "offscreenTriangles": 1474,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 9,
+            "offscreenCalls": 0,
+            "totalCalls": 9,
+            "mainTriangles": 986,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 10,
+            "offscreenCalls": 6,
+            "totalCalls": 16,
+            "mainTriangles": 1238,
+            "offscreenTriangles": 1190,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 9,
+            "offscreenCalls": 0,
+            "totalCalls": 9,
+            "mainTriangles": 986,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 10,
+            "offscreenCalls": 5,
+            "totalCalls": 15,
+            "mainTriangles": 1238,
+            "offscreenTriangles": 1178,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 87,
+            "offscreenCalls": 46,
+            "totalCalls": 133,
+            "mainTriangles": 24870,
+            "offscreenTriangles": 3602,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 155,
+            "offscreenCalls": 111,
+            "totalCalls": 266,
+            "mainTriangles": 35806,
+            "offscreenTriangles": 31254,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 87,
+            "offscreenCalls": 44,
+            "totalCalls": 131,
+            "mainTriangles": 24870,
+            "offscreenTriangles": 3218,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 155,
+            "offscreenCalls": 109,
+            "totalCalls": 264,
+            "mainTriangles": 35806,
+            "offscreenTriangles": 30870,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 86,
+            "offscreenCalls": 43,
+            "totalCalls": 129,
+            "mainTriangles": 24838,
+            "offscreenTriangles": 3026,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 142,
+            "offscreenCalls": 93,
+            "totalCalls": 235,
+            "mainTriangles": 33086,
+            "offscreenTriangles": 27414,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 81,
+            "offscreenCalls": 40,
+            "totalCalls": 121,
+            "mainTriangles": 24152,
+            "offscreenTriangles": 2354,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 137,
+            "offscreenCalls": 88,
+            "totalCalls": 225,
+            "mainTriangles": 32240,
+            "offscreenTriangles": 26518,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 68,
+            "offscreenCalls": 36,
+            "totalCalls": 104,
+            "mainTriangles": 22736,
+            "offscreenTriangles": 2296,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 119,
+            "offscreenCalls": 87,
+            "totalCalls": 206,
+            "mainTriangles": 29864,
+            "offscreenTriangles": 26326,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 66,
+            "offscreenCalls": 35,
+            "totalCalls": 101,
+            "mainTriangles": 22532,
+            "offscreenTriangles": 2284,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 111,
+            "offscreenCalls": 80,
+            "totalCalls": 191,
+            "mainTriangles": 28668,
+            "offscreenTriangles": 24112,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 63,
+            "offscreenCalls": 31,
+            "totalCalls": 94,
+            "mainTriangles": 22146,
+            "offscreenTriangles": 1706,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 99,
+            "offscreenCalls": 77,
+            "totalCalls": 176,
+            "mainTriangles": 27322,
+            "offscreenTriangles": 21808,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 59,
+            "offscreenCalls": 28,
+            "totalCalls": 87,
+            "mainTriangles": 21558,
+            "offscreenTriangles": 1290,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 92,
+            "offscreenCalls": 67,
+            "totalCalls": 159,
+            "mainTriangles": 25646,
+            "offscreenTriangles": 16178,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 26,
+            "totalCalls": 80,
+            "mainTriangles": 21478,
+            "offscreenTriangles": 1256,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 89,
+            "offscreenCalls": 59,
+            "totalCalls": 148,
+            "mainTriangles": 25440,
+            "offscreenTriangles": 12026,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 19,
+            "totalCalls": 38,
+            "mainTriangles": 1152,
+            "offscreenTriangles": 1152,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 26,
+            "offscreenCalls": 30,
+            "totalCalls": 56,
+            "mainTriangles": 2736,
+            "offscreenTriangles": 2764,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 18,
+            "totalCalls": 36,
+            "mainTriangles": 1140,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 25,
+            "offscreenCalls": 28,
+            "totalCalls": 53,
+            "mainTriangles": 2724,
+            "offscreenTriangles": 2750,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 67,
+            "offscreenCalls": 35,
+            "totalCalls": 102,
+            "mainTriangles": 23084,
+            "offscreenTriangles": 2284,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 105,
+            "offscreenCalls": 78,
+            "totalCalls": 183,
+            "mainTriangles": 27972,
+            "offscreenTriangles": 21938,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 72,
+            "totalCalls": 126,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 13422,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 70,
+            "totalCalls": 124,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 11490,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 67,
+            "totalCalls": 121,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 8698,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 65,
+            "totalCalls": 119,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 7338,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 32,
+            "offscreenCalls": 23,
+            "totalCalls": 55,
+            "mainTriangles": 2554,
+            "offscreenTriangles": 1178,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 44,
+            "offscreenCalls": 21,
+            "totalCalls": 65,
+            "mainTriangles": 5214,
+            "offscreenTriangles": 2326,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 31,
+            "offscreenCalls": 23,
+            "totalCalls": 54,
+            "mainTriangles": 2542,
+            "offscreenTriangles": 1178,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 38,
+            "offscreenCalls": 19,
+            "totalCalls": 57,
+            "mainTriangles": 3806,
+            "offscreenTriangles": 2302,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 30,
+            "offscreenCalls": 22,
+            "totalCalls": 52,
+            "mainTriangles": 2350,
+            "offscreenTriangles": 1166,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 17,
+            "totalCalls": 51,
+            "mainTriangles": 3198,
+            "offscreenTriangles": 1918,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 30,
+            "offscreenCalls": 22,
+            "totalCalls": 52,
+            "mainTriangles": 2350,
+            "offscreenTriangles": 1166,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 17,
+            "totalCalls": 51,
+            "mainTriangles": 3198,
+            "offscreenTriangles": 1918,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 30,
+            "offscreenCalls": 22,
+            "totalCalls": 52,
+            "mainTriangles": 2350,
+            "offscreenTriangles": 1166,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 17,
+            "totalCalls": 51,
+            "mainTriangles": 3198,
+            "offscreenTriangles": 1918,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 77,
+            "offscreenCalls": 42,
+            "totalCalls": 119,
+            "mainTriangles": 19352,
+            "offscreenTriangles": 3024,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 121,
+            "offscreenCalls": 65,
+            "totalCalls": 186,
+            "mainTriangles": 25552,
+            "offscreenTriangles": 5624,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 63,
+            "offscreenCalls": 37,
+            "totalCalls": 100,
+            "mainTriangles": 13910,
+            "offscreenTriangles": 2308,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 103,
+            "offscreenCalls": 63,
+            "totalCalls": 166,
+            "mainTriangles": 19182,
+            "offscreenTriangles": 5400,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 63,
+            "totalCalls": 117,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4542,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 54,
+            "offscreenCalls": 64,
+            "totalCalls": 118,
+            "mainTriangles": 4434,
+            "offscreenTriangles": 4554,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 88,
+            "offscreenCalls": 116,
+            "totalCalls": 204,
+            "mainTriangles": 11036,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 57,
+            "offscreenCalls": 67,
+            "totalCalls": 124,
+            "mainTriangles": 8578,
+            "offscreenTriangles": 8698,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 91,
+            "offscreenCalls": 116,
+            "totalCalls": 207,
+            "mainTriangles": 15180,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 60,
+            "offscreenCalls": 73,
+            "totalCalls": 133,
+            "mainTriangles": 11378,
+            "offscreenTriangles": 14862,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 116,
+            "totalCalls": 210,
+            "mainTriangles": 17980,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 67,
+            "offscreenCalls": 73,
+            "totalCalls": 140,
+            "mainTriangles": 19028,
+            "offscreenTriangles": 14862,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 116,
+            "totalCalls": 210,
+            "mainTriangles": 17980,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 97,
+            "offscreenCalls": 116,
+            "totalCalls": 213,
+            "mainTriangles": 21344,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 97,
+            "offscreenCalls": 116,
+            "totalCalls": 213,
+            "mainTriangles": 21344,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 116,
+            "totalCalls": 212,
+            "mainTriangles": 21312,
+            "offscreenTriangles": 31248,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 115,
+            "totalCalls": 211,
+            "mainTriangles": 21312,
+            "offscreenTriangles": 29996,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 112,
+            "totalCalls": 208,
+            "mainTriangles": 21312,
+            "offscreenTriangles": 25774,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 109,
+            "totalCalls": 205,
+            "mainTriangles": 21312,
+            "offscreenTriangles": 23486,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 106,
+            "totalCalls": 202,
+            "mainTriangles": 21312,
+            "offscreenTriangles": 19842,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 95,
+            "offscreenCalls": 100,
+            "totalCalls": 195,
+            "mainTriangles": 20632,
+            "offscreenTriangles": 15298,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 98,
+            "totalCalls": 192,
+            "mainTriangles": 19952,
+            "offscreenTriangles": 13938,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 98,
+            "totalCalls": 194,
+            "mainTriangles": 22402,
+            "offscreenTriangles": 13938,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 69,
+            "offscreenCalls": 75,
+            "totalCalls": 144,
+            "mainTriangles": 20212,
+            "offscreenTriangles": 15934,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 96,
+            "offscreenCalls": 98,
+            "totalCalls": 194,
+            "mainTriangles": 22402,
+            "offscreenTriangles": 13938,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 66,
+            "offscreenCalls": 74,
+            "totalCalls": 140,
+            "mainTriangles": 19276,
+            "offscreenTriangles": 15814,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 96,
+            "totalCalls": 190,
+            "mainTriangles": 22372,
+            "offscreenTriangles": 13908,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 64,
+            "offscreenCalls": 72,
+            "totalCalls": 136,
+            "mainTriangles": 19246,
+            "offscreenTriangles": 15784,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 96,
+            "totalCalls": 190,
+            "mainTriangles": 22372,
+            "offscreenTriangles": 13908,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 64,
+            "offscreenCalls": 73,
+            "totalCalls": 137,
+            "mainTriangles": 19246,
+            "offscreenTriangles": 15904,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 95,
+            "totalCalls": 189,
+            "mainTriangles": 22372,
+            "offscreenTriangles": 13876,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 64,
+            "offscreenCalls": 73,
+            "totalCalls": 137,
+            "mainTriangles": 19246,
+            "offscreenTriangles": 15904,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 95,
+            "totalCalls": 189,
+            "mainTriangles": 22372,
+            "offscreenTriangles": 13876,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 64,
+            "offscreenCalls": 73,
+            "totalCalls": 137,
+            "mainTriangles": 19246,
+            "offscreenTriangles": 15904,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 94,
+            "offscreenCalls": 95,
+            "totalCalls": 189,
+            "mainTriangles": 22372,
+            "offscreenTriangles": 13876,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 51,
+            "offscreenCalls": 70,
+            "totalCalls": 121,
+            "mainTriangles": 11836,
+            "offscreenTriangles": 18336,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 83,
+            "offscreenCalls": 97,
+            "totalCalls": 180,
+            "mainTriangles": 18958,
+            "offscreenTriangles": 14470,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 51,
+            "offscreenCalls": 70,
+            "totalCalls": 121,
+            "mainTriangles": 11836,
+            "offscreenTriangles": 18336,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 83,
+            "offscreenCalls": 97,
+            "totalCalls": 180,
+            "mainTriangles": 18958,
+            "offscreenTriangles": 14470,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 51,
+            "offscreenCalls": 70,
+            "totalCalls": 121,
+            "mainTriangles": 11836,
+            "offscreenTriangles": 18336,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 83,
+            "offscreenCalls": 97,
+            "totalCalls": 180,
+            "mainTriangles": 18958,
+            "offscreenTriangles": 14470,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 51,
+            "offscreenCalls": 70,
+            "totalCalls": 121,
+            "mainTriangles": 11836,
+            "offscreenTriangles": 18336,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 84,
+            "offscreenCalls": 97,
+            "totalCalls": 181,
+            "mainTriangles": 20022,
+            "offscreenTriangles": 14470,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 41,
+            "offscreenCalls": 23,
+            "totalCalls": 64,
+            "mainTriangles": 3538,
+            "offscreenTriangles": 1178,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 57,
+            "offscreenCalls": 25,
+            "totalCalls": 82,
+            "mainTriangles": 7178,
+            "offscreenTriangles": 2724,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 32,
+            "offscreenCalls": 23,
+            "totalCalls": 55,
+            "mainTriangles": 2554,
+            "offscreenTriangles": 1178,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 41,
+            "offscreenCalls": 21,
+            "totalCalls": 62,
+            "mainTriangles": 4382,
+            "offscreenTriangles": 2326,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 31,
+            "offscreenCalls": 22,
+            "totalCalls": 53,
+            "mainTriangles": 2542,
+            "offscreenTriangles": 1166,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 38,
+            "offscreenCalls": 19,
+            "totalCalls": 57,
+            "mainTriangles": 3806,
+            "offscreenTriangles": 2302,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 11,
+            "totalCalls": 25,
+            "mainTriangles": 1066,
+            "offscreenTriangles": 1030,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 16,
+            "offscreenCalls": 6,
+            "totalCalls": 22,
+            "mainTriangles": 1546,
+            "offscreenTriangles": 1210,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 13,
+            "offscreenCalls": 9,
+            "totalCalls": 22,
+            "mainTriangles": 1054,
+            "offscreenTriangles": 986,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 6,
+            "totalCalls": 20,
+            "mainTriangles": 1486,
+            "offscreenTriangles": 1210,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 12,
+            "offscreenCalls": 6,
+            "totalCalls": 18,
+            "mainTriangles": 1042,
+            "offscreenTriangles": 950,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 13,
+            "offscreenCalls": 5,
+            "totalCalls": 18,
+            "mainTriangles": 1474,
+            "offscreenTriangles": 1178,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 10,
+            "offscreenCalls": 5,
+            "totalCalls": 15,
+            "mainTriangles": 1018,
+            "offscreenTriangles": 938,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 12,
+            "offscreenCalls": 5,
+            "totalCalls": 17,
+            "mainTriangles": 1462,
+            "offscreenTriangles": 1178,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 27,
+            "offscreenCalls": 18,
+            "totalCalls": 45,
+            "mainTriangles": 1262,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 48,
+            "offscreenCalls": 43,
+            "totalCalls": 91,
+            "mainTriangles": 3030,
+            "offscreenTriangles": 3246,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 26,
+            "offscreenCalls": 18,
+            "totalCalls": 44,
+            "mainTriangles": 1250,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 47,
+            "offscreenCalls": 40,
+            "totalCalls": 87,
+            "mainTriangles": 3018,
+            "offscreenTriangles": 2574,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 26,
+            "offscreenCalls": 18,
+            "totalCalls": 44,
+            "mainTriangles": 1250,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 46,
+            "offscreenCalls": 40,
+            "totalCalls": 86,
+            "mainTriangles": 2970,
+            "offscreenTriangles": 2574,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 26,
+            "offscreenCalls": 18,
+            "totalCalls": 44,
+            "mainTriangles": 1250,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 46,
+            "offscreenCalls": 40,
+            "totalCalls": 86,
+            "mainTriangles": 2970,
+            "offscreenTriangles": 2574,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 24,
+            "offscreenCalls": 18,
+            "totalCalls": 42,
+            "mainTriangles": 1226,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 44,
+            "offscreenCalls": 39,
+            "totalCalls": 83,
+            "mainTriangles": 2946,
+            "offscreenTriangles": 2382,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 24,
+            "offscreenCalls": 18,
+            "totalCalls": 42,
+            "mainTriangles": 1226,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 44,
+            "offscreenCalls": 39,
+            "totalCalls": 83,
+            "mainTriangles": 2946,
+            "offscreenTriangles": 2382,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 21,
+            "offscreenCalls": 18,
+            "totalCalls": 39,
+            "mainTriangles": 1190,
+            "offscreenTriangles": 1140,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 40,
+            "offscreenCalls": 37,
+            "totalCalls": 77,
+            "mainTriangles": 2718,
+            "offscreenTriangles": 2368,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 21,
+            "offscreenCalls": 17,
+            "totalCalls": 38,
+            "mainTriangles": 1190,
+            "offscreenTriangles": 1128,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 40,
+            "offscreenCalls": 36,
+            "totalCalls": 76,
+            "mainTriangles": 2718,
+            "offscreenTriangles": 2320,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 21,
+            "offscreenCalls": 15,
+            "totalCalls": 36,
+            "mainTriangles": 1190,
+            "offscreenTriangles": 1068,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 39,
+            "offscreenCalls": 36,
+            "totalCalls": 75,
+            "mainTriangles": 2706,
+            "offscreenTriangles": 2320,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 21,
+            "offscreenCalls": 13,
+            "totalCalls": 34,
+            "mainTriangles": 1190,
+            "offscreenTriangles": 1054,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 37,
+            "offscreenCalls": 34,
+            "totalCalls": 71,
+            "mainTriangles": 2482,
+            "offscreenTriangles": 2276,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 21,
+            "offscreenCalls": 13,
+            "totalCalls": 34,
+            "mainTriangles": 1190,
+            "offscreenTriangles": 1054,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 36,
+            "offscreenCalls": 33,
+            "totalCalls": 69,
+            "mainTriangles": 2290,
+            "offscreenTriangles": 2084,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 21,
+            "offscreenCalls": 13,
+            "totalCalls": 34,
+            "mainTriangles": 1190,
+            "offscreenTriangles": 1054,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 36,
+            "offscreenCalls": 32,
+            "totalCalls": 68,
+            "mainTriangles": 2290,
+            "offscreenTriangles": 2072,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 20,
+            "offscreenCalls": 12,
+            "totalCalls": 32,
+            "mainTriangles": 1178,
+            "offscreenTriangles": 1042,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 31,
+            "totalCalls": 65,
+            "mainTriangles": 2266,
+            "offscreenTriangles": 2060,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 20,
+            "offscreenCalls": 11,
+            "totalCalls": 31,
+            "mainTriangles": 1178,
+            "offscreenTriangles": 1030,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 31,
+            "totalCalls": 65,
+            "mainTriangles": 2266,
+            "offscreenTriangles": 2060,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 20,
+            "offscreenCalls": 10,
+            "totalCalls": 30,
+            "mainTriangles": 1178,
+            "offscreenTriangles": 1018,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 29,
+            "totalCalls": 63,
+            "mainTriangles": 2266,
+            "offscreenTriangles": 1856,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 10,
+            "totalCalls": 29,
+            "mainTriangles": 1146,
+            "offscreenTriangles": 1018,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 34,
+            "offscreenCalls": 27,
+            "totalCalls": 61,
+            "mainTriangles": 2266,
+            "offscreenTriangles": 1832,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 9,
+            "totalCalls": 28,
+            "mainTriangles": 1146,
+            "offscreenTriangles": 1006,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 33,
+            "offscreenCalls": 26,
+            "totalCalls": 59,
+            "mainTriangles": 2254,
+            "offscreenTriangles": 1820,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 8,
+            "totalCalls": 27,
+            "mainTriangles": 1146,
+            "offscreenTriangles": 994,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 33,
+            "offscreenCalls": 26,
+            "totalCalls": 59,
+            "mainTriangles": 2254,
+            "offscreenTriangles": 1820,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 8,
+            "totalCalls": 27,
+            "mainTriangles": 1146,
+            "offscreenTriangles": 994,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 33,
+            "offscreenCalls": 25,
+            "totalCalls": 58,
+            "mainTriangles": 2254,
+            "offscreenTriangles": 1808,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 8,
+            "totalCalls": 26,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 994,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 24,
+            "offscreenCalls": 24,
+            "totalCalls": 48,
+            "mainTriangles": 2146,
+            "offscreenTriangles": 1796,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 18,
+            "totalCalls": 41,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1724,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 16,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 16,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 16,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 16,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 16,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 18,
+            "offscreenCalls": 7,
+            "totalCalls": 25,
+            "mainTriangles": 1134,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 23,
+            "offscreenCalls": 16,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 15,
+            "offscreenCalls": 7,
+            "totalCalls": 22,
+            "mainTriangles": 1078,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 20,
+            "offscreenCalls": 16,
+            "totalCalls": 36,
+            "mainTriangles": 2078,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 20,
+            "offscreenCalls": 16,
+            "totalCalls": 36,
+            "mainTriangles": 2078,
+            "offscreenTriangles": 1700,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 20,
+            "offscreenCalls": 15,
+            "totalCalls": 35,
+            "mainTriangles": 2078,
+            "offscreenTriangles": 1668,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 15,
+            "totalCalls": 34,
+            "mainTriangles": 2046,
+            "offscreenTriangles": 1668,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 15,
+            "totalCalls": 34,
+            "mainTriangles": 2046,
+            "offscreenTriangles": 1668,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 13,
+            "totalCalls": 32,
+            "mainTriangles": 2046,
+            "offscreenTriangles": 1644,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 19,
+            "offscreenCalls": 13,
+            "totalCalls": 32,
+            "mainTriangles": 2046,
+            "offscreenTriangles": 1644,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": true,
+            "mainCalls": 17,
+            "offscreenCalls": 13,
+            "totalCalls": 30,
+            "mainTriangles": 1662,
+            "offscreenTriangles": 1644,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 17,
+            "offscreenCalls": 0,
+            "totalCalls": 17,
+            "mainTriangles": 1662,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 16,
+            "offscreenCalls": 0,
+            "totalCalls": 16,
+            "mainTriangles": 1660,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 16,
+            "offscreenCalls": 0,
+            "totalCalls": 16,
+            "mainTriangles": 1660,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 16,
+            "offscreenCalls": 0,
+            "totalCalls": 16,
+            "mainTriangles": 1660,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 16,
+            "offscreenCalls": 0,
+            "totalCalls": 16,
+            "mainTriangles": 1660,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1456,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 13,
+            "offscreenCalls": 0,
+            "totalCalls": 13,
+            "mainTriangles": 1454,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 13,
+            "offscreenCalls": 0,
+            "totalCalls": 13,
+            "mainTriangles": 1454,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 12,
+            "offscreenCalls": 0,
+            "totalCalls": 12,
+            "mainTriangles": 1442,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1430,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1430,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1430,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": true,
+            "mainCalls": 14,
+            "offscreenCalls": 7,
+            "totalCalls": 21,
+            "mainTriangles": 1046,
+            "offscreenTriangles": 982,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1430,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ]
+      ],
+      "video": {
+        "file": "area-04-paired-silent.mp4",
+        "sha256": "add3bcff6a0669f851271cf3c86d2cc26c59f4b8c100aa009a3ba01a887ee28f"
+      }
+    },
+    {
+      "area": "05",
+      "frames": 125,
+      "videoSeconds": 25,
+      "tapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250",
+      "beforeReportSha256": "5e99ae3b8e7240a38df41e0d34d237969bcbae6630c9fc8300a3dfc15f220f96",
+      "afterReportSha256": "02b17461565ac1b17ee67289c5c0ae017324cc5b5130ada301426b49e1d16c31",
+      "cameraPoseDifferences": [],
+      "cameraComparisonBoundary": "All sampled actual player/camera poses match within 1e-6.",
+      "actorComparisonBoundary": "Actor simulation runs independently against each authored world. Actor poses can differ as a consequence of changed collision/LOS and control timing; this is not an equal-actor-pose turntable.",
+      "disposed": {
+        "geometries": 0,
+        "textures": 1
+      },
+      "metrics": [
+        [
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1188,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 12,
+            "offscreenCalls": 0,
+            "totalCalls": 12,
+            "mainTriangles": 1220,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1188,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 12,
+            "offscreenCalls": 0,
+            "totalCalls": 12,
+            "mainTriangles": 1220,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1188,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 12,
+            "offscreenCalls": 0,
+            "totalCalls": 12,
+            "mainTriangles": 1220,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 11,
+            "offscreenCalls": 0,
+            "totalCalls": 11,
+            "mainTriangles": 1188,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 12,
+            "offscreenCalls": 0,
+            "totalCalls": 12,
+            "mainTriangles": 1220,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 6552,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 98,
+            "offscreenCalls": 0,
+            "totalCalls": 98,
+            "mainTriangles": 7064,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 86,
+            "offscreenCalls": 0,
+            "totalCalls": 86,
+            "mainTriangles": 5656,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 6168,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 76,
+            "offscreenCalls": 0,
+            "totalCalls": 76,
+            "mainTriangles": 5092,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 82,
+            "offscreenCalls": 0,
+            "totalCalls": 82,
+            "mainTriangles": 5604,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 85,
+            "offscreenCalls": 0,
+            "totalCalls": 85,
+            "mainTriangles": 6040,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 6552,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 85,
+            "offscreenCalls": 0,
+            "totalCalls": 85,
+            "mainTriangles": 6040,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 6552,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 16,
+            "offscreenCalls": 0,
+            "totalCalls": 16,
+            "mainTriangles": 1448,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 18,
+            "offscreenCalls": 0,
+            "totalCalls": 18,
+            "mainTriangles": 1512,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 111,
+            "offscreenCalls": 0,
+            "totalCalls": 111,
+            "mainTriangles": 8074,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 119,
+            "offscreenCalls": 0,
+            "totalCalls": 119,
+            "mainTriangles": 8650,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 14,
+            "offscreenCalls": 0,
+            "totalCalls": 14,
+            "mainTriangles": 1424,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 16,
+            "offscreenCalls": 0,
+            "totalCalls": 16,
+            "mainTriangles": 1488,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 98,
+            "offscreenCalls": 0,
+            "totalCalls": 98,
+            "mainTriangles": 7066,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 104,
+            "offscreenCalls": 0,
+            "totalCalls": 104,
+            "mainTriangles": 7418,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 98,
+            "offscreenCalls": 0,
+            "totalCalls": 98,
+            "mainTriangles": 7066,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 104,
+            "offscreenCalls": 0,
+            "totalCalls": 104,
+            "mainTriangles": 7418,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5104,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5232,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 72,
+            "offscreenCalls": 0,
+            "totalCalls": 72,
+            "mainTriangles": 5784,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 76,
+            "offscreenCalls": 0,
+            "totalCalls": 76,
+            "mainTriangles": 5912,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 76,
+            "offscreenCalls": 0,
+            "totalCalls": 76,
+            "mainTriangles": 10608,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 80,
+            "offscreenCalls": 0,
+            "totalCalls": 80,
+            "mainTriangles": 10736,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 77,
+            "offscreenCalls": 0,
+            "totalCalls": 77,
+            "mainTriangles": 12048,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 81,
+            "offscreenCalls": 0,
+            "totalCalls": 81,
+            "mainTriangles": 12176,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 86,
+            "offscreenCalls": 0,
+            "totalCalls": 86,
+            "mainTriangles": 20882,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 21010,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 90,
+            "offscreenCalls": 0,
+            "totalCalls": 90,
+            "mainTriangles": 25198,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 94,
+            "offscreenCalls": 0,
+            "totalCalls": 94,
+            "mainTriangles": 25326,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 13,
+            "offscreenCalls": 0,
+            "totalCalls": 13,
+            "mainTriangles": 1412,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 15,
+            "offscreenCalls": 0,
+            "totalCalls": 15,
+            "mainTriangles": 1476,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 123,
+            "offscreenCalls": 0,
+            "totalCalls": 123,
+            "mainTriangles": 19170,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 130,
+            "offscreenCalls": 0,
+            "totalCalls": 130,
+            "mainTriangles": 19714,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 127,
+            "offscreenCalls": 0,
+            "totalCalls": 127,
+            "mainTriangles": 22880,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 134,
+            "offscreenCalls": 0,
+            "totalCalls": 134,
+            "mainTriangles": 23424,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 91,
+            "offscreenCalls": 0,
+            "totalCalls": 91,
+            "mainTriangles": 25230,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 95,
+            "offscreenCalls": 0,
+            "totalCalls": 95,
+            "mainTriangles": 25358,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 21,
+            "offscreenCalls": 0,
+            "totalCalls": 21,
+            "mainTriangles": 1488,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 23,
+            "offscreenCalls": 0,
+            "totalCalls": 23,
+            "mainTriangles": 1552,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 105,
+            "offscreenCalls": 0,
+            "totalCalls": 105,
+            "mainTriangles": 7554,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 113,
+            "offscreenCalls": 0,
+            "totalCalls": 113,
+            "mainTriangles": 8130,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 92,
+            "offscreenCalls": 0,
+            "totalCalls": 92,
+            "mainTriangles": 25350,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 96,
+            "offscreenCalls": 0,
+            "totalCalls": 96,
+            "mainTriangles": 25478,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 76,
+            "offscreenCalls": 0,
+            "totalCalls": 76,
+            "mainTriangles": 5194,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 82,
+            "offscreenCalls": 0,
+            "totalCalls": 82,
+            "mainTriangles": 5706,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5030,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 77,
+            "offscreenCalls": 0,
+            "totalCalls": 77,
+            "mainTriangles": 5542,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5030,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 77,
+            "offscreenCalls": 0,
+            "totalCalls": 77,
+            "mainTriangles": 5542,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 71,
+            "offscreenCalls": 0,
+            "totalCalls": 71,
+            "mainTriangles": 5030,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 77,
+            "offscreenCalls": 0,
+            "totalCalls": 77,
+            "mainTriangles": 5542,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 70,
+            "offscreenCalls": 0,
+            "totalCalls": 70,
+            "mainTriangles": 4838,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 76,
+            "offscreenCalls": 0,
+            "totalCalls": 76,
+            "mainTriangles": 5350,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 69,
+            "offscreenCalls": 0,
+            "totalCalls": 69,
+            "mainTriangles": 4806,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5318,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 69,
+            "offscreenCalls": 0,
+            "totalCalls": 69,
+            "mainTriangles": 4806,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5318,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 69,
+            "offscreenCalls": 0,
+            "totalCalls": 69,
+            "mainTriangles": 4806,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5318,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 69,
+            "offscreenCalls": 0,
+            "totalCalls": 69,
+            "mainTriangles": 4806,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 75,
+            "offscreenCalls": 0,
+            "totalCalls": 75,
+            "mainTriangles": 5318,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 67,
+            "offscreenCalls": 0,
+            "totalCalls": 67,
+            "mainTriangles": 4792,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 72,
+            "offscreenCalls": 0,
+            "totalCalls": 72,
+            "mainTriangles": 5272,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 64,
+            "offscreenCalls": 0,
+            "totalCalls": 64,
+            "mainTriangles": 4406,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 69,
+            "offscreenCalls": 0,
+            "totalCalls": 69,
+            "mainTriangles": 4886,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 52,
+            "offscreenCalls": 0,
+            "totalCalls": 52,
+            "mainTriangles": 3170,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 55,
+            "offscreenCalls": 0,
+            "totalCalls": 55,
+            "mainTriangles": 3426,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 45,
+            "offscreenCalls": 0,
+            "totalCalls": 45,
+            "mainTriangles": 2546,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 47,
+            "offscreenCalls": 0,
+            "totalCalls": 47,
+            "mainTriangles": 2610,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 43,
+            "offscreenCalls": 0,
+            "totalCalls": 43,
+            "mainTriangles": 2352,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 45,
+            "offscreenCalls": 0,
+            "totalCalls": 45,
+            "mainTriangles": 2416,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 40,
+            "offscreenCalls": 0,
+            "totalCalls": 40,
+            "mainTriangles": 2136,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 42,
+            "offscreenCalls": 0,
+            "totalCalls": 42,
+            "mainTriangles": 2200,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 39,
+            "offscreenCalls": 0,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 41,
+            "offscreenCalls": 0,
+            "totalCalls": 41,
+            "mainTriangles": 2198,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 39,
+            "offscreenCalls": 0,
+            "totalCalls": 39,
+            "mainTriangles": 2134,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 41,
+            "offscreenCalls": 0,
+            "totalCalls": 41,
+            "mainTriangles": 2198,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 38,
+            "offscreenCalls": 0,
+            "totalCalls": 38,
+            "mainTriangles": 2102,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 40,
+            "offscreenCalls": 0,
+            "totalCalls": 40,
+            "mainTriangles": 2166,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 36,
+            "offscreenCalls": 0,
+            "totalCalls": 36,
+            "mainTriangles": 2058,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 37,
+            "offscreenCalls": 0,
+            "totalCalls": 37,
+            "mainTriangles": 2090,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 35,
+            "offscreenCalls": 0,
+            "totalCalls": 35,
+            "mainTriangles": 2046,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 36,
+            "offscreenCalls": 0,
+            "totalCalls": 36,
+            "mainTriangles": 2078,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 35,
+            "offscreenCalls": 0,
+            "totalCalls": 35,
+            "mainTriangles": 2046,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 36,
+            "offscreenCalls": 0,
+            "totalCalls": 36,
+            "mainTriangles": 2078,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 33,
+            "offscreenCalls": 0,
+            "totalCalls": 33,
+            "mainTriangles": 2022,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 34,
+            "offscreenCalls": 0,
+            "totalCalls": 34,
+            "mainTriangles": 2054,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 33,
+            "offscreenCalls": 0,
+            "totalCalls": 33,
+            "mainTriangles": 2022,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 34,
+            "offscreenCalls": 0,
+            "totalCalls": 34,
+            "mainTriangles": 2054,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 33,
+            "offscreenCalls": 0,
+            "totalCalls": 33,
+            "mainTriangles": 2022,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 34,
+            "offscreenCalls": 0,
+            "totalCalls": 34,
+            "mainTriangles": 2054,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 32,
+            "offscreenCalls": 0,
+            "totalCalls": 32,
+            "mainTriangles": 1990,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 33,
+            "offscreenCalls": 0,
+            "totalCalls": 33,
+            "mainTriangles": 2022,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 32,
+            "offscreenCalls": 0,
+            "totalCalls": 32,
+            "mainTriangles": 1990,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 33,
+            "offscreenCalls": 0,
+            "totalCalls": 33,
+            "mainTriangles": 2022,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 31,
+            "offscreenCalls": 0,
+            "totalCalls": 31,
+            "mainTriangles": 1978,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 30,
+            "offscreenCalls": 0,
+            "totalCalls": 30,
+            "mainTriangles": 1966,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 28,
+            "offscreenCalls": 0,
+            "totalCalls": 28,
+            "mainTriangles": 1952,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 28,
+            "offscreenCalls": 0,
+            "totalCalls": 28,
+            "mainTriangles": 1952,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 27,
+            "offscreenCalls": 0,
+            "totalCalls": 27,
+            "mainTriangles": 1940,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 27,
+            "offscreenCalls": 0,
+            "totalCalls": 27,
+            "mainTriangles": 1940,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 24,
+            "offscreenCalls": 0,
+            "totalCalls": 24,
+            "mainTriangles": 1904,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 24,
+            "offscreenCalls": 0,
+            "totalCalls": 24,
+            "mainTriangles": 1904,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 23,
+            "offscreenCalls": 0,
+            "totalCalls": 23,
+            "mainTriangles": 1892,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 23,
+            "offscreenCalls": 0,
+            "totalCalls": 23,
+            "mainTriangles": 1892,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ],
+        [
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          },
+          {
+            "reflected": false,
+            "mainCalls": 22,
+            "offscreenCalls": 0,
+            "totalCalls": 22,
+            "mainTriangles": 1700,
+            "offscreenTriangles": 0,
+            "error": 0
+          }
+        ]
+      ],
+      "video": {
+        "file": "area-05-paired-silent.mp4",
+        "sha256": "6cea4ee6aca3995ce3293456c7b92c9a890472a939ed60db05a350e6e35b1822"
+      }
+    }
+  ],
+  "browserErrors": []
+}

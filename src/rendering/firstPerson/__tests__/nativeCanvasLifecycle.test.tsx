@@ -1463,7 +1463,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
       const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
       expect(failure.support).toMatchObject({ schemaVersion: 1 });
-      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-014-1-audio-ja-r1',
+      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-014-2-fair-escape-r1',
         chapterId: 'mirror-corridor-v1', attempt: 0, restoreOrigin: 'checkpoint',
         poseSource: 'failed-unpresented-frame',
         firstFailure: { reasonCode: 'NATIVE_PRESENTATION', stageBeforeFailure: 'ready',

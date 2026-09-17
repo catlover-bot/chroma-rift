@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "baselineRevision": "5bd34f26b65558e8da1cffd9d22ee93c0db78258",
+  "sourceGuardPassed": true,
+  "counts": [
+    {
+      "side": "before",
+      "area": "04",
+      "sources": 142,
+      "assets": 28,
+      "frames": 166,
+      "simulationSeconds": 32.84418604651094,
+      "finalPose": {
+        "position": {
+          "x": 5.019579645210113e-15,
+          "y": 1.6,
+          "z": 23.74499999999954
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 2.7755575615628914e-17
+      },
+      "cleared": false,
+      "tapeSha256": "794cce1de8abbbd5c28eb0484670206bfcb5f49a9d44ad8a141885e118c8b944",
+      "playersAtEnd": 0
+    },
+    {
+      "side": "before",
+      "area": "05",
+      "sources": 142,
+      "assets": 28,
+      "frames": 125,
+      "simulationSeconds": 24.62674418604641,
+      "finalPose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 24.99999999999977
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "cleared": true,
+      "tapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250",
+      "playersAtEnd": 0
+    },
+    {
+      "side": "after",
+      "area": "04",
+      "sources": 142,
+      "assets": 28,
+      "frames": 166,
+      "simulationSeconds": 32.84418604651094,
+      "finalPose": {
+        "position": {
+          "x": 4.996413409926271e-15,
+          "y": 1.6,
+          "z": 31.510833333332968
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 2.7755575615628914e-17
+      },
+      "cleared": true,
+      "tapeSha256": "794cce1de8abbbd5c28eb0484670206bfcb5f49a9d44ad8a141885e118c8b944",
+      "playersAtEnd": 0
+    },
+    {
+      "side": "after",
+      "area": "05",
+      "sources": 142,
+      "assets": 28,
+      "frames": 125,
+      "simulationSeconds": 24.62674418604641,
+      "finalPose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 24.99999999999977
+        },
+        "yaw": -3.141592653589793,
+        "pitch": 0
+      },
+      "cleared": true,
+      "tapeSha256": "2d4d7b4e46dbba835ce549a77f74448e894b8b890e826c3a51adfaf8f5082250",
+      "playersAtEnd": 0
+    }
+  ],
+  "boundary": "Same literal tape and checkpoint start; actual divergent collision/actor/held-action/completion outcomes retained. Isolated controller/ChapterScene fixtures, not App transitions. Separate current Screen recordings prove App04→05. Each sound movie uses actual matching revision audio-owner commands rendered offline; loaded/zero-latency audio and accepted presentation are fixtures. Not native capture or listening approval."
+}

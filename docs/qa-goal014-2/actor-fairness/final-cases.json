@@ -1,0 +1,2557 @@
+[
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 44.63259763624926,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 9.274843931685547,
+      "firstDangerCue": 10.59151059835228,
+      "release": 11.341510598352317,
+      "movementResumed": 11.358177265018984,
+      "coverReached": 12.597324551840762,
+      "departureCue": 25.447324551840396,
+      "gatePassable": 30.719805171995148,
+      "gateCrossed": 38.182597636249625,
+      "visibleExitReached": 44.63259763624926
+    },
+    "reactionMeasuredSeconds": 0.7500000000000373,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 45.02018006057276,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 9.279093022674425,
+      "firstDangerCue": 10.57909302267442,
+      "release": 11.345759689341085,
+      "movementResumed": 11.379093022674418,
+      "coverReached": 12.601573642829447,
+      "departureCue": 25.834906976163257,
+      "gatePassable": 31.124054262985222,
+      "gateCrossed": 38.586846727239795,
+      "visibleExitReached": 45.02018006057276
+    },
+    "reactionMeasuredSeconds": 0.7666666666666639,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 45.46400110955821,
+    "distanceWalkedMeters": 54.058169052218254,
+    "timestamps": {
+      "workStart": 9.283720930232569,
+      "firstDangerCue": 10.611720930232572,
+      "release": 11.38638759689924,
+      "movementResumed": 11.40838759689924,
+      "coverReached": 12.633768551419482,
+      "departureCue": 26.245768551419513,
+      "gatePassable": 31.548970101807118,
+      "gateCrossed": 39.00366777622528,
+      "visibleExitReached": 45.46400110955821
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 51.21593096958219,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 13.274843931685714,
+      "firstDangerCue": 13.441510598352389,
+      "release": 14.191510598352426,
+      "movementResumed": 14.208177265019094,
+      "coverReached": 15.447324551840872,
+      "departureCue": 30.030657885173436,
+      "gatePassable": 37.30313850532808,
+      "gateCrossed": 44.765930969582556,
+      "visibleExitReached": 51.21593096958219
+    },
+    "reactionMeasuredSeconds": 0.7500000000000373,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 51.25351339390574,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 13.27909302267441,
+      "firstDangerCue": 13.345759689341076,
+      "release": 14.11242635600774,
+      "movementResumed": 14.145759689341073,
+      "coverReached": 15.368240309496102,
+      "departureCue": 30.0682403094968,
+      "gatePassable": 37.3573875963183,
+      "gateCrossed": 44.820180060572774,
+      "visibleExitReached": 51.25351339390574
+    },
+    "reactionMeasuredSeconds": 0.7666666666666639,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.058967008160415,
+    "distanceWalkedMeters": 54.05236240088006,
+    "timestamps": {
+      "workStart": 13.28340320936693,
+      "firstDangerCue": 13.463069876033599,
+      "release": 14.237736542700267,
+      "movementResumed": 14.2460698760336,
+      "coverReached": 15.48795925622364,
+      "departureCue": 30.806959256223674,
+      "gatePassable": 38.143827473277554,
+      "gateCrossed": 45.59863367482748,
+      "visibleExitReached": 52.058967008160415
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.43259763624852,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 18.274843931685695,
+      "firstDangerCue": 21.84151059835216,
+      "release": 22.591510598352116,
+      "movementResumed": 22.60817726501878,
+      "coverReached": 23.84732455184043,
+      "departureCue": 39.247324551839554,
+      "gatePassable": 42.51980517199441,
+      "gateCrossed": 49.98259763624889,
+      "visibleExitReached": 56.43259763624852
+    },
+    "reactionMeasuredSeconds": 0.7499999999999574,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.586846727238765,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 18.27909302267451,
+      "firstDangerCue": 21.912426356008023,
+      "release": 22.679093022674728,
+      "movementResumed": 22.712426356008063,
+      "coverReached": 23.93490697616316,
+      "departureCue": 39.4015736428298,
+      "gatePassable": 42.69072092965132,
+      "gateCrossed": 50.1535133939058,
+      "visibleExitReached": 56.586846727238765
+    },
+    "reactionMeasuredSeconds": 0.7666666666667048,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.34501672202522,
+    "distanceWalkedMeters": 54.05748595235712,
+    "timestamps": {
+      "workStart": 18.28340320936693,
+      "firstDangerCue": 21.714069876033605,
+      "release": 22.488736542700273,
+      "movementResumed": 22.510736542700272,
+      "coverReached": 23.736117497220516,
+      "departureCue": 39.11878416388676,
+      "gatePassable": 42.42998571427415,
+      "gateCrossed": 49.88468338869229,
+      "visibleExitReached": 56.34501672202522
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 46.66322625352114,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 9.298105840093173,
+      "firstDangerCue": 10.24810584009322,
+      "release": 10.998105840093258,
+      "movementResumed": 11.014772506759925,
+      "coverReached": 12.41671049125613,
+      "departureCue": 25.283377157922445,
+      "gatePassable": 32.71864847575149,
+      "gateCrossed": 40.213226253521505,
+      "visibleExitReached": 46.66322625352114
+    },
+    "reactionMeasuredSeconds": 0.7500000000000373,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 46.66746925005719,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 9.302348836627912,
+      "firstDangerCue": 10.235682169961242,
+      "release": 11.002348836627906,
+      "movementResumed": 11.03568216996124,
+      "coverReached": 12.420953487790689,
+      "departureCue": 25.287620154457805,
+      "gatePassable": 32.739558138954216,
+      "gateCrossed": 40.23413591672422,
+      "visibleExitReached": 46.66746925005719
+    },
+    "reactionMeasuredSeconds": 0.7666666666666639,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 47.166131379492406,
+    "distanceWalkedMeters": 54.80879913257695,
+    "timestamps": {
+      "workStart": 9.306976744186056,
+      "firstDangerCue": 10.239310077519391,
+      "release": 11.01397674418606,
+      "movementResumed": 11.022310077519393,
+      "coverReached": 12.429362052446727,
+      "departureCue": 25.751028719113425,
+      "gatePassable": 33.25312362755529,
+      "gateCrossed": 40.72546471282614,
+      "visibleExitReached": 47.166131379492406
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 51.56322625352083,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 13.29810584009334,
+      "firstDangerCue": 13.43143917342668,
+      "release": 14.181439173426718,
+      "movementResumed": 14.198105840093385,
+      "coverReached": 15.600043824589589,
+      "departureCue": 30.183377157922134,
+      "gatePassable": 37.618648475751186,
+      "gateCrossed": 45.1132262535212,
+      "visibleExitReached": 51.56322625352083
+    },
+    "reactionMeasuredSeconds": 0.7500000000000373,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.46746925005685,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 13.302348836627896,
+      "firstDangerCue": 13.33568216996123,
+      "release": 14.102348836627893,
+      "movementResumed": 14.135682169961227,
+      "coverReached": 15.520953487790676,
+      "departureCue": 31.08762015445809,
+      "gatePassable": 38.53955813895388,
+      "gateCrossed": 46.03413591672388,
+      "visibleExitReached": 52.46746925005685
+    },
+    "reactionMeasuredSeconds": 0.7666666666666639,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 51.899656734680654,
+    "distanceWalkedMeters": 54.868695312899,
+    "timestamps": {
+      "workStart": 13.306659023320417,
+      "firstDangerCue": 13.464325689987085,
+      "release": 14.238992356653753,
+      "movementResumed": 14.247325689987086,
+      "coverReached": 15.65437766491442,
+      "departureCue": 30.483710998247787,
+      "gatePassable": 37.941982316076874,
+      "gateCrossed": 45.43932340134772,
+      "visibleExitReached": 51.899656734680654
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.34655958685376,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 18.298105840093317,
+      "firstDangerCue": 21.531439173426467,
+      "release": 22.281439173426424,
+      "movementResumed": 22.29810584009309,
+      "coverReached": 23.700043824589148,
+      "departureCue": 38.96671049125495,
+      "gatePassable": 44.40198180908411,
+      "gateCrossed": 51.896559586854124,
+      "visibleExitReached": 58.34655958685376
+    },
+    "reactionMeasuredSeconds": 0.7499999999999574,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 57.30080258338991,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 18.302348836628,
+      "firstDangerCue": 21.735682169961503,
+      "release": 22.502348836628208,
+      "movementResumed": 22.535682169961543,
+      "coverReached": 23.920953487791063,
+      "departureCue": 39.92095348779102,
+      "gatePassable": 43.37289147228694,
+      "gateCrossed": 50.86746925005694,
+      "visibleExitReached": 57.30080258338991
+    },
+    "reactionMeasuredSeconds": 0.7666666666667048,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.581205794722194,
+    "distanceWalkedMeters": 54.85052579198895,
+    "timestamps": {
+      "workStart": 18.30665902332042,
+      "firstDangerCue": 21.562992356653762,
+      "release": 22.33765902332043,
+      "movementResumed": 22.345992356653763,
+      "coverReached": 23.753044331581098,
+      "departureCue": 39.177377664914005,
+      "gatePassable": 42.65380590668905,
+      "gateCrossed": 50.12087246138926,
+      "visibleExitReached": 56.581205794722194
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 48.285714282503946,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 9.155865123729525,
+      "firstDangerCue": 10.25586512372958,
+      "release": 11.005865123729617,
+      "movementResumed": 11.022531790396284,
+      "coverReached": 12.514392327289846,
+      "departureCue": 26.964392327289396,
+      "gatePassable": 34.4895861257386,
+      "gateCrossed": 41.83571428250431,
+      "visibleExitReached": 48.285714282503946
+    },
+    "reactionMeasuredSeconds": 0.7500000000000373,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 47.465148262392745,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 9.162813952906983,
+      "firstDangerCue": 10.26281395290698,
+      "release": 11.029480619573643,
+      "movementResumed": 11.062813952906977,
+      "coverReached": 12.538012345087528,
+      "departureCue": 26.138012345088022,
+      "gatePassable": 33.67987281020449,
+      "gateCrossed": 41.03181492905978,
+      "visibleExitReached": 47.465148262392745
+    },
+    "reactionMeasuredSeconds": 0.7666666666666639,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 48.56440338216953,
+    "distanceWalkedMeters": 54.674650604999634,
+    "timestamps": {
+      "workStart": 9.167441860465125,
+      "firstDangerCue": 10.274108527131794,
+      "release": 11.048775193798463,
+      "movementResumed": 11.070775193798463,
+      "coverReached": 12.559635940310054,
+      "departureCue": 27.167635940310088,
+      "gatePassable": 34.765930513953336,
+      "gateCrossed": 42.1040700488366,
+      "visibleExitReached": 48.56440338216953
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 51.33571428250374,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 13.155865123729692,
+      "firstDangerCue": 13.17253179039636,
+      "release": 13.922531790396397,
+      "movementResumed": 13.939198457063064,
+      "coverReached": 15.431058993956626,
+      "departureCue": 30.01439232728919,
+      "gatePassable": 37.53958612573839,
+      "gateCrossed": 44.885714282504104,
+      "visibleExitReached": 51.33571428250374
+    },
+    "reactionMeasuredSeconds": 0.7500000000000373,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.56514826239245,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 13.162813952906967,
+      "firstDangerCue": 13.329480619573634,
+      "release": 14.096147286240297,
+      "movementResumed": 14.12948061957363,
+      "coverReached": 15.604679011754182,
+      "departureCue": 31.238012345088272,
+      "gatePassable": 38.779872810204196,
+      "gateCrossed": 46.13181492905948,
+      "visibleExitReached": 52.56514826239245
+    },
+    "reactionMeasuredSeconds": 0.7666666666666639,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.121418994637,
+    "distanceWalkedMeters": 54.673967505138485,
+    "timestamps": {
+      "workStart": 13.167124139599487,
+      "firstDangerCue": 13.189124139599487,
+      "release": 13.941790806266155,
+      "movementResumed": 13.963790806266156,
+      "coverReached": 15.452651552777747,
+      "departureCue": 30.724651552777782,
+      "gatePassable": 38.3229461264208,
+      "gateCrossed": 45.661085661304064,
+      "visibleExitReached": 52.121418994637
+    },
+    "reactionMeasuredSeconds": 0.7526666666666681,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.66904761583674,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 18.155865123729683,
+      "firstDangerCue": 21.405865123729498,
+      "release": 22.155865123729455,
+      "movementResumed": 22.17253179039612,
+      "coverReached": 23.664392327289526,
+      "departureCue": 39.34772566062197,
+      "gatePassable": 42.87291945907139,
+      "gateCrossed": 50.219047615837106,
+      "visibleExitReached": 56.66904761583674
+    },
+    "reactionMeasuredSeconds": 0.7499999999999574,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.63181492905888,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 18.16281395290706,
+      "firstDangerCue": 21.42948061957389,
+      "release": 22.196147286240596,
+      "movementResumed": 22.22948061957393,
+      "coverReached": 23.70467901175456,
+      "departureCue": 39.30467901175456,
+      "gatePassable": 42.84653947687063,
+      "gateCrossed": 50.198481595725916,
+      "visibleExitReached": 56.63181492905888
+    },
+    "reactionMeasuredSeconds": 0.7666666666667048,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 0.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.369958806140026,
+    "distanceWalkedMeters": 54.6400114332042,
+    "timestamps": {
+      "workStart": 18.16712413959949,
+      "firstDangerCue": 21.265790806266164,
+      "release": 22.040457472932832,
+      "movementResumed": 22.06245747293283,
+      "coverReached": 23.551318219444422,
+      "departureCue": 39.002984886110674,
+      "gatePassable": 44.57766705665296,
+      "gateCrossed": 51.90962547280709,
+      "visibleExitReached": 58.369958806140026
+    },
+    "reactionMeasuredSeconds": 0.7746666666666684,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 45.0992643029159,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 9.274843931685547,
+      "firstDangerCue": 10.59151059835228,
+      "release": 11.841510598352341,
+      "movementResumed": 11.858177265019009,
+      "coverReached": 13.097324551840787,
+      "departureCue": 25.913991218507036,
+      "gatePassable": 31.186471838661788,
+      "gateCrossed": 38.649264302916265,
+      "visibleExitReached": 45.0992643029159
+    },
+    "reactionMeasuredSeconds": 1.2500000000000622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 45.82018006057272,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 9.279093022674425,
+      "firstDangerCue": 10.57909302267442,
+      "release": 11.845759689341083,
+      "movementResumed": 11.879093022674416,
+      "coverReached": 13.101573642829445,
+      "departureCue": 26.634906976163297,
+      "gatePassable": 31.924054262985262,
+      "gateCrossed": 39.38684672723975,
+      "visibleExitReached": 45.82018006057272
+    },
+    "reactionMeasuredSeconds": 1.2666666666666622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 45.25084286856136,
+    "distanceWalkedMeters": 54.064278834074976,
+    "timestamps": {
+      "workStart": 9.283720930232569,
+      "firstDangerCue": 10.611720930232572,
+      "release": 11.898054263565909,
+      "movementResumed": 11.906387596899242,
+      "coverReached": 13.148276977089282,
+      "departureCue": 26.032610310422644,
+      "gatePassable": 31.33581186081025,
+      "gateCrossed": 38.79050953522842,
+      "visibleExitReached": 45.25084286856136
+    },
+    "reactionMeasuredSeconds": 1.2863333333333369,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 50.01593096958226,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 13.274843931685714,
+      "firstDangerCue": 13.441510598352389,
+      "release": 14.691510598352451,
+      "movementResumed": 14.708177265019119,
+      "coverReached": 15.947324551840897,
+      "departureCue": 28.830657885173505,
+      "gatePassable": 36.10313850532815,
+      "gateCrossed": 43.565930969582624,
+      "visibleExitReached": 50.01593096958226
+    },
+    "reactionMeasuredSeconds": 1.2500000000000622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 50.35351339390579,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 13.27909302267441,
+      "firstDangerCue": 13.345759689341076,
+      "release": 14.612426356007738,
+      "movementResumed": 14.645759689341071,
+      "coverReached": 15.8682403094961,
+      "departureCue": 29.168240309496756,
+      "gatePassable": 36.45738759631835,
+      "gateCrossed": 43.920180060572825,
+      "visibleExitReached": 50.35351339390579
+    },
+    "reactionMeasuredSeconds": 1.2666666666666622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 50.50145858249071,
+    "distanceWalkedMeters": 54.04625261902334,
+    "timestamps": {
+      "workStart": 13.28340320936693,
+      "firstDangerCue": 13.463069876033599,
+      "release": 14.7220698760336,
+      "movementResumed": 14.7440698760336,
+      "coverReached": 15.969450830553843,
+      "departureCue": 29.249450830553872,
+      "gatePassable": 36.58631904760785,
+      "gateCrossed": 44.04112524915778,
+      "visibleExitReached": 50.50145858249071
+    },
+    "reactionMeasuredSeconds": 1.2590000000000021,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.265930969581866,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 18.274843931685695,
+      "firstDangerCue": 21.84151059835216,
+      "release": 23.091510598352087,
+      "movementResumed": 23.108177265018753,
+      "coverReached": 24.3473245518404,
+      "departureCue": 39.0806578851729,
+      "gatePassable": 42.353138505327756,
+      "gateCrossed": 49.81593096958223,
+      "visibleExitReached": 56.265930969581866
+    },
+    "reactionMeasuredSeconds": 1.249999999999929,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 56.45351339390544,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 18.27909302267451,
+      "firstDangerCue": 21.912426356008023,
+      "release": 23.179093022674753,
+      "movementResumed": 23.212426356008088,
+      "coverReached": 24.434906976163184,
+      "departureCue": 39.26824030949648,
+      "gatePassable": 42.557387596317994,
+      "gateCrossed": 50.02018006057247,
+      "visibleExitReached": 56.45351339390544
+    },
+    "reactionMeasuredSeconds": 1.2666666666667297,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 55.79985848102839,
+    "distanceWalkedMeters": 54.06359573421383,
+    "timestamps": {
+      "workStart": 18.28340320936693,
+      "firstDangerCue": 21.714069876033605,
+      "release": 23.00040320936694,
+      "movementResumed": 23.008736542700273,
+      "coverReached": 24.25062592289031,
+      "departureCue": 38.573625922889924,
+      "gatePassable": 41.88482747327732,
+      "gateCrossed": 49.339525147695454,
+      "visibleExitReached": 55.79985848102839
+    },
+    "reactionMeasuredSeconds": 1.286333333333335,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.54655958685431,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 9.298105840093173,
+      "firstDangerCue": 10.24810584009322,
+      "release": 11.498105840093283,
+      "movementResumed": 11.51477250675995,
+      "coverReached": 12.916710491256154,
+      "departureCue": 30.1667104912555,
+      "gatePassable": 35.60198180908466,
+      "gateCrossed": 43.096559586854674,
+      "visibleExitReached": 49.54655958685431
+    },
+    "reactionMeasuredSeconds": 1.2500000000000622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.50080258339036,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 9.302348836627912,
+      "firstDangerCue": 10.235682169961242,
+      "release": 11.502348836627904,
+      "movementResumed": 11.535682169961238,
+      "coverReached": 12.920953487790687,
+      "departureCue": 30.12095348779138,
+      "gatePassable": 35.57289147228739,
+      "gateCrossed": 43.06746925005739,
+      "visibleExitReached": 49.50080258339036
+    },
+    "reactionMeasuredSeconds": 1.2666666666666622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.60486046511524,
+    "distanceWalkedMeters": 54.87629999999972,
+    "timestamps": {
+      "workStart": 9.306976744186056,
+      "firstDangerCue": 10.239310077519391,
+      "release": 11.498310077519394,
+      "movementResumed": 11.520310077519394,
+      "coverReached": 12.916914728682185,
+      "departureCue": 30.18091472868222,
+      "gatePassable": 35.64718604651146,
+      "gateCrossed": 43.144527131782304,
+      "visibleExitReached": 49.60486046511524
+    },
+    "reactionMeasuredSeconds": 1.2590000000000021,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 55.34655958685395,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 13.29810584009334,
+      "firstDangerCue": 13.43143917342668,
+      "release": 14.681439173426742,
+      "movementResumed": 14.69810584009341,
+      "coverReached": 16.100043824589605,
+      "departureCue": 33.966710491255256,
+      "gatePassable": 41.401981809084305,
+      "gateCrossed": 48.896559586854316,
+      "visibleExitReached": 55.34655958685395
+    },
+    "reactionMeasuredSeconds": 1.2500000000000622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.36746925005686,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 13.302348836627896,
+      "firstDangerCue": 13.33568216996123,
+      "release": 14.602348836627892,
+      "movementResumed": 14.635682169961225,
+      "coverReached": 16.020953487790674,
+      "departureCue": 30.987620154458085,
+      "gatePassable": 38.439558138953885,
+      "gateCrossed": 45.93413591672389,
+      "visibleExitReached": 52.36746925005686
+    },
+    "reactionMeasuredSeconds": 1.2666666666666622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.79903300152841,
+    "distanceWalkedMeters": 54.81503761995539,
+    "timestamps": {
+      "workStart": 13.306659023320417,
+      "firstDangerCue": 13.464325689987085,
+      "release": 14.723325689987087,
+      "movementResumed": 14.745325689987087,
+      "coverReached": 16.141930341149877,
+      "departureCue": 33.38393034114983,
+      "gatePassable": 40.88602524959129,
+      "gateCrossed": 48.35836633486214,
+      "visibleExitReached": 54.79903300152841
+    },
+    "reactionMeasuredSeconds": 1.2590000000000021,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.313226253520426,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 18.298105840093317,
+      "firstDangerCue": 21.531439173426467,
+      "release": 22.781439173426396,
+      "movementResumed": 22.79810584009306,
+      "coverReached": 24.20004382458912,
+      "departureCue": 40.933377157921505,
+      "gatePassable": 44.36864847575078,
+      "gateCrossed": 51.86322625352079,
+      "visibleExitReached": 58.313226253520426
+    },
+    "reactionMeasuredSeconds": 1.249999999999929,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.600802583389836,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 18.302348836628,
+      "firstDangerCue": 21.735682169961503,
+      "release": 23.002348836628233,
+      "movementResumed": 23.035682169961568,
+      "coverReached": 24.42095348779109,
+      "departureCue": 41.22095348779094,
+      "gatePassable": 44.672891472286864,
+      "gateCrossed": 52.16746925005687,
+      "visibleExitReached": 58.600802583389836
+    },
+    "reactionMeasuredSeconds": 1.2666666666667297,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.44375847095754,
+    "distanceWalkedMeters": 54.857447379228525,
+    "timestamps": {
+      "workStart": 18.30665902332042,
+      "firstDangerCue": 21.562992356653762,
+      "release": 22.821992356653766,
+      "movementResumed": 22.843992356653764,
+      "coverReached": 24.240597007816557,
+      "departureCue": 41.03993034114935,
+      "gatePassable": 44.5163585829244,
+      "gateCrossed": 51.98342513762461,
+      "visibleExitReached": 58.44375847095754
+    },
+    "reactionMeasuredSeconds": 1.259000000000004,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.36904761583722,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 9.155865123729525,
+      "firstDangerCue": 10.25586512372958,
+      "release": 11.505865123729642,
+      "movementResumed": 11.52253179039631,
+      "coverReached": 13.01439232728987,
+      "departureCue": 30.047725660622554,
+      "gatePassable": 35.57291945907187,
+      "gateCrossed": 42.919047615837584,
+      "visibleExitReached": 49.36904761583722
+    },
+    "reactionMeasuredSeconds": 1.2500000000000622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.16514826239265,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 9.162813952906983,
+      "firstDangerCue": 10.26281395290698,
+      "release": 11.529480619573642,
+      "movementResumed": 11.562813952906975,
+      "coverReached": 13.038012345087527,
+      "departureCue": 29.838012345088206,
+      "gatePassable": 35.3798728102044,
+      "gateCrossed": 42.73181492905968,
+      "visibleExitReached": 49.16514826239265
+    },
+    "reactionMeasuredSeconds": 1.2666666666666622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.10888665214148,
+    "distanceWalkedMeters": 54.655622968772725,
+    "timestamps": {
+      "workStart": 9.167441860465125,
+      "firstDangerCue": 10.274108527131794,
+      "release": 11.560441860465131,
+      "movementResumed": 11.568775193798464,
+      "coverReached": 13.062452543615368,
+      "departureCue": 29.751119210282074,
+      "gatePassable": 35.31574711725862,
+      "gateCrossed": 42.648553318808545,
+      "visibleExitReached": 49.10888665214148
+    },
+    "reactionMeasuredSeconds": 1.2863333333333369,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.902380949170315,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 13.155865123729692,
+      "firstDangerCue": 13.17253179039636,
+      "release": 14.422531790396421,
+      "movementResumed": 14.439198457063089,
+      "coverReached": 15.93105899395665,
+      "departureCue": 31.581058993955768,
+      "gatePassable": 39.106252792404966,
+      "gateCrossed": 46.45238094917068,
+      "visibleExitReached": 52.902380949170315
+    },
+    "reactionMeasuredSeconds": 1.2500000000000622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.69848159572566,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 13.162813952906967,
+      "firstDangerCue": 13.329480619573634,
+      "release": 14.596147286240296,
+      "movementResumed": 14.629480619573629,
+      "coverReached": 16.104679011754186,
+      "departureCue": 33.37134567842156,
+      "gatePassable": 40.91320614353741,
+      "gateCrossed": 48.26514826239269,
+      "visibleExitReached": 54.69848159572566
+    },
+    "reactionMeasuredSeconds": 1.2666666666666622,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.93423559794226,
+    "distanceWalkedMeters": 54.65493986891159,
+    "timestamps": {
+      "workStart": 13.167124139599487,
+      "firstDangerCue": 13.189124139599487,
+      "release": 14.453457472932824,
+      "movementResumed": 14.461790806266157,
+      "coverReached": 15.955468156083061,
+      "departureCue": 31.537468156083097,
+      "gatePassable": 39.13576272972607,
+      "gateCrossed": 46.47390226460933,
+      "visibleExitReached": 52.93423559794226
+    },
+    "reactionMeasuredSeconds": 1.2643333333333366,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 57.91904761583667,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 18.155865123729683,
+      "firstDangerCue": 21.405865123729498,
+      "release": 22.655865123729427,
+      "movementResumed": 22.672531790396093,
+      "coverReached": 24.164392327289498,
+      "departureCue": 40.5977256606219,
+      "gatePassable": 44.12291945907132,
+      "gateCrossed": 51.469047615837034,
+      "visibleExitReached": 57.91904761583667
+    },
+    "reactionMeasuredSeconds": 1.249999999999929,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.59848159572544,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 18.16281395290706,
+      "firstDangerCue": 21.42948061957389,
+      "release": 22.69614728624062,
+      "movementResumed": 22.729480619573955,
+      "coverReached": 24.204679011754585,
+      "departureCue": 41.27134567842111,
+      "gatePassable": 44.81320614353719,
+      "gateCrossed": 52.16514826239247,
+      "visibleExitReached": 58.59848159572544
+    },
+    "reactionMeasuredSeconds": 1.2666666666667297,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 1.25,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.74010874277865,
+    "distanceWalkedMeters": 54.62098379697729,
+    "timestamps": {
+      "workStart": 18.16712413959949,
+      "firstDangerCue": 21.265790806266164,
+      "release": 22.5521241395995,
+      "movementResumed": 22.560457472932832,
+      "coverReached": 24.054134822749738,
+      "departureCue": 41.36513482274918,
+      "gatePassable": 44.94781699329159,
+      "gateCrossed": 52.27977540944572,
+      "visibleExitReached": 58.74010874277865
+    },
+    "reactionMeasuredSeconds": 1.286333333333335,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 45.59926430291587,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 9.274843931685547,
+      "firstDangerCue": 10.59151059835228,
+      "release": 12.341510598352366,
+      "movementResumed": 12.358177265019034,
+      "coverReached": 13.597324551840812,
+      "departureCue": 26.413991218507007,
+      "gatePassable": 31.68647183866176,
+      "gateCrossed": 39.14926430291624,
+      "visibleExitReached": 45.59926430291587
+    },
+    "reactionMeasuredSeconds": 1.750000000000087,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 46.32018006057269,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 9.279093022674425,
+      "firstDangerCue": 10.57909302267442,
+      "release": 12.345759689341081,
+      "movementResumed": 12.379093022674414,
+      "coverReached": 13.601573642829443,
+      "departureCue": 27.13490697616332,
+      "gatePassable": 32.424054262985244,
+      "gateCrossed": 39.88684672723972,
+      "visibleExitReached": 46.32018006057269
+    },
+    "reactionMeasuredSeconds": 1.7666666666666604,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 46.460001109558156,
+    "distanceWalkedMeters": 54.058169052218254,
+    "timestamps": {
+      "workStart": 9.283720930232569,
+      "firstDangerCue": 10.611720930232572,
+      "release": 12.382387596899243,
+      "movementResumed": 12.404387596899243,
+      "coverReached": 13.629768551419485,
+      "departureCue": 27.241768551419515,
+      "gatePassable": 32.54497010180709,
+      "gateCrossed": 39.99966777622522,
+      "visibleExitReached": 46.460001109558156
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 51.41593096958218,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 13.274843931685714,
+      "firstDangerCue": 13.441510598352389,
+      "release": 15.191510598352476,
+      "movementResumed": 15.208177265019144,
+      "coverReached": 16.447324551840875,
+      "departureCue": 30.230657885173425,
+      "gatePassable": 37.50313850532807,
+      "gateCrossed": 44.965930969582544,
+      "visibleExitReached": 51.41593096958218
+    },
+    "reactionMeasuredSeconds": 1.750000000000087,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.98684672723886,
+    "distanceWalkedMeters": 54.00838713023076,
+    "timestamps": {
+      "workStart": 13.27909302267441,
+      "firstDangerCue": 13.345759689341076,
+      "release": 15.112426356007736,
+      "movementResumed": 15.14575968934107,
+      "coverReached": 16.36824030949612,
+      "departureCue": 33.80157364283013,
+      "gatePassable": 41.09072092965142,
+      "gateCrossed": 48.553513393905895,
+      "visibleExitReached": 54.98684672723886
+    },
+    "reactionMeasuredSeconds": 1.7666666666666604,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 52.6427057898338,
+    "distanceWalkedMeters": 54.05753411481171,
+    "timestamps": {
+      "workStart": 13.28340320936693,
+      "firstDangerCue": 13.463069876033599,
+      "release": 15.23373654270027,
+      "movementResumed": 15.242069876033602,
+      "coverReached": 16.48395925622364,
+      "departureCue": 31.42395925622367,
+      "gatePassable": 38.702641426765894,
+      "gateCrossed": 46.182372456500865,
+      "visibleExitReached": 52.6427057898338
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 55.69926430291523,
+    "distanceWalkedMeters": 53.99925158460279,
+    "timestamps": {
+      "workStart": 18.274843931685695,
+      "firstDangerCue": 21.84151059835216,
+      "release": 23.59151059835206,
+      "movementResumed": 23.608177265018725,
+      "coverReached": 24.847324551840373,
+      "departureCue": 38.51399121850626,
+      "gatePassable": 41.78647183866112,
+      "gateCrossed": 49.2492643029156,
+      "visibleExitReached": 55.69926430291523
+    },
+    "reactionMeasuredSeconds": 1.7499999999999005,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "captured-after-late-response",
+    "simulatedSeconds": 24.15351162732596,
+    "distanceWalkedMeters": 18.875049998750008,
+    "timestamps": {
+      "workStart": 18.27909302267451,
+      "firstDangerCue": 21.912426356008023,
+      "release": 23.679093022674778,
+      "movementResumed": 23.712426356008113,
+      "captureConfirmed": 24.15351162732596
+    },
+    "reactionMeasuredSeconds": 1.7666666666667545,
+    "capture": {
+      "name": "captureConfirmed",
+      "time": 24.15351162732596,
+      "pose": {
+        "x": -4.05,
+        "y": 1.6,
+        "z": 10.7
+      },
+      "ratchets": 2,
+      "gateLift": 1.8,
+      "enemyPhase": "patrol",
+      "enemy": {
+        "x": 1.05,
+        "y": 0,
+        "z": 14.25
+      },
+      "blockers": [],
+      "holding": null,
+      "pointers": {
+        "move": null,
+        "barrier": []
+      },
+      "detail": {
+        "precedingFrame": {
+          "player": {
+            "x": -2.45,
+            "y": 1.6,
+            "z": 9.815000000000001
+          },
+          "enemy": {
+            "x": -1.970924565217049,
+            "y": 0,
+            "z": 10.3020055972823
+          },
+          "phase": "attack"
+        },
+        "frameDelta": 0.0162790697674411,
+        "recoveredPose": {
+          "position": {
+            "x": -4.05,
+            "y": 1.6,
+            "z": 10.7
+          },
+          "yaw": -0.8408966686431651,
+          "pitch": 0
+        },
+        "recoveryPending": true
+      }
+    }
+  },
+  {
+    "options": {
+      "work": [
+        -2.45,
+        9.6
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 55.79168338869192,
+    "distanceWalkedMeters": 54.05748595235712,
+    "timestamps": {
+      "workStart": 18.28340320936693,
+      "firstDangerCue": 21.714069876033605,
+      "release": 23.484736542700276,
+      "movementResumed": 23.506736542700274,
+      "coverReached": 24.732117497220518,
+      "departureCue": 38.56545083055346,
+      "gatePassable": 41.876652380940854,
+      "gateCrossed": 49.33135005535899,
+      "visibleExitReached": 55.79168338869192
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.21322625352099,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 9.298105840093173,
+      "firstDangerCue": 10.24810584009322,
+      "release": 11.998105840093308,
+      "movementResumed": 12.014772506759975,
+      "coverReached": 13.416710491256179,
+      "departureCue": 29.833377157922186,
+      "gatePassable": 35.26864847575135,
+      "gateCrossed": 42.76322625352136,
+      "visibleExitReached": 49.21322625352099
+    },
+    "reactionMeasuredSeconds": 1.750000000000087,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.167469250057046,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 9.302348836627912,
+      "firstDangerCue": 10.235682169961242,
+      "release": 12.002348836627903,
+      "movementResumed": 12.035682169961236,
+      "coverReached": 13.420953487790685,
+      "departureCue": 29.78762015445803,
+      "gatePassable": 35.239558138954074,
+      "gateCrossed": 42.73413591672408,
+      "visibleExitReached": 49.167469250057046
+    },
+    "reactionMeasuredSeconds": 1.7666666666666604,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.130856848921646,
+    "distanceWalkedMeters": 54.8512088918501,
+    "timestamps": {
+      "workStart": 9.306976744186056,
+      "firstDangerCue": 10.239310077519391,
+      "release": 12.009976744186062,
+      "movementResumed": 12.018310077519395,
+      "coverReached": 13.42536205244673,
+      "departureCue": 29.735028719113433,
+      "gatePassable": 35.2034569608885,
+      "gateCrossed": 42.67052351558871,
+      "visibleExitReached": 49.130856848921646
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.59655958685399,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 13.29810584009334,
+      "firstDangerCue": 13.43143917342668,
+      "release": 15.181439173426767,
+      "movementResumed": 15.198105840093435,
+      "coverReached": 16.600043824589577,
+      "departureCue": 33.2167104912553,
+      "gatePassable": 40.65198180908435,
+      "gateCrossed": 48.14655958685436,
+      "visibleExitReached": 54.59655958685399
+    },
+    "reactionMeasuredSeconds": 1.750000000000087,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.900802583390046,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 13.302348836627896,
+      "firstDangerCue": 13.33568216996123,
+      "release": 15.10234883662789,
+      "movementResumed": 15.135682169961223,
+      "coverReached": 16.5209534877907,
+      "departureCue": 33.52095348779138,
+      "gatePassable": 40.972891472287074,
+      "gateCrossed": 48.46746925005708,
+      "visibleExitReached": 54.900802583390046
+    },
+    "reactionMeasuredSeconds": 1.7666666666666604,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.66632340134716,
+    "distanceWalkedMeters": 54.868695312899,
+    "timestamps": {
+      "workStart": 13.306659023320417,
+      "firstDangerCue": 13.464325689987085,
+      "release": 15.234992356653756,
+      "movementResumed": 15.243325689987088,
+      "coverReached": 16.650377664914423,
+      "departureCue": 33.25037766491438,
+      "gatePassable": 40.70864898274338,
+      "gateCrossed": 48.20599006801422,
+      "visibleExitReached": 54.66632340134716
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.79655958685373,
+    "distanceWalkedMeters": 54.81760311173748,
+    "timestamps": {
+      "workStart": 18.298105840093317,
+      "firstDangerCue": 21.531439173426467,
+      "release": 23.281439173426367,
+      "movementResumed": 23.298105840093033,
+      "coverReached": 24.70004382458909,
+      "departureCue": 41.41671049125481,
+      "gatePassable": 44.85198180908409,
+      "gateCrossed": 52.3465595868541,
+      "visibleExitReached": 58.79655958685373
+    },
+    "reactionMeasuredSeconds": 1.7499999999999005,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.86746925005649,
+    "distanceWalkedMeters": 54.826725554289126,
+    "timestamps": {
+      "workStart": 18.302348836628,
+      "firstDangerCue": 21.735682169961503,
+      "release": 23.502348836628258,
+      "movementResumed": 23.535682169961593,
+      "coverReached": 24.920953487791113,
+      "departureCue": 41.487620154457595,
+      "gatePassable": 44.939558138953515,
+      "gateCrossed": 52.43413591672352,
+      "visibleExitReached": 58.86746925005649
+    },
+    "reactionMeasuredSeconds": 1.7666666666667545,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -2.05,
+        10.05
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 59.45853912805535,
+    "distanceWalkedMeters": 54.85052579198895,
+    "timestamps": {
+      "workStart": 18.30665902332042,
+      "firstDangerCue": 21.562992356653762,
+      "release": 23.333659023320433,
+      "movementResumed": 23.341992356653765,
+      "coverReached": 24.7490443315811,
+      "departureCue": 42.05471099824716,
+      "gatePassable": 45.531139240022206,
+      "gateCrossed": 52.998205794722416,
+      "visibleExitReached": 59.45853912805535
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 48.96904761583724,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 9.155865123729525,
+      "firstDangerCue": 10.25586512372958,
+      "release": 12.005865123729667,
+      "movementResumed": 12.022531790396334,
+      "coverReached": 13.514392327289896,
+      "departureCue": 29.647725660622577,
+      "gatePassable": 35.17291945907189,
+      "gateCrossed": 42.51904761583761,
+      "visibleExitReached": 48.96904761583724
+    },
+    "reactionMeasuredSeconds": 1.750000000000087,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 48.93181492905933,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 9.162813952906983,
+      "firstDangerCue": 10.26281395290698,
+      "release": 12.02948061957364,
+      "movementResumed": 12.062813952906973,
+      "coverReached": 13.538012345087525,
+      "departureCue": 29.60467901175486,
+      "gatePassable": 35.14653947687108,
+      "gateCrossed": 42.49848159572636,
+      "visibleExitReached": 48.93181492905933
+    },
+    "reactionMeasuredSeconds": 1.7666666666666604,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 0,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 49.07073671550283,
+    "distanceWalkedMeters": 54.674650604999634,
+    "timestamps": {
+      "workStart": 9.167441860465125,
+      "firstDangerCue": 10.274108527131794,
+      "release": 12.044775193798465,
+      "movementResumed": 12.066775193798465,
+      "coverReached": 13.555635940310056,
+      "departureCue": 29.712969273643427,
+      "gatePassable": 35.27759718061997,
+      "gateCrossed": 42.6104033821699,
+      "visibleExitReached": 49.07073671550283
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.11904761583691,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 13.155865123729692,
+      "firstDangerCue": 13.17253179039636,
+      "release": 14.922531790396446,
+      "movementResumed": 14.939198457063114,
+      "coverReached": 16.431058993956633,
+      "departureCue": 32.79772566062237,
+      "gatePassable": 40.322919459071564,
+      "gateCrossed": 47.66904761583728,
+      "visibleExitReached": 54.11904761583691
+    },
+    "reactionMeasuredSeconds": 1.750000000000087,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.99848159572564,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 13.162813952906967,
+      "firstDangerCue": 13.329480619573634,
+      "release": 15.096147286240294,
+      "movementResumed": 15.129480619573627,
+      "coverReached": 16.60467901175421,
+      "departureCue": 33.671345678421545,
+      "gatePassable": 41.21320614353739,
+      "gateCrossed": 48.565148262392675,
+      "visibleExitReached": 54.99848159572564
+    },
+    "reactionMeasuredSeconds": 1.7666666666666604,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 4,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 54.999519488435304,
+    "distanceWalkedMeters": 54.67561690013857,
+    "timestamps": {
+      "workStart": 13.167124139599487,
+      "firstDangerCue": 13.189124139599487,
+      "release": 14.959790806266158,
+      "movementResumed": 15.006790806266158,
+      "coverReached": 16.4714187132429,
+      "departureCue": 33.60275204657617,
+      "gatePassable": 41.20104662021911,
+      "gateCrossed": 48.53918615510237,
+      "visibleExitReached": 54.999519488435304
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.016666666666666666
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.65238094916996,
+    "distanceWalkedMeters": 54.579285707384955,
+    "timestamps": {
+      "workStart": 18.155865123729683,
+      "firstDangerCue": 21.405865123729498,
+      "release": 23.1558651237294,
+      "movementResumed": 23.172531790396064,
+      "coverReached": 24.66439232728947,
+      "departureCue": 41.33105899395519,
+      "gatePassable": 44.85625279240461,
+      "gateCrossed": 52.202380949170326,
+      "visibleExitReached": 58.65238094916996
+    },
+    "reactionMeasuredSeconds": 1.7499999999999005,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.03333333333333333
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.33181492905879,
+    "distanceWalkedMeters": 54.60673543081068,
+    "timestamps": {
+      "workStart": 18.16281395290706,
+      "firstDangerCue": 21.42948061957389,
+      "release": 23.196147286240645,
+      "movementResumed": 23.22948061957398,
+      "coverReached": 24.70467901175461,
+      "departureCue": 41.00467901175446,
+      "gatePassable": 44.546539476870535,
+      "gateCrossed": 51.89848159572582,
+      "visibleExitReached": 58.33181492905879
+    },
+    "reactionMeasuredSeconds": 1.7666666666667545,
+    "capture": null
+  },
+  {
+    "options": {
+      "work": [
+        -1.8,
+        10
+      ],
+      "initialWait": 9,
+      "reaction": 1.75,
+      "deltas": [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ],
+      "retreat": true
+    },
+    "outcome": "completed-without-capture",
+    "simulatedSeconds": 58.9905507775823,
+    "distanceWalkedMeters": 54.64773417180515,
+    "timestamps": {
+      "workStart": 18.16712413959949,
+      "firstDangerCue": 21.265790806266164,
+      "release": 23.036457472932835,
+      "movementResumed": 23.058457472932833,
+      "coverReached": 24.547318219444424,
+      "departureCue": 41.61198488611051,
+      "gatePassable": 45.198178684559906,
+      "gateCrossed": 52.53021744424937,
+      "visibleExitReached": 58.9905507775823
+    },
+    "reactionMeasuredSeconds": 1.7706666666666706,
+    "capture": null
+  }
+]

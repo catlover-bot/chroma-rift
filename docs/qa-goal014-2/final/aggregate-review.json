@@ -1,0 +1,14 @@
+{
+  "verified": true,
+  "checks": {
+    "screen-route": 46,
+    "comparison": 60,
+    "mechanisms": 117,
+    "currentSourceHashCount": 538,
+    "protectedSixByteEqual": true,
+    "r8Gates": 14,
+    "metroCommands": 8,
+    "fullCheckChildExitCode": 0
+  },
+  "scope": "Artifact hash/decompression and current-source correspondence; full-check child results inspected. Device acceptance remains pending."
+}

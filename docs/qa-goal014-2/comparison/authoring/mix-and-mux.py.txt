@@ -1,0 +1,39 @@
+import hashlib,importlib.util,json,pathlib,subprocess,sys,time
+sys.dont_write_bytecode=True
+ROOT=pathlib.Path.cwd();BASE=pathlib.Path('/tmp/chroma-goal014-comparison-Vp6xNc/baseline-source');OUT=ROOT/'.expo/goal014-2/comparison'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def run(cmd,log):
+ started=time.time()
+ with log.open('wb') as f:r=subprocess.run([str(x) for x in cmd],stdout=f,stderr=subprocess.STDOUT)
+ entry={'command':[str(x) for x in cmd],'exitCode':r.returncode,'seconds':time.time()-started,'log':str(log.relative_to(ROOT)),'logSha256':sha(log)};commands.append(entry)
+ if r.returncode:raise RuntimeError(entry)
+ return entry
+commands=[];reports=[]
+spec=importlib.util.spec_from_file_location('audio_measure',ROOT/'scripts/audio/render-chapter-music.py');audio=importlib.util.module_from_spec(spec);spec.loader.exec_module(audio)
+for area,count in [('04',166),('05',125)]:
+ for version,x in [('before',0),('after',390)]:
+  part=OUT/version/area;record=part/'recording.json';samples=part/'samples.json';root=BASE if version=='before' else ROOT
+  data=json.loads(record.read_text());inputHashes={str(record):sha(record),str(samples):sha(samples),str(OUT/f'area-{area}-paired-silent.mp4'):sha(OUT/f'area-{area}-paired-silent.mp4')}
+  for relative,expected in data['sourceHashes'].items():
+   p=root/relative
+   if sha(p)!=expected:raise RuntimeError('Source no longer matches recording '+str(p))
+   inputHashes[str(p)]=expected
+  for asset in data['assetHashes'].values():
+   p=root/asset['path']
+   if sha(p)!=asset['sha256']:raise RuntimeError('Asset no longer matches recording '+str(p))
+   inputHashes[str(p)]=asset['sha256']
+  for tool in ['scripts/audio/render-recorded-mix.py','scripts/audio/render-chapter-music.py']:inputHashes[str(ROOT/tool)]=sha(ROOT/tool)
+  out=part/'audio';out.mkdir(exist_ok=True)
+  rows=json.loads(samples.read_text());assert len(rows)==count
+  mapping=out/'frame-map.json';mapping.write_text(json.dumps({'schemaVersion':1,'sourceSamplesSha256':sha(samples),'frames':[{'area':'comparison','simulationSeconds':row['seconds']}for row in rows]},indent=2)+'\n')
+  run(['python3',ROOT/'scripts/audio/render-recorded-mix.py',record,'--frame-map',mapping,'--asset-root',root,'--fps','5','--output',out,'--wav-output',out],out/'mix.log')
+  silent=OUT/f'area-{area}-paired-silent.mp4';movie=OUT/f'area-{area}-{version}-sound.mp4';duration=count/5
+  run(['ffmpeg','-y','-v','error','-i',silent,'-i',out/'route-video-aligned.wav','-filter_complex',f'[0:v]crop=390:844:{x}:0[v];[1:a]apad,atrim=duration={duration},asetpts=PTS-STARTPTS[a]','-map','[v]','-map','[a]','-c:v','libx264','-preset','veryfast','-crf','23','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-t',str(duration),'-movflags','+faststart',movie],out/'mux.log')
+  probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-count_frames','-show_streams','-show_format','-of','json',str(movie)]));video=next(s for s in probe['streams']if s['codec_type']=='video');sound=next(s for s in probe['streams']if s['codec_type']=='audio');assert int(video['nb_read_frames'])==count and video['width']==390 and video['height']==844 and video['r_frame_rate']=='5/1';assert abs(float(probe['format']['duration'])-duration)<.025
+  run(['ffmpeg','-v','error','-i',movie,'-f','null','-'],out/'decode.log')
+  measurement=audio.stats(movie);assert measurement['truePeakDbtp']<=-1 and measurement['clippedSamples']==0
+  changed=[p for p,expected in inputHashes.items()if not pathlib.Path(p).exists()or sha(pathlib.Path(p))!=expected];assert not changed,changed
+  item={'area':area,'revision':version,'recording':{'file':str(record.relative_to(ROOT)),'sha256':sha(record)},'sourceScope':'Every recorded loaded source and audio asset compared to the corresponding revision root before and after mixing; input movie, samples and mixer tools also guarded.','guardedFiles':len(inputHashes),'sourceGuardPassed':True,'sourceHashes':data['sourceHashes'],'sourceRoot':str(root),'frameMap':{'file':str(mapping.relative_to(ROOT)),'sha256':sha(mapping),'samples':count,'fps':5},'mixAnalysis':{'file':str((out/'mix-video-analysis.json').relative_to(ROOT)),'sha256':sha(out/'mix-video-analysis.json')},'movie':{'file':str(movie.relative_to(ROOT)),'sha256':sha(movie),'bytes':movie.stat().st_size,'frames':count,'width':390,'height':844,'fps':5,'durationSeconds':duration,'codec':video['codec_name'],'audioCodec':sound['codec_name']},'audio':measurement,'fullDecodePassed':True,'sourceSimulationSeconds':data['route']['durationSeconds'],'presentationPaddingSeconds':duration-data['route']['durationSeconds'],'paddingPolicy':'Map recorded commands to actual 5 Hz visual sample timestamps, earliest anchor for repeats. Keep every video frame, pad silence if needed and trim only the mix tail to the full movie duration; never use shortest-stream truncation. No synthesized replacement owner behavior.','fixtureBoundary':data['route']['boundary']};reports.append(item)
+  (OUT/'audio-video-report.json').write_text(json.dumps({'schemaVersion':1,'status':'in-progress','reports':reports,'commands':commands},indent=2)+'\n');print(area,version,'complete',movie.name,measurement['integratedLufs'],measurement['truePeakDbtp'],flush=True)
+report={'schemaVersion':1,'status':'complete','boundary':'Separate before and after movies cropped from the same-input paired actual-scene replay. Each uses that revision real audio-owner command trace reconstructed offline. Native successful presentation and loaded/zero-latency players are explicit fixtures, not device capture. Audio A and B are separate, not overlaid.','artisticListeningVerified':False,'nativeDeviceCapture':False,'RELEASE_READY':False,'reports':reports,'commands':commands}
+(OUT/'audio-video-report.json').write_text(json.dumps(report,indent=2)+'\n');print('report',sha(OUT/'audio-video-report.json'),flush=True)

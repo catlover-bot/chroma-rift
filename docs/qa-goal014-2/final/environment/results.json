@@ -1,0 +1,40 @@
+{
+  "npm-ls": {
+    "command": [
+      "npm",
+      "ls",
+      "--depth=0",
+      "--json"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.6530286230117781
+  },
+  "doctor": {
+    "command": [
+      "npm",
+      "run",
+      "doctor"
+    ],
+    "exitCode": 1,
+    "elapsedSeconds": 3.9201397720025852
+  },
+  "expo-install-check": {
+    "command": [
+      "npx",
+      "expo",
+      "install",
+      "--check"
+    ],
+    "exitCode": 1,
+    "elapsedSeconds": 1.2750807959964732
+  },
+  "audit": {
+    "command": [
+      "npm",
+      "audit",
+      "--json"
+    ],
+    "exitCode": 1,
+    "elapsedSeconds": 3.584450845999527
+  }
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "name": "development-export",
+    "command": [
+      "npx",
+      "expo",
+      "export",
+      "--platform",
+      "ios",
+      "--no-bytecode",
+      "--source-maps",
+      "--output-dir",
+      ".expo/goal014-2/final/metro/development",
+      "--dev"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 27.952495587989688
+  },
+  {
+    "name": "development-three",
+    "command": [
+      "node",
+      "scripts/inspect-three-bundle.cjs",
+      ".expo/goal014-2/final/metro/development",
+      "--expect-single"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.8075562169979094
+  },
+  {
+    "name": "development-sources",
+    "command": [
+      "node",
+      "scripts/inspect-bundle-sources.cjs",
+      ".expo/goal014-2/final/metro/development",
+      "."
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.1941567869944265
+  },
+  {
+    "name": "development-entry",
+    "command": [
+      "node",
+      "scripts/inspect-metro-stage-entry.cjs",
+      ".expo/goal014-2/final/metro/development",
+      ".",
+      "--expect-acyclic"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 2.1636901869933354
+  },
+  {
+    "name": "production-export",
+    "command": [
+      "npx",
+      "expo",
+      "export",
+      "--platform",
+      "ios",
+      "--no-bytecode",
+      "--source-maps",
+      "--output-dir",
+      ".expo/goal014-2/final/metro/production"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 23.62699392500508
+  },
+  {
+    "name": "production-three",
+    "command": [
+      "node",
+      "scripts/inspect-three-bundle.cjs",
+      ".expo/goal014-2/final/metro/production",
+      "--expect-single"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.5865314270049566
+  },
+  {
+    "name": "production-sources",
+    "command": [
+      "node",
+      "scripts/inspect-bundle-sources.cjs",
+      ".expo/goal014-2/final/metro/production",
+      "."
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.19816407200414687
+  },
+  {
+    "name": "production-release",
+    "command": [
+      "node",
+      "scripts/check-release-export.cjs",
+      ".expo/goal014-2/final/metro/production",
+      "ios"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.18147832599061076
+  }
+]

@@ -31,7 +31,7 @@ const originalDimensions = { window: Dimensions.get('window'), screen: Dimension
 const scene = (): FirstPersonCanvasProps => canvas.mock.calls[canvas.mock.calls.length - 1]![0];
 function glRecord(serialized: string) {
   const { support, ...originalFields } = JSON.parse(serialized);
-  expect(support).toMatchObject({ schemaVersion: 1, build: { code: 'goal-014-1-audio-ja-r1' } });
+  expect(support).toMatchObject({ schemaVersion: 1, build: { code: 'goal-014-2-fair-escape-r1' } });
   return originalFields;
 }
 function props(overrides: Partial<FirstPersonScreenProps> = {}): FirstPersonScreenProps {
@@ -687,7 +687,7 @@ describe('first-person control surface and lifecycle', () => {
       expect(view.getByRole('button', { name: '情報をコピー' })).toBeTruthy();
       await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
       const copied = jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0];
-      expect(copied).toContain('goal-014-1-audio-ja-r1');
+      expect(copied).toContain('goal-014-2-fair-escape-r1');
       expect(copied).toContain('MAIN_RENDER');
       await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
       expect(view.queryByTestId('render-diagnostic-record')).toBeNull();

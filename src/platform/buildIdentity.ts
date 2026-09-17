@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import appConfig from '../../app.json';
 
 // A source marker, not a claim that a particular EAS binary was installed.
-export const DIAGNOSTIC_REVISION = 'goal-014-1-audio-ja-r1';
+export const DIAGNOSTIC_REVISION = 'goal-014-2-fair-escape-r1';
 
 export function buildIdentity() {
   const profileMarker = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;

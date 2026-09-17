@@ -1,0 +1,9 @@
+PASS src/domain/stageKit/__tests__/validateDefinitions.test.ts
+  ✓ all live stage definitions and codecs pass the authoring validator (23 ms)
+  ✓ registered modules independently start and restore without sharing a checkpoint reference (43 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        0.778 s, estimated 1 s
+Ran all test suites within paths "src/domain/stageKit/__tests__/validateDefinitions.test.ts".

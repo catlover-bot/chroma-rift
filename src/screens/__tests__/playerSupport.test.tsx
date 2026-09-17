@@ -28,7 +28,7 @@ it.each(['preview', 'production'])('keeps %s support closed and retains a failur
   expect(view.getByTestId('render-diagnostic-record').props.children).toContain('MAIN_RENDER');
   await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
   const copied = jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0];
-  expect(copied).toContain('goal-014-1-audio-ja-r1'); expect(copied).toContain('MAIN_RENDER');
+  expect(copied).toContain('goal-014-2-fair-escape-r1'); expect(copied).toContain('MAIN_RENDER');
   expect(copied).not.toContain('/home/private'); expect(copied).not.toContain('token=secret');
   if (profile === 'production') expect(copied).not.toContain('PRIVATE_EVENT');
   else expect(copied).toContain('PRIVATE_EVENT');

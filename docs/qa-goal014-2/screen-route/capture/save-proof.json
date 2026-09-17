@@ -1,0 +1,242 @@
+{
+  "initialSave": {
+    "schemaVersion": 1,
+    "chapterId": "chapter-1",
+    "contentVersion": 1,
+    "appVersion": "2026-09-18",
+    "runId": "QA-goal014-2-screen-capture",
+    "resetGeneration": 0,
+    "migrationSource": "fresh",
+    "revision": 12,
+    "currentArea": "chapter-1-area-04",
+    "completedAreas": [
+      "chapter-1-area-01",
+      "chapter-1-area-02",
+      "chapter-1-area-03"
+    ],
+    "checkpoint": {
+      "schemaVersion": 1,
+      "chapterId": "mirror-corridor-v1",
+      "levelVersion": 1,
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": -2.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "progress": {
+        "emblem": {
+          "schemaVersion": 1,
+          "seed": 21,
+          "phase": "unexamined",
+          "attempts": 0,
+          "hintTier": 0,
+          "assist": false,
+          "compared": false
+        },
+        "guideExamined": false,
+        "markActivated": false,
+        "sealA": false,
+        "sealB": false,
+        "variant": "entrance",
+        "exitDoorOpen": false,
+        "cleared": false,
+        "hintStage": 0,
+        "usedLookAssist": false
+      },
+      "stageData": {
+        "schemaVersion": 1,
+        "stageId": "mirror-corridor-v1",
+        "figureInspected": false,
+        "mirrorInspected": false,
+        "keyTaken": false,
+        "practiced": false,
+        "ratchets": 0,
+        "gateCrossed": false,
+        "cleared": false,
+        "pose": {
+          "position": {
+            "x": 0,
+            "y": 1.6,
+            "z": -2.5
+          },
+          "yaw": 3.141592653589793,
+          "pitch": 0
+        }
+      }
+    },
+    "keyLocation": "unfound",
+    "storyFired": [],
+    "storyPresented": [],
+    "discoveryHistory": {},
+    "finale": {
+      "contained": false,
+      "isolated": false,
+      "stopped": false,
+      "outdoorExited": false
+    },
+    "campaignCompleted": false
+  },
+  "finalSave": {
+    "schemaVersion": 1,
+    "chapterId": "chapter-1",
+    "contentVersion": 1,
+    "appVersion": "2026-09-18",
+    "runId": "QA-goal014-2-screen-capture",
+    "resetGeneration": 0,
+    "migrationSource": "fresh",
+    "revision": 21,
+    "currentArea": "chapter-1-area-05",
+    "completedAreas": [
+      "chapter-1-area-01",
+      "chapter-1-area-02",
+      "chapter-1-area-03",
+      "chapter-1-area-04"
+    ],
+    "checkpoint": {
+      "schemaVersion": 1,
+      "chapterId": "departure-control-v1",
+      "levelVersion": 1,
+      "pose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 11.6
+        },
+        "yaw": -2.994514298201391,
+        "pitch": -0.3382034312107085
+      },
+      "progress": {
+        "emblem": {
+          "schemaVersion": 1,
+          "seed": 21,
+          "phase": "unexamined",
+          "attempts": 0,
+          "hintTier": 0,
+          "assist": false,
+          "compared": false
+        },
+        "guideExamined": false,
+        "markActivated": false,
+        "sealA": false,
+        "sealB": false,
+        "variant": "entrance",
+        "exitDoorOpen": false,
+        "cleared": false,
+        "hintStage": 0,
+        "usedLookAssist": false
+      },
+      "stageData": {
+        "schemaVersion": 1,
+        "stageId": "departure-control-v1",
+        "keyAvailable": true,
+        "keyInstalled": false,
+        "procedureRead": false,
+        "isolated": false,
+        "stopped": false,
+        "staffDoorOpened": false,
+        "cleared": false,
+        "pose": {
+          "position": {
+            "x": -3.75,
+            "y": 1.6,
+            "z": 11.6
+          },
+          "yaw": -2.994514298201391,
+          "pitch": -0.3382034312107085
+        }
+      }
+    },
+    "keyLocation": "carried",
+    "storyFired": [
+      "isolation-key"
+    ],
+    "storyPresented": [
+      "isolation-key"
+    ],
+    "discoveryHistory": {
+      "chapter-1-area-04": [
+        "figure",
+        "ratchet"
+      ]
+    },
+    "finale": {
+      "contained": false,
+      "isolated": false,
+      "stopped": false,
+      "outdoorExited": false
+    },
+    "campaignCompleted": false
+  },
+  "finalRawSha256": "7946f646298601a22d129c0e302df24aa10342aac237b43d44db1a0b23c2694b",
+  "storageWrites": [
+    {
+      "seconds": 0,
+      "key": "chroma-rift.application.v2",
+      "sha256": "484ffdf09ff66050c8cdac7a21df9290282ee901ef408852173cb06e8c63f722"
+    },
+    {
+      "seconds": 0,
+      "key": "chroma-rift.first-person.onboarding.v1",
+      "sha256": "b5908f9297e405b89603e13920fdff700141edda200b8449272f24aec011fc8e"
+    },
+    {
+      "seconds": 0,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "b4e43eccf97dfd1288e37742666531ca5382eb10fcbaa5c342919c15cad89b20"
+    },
+    {
+      "seconds": 0,
+      "key": "chroma-rift.application.v2",
+      "sha256": "b916366e2490120abcfb33e1890d4bde10446d9a36a7c9a5d1ba6fe26adeb546"
+    },
+    {
+      "seconds": 0.9833333333333347,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "2164f767b305368c907793b35d6c80c181118c5a00bcfb73954ea9526131c321"
+    },
+    {
+      "seconds": 1.016666666666668,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "71ec49c6aacce8a45ad86e0be7d894cdc2e397e77f1d69ad8ed509994f212177"
+    },
+    {
+      "seconds": 1.016666666666668,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "b2cb6f78bc0967ac9ba00b3b427d3e75dd05989f124add50f426f8d9f19ab5cc"
+    },
+    {
+      "seconds": 6.549999999999982,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "e4ab240c9331bc461c812ea0a1ffb0e88795bfb3b9852dbfec7736ff4e4fa6ce"
+    },
+    {
+      "seconds": 11.94994482966541,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "d3a4b3e8f0931b8dab45a4e6860b996d956c41da34894db47a54faee5e5d6eb6"
+    },
+    {
+      "seconds": 27.76661149633161,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "7477cf2e393589ab89942dd0c9816667272aad870fd05c28de8c27920fa79196"
+    },
+    {
+      "seconds": 29.766611496331496,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "ffda430daf2651e8ead4ea70fcf247d38c6b5a5edd8c0880b9d06fd2455b64b2"
+    },
+    {
+      "seconds": 36.249944829664464,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "539a9f4d40dda406dbbd89bbf7cb9c741e29d5b92eed955fffdc58a909fe17d7"
+    },
+    {
+      "seconds": 42.6999448296641,
+      "key": "chroma-rift.campaign.chapter-1.v1",
+      "sha256": "7946f646298601a22d129c0e302df24aa10342aac237b43d44db1a0b23c2694b"
+    }
+  ]
+}

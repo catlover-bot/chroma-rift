@@ -1,0 +1,642 @@
+{
+  "schemaVersion": 1,
+  "status": "Retained development attempts. Final canonical matrix is recorded separately after the final whole-repository check.",
+  "baselineRevision": "5bd34f26b65558e8da1cffd9d22ee93c0db78258",
+  "packagingHead": "bddc797fa15492b3167d75d9991c540741b012c0",
+  "scope": "Real controller commands/input, real world/body/actor and checkpoint, with explicitly simulated successful presentation. Controller routes do not mount Screen, render a GPU frame, play native audio, or prove human perception. Separate parent Screen/visual evidence covers those software paths.",
+  "decisionPolicy": {
+    "dangerCue": "Actual emitted actor footplant within 4.5 m during work; threshold is a QA perception assumption, not measured hearing.",
+    "release": "Wait the selected reaction interval, quantized by the scheduled simulation delta.",
+    "coverDeparture": "Actual successive footplants recede beyond 5.6 m after a minimum 4 s cover interval; bounded wait fails instead of consulting enemy phase.",
+    "observationsOnly": "Enemy phase, lastSeen/lastHeard and clocks are logged for diagnosis, never read to select route input.",
+    "movement": "Real normalized forward input and turn commands at legal waypoints. No pose/progress injection, enemy removal, or intensity switch during successful routes."
+  },
+  "historicalR8": {
+    "startedHead": "a1d682d6faca9521a9a75cac0c1fa8b46b690922",
+    "endedHead": "a1d682d6faca9521a9a75cac0c1fa8b46b690922",
+    "command": [
+      "node",
+      "node_modules/jest/bin/jest.js",
+      "--runInBand",
+      "--runTestsByPath",
+      "src/domain/stages/mirror-corridor-v1/actorFairness.test.ts"
+    ],
+    "exitCode": 1,
+    "elapsedSeconds": 156.99878478050232,
+    "sourceScope": "All src non-test files, assets, listed entry/config files, and actual route helper/test; tests outside the route and other QA tools are excluded.",
+    "guardedFiles": 304,
+    "stableBeforeAfter": true,
+    "matrixCases": 81,
+    "testsPassed": 86,
+    "testsFailed": 1,
+    "measurements": [
+      {
+        "reactionSeconds": 0.75,
+        "cases": 27,
+        "completedWithoutCapture": 27,
+        "capturedBeforeCover": 0,
+        "releaseToCoverSecondsSuccessful": [
+          1.2473809545202421,
+          1.5108607465115913
+        ],
+        "totalSimulationSecondsSuccessful": [
+          44.63259763624926,
+          58.369958806140026
+        ]
+      },
+      {
+        "reactionSeconds": 1.25,
+        "cases": 27,
+        "completedWithoutCapture": 27,
+        "capturedBeforeCover": 0,
+        "releaseToCoverSecondsSuccessful": [
+          1.2473809545202421,
+          1.508531725513965
+        ],
+        "totalSimulationSecondsSuccessful": [
+          45.0992643029159,
+          58.74010874277865
+        ]
+      },
+      {
+        "reactionSeconds": 1.75,
+        "cases": 27,
+        "completedWithoutCapture": 26,
+        "capturedBeforeCover": 1,
+        "releaseToCoverSecondsSuccessful": [
+          1.2473809545202421,
+          1.5116279069767433
+        ],
+        "totalSimulationSecondsSuccessful": [
+          45.59926430291587,
+          59.45853912805535
+        ]
+      }
+    ],
+    "failure": "One 1.75 s / 30 Hz / initial wait 9 s / work(-2.45,9.6) route was caught on the first retreat. The historical all-cases-win assertion failed; this result is preserved unchanged.",
+    "followupPolicy": "Final tests require all .75 s and 1.25 s cases to finish without capture. A 1.75 s comparison may lose only after actual movement, a telegraphed physical attack, retained progress, and safe pending recovery, before reaching cover. Other failures remain failures.",
+    "originalBytesPreserved": true,
+    "subsequentFileDifferences": [
+      {
+        "path": "src/domain/stages/mirror-corridor-v1/actorFairness.test.ts",
+        "historicalSha256": "3ffb997ed8f5b8daadd9a626c82c6c534a364ce19686c80dd936074ab0293bf8",
+        "currentSha256AtPackaging": "d2f8344149527f6f6ec52befa5b3ae4c15c7db73541ed6a7e1f074d50f51c769"
+      },
+      {
+        "path": "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "historicalSha256": "56512366d7acc06fcbc66ba91b0272dfce806ab691321236bc5214557eba1a6b",
+        "currentSha256AtPackaging": "a6d6aa91bced040a1cea114f794a25373ee955e16878e763864943d80f9976a9"
+      },
+      {
+        "path": "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "historicalSha256": "7d0c1fc8e52b812c7cd54701dbed8d62da9eaf4b20130e42f56e0c7c41d41285",
+        "currentSha256AtPackaging": "35ab749b76f1891ac8da6c1c71f72cebdf4b1fea653c5581e7aaf51ea0d7ce51"
+      },
+      {
+        "path": "src/screens/FirstPersonScreen.tsx",
+        "historicalSha256": "e2b0359464948611e26efed07322c5c13059584fb3382cf670c2e267040f589a",
+        "currentSha256AtPackaging": "c0701a68f177f57cb145672ddd352e533581218025a93ec2ab257cd9e399885d"
+      },
+      {
+        "path": "test-support/mirrorFairRoute.ts",
+        "historicalSha256": "8434de6252e9ec100322e5a7e6a317d0de2d080c9ef0c458a68d9ec3fb0871cc",
+        "currentSha256AtPackaging": "9f7c060965c4a6a7d89dba2efd3c458a9fa15c475ddf61bb9b4d1b5737bc9d95"
+      }
+    ]
+  },
+  "historyNotes": [
+    "actor-recovery-red.log retains 7 failed recovery/investigation assertions before the actor fix.",
+    "actor-return-red.log and actor-return-green.log both failed; actor-return-green-r2.log is the passing path correction. Names are not substituted for outcomes.",
+    "actor-shelf-gap-red.log proves the old physical gap admits the wider actor; green follows the shared rack extension. No AI safe-zone flag was added.",
+    "Earlier matrix failures exposed physical return-path blockage, visible shelf recovery, and east-lane interception; raw failed records are retained, not presented as current runs.",
+    "actor-focused-r3.log includes accidentally discovered archived tests under .expo. Parent moved that archive outside the repository; actor-focused-r4.log uses explicit active test paths.",
+    "actor-fairness-r1.log is an initial TypeScript/import failure with zero executed tests.",
+    "Historical R8 predates the final southeast recovery yaw and comparison-test/report refinements. The differences are recorded; its hashes are not relabeled as final."
+  ],
+  "ownedFilesAtPackaging": [
+    {
+      "path": "src/domain/stages/mirror-corridor-v1/actor.ts",
+      "sha256": "e5b8970f386a3d36664bc41a82c3dfa41c95c60db5aabc192863b8f6f301a39a"
+    },
+    {
+      "path": "src/domain/stages/mirror-corridor-v1/actor.test.ts",
+      "sha256": "df810f72841beadc5c2a53a5d015d44ac6a483fb9b416ed9019babafdc868844"
+    },
+    {
+      "path": "src/domain/stages/mirror-corridor-v1/actorRecovery.test.ts",
+      "sha256": "14619ae8e97547cde0d06fae927db5223951924417b09919fbacc372814fc360"
+    },
+    {
+      "path": "src/domain/stages/mirror-corridor-v1/actorFairness.test.ts",
+      "sha256": "d2f8344149527f6f6ec52befa5b3ae4c15c7db73541ed6a7e1f074d50f51c769"
+    },
+    {
+      "path": "test-support/mirrorFairRoute.ts",
+      "sha256": "9f7c060965c4a6a7d89dba2efd3c458a9fa15c475ddf61bb9b4d1b5737bc9d95"
+    },
+    {
+      "path": "src/rendering/firstPerson/__tests__/mirrorCorridorHoldController.test.ts",
+      "sha256": "fcd29ee44946935a8138a2c5d844b01a0ba12397fa8234fe658c8c901e58e149"
+    },
+    {
+      "path": "src/rendering/firstPerson/__tests__/mirrorReportedCheckpointRecovery.test.ts",
+      "sha256": "92dc6ae18f57d873461bb55ee67b039155b38b943b1bf77bcbab46a1e57f89fd"
+    }
+  ],
+  "focusedChecks": {
+    "typecheck": {
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "log": "actor-typecheck-final.log.gz"
+    },
+    "ownedLint": {
+      "exitCode": 0,
+      "log": "actor-lint-final.log.gz",
+      "scope": "Owned actor/recovery/fairness files listed in ownedFilesAtPackaging; completed ESLint process exit0. Original process arguments are not captured in its empty output log."
+    }
+  },
+  "records": [
+    {
+      "sourcePath": ".expo/goal014-2/fairness-departure-debug.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-departure-debug.json.gz",
+      "sha256": "a21d849363527629f393a714272a8f70fb8fc867f5ab043939ec6232288dc1a3",
+      "bytes": 1882,
+      "uncompressedSha256": "39b4a3e4a537ac032cdd8b083217e25f2609de03da89f8665f1b0972265bd73e",
+      "uncompressedBytes": 11973
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-late-comparison.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-late-comparison.json.gz",
+      "sha256": "f9641432d596b9b163a6b26b27af52eecf1d8ad259a988c9e5760c7bf2964878",
+      "bytes": 1626,
+      "uncompressedSha256": "54f2ff9f6e075b3de121c41440ecf917bb8ebd5536888525d45f807ef7fb21c6",
+      "uncompressedBytes": 9729
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r1.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r1.json.gz",
+      "sha256": "047f3186c9fd319df3ed31066b60f7fc4e4d9ce6cd6f8565af3ce4d55beac228",
+      "bytes": 77563,
+      "uncompressedSha256": "df0518fabf51711693906e1b592c8c7b3d149572852f9e53dc13bd91168b0aa7",
+      "uncompressedBytes": 1113431
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r2-focused.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r2-focused.json.gz",
+      "sha256": "dfb8162dd29bcb97769cddb01cd2fef7c1b90b41ea268677225384f5a629f228",
+      "bytes": 12098,
+      "uncompressedSha256": "6d355a07e6299452e0a8e6a74ae7b68a9ca7b244733602b028728f334bc83406",
+      "uncompressedBytes": 172284
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r3-focused.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r3-focused.json.gz",
+      "sha256": "ae7901ddd6cbae610d1b9779f6ccd98e84cedc6c7973e0c75bca568d050e8f7e",
+      "bytes": 11588,
+      "uncompressedSha256": "e192de158e0d7096994887d2fe9a937f799b9cb9f6897426fde910051188c5ee",
+      "uncompressedBytes": 177819
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r4.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r4.json.gz",
+      "sha256": "e105b2cf7d57c7b7021913c5308aa89d01d9d1ce5e0bc1899b15c7df167f29ad",
+      "bytes": 100099,
+      "uncompressedSha256": "e952b702e078af86f46373e6a44a7a46ba4ac9f98a4b9930ea075ad4415447ed",
+      "uncompressedBytes": 1393750
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r5-focused.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r5-focused.json.gz",
+      "sha256": "dc245217c584093aa872d668ce2298885518dd726b985fe5d11976749eb18d24",
+      "bytes": 12650,
+      "uncompressedSha256": "247525a02e48bab737dbe937d6e92e8773cef78fdaa57caa2d3f5e0489590e28",
+      "uncompressedBytes": 151058
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r6-focused.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r6-focused.json.gz",
+      "sha256": "839cc077e4449e19e0643ecc23344da60f09d5e0cbc4ae4412037ba1c31ea92c",
+      "bytes": 14624,
+      "uncompressedSha256": "f204c924950b6b5f47cc42687ced1879107396b9d1b44cf9d87140fb5f985e03",
+      "uncompressedBytes": 181520
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r7-focused.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r7-focused.json.gz",
+      "sha256": "9c4499c83df372e2924591aacf7ad1ebc15b7e5b610fecba4251916b29cf037c",
+      "bytes": 12627,
+      "uncompressedSha256": "41fd3b985dcca62cac3eceb5ea42f9d98b298d51a15d028ad8290ebc9e7af85c",
+      "uncompressedBytes": 184378
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r8-source-guard.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r8-source-guard.json.gz",
+      "sha256": "906879b0b370aa9688b3c28a5ff1cb1de4246e1f4f4c41c8b61430444dd6ee72",
+      "bytes": 29854,
+      "uncompressedSha256": "325f00aaecab183c6a2bdf66bcfd225b41dbed4333f32bcc8bcd4e68308f221c",
+      "uncompressedBytes": 68064
+    },
+    {
+      "sourcePath": ".expo/goal014-2/fairness-r8.json",
+      "file": "docs/qa-goal014-2/actor-fairness/fairness-r8.json.gz",
+      "sha256": "d4df52028ff7fc29e9a1e7d2ee0855d57b00eb4c8316e7c1af55408a219e3873",
+      "bytes": 112025,
+      "uncompressedSha256": "e4fa470704ebf017aa44dd6dd5abd0942bb42d4c721266eb4f94c90c55127103",
+      "uncompressedBytes": 1640536
+    }
+  ],
+  "logs": [
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-departure-debug.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-departure-debug.log.gz",
+      "sha256": "4d2ea605b9638ebfdeb7be5d52df04fe7d1240743cc09bc3b57b976172a6fb14",
+      "bytes": 1233,
+      "uncompressedSha256": "01aa32ca3ecf08d96fed373f2929e985012b8488b5c6257be2900e197ed4f6f0",
+      "uncompressedBytes": 7600,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       1 failed, 83 skipped, 84 total",
+        "Time:        3.646 s, estimated 26 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r1.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r1.log.gz",
+      "sha256": "4ae9dd9330807055a6abcdd7769e39040c6dad9e1ccbe8cc15353178dd229551",
+      "bytes": 5880,
+      "uncompressedSha256": "edad09b8cdf54da6ee37f8bf9498c0807991fd3aaccd60b3c0a3bb0961f21a16",
+      "uncompressedBytes": 85723,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       63 failed, 20 passed, 83 total",
+        "Time:        156.465 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r2-focused.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r2-focused.log.gz",
+      "sha256": "d4eee3335ceebacd4295ce47941e004455308d4a4549b229a18e8d93dd5776b9",
+      "bytes": 1365,
+      "uncompressedSha256": "55895c36d9a689d671933e83768a1437b089feeb785bdba4f4b90d2295645daf",
+      "uncompressedBytes": 8283,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       1 failed, 72 skipped, 10 passed, 83 total",
+        "Time:        30.252 s, estimated 157 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r3-focused.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r3-focused.log.gz",
+      "sha256": "ef8fcd262e2a60220f885de15cf8918d9f37977d4ae55625d0bd7e5e77d715d8",
+      "bytes": 700,
+      "uncompressedSha256": "ea8013c9d36a89d61a199fd53bf540a0b6bea172bb192df5e291df17525fdbbe",
+      "uncompressedBytes": 6339,
+      "jestSummary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       72 skipped, 11 passed, 83 total",
+        "Time:        31.949 s, estimated 157 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r4.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r4.log.gz",
+      "sha256": "b31e87b61fc010b91ef812d976780b006d11d31a74cd42dd9fdca649e1796e59",
+      "bytes": 4155,
+      "uncompressedSha256": "018f4c2b8353a34c8915b294a6e658b6040da0d2a3dc8eb82244304e45fade4f",
+      "uncompressedBytes": 48202,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       28 failed, 55 passed, 83 total",
+        "Time:        141.794 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r5-focused.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r5-focused.log.gz",
+      "sha256": "1eddc14538c915a60946921cea140d662f603d491c7feb02035413a60c9abd29",
+      "bytes": 2102,
+      "uncompressedSha256": "15204c446a81efc2289ed5277fd57d31c34da925f76c6843f164093b125ffee9",
+      "uncompressedBytes": 13637,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       5 failed, 73 skipped, 6 passed, 84 total",
+        "Time:        25.215 s, estimated 142 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r6-focused.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r6-focused.log.gz",
+      "sha256": "24de6de40e817abdb4c479f8ecd351a740c688d0c840b44d530b9026290a1197",
+      "bytes": 2006,
+      "uncompressedSha256": "e46040d679cf8a26c0d95585d737f931ea1b7140fc5540e7a9ee21a13ccf90fb",
+      "uncompressedBytes": 13279,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       3 failed, 73 skipped, 8 passed, 84 total",
+        "Time:        24.579 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r7-focused.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r7-focused.log.gz",
+      "sha256": "6223a3f2090a0af12df9885bac4d65050fc4e5b9ea1714bfbc7e2833bc1bf27c",
+      "bytes": 724,
+      "uncompressedSha256": "2b1e1bd01f6f709064bdf5da321d59f17215013b94f57d5fa05b13ae4748336a",
+      "uncompressedBytes": 6356,
+      "jestSummary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       73 skipped, 11 passed, 84 total",
+        "Time:        25.679 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-matrix-r8.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-matrix-r8.log.gz",
+      "sha256": "e829c956933ae46c18f5a2edbd97ced0e33b8dd3b96a2bce420327a290d05473",
+      "bytes": 1880,
+      "uncompressedSha256": "088db5909f7c036f046bf82709bf8d6d0576887c8ade1b7fb544d96be5e61018",
+      "uncompressedBytes": 9154,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       1 failed, 86 passed, 87 total",
+        "Time:        156.05 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-r1.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-r1.log.gz",
+      "sha256": "61780ff07ddbbddc70bd02586d73ab7d28f9e3015d8419a63aa105daf5213507",
+      "bytes": 506,
+      "uncompressedSha256": "b31a205143d6da32fb5eb86b695cc2dbfd2b585cffabd753fb989122b38a9187",
+      "uncompressedBytes": 953,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       0 total",
+        "Time:        0.673 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-fairness-r2.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-fairness-r2.log.gz",
+      "sha256": "d54973fccd5784e8d5953842dd0b70c8779fd310b8e0f0cd69eee0c92d7b3948",
+      "bytes": 286,
+      "uncompressedSha256": "cef740a3c5f27d98c6d1214fc448611b456eac9fcbbb1891f9cc25355217bb5e",
+      "uncompressedBytes": 451,
+      "jestSummary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       2 passed, 2 total",
+        "Time:        4.254 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-focused-r3.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-focused-r3.log.gz",
+      "sha256": "94bf230b09c4dbe6427460a850b85b47b927f685f2e4645121fa0e137d2e5483",
+      "bytes": 1088,
+      "uncompressedSha256": "38fac0ba799d45874d3899aaaae35442bb8059e81e5a346622fdad7ec91028af",
+      "uncompressedBytes": 3187,
+      "jestSummary": [
+        "Test Suites: 2 failed, 5 passed, 7 total",
+        "Tests:       2 failed, 35 passed, 37 total",
+        "Time:        7.302 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-focused-r4.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-focused-r4.log.gz",
+      "sha256": "c07b25328b1253fa8bc810b592b6b6822f40b13e64afbd99c6031be7fa7548d1",
+      "bytes": 258,
+      "uncompressedSha256": "b616048c9bf21a31e7218c37c7b8183c0baec13b9777d25440bb4a8f000c6904",
+      "uncompressedBytes": 707,
+      "jestSummary": [
+        "Test Suites: 4 passed, 4 total",
+        "Tests:       25 passed, 25 total",
+        "Time:        5.037 s, estimated 6 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-late-comparison.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-late-comparison.log.gz",
+      "sha256": "2d6501f73e216b4e978d75229b5e673ce0229e718ee319ddf77ed034567559ad",
+      "bytes": 736,
+      "uncompressedSha256": "26f1e17f32e8d4cde8a944e4379f06bee35e2d85f5309160e979bdb0b452f9ef",
+      "uncompressedBytes": 6601,
+      "jestSummary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       84 skipped, 3 passed, 87 total",
+        "Time:        4.818 s, estimated 156 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-legacy-r1.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-legacy-r1.log.gz",
+      "sha256": "e9fbbb39de5e5b07f297647082c0ac919d7136cae725f50527da11113185fdfb",
+      "bytes": 492,
+      "uncompressedSha256": "f08a9adcfaa14ff7c920ed461d378625eac0766099a053152d34678ed55b32e3",
+      "uncompressedBytes": 1107,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 passed, 2 total",
+        "Tests:       1 failed, 4 passed, 5 total",
+        "Time:        2.126 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-legacy-recovery-r2.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-legacy-recovery-r2.log.gz",
+      "sha256": "3ccc0a30574c18f8a7383a99495bc8b73ae33accfea31fab3798ac60c2b59ee6",
+      "bytes": 270,
+      "uncompressedSha256": "ad437d967df719f1fda6e13b3fb2dab69a0fdfb297151fafee04cfdda60df091",
+      "uncompressedBytes": 600,
+      "jestSummary": [
+        "Test Suites: 3 passed, 3 total",
+        "Tests:       17 passed, 17 total",
+        "Time:        3.221 s, estimated 4 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-lint-final.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-lint-final.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-lint-r1.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-lint-r1.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-lint-r2.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-lint-r2.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-lint-r3.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-lint-r3.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-physical-capture.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-physical-capture.log.gz",
+      "sha256": "5c9c519702148ce390ea91468a8e7c2050bb5d71575a4e5b7ed9d1878ff6738b",
+      "bytes": 664,
+      "uncompressedSha256": "bd728838a333462501d13f5f308e1431c123030aa217e110518e8169b36fb965",
+      "uncompressedBytes": 6339,
+      "jestSummary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       83 skipped, 1 passed, 84 total",
+        "Time:        1.908 s, estimated 32 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-recovery-green-r1.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-recovery-green-r1.log.gz",
+      "sha256": "3a5f057912590f8a3ef43f8937640bc64adaa95e07dc8072eb5e9cf3ddfb5e73",
+      "bytes": 201,
+      "uncompressedSha256": "b1496243a7871a74423ca3f99620d67122be564b217228e637a39efedb52e3de",
+      "uncompressedBytes": 393,
+      "jestSummary": [
+        "Test Suites: 2 passed, 2 total",
+        "Tests:       15 passed, 15 total",
+        "Time:        1.865 s, estimated 2 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-recovery-red.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-recovery-red.log.gz",
+      "sha256": "ec888e8fca0cd6bc39c4f52281fd2ba261f0180af884b86973d5ed0016a429a0",
+      "bytes": 2406,
+      "uncompressedSha256": "d1bcc7a20321ec11f3d6213b3fd8dd3bd51e4c180f61c10eab79c98d75e440a7",
+      "uncompressedBytes": 12701,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 passed, 2 total",
+        "Tests:       7 failed, 8 passed, 15 total",
+        "Time:        1.222 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-return-green-r2.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-return-green-r2.log.gz",
+      "sha256": "cf2c3346b505772fb3ebb1338b219674a8b370de421e305f3cfed994a3226134",
+      "bytes": 758,
+      "uncompressedSha256": "5ff4f58f12db48c48c91384b1f7053ba06ecb5cc119ba9cd56836106ae505218",
+      "uncompressedBytes": 1753,
+      "jestSummary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       12 skipped, 1 passed, 13 total",
+        "Time:        1.367 s, estimated 5 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-return-green.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-return-green.log.gz",
+      "sha256": "64150614790d128c010cac4f97f89fd5a4966525ee9419dc965de53819cdd061",
+      "bytes": 869,
+      "uncompressedSha256": "a82c745fce9513a0921a2019eae1790a17a3cad2e0d03d05ecb0fea90e522c9b",
+      "uncompressedBytes": 2108,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       1 failed, 12 passed, 13 total",
+        "Time:        4.664 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-return-red.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-return-red.log.gz",
+      "sha256": "c8830fddeb876b178f375d9be52fa590fbcbeefb7e007724d595170044fcee47",
+      "bytes": 862,
+      "uncompressedSha256": "f12055b5f050cb5fecedbe1952d6d969463e541f60e152f3738c530f2c351435",
+      "uncompressedBytes": 2175,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       1 failed, 12 skipped, 13 total",
+        "Time:        1.204 s, estimated 2 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-shelf-gap-green.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-shelf-gap-green.log.gz",
+      "sha256": "7ed984156b8deaffffbadf31fdcba2fd33e2f303bde00bf6d877dfede7339818",
+      "bytes": 189,
+      "uncompressedSha256": "c5e39f388c0126d11ebdc4800181b0d684bce4965ddc94d0b2e8be5c45a8f90f",
+      "uncompressedBytes": 391,
+      "jestSummary": [
+        "Test Suites: 2 passed, 2 total",
+        "Tests:       21 passed, 21 total",
+        "Time:        1.922 s, estimated 2 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-shelf-gap-red.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-shelf-gap-red.log.gz",
+      "sha256": "3839c7163b0b23d6bc4859cfb9db5d1586ff3b63bf64418f8d27ac6af4c42ab1",
+      "bytes": 881,
+      "uncompressedSha256": "433d89bf78dea65d9b151065398c33169a80a3081b886a7a371aa8d9b14d28b3",
+      "uncompressedBytes": 2192,
+      "jestSummary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       1 failed, 13 skipped, 14 total",
+        "Time:        0.789 s, estimated 5 s"
+      ]
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-typecheck-final.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-typecheck-final.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-typecheck-r1.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-typecheck-r1.log.gz",
+      "sha256": "0e8965ff5f9c6e88116f6898e1e2cd4b5ccbc43f05162feedbff9385547c67a3",
+      "bytes": 362,
+      "uncompressedSha256": "378e942d531baa52541bf060d64a98f68abb9c567fcfaa7fb947d728da168d6d",
+      "uncompressedBytes": 546,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-typecheck-r2.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-typecheck-r2.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    },
+    {
+      "sourcePath": ".expo/goal014-2/logs/actor-typecheck-r3.log",
+      "file": "docs/qa-goal014-2/actor-fairness/actor-typecheck-r3.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0,
+      "jestSummary": []
+    }
+  ],
+  "nativeDeviceEvidence": false,
+  "humanReactionMeasured": false,
+  "artisticListeningVerified": false,
+  "RELEASE_READY": false
+}

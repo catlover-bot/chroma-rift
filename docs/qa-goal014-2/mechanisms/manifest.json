@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 1,
+  "baseline": "5bd34f26b65558e8da1cffd9d22ee93c0db78258",
+  "sourceHeadAtCapture": "a1d682d6faca9521a9a75cac0c1fa8b46b690922",
+  "headAtPackaging": "2f8a097da38f81cff5fe48e363ab2e4d50bf5067",
+  "sourceBytesVerifiedAtPackaging": true,
+  "sourceFilesPerRevision": 174,
+  "assetFilesPerRevision": 42,
+  "qaAndDependencyFilesPerRevision": 10,
+  "legalViewsPerRevision": 26,
+  "pngCount": 104,
+  "exactPairs": 52,
+  "mechanismAndSafetyTests": 25,
+  "nativeLifecycleTests": 75,
+  "framebufferCases": 19,
+  "framebufferGates": 14,
+  "testBoundary": "Static specified poses/state are appearance fixtures; native renderer/GL/CSS substitutes and no human/device/audio acceptance.",
+  "artifacts": {
+    "README.md": {
+      "bytes": 10318,
+      "sha256": "96c82e6c93742cdfc48563b86a48cec2423ef2a2e4f0fdf55090cbe12b5b8e06"
+    },
+    "after/departure-controls-390-normal.png": {
+      "bytes": 125554,
+      "sha256": "38248e13c549c9ee9313d17b659536caccb31e4fa1384022488d88e9f02416c1"
+    },
+    "after/departure-controls-390-text-hidden.png": {
+      "bytes": 103900,
+      "sha256": "9a1b4379b3de807a52e3f951394878f73572d5a82577b3557eb19bd7d28d6fe0"
+    },
+    "after/departure-power-390-normal.png": {
+      "bytes": 124188,
+      "sha256": "1ce7b00f19ffec328e42baf0428605c67b5fec8ef1c932c27675c84c7c694274"
+    },
+    "after/departure-power-390-text-hidden.png": {
+      "bytes": 100276,
+      "sha256": "2d30fa04ff56e5512be1bf4efa848788cb6c6bad300962379dd9bba318a4db73"
+    },
+    "after/gallery-disc-pivots-390-normal.png": {
+      "bytes": 127400,
+      "sha256": "4834b0d1aa31a5850ac9fb16a8c781176aa7e9be6096f92f94a8b6842210fe88"
+    },
+    "after/gallery-disc-pivots-390-text-hidden.png": {
+      "bytes": 114628,
+      "sha256": "20fea30952b4503d350c142fdc3c3d4f2869a6d498ac50157c985739f497289d"
+    },
+    "after/gallery-trays-empty-390-normal.png": {
+      "bytes": 127341,
+      "sha256": "f9d2d2aa29408e16b4dba0d23ee42888b9f88ce0d93663ca29f1abcb089768a8"
+    },
+    "after/gallery-trays-empty-390-text-hidden.png": {
+      "bytes": 114733,
+      "sha256": "68300b9e4bddcf847e0aaa7f6353644d820572a00ef2fc0e1b12d7dff6f3b075"
+    },
+    "after/gallery-trays-occupied-390-normal.png": {
+      "bytes": 127040,
+      "sha256": "5adebda10359e77049d3d0caa93816ad473180cc78484f959f9bf47b9c30b59a"
+    },
+    "after/gallery-trays-occupied-390-text-hidden.png": {
+      "bytes": 114405,
+      "sha256": "c7b3e2c5e0dc7673a3183c9c9de88bf2f07ee12e8fd8860e821e6939dc0c62d6"
+    },
+    "after/grate-closed-390-normal.png": {
+      "bytes": 118736,
+      "sha256": "ae66fa06c88aa564b4c42714fc09ff2fee5c005ac008b22b3a8442f5d90cd5f6"
+    },
+    "after/grate-closed-390-text-hidden.png": {
+      "bytes": 110729,
+      "sha256": "da2667752ba8550ecc9b37d3003c7ba16042ac730be237453bee7bb1eb397416"
+    },
+    "after/grate-one-390-normal.png": {
+      "bytes": 130823,
+      "sha256": "ce3bbf0a0239a3ef473f85fb7cc4e36ec5a1e5d5306375abb6de5023bb4db9b7"
+    },
+    "after/grate-one-390-text-hidden.png": {
+      "bytes": 123388,
+      "sha256": "9676ad1d60a8f8bbb2df57afb8fb791972ef521371eae03a9e448a033256ebf6"
+    },
+    "after/grate-passable-390-normal.png": {
+      "bytes": 137859,
+      "sha256": "428af5d519bc4fdba379629b83f677474e4353ccb8db894bb018fc54eabf5bc4"
+    },
+    "after/grate-passable-390-text-hidden.png": {
+      "bytes": 131897,
+      "sha256": "5d6afc31bd3956ee0c87f4d7fb77fa82dea1051a70d9f716523a07cbecc181bc"
+    },
+    "after/hoist-route-390-normal.png": {
+      "bytes": 125712,
+      "sha256": "9023fadc5db863f4420d2ba839a6b76b8784b370d1ad9ef1d8e3ab10627fa1ae"
+    },
+    "after/hoist-route-390-text-hidden.png": {
+      "bytes": 118106,
+      "sha256": "4b86bf61335436299c7c832dd9046cedb8e1c5af3c5801331eed1c1e1f61723d"
+    },
+    "after/practice-half-390-normal.png": {
+      "bytes": 199037,
+      "sha256": "49ea33b64ee82fdeec139bd7196feaf2ffade4d29d5bbc082a088d9b9ed0ce5d"
+    },
+    "after/practice-half-390-text-hidden.png": {
+      "bytes": 188884,
+      "sha256": "245bb67f2777acf4de8a244edd9b38337c3a27acc6019b9f78a6e743dcbc36b1"
+    },
+    "after/practice-raised-390-normal.png": {
+      "bytes": 201001,
+      "sha256": "84e6cdd38e47408957d5301e59c1e24f5651a1661e360d697e718159a8a2ef69"
+    },
+    "after/practice-raised-390-text-hidden.png": {
+      "bytes": 193440,
+      "sha256": "69debeedca8a6b1b492177561bfbc88ba383c2ee789ceeec432dfd6dd8b1eea3"
+    },
+    "after/practice-rest-390-normal.png": {
+      "bytes": 203982,
+      "sha256": "9cff7ff3eddfa603d436decdf4a2e808acf463bad933bd66c27028e811d61ebb"
+    },
+    "after/practice-rest-390-text-hidden.png": {
+      "bytes": 194465,
+      "sha256": "3b833cc9eb9c8ec31678e29b6e166ff6acb76cd260b2c5268286f361cfcf2a75"
+    },
+    "after/shelter-overview-390-normal.png": {
+      "bytes": 133924,
+      "sha256": "162b579233f6d5b40fe47b022d68c9bbeeec21a7cbad9d71a5cea4eb41e4a5ae"
+    },
+    "after/shelter-overview-390-text-hidden.png": {
+      "bytes": 119209,
+      "sha256": "c923e0a9e4c2678bdd35dee7e8edc9440112c09589a41898ee184ac2e6f2ac41"
+    },
+    "after/shelter-recovery-facing-390-normal.png": {
+      "bytes": 169502,
+      "sha256": "e5ac4b02ac247188afb055b722d745f33f4795f9ef9d4f4cddfc9c91d3c28963"
+    },
+    "after/shelter-recovery-facing-390-text-hidden.png": {
+      "bytes": 165663,
+      "sha256": "aa60fd8836d783abb1feac0760f80f4eb4c8806b1c27c10caf468f1ee9df66e2"
+    },
+    "after/shelter-south-approach-390-normal.png": {
+      "bytes": 248212,
+      "sha256": "0f6e3b0dff67c602dfef345a1ec14679e071200f48ac29477e9950f12ce47a4f"
+    },
+    "after/shelter-south-approach-390-text-hidden.png": {
+      "bytes": 245939,
+      "sha256": "cdc88e236e20e1a1297a62c91c757c18102f76f6248caf7e1247cf44d5037fa2"
+    },
+    "after/theatre-light-390-normal.png": {
+      "bytes": 168962,
+      "sha256": "f375d921f12c1f1d6e467b47849e68d0db7f0f07f6f5a230e34b6e3eac912883"
+    },
+    "after/theatre-light-390-text-hidden.png": {
+      "bytes": 157933,
+      "sha256": "0b999753e66e7507c2c2fe18d4f0d147764fbe4b3ce2a6657b107534eb999b4b"
+    },
+    "after/vault-length-390-normal.png": {
+      "bytes": 126871,
+      "sha256": "6cf71282e26f794a5d060e33fef65cd6918295013c5717fcd4e2fe51750bbc67"
+    },
+    "after/vault-length-390-text-hidden.png": {
+      "bytes": 112347,
+      "sha256": "abf41bf736fde2026d042d1d4c31c5a382db31255eecd972492386937b4a0ff2"
+    },
+    "after/visible-exit-390-normal.png": {
+      "bytes": 132159,
+      "sha256": "ba045ae2c72e933e423c4089cfafc2ec60e80d1e0168807903b5447ab04497ec"
+    },
+    "after/visible-exit-390-text-hidden.png": {
+      "bytes": 124925,
+      "sha256": "dbd71855a4487cd8f66b29fe361594faf9f828078687cc4b3a37000c58bac8f1"
+    },
+    "after/winch-mirror-east-320-normal.png": {
+      "bytes": 90380,
+      "sha256": "e55642def62aca0bf0455b0e4a0771903653229ecd9b5928c435381ac15e4b37"
+    },
+    "after/winch-mirror-east-320-text-hidden.png": {
+      "bytes": 78902,
+      "sha256": "87fc8605b006a8d992494b48cd0178f7a68837261ac3ed4a98b97220b8d321ac"
+    },
+    "after/winch-mirror-east-390-normal.png": {
+      "bytes": 129586,
+      "sha256": "21edea2ff5032d009491c8b3bd74271191838c8b588dbb98470273904236f3a6"
+    },
+    "after/winch-mirror-east-390-text-hidden.png": {
+      "bytes": 117847,
+      "sha256": "c1ff5ccdded238587e6fabe8c65fcd0e26c77be46d617d2baffc7770a2239e32"
+    },
+    "after/winch-mirror-middle-320-normal.png": {
+      "bytes": 83241,
+      "sha256": "9cb0cb283272851ef76ae87e496fb73125abc68fc07a8782e9807ec76f3d95ae"
+    },
+    "after/winch-mirror-middle-320-text-hidden.png": {
+      "bytes": 72555,
+      "sha256": "8e7a5e9c21e4b98c9736dd8db6359329a26d286a54ee073115e87c5bc7c80afb"
+    },
+    "after/winch-mirror-middle-390-normal.png": {
+      "bytes": 123990,
+      "sha256": "578fccafefda839ca749d51b3046a2557ff8fbf6afe5c1641fc1ffd0ea13b4c3"
+    },
+    "after/winch-mirror-middle-390-text-hidden.png": {
+      "bytes": 112414,
+      "sha256": "e3667cfc0080ea781339b1d1e9d7acfb48f155bcd25353e10ca70e4c4c6eb097"
+    },
+    "after/winch-released-three-320-normal.png": {
+      "bytes": 91394,
+      "sha256": "8e586fc8790e031aaee21b9523faccb34d700effe018e83f437cfec1751eaee9"
+    },
+    "after/winch-released-three-320-text-hidden.png": {
+      "bytes": 84175,
+      "sha256": "a29e1548eed5998207fd1d52b29a0608d0ce0a9a4e21b91f6709d670f4264a7e"
+    },
+    "after/winch-released-three-390-normal.png": {
+      "bytes": 136598,
+      "sha256": "4e1180f148a72fcb528d10f690426416ec4b18030b94d986840db2036241de85"
+    },
+    "after/winch-released-three-390-text-hidden.png": {
+      "bytes": 128960,
+      "sha256": "4cb15f49f4fde2b8089b5ed1a414df13f4609801ba43a726e24114a16f8d2de6"
+    },
+    "after/winch-work-west-320-normal.png": {
+      "bytes": 94980,
+      "sha256": "9f26ec1c8e88ed08c03c0548c8ace23dcd0010c05ea773b85107e1e8d6865b84"
+    },
+    "after/winch-work-west-320-text-hidden.png": {
+      "bytes": 85844,
+      "sha256": "971c348231e26447f0aac6463361b4bb28ac2eed5dd2a88c3b6e7686b3a0ce0b"
+    },
+    "after/winch-work-west-390-normal.png": {
+      "bytes": 137704,
+      "sha256": "bc0b74870699cdf18d358b759372fa806592cc509f6f7721f671305b24deab40"
+    },
+    "after/winch-work-west-390-text-hidden.png": {
+      "bytes": 128044,
+      "sha256": "8aa0c4a1c7bdb8421a75b37f4a0322fb34529a75b6283a1117d0a8313b78b87b"
+    },
+    "after-report.json.gz": {
+      "bytes": 19259,
+      "sha256": "a1da6d353369eca2f5b970b45ac7fdb129ce99ce58c6bcb77493bb9dcd334909",
+      "decompressedSha256": "84c04ad08e7ebc7a810afaeb93eed2bd36d76181a382c9ca4a778f3369c327bf"
+    },
+    "before/departure-controls-390-normal.png": {
+      "bytes": 126790,
+      "sha256": "018fb590b1479032855d41c03572a97f6127d6f36ff70f13265a86645e3519b2"
+    },
+    "before/departure-controls-390-text-hidden.png": {
+      "bytes": 105011,
+      "sha256": "1bfc7c79683ae6b93a18a8dbd6e9ad2623e555db5ec401c0a40a62578bbdcbc4"
+    },
+    "before/departure-power-390-normal.png": {
+      "bytes": 125169,
+      "sha256": "b2a412f2ff8ce4d2ca0b7ca01906e077f24a6378f626fd8371af06247874c59b"
+    },
+    "before/departure-power-390-text-hidden.png": {
+      "bytes": 101195,
+      "sha256": "d867101a7bb9e624c4997110e66f71efa925990e7fd74e0dde8bf992071d3b59"
+    },
+    "before/gallery-disc-pivots-390-normal.png": {
+      "bytes": 127186,
+      "sha256": "136872b758d969cb12d79d67408ee1c4d54d4c6e927da4f8b6a29fba881f3417"
+    },
+    "before/gallery-disc-pivots-390-text-hidden.png": {
+      "bytes": 114379,
+      "sha256": "9415d1f4956f7c693286c925d5b4ed7b7e04fdb882ea1b43565a160a31b9595f"
+    },
+    "before/gallery-trays-empty-390-normal.png": {
+      "bytes": 126576,
+      "sha256": "1c4d27ef90f748a31ef465a1c7c7b6fad39d013ae3e9303b8041f6ba263c20e3"
+    },
+    "before/gallery-trays-empty-390-text-hidden.png": {
+      "bytes": 113890,
+      "sha256": "0436eacce1c65febf3e96635934602feadcc72f1eb47b995c956e04cbeae7c91"
+    },
+    "before/gallery-trays-occupied-390-normal.png": {
+      "bytes": 126311,
+      "sha256": "59759c4e13f81a4f2e7fe9ccf5f28dfdd6c3c8aa0c1544c3302847f4523b1cec"
+    },
+    "before/gallery-trays-occupied-390-text-hidden.png": {
+      "bytes": 113576,
+      "sha256": "cadc8eff79b82a2a8c616f2f2f24714bec73f96b4794b9e4f6ad7ecafb0a8d42"
+    },
+    "before/grate-closed-390-normal.png": {
+      "bytes": 165870,
+      "sha256": "d4efd4867a646c7cca9eb6d3090b84c7256c470bb029deb247011c364c6ff1ad"
+    },
+    "before/grate-closed-390-text-hidden.png": {
+      "bytes": 157737,
+      "sha256": "2297a310ec46323c97558874c8b8137da05ccc7b16061f55b8123e58cef32725"
+    },
+    "before/grate-one-390-normal.png": {
+      "bytes": 193788,
+      "sha256": "9c337dc386fd72f71d8b00f1b9c391751f65112795845cbbf08c000b0245b215"
+    },
+    "before/grate-one-390-text-hidden.png": {
+      "bytes": 194064,
+      "sha256": "5345bcbcfc81ba2fc575876a546875cba3dcbcc80b8fa046f7d7e400ec5bdee6"
+    },
+    "before/grate-passable-390-normal.png": {
+      "bytes": 152825,
+      "sha256": "858d8a704be91e3c810fa64818de69dc4862e48a52875f57770d983b2ace9973"
+    },
+    "before/grate-passable-390-text-hidden.png": {
+      "bytes": 147177,
+      "sha256": "5d31e81ff7ee29e439320cf57b69cd53258eed81a24d4c44fc779cd14a0abd5a"
+    },
+    "before/hoist-route-390-normal.png": {
+      "bytes": 138320,
+      "sha256": "cde834e0834b90223c00c74469323aaf766004725072fb49a9205e9edd1dc1f6"
+    },
+    "before/hoist-route-390-text-hidden.png": {
+      "bytes": 130558,
+      "sha256": "51327723c9750936fd7e89ca92c418966393290c8a7c818d504fd80e2976d609"
+    },
+    "before/practice-half-390-normal.png": {
+      "bytes": 218250,
+      "sha256": "9eccf8b9e43be265915cd0a3b1c8e002d196ca2d899a16414cac204d85fb44ec"
+    },
+    "before/practice-half-390-text-hidden.png": {
+      "bytes": 208125,
+      "sha256": "0da9b43b17ebe9af43c04ea13091092ac023e6dc19a77418c0fe808869330fd7"
+    },
+    "before/practice-raised-390-normal.png": {
+      "bytes": 215913,
+      "sha256": "87f3d1f7d71574def0538a8f574fcdab582341511a1fcb19299476bc8d2191a8"
+    },
+    "before/practice-raised-390-text-hidden.png": {
+      "bytes": 208709,
+      "sha256": "274b499dafd353fe864d9e05da7a2bd21d80f379cc3a7b95e2268d8647a3cea7"
+    },
+    "before/practice-rest-390-normal.png": {
+      "bytes": 218063,
+      "sha256": "a0d223a414a3c34261a3af1abb7de8388a964af903fb641d31c29d6791add900"
+    },
+    "before/practice-rest-390-text-hidden.png": {
+      "bytes": 208070,
+      "sha256": "c869418b6bdc8acc8a309b48772d062d65ed439ba30518c06f30374ff647c070"
+    },
+    "before/shelter-overview-390-normal.png": {
+      "bytes": 152282,
+      "sha256": "dde861c8ddb1e91a87af92d39adba3104b2c59438ddd78ed49844adba49e75f1"
+    },
+    "before/shelter-overview-390-text-hidden.png": {
+      "bytes": 137497,
+      "sha256": "c530b73f32241be03fafd13383640c3921d6eb47441a5f2c3ddb645055db61bf"
+    },
+    "before/shelter-recovery-facing-390-normal.png": {
+      "bytes": 191112,
+      "sha256": "c03d14058108388ebaf22b8efe6e61239db23997202545bddd59387e3a247021"
+    },
+    "before/shelter-recovery-facing-390-text-hidden.png": {
+      "bytes": 185923,
+      "sha256": "9d408159dfd4f9d7de845594c3182ef1ab5965969d18a1e44c6bfd590e6690de"
+    },
+    "before/shelter-south-approach-390-normal.png": {
+      "bytes": 248621,
+      "sha256": "c7d169e2995c588a8de2cc8b36c07bf7cb2f74c75730ae1c8abba0334911c8e4"
+    },
+    "before/shelter-south-approach-390-text-hidden.png": {
+      "bytes": 246265,
+      "sha256": "888f866ae733deb57c69c6aac99e635fcb69b475f4070569eb5f4d9792f66cdf"
+    },
+    "before/theatre-light-390-normal.png": {
+      "bytes": 168908,
+      "sha256": "e655b134c438efe1853842056885d5b7d276a093e8c33654b05c9cd2da928f65"
+    },
+    "before/theatre-light-390-text-hidden.png": {
+      "bytes": 157834,
+      "sha256": "51592bac252ccb304f200cd7b6a3862e1fec558d6be1be41fd682da6e40452f8"
+    },
+    "before/vault-length-390-normal.png": {
+      "bytes": 126181,
+      "sha256": "27f0ec72d5ecbfc2f48359083797faab386a5a6948cf59ff2069a16b872f0f54"
+    },
+    "before/vault-length-390-text-hidden.png": {
+      "bytes": 111588,
+      "sha256": "68c40681550fb647ff843ba109d7c6764b21fef49d6fde879ae26632107a058c"
+    },
+    "before/visible-exit-390-normal.png": {
+      "bytes": 149058,
+      "sha256": "96aec582bfa2dd9cb8727358e85c014d99c27a66cb2dad15c60b5d1acb764710"
+    },
+    "before/visible-exit-390-text-hidden.png": {
+      "bytes": 141683,
+      "sha256": "f87b4a47ba1b0a7f486c24c4260417ef6e126871055d2648df4e48bbfdbabbd4"
+    },
+    "before/winch-mirror-east-320-normal.png": {
+      "bytes": 95181,
+      "sha256": "e04978c1a00407c480fbc29bebe27342db8387b7bccfd8c2d847de01b5ae20a1"
+    },
+    "before/winch-mirror-east-320-text-hidden.png": {
+      "bytes": 82749,
+      "sha256": "81d5e489dd94336928b6435dd5a41372f0103d1b27dafe21454f9fd2bbd776b9"
+    },
+    "before/winch-mirror-east-390-normal.png": {
+      "bytes": 139119,
+      "sha256": "af5e1b7005e02c8c74599ea4d59d7eaeb4f32a2c1234977dc55260823fe9aa3d"
+    },
+    "before/winch-mirror-east-390-text-hidden.png": {
+      "bytes": 126994,
+      "sha256": "316020c32afa8422c7c9705f94548e8dcfb347be2e8e99ffbf67876571212266"
+    },
+    "before/winch-mirror-middle-320-normal.png": {
+      "bytes": 84844,
+      "sha256": "eac8991ab3812eb660587728e1415a583dd3248d901dd9e10a0e9a7767998fe8"
+    },
+    "before/winch-mirror-middle-320-text-hidden.png": {
+      "bytes": 76086,
+      "sha256": "082aa82e0cae03dae8896f101c5d3cd82d7e331b37bb4fa518789ea99523ee70"
+    },
+    "before/winch-mirror-middle-390-normal.png": {
+      "bytes": 126971,
+      "sha256": "5c696d904ef5eeb614b8f4c1c93114c476f829008875e5f350ed06000a28ad95"
+    },
+    "before/winch-mirror-middle-390-text-hidden.png": {
+      "bytes": 118016,
+      "sha256": "4eb5fdc7af741ba183c445a3b271558f2b41e4c0ccf24a47990bf0b187b9a40a"
+    },
+    "before/winch-released-three-320-normal.png": {
+      "bytes": 89466,
+      "sha256": "8b526cb99fa07547d70f38b4447ac59ab53a9b7c25f840a4125b72b50208896a"
+    },
+    "before/winch-released-three-320-text-hidden.png": {
+      "bytes": 78647,
+      "sha256": "b3a34ba3140192f5cf15454eed6f02927c94c99b02426f75aa7aa7f6bd84565c"
+    },
+    "before/winch-released-three-390-normal.png": {
+      "bytes": 145871,
+      "sha256": "4ced2945d77ddcaa0141b490a1fa5a31fb5ddec69d9fca6fa6464bd1c154668c"
+    },
+    "before/winch-released-three-390-text-hidden.png": {
+      "bytes": 134561,
+      "sha256": "74e0e2da78e57a0b2bebfe7fa02132599cfd832d0475d38bedd5d8fc4baaff53"
+    },
+    "before/winch-work-west-320-normal.png": {
+      "bytes": 80739,
+      "sha256": "a84073c5b047e0f1002a8657bce8cfd76dd470034b1b63273852e490beb62eb8"
+    },
+    "before/winch-work-west-320-text-hidden.png": {
+      "bytes": 71318,
+      "sha256": "e30a4bf562a0e069847d935acbd0afae3ba483619dda82d20d2a6972bbe059f1"
+    },
+    "before/winch-work-west-390-normal.png": {
+      "bytes": 126286,
+      "sha256": "2b9f2477c31eb3b0db3206d7111edbf353f1e0625a96dea2a9966aa85876b68f"
+    },
+    "before/winch-work-west-390-text-hidden.png": {
+      "bytes": 116228,
+      "sha256": "4e1b2c7a517ac67b7697d45ada4ddc6e18307c5987a512ccb8d467bf6459523a"
+    },
+    "before-report.json.gz": {
+      "bytes": 19280,
+      "sha256": "cf5a77336b570f10b542ff80ba6c4d6eb5179429d7ac2c0ed1194d184fb38e16",
+      "decompressedSha256": "ab9f701d0ecb24f004c47805a859967677b53f99ab5d5a0881f903d52ad99cdd"
+    },
+    "capture.txt": {
+      "bytes": 9195,
+      "sha256": "e1ebab5c08ac511f154c27219d189dfeefa8dd4921b628998274ea796f93548b"
+    },
+    "comparison.json": {
+      "bytes": 28139,
+      "sha256": "28938d262266cdc3090399a0692bced190c787dca4ce54227fadf9d73176f679"
+    },
+    "history/initial-mechanism-assertion.txt": {
+      "bytes": 1560,
+      "sha256": "f732c81ea8cd9364c63ee8e856fe9b623f361d9f6d0af3ec8938e9c903b7e868"
+    },
+    "history/native-framebuffer-old-back-pose.json.gz": {
+      "bytes": 12439,
+      "sha256": "b48ad7a33794892c27e342a1cee27914b2c49e442c77b34739b754d32e94923d",
+      "decompressedSha256": "3361c79a79ebad53a2fa031c60057df9767bd3dec246687584102527123036a3"
+    },
+    "history/native-framebuffer-old-back-pose.txt": {
+      "bytes": 1582,
+      "sha256": "d1006e91bc445c2d6c4628c1f9e03e0f8a5d76a644ece0faf7e3be2bc1752e27"
+    },
+    "history/native-lifecycle-old-back-pose.txt.gz": {
+      "bytes": 3428,
+      "sha256": "1ed740f49596a9692867db9958f02a430e969bf92976de5a9e362c8c95a6b1f8",
+      "decompressedSha256": "d69a3ce0bfadb773e8f6b2d18e100152ce9893412df0f02b5e7a6dbeec5bb079"
+    },
+    "history/winch-development-source-drift.txt": {
+      "bytes": 3881,
+      "sha256": "876898db24c2d00991cbba268c9570a712a4a1eb0a421e93edddaa5428d152be"
+    },
+    "mechanisms-and-safety.txt": {
+      "bytes": 398,
+      "sha256": "40f3142028f74320f8f68c30d76e8e94963f88b69b1e8e81d91971d902edfa98"
+    },
+    "native-framebuffer-r2.txt": {
+      "bytes": 1582,
+      "sha256": "f46c3461937d445c2befb03440c40d6f7cb019a05f40865171906cff8b80c183"
+    },
+    "native-lifecycle.txt.gz": {
+      "bytes": 5575,
+      "sha256": "8d435a64e3eaa737f7597ccc3fd294c94593f1704ad2f1b11de0b621eed13697",
+      "decompressedSha256": "bf5e76e960679b5482c7f587bf09f16698e6f692c2219ce72b243c6840fee3f9"
+    }
+  }
+}

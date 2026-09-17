@@ -1,0 +1,28 @@
+{
+  "command": "npm run check",
+  "childExitCode": 0,
+  "testSuites": 142,
+  "tests": 1472,
+  "jestSeconds": 542.675,
+  "commandSeconds": 634.6741912549915,
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "test": "PASS",
+  "exportIOS": "PASS",
+  "guardedFiles": 538,
+  "unchangedFiles": 535,
+  "changedQAOnlyFiles": [
+    "scripts/qa-goal014-common-tape-capture.cjs",
+    "scripts/qa-goal014-common-tape.cjs",
+    "scripts/qa-native-default-framebuffer.cjs"
+  ],
+  "productionTestsSupportAssetsConfigUnchanged": true,
+  "currentMatchesAfter": true,
+  "latestWholeRepositoryLintExitCode": 0,
+  "guardExplanation": "The all-file guard intentionally reports false: while the unchanged production/tests ran, three QA tools were corrected for archive transport/current metadata and the moved mirror backside fixture. Latest repository-wide ESLint and those actual QA captures subsequently passed. No whole-tree unchanged claim is made.",
+  "outerExecObservedExitCode": 143,
+  "outerExecScope": "The tool reported143 after emitting the complete child result. The Python record explicitly reports npm child0; retained terminal summaries show142/1472 and successful iOS export. Do not treat the outer wrapper as a successful all-file guard.",
+  "logSha256": "adc8c529a183aabd47d85a02cd380e0efc9dcc1149946cc4b8d08501bc64b73a",
+  "DEVICE_ACCEPTANCE": "PENDING",
+  "RELEASE_READY": false
+}

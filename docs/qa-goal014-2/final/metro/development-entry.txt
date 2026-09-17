@@ -1,0 +1,2120 @@
+{
+  "scope": "Actual emitted iOS development Metro loader and domain/controller/Three factories executed in isolated Node VM registries, with an explicit external expo-constants API fixture. No RN App mount, native GL, audio bridge, or physical iPhone startup.",
+  "bundle": "_expo/static/js/ios/index-d41d8cd98f00b204e9800998ecf8427e.js",
+  "bundleSha256": "273e94c68e2b34a737ca8e951955f86346ecad59fe8d38ef26ba041300a83996",
+  "preludeUnmodified": true,
+  "loaderUnmodified": true,
+  "firstPartyFactoriesUnmodified": true,
+  "factorySubstitutions": [
+    {
+      "source": "node_modules/expo-constants/build/Constants.js",
+      "moduleId": 681,
+      "fixture": "TEST/FIXTURE: empty CommonJS exports seeded into the Metro module cache; native build metadata unavailable",
+      "emittedFactoryExecuted": false,
+      "nativeRegistryFixtures": false
+    }
+  ],
+  "nativeDeviceStartup": "not run",
+  "registeredModules": 1768,
+  "sourceCorrespondence": [
+    {
+      "source": "index.tsx",
+      "matches": true,
+      "sha256": "88fcd04d97790ad2783996e928ed4614cb3072b7c349ba744c888e60ff376e75"
+    },
+    {
+      "source": "App.tsx",
+      "matches": true,
+      "sha256": "9a8d0878f36acdb7e4d1d95f68165f9ddfee78da9b14615c6afd4562a9960d52"
+    },
+    {
+      "source": "src/screens/ChapterMusic.tsx",
+      "matches": true,
+      "sha256": "6a7a7bb6b7b6f0721d013c7e1e1b423ec52e8e3e981b2e9a4e75e25be1cbda0f"
+    },
+    {
+      "source": "src/audio/index.ts",
+      "matches": true,
+      "sha256": "a0ffb6b96f81a383f8132487fa29f57565b539d029fb8ee5b8c26d8b0b968cf5"
+    },
+    {
+      "source": "src/audio/nativeBackend.ts",
+      "matches": true,
+      "sha256": "27e8edca07f1677849324b54f221c2f3f3d44600739c2279739c86dbe5806892"
+    },
+    {
+      "source": "src/audio/sources.ts",
+      "matches": true,
+      "sha256": "c18a2b14e666e49ee6afa83cb3756a29acd0c13639e05933c5c11a5478792a3c"
+    },
+    {
+      "source": "src/audio/diagnostics.ts",
+      "matches": true,
+      "sha256": "179daa85f1245530c308e5a9a74e18b893420d6b7fb23c9fdad8d8120f11af41"
+    },
+    {
+      "source": "src/platform/diagnosticText.ts",
+      "matches": true,
+      "sha256": "a6b0709b571d35755a81ab3bb81ede24ab91567210b7d2d19141b890da637131"
+    },
+    {
+      "source": "src/audio/nativeSession.ts",
+      "matches": true,
+      "sha256": "03770654b6119571658f5d37eda532d6ec3e7eb0e601bb64142d0c2dd910c027"
+    },
+    {
+      "source": "src/audio/owner.ts",
+      "matches": true,
+      "sha256": "db532142153b076830dd63f67911750e425b6b4e94ccdc8683fa00efd5bde1a8"
+    },
+    {
+      "source": "src/domain/gallery/actor.ts",
+      "matches": true,
+      "sha256": "9e4e00823e4a10f8f4102e0c81a8bab32f8ce05e33e3871d676a031f3c3d5dc9"
+    },
+    {
+      "source": "src/domain/actorMotion/index.ts",
+      "matches": true,
+      "sha256": "7dd4b82f6438e39d4aabccddb4356206e169c5e3b87f8dd50d952a81509950e7"
+    },
+    {
+      "source": "src/domain/actorMotion/types.ts",
+      "matches": true,
+      "sha256": "8337711ab083a039bf7b61a6c6b6c3ecb824fcd738360f1f19005cd1c7abb774"
+    },
+    {
+      "source": "src/domain/actorMotion/config.ts",
+      "matches": true,
+      "sha256": "f8bc613a6a029685cf0e75b6c527585003faae2ae2353ae653f82ad772b81664"
+    },
+    {
+      "source": "src/domain/actorMotion/locomotion.ts",
+      "matches": true,
+      "sha256": "0abe77887374f7953d8b3fdaab91a5cd2c4264ef5ab964b605624cfad43f8f98"
+    },
+    {
+      "source": "src/domain/actorMotion/pose.ts",
+      "matches": true,
+      "sha256": "a9530b04fd1994ba5cbd11f97ba7883bee919575cf677e99c0915653c22f3576"
+    },
+    {
+      "source": "src/domain/gallery/world.ts",
+      "matches": true,
+      "sha256": "897f4a91864e3d3668d68f7a94ae76a7f1ec710bc6324d18ad887c8fbb0b606f"
+    },
+    {
+      "source": "src/domain/firstPerson/panelFixture.ts",
+      "matches": true,
+      "sha256": "ac32c3613e983fc2a8a6892c0064fcc9f74e7a4dd18de06f5739149162fdc0d7"
+    },
+    {
+      "source": "src/domain/firstPerson/boundaryWalls.ts",
+      "matches": true,
+      "sha256": "8b1f8fe9e28c759e2b4de88e710a80693fc12714a2889436e1f04637408971e8"
+    },
+    {
+      "source": "src/domain/gallery/definition.ts",
+      "matches": true,
+      "sha256": "887b08724488ad96fbc7a483f426d7a5ff663965eab185782161059c60f0bd7e"
+    },
+    {
+      "source": "src/domain/actorMotion/envelope.ts",
+      "matches": true,
+      "sha256": "95754b517c8f009e1f2c8ddc84378dfef06030bc42972b73b2fa572ccfcdb8fb"
+    },
+    {
+      "source": "src/domain/firstPerson/alignment.ts",
+      "matches": true,
+      "sha256": "135a0e56456bafe64068eb3a825f32505aba64e4098b7a429f9f22b252141ed0"
+    },
+    {
+      "source": "src/domain/firstPerson/legacyDefinition.ts",
+      "matches": true,
+      "sha256": "aff8003e56ecbfcc47ebd038b1aa8036c90099ca12eedf32c2999d9196b39e2f"
+    },
+    {
+      "source": "src/domain/firstPerson/constants.ts",
+      "matches": true,
+      "sha256": "e16a614d005069f95bce78874278acb4c94b47fc9ca9e072fbbf8a5c2fd6cdc2"
+    },
+    {
+      "source": "src/domain/firstPerson/geometry.ts",
+      "matches": true,
+      "sha256": "d6e7aba383fe1f1f30c6d5a41bfe5aae4b1014da21ce0853d0822993107b748a"
+    },
+    {
+      "source": "src/domain/firstPerson/occlusion.ts",
+      "matches": true,
+      "sha256": "59dde0bb6d476ff1bfca450a79adf41c2927462a82e8cfdc7284405dbd429f71"
+    },
+    {
+      "source": "src/domain/gallery/selectors.ts",
+      "matches": true,
+      "sha256": "95cd6352992b60c92006d89a7729052f3c8c9bf4e5d0f72109deea51b64813f1"
+    },
+    {
+      "source": "src/domain/firstPerson/interaction.ts",
+      "matches": true,
+      "sha256": "e37917996382327be6e8679428c759e1a7574643acadea361847a8a5f44190fe"
+    },
+    {
+      "source": "src/domain/gallery/contour.ts",
+      "matches": true,
+      "sha256": "d043bfb0ee5e47e2be8831c48109289d777f324a3d09d289cee6ef558476c6b6"
+    },
+    {
+      "source": "src/domain/gallery/shadow.ts",
+      "matches": true,
+      "sha256": "9b8aee39e21593357b037d33d045ee1559ac2d58b9a8de75dc43c4fab7f93c82"
+    },
+    {
+      "source": "src/domain/gallery/wiring.ts",
+      "matches": true,
+      "sha256": "a1948f4383a48c13e5cc2ce2a7b800e693266ded17651c3a3775ebeae84f1077"
+    },
+    {
+      "source": "src/audio/musicDirector.ts",
+      "matches": true,
+      "sha256": "9cc56f6060ec3a5b95898d86694b627f1faa1c9d061cde192eb60945013efe65"
+    },
+    {
+      "source": "src/audio/preferences.ts",
+      "matches": true,
+      "sha256": "972ee7f67e77b9f916e1b17fbc4f7181a5243c687f41276cdd488c67b8ca525a"
+    },
+    {
+      "source": "src/audio/musicState.ts",
+      "matches": true,
+      "sha256": "daf58b0d4127fbc5789be24f7454fb2efc2e2cc456c7b336680f060c28a84a37"
+    },
+    {
+      "source": "src/app/state.ts",
+      "matches": true,
+      "sha256": "8583a76074912f1b6614e99357e5124e8f9567ad04354994074da25cdfe5fa17"
+    },
+    {
+      "source": "src/domain/calibration/scoring.ts",
+      "matches": true,
+      "sha256": "2c2f0d5bcb724514387de628ab7b72069c561773d7adbfd3c72c362974bbe675"
+    },
+    {
+      "source": "src/domain/calibration/trials.ts",
+      "matches": true,
+      "sha256": "ba303819b698562689a51ee65a31e4ea67c3eb265b2da6a07450735c971d686e"
+    },
+    {
+      "source": "src/domain/calibration/types.ts",
+      "matches": true,
+      "sha256": "2a6b31c55b82f8e047f7c2fa1cdb195605c1fc7bf035e7121af1b31d00857d0e"
+    },
+    {
+      "source": "src/domain/calibration/quickSetup.ts",
+      "matches": true,
+      "sha256": "3c68897d34a54bba8f742c8a7599246fb310626967d8c08635406b4e71af73ba"
+    },
+    {
+      "source": "src/domain/emblem/presentation.ts",
+      "matches": true,
+      "sha256": "40f6cc9f7670a2dbe93e55dbf3af1b0f4ae757b80fac43676b1ebc241a770ee9"
+    },
+    {
+      "source": "src/domain/emblem/stimulus.ts",
+      "matches": true,
+      "sha256": "fd97463880be5440b0c1f27374fe1caf0789071a6c132614db179a9433635fc5"
+    },
+    {
+      "source": "src/domain/emblem/color.ts",
+      "matches": true,
+      "sha256": "b0be97816aaef38661069638a5b20140d95312e97bccc668505e55a95837b64c"
+    },
+    {
+      "source": "src/domain/stageKit/definitions.ts",
+      "matches": true,
+      "sha256": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495"
+    },
+    {
+      "source": "src/storage/applicationStorage.ts",
+      "matches": true,
+      "sha256": "7052d00cdf61fbad917969fc36aae8831e9171f4fafac50a9d17a3028f3d7685"
+    },
+    {
+      "source": "src/types/application.ts",
+      "matches": true,
+      "sha256": "7f3236ea92c95dd961a70d13d8ce165dbead531d4f16ca0ce502b8761719dcf4"
+    },
+    {
+      "source": "src/domain/gallery/index.ts",
+      "matches": true,
+      "sha256": "89b72ca0d86014f6bbde74ca47448cc31019258126053ca806ca521b9d6156b0"
+    },
+    {
+      "source": "src/domain/gallery/types.ts",
+      "matches": true,
+      "sha256": "00d28e66e3a4e32e1b217dd8e5558f96f2c2881ce70ce513848b586a693cae5b"
+    },
+    {
+      "source": "src/domain/gallery/state.ts",
+      "matches": true,
+      "sha256": "2076756e8aa02ed6d744d8002700d9625436d4e55866aa4f826b63fda6efac64"
+    },
+    {
+      "source": "src/domain/gallery/runtime.ts",
+      "matches": true,
+      "sha256": "816f90c79d0b12b214d5fec4bc241f6e6b3f86c9d149ecfaebd74321c0ad27e3"
+    },
+    {
+      "source": "src/domain/firstPerson/baseRuntime.ts",
+      "matches": true,
+      "sha256": "5f049812f2ee6748713bf5288bf032096d907857afc949cb9d4c02d08efc9d78"
+    },
+    {
+      "source": "src/domain/emblem/puzzle.ts",
+      "matches": true,
+      "sha256": "e5575f7f63a9ef9ed2ac0ac831a7f1746142f02e831bcef08c58328d419bed61"
+    },
+    {
+      "source": "src/domain/gallery/checkpoint.ts",
+      "matches": true,
+      "sha256": "21839f4f6bac6a9462d1898954ce66cb95f7c59d6015e4f306a4f3c068a55073"
+    },
+    {
+      "source": "src/domain/emblem/index.ts",
+      "matches": true,
+      "sha256": "1ac624fddb79522d78985dedf06448dd1f25ce3c8b531855361553f1d0ab4a02"
+    },
+    {
+      "source": "src/domain/emblem/surfaceOwner.ts",
+      "matches": true,
+      "sha256": "cb11b2092754972e2d608693357026b0e70d5a503317fd0bc2b44e5da32d2aef"
+    },
+    {
+      "source": "src/domain/theatre/index.ts",
+      "matches": true,
+      "sha256": "10314102ff75d4ab09d576b972aa01a59e4967685cfcfbcfab6ce5e6a03f7b2b"
+    },
+    {
+      "source": "src/domain/theatre/types.ts",
+      "matches": true,
+      "sha256": "35c19371e7b8c2a82e6335c1750e788e6238380244646f27825ee7c54e427e26"
+    },
+    {
+      "source": "src/domain/theatre/definition.ts",
+      "matches": true,
+      "sha256": "920eaa717f54e146aeb5d99d8b246550adc57a26020cc0b44aa8c217efdc265f"
+    },
+    {
+      "source": "src/domain/theatre/lightGate.ts",
+      "matches": true,
+      "sha256": "4b7ea3b5b6cda3d16eb012e0b32f3ec2d588e546e25bb87d7392469448217145"
+    },
+    {
+      "source": "src/domain/theatre/projection.ts",
+      "matches": true,
+      "sha256": "a0a52187033ed6b91bd288aa8b918d228298c218a5916739c9c05bebcba96250"
+    },
+    {
+      "source": "src/domain/theatre/perspectiveExhibit.ts",
+      "matches": true,
+      "sha256": "bbe7c3fb7b754dd11383d56398ea38b70008ac53c1441e6c6bd1ec8762770472"
+    },
+    {
+      "source": "src/domain/theatre/state.ts",
+      "matches": true,
+      "sha256": "e3af183ca8bf7e28704ddf1c125388a582759f99c68b5989690daa5e0ed0e8c9"
+    },
+    {
+      "source": "src/domain/stageKit/linearDrag.ts",
+      "matches": true,
+      "sha256": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c"
+    },
+    {
+      "source": "src/domain/theatre/actor.ts",
+      "matches": true,
+      "sha256": "ae7e8395d27309e82512239704f896ecdc040b271c9b7c98d33fb3eda0aaf995"
+    },
+    {
+      "source": "src/domain/vault/actorPolicy.ts",
+      "matches": true,
+      "sha256": "c2aa94afef48d5792a7e90106bcd6cc3db5f928a256ca45225cfc7957a868643"
+    },
+    {
+      "source": "src/domain/theatre/world.ts",
+      "matches": true,
+      "sha256": "a6b3214575a433c162de21c677d665d96011ce5f35830f5f2fd42b1f5eb9c491"
+    },
+    {
+      "source": "src/domain/theatre/deviceStatus.ts",
+      "matches": true,
+      "sha256": "05a2b6a762bab8719ccb525357b02fb49884bdffcb9c532af0e5193a2a5da352"
+    },
+    {
+      "source": "src/domain/theatre/environment.ts",
+      "matches": true,
+      "sha256": "789347e40e1776e0fcefeba6b6cad8e31d0ea4d4ef225e56b85ea3d6d9e03246"
+    },
+    {
+      "source": "src/domain/stageKit/actionInstance.ts",
+      "matches": true,
+      "sha256": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4"
+    },
+    {
+      "source": "src/domain/theatre/runtime.ts",
+      "matches": true,
+      "sha256": "6817cdfbda9281970e68908253ad881581874f242c534012bb4198ffd6433f7f"
+    },
+    {
+      "source": "src/domain/theatre/checkpoint.ts",
+      "matches": true,
+      "sha256": "5b603bff2183a7d18d9ba6b26e94f747167e5231fae92ed1b3417373bf24c21e"
+    },
+    {
+      "source": "src/domain/theatre/selectors.ts",
+      "matches": true,
+      "sha256": "c12cfa03f72bf261bac2e636e1d1142da12978160f8335695ee84a13df2e73c4"
+    },
+    {
+      "source": "src/domain/vault/runtime.ts",
+      "matches": true,
+      "sha256": "5e0b7f0977ad4ccb8b56d9c451ccb538f0e52464d1c1f9092bbe306e740a84a8"
+    },
+    {
+      "source": "src/domain/vault/definition.ts",
+      "matches": true,
+      "sha256": "32a724fdde872d5d843a271012cd954f05957939564711e53d5efe186902dbb1"
+    },
+    {
+      "source": "src/domain/vault/state.ts",
+      "matches": true,
+      "sha256": "ad69f9ff9276a4b1e4b79e49aec9ce778383a7251437ffa57f2e20b85faf26e6"
+    },
+    {
+      "source": "src/domain/vault/specs.ts",
+      "matches": true,
+      "sha256": "bad57a3fa323386952badbdcfa36b433e159dfed8ea5bb918c4f59771891a068"
+    },
+    {
+      "source": "src/domain/vault/actor.ts",
+      "matches": true,
+      "sha256": "f0d02a549d8f29087d87934f6d0362eefb464a700422cd20862663a0b1ea9b1e"
+    },
+    {
+      "source": "src/domain/vault/world.ts",
+      "matches": true,
+      "sha256": "c1bba52ba4d3445d3429a136c73452d83ea229bf32f637202349795ae4f3fbae"
+    },
+    {
+      "source": "src/domain/vault/checkpoint.ts",
+      "matches": true,
+      "sha256": "50980011c373fbcca6e70e6d26daa6d52db6d121e500b446bfb30cda6d197f6b"
+    },
+    {
+      "source": "src/app/chapterSummary.ts",
+      "matches": true,
+      "sha256": "8939e0e948814e38cdbac53eca5d98a86a6490297989402c6483d98749220905"
+    },
+    {
+      "source": "src/app/version.ts",
+      "matches": true,
+      "sha256": "31214005bf401e138cade7af682f9c7a7e2f1acf4e33661bc00f8fae2df2b6e7"
+    },
+    {
+      "source": "src/domain/campaign/definition.ts",
+      "matches": true,
+      "sha256": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd"
+    },
+    {
+      "source": "src/domain/campaign/areaEntry.ts",
+      "matches": true,
+      "sha256": "63dcdf7f0a6515ecf3390bbb2c98ebd5d6683a71796508e31001b535e19f4c13"
+    },
+    {
+      "source": "src/domain/stageKit/modules.ts",
+      "matches": true,
+      "sha256": "5ce3d9749d6046f847e4c96753aca514185c2a89716970f51e59da088f3efcfd"
+    },
+    {
+      "source": "src/domain/vault/selectors.ts",
+      "matches": true,
+      "sha256": "4707ddd9bdf5bb3b3c4795eaa728396cc09b22c84bab9266ce84f7aa8b21eff6"
+    },
+    {
+      "source": "src/domain/gallery/hint.ts",
+      "matches": true,
+      "sha256": "9c89e132711f80f349324a021b56eda4489822e0dbd3e76422f82c7aa6ac8f33"
+    },
+    {
+      "source": "src/domain/stages/stage-kit-probe/binding.ts",
+      "matches": true,
+      "sha256": "55604d78388632272df8a9d8fd5840c4541392642c90bae592dd70dcbeffb7a5"
+    },
+    {
+      "source": "src/domain/stages/stage-kit-probe/definition.ts",
+      "matches": true,
+      "sha256": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978"
+    },
+    {
+      "source": "src/domain/stages/stage-kit-probe/session.ts",
+      "matches": true,
+      "sha256": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c"
+    },
+    {
+      "source": "src/domain/stages/stage-kit-probe/checkpoint.ts",
+      "matches": true,
+      "sha256": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/binding.ts",
+      "matches": true,
+      "sha256": "cfded286143107d34035ec93ecd08b65d815bcb230e44fb5f0a03dd7f40fb0eb"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/definition.ts",
+      "matches": true,
+      "sha256": "35ab749b76f1891ac8da6c1c71f72cebdf4b1fea653c5581e7aaf51ea0d7ce51"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/session.ts",
+      "matches": true,
+      "sha256": "018c0575a81cd6597449bad447ce4d61896f760e2dbb8698ebc702c03e20715f"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+      "matches": true,
+      "sha256": "a6d6aa91bced040a1cea114f794a25373ee955e16878e763864943d80f9976a9"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/actor.ts",
+      "matches": true,
+      "sha256": "e5b8970f386a3d36664bc41a82c3dfa41c95c60db5aabc192863b8f6f301a39a"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/selectors.ts",
+      "matches": true,
+      "sha256": "bfbfae53334435c8f6a98a41dd7f474cd0a08ba0c9c12d9869e74d62dc03d800"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/binding.ts",
+      "matches": true,
+      "sha256": "32bb48d4a0f6c8feefde472b0c2d1b6e1f7794146f6af10906cbb44782d20945"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/copy.ts",
+      "matches": true,
+      "sha256": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/actor.ts",
+      "matches": true,
+      "sha256": "97a55e1746b8d573a603209a5fe2b1a41935751e46e8c904d94b5af72ea83cf0"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/definition.ts",
+      "matches": true,
+      "sha256": "9f88d963d83c8c4b29db19c547e2e735471e8fc0bf1ee1b511fd9a8a36b7ca2c"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/containmentDoor.ts",
+      "matches": true,
+      "sha256": "4ccf1f954a1e16b6ccbf620c500091544fae21c914f8f0948aab0a96a1f87bb5"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/checkpoint.ts",
+      "matches": true,
+      "sha256": "6175ccfd83e5b1e005c5bec979b7724511768318ad4ef93c4162e90d4e78ad73"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/selectors.ts",
+      "matches": true,
+      "sha256": "f004c5ca00930aa85e61262c451313de067977dcab3dbcd5c55b9afbd07990cf"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/session.ts",
+      "matches": true,
+      "sha256": "ff118cfab5e570521b685eed545dee52017628f5c39cd0614d6684b397fbe8ad"
+    },
+    {
+      "source": "src/domain/campaign/session.ts",
+      "matches": true,
+      "sha256": "72cb704801eaa6abd6d01977a13492929566b1f00bf3404070217dd3f0b364ba"
+    },
+    {
+      "source": "src/domain/campaign/discoveries.ts",
+      "matches": true,
+      "sha256": "3f7e6eb88ce9e5eda5242cd1e668d67e40aef4cdc18e13b5aa56cf04d9a6e3a4"
+    },
+    {
+      "source": "src/domain/stageKit/checkpointProgression.ts",
+      "matches": true,
+      "sha256": "104adb05e5d016320f9f21b07841a036844040727c129271adfff4c3353f3583"
+    },
+    {
+      "source": "src/domain/campaign/migration.ts",
+      "matches": true,
+      "sha256": "7668fc402eb329aaecca8d39f8108c643f8de94fb36d1e19ef13b89d56d0db72"
+    },
+    {
+      "source": "src/domain/campaign/story.ts",
+      "matches": true,
+      "sha256": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94"
+    },
+    {
+      "source": "src/domain/firstPerson/index.ts",
+      "matches": true,
+      "sha256": "5ffa9fee945c94d7cdbdc26a1858b3c0bc8fe32a80d1dbcabf5429181148d292"
+    },
+    {
+      "source": "src/domain/firstPerson/types.ts",
+      "matches": true,
+      "sha256": "8ae410144e5ecf53e9bfff1fefbcf8a475e2a97984e4ff07ced2a760b7beb807"
+    },
+    {
+      "source": "src/domain/firstPerson/chapter.ts",
+      "matches": true,
+      "sha256": "2c83e031c2e475bde0605fd9f0e06484908cf8152956d9c220c83f8f400dc1e2"
+    },
+    {
+      "source": "src/domain/firstPerson/emblemFixture.ts",
+      "matches": true,
+      "sha256": "acf5ab02799778939df8a3eda5c8f6e0adf869f25470da0625df288a06ef1334"
+    },
+    {
+      "source": "src/domain/firstPerson/runtime.ts",
+      "matches": true,
+      "sha256": "0d61f2111879bdfc803ccab61c55e80b258958f73518a1babadeb1363bd5df88"
+    },
+    {
+      "source": "src/domain/firstPerson/checkpoint.ts",
+      "matches": true,
+      "sha256": "66ffc70a4f31b81880226c25678e5502a2a0119cdb1dc2891dfc994562ce7499"
+    },
+    {
+      "source": "src/domain/firstPerson/interactionCue.ts",
+      "matches": true,
+      "sha256": "5919268feb68415d57709af0235b5b227ee2cb02d588f813a1394a73f477ce0b"
+    },
+    {
+      "source": "src/domain/firstPerson/tutorial.ts",
+      "matches": true,
+      "sha256": "8ea7ccce36d308eb8670a94e639f849fcc4a79dc81673373ee44f9c72e8213e2"
+    },
+    {
+      "source": "src/screens/CalibrationInstructionsScreen.tsx",
+      "matches": true,
+      "sha256": "257d415d8945a2bb99654b3dc4d1517aa346a56be27236897426bf330111113c"
+    },
+    {
+      "source": "src/components/Layout.tsx",
+      "matches": true,
+      "sha256": "e6bcd4bed398d38c5027996ea89bda50f344edf892cbf3e0a1e0830bd58e8da7"
+    },
+    {
+      "source": "src/theme/ui.ts",
+      "matches": true,
+      "sha256": "668ede50f97e55316207fa423a4e0dca8ebf09be656b47e6047c9067341ba9a5"
+    },
+    {
+      "source": "src/screens/CalibrationResultScreen.tsx",
+      "matches": true,
+      "sha256": "6d64fa67d4dd32579e2290330a8a67f5ba09b084775b6935a00e8713158396cd"
+    },
+    {
+      "source": "src/screens/CalibrationScreen.tsx",
+      "matches": true,
+      "sha256": "0b9578ae9c786fe58c89c33b6a19a6bdf92e76e1bdf21fa52b9151d94b4ca000"
+    },
+    {
+      "source": "src/rendering/CalibrationStimulus.tsx",
+      "matches": true,
+      "sha256": "8ebba40e5524cc812807efa9788b3c78e1e804565cda32782677e77ab58318a3"
+    },
+    {
+      "source": "src/domain/calibration/stimulusGeometry.ts",
+      "matches": true,
+      "sha256": "a9042eff7e0fef1441ea4b0b1a1f4e0b325667229a08a8e82d58b93e086745dc"
+    },
+    {
+      "source": "src/theme/stimulus.ts",
+      "matches": true,
+      "sha256": "72742e3dd9e789d8a6e911850e41847c2b6f6ffe861caf1d5b8f94fe9c1d9b94"
+    },
+    {
+      "source": "src/screens/DeveloperLabScreen.tsx",
+      "matches": true,
+      "sha256": "c525d6f73df1615a416731203e1e91044f25fc3ae5707d3685d543ea4444dcbe"
+    },
+    {
+      "source": "src/rendering/IllusionPalette.ts",
+      "matches": true,
+      "sha256": "ee59f1256f9a890e22e7159f7689697ec15036edd7b19a6d33c4479bca7f4b2a"
+    },
+    {
+      "source": "src/domain/illusion/index.ts",
+      "matches": true,
+      "sha256": "958a481c7f125fd2f077aa86a6ed45deba2fc40c1c71f632d281108aab67e565"
+    },
+    {
+      "source": "src/domain/illusion/types.ts",
+      "matches": true,
+      "sha256": "2929a65cdf4c2760eb75e1b29e63702b0eec6e0896eca0960cb487d040482e14"
+    },
+    {
+      "source": "src/domain/illusion/levels.ts",
+      "matches": true,
+      "sha256": "2240ef6536a012218fd2f57e797c1d1d19248c4c5573029de5a6a85580f9b1c4"
+    },
+    {
+      "source": "src/domain/illusion/projection.ts",
+      "matches": true,
+      "sha256": "fb9eafdcfe845c2085bafa487640912edba760e95dd1036434b3b42ac2aa1467"
+    },
+    {
+      "source": "src/domain/illusion/state.ts",
+      "matches": true,
+      "sha256": "97bf14869304c2c347ed3eef8888755257a2ff3c4190578a18c9057778eefd0a"
+    },
+    {
+      "source": "src/domain/illusion/reachability.ts",
+      "matches": true,
+      "sha256": "40f489ff9b199728210d96d03345dda05168afd5d170035a2767958f076461b7"
+    },
+    {
+      "source": "src/screens/IllusionMazeScreen.tsx",
+      "matches": true,
+      "sha256": "536b08d5fd26d1b59d128ba2aadb6634d2d03c34954e55977720ff3be5e08aa7"
+    },
+    {
+      "source": "src/platform/haptics.ts",
+      "matches": true,
+      "sha256": "294b7f84ddcefbc4ada965e52c5ac19eb1e48637745d0a18983a8a01cc1cb7f5"
+    },
+    {
+      "source": "src/rendering/IllusionMazeCanvas.tsx",
+      "matches": true,
+      "sha256": "e6b8c1d324007cd57b29cd67085d090ba09a8b09b039889918d2176e96ad5be7"
+    },
+    {
+      "source": "src/rendering/IllusionMotion.ts",
+      "matches": true,
+      "sha256": "bb2cbfeb80e2f2b60d47c7b1bfb0d58aca9c167f630f49da95707eb6be7cc026"
+    },
+    {
+      "source": "src/screens/JourneyResultScreen.tsx",
+      "matches": true,
+      "sha256": "e07e9d160ea988d5fede2910f512701ec3b9e66d13d05539ad9d65ae31fa5c49"
+    },
+    {
+      "source": "src/screens/MicroMazeScreen.tsx",
+      "matches": true,
+      "sha256": "a379f85a30ab131b82c8b89f93f16f09c3cd5bec3f50572c3bea6b2b388fd0f6"
+    },
+    {
+      "source": "src/domain/maze/geometry.ts",
+      "matches": true,
+      "sha256": "31d0813cc96c2cc208a80988aeb0754d1da3397295b6003c787b8be039ca5c6a"
+    },
+    {
+      "source": "src/domain/maze/level.ts",
+      "matches": true,
+      "sha256": "12c288aa78893bfe18598ab9b4cc3f210fce299fbefe968d49bc1e65cf2a90f6"
+    },
+    {
+      "source": "src/domain/maze/scoring.ts",
+      "matches": true,
+      "sha256": "5f073582a843ce068f19782b62aa8b3e7c388dc8194bcb8d2be264577529493b"
+    },
+    {
+      "source": "src/rendering/MazeCanvas.tsx",
+      "matches": true,
+      "sha256": "85206bd403022566f17d9a95e39f53fba1bd58d83fa0b49fb134142afe3ed8a3"
+    },
+    {
+      "source": "src/rendering/mazeGeometry.ts",
+      "matches": true,
+      "sha256": "c9a210ee8dc790a7b47627cbe7858f3bd17016bda70d2a6a53798fd5821c7154"
+    },
+    {
+      "source": "src/screens/NativeFirstPersonGate.tsx",
+      "matches": true,
+      "sha256": "73ec1438e32d0347df0b78052848a9c397bf0320fc27875d30c49e2d1a2d7c98"
+    },
+    {
+      "source": "src/app/playerText.ts",
+      "matches": true,
+      "sha256": "0ece0057a64c8526c0d4242596c904b316247f1d735a142ad80cdf6cceb1833e"
+    },
+    {
+      "source": "src/screens/SupportInformation.tsx",
+      "matches": true,
+      "sha256": "f3c9b3a19ec7f1b704abf8237f2391c5a3ceb20f182a6319f0b5a3f89143794f"
+    },
+    {
+      "source": "src/platform/supportDiagnostics.ts",
+      "matches": true,
+      "sha256": "4a360a642fe8b4343dd2ef26f6a60ccdfde4fb2df0db867dca89dcdb046e5f05"
+    },
+    {
+      "source": "src/rendering/firstPerson/failureLedger.ts",
+      "matches": true,
+      "sha256": "6ce6c51a41b815c10c210b8dab233281d593215e79014c7a1a608b0d5c601712"
+    },
+    {
+      "source": "src/platform/buildIdentity.ts",
+      "matches": true,
+      "sha256": "a476eeabe0c80879ede608bff11669cb1820a17b2313c80cf9d9b491e8b62d35"
+    },
+    {
+      "source": "src/platform/native3D.ts",
+      "matches": true,
+      "sha256": "52ee697c9b724a12c2fc994fba4a0504632190336d106a3858aa483e9c8e376e"
+    },
+    {
+      "source": "src/screens/FirstPersonScreen.tsx",
+      "matches": true,
+      "sha256": "c0701a68f177f57cb145672ddd352e533581218025a93ec2ab257cd9e399885d"
+    },
+    {
+      "source": "src/screens/DiscoveryNotebook.tsx",
+      "matches": true,
+      "sha256": "f62aab8d606ac7b6d75fadc959eae10dcb0d1495758d5961996db365758ec2dc"
+    },
+    {
+      "source": "src/content/illusionNotes.ts",
+      "matches": true,
+      "sha256": "6b8cc38707c0e8d91f1f14aa4520711b4738d81c66bd188c06bd8c3258c515f4"
+    },
+    {
+      "source": "src/content/illusionComparisons.ts",
+      "matches": true,
+      "sha256": "03abfecae8abcab2990f438c7cae049101c765c7c6b7714ac19893ce32898be0"
+    },
+    {
+      "source": "src/rendering/firstPerson/chromaticExhibit.ts",
+      "matches": true,
+      "sha256": "ed212cbb9fc97fca725220a9cdf89cd35177f6ff818f509f295d091db57680e2"
+    },
+    {
+      "source": "src/screens/TheatreNotebook.tsx",
+      "matches": true,
+      "sha256": "bd0e7bc84e4c30789c264c889b2181fd2e958a77a29ef903860ea97684b9ff29"
+    },
+    {
+      "source": "src/content/theatreComparisons.ts",
+      "matches": true,
+      "sha256": "8b598de2efd3557c73f6bffd93357c9346527191993849222ddc980102e09680"
+    },
+    {
+      "source": "src/rendering/firstPerson/controllerContext.ts",
+      "matches": true,
+      "sha256": "10bbd37bd4a49de560cf79ca93b5d2b7e82e94fdf92fe459cb2b65b4844450d6"
+    },
+    {
+      "source": "src/rendering/firstPerson/labRuntime.ts",
+      "matches": true,
+      "sha256": "99319c08852f708a1f89d1b2f3335fe00aa6571cb4c9b7e57d126d5aac9eb15c"
+    },
+    {
+      "source": "src/rendering/firstPerson/TheatreManipulation.tsx",
+      "matches": true,
+      "sha256": "f1000f0bdf7bc7de27c9bde320a144dea220dcfb6494a9b7f785d3a507a81069"
+    },
+    {
+      "source": "src/rendering/firstPerson/theatreController.ts",
+      "matches": true,
+      "sha256": "19ed5d6e1f8558c06c285c71575f307b8d75161544d453a6de2ce42258708d30"
+    },
+    {
+      "source": "src/domain/theatre/cues.ts",
+      "matches": true,
+      "sha256": "16b589ad3380f3dc3f3d01a106957deef6943a9a67c3d4a5efee6acb850dcc34"
+    },
+    {
+      "source": "src/rendering/firstPerson/manipulationProjection.ts",
+      "matches": true,
+      "sha256": "3f2331d17bc37b2eaa2bb08f8489fae826ad956d79f376662579fe2d7ce6d593"
+    },
+    {
+      "source": "src/rendering/firstPerson/controllerTransitionAudio.ts",
+      "matches": true,
+      "sha256": "0daeeffa43137f7d0b1d7676e5a339e881e7aa87da354ade9be9dcec0206734a"
+    },
+    {
+      "source": "src/rendering/firstPerson/touchInput.ts",
+      "matches": true,
+      "sha256": "ac53d5695c4dfc9799e814e5eff93e4e0674e2b2ea3cda884cd29d5dd22878ae"
+    },
+    {
+      "source": "src/rendering/firstPerson/SceneActionButton.tsx",
+      "matches": true,
+      "sha256": "63e83ca58e3392f355ae5b8ea815cd6c0c31f995219ccf5e6146ee271e4abcbd"
+    },
+    {
+      "source": "src/screens/VaultNotebook.tsx",
+      "matches": true,
+      "sha256": "cc15777ffd5132285ead57ddc6aa101ad8e423d8882c7d433eff40880fced3fc"
+    },
+    {
+      "source": "src/content/vaultNotes.ts",
+      "matches": true,
+      "sha256": "3b047ef11f7641e931a3c5d1c39a100b85093ed384be0ca4544b7937b7ca3f2d"
+    },
+    {
+      "source": "src/content/vaultComparisons.ts",
+      "matches": true,
+      "sha256": "2add079d40dd8f0e81f581436c06f9d85e4936c9268443fc6ef1c2eb510eaaf9"
+    },
+    {
+      "source": "src/rendering/firstPerson/VaultManipulation.tsx",
+      "matches": true,
+      "sha256": "59de760338f52a1f8cfa78aa61a36061f42b074444b0e967fe2fe53abf3c601b"
+    },
+    {
+      "source": "src/rendering/firstPerson/vaultController.ts",
+      "matches": true,
+      "sha256": "2861e61847110c0c09173c7f64dc7d97e4fc5f70f4101f9e4807f0c054c4add6"
+    },
+    {
+      "source": "src/rendering/firstPerson/FirstPersonCanvas.tsx",
+      "matches": true,
+      "sha256": "11f283d74c9b06881eee1ff6099b01285ab533156ed231b27afb2a3d7cad7d07"
+    },
+    {
+      "source": "src/rendering/firstPerson/CanvasFailureBoundary.tsx",
+      "matches": true,
+      "sha256": "e84bf0b6de838260e48cefe251e6e0d55b503a1b15b5804ec7ee0e3668da8c67"
+    },
+    {
+      "source": "src/rendering/firstPerson/canvasLifecycle.ts",
+      "matches": true,
+      "sha256": "3c6d57848eadc382e93a0b26baeb63e6e150a2feb41068c3afbc82f6434d01a8"
+    },
+    {
+      "source": "src/rendering/firstPerson/diagnostics.ts",
+      "matches": true,
+      "sha256": "3b24469e024f5385e8335bb63e44bd0d59473eb163e39a212b4e83bd2fc8918f"
+    },
+    {
+      "source": "src/rendering/firstPerson/nativeGlObserver.ts",
+      "matches": true,
+      "sha256": "d3ef9d422ce00d785a791e987cc93aea79f2055516c8a8ea36924ea6b9e8e177"
+    },
+    {
+      "source": "src/rendering/firstPerson/runtimeController.ts",
+      "matches": true,
+      "sha256": "68fcd02d1ba4b49bd0e626997f9d402cdb8f5f6513d4b79f8bb82544134aa867"
+    },
+    {
+      "source": "src/rendering/firstPerson/notebookCamera.ts",
+      "matches": true,
+      "sha256": "7c05427b3cde9694cdee57366bd723077b80802d22131002494b9dcb9695eb2e"
+    },
+    {
+      "source": "src/rendering/firstPerson/galleryController.ts",
+      "matches": true,
+      "sha256": "40ec0cf64831406cf94e8c2160e030d33bfe29444055e3a86e658ddd2717aab8"
+    },
+    {
+      "source": "src/rendering/firstPerson/NotebookMaskScene.tsx",
+      "matches": true,
+      "sha256": "9d4aef1faafeee22362bb318aa0d22bcfc8030f744ac00df642824c1361c031c"
+    },
+    {
+      "source": "src/rendering/firstPerson/ChapterScene.tsx",
+      "matches": true,
+      "sha256": "24bb19ae91af5b81c8c944d1455c7693dafb5bb6f16874e2ea4c80482b2d8b0a"
+    },
+    {
+      "source": "src/rendering/firstPerson/FacilityDetails.tsx",
+      "matches": true,
+      "sha256": "33f779b3dc0c0f59ff86ff51bf307792066da694abcefedb1de8b0613c638680"
+    },
+    {
+      "source": "src/rendering/firstPerson/facilitySignData.ts",
+      "matches": true,
+      "sha256": "bf613df92d0cbc39f29f55972e3a6880b8b1f48d487d2ce7ebe352daae1b9e4f"
+    },
+    {
+      "source": "src/rendering/firstPerson/PanelFixture.tsx",
+      "matches": true,
+      "sha256": "bed01fb3b2adf540ea3c00721ce5ecb407da5e55b9fb652e4621e672abeca229"
+    },
+    {
+      "source": "src/rendering/firstPerson/GlyphMark.tsx",
+      "matches": true,
+      "sha256": "3125f8871ac685e6b4e2630ce226d1a07794e1991e4692b04f602d25d9e8c252"
+    },
+    {
+      "source": "src/rendering/firstPerson/TheatreScene.tsx",
+      "matches": true,
+      "sha256": "962c2c74187d834c0497f85d82c2eeef72e626f4c9f298622e0f126293e21f15"
+    },
+    {
+      "source": "src/rendering/firstPerson/MechanicalDevices.tsx",
+      "matches": true,
+      "sha256": "1ef0ede5b89d1953e1c26376439d54dc341f0b15ec0eb79785092c10d978c85c"
+    },
+    {
+      "source": "src/rendering/firstPerson/segmentTransform.ts",
+      "matches": true,
+      "sha256": "cd9657077cae0b9dfdd5adc543c5bdd290124594675de2627cbb70451812d2b2"
+    },
+    {
+      "source": "src/rendering/firstPerson/GalleryActor.tsx",
+      "matches": true,
+      "sha256": "0790c66d94542f1caa024ce7279e638db34406a1143b01390145103ccccae65f"
+    },
+    {
+      "source": "src/rendering/firstPerson/actorArtRig.ts",
+      "matches": true,
+      "sha256": "51deb3d00b870ca043bc97427e2fbfd9d0b40659ea302ea84dc802e172ed4a68"
+    },
+    {
+      "source": "src/rendering/firstPerson/VaultScene.tsx",
+      "matches": true,
+      "sha256": "7311cd0a1bfb5b182d9d6aced88e88e617cb5fba8f12e01f6df6eeb1ad233b75"
+    },
+    {
+      "source": "src/rendering/firstPerson/VaultDevices.tsx",
+      "matches": true,
+      "sha256": "7928dab622bfea490c9742c85c2f964c7a4c3d32122847aeb40e73d0bd92e326"
+    },
+    {
+      "source": "src/rendering/firstPerson/GalleryScene.tsx",
+      "matches": true,
+      "sha256": "ab9408b854f20bb5d03ac043e61856c28ffa9eb8542f3e0b4eb234852f2e175f"
+    },
+    {
+      "source": "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx",
+      "matches": true,
+      "sha256": "a3c443543a5020bf617fec2dc36d883b14fdc0ea14120a6267afb1182d2d2b13"
+    },
+    {
+      "source": "src/rendering/firstPerson/stageSceneBindings.tsx",
+      "matches": true,
+      "sha256": "cd175512d63cc1c546659be3f7420073e988a3c6f3fef40c940aee08d19c38bc"
+    },
+    {
+      "source": "src/domain/stages/stage-kit-probe/scene.tsx",
+      "matches": true,
+      "sha256": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555"
+    },
+    {
+      "source": "src/domain/stages/mirror-corridor-v1/scene.tsx",
+      "matches": true,
+      "sha256": "ba57ae661ef3bcd888525c200fa4b14ad90aa2df46b7ea40f648fe536d80de37"
+    },
+    {
+      "source": "src/domain/stages/isolationKeyGeometry.ts",
+      "matches": true,
+      "sha256": "c110b5466ca6dfad377275a75d8c430dbb60b6340dee7850b6bae366b250e374"
+    },
+    {
+      "source": "src/rendering/firstPerson/planarMirror.ts",
+      "matches": true,
+      "sha256": "5aa584443b910c569259a543c434bfbb1b5a2a0322c09e34d3159eb1c8c7e3f5"
+    },
+    {
+      "source": "src/domain/stages/departure-control-v1/scene.tsx",
+      "matches": true,
+      "sha256": "03ce21de130c78b0c0141db051d74bea8e5c33b3a7db33cf7597626444235810"
+    },
+    {
+      "source": "src/rendering/firstPerson/nativeSceneSession.ts",
+      "matches": true,
+      "sha256": "3466ec911daac070df7e369a1407468955bef70ee41f6f59ccd105e4309d6c23"
+    },
+    {
+      "source": "src/rendering/firstPerson/chapterAudio.ts",
+      "matches": true,
+      "sha256": "b3399a80ce78dbd8fdd8a50dc7198c88bb9d50520f0e081831ba0e7b6a2708cb"
+    },
+    {
+      "source": "src/rendering/firstPerson/nativeGlSession.ts",
+      "matches": true,
+      "sha256": "d9a3a6a4a71726727d3fa131ba7597e236983d09c8cdfc3039d2d1c4168b4457"
+    },
+    {
+      "source": "src/rendering/firstPerson/nativeDefaultFramebuffer.ts",
+      "matches": true,
+      "sha256": "8e0439c0cf89dcc5c790e357121061f6de27e85e579fa5cb0afb1f4c5605379d"
+    },
+    {
+      "source": "src/rendering/firstPerson/nativeRendererFactory.ts",
+      "matches": true,
+      "sha256": "e0201f5c963b24a98c7939f00c8be902f10429d243443af89bee23b0819bf52e"
+    },
+    {
+      "source": "src/rendering/firstPerson/ProofScene.tsx",
+      "matches": true,
+      "sha256": "9fd7ecb09cb3225a3b8f95bbd8aa2bdcf175b915bfc30ba28d7a2bda42d05258"
+    },
+    {
+      "source": "src/rendering/firstPerson/resources.ts",
+      "matches": true,
+      "sha256": "5d39708a8d9f7eb38cf49d096a9ea7e13e0a8bc9a552e41e46b547cab03d47e3"
+    },
+    {
+      "source": "src/rendering/firstPerson/facilitySigns.ts",
+      "matches": true,
+      "sha256": "3fb5ccb18f6b77764c43998f5985686f2e5761e9be07b241f83fb5cea2ed09dc"
+    },
+    {
+      "source": "src/rendering/firstPerson/environmentArtResources.ts",
+      "matches": true,
+      "sha256": "9b8e37cebc7e44c4563c35453cd43bd1ce67a9fa4ac73a917417c4476539e888"
+    },
+    {
+      "source": "src/rendering/firstPerson/theatreResources.ts",
+      "matches": true,
+      "sha256": "3b7013de3dc797bb1fcc7ca50aaacfd3ef971adecff3e230feb8e0046e4e9622"
+    },
+    {
+      "source": "src/rendering/firstPerson/vaultResources.ts",
+      "matches": true,
+      "sha256": "537f3fb9899d8f3722cc62dde7e114af137832ebe8bad59054a4295ac2c3c076"
+    },
+    {
+      "source": "src/rendering/firstPerson/galleryResources.ts",
+      "matches": true,
+      "sha256": "5db65e1bbae25fa1eabebe118adbffe4fb5f36773f32c90d3f74c9abc5407c20"
+    },
+    {
+      "source": "src/rendering/firstPerson/actorArtResources.ts",
+      "matches": true,
+      "sha256": "2e29eecbc2920fb173fe083aed24b5aa9b67d03b2886dc468575b518fb90ffdd"
+    },
+    {
+      "source": "src/rendering/firstPerson/perceptualResources.ts",
+      "matches": true,
+      "sha256": "9befb71148c993ceca015e7d1108b87c7050c0241e860f408254535543c8cce7"
+    },
+    {
+      "source": "src/rendering/firstPerson/galleryGraphics.ts",
+      "matches": true,
+      "sha256": "abe916e15caa206c3c7e0ca546e084e00cbc11f8ec23f2eb88ceeaef07bbf6dc"
+    },
+    {
+      "source": "src/rendering/firstPerson/destinationSigns.ts",
+      "matches": true,
+      "sha256": "36e4d3454d6b373078ac415f7dafdc9e8beb734a7f0caf0239c6d88486682518"
+    },
+    {
+      "source": "src/rendering/firstPerson/destinationSignData.ts",
+      "matches": true,
+      "sha256": "2eaf4ec7cb8304ab0f01eb1b255fef39618b1d90fbbe3b39a4a4264748ce4097"
+    },
+    {
+      "source": "src/rendering/firstPerson/emblemSurface.ts",
+      "matches": true,
+      "sha256": "77dd43c584a4b7f4fb7b7c73183e254a28eb542af4f895eaad9269c20b6cb534"
+    },
+    {
+      "source": "src/rendering/firstPerson/RawGLProof.tsx",
+      "matches": true,
+      "sha256": "520a8e0ea9346c0112cf5479c2030b707b7bbf6e1eae737c51c385517ccbe47f"
+    },
+    {
+      "source": "src/rendering/firstPerson/rawGLTriangle.ts",
+      "matches": true,
+      "sha256": "029eaf7b1640af3771350bbed16efcad39ef2eab08864f65516e5426280d8ddb"
+    },
+    {
+      "source": "src/rendering/firstPerson/controlLayout.ts",
+      "matches": true,
+      "sha256": "f26bcc88190234188ac336406b8f2b2f1348afb79c623160d548377a41b6df2b"
+    },
+    {
+      "source": "src/rendering/firstPerson/StageHoldButton.tsx",
+      "matches": true,
+      "sha256": "673d25aeae1a1d159fb5d5559b35ddaaef756e980e3e66f56328522912fd4c6c"
+    },
+    {
+      "source": "src/rendering/firstPerson/touchAdapter.ts",
+      "matches": true,
+      "sha256": "0466eb6ca94bb84af0ebd591334285331d4a7788a50671895d04f246559d1adf"
+    },
+    {
+      "source": "src/rendering/firstPerson/GalleryManipulation.tsx",
+      "matches": true,
+      "sha256": "513d863674af50bb64c414d4915675e30a3306c2c8ccd039dad7a2cc22ced366"
+    },
+    {
+      "source": "src/rendering/firstPerson/TouchControls.tsx",
+      "matches": true,
+      "sha256": "8bdd151a74dedebde2204edb0a8f37c092640b2125e5d828366895727e5d3e46"
+    },
+    {
+      "source": "src/screens/firstPersonControlMode.ts",
+      "matches": true,
+      "sha256": "e1bc4218b77a6c67e771a45d0cc943be26046ec25901f13d6a1a8212aa7a3ad1"
+    },
+    {
+      "source": "src/screens/CampaignStageNotebook.tsx",
+      "matches": true,
+      "sha256": "948aa1f06eccc7e7149245d905f1e0b7b2a4ff383544b8950409aceca6b61f8f"
+    },
+    {
+      "source": "src/content/chapterOneDiscoveries.ts",
+      "matches": true,
+      "sha256": "014689b81eacaa06129d2830c8aadc1f102224e5d8b4c83b3ff46394b9d160f4"
+    },
+    {
+      "source": "src/screens/FirstPersonResultScreen.tsx",
+      "matches": true,
+      "sha256": "f03eeda4e4b44a27509b29f16fbc5114d6bbbda0733702b060a54361e4a25790"
+    },
+    {
+      "source": "src/components/FreshPressButton.tsx",
+      "matches": true,
+      "sha256": "d7f7b7a68ac3cd2f99237ab44293c5fb87f0f7bbd6529f7e7339430a1a5eab85"
+    },
+    {
+      "source": "src/screens/PlayInstructionsScreen.tsx",
+      "matches": true,
+      "sha256": "ed7783e6f7718f52ce17a3fc9abcbd73c4d0fbc01bf6d878d08a81b2c5513f13"
+    },
+    {
+      "source": "src/screens/QuickSetupScreen.tsx",
+      "matches": true,
+      "sha256": "2d4bf2069ec563cc2ef67a41a4e15b54da459fae7cf771b25bf9e290630aa246"
+    },
+    {
+      "source": "src/screens/SettingsScreen.tsx",
+      "matches": true,
+      "sha256": "f605f5f3038459ec8cf7d52d5a567e7bd5b6fbbbc09bc410271acbb41ddc48f0"
+    },
+    {
+      "source": "src/screens/StageResultScreen.tsx",
+      "matches": true,
+      "sha256": "84a8a9d43580d3108b520014baa3072fad1e7c6fa967248d9305d5ad1257b0a4"
+    },
+    {
+      "source": "src/screens/StageSelectScreen.tsx",
+      "matches": true,
+      "sha256": "70a7ecbb4288dea55c515a52de24aea746c855485b71af1fd215ebd57fb3a600"
+    },
+    {
+      "source": "src/components/StageArtwork.tsx",
+      "matches": true,
+      "sha256": "b26de99cc40129aab5cdaf16490fc58d6230b595d92d8e14bdbec9baf2d68d6d"
+    },
+    {
+      "source": "src/app/stages.ts",
+      "matches": true,
+      "sha256": "3ba9050f798c9581d59f42342264eb62d4ccafb2891aedba5ac545a49b1836b7"
+    },
+    {
+      "source": "src/screens/ChapterOneHomeScreen.tsx",
+      "matches": true,
+      "sha256": "9c554fa97cafef554cd09936ac26104dc7226efeb7196795559653afe67788c8"
+    },
+    {
+      "source": "src/screens/ChapterOneEndingScreen.tsx",
+      "matches": true,
+      "sha256": "ccc011b2b7e0195b82a49cd5bcf2d6adf3b02509e2fcb17f1da876877a2bca2d"
+    },
+    {
+      "source": "src/storage/firstPersonStorage.ts",
+      "matches": true,
+      "sha256": "a3a269a18524df6d6596ae22ecda5854889797f0db69b202fbf1310bda6e8caf"
+    },
+    {
+      "source": "src/storage/stageJournalStorage.ts",
+      "matches": true,
+      "sha256": "68d83100a6d10c4c4d6e19636b94fac68080e3eb57b559b74f38b8eb90cd4aab"
+    },
+    {
+      "source": "src/storage/moduleStageStorage.ts",
+      "matches": true,
+      "sha256": "be9812f9076d8ba537d3806f092bfb8f9335b84c4fd32feb3438ab010a0ef0dd"
+    },
+    {
+      "source": "src/storage/chapterOneStorage.ts",
+      "matches": true,
+      "sha256": "ea7713e7f990011a83738868cca832a0a73163597abbf069e2398108fa643653"
+    },
+    {
+      "source": "src/domain/campaign/checkpoint.ts",
+      "matches": true,
+      "sha256": "e9dabb31bfe804a3377666ec4815c87a257274c0ad25315eb42016164338f365"
+    },
+    {
+      "source": "src/storage/chapterOneLegacy.ts",
+      "matches": true,
+      "sha256": "7807879fd04cc89961cb6618cc5810f7d7e08ac992b220eb2f381ff1e2736a5a"
+    }
+  ],
+  "missingRoots": [],
+  "observations": [
+    {
+      "first": "src/domain/firstPerson/runtime.ts",
+      "warnings": [],
+      "output": [],
+      "buildIdentity": {
+        "code": "goal-014-2-fair-escape-r1",
+        "appVersion": "1.0.0",
+        "nativeBuild": "unknown",
+        "profileMarker": "unknown",
+        "bundleSource": "metro-development"
+      },
+      "chapters": [
+        {
+          "chapterId": "returnless-entrance",
+          "session": 1,
+          "controllerSession": 2,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 3,
+          "controllerSession": 4,
+          "solids": 67,
+          "interactables": 10,
+          "finite": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 5,
+          "controllerSession": 6,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 7,
+          "controllerSession": 8,
+          "solids": 49,
+          "interactables": 4,
+          "finite": true
+        }
+      ],
+      "passed": true,
+      "executedFirstParty": [
+        "src/domain/actorMotion/config.ts",
+        "src/domain/actorMotion/envelope.ts",
+        "src/domain/actorMotion/index.ts",
+        "src/domain/actorMotion/locomotion.ts",
+        "src/domain/actorMotion/pose.ts",
+        "src/domain/actorMotion/types.ts",
+        "src/domain/emblem/color.ts",
+        "src/domain/emblem/index.ts",
+        "src/domain/emblem/presentation.ts",
+        "src/domain/emblem/puzzle.ts",
+        "src/domain/emblem/stimulus.ts",
+        "src/domain/emblem/surfaceOwner.ts",
+        "src/domain/firstPerson/alignment.ts",
+        "src/domain/firstPerson/baseRuntime.ts",
+        "src/domain/firstPerson/boundaryWalls.ts",
+        "src/domain/firstPerson/chapter.ts",
+        "src/domain/firstPerson/constants.ts",
+        "src/domain/firstPerson/emblemFixture.ts",
+        "src/domain/firstPerson/geometry.ts",
+        "src/domain/firstPerson/interaction.ts",
+        "src/domain/firstPerson/interactionCue.ts",
+        "src/domain/firstPerson/legacyDefinition.ts",
+        "src/domain/firstPerson/occlusion.ts",
+        "src/domain/firstPerson/panelFixture.ts",
+        "src/domain/firstPerson/runtime.ts",
+        "src/domain/firstPerson/tutorial.ts",
+        "src/domain/gallery/actor.ts",
+        "src/domain/gallery/checkpoint.ts",
+        "src/domain/gallery/contour.ts",
+        "src/domain/gallery/definition.ts",
+        "src/domain/gallery/hint.ts",
+        "src/domain/gallery/index.ts",
+        "src/domain/gallery/runtime.ts",
+        "src/domain/gallery/selectors.ts",
+        "src/domain/gallery/shadow.ts",
+        "src/domain/gallery/state.ts",
+        "src/domain/gallery/types.ts",
+        "src/domain/gallery/wiring.ts",
+        "src/domain/gallery/world.ts",
+        "src/domain/stageKit/actionInstance.ts",
+        "src/domain/stageKit/definitions.ts",
+        "src/domain/stageKit/linearDrag.ts",
+        "src/domain/stageKit/modules.ts",
+        "src/domain/stages/departure-control-v1/actor.ts",
+        "src/domain/stages/departure-control-v1/binding.ts",
+        "src/domain/stages/departure-control-v1/checkpoint.ts",
+        "src/domain/stages/departure-control-v1/containmentDoor.ts",
+        "src/domain/stages/departure-control-v1/copy.ts",
+        "src/domain/stages/departure-control-v1/definition.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/domain/stages/departure-control-v1/session.ts",
+        "src/domain/stages/mirror-corridor-v1/actor.ts",
+        "src/domain/stages/mirror-corridor-v1/binding.ts",
+        "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "src/domain/stages/mirror-corridor-v1/selectors.ts",
+        "src/domain/stages/mirror-corridor-v1/session.ts",
+        "src/domain/stages/stage-kit-probe/binding.ts",
+        "src/domain/stages/stage-kit-probe/checkpoint.ts",
+        "src/domain/stages/stage-kit-probe/definition.ts",
+        "src/domain/stages/stage-kit-probe/session.ts",
+        "src/domain/theatre/actor.ts",
+        "src/domain/theatre/checkpoint.ts",
+        "src/domain/theatre/cues.ts",
+        "src/domain/theatre/definition.ts",
+        "src/domain/theatre/deviceStatus.ts",
+        "src/domain/theatre/environment.ts",
+        "src/domain/theatre/lightGate.ts",
+        "src/domain/theatre/projection.ts",
+        "src/domain/theatre/runtime.ts",
+        "src/domain/theatre/selectors.ts",
+        "src/domain/theatre/state.ts",
+        "src/domain/theatre/world.ts",
+        "src/domain/vault/actor.ts",
+        "src/domain/vault/actorPolicy.ts",
+        "src/domain/vault/checkpoint.ts",
+        "src/domain/vault/definition.ts",
+        "src/domain/vault/runtime.ts",
+        "src/domain/vault/selectors.ts",
+        "src/domain/vault/specs.ts",
+        "src/domain/vault/state.ts",
+        "src/domain/vault/world.ts",
+        "src/platform/buildIdentity.ts",
+        "src/platform/diagnosticText.ts",
+        "src/rendering/firstPerson/controllerContext.ts",
+        "src/rendering/firstPerson/controllerTransitionAudio.ts",
+        "src/rendering/firstPerson/diagnostics.ts",
+        "src/rendering/firstPerson/galleryController.ts",
+        "src/rendering/firstPerson/labRuntime.ts",
+        "src/rendering/firstPerson/manipulationProjection.ts",
+        "src/rendering/firstPerson/nativeGlObserver.ts",
+        "src/rendering/firstPerson/notebookCamera.ts",
+        "src/rendering/firstPerson/runtimeController.ts",
+        "src/rendering/firstPerson/theatreController.ts",
+        "src/rendering/firstPerson/touchInput.ts",
+        "src/rendering/firstPerson/vaultController.ts"
+      ]
+    },
+    {
+      "first": "src/domain/firstPerson/chapter.ts",
+      "warnings": [],
+      "output": [],
+      "buildIdentity": {
+        "code": "goal-014-2-fair-escape-r1",
+        "appVersion": "1.0.0",
+        "nativeBuild": "unknown",
+        "profileMarker": "unknown",
+        "bundleSource": "metro-development"
+      },
+      "chapters": [
+        {
+          "chapterId": "returnless-entrance",
+          "session": 1,
+          "controllerSession": 2,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 3,
+          "controllerSession": 4,
+          "solids": 67,
+          "interactables": 10,
+          "finite": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 5,
+          "controllerSession": 6,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 7,
+          "controllerSession": 8,
+          "solids": 49,
+          "interactables": 4,
+          "finite": true
+        }
+      ],
+      "passed": true,
+      "executedFirstParty": [
+        "src/domain/actorMotion/config.ts",
+        "src/domain/actorMotion/envelope.ts",
+        "src/domain/actorMotion/index.ts",
+        "src/domain/actorMotion/locomotion.ts",
+        "src/domain/actorMotion/pose.ts",
+        "src/domain/actorMotion/types.ts",
+        "src/domain/emblem/color.ts",
+        "src/domain/emblem/index.ts",
+        "src/domain/emblem/presentation.ts",
+        "src/domain/emblem/puzzle.ts",
+        "src/domain/emblem/stimulus.ts",
+        "src/domain/emblem/surfaceOwner.ts",
+        "src/domain/firstPerson/alignment.ts",
+        "src/domain/firstPerson/baseRuntime.ts",
+        "src/domain/firstPerson/boundaryWalls.ts",
+        "src/domain/firstPerson/chapter.ts",
+        "src/domain/firstPerson/constants.ts",
+        "src/domain/firstPerson/emblemFixture.ts",
+        "src/domain/firstPerson/geometry.ts",
+        "src/domain/firstPerson/interaction.ts",
+        "src/domain/firstPerson/interactionCue.ts",
+        "src/domain/firstPerson/legacyDefinition.ts",
+        "src/domain/firstPerson/occlusion.ts",
+        "src/domain/firstPerson/panelFixture.ts",
+        "src/domain/firstPerson/runtime.ts",
+        "src/domain/firstPerson/tutorial.ts",
+        "src/domain/gallery/actor.ts",
+        "src/domain/gallery/checkpoint.ts",
+        "src/domain/gallery/contour.ts",
+        "src/domain/gallery/definition.ts",
+        "src/domain/gallery/hint.ts",
+        "src/domain/gallery/index.ts",
+        "src/domain/gallery/runtime.ts",
+        "src/domain/gallery/selectors.ts",
+        "src/domain/gallery/shadow.ts",
+        "src/domain/gallery/state.ts",
+        "src/domain/gallery/types.ts",
+        "src/domain/gallery/wiring.ts",
+        "src/domain/gallery/world.ts",
+        "src/domain/stageKit/actionInstance.ts",
+        "src/domain/stageKit/definitions.ts",
+        "src/domain/stageKit/linearDrag.ts",
+        "src/domain/stageKit/modules.ts",
+        "src/domain/stages/departure-control-v1/actor.ts",
+        "src/domain/stages/departure-control-v1/binding.ts",
+        "src/domain/stages/departure-control-v1/checkpoint.ts",
+        "src/domain/stages/departure-control-v1/containmentDoor.ts",
+        "src/domain/stages/departure-control-v1/copy.ts",
+        "src/domain/stages/departure-control-v1/definition.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/domain/stages/departure-control-v1/session.ts",
+        "src/domain/stages/mirror-corridor-v1/actor.ts",
+        "src/domain/stages/mirror-corridor-v1/binding.ts",
+        "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "src/domain/stages/mirror-corridor-v1/selectors.ts",
+        "src/domain/stages/mirror-corridor-v1/session.ts",
+        "src/domain/stages/stage-kit-probe/binding.ts",
+        "src/domain/stages/stage-kit-probe/checkpoint.ts",
+        "src/domain/stages/stage-kit-probe/definition.ts",
+        "src/domain/stages/stage-kit-probe/session.ts",
+        "src/domain/theatre/actor.ts",
+        "src/domain/theatre/checkpoint.ts",
+        "src/domain/theatre/cues.ts",
+        "src/domain/theatre/definition.ts",
+        "src/domain/theatre/deviceStatus.ts",
+        "src/domain/theatre/environment.ts",
+        "src/domain/theatre/lightGate.ts",
+        "src/domain/theatre/projection.ts",
+        "src/domain/theatre/runtime.ts",
+        "src/domain/theatre/selectors.ts",
+        "src/domain/theatre/state.ts",
+        "src/domain/theatre/world.ts",
+        "src/domain/vault/actor.ts",
+        "src/domain/vault/actorPolicy.ts",
+        "src/domain/vault/checkpoint.ts",
+        "src/domain/vault/definition.ts",
+        "src/domain/vault/runtime.ts",
+        "src/domain/vault/selectors.ts",
+        "src/domain/vault/specs.ts",
+        "src/domain/vault/state.ts",
+        "src/domain/vault/world.ts",
+        "src/platform/buildIdentity.ts",
+        "src/platform/diagnosticText.ts",
+        "src/rendering/firstPerson/controllerContext.ts",
+        "src/rendering/firstPerson/controllerTransitionAudio.ts",
+        "src/rendering/firstPerson/diagnostics.ts",
+        "src/rendering/firstPerson/galleryController.ts",
+        "src/rendering/firstPerson/labRuntime.ts",
+        "src/rendering/firstPerson/manipulationProjection.ts",
+        "src/rendering/firstPerson/nativeGlObserver.ts",
+        "src/rendering/firstPerson/notebookCamera.ts",
+        "src/rendering/firstPerson/runtimeController.ts",
+        "src/rendering/firstPerson/theatreController.ts",
+        "src/rendering/firstPerson/touchInput.ts",
+        "src/rendering/firstPerson/vaultController.ts"
+      ]
+    },
+    {
+      "first": "src/domain/gallery/runtime.ts",
+      "warnings": [],
+      "output": [],
+      "buildIdentity": {
+        "code": "goal-014-2-fair-escape-r1",
+        "appVersion": "1.0.0",
+        "nativeBuild": "unknown",
+        "profileMarker": "unknown",
+        "bundleSource": "metro-development"
+      },
+      "chapters": [
+        {
+          "chapterId": "returnless-entrance",
+          "session": 1,
+          "controllerSession": 2,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 3,
+          "controllerSession": 4,
+          "solids": 67,
+          "interactables": 10,
+          "finite": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 5,
+          "controllerSession": 6,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 7,
+          "controllerSession": 8,
+          "solids": 49,
+          "interactables": 4,
+          "finite": true
+        }
+      ],
+      "passed": true,
+      "executedFirstParty": [
+        "src/domain/actorMotion/config.ts",
+        "src/domain/actorMotion/envelope.ts",
+        "src/domain/actorMotion/index.ts",
+        "src/domain/actorMotion/locomotion.ts",
+        "src/domain/actorMotion/pose.ts",
+        "src/domain/actorMotion/types.ts",
+        "src/domain/emblem/color.ts",
+        "src/domain/emblem/index.ts",
+        "src/domain/emblem/presentation.ts",
+        "src/domain/emblem/puzzle.ts",
+        "src/domain/emblem/stimulus.ts",
+        "src/domain/emblem/surfaceOwner.ts",
+        "src/domain/firstPerson/alignment.ts",
+        "src/domain/firstPerson/baseRuntime.ts",
+        "src/domain/firstPerson/boundaryWalls.ts",
+        "src/domain/firstPerson/chapter.ts",
+        "src/domain/firstPerson/constants.ts",
+        "src/domain/firstPerson/emblemFixture.ts",
+        "src/domain/firstPerson/geometry.ts",
+        "src/domain/firstPerson/interaction.ts",
+        "src/domain/firstPerson/interactionCue.ts",
+        "src/domain/firstPerson/legacyDefinition.ts",
+        "src/domain/firstPerson/occlusion.ts",
+        "src/domain/firstPerson/panelFixture.ts",
+        "src/domain/firstPerson/runtime.ts",
+        "src/domain/firstPerson/tutorial.ts",
+        "src/domain/gallery/actor.ts",
+        "src/domain/gallery/checkpoint.ts",
+        "src/domain/gallery/contour.ts",
+        "src/domain/gallery/definition.ts",
+        "src/domain/gallery/hint.ts",
+        "src/domain/gallery/index.ts",
+        "src/domain/gallery/runtime.ts",
+        "src/domain/gallery/selectors.ts",
+        "src/domain/gallery/shadow.ts",
+        "src/domain/gallery/state.ts",
+        "src/domain/gallery/types.ts",
+        "src/domain/gallery/wiring.ts",
+        "src/domain/gallery/world.ts",
+        "src/domain/stageKit/actionInstance.ts",
+        "src/domain/stageKit/definitions.ts",
+        "src/domain/stageKit/linearDrag.ts",
+        "src/domain/stageKit/modules.ts",
+        "src/domain/stages/departure-control-v1/actor.ts",
+        "src/domain/stages/departure-control-v1/binding.ts",
+        "src/domain/stages/departure-control-v1/checkpoint.ts",
+        "src/domain/stages/departure-control-v1/containmentDoor.ts",
+        "src/domain/stages/departure-control-v1/copy.ts",
+        "src/domain/stages/departure-control-v1/definition.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/domain/stages/departure-control-v1/session.ts",
+        "src/domain/stages/mirror-corridor-v1/actor.ts",
+        "src/domain/stages/mirror-corridor-v1/binding.ts",
+        "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "src/domain/stages/mirror-corridor-v1/selectors.ts",
+        "src/domain/stages/mirror-corridor-v1/session.ts",
+        "src/domain/stages/stage-kit-probe/binding.ts",
+        "src/domain/stages/stage-kit-probe/checkpoint.ts",
+        "src/domain/stages/stage-kit-probe/definition.ts",
+        "src/domain/stages/stage-kit-probe/session.ts",
+        "src/domain/theatre/actor.ts",
+        "src/domain/theatre/checkpoint.ts",
+        "src/domain/theatre/cues.ts",
+        "src/domain/theatre/definition.ts",
+        "src/domain/theatre/deviceStatus.ts",
+        "src/domain/theatre/environment.ts",
+        "src/domain/theatre/lightGate.ts",
+        "src/domain/theatre/projection.ts",
+        "src/domain/theatre/runtime.ts",
+        "src/domain/theatre/selectors.ts",
+        "src/domain/theatre/state.ts",
+        "src/domain/theatre/world.ts",
+        "src/domain/vault/actor.ts",
+        "src/domain/vault/actorPolicy.ts",
+        "src/domain/vault/checkpoint.ts",
+        "src/domain/vault/definition.ts",
+        "src/domain/vault/runtime.ts",
+        "src/domain/vault/selectors.ts",
+        "src/domain/vault/specs.ts",
+        "src/domain/vault/state.ts",
+        "src/domain/vault/world.ts",
+        "src/platform/buildIdentity.ts",
+        "src/platform/diagnosticText.ts",
+        "src/rendering/firstPerson/controllerContext.ts",
+        "src/rendering/firstPerson/controllerTransitionAudio.ts",
+        "src/rendering/firstPerson/diagnostics.ts",
+        "src/rendering/firstPerson/galleryController.ts",
+        "src/rendering/firstPerson/labRuntime.ts",
+        "src/rendering/firstPerson/manipulationProjection.ts",
+        "src/rendering/firstPerson/nativeGlObserver.ts",
+        "src/rendering/firstPerson/notebookCamera.ts",
+        "src/rendering/firstPerson/runtimeController.ts",
+        "src/rendering/firstPerson/theatreController.ts",
+        "src/rendering/firstPerson/touchInput.ts",
+        "src/rendering/firstPerson/vaultController.ts"
+      ]
+    },
+    {
+      "first": "src/domain/vault/runtime.ts",
+      "warnings": [],
+      "output": [],
+      "buildIdentity": {
+        "code": "goal-014-2-fair-escape-r1",
+        "appVersion": "1.0.0",
+        "nativeBuild": "unknown",
+        "profileMarker": "unknown",
+        "bundleSource": "metro-development"
+      },
+      "chapters": [
+        {
+          "chapterId": "returnless-entrance",
+          "session": 1,
+          "controllerSession": 2,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 3,
+          "controllerSession": 4,
+          "solids": 67,
+          "interactables": 10,
+          "finite": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 5,
+          "controllerSession": 6,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 7,
+          "controllerSession": 8,
+          "solids": 49,
+          "interactables": 4,
+          "finite": true
+        }
+      ],
+      "passed": true,
+      "executedFirstParty": [
+        "src/domain/actorMotion/config.ts",
+        "src/domain/actorMotion/envelope.ts",
+        "src/domain/actorMotion/index.ts",
+        "src/domain/actorMotion/locomotion.ts",
+        "src/domain/actorMotion/pose.ts",
+        "src/domain/actorMotion/types.ts",
+        "src/domain/emblem/color.ts",
+        "src/domain/emblem/index.ts",
+        "src/domain/emblem/presentation.ts",
+        "src/domain/emblem/puzzle.ts",
+        "src/domain/emblem/stimulus.ts",
+        "src/domain/emblem/surfaceOwner.ts",
+        "src/domain/firstPerson/alignment.ts",
+        "src/domain/firstPerson/baseRuntime.ts",
+        "src/domain/firstPerson/boundaryWalls.ts",
+        "src/domain/firstPerson/chapter.ts",
+        "src/domain/firstPerson/constants.ts",
+        "src/domain/firstPerson/emblemFixture.ts",
+        "src/domain/firstPerson/geometry.ts",
+        "src/domain/firstPerson/interaction.ts",
+        "src/domain/firstPerson/interactionCue.ts",
+        "src/domain/firstPerson/legacyDefinition.ts",
+        "src/domain/firstPerson/occlusion.ts",
+        "src/domain/firstPerson/panelFixture.ts",
+        "src/domain/firstPerson/runtime.ts",
+        "src/domain/firstPerson/tutorial.ts",
+        "src/domain/gallery/actor.ts",
+        "src/domain/gallery/checkpoint.ts",
+        "src/domain/gallery/contour.ts",
+        "src/domain/gallery/definition.ts",
+        "src/domain/gallery/hint.ts",
+        "src/domain/gallery/index.ts",
+        "src/domain/gallery/runtime.ts",
+        "src/domain/gallery/selectors.ts",
+        "src/domain/gallery/shadow.ts",
+        "src/domain/gallery/state.ts",
+        "src/domain/gallery/types.ts",
+        "src/domain/gallery/wiring.ts",
+        "src/domain/gallery/world.ts",
+        "src/domain/stageKit/actionInstance.ts",
+        "src/domain/stageKit/definitions.ts",
+        "src/domain/stageKit/linearDrag.ts",
+        "src/domain/stageKit/modules.ts",
+        "src/domain/stages/departure-control-v1/actor.ts",
+        "src/domain/stages/departure-control-v1/binding.ts",
+        "src/domain/stages/departure-control-v1/checkpoint.ts",
+        "src/domain/stages/departure-control-v1/containmentDoor.ts",
+        "src/domain/stages/departure-control-v1/copy.ts",
+        "src/domain/stages/departure-control-v1/definition.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/domain/stages/departure-control-v1/session.ts",
+        "src/domain/stages/mirror-corridor-v1/actor.ts",
+        "src/domain/stages/mirror-corridor-v1/binding.ts",
+        "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "src/domain/stages/mirror-corridor-v1/selectors.ts",
+        "src/domain/stages/mirror-corridor-v1/session.ts",
+        "src/domain/stages/stage-kit-probe/binding.ts",
+        "src/domain/stages/stage-kit-probe/checkpoint.ts",
+        "src/domain/stages/stage-kit-probe/definition.ts",
+        "src/domain/stages/stage-kit-probe/session.ts",
+        "src/domain/theatre/actor.ts",
+        "src/domain/theatre/checkpoint.ts",
+        "src/domain/theatre/cues.ts",
+        "src/domain/theatre/definition.ts",
+        "src/domain/theatre/deviceStatus.ts",
+        "src/domain/theatre/environment.ts",
+        "src/domain/theatre/lightGate.ts",
+        "src/domain/theatre/projection.ts",
+        "src/domain/theatre/runtime.ts",
+        "src/domain/theatre/selectors.ts",
+        "src/domain/theatre/state.ts",
+        "src/domain/theatre/world.ts",
+        "src/domain/vault/actor.ts",
+        "src/domain/vault/actorPolicy.ts",
+        "src/domain/vault/checkpoint.ts",
+        "src/domain/vault/definition.ts",
+        "src/domain/vault/runtime.ts",
+        "src/domain/vault/selectors.ts",
+        "src/domain/vault/specs.ts",
+        "src/domain/vault/state.ts",
+        "src/domain/vault/world.ts",
+        "src/platform/buildIdentity.ts",
+        "src/platform/diagnosticText.ts",
+        "src/rendering/firstPerson/controllerContext.ts",
+        "src/rendering/firstPerson/controllerTransitionAudio.ts",
+        "src/rendering/firstPerson/diagnostics.ts",
+        "src/rendering/firstPerson/galleryController.ts",
+        "src/rendering/firstPerson/labRuntime.ts",
+        "src/rendering/firstPerson/manipulationProjection.ts",
+        "src/rendering/firstPerson/nativeGlObserver.ts",
+        "src/rendering/firstPerson/notebookCamera.ts",
+        "src/rendering/firstPerson/runtimeController.ts",
+        "src/rendering/firstPerson/theatreController.ts",
+        "src/rendering/firstPerson/touchInput.ts",
+        "src/rendering/firstPerson/vaultController.ts"
+      ]
+    },
+    {
+      "first": "src/domain/theatre/runtime.ts",
+      "warnings": [],
+      "output": [],
+      "buildIdentity": {
+        "code": "goal-014-2-fair-escape-r1",
+        "appVersion": "1.0.0",
+        "nativeBuild": "unknown",
+        "profileMarker": "unknown",
+        "bundleSource": "metro-development"
+      },
+      "chapters": [
+        {
+          "chapterId": "returnless-entrance",
+          "session": 1,
+          "controllerSession": 2,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 3,
+          "controllerSession": 4,
+          "solids": 67,
+          "interactables": 10,
+          "finite": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 5,
+          "controllerSession": 6,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 7,
+          "controllerSession": 8,
+          "solids": 49,
+          "interactables": 4,
+          "finite": true
+        }
+      ],
+      "passed": true,
+      "executedFirstParty": [
+        "src/domain/actorMotion/config.ts",
+        "src/domain/actorMotion/envelope.ts",
+        "src/domain/actorMotion/index.ts",
+        "src/domain/actorMotion/locomotion.ts",
+        "src/domain/actorMotion/pose.ts",
+        "src/domain/actorMotion/types.ts",
+        "src/domain/emblem/color.ts",
+        "src/domain/emblem/index.ts",
+        "src/domain/emblem/presentation.ts",
+        "src/domain/emblem/puzzle.ts",
+        "src/domain/emblem/stimulus.ts",
+        "src/domain/emblem/surfaceOwner.ts",
+        "src/domain/firstPerson/alignment.ts",
+        "src/domain/firstPerson/baseRuntime.ts",
+        "src/domain/firstPerson/boundaryWalls.ts",
+        "src/domain/firstPerson/chapter.ts",
+        "src/domain/firstPerson/constants.ts",
+        "src/domain/firstPerson/emblemFixture.ts",
+        "src/domain/firstPerson/geometry.ts",
+        "src/domain/firstPerson/interaction.ts",
+        "src/domain/firstPerson/interactionCue.ts",
+        "src/domain/firstPerson/legacyDefinition.ts",
+        "src/domain/firstPerson/occlusion.ts",
+        "src/domain/firstPerson/panelFixture.ts",
+        "src/domain/firstPerson/runtime.ts",
+        "src/domain/firstPerson/tutorial.ts",
+        "src/domain/gallery/actor.ts",
+        "src/domain/gallery/checkpoint.ts",
+        "src/domain/gallery/contour.ts",
+        "src/domain/gallery/definition.ts",
+        "src/domain/gallery/hint.ts",
+        "src/domain/gallery/index.ts",
+        "src/domain/gallery/runtime.ts",
+        "src/domain/gallery/selectors.ts",
+        "src/domain/gallery/shadow.ts",
+        "src/domain/gallery/state.ts",
+        "src/domain/gallery/types.ts",
+        "src/domain/gallery/wiring.ts",
+        "src/domain/gallery/world.ts",
+        "src/domain/stageKit/actionInstance.ts",
+        "src/domain/stageKit/definitions.ts",
+        "src/domain/stageKit/linearDrag.ts",
+        "src/domain/stageKit/modules.ts",
+        "src/domain/stages/departure-control-v1/actor.ts",
+        "src/domain/stages/departure-control-v1/binding.ts",
+        "src/domain/stages/departure-control-v1/checkpoint.ts",
+        "src/domain/stages/departure-control-v1/containmentDoor.ts",
+        "src/domain/stages/departure-control-v1/copy.ts",
+        "src/domain/stages/departure-control-v1/definition.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/domain/stages/departure-control-v1/session.ts",
+        "src/domain/stages/mirror-corridor-v1/actor.ts",
+        "src/domain/stages/mirror-corridor-v1/binding.ts",
+        "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "src/domain/stages/mirror-corridor-v1/selectors.ts",
+        "src/domain/stages/mirror-corridor-v1/session.ts",
+        "src/domain/stages/stage-kit-probe/binding.ts",
+        "src/domain/stages/stage-kit-probe/checkpoint.ts",
+        "src/domain/stages/stage-kit-probe/definition.ts",
+        "src/domain/stages/stage-kit-probe/session.ts",
+        "src/domain/theatre/actor.ts",
+        "src/domain/theatre/checkpoint.ts",
+        "src/domain/theatre/cues.ts",
+        "src/domain/theatre/definition.ts",
+        "src/domain/theatre/deviceStatus.ts",
+        "src/domain/theatre/environment.ts",
+        "src/domain/theatre/lightGate.ts",
+        "src/domain/theatre/projection.ts",
+        "src/domain/theatre/runtime.ts",
+        "src/domain/theatre/selectors.ts",
+        "src/domain/theatre/state.ts",
+        "src/domain/theatre/world.ts",
+        "src/domain/vault/actor.ts",
+        "src/domain/vault/actorPolicy.ts",
+        "src/domain/vault/checkpoint.ts",
+        "src/domain/vault/definition.ts",
+        "src/domain/vault/runtime.ts",
+        "src/domain/vault/selectors.ts",
+        "src/domain/vault/specs.ts",
+        "src/domain/vault/state.ts",
+        "src/domain/vault/world.ts",
+        "src/platform/buildIdentity.ts",
+        "src/platform/diagnosticText.ts",
+        "src/rendering/firstPerson/controllerContext.ts",
+        "src/rendering/firstPerson/controllerTransitionAudio.ts",
+        "src/rendering/firstPerson/diagnostics.ts",
+        "src/rendering/firstPerson/galleryController.ts",
+        "src/rendering/firstPerson/labRuntime.ts",
+        "src/rendering/firstPerson/manipulationProjection.ts",
+        "src/rendering/firstPerson/nativeGlObserver.ts",
+        "src/rendering/firstPerson/notebookCamera.ts",
+        "src/rendering/firstPerson/runtimeController.ts",
+        "src/rendering/firstPerson/theatreController.ts",
+        "src/rendering/firstPerson/touchInput.ts",
+        "src/rendering/firstPerson/vaultController.ts"
+      ]
+    },
+    {
+      "first": "src/rendering/firstPerson/runtimeController.ts",
+      "warnings": [],
+      "output": [],
+      "buildIdentity": {
+        "code": "goal-014-2-fair-escape-r1",
+        "appVersion": "1.0.0",
+        "nativeBuild": "unknown",
+        "profileMarker": "unknown",
+        "bundleSource": "metro-development"
+      },
+      "chapters": [
+        {
+          "chapterId": "returnless-entrance",
+          "session": 1,
+          "controllerSession": 2,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "perception-gallery-v1",
+          "session": 3,
+          "controllerSession": 4,
+          "solids": 67,
+          "interactables": 10,
+          "finite": true
+        },
+        {
+          "chapterId": "uncanny-vault-v1",
+          "session": 5,
+          "controllerSession": 6,
+          "solids": 35,
+          "interactables": 5,
+          "finite": true
+        },
+        {
+          "chapterId": "shadow-theatre-v1",
+          "session": 7,
+          "controllerSession": 8,
+          "solids": 49,
+          "interactables": 4,
+          "finite": true
+        }
+      ],
+      "passed": true,
+      "executedFirstParty": [
+        "src/domain/actorMotion/config.ts",
+        "src/domain/actorMotion/envelope.ts",
+        "src/domain/actorMotion/index.ts",
+        "src/domain/actorMotion/locomotion.ts",
+        "src/domain/actorMotion/pose.ts",
+        "src/domain/actorMotion/types.ts",
+        "src/domain/emblem/color.ts",
+        "src/domain/emblem/index.ts",
+        "src/domain/emblem/presentation.ts",
+        "src/domain/emblem/puzzle.ts",
+        "src/domain/emblem/stimulus.ts",
+        "src/domain/emblem/surfaceOwner.ts",
+        "src/domain/firstPerson/alignment.ts",
+        "src/domain/firstPerson/baseRuntime.ts",
+        "src/domain/firstPerson/boundaryWalls.ts",
+        "src/domain/firstPerson/chapter.ts",
+        "src/domain/firstPerson/constants.ts",
+        "src/domain/firstPerson/emblemFixture.ts",
+        "src/domain/firstPerson/geometry.ts",
+        "src/domain/firstPerson/interaction.ts",
+        "src/domain/firstPerson/interactionCue.ts",
+        "src/domain/firstPerson/legacyDefinition.ts",
+        "src/domain/firstPerson/occlusion.ts",
+        "src/domain/firstPerson/panelFixture.ts",
+        "src/domain/firstPerson/runtime.ts",
+        "src/domain/firstPerson/tutorial.ts",
+        "src/domain/gallery/actor.ts",
+        "src/domain/gallery/checkpoint.ts",
+        "src/domain/gallery/contour.ts",
+        "src/domain/gallery/definition.ts",
+        "src/domain/gallery/hint.ts",
+        "src/domain/gallery/index.ts",
+        "src/domain/gallery/runtime.ts",
+        "src/domain/gallery/selectors.ts",
+        "src/domain/gallery/shadow.ts",
+        "src/domain/gallery/state.ts",
+        "src/domain/gallery/types.ts",
+        "src/domain/gallery/wiring.ts",
+        "src/domain/gallery/world.ts",
+        "src/domain/stageKit/actionInstance.ts",
+        "src/domain/stageKit/definitions.ts",
+        "src/domain/stageKit/linearDrag.ts",
+        "src/domain/stageKit/modules.ts",
+        "src/domain/stages/departure-control-v1/actor.ts",
+        "src/domain/stages/departure-control-v1/binding.ts",
+        "src/domain/stages/departure-control-v1/checkpoint.ts",
+        "src/domain/stages/departure-control-v1/containmentDoor.ts",
+        "src/domain/stages/departure-control-v1/copy.ts",
+        "src/domain/stages/departure-control-v1/definition.ts",
+        "src/domain/stages/departure-control-v1/selectors.ts",
+        "src/domain/stages/departure-control-v1/session.ts",
+        "src/domain/stages/mirror-corridor-v1/actor.ts",
+        "src/domain/stages/mirror-corridor-v1/binding.ts",
+        "src/domain/stages/mirror-corridor-v1/checkpoint.ts",
+        "src/domain/stages/mirror-corridor-v1/definition.ts",
+        "src/domain/stages/mirror-corridor-v1/selectors.ts",
+        "src/domain/stages/mirror-corridor-v1/session.ts",
+        "src/domain/stages/stage-kit-probe/binding.ts",
+        "src/domain/stages/stage-kit-probe/checkpoint.ts",
+        "src/domain/stages/stage-kit-probe/definition.ts",
+        "src/domain/stages/stage-kit-probe/session.ts",
+        "src/domain/theatre/actor.ts",
+        "src/domain/theatre/checkpoint.ts",
+        "src/domain/theatre/cues.ts",
+        "src/domain/theatre/definition.ts",
+        "src/domain/theatre/deviceStatus.ts",
+        "src/domain/theatre/environment.ts",
+        "src/domain/theatre/lightGate.ts",
+        "src/domain/theatre/projection.ts",
+        "src/domain/theatre/runtime.ts",
+        "src/domain/theatre/selectors.ts",
+        "src/domain/theatre/state.ts",
+        "src/domain/theatre/world.ts",
+        "src/domain/vault/actor.ts",
+        "src/domain/vault/actorPolicy.ts",
+        "src/domain/vault/checkpoint.ts",
+        "src/domain/vault/definition.ts",
+        "src/domain/vault/runtime.ts",
+        "src/domain/vault/selectors.ts",
+        "src/domain/vault/specs.ts",
+        "src/domain/vault/state.ts",
+        "src/domain/vault/world.ts",
+        "src/platform/buildIdentity.ts",
+        "src/platform/diagnosticText.ts",
+        "src/rendering/firstPerson/controllerContext.ts",
+        "src/rendering/firstPerson/controllerTransitionAudio.ts",
+        "src/rendering/firstPerson/diagnostics.ts",
+        "src/rendering/firstPerson/galleryController.ts",
+        "src/rendering/firstPerson/labRuntime.ts",
+        "src/rendering/firstPerson/manipulationProjection.ts",
+        "src/rendering/firstPerson/nativeGlObserver.ts",
+        "src/rendering/firstPerson/notebookCamera.ts",
+        "src/rendering/firstPerson/runtimeController.ts",
+        "src/rendering/firstPerson/theatreController.ts",
+        "src/rendering/firstPerson/touchInput.ts",
+        "src/rendering/firstPerson/vaultController.ts"
+      ]
+    }
+  ],
+  "firstPartyCycles": []
+}

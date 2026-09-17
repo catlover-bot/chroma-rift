@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "status": "Canonical actorFairness suite passed during parent npm run check; overall whole-check result is recorded by the parent separately.",
+  "command": {
+    "outer": "npm run check",
+    "suite": "src/domain/stages/mirror-corridor-v1/actorFairness.test.ts",
+    "environment": {
+      "MIRROR_FAIRNESS_REPORT": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal014-2/final/fairness.json"
+    },
+    "observedSuiteLog": "PASS src/domain/stages/mirror-corridor-v1/actorFairness.test.ts (150.857 s)"
+  },
+  "packagingHead": "2f8a097da38f81cff5fe48e363ab2e4d50bf5067",
+  "matrixCases": 81,
+  "matrixCompletionsWithoutCapture": 80,
+  "matrixLateCaptures": 1,
+  "suiteCases": 87,
+  "additionalCases": [
+    "Standard direct route without capture",
+    "Standard one-tooth delayed-cue retreat and rework",
+    "Subdued actor remains present at60Hz",
+    "Subdued actor remains present at30Hz",
+    "Subdued actor remains present atvariable deltas",
+    "Ordinary one-tooth route then walking into patrol lane produces actual physical capture and safe pending recovery"
+  ],
+  "scope": "Actual controller input, physics, actor, checkpoint and simulated successful presentations; no native Screen/GPU/audio or human reaction claim.",
+  "decisionPolicy": "Real emitted footplant within4.5m; selected reaction delay; leave cover after successive actual footsteps recede beyond5.6m. These are QA perception thresholds, not human hearing measurements. No enemy phase, timer or memory read controls input.",
+  "variants": {
+    "workPosesXZ": [
+      [
+        -2.45,
+        9.6
+      ],
+      [
+        -2.05,
+        10.05
+      ],
+      [
+        -1.8,
+        10
+      ]
+    ],
+    "entryWaitSeconds": [
+      0,
+      4,
+      9
+    ],
+    "simulationDeltas": [
+      [
+        0.016666666666666666
+      ],
+      [
+        0.03333333333333333
+      ],
+      [
+        0.008333333333333333,
+        0.03333333333333333,
+        0.022,
+        0.047
+      ]
+    ],
+    "reactionSeconds": [
+      0.75,
+      1.25,
+      1.75
+    ]
+  },
+  "measurements": [
+    {
+      "reactionSeconds": 0.75,
+      "cases": 27,
+      "completedWithoutCapture": 27,
+      "capturedAfterLateResponse": 0,
+      "measuredReactionSeconds": [
+        0.7499999999999574,
+        0.7746666666666684
+      ],
+      "releaseToCoverSecondsSuccessful": [
+        1.2473809545202421,
+        1.5108607465115913
+      ],
+      "coverToDepartureCueSecondsSuccessful": [
+        12.849999999999634,
+        15.999999999999954
+      ],
+      "totalSimulationSecondsSuccessful": [
+        44.63259763624926,
+        58.369958806140026
+      ],
+      "distanceWalkedMetersAllCases": [
+        53.99925158460279,
+        54.868695312899
+      ]
+    },
+    {
+      "reactionSeconds": 1.25,
+      "cases": 27,
+      "completedWithoutCapture": 27,
+      "capturedAfterLateResponse": 0,
+      "measuredReactionSeconds": [
+        1.249999999999929,
+        1.2863333333333369
+      ],
+      "releaseToCoverSecondsSuccessful": [
+        1.2473809545202421,
+        1.508531725513965
+      ],
+      "coverToDepartureCueSecondsSuccessful": [
+        12.816666666666249,
+        17.86666666666565
+      ],
+      "totalSimulationSecondsSuccessful": [
+        45.0992643029159,
+        58.74010874277865
+      ],
+      "distanceWalkedMetersAllCases": [
+        53.99925158460279,
+        54.87629999999972
+      ]
+    },
+    {
+      "reactionSeconds": 1.75,
+      "cases": 27,
+      "completedWithoutCapture": 26,
+      "capturedAfterLateResponse": 1,
+      "measuredReactionSeconds": [
+        1.7499999999999005,
+        1.7706666666666706
+      ],
+      "releaseToCoverSecondsSuccessful": [
+        1.2473809545202421,
+        1.5116279069767433
+      ],
+      "coverToDepartureCueSecondsSuccessful": [
+        12.816666666666196,
+        17.43333333333401
+      ],
+      "totalSimulationSecondsSuccessful": [
+        45.59926430291587,
+        59.45853912805535
+      ],
+      "distanceWalkedMetersAllCases": [
+        18.875049998750008,
+        54.868695312899
+      ]
+    }
+  ],
+  "lateComparison": "The 1.75 s /30Hz /wait9s /(-2.45,9.6) case moves after release, then an already telegraphed physical attack catches it before cover. It retains two teeth and returns safely pending recovery. This is a measured comparison limit, not a successful escape. All .75s and1.25s cases must win; blockage, unsafe recovery or rework failures remain test failures.",
+  "routeBoundary": "visibleExitReached is real physical movement across the stage completion threshold plus a real checkpoint. This controller-only matrix does not by itself assert mounted App campaign area05 entry; that belongs to separate actual Screen route evidence.",
+  "traceFields": "Full event records retain pose, ratchets, gateLift, enemy phase/position, current-pose blocker IDs, hold state, pointer owner/barrier and capture safety context. Phase is diagnostic only.",
+  "inputTiming": "Scheduled simulation deltas and reaction offsets, not measured device FPS or human reaction time.",
+  "recoveryTimingBoundary": "This matrix proves safe pending recovery and retained progress. Accepted-presentation1.2s timing, input rearming and actual Screen transition are separately covered by mirrorRecoveryPresentation and mirrorFairEscapeScreen.",
+  "sourceCorrespondence": {
+    "file": "docs/qa-goal014-2/actor-fairness/final-source-correspondence.json",
+    "sha256": "a5d8860f76f9f7c73fefdfc8989882a6dc88c6ababa9e4519a09c6a13a2135ee",
+    "matchedFileCount": 535,
+    "unrelatedQAToolDifferences": [
+      "scripts/qa-goal014-common-tape-capture.cjs",
+      "scripts/qa-goal014-common-tape.cjs",
+      "scripts/qa-native-default-framebuffer.cjs"
+    ]
+  },
+  "raw": {
+    "file": "docs/qa-goal014-2/actor-fairness/final-measurements.json.gz",
+    "sha256": "1cc03e780c5fb4512fb5967b31d88b894e3f351f02942486117ab7b2721ec0e7",
+    "bytes": 111539,
+    "uncompressedSha256": "8f42ad7767ab1199b9bda772157240ee49e9ec9bc8ace08b1b11cb8876635540",
+    "uncompressedBytes": 1642623,
+    "originalPath": ".expo/goal014-2/final/fairness.json"
+  },
+  "parentStartManifest": {
+    "file": "docs/qa-goal014-2/actor-fairness/final-check-source-before.json.gz",
+    "sha256": "6bb4d7ae7a8b609514395d7b9f5b6489bcd0b29ae3c29a07bfd3791f1faf9889",
+    "bytes": 26368,
+    "uncompressedSha256": "a7537c004aebf33b16dfb036b077f0a5c68811ed0ac7ef63ef920d69421a3478",
+    "uncompressedBytes": 60879,
+    "originalPath": ".expo/goal014-2/final/check-source-before.json"
+  },
+  "caseSummary": {
+    "file": "docs/qa-goal014-2/actor-fairness/final-cases.json",
+    "sha256": "6fac58c41934918cae8fccbd92a3091283dbda4389df62467f5c558fe003c253"
+  },
+  "history": {
+    "file": "docs/qa-goal014-2/actor-fairness/history.json",
+    "sha256": "c6263c89491bd9542394831251559959bf61d03f6c4aed0f6431a730e00f1046"
+  },
+  "nativeDeviceCapture": false,
+  "humanPerceptionVerified": false,
+  "RELEASE_READY": false
+}

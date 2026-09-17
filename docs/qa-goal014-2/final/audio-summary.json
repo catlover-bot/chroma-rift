@@ -1,0 +1,142 @@
+{
+  "scope": "Real standard-intensity controllers, campaign handoffs, audio owner and post-presentation audio hooks. Presentation success is simulated by the QA fixture; all players are loaded with zero-latency seek completion. No native device audio, GL presentation, human continuous play or listening verification.",
+  "sourceHashGuardPassed": true,
+  "campaignCompleted": true,
+  "areas": [
+    {
+      "area": "chapter-1-area-01",
+      "stageId": "perception-gallery-v1",
+      "cleared": true,
+      "exitPose": {
+        "position": {
+          "x": 4,
+          "y": 1.6,
+          "z": 24.6
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "diagnostics": {
+        "availability": "available",
+        "active": true,
+        "ready": true,
+        "players": 10,
+        "playedEvents": 382,
+        "droppedEvents": 7,
+        "musicPlayers": 0,
+        "musicState": "silent"
+      }
+    },
+    {
+      "area": "chapter-1-area-02",
+      "stageId": "uncanny-vault-v1",
+      "cleared": true,
+      "exitPose": {
+        "position": {
+          "x": 3,
+          "y": 1.6,
+          "z": 29
+        },
+        "yaw": 0,
+        "pitch": 0
+      },
+      "diagnostics": {
+        "availability": "available",
+        "active": true,
+        "ready": true,
+        "players": 11,
+        "playedEvents": 229,
+        "droppedEvents": 0,
+        "musicPlayers": 1,
+        "musicState": "exploration"
+      }
+    },
+    {
+      "area": "chapter-1-area-03",
+      "stageId": "shadow-theatre-v1",
+      "cleared": true,
+      "exitPose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 23.6
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "diagnostics": {
+        "availability": "available",
+        "active": true,
+        "ready": true,
+        "players": 11,
+        "playedEvents": 74,
+        "droppedEvents": 18,
+        "musicPlayers": 1,
+        "musicState": "exploration"
+      }
+    },
+    {
+      "area": "chapter-1-area-04",
+      "stageId": "mirror-corridor-v1",
+      "cleared": true,
+      "exitPose": {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 31.7
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "diagnostics": {
+        "availability": "available",
+        "active": true,
+        "ready": true,
+        "players": 11,
+        "playedEvents": 162,
+        "droppedEvents": 44,
+        "musicPlayers": 1,
+        "musicState": "suspicion"
+      }
+    },
+    {
+      "area": "chapter-1-area-05",
+      "stageId": "departure-control-v1",
+      "cleared": true,
+      "exitPose": {
+        "position": {
+          "x": -3.75,
+          "y": 1.6,
+          "z": 23
+        },
+        "yaw": 3.141592653589793,
+        "pitch": 0
+      },
+      "diagnostics": {
+        "availability": "available",
+        "active": true,
+        "ready": true,
+        "players": 11,
+        "playedEvents": 65,
+        "droppedEvents": 0,
+        "musicPlayers": 1,
+        "musicState": "exploration"
+      }
+    }
+  ],
+  "finale": {
+    "contained": true,
+    "isolated": true,
+    "stopped": true,
+    "outdoorExited": true
+  },
+  "durationSeconds": 155.1174626496715,
+  "maxPlayers": 12,
+  "activePlayersAtEnd": 0,
+  "sourceCount": 116,
+  "assetCount": 28,
+  "rawSha256": "dd86bb27bdaeea638789fb5b0723233312c549cdd895596262d792bd0651ab5b",
+  "artifact": "docs/qa-goal014-2/final/audio-recording.json.gz",
+  "DEVICE_ACCEPTANCE": "PENDING",
+  "RELEASE_READY": false
+}

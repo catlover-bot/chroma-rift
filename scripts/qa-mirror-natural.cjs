@@ -3,14 +3,23 @@
 /* global __dirname, __filename, Buffer */
 // Actual area-04 controller/StageScene source, with the same planarMirror.ts
 // transpiled for a browser Software WebGL pass. Native EXGL remains untested.
-const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), ts = require('typescript');
+const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), ts = require('typescript'), Module = require('node:module');
 const { installSourceBridge, mountThree, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
 const standardRecovery = process.argv.includes('--standard-recovery');
-if (process.argv.slice(2).some(argument => argument !== '--standard-recovery'))
-  throw Error('usage: node scripts/qa-mirror-natural.cjs [--standard-recovery]');
+const extractOnly = process.argv.includes('--extract-only');
+const outputArgument = process.argv.slice(2).find(argument => argument.startsWith('--out='));
+if (process.argv.slice(2).some(argument => argument !== '--standard-recovery' && argument !== '--extract-only' && !argument.startsWith('--out=')))
+  throw Error('usage: node scripts/qa-mirror-natural.cjs [--standard-recovery] [--extract-only] [--out=path]');
 const name = standardRecovery ? 'mirror-standard-recovery' : 'mirror-natural';
-const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal013', name);
+const root = path.resolve(__dirname, '..'), out = outputArgument ? path.resolve(outputArgument.slice(6)) : path.join(root, '.expo/goal014-2', name);
 fs.mkdirSync(out, { recursive: true });
+// No native app metadata exists in the Node scene extractor.
+const load = Module._load;
+Module._load = function (name, ...args) {
+  if (name === 'expo-constants') return {};
+  return load.call(this, name, ...args);
+};
+globalThis.__DEV__ = false;
 const bridge = installSourceBridge(root), React = require('react'), THREE = require('three');
 const RC = require('../src/rendering/firstPerson/runtimeController.ts');
 const { createSceneResources } = require('../src/rendering/firstPerson/resources.ts');
@@ -19,7 +28,9 @@ const { isStageSession } = require('../src/domain/stages/mirror-corridor-v1/sess
 const { createCheckpoint } = require('../src/domain/firstPerson/checkpoint.ts');
 const { parseStageCheckpoint } = require('../src/domain/stages/mirror-corridor-v1/checkpoint.ts');
 const { stageModule } = require('../src/domain/stageKit/modules.ts');
-const { KEY_CENTER, MIRROR_CENTER, WINCH_CENTER, WINCH_SAFE } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
+const { FIGURE_CENTER, KEY_CENTER, MIRROR_CENTER, WINCH_CENTER, WINCH_SAFE, PRACTICE_CENTER, SHELTER_SAFE, MIRROR_LAYOUT } = require('../src/domain/stages/mirror-corridor-v1/definition.ts');
+const { isSafePose, inspectPoseSafety } = require('../src/domain/firstPerson/geometry.ts');
+const { beginStick, endPointer } = require('../src/rendering/firstPerson/touchInput.ts');
 
 function timingSummary(samples) {
   if (!samples.length) throw Error('No CPU timing samples');
@@ -65,6 +76,11 @@ async function extract() {
   const frames = [], events = [];
   const state = () => { const value = controller.runtime.stageSession?.value;
     if (!isStageSession(value)) throw Error('Mirror stage session lost'); return value; };
+  const assertSafe = context => {
+    if (!isSafePose(controller.runtime.pose, RC.worldForController(controller)))
+      throw Error('Unsafe route pose at ' + context + ': ' + JSON.stringify(inspectPoseSafety(controller.runtime.pose, RC.worldForController(controller))));
+  };
+  assertSafe('entry');
   const capture = () => {
     scene.updateMatrixWorld(true);
     const objects = [];
@@ -74,12 +90,19 @@ async function extract() {
       ratchets: state().ratchets });
   };
   let simulationFrames = 0;
+  let lastActorEvents = [];
   const simulationCpuMs = [];
   const tick = () => {
     const started = performance.now();
     RC.advanceController(controller, 1 / 60, camera); simulationFrames += 1;
+    lastActorEvents = [...controller.pendingActorEvents];
     runtime.current = controller.runtime;
     callbacks.forEach(callback => callback({}, 1 / 60));
+    RC.flushControllerAudioFrame(controller);
+    // Explicit successful presentation fixture; native failed frames are not
+    // represented by this extractor and cannot be inferred from the movie.
+    RC.presentControllerRecovery(controller, 1 / 60);
+    assertSafe('frame');
     simulationCpuMs.push(performance.now() - started);
     if (simulationFrames % 6 === 0) capture();
   };
@@ -95,12 +118,12 @@ async function extract() {
   };
   const walkZ = z => {
     turn(Math.PI); let count = 0;
-    while (Math.abs(controller.runtime.pose.position.z - z) > .07 && count < 600) {
+    while (Math.abs(controller.runtime.pose.position.z - z) > .07 && count < 900 && !controller.runtime.progress.cleared) {
       controller.input.forward = controller.runtime.pose.position.z < z ? 1 : -1;
       tick(); count += 1;
     }
     controller.input.forward = 0;
-    if (count === 600) throw Error(`Blocked walking to z=${z}`);
+    if (count === 900) throw Error(`Blocked walking to z=${z}`);
   };
   const walkX = x => {
     turn(Math.PI / 2); let count = 0;
@@ -128,11 +151,11 @@ async function extract() {
   fs.writeFileSync(path.join(out, 'scene.json'), JSON.stringify(scene.toJSON()));
   surface.material = nativeMirrorMaterial; transportMaterial.dispose(); capture();
   if (standardRecovery) {
-    event('validated-entry', '鍵と練習を引き継いだ安全地点');
+    event('validated-entry', '鍵と練習を引き継いだ作業地点');
     const walkTo = (x, z) => {
       for (let frame = 0; frame < 900; frame += 1) {
         const pose = controller.runtime.pose;
-        if (Math.hypot(x - pose.position.x, z - pose.position.z) < .06) {
+        if (Math.hypot(x - pose.position.x, z - pose.position.z) < .06 || controller.runtime.progress.cleared) {
           controller.input.forward = 0; return;
         }
         const yaw = Math.atan2(-(x - pose.position.x), -(z - pose.position.z));
@@ -142,7 +165,7 @@ async function extract() {
       controller.input.forward = 0;
       throw Error(`Recovery walk blocked before ${x},${z}`);
     };
-    walkTo(-2.45, 9.6); aimWinch();
+    aimWinch();
     if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
       !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 7)) throw Error('Standard first hold rejected');
     event('first-hold', '標準：一段目を保持');
@@ -150,24 +173,22 @@ async function extract() {
     if (state().ratchets !== 1 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 7))
       throw Error('Standard first ratchet did not settle');
     event('first-release', '一段目を残して指を離す');
-    walkTo(-1.8, 8.5); event('retreat', '格子から離れて巡回体を避ける');
-    for (let frame = 0; frame < 120; frame += 1) tick();
-    walkTo(-2.45, 9.6); event('return-to-winch', '戻って巻き上げを再開する');
-    let approach = 0, firstAttackRecovered = false;
-    while (!(firstAttackRecovered && state().actor.phase === 'windup') && approach < 1800) {
-      tick(); approach += 1;
-      if (state().actor.phase === 'recover') firstAttackRecovered = true;
-      if (controller.pendingActorEvents.includes('caught')) throw Error('Actor caught the player before the second hold');
-    }
-    if (approach === 1800) throw Error('Actor never telegraphed another attack at the resumed winch');
-    event('actor-approaches', '巡回体が再び作業位置へ迫る');
     aimWinch();
     if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
       !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 8)) throw Error('Standard second hold rejected');
-    event('second-hold', '残りを巻き上げる間に巡回体が近づく');
+    event('second-hold', '次の歯止めを途中で離す');
+    for (let frame = 0; frame < 30; frame++) tick();
+    if (!RC.endStageHoldController(controller, 'mirror-corridor-winch', 8) || state().ratchets !== 1)
+      throw Error('Unfinished tooth did not cancel without losing the first tooth');
+    // Deliberately leave cover with a real held movement contact. This adverse
+    // route tests capture/progress/contact retirement, not a fairness success.
+    walkTo(0, 10); walkTo(0, 10.5);
+    beginStick(controller.input, 8, 40, 600);
+    if (controller.input.stickPointer !== 8) throw Error('Adverse movement contact not owned');
+    event('actor-approaches', '棚から離れた通路で巡回体を待つ');
     let caught = false;
     for (let frame = 0; frame < 900 && !caught; frame += 1) {
-      tick(); caught = controller.pendingActorEvents.includes('caught');
+      tick(); caught = lastActorEvents.includes('caught');
     }
     if (!caught || state().holding !== null || state().holdSeconds !== 0 ||
       state().ratchets < 1 || state().ratchets >= 3 ||
@@ -175,10 +196,15 @@ async function extract() {
         JSON.stringify({ caught, holding: state().holding, ratchets: state().ratchets,
           keyTaken: state().keyTaken, practiced: state().practiced, seconds: simulationFrames / 60,
           events: events.map(({ id, at, actor, actorPhase }) => ({ id, at, actor, actorPhase })) }));
-    if (!controller.input.releaseBarrier.includes(8) ||
-      RC.endStageHoldController(controller, 'mirror-corridor-winch', 8) ||
-      controller.input.releaseBarrier.includes(8)) throw Error('Caught hold did not require a fresh pointer');
+    if (!controller.input.releaseBarrier.includes(8) || RC.endStageHoldController(controller, 'mirror-corridor-winch'))
+      throw Error('Capture did not retire the held contact and reject stale winch completion');
+    endPointer(controller.input, 8);
+    if (controller.input.releaseBarrier.includes(8)) throw Error('Captured movement contact did not release');
     event('caught', '捕捉後、確定した歯止めと鍵を保って復帰');
+    let presented = 0;
+    while (state().actor.recoveryPending && presented++ < 90) tick();
+    if (state().actor.recoveryPending || controller.captureRecovery) throw Error('Recovery did not resume after accepted presentations');
+    event('recovery-input-ready', '棚の陰で操作を再開できる');
     const checkpoint = createCheckpoint(controller.runtime);
     const verified = stageModule('mirror-corridor-v1').restore(checkpoint)?.checkpoint;
     if (!verified) throw Error('Caught winch state could not be restored through the Stage codec');
@@ -194,44 +220,47 @@ async function extract() {
     if (!state().keyTaken || !state().practiced || state().ratchets !== checkpoint.stageData.ratchets ||
       state().holding !== null) throw Error('Cold winch restore lost key, settled teeth, or safe hold state');
     event('cold-resume', '保存した歯止めから再開');
-    walkTo(-2.45, 9.6); aimWinch();
+    walkTo(SHELTER_SAFE.position.x, 9.85); walkTo(-2.45, 9.85); walkTo(-2.45, 9.6); aimWinch();
     if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
       !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 9)) throw Error('Recovered winch hold rejected');
     event('rework', '残りの歯止めを巻き上げ直す');
     const remainingFrames = 120 * (3 - state().ratchets);
     for (let frame = 0; frame < remainingFrames; frame += 1) tick();
-    if (state().ratchets !== 3 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 9))
+    if (state().ratchets !== 3 || state().holding !== null || RC.endStageHoldController(controller, 'mirror-corridor-winch', 9))
       throw Error('Recovered winch did not open the physical grate');
     event('grate-open', '確定した歯止めを残して格子が開く');
-    walkTo(-1.8, 8.5); walkTo(0, 8.5); walkTo(0, 22.5);
-    turn(Math.PI, -.06);
-    if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-exit' ||
-      !RC.interactController(controller, 'mirror-corridor-exit') || !controller.runtime.progress.cleared)
+    walkTo(-2.45, 9.3); walkTo(1.3, 9.3); walkTo(1.3, 15.9); walkTo(0, 15.9); walkTo(0, MIRROR_LAYOUT.doorway.thresholdZ + .2);
+    if (!state().gateCrossed || controller.runtime.pose.position.z < MIRROR_LAYOUT.doorway.thresholdZ || !controller.runtime.progress.cleared)
       throw Error('Standard physical corridor exit failed after capture');
     event('exit', '標準：制御室への前室に着く');
   } else {
-  walkZ(-1);
-  press('mirror-corridor-figure', '向き合う横顔を観察', Math.PI, .1);
-  press('mirror-corridor-key', '中央の隔離キーを取得', Math.PI, -.16);
+  walkZ(-1.5);
+  press('mirror-corridor-figure', '向き合う横顔を観察',
+    Math.atan2(-(FIGURE_CENTER.x - controller.runtime.pose.position.x), -(FIGURE_CENTER.z - controller.runtime.pose.position.z)),
+    Math.atan2(FIGURE_CENTER.y - controller.runtime.pose.position.y, Math.hypot(FIGURE_CENTER.x - controller.runtime.pose.position.x, FIGURE_CENTER.z - controller.runtime.pose.position.z)));
+  press('mirror-corridor-key', '中央の隔離キーを取得', Math.PI,
+    Math.atan2(KEY_CENTER.y - controller.runtime.pose.position.y, KEY_CENTER.z - controller.runtime.pose.position.z));
   if (!keyMesh.visible) throw Error('Accepted key pickup skipped its visible movement');
   for (let i = 0; i < 24; i += 1) tick();
   if (keyMesh.visible || keyMesh.position.z > KEY_CENTER.z - .28) throw Error('Picked-up key did not leave the fixed figure-ground panel');
   event('key-lifted', '中央の部品を取り出した');
-  walkZ(7.5); walkX(-1.5);
-  turn(Math.PI / 2, -.16);
+  walkZ(5.9); walkX(-2.16); walkZ(6.9);
+  const practiceDx = PRACTICE_CENTER.x - controller.runtime.pose.position.x, practiceDz = PRACTICE_CENTER.z - controller.runtime.pose.position.z;
+  turn(Math.atan2(-practiceDx, -practiceDz), Math.atan2(PRACTICE_CENTER.y - controller.runtime.pose.position.y, Math.hypot(practiceDx, practiceDz)));
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-practice' ||
     !RC.beginStageHoldController(controller, 'mirror-corridor-practice', 3)) throw Error('Practice hold rejected');
   event('practice', '安全な練習レバーを保持');
   for (let i = 0; i < 40; i += 1) tick();
   if (!state().practiced || !RC.endStageHoldController(controller, 'mirror-corridor-practice', 3)) throw Error('Practice did not settle');
   event('practice-release', '練習終了');
-  walkZ(10.9);
+  walkZ(5.9); walkX(-1.1); walkZ(9.6); walkX(-1.8); walkZ(10);
   const mirrorDx = MIRROR_CENTER.x - controller.runtime.pose.position.x;
   const mirrorDz = MIRROR_CENTER.z - controller.runtime.pose.position.z;
   press('mirror-corridor-mirror', '実鏡面を調べ、背後の通路を確認',
     Math.atan2(-mirrorDx, -mirrorDz),
     Math.atan2(MIRROR_CENTER.y - controller.runtime.pose.position.y, Math.hypot(mirrorDx, mirrorDz)));
   if (!state().mirrorInspected) throw Error('Mirror inspection was not recorded');
+  walkZ(9.6); walkX(-2.45);
   aimWinch();
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
     !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 4)) throw Error('Winch hold rejected');
@@ -249,22 +278,20 @@ async function extract() {
   for (let i = 0; i < 14; i += 1) tick();
   if (winchKey.visible || !state().keyTaken) throw Error('Winch key did not return to reusable carried state');
   event('release-one', '一段目を残して離す');
-  walkZ(8.5); event('retreat', '離れて巡回体を避ける');
-  for (let i = 0; i < 30; i += 1) tick();
-  walkZ(10.9); aimWinch();
+  walkZ(9.85); walkX(SHELTER_SAFE.position.x); walkZ(SHELTER_SAFE.position.z); event('retreat', '棚の陰へ退く');
+  for (let i = 0; i < 960; i += 1) tick();
+  walkZ(9.85); walkX(-2.45); walkZ(9.6); aimWinch();
   if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-winch' ||
     !RC.beginStageHoldController(controller, 'mirror-corridor-winch', 5)) throw Error('Second winch hold rejected');
   runtime.current = controller.runtime; callbacks.forEach(callback => callback({}, 0));
   if (!winchKey.visible) throw Error('Reusable key did not enter the winch again');
   event('winch-rest', '残りの歯止めを巻き上げる');
   for (let i = 0; i < 240; i += 1) tick();
-  if (state().ratchets !== 3 || !RC.endStageHoldController(controller, 'mirror-corridor-winch', 5)) throw Error('Grate did not open');
+  if (state().ratchets !== 3 || state().holding !== null || RC.endStageHoldController(controller, 'mirror-corridor-winch', 5)) throw Error('Grate did not open');
   event('grate-open', '格子が開いた');
-  walkZ(8.5); walkX(0); walkZ(22);
+  walkZ(9.3); walkX(1.3); walkZ(15.9); walkX(0); walkZ(MIRROR_LAYOUT.doorway.thresholdZ + .2);
   if (winchKey.visible || !state().keyTaken) throw Error('The isolation key was consumed after opening the grate');
-  turn(Math.PI, -.06);
-  if (RC.controllerSnapshot(controller).target?.id !== 'mirror-corridor-exit' ||
-    !RC.interactController(controller, 'mirror-corridor-exit') || !controller.runtime.progress.cleared)
+  if (!state().gateCrossed || controller.runtime.pose.position.z < MIRROR_LAYOUT.doorway.thresholdZ || !controller.runtime.progress.cleared)
     throw Error('Physical corridor exit failed');
   event('exit', '制御室への前室に着く');
   }
@@ -362,8 +389,8 @@ async function render(report) {
 }
 
 async function main() {
-  const report = await extract(); await render(report);
-  report.boundary = `Actual area-04 controller, collisions, held pointer, StageScene, actor body and planarMirror.ts in one Software WebGL renderer; browser QA caption, no native EXGL/presentation/HUD/audio or chapter-01→03 handoff. ${standardRecovery ? 'Standard intensity from a validated key/practice checkpoint; capture with unfinished winch progress, Stage-codec checkpoint restore, remaining ratchet and physical exit. The viewer retains one scene across controller restoration, so it does not prove a native Canvas remount.' : 'Subdued intensity from a fresh area entry.'}`;
+  const report = await extract(); if (!extractOnly) await render(report);
+  report.boundary = `Actual area-04 controller, collisions, held pointer, StageScene and actor body; ${extractOnly ? 'scene extraction only, no browser rendering in this invocation' : 'planarMirror.ts in one Software WebGL renderer with browser QA caption'}; each simulation tick explicitly substitutes a successful recovery presentation. Native app metadata is an empty fixture. No native EXGL/presentation/HUD/audio or chapter-01→03 handoff. ${standardRecovery ? 'Standard intensity from a validated key/practice checkpoint; one tooth is committed and the next unfinished hold is released, then deliberately leaving cover with a held movement contact earns capture. Progress/contact retirement, presented recovery, Stage-codec cold restore, remaining ratchets and physical threshold crossing are asserted. This adverse compatibility path is not the reaction-delay fairness proof. The viewer retains one scene across controller restoration, so it does not prove a native Canvas remount.' : 'Subdued intensity from a fresh area entry.'}`;
   report.toolHash = sha256(fs.readFileSync(__filename));
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ frames: report.frames, duration: report.simulationSeconds, video: report.video }));

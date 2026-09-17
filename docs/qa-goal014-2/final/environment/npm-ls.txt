@@ -1,0 +1,148 @@
+{
+  "version": "1.0.0",
+  "name": "chroma-rift",
+  "dependencies": {
+    "@react-native-async-storage/async-storage": {
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-2.2.0.tgz",
+      "overridden": false
+    },
+    "@react-three/fiber": {
+      "version": "9.7.0",
+      "resolved": "https://registry.npmjs.org/@react-three/fiber/-/fiber-9.7.0.tgz",
+      "overridden": false
+    },
+    "@shopify/react-native-skia": {
+      "version": "2.6.2",
+      "overridden": false
+    },
+    "@testing-library/react-native": {
+      "version": "14.0.1",
+      "resolved": "https://registry.npmjs.org/@testing-library/react-native/-/react-native-14.0.1.tgz",
+      "overridden": false
+    },
+    "@types/jest": {
+      "version": "29.5.14",
+      "resolved": "https://registry.npmjs.org/@types/jest/-/jest-29.5.14.tgz",
+      "overridden": false
+    },
+    "@types/react": {
+      "version": "19.2.18",
+      "resolved": "https://registry.npmjs.org/@types/react/-/react-19.2.18.tgz",
+      "overridden": false
+    },
+    "@types/three": {
+      "version": "0.185.4",
+      "resolved": "https://registry.npmjs.org/@types/three/-/three-0.185.4.tgz",
+      "overridden": false
+    },
+    "eslint-config-expo": {
+      "version": "57.0.2",
+      "resolved": "https://registry.npmjs.org/eslint-config-expo/-/eslint-config-expo-57.0.2.tgz",
+      "overridden": false
+    },
+    "eslint": {
+      "version": "9.39.5",
+      "resolved": "https://registry.npmjs.org/eslint/-/eslint-9.39.5.tgz",
+      "overridden": false
+    },
+    "expo-asset": {
+      "version": "57.0.17",
+      "resolved": "https://registry.npmjs.org/expo-asset/-/expo-asset-57.0.17.tgz",
+      "overridden": false
+    },
+    "expo-audio": {
+      "version": "57.0.5",
+      "resolved": "https://registry.npmjs.org/expo-audio/-/expo-audio-57.0.5.tgz",
+      "overridden": false
+    },
+    "expo-clipboard": {
+      "version": "57.0.2",
+      "resolved": "https://registry.npmjs.org/expo-clipboard/-/expo-clipboard-57.0.2.tgz",
+      "overridden": false
+    },
+    "expo-constants": {
+      "version": "57.0.18",
+      "resolved": "https://registry.npmjs.org/expo-constants/-/expo-constants-57.0.18.tgz",
+      "overridden": false
+    },
+    "expo-dev-client": {
+      "version": "57.0.19",
+      "resolved": "https://registry.npmjs.org/expo-dev-client/-/expo-dev-client-57.0.19.tgz",
+      "overridden": false
+    },
+    "expo-file-system": {
+      "version": "57.0.7",
+      "resolved": "https://registry.npmjs.org/expo-file-system/-/expo-file-system-57.0.7.tgz",
+      "overridden": false
+    },
+    "expo-gl": {
+      "version": "57.0.2",
+      "resolved": "https://registry.npmjs.org/expo-gl/-/expo-gl-57.0.2.tgz",
+      "overridden": false
+    },
+    "expo-haptics": {
+      "version": "57.0.3",
+      "resolved": "https://registry.npmjs.org/expo-haptics/-/expo-haptics-57.0.3.tgz",
+      "overridden": false
+    },
+    "expo-splash-screen": {
+      "version": "57.0.9",
+      "resolved": "https://registry.npmjs.org/expo-splash-screen/-/expo-splash-screen-57.0.9.tgz",
+      "overridden": false
+    },
+    "expo": {
+      "version": "57.0.22",
+      "resolved": "https://registry.npmjs.org/expo/-/expo-57.0.22.tgz",
+      "overridden": false
+    },
+    "jest-expo": {
+      "version": "57.0.5",
+      "resolved": "https://registry.npmjs.org/jest-expo/-/jest-expo-57.0.5.tgz",
+      "overridden": false
+    },
+    "react-native-gesture-handler": {
+      "version": "2.32.0",
+      "resolved": "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.32.0.tgz",
+      "overridden": false
+    },
+    "react-native-reanimated": {
+      "version": "4.5.1",
+      "resolved": "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-4.5.1.tgz",
+      "overridden": false
+    },
+    "react-native-safe-area-context": {
+      "version": "5.7.0",
+      "overridden": false
+    },
+    "react-native-worklets": {
+      "version": "0.10.1",
+      "resolved": "https://registry.npmjs.org/react-native-worklets/-/react-native-worklets-0.10.1.tgz",
+      "overridden": false
+    },
+    "react-native": {
+      "version": "0.86.3",
+      "resolved": "https://registry.npmjs.org/react-native/-/react-native-0.86.3.tgz",
+      "overridden": false
+    },
+    "react-test-renderer": {
+      "version": "19.2.3",
+      "resolved": "https://registry.npmjs.org/react-test-renderer/-/react-test-renderer-19.2.3.tgz",
+      "overridden": false
+    },
+    "react": {
+      "version": "19.2.3",
+      "overridden": false
+    },
+    "three": {
+      "version": "0.185.1",
+      "resolved": "https://registry.npmjs.org/three/-/three-0.185.1.tgz",
+      "overridden": false
+    },
+    "typescript": {
+      "version": "6.0.3",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-6.0.3.tgz",
+      "overridden": false
+    }
+  }
+}
