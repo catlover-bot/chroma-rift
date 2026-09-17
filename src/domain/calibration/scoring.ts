@@ -102,15 +102,15 @@ export function calculateCalibrationProfile(
 }
 
 export const PROFILE_EXPLANATIONS: Record<DepthPreference, string> = {
-  RED_FRONT: '赤が手前に見える回答が一貫していました。赤を主な前景ルートにします。',
-  BLUE_FRONT: '青が手前に見える回答が一貫していました。青を主な前景ルートにします。',
+  RED_FRONT: '赤が手前に見える回答が一貫していました。この見え方に合わせて色の表示を調整します。',
+  BLUE_FRONT: '青が手前に見える回答が一貫していました。この見え方に合わせて色の表示を調整します。',
   VARIABLE: '色や背景によって見え方が変わりました。補助記号を標準で表示します。',
   SOFT_DEPTH: '奥行きの手がかりが穏やかでした。補助記号を標準で表示します。',
 };
 
 export const PROFILE_LABELS: Record<DepthPreference, string> = {
-  RED_FRONT: '赤が手前（RED_FRONT）',
-  BLUE_FRONT: '青が手前（BLUE_FRONT）',
-  VARIABLE: '見え方が変化（VARIABLE）',
-  SOFT_DEPTH: '穏やかな奥行き（SOFT_DEPTH）',
+  RED_FRONT: '赤が手前',
+  BLUE_FRONT: '青が手前',
+  VARIABLE: '見え方が変化',
+  SOFT_DEPTH: '穏やかな奥行き',
 };

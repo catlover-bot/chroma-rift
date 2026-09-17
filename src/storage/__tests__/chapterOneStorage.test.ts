@@ -65,11 +65,21 @@ test('saved practice discoveries cannot be removed by a later revision', async (
 test('unknown raw blocks autosave and explicit restart backs up its exact bytes', async () => {
   const h=harness(),store=createChapterOneStorage(h.boundary,h.storage),raw='{"schemaVersion":99,"unreadable":true}';
   h.values.set(CHAPTER_ONE_STORAGE_KEY,raw);
-  expect(await store.load()).toMatchObject({status:'blocked',writable:false});
+  expect(await store.load()).toMatchObject({status:'blocked',writable:false,
+    message:'第一章の記録を読み込めませんでした。以前のプレイ記録を残し、自動保存を停止しています。'});
   expect(await store.save(createChapterOneSession('new-run','0.1.0'),1)).toBe(false);
   expect(h.values.get(CHAPTER_ONE_STORAGE_KEY)).toBe(raw);
   expect(await store.startNew(createChapterOneSession('new-run','0.1.0'),1)).toBe(true);
   expect(h.values.get(CHAPTER_ONE_BACKUP_KEY)).toBe(raw);
+});
+
+test('a superseded load explains the changed play state without exposing its session key', async () => {
+  const h = harness(), store = createChapterOneStorage(h.boundary, h.storage);
+  const pending = store.load();
+  h.nextLease();
+  expect(await pending).toEqual({ status: 'blocked', writable: false,
+    message: '読み込み中にプレイの状態が切り替わりました。' });
+  expect(h.values.size).toBe(0);
 });
 
 test('a later restart never overwrites the first raw recovery copy', async () => {

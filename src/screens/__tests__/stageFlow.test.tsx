@@ -29,15 +29,20 @@ jest.mock('../../rendering/firstPerson/FirstPersonCanvas', () => ({ FirstPersonC
   return React.createElement(require('react-native').View, { testID: 'native-stage-canvas' });
 }) }));
 const scene = () => jest.mocked(FirstPersonCanvas).mock.calls.at(-1)![0];
+async function openLegacyStages(view: Awaited<ReturnType<typeof render>>) {
+  if (!view.queryByRole('button', { name: 'サポート' })) await fireEvent.press(await view.findByRole('button', { name: '設定' }));
+  await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
+  await fireEvent.press(view.getByRole('button', { name: '開発用の道具' }));
+  await fireEvent.press(view.getByRole('button', { name: '旧ステージ一覧（開発用）' }));
+}
 async function legacyControl(view: Awaited<ReturnType<typeof render>>, testId: string) {
-  if (!view.queryByTestId(testId))
-    await fireEvent.press(await view.findByRole('button', { name: '旧ステージ一覧（開発用）' }));
+  if (!view.queryByTestId(testId)) await openLegacyStages(view);
   return view.findByTestId(testId);
 }
 const readJournal = async () => JSON.parse((await AsyncStorage.getItem(STAGE_JOURNAL_KEY)) ?? '{"recentEntries":[],"history":{}}');
 async function home(view: Awaited<ReturnType<typeof render>>) {
   await fireEvent.press(view.getByTestId('pause-control')); await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
-  await fireEvent.press(await view.findByRole('button', { name: '旧ステージ一覧（開発用）' }));
+  await openLegacyStages(view);
 }
 beforeEach(async () => {
   await resetAllApplicationStorage(); jest.clearAllMocks(); mockReady = true;
@@ -79,7 +84,7 @@ it('does not invent a most recent old save, then records only validated entries 
 it('does not record missing-native, failed-ready, or protected-save trial as a resumable entry', async () => {
   jest.mocked(requireOptionalNativeModule).mockReturnValue(null);
   const view = await render(<App />); await fireEvent.press(await legacyControl(view, 'select-uncanny-vault-v1'));
-  await fireEvent.press(view.getByText('収蔵庫へ入る')); await view.findByText('3D対応の開発版が必要です');
+  await fireEvent.press(view.getByText('収蔵庫へ入る')); await view.findByText('画面を表示できませんでした。');
   expect((await readJournal()).recentEntries).toEqual([]); await view.unmount();
   jest.mocked(requireOptionalNativeModule).mockReturnValue({} as ReturnType<typeof requireOptionalNativeModule>);
   mockReady = false;

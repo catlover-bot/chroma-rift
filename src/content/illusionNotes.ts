@@ -25,7 +25,7 @@ export const ILLUSION_NOTES: readonly IllusionNote[] = [
     sources: [{ title: 'Oliva, Torralba & Schyns (2006), Hybrid Images', url: 'https://doi.org/10.1145/1141911.1141919' }, { title: 'Michael Bach：Dr. Angry and Mr. Smile', url: 'https://michaelbach.de/ot/fcs-spatFreqComposites/index.html' }], credit: '本作で生成した仮面と閉館の線画。人物写真・有名な作例は使用していません。' },
   { id: 'shepard', title: '音の錯覚', discovery: '音量が増え続けなくても、音の高さが上がり続けるように感じることがあります。',
     explanation: '異なるオクターブの成分を、滑らかに強さを変えながら重ねています。短い自作音で、いつでも止められます。聞こえ方は進行の条件ではありません。', operation: '任意の短い再生・停止と効果音量。無音・控えめ・演出音オフでは再生しません。',
-    sources: [{ title: 'Shepard (1964), Circularity in Judgments of Relative Pitch', url: 'https://doi.org/10.1121/1.1919362' }, { title: 'Michael Bach：Shepard Tone', url: 'https://michaelbach.de/ot/aud-ShepardTone/index.html' }], credit: '本作の事前合成WAV。資料サイトの音声・コードは使用していません。' },
+    sources: [{ title: 'Shepard (1964), Circularity in Judgments of Relative Pitch', url: 'https://doi.org/10.1121/1.1919362' }, { title: 'Michael Bach：Shepard Tone', url: 'https://michaelbach.de/ot/aud-ShepardTone/index.html' }], credit: '本作で制作した音です。資料サイトの音声・プログラムは使用していません。' },
 ];
 export function availableIllusionNotes(discoveries: Partial<Record<DiscoveryId, boolean>>, completed: boolean) {
   return ILLUSION_NOTES.filter(note => completed || discoveries[note.id] === true);

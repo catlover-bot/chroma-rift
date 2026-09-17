@@ -19,7 +19,7 @@ export function PlayInstructionsScreen({ controls, onStart, onBack, onSettings, 
       </Panel>
       <Body>{campaignMode ? theatre ? '灯りを受光窓へ届け、防火幕を下ろして点検回廊へ進む。' : vault ? '留め金を確かめ、館内搬送路から映写室へ進む。' : gallery ? '非常灯を点け、収蔵庫へ続く職員通路を探す。' : simple ? simple.teaser : '館内の次の区画へ進む。' : theatre ? '灯りを動かして受光窓に光を届けよう。防火幕の先に出口があります。' : vault ? 'まず下の棒の長さを見本に合わせ、固定しよう。棚の奥に搬出口があります。' : gallery ? 'まず出口を探そう。大きな非常灯スイッチは、近づいて押せます。' : simple ? simple.teaser : '壁の紋章に近づいて調べよう。'}</Body>
       {gallery || vault || theatre ? <Panel>
-        <Body>展示体の気配と巡回があります。控えめでは追尾と接触によるやり直しがありません。</Body>
+        <Body>巡回体の気配と巡回があります。控えめでは追尾と接触によるやり直しがありません。</Body>
         {onHorrorChange ? <ChoiceRow>
           <ActionButton label="標準の怖さ" variant={horrorIntensity === 'standard' ? 'primary' : 'secondary'} onPress={() => onHorrorChange('standard')} />
           <ActionButton label="控えめな怖さ" variant={horrorIntensity === 'subdued' ? 'primary' : 'secondary'} onPress={() => onHorrorChange('subdued')} />

@@ -187,13 +187,13 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
         if (accepted) {
           expect(view.getByText(installed)).toBeTruthy();
           expect(controller.runtime.stageSession?.value).toMatchObject({ keyInstalled: true });
-          expect(view.queryByText('3Dを表示できませんでした')).toBeNull();
+          expect(view.queryByText('画面を表示できませんでした。')).toBeNull();
           await submitFrame(renderer, 4);
           expect(Haptics.selectionAsync).toHaveBeenCalledTimes(outcome === 'disabled' ? 0 : 1);
         } else {
           expect(view.queryByText(installed)).toBeNull();
           if (outcome !== 'pause') {
-            expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
+            expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
             renderer = fakeRenderer();
             await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
             await createNativeContext(view); await submitFrame(renderer); await submitFrame(renderer, 2);
@@ -1066,9 +1066,9 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     const rootsBefore = _roots.size;
     const view = await render(<FirstPersonScreen settings={DEFAULT_SETTINGS} controls={DEFAULT_FIRST_PERSON_CONTROLS} preferredColor="neutral" onSettingsChange={jest.fn()} onControlsChange={jest.fn()} onCheckpoint={jest.fn()} onComplete={onComplete} onRestart={jest.fn()} onExit={onExit} />);
     await createNativeContext(view);
-    expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
+    expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
     expect(view.queryByTestId('first-person-play')).toBeNull();
-    expect(view.queryByText('部屋の描画を準備しています…')).toBeNull();
+    expect(view.queryByText('画面を準備しています。')).toBeNull();
     await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
     expect(onExit).toHaveBeenCalledTimes(1);
     expect(onComplete).not.toHaveBeenCalled();
@@ -1403,21 +1403,21 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
     await submitFrame(renderer);
     renderer.draw.mockImplementation(() => { throw new Error('Injected frame fault before retry'); });
     await submitFrame(renderer, 2);
-    expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
+    expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
     expect(disposed).toHaveBeenCalledTimes(1);
     renderer = fakeRenderer();
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
     await createNativeContext(view);
-    expect(view.getByText('部屋の描画を準備しています…')).toBeTruthy();
+    expect(view.getByText('画面を準備しています。')).toBeTruthy();
     await submitFrame(renderer);
-    expect(view.queryByText('部屋の描画を準備しています…')).toBeNull();
+    expect(view.queryByText('画面を準備しています。')).toBeNull();
     const freshResources = resourceFactory.mock.results.at(-1)!.value as ReturnType<typeof createSceneResources>;
     expect(freshResources.texture.uuid).not.toBe(oldResources.texture.uuid);
     expect(chapterScene.mock.calls.at(-1)![0].runtime.current.progress).toEqual(checkpoint.progress);
     const previousDraws = oldRenderer.draw.mock.calls.length;
     await act(() => oldRender(oldState.scene, oldState.camera));
     expect(oldRenderer.draw).toHaveBeenCalledTimes(previousDraws);
-    expect(view.queryByText('3Dを表示できませんでした')).toBeNull();
+    expect(view.queryByText('画面を表示できませんでした。')).toBeNull();
     await act(async () => { await jest.advanceTimersByTimeAsync(600); });
     expect(_roots.size).toBe(rootsBefore + 1);
     await view.unmount();
@@ -1450,19 +1450,21 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       firstTarget.addEventListener('dispose', targetDisposed);
       deviceContext.endFrameEXP.mockImplementationOnce(() => { throw new Error('running mirror native presentation failed'); });
       await submitFrame(renderer, 2);
-      expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
+      expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
       expect(targetDisposed).toHaveBeenCalledTimes(1);
-      expect(view.getByText('確定済みの進行を保ち、安全な再開位置から描画を作り直します。')).toBeTruthy();
-      await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+      expect(view.getByText('進行を保ち、安全な場所から再開します。')).toBeTruthy();
+      await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
       const failure = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
-      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-014-polish-r1',
+      expect(failure.support).toMatchObject({ schemaVersion: 1 });
+      expect(failure).toMatchObject({ label: 'FIRST_FAILURE', revision: 'goal-014-1-audio-ja-r1',
         chapterId: 'mirror-corridor-v1', attempt: 0, restoreOrigin: 'checkpoint',
         poseSource: 'failed-unpresented-frame',
         firstFailure: { reasonCode: 'NATIVE_PRESENTATION', stageBeforeFailure: 'ready',
           frameSequence: 2, lastMainRenderFrame: 2, lastOffscreenFrame: 2, lastPresentationFrame: 1,
           error: { message: 'running mirror native presentation failed' } },
         frames: { sequence: 2, mainRender: 2, reflection: 2, presentation: 1 } });
-      await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+      await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
+      expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
       renderer = fakeRenderer();
       await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
       await createNativeContext(view);
@@ -1473,7 +1475,7 @@ describe('installed native R3F canvas mount and failure lifecycle (device GL exc
       await submitFrame(renderer);
       expect(renderer.draw).toHaveBeenCalledTimes(2);
       expect(deviceContext.endFrameEXP).toHaveBeenCalledTimes(3);
-      expect(view.queryByText('3Dを表示できませんでした')).toBeNull();
+      expect(view.queryByText('画面を表示できませんでした。')).toBeNull();
       expect(oldRenderer.dispose).toHaveBeenCalledTimes(1);
       await act(async () => { await jest.advanceTimersByTimeAsync(600); });
       expect(_roots.size).toBe(rootsBefore + 1);

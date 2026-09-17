@@ -361,7 +361,7 @@ test('first-chapter reset warning describes the record that will be replaced at 
   await fireEvent.press(view.getByRole('button', { name: '第一章「最後の退館者」だけを最初から' }));
   const confirmation = alert.mock.calls.at(-1)!;
   expect(confirmation[1]).toContain('進行・発見・物語の提示記録を置き換えます');
-  expect(confirmation[1]).toContain('旧ステージの原文');
+  expect(confirmation[1]).toContain('以前のエリアのプレイ記録');
   expect(confirmation[1]).not.toContain('過去の脱出・発見');
   await act(() => confirmation[2]?.find(button => button.text === '入場の準備へ')?.onPress?.());
   expect(await view.findByRole('button', { name: '展示室へ入る' })).toBeTruthy();
@@ -528,7 +528,7 @@ test('unknown campaign raw requires explicit new-game choice and receives exact 
   await AsyncStorage.setItem(CHAPTER_ONE_STORAGE_KEY, raw);
   const alert = jest.spyOn(Alert, 'alert');
   const view = await render(<App />);
-  expect(await view.findByText(/原文を保持/)).toBeTruthy();
+  expect(await view.findByText(/以前のプレイ記録/)).toBeTruthy();
   await fireEvent.press(view.getByRole('button', { name: '第一章をはじめる' }));
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(raw);
   await act(() => alert.mock.calls.at(-1)?.[2]?.find(button => button.text === '最初から始める')?.onPress?.());
@@ -703,8 +703,14 @@ test('area-04 render retries and a cold home continue retain the accepted isolat
   await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
   expect(mockCanvasOwners.active).toBe(0);
   expect(recentFailureSnapshots()).toHaveLength(3);
-  await fireEvent.press(view.getByRole('button', { name: '直前の描画診断を表示' }));
-  expect(view.getByTestId('home-render-diagnostic-record').props.children).toContain('TEST/FIXTURE: first native failure');
+  expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: '設定' }));
+  await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
+  expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
+  expect(view.getByTestId('render-diagnostic-record').props.children).toContain('TEST/FIXTURE: first native failure');
+  await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
+  expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
   expect(await AsyncStorage.getItem(CHAPTER_ONE_STORAGE_KEY)).toBe(savedBeforeFailure);
   await view.unmount();
   view = await render(<App/>);

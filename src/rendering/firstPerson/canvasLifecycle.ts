@@ -6,7 +6,7 @@ import { commandController, retireController } from './runtimeController';
 import type { RuntimeController } from './controllerTypes';
 
 type FailurePhase = 'renderer initialization' | 'scene initialization' | 'scene mount' | 'simulation frame' | 'scene frame' | 'render' | 'presentation' | 'shader' | 'GL' | 'initialization timeout';
-const FAILURE_MESSAGE = '部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。';
+const FAILURE_MESSAGE = '画面を表示できませんでした。もう一度試すか、ホームへ戻ってください。';
 const FAILURE_CODES: Record<FailurePhase, string> = {
   'renderer initialization': 'RENDERER_INIT', 'scene initialization': 'SCENE_INIT', 'scene mount': 'SCENE_MOUNT',
   'simulation frame': 'SIMULATION_FRAME', 'scene frame': 'SCENE_FRAME', render: 'MAIN_RENDER', presentation: 'NATIVE_PRESENTATION',

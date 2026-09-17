@@ -137,17 +137,17 @@ export function decodeFirstPersonStorage(checkpointRaw: string | null, controlsR
   if (!result.controlsWritable || !result.checkpointWritable) {
     result.status = 'blocked';
     result.message = result.emblemStatus === 'unsupported'
-      ? '新しい版の紋章記録を保持しています。読み込める章の進行で再開しますが、この章の変更は保存されません。'
+      ? '新しい版の紋章記録を残しています。読み込める進行で再開しますが、このエリアの変更は保存されません。'
       : !result.checkpointWritable
-      ? '章の記録を読み込めませんでした。元の記録を保持し、安全な地点から始めます。この章の進行は保存されません。'
+      ? 'エリアの記録を読み込めませんでした。以前の記録を残し、安全な場所から始めます。このエリアの進行は保存されません。'
       : '操作設定を読み込めませんでした。元の設定を保持し、今回は標準設定を使います。操作設定の変更は保存されません。';
   } else if (!result.onboardingWritable) {
     result.status = 'blocked';
-    result.message = '操作案内の記録を読み込めませんでした。章の進行と操作設定はそのまま使えます。';
+    result.message = '操作案内の記録を読み込めませんでした。プレイの進行と操作設定はそのまま使えます。';
   } else if (result.status === 'recovered') {
     result.message = result.emblemStatus === 'invalid'
       ? '紋章の記録を安全な状態に戻しました。元の記録を別に保持してから保存します。'
-      : '保存位置を安全なチェックポイントへ戻しました。';
+      : '保存位置を安全な場所へ戻しました。';
   }
   return result;
 }
@@ -230,11 +230,11 @@ export async function loadFirstPersonStorage(): Promise<FirstPersonLoadResult> {
   if (onboardingRead.status === 'rejected') {
     result.onboardingWritable = false;
     result.status = 'blocked';
-    result.message ??= '操作案内の記録を読み込めませんでした。章の進行と操作設定はそのまま使えます。';
+    result.message ??= '操作案内の記録を読み込めませんでした。プレイの進行と操作設定はそのまま使えます。';
   }
   if (!result.checkpointWritable || !result.controlsWritable) {
     result.status = 'blocked';
-    result.message ??= '一人称の保存領域を読み込めませんでした。読み込めなかったデータへの保存を停止しています。';
+    result.message ??= 'プレイ記録を読み込めませんでした。読み込めなかった記録の更新を停止しています。';
   }
   if (readProgressEpoch === progressEpoch) {
     progressWritable = result.checkpointWritable;
@@ -245,14 +245,14 @@ export async function loadFirstPersonStorage(): Promise<FirstPersonLoadResult> {
     result.checkpoint = initialCheckpoint();
     result.checkpointWritable = false;
     result.status = 'blocked';
-    result.message = '読み込み中に章の状態が切り替わりました。';
+    result.message = '読み込み中にプレイの状態が切り替わりました。';
   }
   if (readControlsEpoch === controlsEpoch) controlsWritable = result.controlsWritable;
   else {
     result.controls = { ...DEFAULT_FIRST_PERSON_CONTROLS };
     result.controlsWritable = false;
     result.status = 'blocked';
-    result.message = '読み込み中に保存データがリセットされました。';
+    result.message = '読み込み中に記録の消去が始まりました。';
   }
   if (readOnboardingEpoch === onboardingEpoch) {
     onboardingWritable = result.onboardingWritable;
@@ -447,7 +447,7 @@ export function decodeGalleryStorage(raw: string | null): GalleryLoadResult {
       ...(restored.recovered ? { message: '展示室の保存位置を安全な場所へ戻しました。元の記録を別に保持してから保存します。' } : {}) };
   } catch {
     return { ...fallback, checkpointWritable: false, status: 'blocked',
-      message: '展示室の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。新規に始める場合は、この章だけをリセットしてください。' };
+      message: '展示室の記録を読み込めませんでした。以前の記録を残し、このエリアの変更は保存しません。新しく始める場合は、このエリアだけをはじめからやり直してください。' };
   }
 }
 
@@ -468,7 +468,7 @@ async function readGalleryDocument(): Promise<{ result: GalleryLoadResult; backu
       backup: { key: v2 !== null ? GALLERY_PRE_V3_KEY : GALLERY_PRE_V2_KEY, raw: original } };
   } catch {
     return { result: { checkpoint: initialGalleryCheckpoint(), hasCheckpoint: true, checkpointWritable: false, status: 'blocked',
-      message: '以前の展示室の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。' } };
+      message: '以前の展示室の記録を読み込めませんでした。以前の記録を残し、このエリアの変更は保存しません。' } };
   }
 }
 
@@ -478,7 +478,7 @@ export async function loadGalleryStorage(): Promise<GalleryLoadResult> {
   try {
     const { result, backup } = await readGalleryDocument();
     if (epoch !== progressEpoch) return { checkpoint: initialGalleryCheckpoint(), hasCheckpoint: result.hasCheckpoint,
-      status: 'blocked', checkpointWritable: false, message: '読み込み中に章が切り替わりました。' };
+      status: 'blocked', checkpointWritable: false, message: '読み込み中にエリアが切り替わりました。' };
     galleryWritable = result.checkpointWritable;
     latestGalleryCheckpoint = result.hasCheckpoint ? result.checkpoint : undefined;
     pendingGalleryBackup = backup;
@@ -486,7 +486,7 @@ export async function loadGalleryStorage(): Promise<GalleryLoadResult> {
   } catch {
     if (epoch === progressEpoch) galleryWritable = false;
     return { checkpoint: initialGalleryCheckpoint(), hasCheckpoint: false, status: 'blocked', checkpointWritable: false,
-      message: '展示室の保存領域を読み込めませんでした。元のデータを保持し、保存を停止しています。' };
+      message: '展示室の記録を読み込めませんでした。以前の記録を残し、保存を停止しています。' };
   }
 }
 
@@ -564,7 +564,7 @@ export function decodeVaultStorage(raw: string | null): VaultLoadResult {
       ...(restored.recovered ? { message: '収蔵庫の保存位置を安全な場所へ戻しました。元の記録を別に保持してから保存します。' } : {}) };
   } catch {
     return { ...fallback, checkpointWritable: false, status: 'blocked',
-      message: '収蔵庫の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。新規に始める場合は、この章だけをリセットしてください。' };
+      message: '収蔵庫の記録を読み込めませんでした。以前の記録を残し、このエリアの変更は保存しません。新しく始める場合は、このエリアだけをはじめからやり直してください。' };
   }
 }
 async function readVaultDocument(): Promise<{ result: VaultLoadResult; backup?: string }> {
@@ -577,7 +577,7 @@ export async function loadVaultStorage(): Promise<VaultLoadResult> {
   try {
     const { result, backup } = await readVaultDocument();
     if (epoch !== progressEpoch) return { checkpoint: initialVaultCheckpoint(), hasCheckpoint: result.hasCheckpoint,
-      status: 'blocked', checkpointWritable: false, message: '読み込み中に章が切り替わりました。' };
+      status: 'blocked', checkpointWritable: false, message: '読み込み中にエリアが切り替わりました。' };
     vaultWritable = result.checkpointWritable;
     latestVaultCheckpoint = result.hasCheckpoint ? result.checkpoint : undefined;
     pendingVaultBackup = backup;
@@ -585,7 +585,7 @@ export async function loadVaultStorage(): Promise<VaultLoadResult> {
   } catch {
     if (epoch === progressEpoch) vaultWritable = false;
     return { checkpoint: initialVaultCheckpoint(), hasCheckpoint: false, status: 'blocked', checkpointWritable: false,
-      message: '収蔵庫の保存領域を読み込めませんでした。元のデータを保持し、保存を停止しています。' };
+      message: '収蔵庫の記録を読み込めませんでした。以前の記録を残し、保存を停止しています。' };
   }
 }
 export function saveVaultCheckpoint(checkpoint: CheckpointState, lease: number): Promise<boolean> {
@@ -659,7 +659,7 @@ export function decodeTheatreStorage(raw: string | null): TheatreLoadResult {
       ...(restored.recovered ? { message: '影の映写室の保存位置を安全な場所へ戻しました。元の記録を別に保持してから保存します。' } : {}) };
   } catch {
     return { ...fallback, checkpointWritable: false, status: 'blocked',
-      message: '影の映写室の記録を読み込めませんでした。元の記録を保持し、この章の変更は保存しません。新規に始める場合は、この章だけをリセットしてください。' };
+      message: '影の映写室の記録を読み込めませんでした。以前の記録を残し、このエリアの変更は保存しません。新しく始める場合は、このエリアだけをはじめからやり直してください。' };
   }
 }
 async function readTheatreDocument(): Promise<{ result: TheatreLoadResult; backup?: string }> {
@@ -672,7 +672,7 @@ export async function loadTheatreStorage(): Promise<TheatreLoadResult> {
   try {
     const { result, backup } = await readTheatreDocument();
     if (epoch !== progressEpoch) return { checkpoint: initialTheatreCheckpoint(), hasCheckpoint: result.hasCheckpoint,
-      status: 'blocked', checkpointWritable: false, message: '読み込み中に章が切り替わりました。' };
+      status: 'blocked', checkpointWritable: false, message: '読み込み中にエリアが切り替わりました。' };
     theatreWritable = result.checkpointWritable;
     latestTheatreCheckpoint = result.hasCheckpoint ? result.checkpoint : undefined;
     pendingTheatreBackup = backup;
@@ -680,7 +680,7 @@ export async function loadTheatreStorage(): Promise<TheatreLoadResult> {
   } catch {
     if (epoch === progressEpoch) theatreWritable = false;
     return { checkpoint: initialTheatreCheckpoint(), hasCheckpoint: false, status: 'blocked', checkpointWritable: false,
-      message: '影の映写室の保存領域を読み込めませんでした。元のデータを保持し、保存を停止しています。' };
+      message: '影の映写室の記録を読み込めませんでした。以前の記録を残し、保存を停止しています。' };
   }
 }
 export function saveTheatreCheckpoint(checkpoint: CheckpointState, lease: number): Promise<boolean> {

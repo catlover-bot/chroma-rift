@@ -1,10 +1,10 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import { requireOptionalNativeModule } from 'expo';
-import { Alert } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import { chapterCompletionSummary } from '../../app/chapterSummary';
 import { createGalleryRuntime, migrateGalleryV2Checkpoint } from '../../domain/gallery';
 import { originalV2 } from '../../storage/testFixtures/galleryV2';
-import { DEFAULT_SETTINGS } from '../../types/application';
+import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_SETTINGS } from '../../types/application';
 import { SettingsScreen } from '../SettingsScreen';
 import { FirstPersonResultScreen } from '../FirstPersonResultScreen';
 import { WelcomeScreen } from '../WelcomeScreen';
@@ -26,8 +26,8 @@ it('adjusts independent audio preferences without changing visual or accessibili
   const view = await render(<SettingsScreen settings={DEFAULT_SETTINGS} onChange={onChange} onRecalibrate={jest.fn()}
     onQuickSetup={jest.fn()} onReset={jest.fn()} onBack={jest.fn()} />);
   expect(requireOptionalNativeModule).toHaveBeenCalledWith('ExpoAudio');
-  expect(view.getAllByText(/音の再生には新しいDevelopment Build/)).toHaveLength(1);
-  await fireEvent(view.getByRole('switch', { name: 'サウンド' }), 'valueChange', false);
+  expect(view.getAllByText(/音を再生できませんでした/)).toHaveLength(1);
+  await fireEvent(view.getByRole('switch', { name: '音' }), 'valueChange', false);
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, enabled: false } });
   await fireEvent.press(view.getByText('音楽 25%'));
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, audio: { ...DEFAULT_SETTINGS.audio, musicVolume: 0.25 } });
@@ -49,6 +49,9 @@ it('keeps the old maze-only intensity out of product settings while preserving g
   await fireEvent.press(view.getByRole('button', { name: '表示B' }));
   expect(onChange).toHaveBeenLastCalledWith({ ...DEFAULT_SETTINGS, emblemPalette: 'alternate' });
   await view.rerender(<SettingsScreen {...base} onLegacyMaze={jest.fn()} />);
+  expect(view.queryByText('旧迷宮の色模様の強さ')).toBeNull();
+  await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
+  await fireEvent.press(view.getByRole('button', { name: '開発用の道具' }));
   expect(view.getByText('旧迷宮の色模様の強さ')).toBeTruthy();
 });
 
@@ -63,7 +66,7 @@ it('makes current-chapter and full-data reset scope explicit before either actio
   expect(current).toHaveBeenCalledTimes(1);
   await fireEvent.press(view.getByText('保存データをリセット'));
   expect(alert.mock.calls.at(-1)?.[1]).toContain('第一章の本編進行');
-  expect(alert.mock.calls.at(-1)?.[1]).toContain('各ステージの記録、音の設定、発見履歴');
+  expect(alert.mock.calls.at(-1)?.[1]).toContain('各エリアの記録、音の設定、発見履歴');
   alert.mockRestore();
 });
 
@@ -117,4 +120,20 @@ it('does not claim a bypassed migration wiring puzzle was experienced when the r
   expect(view.getByText('最後の扉を閉めて、展示室から脱出しました。')).toBeTruthy(); expect(view.queryByText('隠れた配線')).toBeNull();
   const fresh = createGalleryRuntime(); fresh.progress.gallery!.wiring.solved = true; fresh.progress.gallery!.discoveries.wiring = true;
   expect(chapterCompletionSummary('perception-gallery-v1', fresh.progress).discoveredMechanisms).toContain('隠れた配線');
+});
+
+
+it('keeps long Japanese control choices actionable with full labels at small width and large text', async () => {
+  const window = Dimensions.get('window'), screen = Dimensions.get('screen'), onControlsChange = jest.fn();
+  Dimensions.set({ window: { width: 320, height: 568, scale: 2, fontScale: 2 }, screen: { width: 320, height: 568, scale: 2, fontScale: 2 } });
+  try {
+    const view = await render(<SettingsScreen settings={DEFAULT_SETTINGS} onChange={jest.fn()} onRecalibrate={jest.fn()}
+      onQuickSetup={jest.fn()} onReset={jest.fn()} onBack={jest.fn()} controls={DEFAULT_FIRST_PERSON_CONTROLS} onControlsChange={onControlsChange} />);
+    await fireEvent.press(view.getByRole('button', { name: '上下の感度：控えめ' }));
+    expect(onControlsChange).toHaveBeenLastCalledWith({ ...DEFAULT_FIRST_PERSON_CONTROLS, verticalSensitivity: 0.6 });
+    await fireEvent.press(view.getByRole('button', { name: '上下の感度：同じ' }));
+    expect(onControlsChange).toHaveBeenLastCalledWith({ ...DEFAULT_FIRST_PERSON_CONTROLS, verticalSensitivity: 1 });
+    // Physical text/button bounds are measured by qa-player-support-layout.cjs;
+    // this host test checks that wrapping does not remove the label or command.
+  } finally { Dimensions.set({ window, screen }); }
 });

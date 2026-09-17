@@ -26,9 +26,14 @@ import { DEFAULT_FIRST_PERSON_CONTROLS, DEFAULT_FIRST_PERSON_ONBOARDING } from '
 
 let mockFirstPersonCanvasProps: FirstPersonCanvasProps | undefined;
 
+async function openLegacyStages(view: Awaited<ReturnType<typeof render>>) {
+  if (!view.queryByRole('button', { name: 'サポート' })) await fireEvent.press(await view.findByRole('button', { name: '設定' }));
+  await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
+  await fireEvent.press(view.getByRole('button', { name: '開発用の道具' }));
+  await fireEvent.press(view.getByRole('button', { name: '旧ステージ一覧（開発用）' }));
+}
 async function legacyControl(view: Awaited<ReturnType<typeof render>>, testId: string) {
-  if (!view.queryByTestId(testId))
-    await fireEvent.press(await view.findByRole('button', { name: '旧ステージ一覧（開発用）' }));
+  if (!view.queryByTestId(testId)) await openLegacyStages(view);
   return view.findByTestId(testId);
 }
 
@@ -216,7 +221,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     await fireEvent.press(await legacyControl(view, 'select-perception-gallery-v1'));
     await fireEvent.press(view.getByText('あとで調整して遊ぶ'));
     await fireEvent.press(view.getByText('展示室へ入る'));
-    expect(await view.findByText('3D対応の開発版が必要です')).toBeTruthy();
+    expect(await view.findByText('画面を表示できませんでした。')).toBeTruthy();
     expect(view.queryByTestId('first-person-native-canvas')).toBeNull();
     await fireEvent.press(view.getByText('ホームへ戻る'));
     // The stimulus is saved at entry, before the native build gate mounts.
@@ -439,6 +444,8 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     expect(await view.findByText('準備できました')).toBeTruthy();
     await fireEvent.press(view.getByText('ホームへ戻る'));
     await fireEvent.press(view.getByText('設定'));
+    await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
+    await fireEvent.press(view.getByRole('button', { name: '開発用の道具' }));
     await fireEvent.press(view.getByText('旧2.5D迷宮（開発用）'));
     expect(view.getByText('浮遊回廊')).toBeTruthy();
 
@@ -604,7 +611,7 @@ describe('first-person introduction and retained two-stage laboratory flow', () 
     const settingsBefore = JSON.parse((await AsyncStorage.getItem(APPLICATION_STORAGE_KEY))!).settings;
     expect(savedBefore.progress.vault!.length.solved).toBe(true);
     await fireEvent.press(view.getByTestId('pause-control')); await fireEvent.press(view.getByText('ホームへ戻る'));
-    await fireEvent.press(await view.findByText('旧ステージ一覧（開発用）'));
+    await openLegacyStages(view);
     await fireEvent.press(await view.findByText('設定'));
     let confirm: (() => void) | undefined;
     jest.spyOn(Alert, 'alert').mockImplementation((_title, _text, buttons) => { confirm = buttons?.find(button => button.text === 'この章だけリセット')?.onPress; });

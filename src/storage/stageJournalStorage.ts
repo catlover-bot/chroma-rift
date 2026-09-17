@@ -43,7 +43,7 @@ export function createStageJournalStorage(boundary: Boundary) {
         latest = undefined; writable = true; // Explicit hydration revalidates the current raw document.
         const allowed = await read(lease);
         return { journal: latest ?? emptyJournal(), writable: allowed,
-          ...(!allowed ? { message: 'ステージ履歴を読み込めないため、履歴の更新を停止しています。元の記録と各章の保存は保持しています。' } : {}) };
+          ...(!allowed ? { message: 'エリアの履歴を読み込めないため、履歴の更新を停止しています。以前の記録と各エリアの保存は残っています。' } : {}) };
       });
     },
     record(checkpoints: readonly CheckpointState[], lease: number, entered?: StageId): Promise<boolean> {

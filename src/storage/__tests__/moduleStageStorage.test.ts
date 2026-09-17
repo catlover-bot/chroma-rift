@@ -28,7 +28,8 @@ test('unknown checkpoint and old lease preserve raw data; explicit reset backs i
   const raw=JSON.stringify({...fresh(),levelVersion:99});
   await AsyncStorage.setItem(key,raw);
   const store=makeStore(),loaded=await store.load(id);
-  expect(loaded).toMatchObject({status:'blocked',checkpointWritable:false,hasCheckpoint:true});
+  expect(loaded).toMatchObject({status:'blocked',checkpointWritable:false,hasCheckpoint:true,
+    message:'このエリアの記録を読み込めませんでした。以前のプレイ記録を残し、このエリアの自動保存を停止しています。'});
   expect(await store.save(fresh(),lease)).toBe(false);
   expect(await AsyncStorage.getItem(key)).toBe(raw);
   const old=lease;lease++;

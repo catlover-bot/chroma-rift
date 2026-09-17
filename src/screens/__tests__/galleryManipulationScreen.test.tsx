@@ -315,16 +315,20 @@ it('shows and copies versioned build identity during preview preparation without
   mockSubmittedFrame = false;
   const view = await render(<FirstPersonScreen {...screenProps('shadow')} />);
   try {
-    expect(view.getByText('部屋の描画を準備しています…')).toBeTruthy();
+    expect(view.getByText('画面を準備しています。')).toBeTruthy();
     expect(scene().controller.diagnostics).toMatchObject({ stage: 'initializing', contextCreates: 0, readyAtMs: null, firstFailure: null });
-    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
     const expected = { schemaVersion: 1, stage: 'initializing', contextCreates: 0, firstFailure: null,
+      support: { schemaVersion: 1 },
       app: { version: fixture.appVersion, build: fixture.nativeBuild, profileMarker: 'preview',
         bundleSource: 'release-js', code: appBuild.DIAGNOSTIC_REVISION } };
     expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toMatchObject(expected);
     expect(view.getByTestId('render-diagnostic-record').props.selectable).toBe(true);
-    await fireEvent.press(view.getByRole('button', { name: '診断をコピー' }));
+    await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
     expect(JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0])).toMatchObject(expected);
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
+    expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
   } finally {
     await view.unmount(); env.__DEV__ = previousDev;
     if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
@@ -345,22 +349,28 @@ it('shows and copies the first raw failure in an internal preview-style build', 
     const current = scene();
     recordFirstFailure(current.controller.diagnostics, new Error('original mirror frame exception'), 'scene frame', 'SCENE_FRAME');
     await act(() => current.onError('部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。'));
-    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
+    expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+    expect(view.queryByText(/original mirror frame exception/)).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
     const record = view.getByTestId('render-diagnostic-record').props.children as string;
     expect(record).toContain('FIRST_FAILURE'); expect(record).toContain('SCENE_FRAME');
-    expect(JSON.parse(record)).toMatchObject({ schemaVersion: 1,
+    expect(JSON.parse(record)).toMatchObject({ schemaVersion: 1, support: { schemaVersion: 1 },
       app: { code: appBuild.DIAGNOSTIC_REVISION, profileMarker: 'preview', bundleSource: 'release-js' } });
     expect(record).toContain('original mirror frame exception');
-    await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
+    await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
     expect(Clipboard.setStringAsync).toHaveBeenCalledWith(expect.stringContaining('FIRST_FAILURE'));
     jest.mocked(Clipboard.setStringAsync).mockRejectedValueOnce(new Error('TEST/FIXTURE: clipboard unavailable'));
-    await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
-    expect(view.getByText('コピーできませんでした。診断はこの画面で確認できます。')).toBeTruthy();
+    await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
+    expect(view.getByText('コピーできませんでした。もう一度お試しください。')).toBeTruthy();
     expect(view.getByTestId('render-diagnostic-record').props.selectable).toBe(true);
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
+    expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+    expect(view.queryByText(/original mirror frame exception/)).toBeNull();
   } finally { await view.unmount(); env.__DEV__ = previousDev; if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE; else process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = previousProfile; }
 });
 
-it('shows only the error number when a production Release frame fails', async () => {
+it('keeps a production failure plain and copies only explicitly opened support information', async () => {
   const env = globalThis as typeof globalThis & { __DEV__: boolean };
   const previousDev = env.__DEV__, previousProfile = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
   env.__DEV__ = false;
@@ -370,9 +380,23 @@ it('shows only the error number when a production Release frame fails', async ()
     const current = scene();
     recordFirstFailure(current.controller.diagnostics, new Error('TEST/FIXTURE: private stack'), 'render', 'MAIN_RENDER');
     await act(() => current.onError('部屋の描画を確認できませんでした。再試行するか、ホームへ戻ってください。'));
-    expect(view.getByText('エラー番号 MAIN_RENDER')).toBeTruthy();
-    expect(view.queryByRole('button', { name: '詳細を表示' })).toBeNull();
+    expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
+    expect(view.queryByText(/MAIN_RENDER/)).toBeNull();
+    expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
     expect(view.queryByText('TEST/FIXTURE: private stack')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
+    const details = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
+    expect(details).toMatchObject({ label: 'FIRST_FAILURE', schemaVersion: 1,
+      firstFailure: { reasonCode: 'MAIN_RENDER' }, support: { schemaVersion: 1 } });
+    expect(Object.keys(details).sort()).toEqual(['firstFailure', 'label', 'schemaVersion', 'support']);
+    expect(details.firstFailure).not.toHaveProperty('error');
+    expect(details.firstFailure).not.toHaveProperty('stack');
+    await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
+    expect(JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0])).toMatchObject({
+      label: 'FIRST_FAILURE', firstFailure: { reasonCode: 'MAIN_RENDER' }, support: { schemaVersion: 1 } });
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
+    expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+    expect(view.queryByText(/MAIN_RENDER|TEST\/FIXTURE/)).toBeNull();
   } finally { await view.unmount(); env.__DEV__ = previousDev; if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE; else process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = previousProfile; }
 });
 

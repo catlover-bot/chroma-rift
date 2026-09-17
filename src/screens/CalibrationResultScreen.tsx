@@ -25,7 +25,7 @@ export function CalibrationResultScreen({
     <Screen>
       <Heading>調整結果</Heading>
       <Panel>
-        <Stat label="プロファイル" value={PROFILE_LABELS[profile.preference]} />
+        <Stat label="見え方の傾向" value={PROFILE_LABELS[profile.preference]} />
         <Body>{PROFILE_EXPLANATIONS[profile.preference]}</Body>
         <Body muted>この分類はゲーム設定用の暫定的な目安で、視力の診断ではありません。</Body>
       </Panel>

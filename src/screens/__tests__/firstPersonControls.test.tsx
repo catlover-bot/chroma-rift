@@ -29,6 +29,11 @@ jest.mock('react-native-safe-area-context', () => ({ ...jest.requireActual('reac
 const canvas = jest.mocked(FirstPersonCanvas);
 const originalDimensions = { window: Dimensions.get('window'), screen: Dimensions.get('screen') };
 const scene = (): FirstPersonCanvasProps => canvas.mock.calls[canvas.mock.calls.length - 1]![0];
+function glRecord(serialized: string) {
+  const { support, ...originalFields } = JSON.parse(serialized);
+  expect(support).toMatchObject({ schemaVersion: 1, build: { code: 'goal-014-1-audio-ja-r1' } });
+  return originalFields;
+}
 function props(overrides: Partial<FirstPersonScreenProps> = {}): FirstPersonScreenProps {
   return { settings: { ...DEFAULT_SETTINGS }, controls: { ...DEFAULT_FIRST_PERSON_CONTROLS }, preferredColor: 'neutral', onSettingsChange: jest.fn(), onControlsChange: jest.fn(), onCheckpoint: jest.fn(), onComplete: jest.fn(), onRestart: jest.fn(), onExit: jest.fn(), ...overrides };
 }
@@ -238,7 +243,7 @@ describe('first-person control surface and lifecycle', () => {
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: '再開する' }));
     await act(() => scene().onError('GLの初期化に失敗しました。'));
-    expect(view.getByText('3Dを表示できませんでした')).toBeTruthy();
+    expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
     await fireEvent.press(view.getByRole('button', { name: 'ホームへ戻る' }));
     expect(original.onExit).toHaveBeenCalledTimes(1);
   });
@@ -249,7 +254,12 @@ describe('first-person control surface and lifecycle', () => {
     old.controller.input.forward = 1;
     await act(() => old.onError('最初の描画エラー。'));
     await act(() => { old.onError('遅れて届いたエラー。'); old.onReady(); old.onSnapshot(controllerSnapshot(old.controller)); });
-    expect(view.getByText('最初の描画エラー。')).toBeTruthy();
+    expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
+    expect(view.queryByText('最初の描画エラー。')).toBeNull();
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
+    expect(view.getByTestId('render-diagnostic-record').props.children).toContain('最初の描画エラー。');
+    expect(view.getByTestId('render-diagnostic-record').props.children).not.toContain('遅れて届いたエラー。');
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
     expect(view.queryByText('遅れて届いたエラー。')).toBeNull();
     expect(old.controller.runtime.paused).toBe(true);
     expect(old.controller.input.forward).toBe(0);
@@ -261,7 +271,7 @@ describe('first-person control surface and lifecycle', () => {
     const current = scene();
     expect(current.controller).not.toBe(old.controller);
     await act(() => { old.onReady(); old.onError('前の章からのエラー。'); old.onSnapshot(controllerSnapshot(old.controller)); });
-    expect(fresh.queryByText('3Dを表示できませんでした')).toBeNull();
+    expect(fresh.queryByText('画面を表示できませんでした。')).toBeNull();
     expect(current.controller.runtime.paused).toBe(false);
     expect(freshProps.onCheckpoint).not.toHaveBeenCalled();
     expect(freshProps.onComplete).not.toHaveBeenCalled();
@@ -274,10 +284,10 @@ describe('first-person control surface and lifecycle', () => {
     const listener = jest.spyOn(AppState, 'addEventListener');
     const view = await render(<FirstPersonScreen {...props({ controls: { ...DEFAULT_FIRST_PERSON_CONTROLS, movementMode: 'simple' } })} />);
     expect(view.getByRole('button', { name: '前へ一歩' })).toBeDisabled();
-    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
     expect(scene().paused).toBe(true);
     expect(view.getByTestId('render-diagnostic-record')).toBeTruthy();
-    await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
     const callbacks = listener.mock.calls.filter(([event]) => event === 'change').map(([, callback]) => callback);
     await act(() => callbacks.forEach((callback) => callback('background')));
     expect(scene().appActive).toBe(false);
@@ -301,10 +311,10 @@ describe('first-person control surface and lifecycle', () => {
     const checkpointCalls = jest.mocked(original.onCheckpoint).mock.calls.length;
     diagnostics.recordFirstFailure(old.controller.diagnostics, new Error('original native draw failed'), 'render', 'MAIN_RENDER');
     await act(() => scene().onError('描画が止まりました。'));
-    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
-    const firstRecord = JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string);
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
+    const firstRecord = glRecord(view.getByTestId('render-diagnostic-record').props.children as string);
     expect(firstRecord).toMatchObject({ attempt: 0, firstFailure: { reasonCode: 'MAIN_RENDER', error: { message: 'original native draw failed' } } });
-    await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
     mockSubmittedFrame = false; // Both retries fail before a successful recovery frame.
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
     const fresh = scene();
@@ -323,12 +333,12 @@ describe('first-person control surface and lifecycle', () => {
     diagnostics.recordFirstFailure(scene().controller.diagnostics, new Error('final retry failed'), 'shader', 'SHADER');
     await act(() => scene().onError('二度目の再試行後のエラー'));
     expect(view.getByRole('button', { name: '表示を再試行' })).toBeDisabled();
-    expect(view.getByRole('button', { name: '詳細を表示' })).toBeEnabled();
-    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
-    expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toEqual(firstRecord);
+    expect(view.getByRole('button', { name: '詳しい情報' })).toBeEnabled();
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
+    expect(glRecord(view.getByTestId('render-diagnostic-record').props.children as string)).toEqual(firstRecord);
     jest.mocked(Clipboard.setStringAsync).mockClear();
-    await fireEvent.press(view.getByRole('button', { name: '診断情報をコピー' }));
-    expect(JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls[0]![0])).toEqual(firstRecord);
+    await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
+    expect(glRecord(jest.mocked(Clipboard.setStringAsync).mock.calls[0]![0])).toEqual(firstRecord);
   });
 
   it('starts a new first-failure episode only after a retry presents a ready frame', async () => {
@@ -342,7 +352,7 @@ describe('first-person control surface and lifecycle', () => {
     expect(view.queryByRole('button', { name: '表示を再試行' })).toBeNull();
     diagnostics.recordFirstFailure(recovered.controller.diagnostics, new Error('new running failure'), 'scene frame', 'SCENE_FRAME');
     await act(() => recovered.onError('後の失敗'));
-    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
     expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toMatchObject({
       attempt: 1, firstFailure: { reasonCode: 'SCENE_FRAME', error: { message: 'new running failure' } },
     });
@@ -356,19 +366,19 @@ describe('first-person control surface and lifecycle', () => {
     await act(() => original.onError('本編の失敗'));
     await fireEvent.press(view.getByRole('button', { name: '表示を再試行' }));
     await act(() => scene().onError('再試行の失敗'));
-    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
     await fireEvent.press(view.getByRole('button', { name: 'R3Fの箱・床・壁を確認' }));
     const proof = scene();
     await act(() => proof.onReady());
     await fireEvent.press(view.getByRole('button', { name: '探索へ戻る（進行を維持）' }));
     await act(() => scene().onError('本編はまだ失敗'));
-    await fireEvent.press(view.getByRole('button', { name: '詳細を表示' }));
+    await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
     expect(JSON.parse(view.getByTestId('render-diagnostic-record').props.children as string)).toMatchObject({
       attempt: 0, firstFailure: { reasonCode: 'OFFSCREEN_DRAW', error: { message: 'chapter reflection failed' } },
     });
   });
 
-  it('refreshes diagnostics only while open at most twice per second and copies only on request', async () => {
+  it('collects diagnostics only on explicit open, refresh or copy, with no background polling', async () => {
     jest.useFakeTimers();
     const serialize = jest.spyOn(diagnostics, 'serializeDiagnostics');
     jest.mocked(Clipboard.setStringAsync).mockClear();
@@ -377,18 +387,20 @@ describe('first-person control surface and lifecycle', () => {
       const view = await render(<FirstPersonScreen {...props()} />);
       await act(() => jest.advanceTimersByTime(1500));
       expect(serialize).not.toHaveBeenCalled();
-      await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+      await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
       expect(serialize).toHaveBeenCalledTimes(1);
       await act(() => jest.advanceTimersByTime(999));
-      expect(serialize).toHaveBeenCalledTimes(2);
+      expect(serialize).toHaveBeenCalledTimes(1);
       await act(() => jest.advanceTimersByTime(1));
-      expect(serialize).toHaveBeenCalledTimes(3);
+      expect(serialize).toHaveBeenCalledTimes(1);
+      await fireEvent.press(view.getByRole('button', { name: '情報を更新' }));
+      expect(serialize).toHaveBeenCalledTimes(2);
       expect(Clipboard.setStringAsync).not.toHaveBeenCalled();
-      await fireEvent.press(view.getByRole('button', { name: '診断をコピー' }));
+      await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
       const payload = JSON.parse(jest.mocked(Clipboard.setStringAsync).mock.calls[0]![0]);
       expect(payload.revision).toBe(diagnostics.DIAGNOSTIC_REVISION);
       expect(payload.effectiveControls).toEqual({ mode: 'standard', reason: '保存したドラッグ操作の希望' });
-      await fireEvent.press(view.getByRole('button', { name: '診断を閉じる' }));
+      await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
       const closedCalls = serialize.mock.calls.length;
       await act(() => jest.advanceTimersByTime(2000));
       expect(serialize).toHaveBeenCalledTimes(closedCalls);
@@ -402,7 +414,7 @@ describe('first-person control surface and lifecycle', () => {
     const view = await render(<FirstPersonScreen {...original} />);
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     await fireEvent.press(view.getByRole('button', { name: '操作と快適設定' }));
-    expect(view.getByText('現在の操作：ドラッグ操作。理由：保存したドラッグ操作の希望。')).toBeTruthy();
+    expect(view.getByText('現在の操作：ドラッグ操作。')).toBeTruthy();
     expect(view.getByRole('switch', { name: 'ボタン操作' }).props.value).toBe(false);
     expect(original.onControlsChange).not.toHaveBeenCalled();
   });
@@ -414,14 +426,14 @@ describe('first-person control surface and lifecycle', () => {
     const chapter = scene();
     const expectedPose = createCheckpoint(chapter.controller.runtime).pose;
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
-    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
     const writes = jest.mocked(original.onCheckpoint).mock.calls.length;
     await fireEvent.press(view.getByRole('button', { name: 'R3Fの箱・床・壁を確認' }));
     expect(scene().sceneMode).toBe('proof');
     expect(view.queryByTestId('movement-stick')).toBeNull();
     await fireEvent.press(view.getByRole('button', { name: '一時停止' }));
     expect(scene().paused).toBe(true);
-    await fireEvent.press(view.getByRole('button', { name: '描画の診断' }));
+    await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
     await fireEvent.press(view.getByRole('button', { name: '箱が見えない：生のGLを確認' }));
     expect(view.getByText('橙色の三角形が見えるか確認します。')).toBeTruthy();
     await fireEvent.press(view.getByRole('button', { name: '探索へ戻る（進行を維持）' }));
@@ -658,6 +670,33 @@ describe('first-person control surface and lifecycle', () => {
     expect(scene().controller.input.stickPointer).toBeNull();
     expect(scene().controller.input.lookPointer).toBeNull();
     expect(scene().controller.input.forward).toBe(0);
+  });
+
+  it.each(['preview', 'production'] as const)('keeps technical failure details out of the normal %s screen and opens support explicitly', async profile => {
+    const env = globalThis as typeof globalThis & { __DEV__: boolean };
+    const previousDev = env.__DEV__, previousProfile = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
+    env.__DEV__ = false; process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = profile;
+    const view = await render(<FirstPersonScreen {...props()} />);
+    try {
+      diagnostics.recordFirstFailure(scene().controller.diagnostics, new Error('renderer TEST/FIXTURE failure'), 'render', 'MAIN_RENDER');
+      await act(() => scene().onError('GL renderer framebuffer native checkpoint TEST/FIXTURE'));
+      expect(view.getByText('画面を表示できませんでした。')).toBeTruthy();
+      expect(JSON.stringify(view.toJSON())).not.toMatch(/goal-014|TEST\/FIXTURE|framebuffer|release-js|iOS build/);
+      expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+      await fireEvent.press(view.getByRole('button', { name: '詳しい情報' }));
+      expect(view.getByRole('button', { name: '情報をコピー' })).toBeTruthy();
+      await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
+      const copied = jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0];
+      expect(copied).toContain('goal-014-1-audio-ja-r1');
+      expect(copied).toContain('MAIN_RENDER');
+      await fireEvent.press(view.getByRole('button', { name: '詳しい情報を閉じる' }));
+      expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
+      expect(JSON.stringify(view.toJSON())).not.toMatch(/goal-014|TEST\/FIXTURE|framebuffer|release-js|iOS build/);
+    } finally {
+      await view.unmount(); env.__DEV__ = previousDev;
+      if (previousProfile === undefined) delete process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
+      else process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = previousProfile;
+    }
   });
 
 });

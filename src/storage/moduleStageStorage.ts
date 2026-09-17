@@ -41,7 +41,7 @@ export function createModuleStageStorage(boundary: Boundary) {
     } catch {
       state.latest=undefined;state.writable=false;cache.set(id,state);
       return {checkpoint:fresh(id),hasCheckpoint:true,status:'blocked',checkpointWritable:false,
-        message:'このステージの保存を読み込めませんでした。元のデータを保持し、この章の自動保存を停止しています。'};
+        message:'このエリアの記録を読み込めませんでした。以前のプレイ記録を残し、このエリアの自動保存を停止しています。'};
     }
   }
   return {

@@ -39,7 +39,8 @@ it.each(['{bad', '{"schemaVersion":99,"raw":"preserve"}',
   '{"schemaVersion":1,"recentEntries":["unknown"],"history":{}}',
   '{"schemaVersion":1,"recentEntries":[],"history":{"uncanny-vault-v1":{"everCleared":true,"discoveries":["unknown"]}}}'])('protects unknown journal bytes without blocking chapter progress: %s', async raw => {
   await AsyncStorage.setItem(STAGE_JOURNAL_KEY, raw);
-  expect((await loadStageJournal()).writable).toBe(false);
+  expect(await loadStageJournal()).toMatchObject({ writable: false,
+    message: 'エリアの履歴を読み込めないため、履歴の更新を停止しています。以前の記録と各エリアの保存は残っています。' });
   const lease = beginFirstPersonSession();
   expect(await recordStageHistory([vaultCheckpoint('clear')], lease)).toBe(false);
   expect(await saveVaultCheckpoint(vaultCheckpoint('length'), lease)).toBe(true);

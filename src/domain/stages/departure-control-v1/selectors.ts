@@ -21,7 +21,7 @@ export function selectDeparturePresentation(session: StageSession) {
   const text = session.cleared ? '退館は記録済み。危険は戻らない。' : session.staffDoorOpened ? '開いた職員出口の先が屋外。自分で歩いて出る。' :
     session.stopped ? '巡回体は停止した。職員出口の押し棒へ。' : session.isolated ? '隔離戸の向こうに収容済み。停止レバーを下ろす。' :
     !session.keyInstalled ? '横顔の余白から取った隔離キーを、同じ形の差込口へ。' : !session.procedureRead ? '図のある手順板を読み、受鈴器と隔離戸を確かめる。' :
-    session.doorMode !== 'idle' ? '扉の動きが終わるまで、操作ベイで見届ける。' : contained && clear ? '全身が床の収容境界内に入った。安全側から隔離する。' :
+    session.doorMode !== 'idle' ? '扉の動きが終わるまで、制御盤のそばで見届ける。' : contained && clear ? '全身が床の収容境界内に入った。安全側から隔離する。' :
     '呼び鈴は区画内の受鈴器につながる。見つかっていたら、棚で視線を切ってから鳴らす。';
   return { objective, hint: { text }, feedbackRevision: [session.keyInstalled, session.procedureRead, session.doorMode,
     session.isolated, session.stopped, session.staffDoorOpened, session.cleared, contained, clear].join(':') };
@@ -50,7 +50,7 @@ export function selectDepartureAction(session: StageSession, targetId: TargetId)
       if (!session.procedureRead) return result('locked', '隔離レバー：手順を確認する', '先に収容手順を読む。');
       if (session.doorMode !== 'idle' || session.doorProgress > 0) return result('operating', '隔離扉が動いている', '扉の動きが終わるまで待つ。');
       if (session.pose.position.x > -2.55 || session.pose.position.z < 8.2 || session.pose.position.z > 13.8)
-        return result('locked', '安全側から隔離する', '制御ベイの安全側へ戻る。', 'unsafeSide');
+        return result('locked', '安全側から隔離する', '制御盤のある安全な側へ戻る。', 'unsafeSide');
       if (!doorSweepClear(session.actor.motion.position)) return result('locked', '隔離扉の敷居を空ける', '巡回体が扉の可動範囲にいる。全身が奥へ入るまで待つ。', 'sweepOccupied');
       return actorFullyContained(session.actor.motion.position) ? result('ready', '隔離扉を閉じる', '全身の収容を確認。隔離扉を閉じられる。') :
         result('locked', '全身の収容を待つ', '巡回体の全身が床の収容境界に入るまで閉じられない。', 'actorOutside');

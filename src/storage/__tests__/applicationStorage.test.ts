@@ -128,6 +128,7 @@ describe('versioned persistence', () => {
     await AsyncStorage.setItem(LEGACY_APPLICATION_STORAGE_KEY, JSON.stringify(legacyData()));
     const loaded = await loadApplication();
     expect(loaded.status).toBe('blocked');
+    expect(loaded.message).toBe('保存した記録を読み込めませんでした。以前の記録は残っています。今回は変更を保存できません。');
     expect(await saveApplication(createDefaultApplication())).toBe(false);
     expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBe(raw);
     expect(await AsyncStorage.getItem(LEGACY_APPLICATION_STORAGE_KEY)).not.toBeNull();
@@ -173,11 +174,13 @@ describe('versioned persistence', () => {
   it('reports read and write failures without deleting existing data', async () => {
     await AsyncStorage.setItem(LEGACY_APPLICATION_STORAGE_KEY, JSON.stringify(legacyData()));
     jest.mocked(AsyncStorage.getItem).mockRejectedValueOnce(new Error('read failed'));
-    expect((await loadApplication()).status).toBe('blocked');
+    expect(await loadApplication()).toMatchObject({ status: 'blocked',
+      message: '保存した記録を読み込めませんでした。今回は変更を保存できません。' });
     expect(await saveApplication(createDefaultApplication())).toBe(false);
     jest.mocked(AsyncStorage.setItem).mockRejectedValueOnce(new Error('write failed'));
     const result = await loadApplication();
     expect(result.status).toBe('blocked');
+    expect(result.message).toBe('引き継いだ設定を保存できませんでした。以前の記録は残っています。');
     expect(result.application.bestMazeScore).toBe(432);
     expect(await AsyncStorage.getItem(LEGACY_APPLICATION_STORAGE_KEY)).not.toBeNull();
     expect(await saveApplication(createDefaultApplication())).toBe(false);
@@ -217,7 +220,7 @@ describe('versioned persistence', () => {
     await entered;
     expect(await resetApplicationStorage()).toBe(true);
     release?.(JSON.stringify(legacyData()));
-    expect((await loading).status).toBe('blocked');
+    expect(await loading).toMatchObject({ status: 'blocked', message: '読み込み中に記録の消去が始まりました。' });
     expect(await AsyncStorage.getItem(APPLICATION_STORAGE_KEY)).toBeNull();
     expect(await saveApplication(createDefaultApplication())).toBe(true);
     expect((await loadApplication()).application.bestMazeScore).toBe(0);

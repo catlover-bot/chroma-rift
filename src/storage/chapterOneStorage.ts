@@ -52,7 +52,7 @@ export function createChapterOneStorage(boundary: Boundary, storage: Storage = A
   async function read(lease: number): Promise<ChapterOneLoad> {
     try {
       const raw = await storage.getItem(CHAPTER_ONE_STORAGE_KEY);
-      if (!boundary.current(lease)) return { status: 'blocked', writable: false, message: '読み込み中にセッションが切り替わりました。' };
+      if (!boundary.current(lease)) return { status: 'blocked', writable: false, message: '読み込み中にプレイの状態が切り替わりました。' };
       if (raw === null) { latest = undefined; writable = true; loaded = true; return { status: 'empty', writable: true }; }
       const parsed = parseChapterOneSession(JSON.parse(raw));
       if (!parsed) throw new Error('unsupported campaign envelope');
@@ -61,7 +61,7 @@ export function createChapterOneStorage(boundary: Boundary, storage: Storage = A
     } catch {
       latest = undefined; writable = false; loaded = true;
       return { status: 'blocked', writable: false,
-        message: '第一章の記録を読み込めませんでした。原文を保持し、自動保存を停止しています。' };
+        message: '第一章の記録を読み込めませんでした。以前のプレイ記録を残し、自動保存を停止しています。' };
     }
   }
   return {

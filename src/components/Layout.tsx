@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 48,
     minWidth: 48,
+    maxWidth: '100%',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },

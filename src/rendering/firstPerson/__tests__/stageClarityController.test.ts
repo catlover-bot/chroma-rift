@@ -89,7 +89,7 @@ test.each([
   { name: 'center inside but shoulders outside', actor: { x: .95, y: 0, z: 18.1 }, unsafe: false, ready: false, reason: /全身が床の収容境界/ },
   { name: 'body in the moving-door sweep', actor: { x: 2.45, y: 0, z: 15.12 }, unsafe: false, ready: false, reason: /扉の可動範囲/ },
   { name: 'whole body clear of the sweep', actor: { ...BELL_RECEIVER, y: 0 }, unsafe: false, ready: true, reason: /全身の収容を確認/ },
-  { name: 'player on the unsafe side', actor: { ...BELL_RECEIVER, y: 0 }, unsafe: true, ready: false, reason: /安全側へ戻る/ },
+  { name: 'player on the unsafe side', actor: { ...BELL_RECEIVER, y: 0 }, unsafe: true, ready: false, reason: /制御盤のある安全な側へ戻る/ },
 ])('containment HUD and real command agree for $name', ({ actor, unsafe, ready, reason }) => {
   const checkpoint = departureBinding.restore({ ...departureBinding.checkpoint(departureBinding.create()),
     stageData: { ...carriedKeyEntry(), keyAvailable: false, keyInstalled: true, procedureRead: true } })?.checkpoint;

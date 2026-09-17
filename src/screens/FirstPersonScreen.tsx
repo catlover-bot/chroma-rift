@@ -13,8 +13,9 @@ import { stageDefinition } from '../domain/stageKit/definitions';
 import { stageCompletionTailMovement, stageModule } from '../domain/stageKit/modules';
 import { isStageSession as isMirrorSession } from '../domain/stages/mirror-corridor-v1/session';
 import { canCloseGalleryExit, galleryPowerCount } from '../domain/gallery';
-import * as Clipboard from 'expo-clipboard';
-import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES } from '../audio';
+import { createGalleryAudio, DEFAULT_AUDIO_PREFERENCES, normalizeAudioPreferences, type AudioAvailability } from '../audio';
+import { PLAYER_TEXT } from '../app/playerText';
+import { SupportDetails } from './SupportInformation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, AppState, Modal, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,10 +24,9 @@ import { GLYPH_LABELS, PALETTE_IDS, PALETTE_LABELS, sealDescription } from '../d
 import { ActionButton, Body, ChoiceRow, Heading, SettingSwitch } from '../components/Layout';
 import { CHAPTER_ID, createCheckpoint, hintForRuntime, type CheckpointState, type HintStage, type InteractableId } from '../domain/firstPerson';
 import { playSelectionHaptic } from '../platform/haptics';
-import { buildIdentity, internalDiagnosticsEnabled } from '../platform/buildIdentity';
 import { FirstPersonCanvas } from '../rendering/firstPerson/FirstPersonCanvas';
 import { rememberFailureSnapshot } from '../rendering/firstPerson/failureLedger';
-import { serializeDiagnostics, serializeFailureDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
+import { recordFirstFailure, serializeDiagnostics, serializeFailureDiagnostics, setDiagnosticsOpen, updateDiagnosticContext, updateStageKitDiagnostics } from '../rendering/firstPerson/diagnostics';
 import { RawGLProof } from '../rendering/firstPerson/RawGLProof';
 import { attachControllerAudio, prepareControllerNotebook, queueControllerPresentationFeedback, setControllerHorrorIntensity, setControllerNotebookPreview, setControllerViewport, accessibleEmblemTargets, beginStageHoldController, commandController, compareController, controllerSnapshot, createController, createEmblemCommand, dispatchEmblemController, endStageHoldController, interactAccessibleEmblem, interactController, retireController, setControllerForeground, setControllerScreenReader, stopController } from '../rendering/firstPerson/runtimeController';
 import type { RuntimeSnapshot } from '../rendering/firstPerson/controllerTypes';
@@ -63,6 +63,8 @@ export type FirstPersonScreenProps = {
   onStoryPresented?: (beat: ChapterOneBeatId) => void;
   onCampaignNoiseObserved?: () => void;
   pauseForCampaignSave?: boolean;
+  campaignSessionId?: string | undefined;
+  campaignAreaId?: string | undefined;
   onRestart: () => void;
   onExit: () => void;
   scene?: 'chapter' | 'lab';
@@ -94,7 +96,7 @@ export function FirstPersonScreen(props: FirstPersonScreenProps) {
     onColorChange={setNeutralColors} onSessionChange={(checkpoint, mode, retry) => setSession((previous) => ({ checkpoint: previous.mode === 'chapter' ? checkpoint : previous.checkpoint, mode, attempt: previous.attempt + (retry ? 1 : 0) }))} />;
 }
 
-function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, pauseForCampaignSave = false, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, firstFailureText, onFirstFailure, onRecoveryReady, onColorChange, onSessionChange }: FirstPersonScreenProps & {
+function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboarding = DEFAULT_FIRST_PERSON_ONBOARDING, onOnboardingChange, preferredColor, onSettingsChange, onControlsChange, onCheckpoint, onValidatedEntry, onComplete, storyBeat, onStoryPresented, onCampaignNoiseObserved, pauseForCampaignSave = false, campaignSessionId, campaignAreaId, onRestart, onExit, scene = 'chapter', reviewOnly = false, startCheckpoint, attempt, renderMode, neutralColors, firstFailureText, onFirstFailure, onRecoveryReady, onColorChange, onSessionChange }: FirstPersonScreenProps & {
   startCheckpoint: CheckpointState | undefined; attempt: number; renderMode: RecoveryScene; neutralColors: boolean;
   firstFailureText: string | undefined; onFirstFailure: (record: string) => void; onRecoveryReady: () => void;
   onColorChange: (neutral: boolean) => void;
@@ -120,8 +122,9 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const [vaultComparisons, setVaultComparisons] = useState(() => controller.runtime.progress.vault ? createVaultComparisons(controller.runtime.progress.vault) : undefined);
   const openedReview = useRef(false);
   const [appActive, setAppActive] = useState(AppState.currentState !== 'background' && AppState.currentState !== 'inactive');
-  const [copyStatus, setCopyStatus] = useState('');
-  const [diagnosticText, setDiagnosticText] = useState('');
+  const [audioAvailability, setAudioAvailability] = useState<AudioAvailability>('available');
+  const initialAudioOptions = useRef({ preferences: settings.audio ?? DEFAULT_AUDIO_PREFERENCES, campaignSessionId, campaignAreaId });
+  const audioRecoveryIntent = useRef<'foreground' | 'user' | undefined>(undefined);
   const mounted = useRef(true);
   const failed = useRef(false);
   const completed = useRef(false);
@@ -180,13 +183,30 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
 
   useEffect(() => {
     if (scene !== 'chapter' || renderMode !== 'chapter') return;
-    const owner = createGalleryAudio({ sessionId: String(controller.runtime.session), areaId: controller.runtime.chapterId ?? CHAPTER_ID });
-    return attachControllerAudio(controller, owner);
+    let current = true;
+    const context = initialAudioOptions.current;
+    const owner = createGalleryAudio({ sessionId: String(controller.runtime.session), runtimeSession: controller.runtime.session,
+      areaId: controller.runtime.chapterId ?? CHAPTER_ID, preferences: context.preferences,
+      ...(context.campaignSessionId ? { campaignSessionId: context.campaignSessionId } : {}),
+      ...(context.campaignAreaId ? { campaignAreaId: context.campaignAreaId } : {}),
+      onAvailability: value => { if (current && mounted.current) setAudioAvailability(value); } });
+    const detach = attachControllerAudio(controller, owner);
+    return () => { current = false; detach(); };
   }, [controller, renderMode, scene]);
   useEffect(() => { setControllerViewport(controller, sceneWidth, sceneHeight); }, [controller, sceneWidth, sceneHeight]);
   useEffect(() => { setControllerHorrorIntensity(controller, settings.horrorIntensity ?? 'standard'); if (settings.horrorIntensity === 'subdued') controller.audio?.stopIllusion(); }, [controller, settings.horrorIntensity]);
   useEffect(() => { controller.audio?.updatePreferences(settings.audio ?? DEFAULT_AUDIO_PREFERENCES); }, [controller, settings.audio]);
-  useEffect(() => { controller.audio?.setActive(audioActive); controller.audio?.setPreviewActive(notesOpen && appActive && ready && !error); }, [appActive, audioActive, controller, error, notesOpen, ready]);
+  useEffect(() => {
+    controller.audio?.setActive(audioActive, audioActive ? 'active' : error ? 'render-failure' : !appActive ? 'background'
+      : !ready ? 'unready' : notesOpen ? 'notes' : menu === 'settings' || showDiagnostics ? 'settings'
+      : paused ? 'paused' : 'ending');
+    controller.audio?.setPreviewActive(notesOpen && appActive && ready && !error);
+    if (audioActive && audioRecoveryIntent.current) {
+      const intent = audioRecoveryIntent.current;
+      audioRecoveryIntent.current = undefined;
+      void controller.audio?.recover(intent);
+    }
+  }, [appActive, audioActive, controller, error, menu, notesOpen, paused, ready, showDiagnostics]);
 
   useEffect(() => {
     if (entryReported.current || !ready || !appActive || paused || error || failed.current || !mounted.current ||
@@ -283,6 +303,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     setNotice('');
     stopController(controller);
     commandController(controller, { type: 'resume' });
+    audioRecoveryIntent.current = 'user';
     publish(controllerSnapshot(controller));
   };
   useEffect(() => {
@@ -306,6 +327,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const fail = useCallback((message: string) => {
     if (!mounted.current || failed.current) return;
     failed.current = true;
+    if (!controller.diagnostics.firstFailure) recordFirstFailure(controller.diagnostics, new Error(message), 'screen', 'SCREEN_FAILURE');
     controller.audio?.setPreviewActive(false);
     setControllerNotebookPreview(controller, undefined);
     setNotesOpen(false);
@@ -338,6 +360,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
     updateDiagnosticContext(controller.diagnostics, { effectiveControls: { mode: effectiveControls.mode, reason: effectiveControls.reason }, appActive, paused, sceneMode: renderMode === 'chapter' ? scene : renderMode });
   }, [appActive, controller, effectiveControls.mode, effectiveControls.reason, paused, renderMode, scene]);
   const diagnosticsForDisplay = useCallback(() => {
+    updateStageKitDiagnostics(controller.diagnostics, controller, controllerSnapshot(controller));
     if (!error) return serializeDiagnostics(controller.diagnostics);
     if (firstFailureText) return firstFailureText;
     try { return serializeCurrentFailure(); } catch { return '{"label":"FIRST_FAILURE","error":"diagnostic-unavailable"}'; }
@@ -345,18 +368,15 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   useEffect(() => {
     setDiagnosticsOpen(controller.diagnostics, showDiagnostics);
     if (showDiagnostics) stopController(controller);
-    if (!showDiagnostics) return;
-    const refresh = () => { updateStageKitDiagnostics(controller.diagnostics,controller,controllerSnapshot(controller)); setDiagnosticText(diagnosticsForDisplay()); };
-    refresh();
-    const timer = appActive ? setInterval(refresh, 500) : undefined;
-    return () => { if (timer !== undefined) clearInterval(timer); setDiagnosticsOpen(controller.diagnostics, false); };
-  }, [appActive, controller, showDiagnostics, diagnosticsForDisplay]);
+    return () => { setDiagnosticsOpen(controller.diagnostics, false); };
+  }, [controller, showDiagnostics]);
   useEffect(() => {
     const listener = AppState.addEventListener('change', (state) => {
       if (!mounted.current) return;
       if (state !== 'active' && (controller.runtime.gallery || controller.runtime.vault)) prepareControllerNotebook(controller);
       setControllerForeground(controller, state === 'active');
       setAppActive(state === 'active');
+      if (state === 'active') audioRecoveryIntent.current = 'foreground';
       if (state !== 'active') { controller.audio?.setPreviewActive(false); setControllerNotebookPreview(controller, undefined); setNotesOpen(false); }
       if (!failed.current && state !== 'active') { setMenu('pause'); pause(); }
     });
@@ -505,38 +525,27 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const intro = !simple && scene === 'chapter' && !snapshot.tutorial.complete;
   const moveSide = controls.handedness === 'right' ? '左' : '右';
   const lookSide = controls.handedness === 'right' ? '右' : '左';
-  const copyDiagnostics = async () => {
-    try {
-      await Clipboard.setStringAsync(diagnosticsForDisplay());
-      if (mounted.current) setCopyStatus('診断をコピーしました。外部へ送信していません。');
-    } catch { if (mounted.current) setCopyStatus('コピーできませんでした。診断はこの画面で確認できます。'); }
-  };
-  const detailedDiagnostics = internalDiagnosticsEnabled();
-  const identity = buildIdentity();
-  const diagnostics = detailedDiagnostics ? <Modal visible={showDiagnostics && (!pauseForCampaignSave || !!error)} transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
+  const diagnostics = showDiagnostics && (!pauseForCampaignSave || !!error) ? <Modal visible transparent animationType="none" onRequestClose={() => setShowDiagnostics(false)}>
     <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
-      <Heading>描画の診断</Heading>
       <ScrollView contentContainerStyle={styles.menuContent}>
-        <Body muted>{error ? '最初の故障記録です。コピーは端末内だけで行われ、外部へ自動送信されません。' : '数値だけでは、部屋が見えているとは判断できません。'}</Body>
-        <Text selectable style={styles.diagnosticText} testID="render-diagnostic-record">{diagnosticText}</Text>
-        <ActionButton label={error ? '診断情報をコピー' : '診断をコピー'} onPress={() => void copyDiagnostics()} />
-        {copyStatus ? <Body>{copyStatus}</Body> : null}
+        <SupportDetails renderDiagnostics={diagnosticsForDisplay} onClose={() => setShowDiagnostics(false)} />
         {__DEV__ && renderMode === 'chapter' ? <ActionButton label="R3Fの箱・床・壁を確認" onPress={() => changeSession('proof')} /> : null}
         {__DEV__ && renderMode === 'proof' ? <ActionButton label="箱が見えない：生のGLを確認" onPress={() => changeSession('raw-gl')} /> : null}
         {__DEV__ && renderMode !== 'chapter' ? <ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /> : null}
-        <ActionButton label="診断を閉じる" onPress={() => setShowDiagnostics(false)} />
       </ScrollView>
     </View></View>
   </Modal> : null;
 
-  if (error) return <SafeAreaView style={styles.screen}><ScrollView contentContainerStyle={styles.errorCard} accessibilityElementsHidden={showDiagnostics} importantForAccessibility={showDiagnostics ? 'no-hide-descendants' : 'auto'}><Heading>3Dを表示できませんでした</Heading><Body>{error}</Body>
-    <Text selectable style={styles.failureIdentity} testID="render-build-identity">{`コード ${identity.code} / ${identity.profileMarker} / iOS build ${identity.nativeBuild}`}</Text>
-    {detailedDiagnostics ? <ActionButton label="詳細を表示" onPress={() => setShowDiagnostics(true)} />
-      : <Text selectable style={styles.failureIdentity}>{`エラー番号 ${controller.diagnostics.firstFailure?.reasonCode ?? 'UNKNOWN'}`}</Text>}
-    <ActionButton label="表示を再試行" onPress={() => changeSession(renderMode, true)} disabled={attempt >= MAX_RENDER_RETRIES} />
-    <Body muted>{attempt >= MAX_RENDER_RETRIES ? detailedDiagnostics ? 'この起動での再試行を終えました。診断を確認してホームへ戻れます。' : 'この起動での再試行を終えました。ホームへ戻れます。' : '確定済みの進行を保ち、安全な再開位置から描画を作り直します。'}</Body>
+  if (error) return <SafeAreaView style={styles.screen}><ScrollView contentContainerStyle={styles.errorCard} accessibilityElementsHidden={showDiagnostics} importantForAccessibility={showDiagnostics ? 'no-hide-descendants' : 'auto'}><Heading>{PLAYER_TEXT.screenUnavailable}</Heading>
+    <ActionButton label={PLAYER_TEXT.details} onPress={() => setShowDiagnostics(true)} />
+    <ActionButton label={PLAYER_TEXT.retry} onPress={() => changeSession(renderMode, true)} disabled={attempt >= MAX_RENDER_RETRIES} />
+    <Body muted>{attempt >= MAX_RENDER_RETRIES ? '今回はこれ以上やり直せません。詳しい情報を確認するか、ホームへ戻れます。' : PLAYER_TEXT.retryFromSafePlace}</Body>
     <ActionButton label="ホームへ戻る" onPress={onExit} />
   </ScrollView>{diagnostics}</SafeAreaView>;
+
+  const audioPreferences = normalizeAudioPreferences(settings.audio);
+  const audiblePreference = audioPreferences.enabled && (audioPreferences.musicVolume > 0 || (audioPreferences.environmentVolume ?? 0) > 0 || audioPreferences.effectsVolume > 0);
+  const audioFailed = audioAvailability !== 'available' && audiblePreference;
 
   const simpleButtons = <View style={styles.simpleControls} testID="button-movement-controls">
     <GameButton sessionKey={controlSessionKey} label="左を向く" onPress={() => turn(Math.PI / 8)} disabled={movementBlocked} />
@@ -643,8 +652,8 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
         {intro && snapshot.tutorial.moved && !snapshot.tutorial.looked ? <View pointerEvents="none" style={[styles.tutorial, { left: layout.look.left, width: layout.look.width, top: layout.look.top + 30 }]}><Text style={styles.tutorialText}>{lookSide}側をドラッグして見回す</Text></View> : null}
       </> : null}
       {manipulating ? <ScrollView style={[styles.bottom, { height: deviceControlsHeight, maxHeight: deviceControlsHeight }]} testID={theatre ? "theatre-device-scroll" : vault ? "vault-device-scroll" : "gallery-device-scroll"} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.deviceContent}>{deviceControls}</ScrollView> : null}
-      {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>部屋の描画を準備しています…</Text>{detailedDiagnostics ? <><Text selectable style={styles.failureIdentity}>{identity.code}</Text><ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /></> : null}</View> : null}
-      {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !manipulating && !compact && !independentChapter ? <View pointerEvents="box-none" style={styles.bottom}>
+      {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>{PLAYER_TEXT.preparing}</Text><ActionButton label={PLAYER_TEXT.details} onPress={() => setShowDiagnostics(true)} /></View> : null}
+      {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label={PLAYER_TEXT.details} onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !manipulating && !compact && !independentChapter ? <View pointerEvents="box-none" style={styles.bottom}>
         <Text style={styles.target} accessibilityLabel={`照準：${targetLabel}`}>{targetLabel}</Text>
         {manipulating ? deviceControls : <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}
       </View> : null}
@@ -674,6 +683,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       <View style={styles.backdrop} accessibilityViewIsModal><View style={styles.menuCard}>
         <Heading>{menu === 'pause' ? 'ひと休み' : menu === 'hints' ? 'ヒント' : '操作と快適設定'}</Heading>
         <ScrollView contentContainerStyle={styles.menuContent}>
+          {audioFailed ? <View accessibilityLiveRegion="polite"><Body>{PLAYER_TEXT.audioUnavailable}</Body></View> : null}
           {menu === 'pause' ? <>
             <ActionButton label="再開する" onPress={resume} variant="primary" />
             <Body>{snapshot.objective}</Body>
@@ -692,7 +702,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
             <ActionButton label="ヒント" onPress={() => openMenu('hints')} disabled={!ready || renderMode !== 'chapter'} />
             <ActionButton label="操作と快適設定" onPress={() => setMenu('settings')} />
             <Body muted>{simple ? '一歩ずつ進み、向きを変えて、照準先を調べます。' : controls.handedness === 'left' ? '右側をドラッグして歩き、左側をドラッグして見回します。' : '左側をドラッグして歩き、右側をドラッグして見回します。'}</Body>
-            {detailedDiagnostics ? <ActionButton label="描画の診断" onPress={() => setShowDiagnostics(true)} /> : null}
+            <ActionButton label="サポート" onPress={() => setShowDiagnostics(true)} />
             <ActionButton label={theatre ? 'この映写室を最初から' : vault ? 'この収蔵庫を最初から' : chapterId === CHAPTER_ID ? 'この旧章を最初から' : gallery ? 'この展示室を最初から' : `${stageDefinition(chapterId)?.title??'この章'}を最初から`} onPress={restart} />
             <ActionButton label="ホームへ戻る" onPress={leave} />
           </> : menu === 'hints' ? <>
@@ -716,7 +726,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
               <SettingSwitch label="音" description="音楽・環境音・効果音を再生します。" value={settings.audio?.enabled ?? true} onValueChange={enabled => onSettingsChange({ ...settings, audio: { ...settings.audio, enabled, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled: settings.audio?.illusionEnabled ?? true } })} />
               <SettingSwitch label="演出音" description="任意の短い音の錯覚。控えめな怖さでは鳴りません。" value={settings.audio?.illusionEnabled ?? true} onValueChange={illusionEnabled => onSettingsChange({ ...settings, audio: { ...settings.audio, enabled: settings.audio?.enabled ?? true, musicVolume: settings.audio?.musicVolume ?? .18, effectsVolume: settings.audio?.effectsVolume ?? .35, illusionEnabled } })} />
             </> : null}
-            <Body>現在の操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}。理由：{effectiveControls.reason}。</Body>
+            <Body>現在の操作：{simple ? 'ボタン操作' : 'ドラッグ操作'}。</Body>
             <SettingSwitch label="ボタン操作" description="一歩ずつ進む・向きを変えるボタンを使います。オフにするとドラッグ操作になります。" value={controls.movementMode === 'simple'} onValueChange={(value) => changeMode(value ? 'simple' : 'standard')} />
             {effectiveControls.forced ? <Body muted>読み上げ中はボタンを表示します。保存したタッチ操作の希望は変わりません。</Body> : null}
             <Body>視点の感度</Body><ChoiceRow>{[0.6, 1, 1.5].map((value, index) => <ActionButton key={value} label={['ゆっくり', '標準', '速め'][index]!} variant={controls.sensitivity === value ? 'primary' : 'secondary'} onPress={() => onControlsChange({ ...controls, sensitivity: value })} />)}</ChoiceRow>

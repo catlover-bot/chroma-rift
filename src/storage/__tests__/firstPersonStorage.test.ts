@@ -75,6 +75,7 @@ describe('first-person persistence and isolation', () => {
     const checkpoint = solvedCheckpoint();
     const loaded = decodeFirstPersonStorage(JSON.stringify({ ...checkpoint, pose: { ...checkpoint.pose, position: { x: 99999, y: -10, z: 99999 } } }), null);
     expect(loaded.status).toBe('recovered');
+    expect(loaded.message).toBe('保存位置を安全な場所へ戻しました。');
     expect(loaded.checkpoint.progress).toEqual(checkpoint.progress);
     expect(restoreCheckpoint(loaded.checkpoint)?.recovered).toBe(false);
   });
@@ -94,6 +95,7 @@ describe('first-person persistence and isolation', () => {
     await AsyncStorage.setItem(FIRST_PERSON_CONTROLS_KEY, controlsDocument());
     const loaded = await loadFirstPersonStorage();
     expect(loaded.status).toBe('blocked');
+    expect(loaded.message).toBe('エリアの記録を読み込めませんでした。以前の記録を残し、安全な場所から始めます。このエリアの進行は保存されません。');
     expect(loaded.checkpoint).toEqual(freshCheckpoint());
     expect(loaded.checkpointWritable).toBe(false);
     expect(loaded.controlsWritable).toBe(true);
@@ -150,6 +152,20 @@ describe('first-person persistence and isolation', () => {
     const loaded = await loading;
     expect(loaded.status).toBe('blocked');
     expect(loaded.checkpoint).toEqual(freshCheckpoint());
+    expect(await saveFirstPersonCheckpoint(freshCheckpoint(), beginFirstPersonSession())).toBe(true);
+  });
+
+  it('explains that full reset started when it supersedes a pending load', async () => {
+    let release!: (raw: string) => void;
+    let began!: () => void;
+    const entered = new Promise<void>(resolve => { began = resolve; });
+    jest.mocked(AsyncStorage.getItem).mockImplementationOnce(() => new Promise<string>(resolve => { release = resolve; began(); }));
+    const loading = loadFirstPersonStorage();
+    await entered;
+    expect(await resetAllApplicationStorage()).toBe(true);
+    release(JSON.stringify(solvedCheckpoint()));
+    expect(await loading).toMatchObject({ status: 'blocked', checkpointWritable: false, controlsWritable: false,
+      message: '読み込み中に記録の消去が始まりました。' });
     expect(await saveFirstPersonCheckpoint(freshCheckpoint(), beginFirstPersonSession())).toBe(true);
   });
 

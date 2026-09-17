@@ -247,7 +247,7 @@ export function decodePersistedApplication(raw: string | null, systemReducedMoti
       (value.activeSetupSource !== undefined && !oneOf(['quick', 'detailed'] as const, value.activeSetupSource)) ||
       (value.activeSetupSource === 'quick' && value.quickSetupResult === undefined) ||
       (value.activeSetupSource === 'detailed' && value.calibrationProfile === undefined)
-    ) return { application: fallback, status: 'blocked', message: '保存データを読み込めませんでした。元のデータは保持しています。この起動中の変更は保存されません。' };
+    ) return { application: fallback, status: 'blocked', message: '保存した記録を読み込めませんでした。以前の記録は残っています。今回は変更を保存できません。' };
     return {
       status: value.schemaVersion === 1 ? 'migrated' : 'loaded',
       application: {
@@ -275,7 +275,7 @@ export function decodePersistedApplication(raw: string | null, systemReducedMoti
       },
     };
   } catch {
-    return { application: fallback, status: 'blocked', message: '保存データを読み込めませんでした。元のデータは保持しています。この起動中の変更は保存されません。' };
+    return { application: fallback, status: 'blocked', message: '保存した記録を読み込めませんでした。以前の記録は残っています。今回は変更を保存できません。' };
   }
 }
 
@@ -305,7 +305,7 @@ export async function loadApplication(systemReducedMotion = false): Promise<Appl
     const legacy = current === null ? await AsyncStorage.getItem(LEGACY_APPLICATION_STORAGE_KEY) : null;
     if (readEpoch !== writeEpoch) return {
       application: createDefaultApplication(systemReducedMotion), status: 'blocked',
-      message: '読み込み中に保存データがリセットされました。',
+      message: '読み込み中に記録の消去が始まりました。',
     };
     const result = decodePersistedApplication(current ?? legacy, systemReducedMotion);
     persistenceAllowed = result.status !== 'blocked';
@@ -313,13 +313,13 @@ export async function loadApplication(systemReducedMotion = false): Promise<Appl
       const saved = await saveApplication(result.application);
       if (!saved) {
         if (readEpoch === writeEpoch) persistenceAllowed = false;
-        return { ...result, status: 'blocked', message: '設定の移行を保存できませんでした。以前のデータは保持しています。' };
+        return { ...result, status: 'blocked', message: '引き継いだ設定を保存できませんでした。以前の記録は残っています。' };
       }
     }
     return result;
   } catch {
     if (readEpoch === writeEpoch) persistenceAllowed = false;
-    return { application: createDefaultApplication(systemReducedMotion), status: 'blocked', message: '保存領域を読み込めませんでした。この起動中の変更は保存されません。' };
+    return { application: createDefaultApplication(systemReducedMotion), status: 'blocked', message: '保存した記録を読み込めませんでした。今回は変更を保存できません。' };
   }
 }
 

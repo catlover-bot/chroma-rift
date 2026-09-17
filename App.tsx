@@ -155,7 +155,7 @@ export default function App() {
       if (chapterOne.status === 'empty') {
         try {
           migration = proposeLegacyCampaignImport(await loadLegacyCampaignRaw(), `legacy-${Date.now()}`, APP_VERSION);
-        } catch { migrationError = '以前の記録を確認できませんでした。原文を保持しています。'; }
+        } catch { migrationError = '以前のプレイ記録を確認できませんでした。記録はそのまま残しています。'; }
       }
       if (!active) return;
       setChapterLease(hydrationLease);
@@ -298,7 +298,7 @@ export default function App() {
   const confirmNewCampaign = () => {
     const begin = () => prepareCampaign('new');
     if (!campaignRef.current && !campaignBlocked && (!campaignMigration || campaignMigration.status === 'none')) { begin(); return; }
-    Alert.alert('第一章を最初から', '現在の第一章の進行を新しい周回に置き換えます。旧ステージの原文と設定は保持します。', [
+    Alert.alert('第一章を最初から', '現在の第一章の進行を新しい周回に置き換えます。以前のエリアのプレイ記録と設定は保持します。', [
       { text: 'キャンセル', style: 'cancel' }, { text: '最初から始める', style: 'destructive', onPress: begin },
     ]);
   };
@@ -323,7 +323,7 @@ export default function App() {
     const saved = !!candidate && (intent === 'new' ? await restartChapterOne(candidate, lease)
       : intent === 'import' ? await adoptLegacyChapterOne(candidate, lease) : true);
     if (!candidate || !saved || !isFirstPersonSessionCurrent(lease)) {
-      setCampaignMessage('第一章の記録を準備できませんでした。原文は保持しています。もう一度お試しください。');
+      setCampaignMessage('第一章の記録を準備できませんでした。以前のプレイ記録は残しています。もう一度お試しください。');
       setResetting(false); resetInFlight.current = false; return;
     }
     campaignRef.current = candidate;
@@ -639,6 +639,7 @@ export default function App() {
     screen = !area ? <Screen><Text style={styles.replayBody}>エリアを読み込めませんでした。</Text><ActionButton label="ホームへ戻る" onPress={navigateHome}/></Screen> :
       <NativeFirstPersonGate
         key={`campaign-${run.areaId}-${run.token}`} scene="chapter" chapterId={area.stageId}
+        campaignAreaId={run.areaId} campaignSessionId={campaign?.runId}
         pauseForCampaignSave={!!campaignCheckpointSave || !!campaignTransition}
         storyBeat={!run.replay ? CHAPTER_ONE_BEATS.find(beat => campaign?.storyFired.includes(beat.id) && !campaign.storyPresented.includes(beat.id)) : undefined}
         onStoryPresented={beat => {
@@ -862,7 +863,7 @@ export default function App() {
         currentChapterName={campaignIntent || settingsReturn === 'welcome' ? '第一章「最後の退館者」' : STAGES.find(stage=>stage.id===state.selectedChapterId)?.title??'帰り道のない入口'}
         onResetChapter={() => { if (campaignIntent || settingsReturn === 'welcome') prepareCampaign('new'); else void restartChapter(); }}
         resetChapterPrompt={campaignIntent || settingsReturn === 'welcome' ? {
-          body: '第一章を最初から始める準備へ進みます。新しい周回で入場すると、第一章の現在の進行・発見・物語の提示記録を置き換えます。旧ステージの原文、他の章、表示と音の設定、調整結果は残ります。',
+          body: '第一章を最初から始める準備へ進みます。新しい周回で入場すると、第一章の現在の進行・発見・物語の提示記録を置き換えます。以前のエリアのプレイ記録、他の章、表示と音の設定、調整結果は残ります。',
           confirmLabel: '入場の準備へ',
         } : undefined}
         onBack={() => dispatch({ type: 'NAVIGATE', screen: settingsReturn })}

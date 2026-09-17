@@ -33,7 +33,7 @@ export function StageResultScreen({
           label="調整プロファイル"
           value={profile ? PROFILE_LABELS[profile.preference] : '未調整'}
         />
-        <Stat label="Depth Assist" value={settings.depthAssist ? 'オン' : 'オフ'} />
+        <Stat label="補助表示" value={settings.depthAssist ? 'オン' : 'オフ'} />
       </Panel>
       <ActionButton label="もう一度遊ぶ" onPress={onRetry} variant="primary" />
       <ActionButton label="ホームへ戻る" onPress={onHome} />

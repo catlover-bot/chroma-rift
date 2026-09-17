@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import * as Clipboard from 'expo-clipboard';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionButton } from '../components/Layout';
@@ -9,8 +7,6 @@ import type { LegacyImportProposal } from '../domain/campaign/migration';
 import type { ChapterOneSession } from '../domain/campaign/session';
 import type { CampaignDiscoveryHistory } from '../domain/campaign/discoveries';
 import { UI_COLORS } from '../theme/ui';
-import { buildIdentity, internalDiagnosticsEnabled } from '../platform/buildIdentity';
-import { recentFailureSnapshots } from '../rendering/firstPerson/failureLedger';
 
 type Props = {
   session?: ChapterOneSession | undefined;
@@ -38,28 +34,12 @@ type Props = {
  * exposed by this screen; discovery and migration remain separate records. */
 export function ChapterOneHomeScreen(props: Props) {
   const current = CHAPTER_ONE.areas.find(area => area.id === props.session?.currentArea);
-  const [showFailure, setShowFailure] = useState(false);
-  const [copyStatus, setCopyStatus] = useState('');
-  const internalDiagnostics = internalDiagnosticsEnabled();
-  const identity = buildIdentity();
-  const failureText = recentFailureSnapshots().join('\n\n');
   return <SafeAreaView style={styles.safe} edges={['top','right','bottom','left']}>
     <ScrollView contentContainerStyle={styles.content}>
       <Text style={styles.brand}>CHROMA RIFT</Text>
       <View style={styles.rule}/>
       <Text style={styles.eyebrow}>第一章</Text>
       <Text style={styles.title} accessibilityRole="header">最後の退館者</Text>
-      {internalDiagnostics ? <View style={styles.diagnosticCard}>
-        <Text selectable style={styles.small} testID="home-build-identity">{`コード ${identity.code} / ${identity.profileMarker} / iOS build ${identity.nativeBuild} / ${identity.bundleSource}`}</Text>
-        {failureText ? <>
-          <ActionButton label={showFailure ? '直前の描画診断を閉じる' : '直前の描画診断を表示'} onPress={() => setShowFailure(value => !value)} />
-          {showFailure ? <>
-            <Text selectable style={styles.failureText} testID="home-render-diagnostic-record">{failureText}</Text>
-            <ActionButton label="診断情報をコピー" onPress={() => { void Clipboard.setStringAsync(failureText).then(() => setCopyStatus('診断をコピーしました。')).catch(() => setCopyStatus('コピーできませんでした。画面の文字を選択できます。')); }} />
-            {copyStatus ? <Text style={styles.small}>{copyStatus}</Text> : null}
-          </> : null}
-        </> : null}
-      </View> : null}
       {props.showDiscoveries ? <>
         <Text style={styles.description}>実際に調べたり操作した記録。以前のクリア記録だけで未発見の項目は増えません。</Text>
         {CHAPTER_ONE.areas.map(area => <View key={area.id} style={styles.areaRow}>
@@ -105,19 +85,18 @@ export function ChapterOneHomeScreen(props: Props) {
         {props.migration?.status === 'ready' && !props.session ? <View style={styles.migration}>
           <Text style={styles.note}>以前のプレイ記録が見つかりました。エリア{String(props.migration.completedPrefix + 1).padStart(2,'0')}から引き継げます。</Text>
           <ActionButton label="記録を引き継ぐ" onPress={props.onImport}/>
-          <Text style={styles.small}>引き継がなくても、以前の記録の原文は残ります。</Text>
+          <Text style={styles.small}>引き継がなくても、以前のプレイ記録は残ります。</Text>
         </View> : null}
         {props.migration?.status === 'blocked' && !props.session ? <Text style={styles.warning}>
-          以前の記録の一部を読めません。原文を保持しています。第一章を新しく始めることはできます。
+          以前のプレイ記録の一部を読めません。記録はそのまま残しています。第一章を新しく始めることはできます。
         </Text> : null}
         {props.migration?.status === 'await-area' && !props.session ? <Text style={styles.warning}>
-          以前の記録を引き継ぐ入口を準備中です。原文を保持しています。
+          以前のプレイ記録を引き継ぐ入口を準備中です。記録はそのまま残しています。
         </Text> : null}
         {props.session ? <ActionButton label="第一章をはじめから" onPress={props.onNew}/> : null}
         <ActionButton label="エリアを振り返る" onPress={props.onAreas} disabled={props.loading}/>
         <ActionButton label="発見の記録" onPress={props.onDiscoveries} disabled={props.loading}/>
         <ActionButton label="設定" onPress={props.onSettings}/>
-        {__DEV__ && props.onLegacyStages ? <ActionButton label="旧ステージ一覧（開発用）" onPress={props.onLegacyStages}/> : null}
       </>}
       <View style={styles.rule}/>
       <Text style={styles.eyebrow}>第二章</Text>
@@ -148,6 +127,4 @@ const styles = StyleSheet.create({
   areaStatus: { color: UI_COLORS.textMuted, fontSize: 14 },
   planned: { color: UI_COLORS.textMuted, fontSize: 17 },
   footer: { color: '#6F7E76', fontSize: 12, marginTop: 28, letterSpacing: 1 },
-  diagnosticCard: { gap: 8, padding: 12, borderWidth: 1, borderColor: '#50645D', borderRadius: 10 },
-  failureText: { color: UI_COLORS.text, fontSize: 12, lineHeight: 18, fontFamily: 'monospace' },
 });

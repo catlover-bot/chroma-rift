@@ -7,6 +7,8 @@ import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, Se
 import type { AppSettings, EffectStrength, FirstPersonControls } from '../types/application';
 import { PALETTE_IDS, PALETTE_LABELS } from '../domain/emblem/color';
 import { APP_VERSION } from '../app/version';
+import { PLAYER_TEXT } from '../app/playerText';
+import { SupportInformation } from './SupportInformation';
 
 export function SettingsScreen({
   settings,
@@ -42,6 +44,8 @@ export function SettingsScreen({
   resetChapterPrompt?: { body: string; confirmLabel: string } | undefined;
 }) {
   const [information, setInformation] = useState<'about' | 'credits' | 'privacy' | 'support'>();
+  const [developerToolsOpen, setDeveloperToolsOpen] = useState(false);
+  const showDeveloperTools = __DEV__ && information === 'support' && developerToolsOpen;
   const toggleInformation = (section: typeof information) => setInformation(current => current === section ? undefined : section);
   const audio = normalizeAudioPreferences(settings.audio);
   const audioAvailability = getGalleryAudioAvailability();
@@ -67,8 +71,8 @@ export function SettingsScreen({
           }
         />
         <SettingSwitch
-          label="ハプティクス"
-          description="仕掛けを解いたときなどに、軽い触覚で知らせます。"
+          label="振動"
+          description="仕掛けを解いたときなどに、軽い振動で知らせます。"
           value={settings.haptics}
           onValueChange={(value) => set('haptics', value)}
         />
@@ -95,10 +99,9 @@ export function SettingsScreen({
       </Panel>
       <SectionTitle>音</SectionTitle>
       <Panel>
-        <SettingSwitch label="サウンド" description="無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。" value={audio.enabled} onValueChange={(enabled) => set('audio', { ...audio, enabled })} />
+        <SettingSwitch label="音" description="無音でも、すべての仕掛けを解けます。端末の消音設定を尊重します。" value={audio.enabled} onValueChange={(enabled) => set('audio', { ...audio, enabled })} />
         <SettingSwitch label="演出音" description="短い音の錯覚を使います。控えめな怖さでは再生しません。" value={audio.illusionEnabled ?? true} onValueChange={(illusionEnabled) => set('audio', { ...audio, illusionEnabled })} />
-        {audioAvailability === 'missing-native' ? <Body muted>音の再生には新しいDevelopment Buildが必要です。今の開発版でも、音なしで探索を続けられます。</Body> : null}
-        {audioAvailability === 'unavailable' ? <Body muted>音を再生できません。音なしで探索を続けられます。</Body> : null}
+        {audio.enabled && [audio.musicVolume, audio.environmentVolume, audio.effectsVolume].some(volume => (volume ?? 0) > 0) && audioAvailability !== 'available' ? <Body muted>{PLAYER_TEXT.audioUnavailable}</Body> : null}
         {(['musicVolume', 'environmentVolume', 'effectsVolume'] as const).map((field) => <Panel key={field}>
           <Body>{field === 'musicVolume' ? '音楽' : field === 'environmentVolume' ? '環境音' : '効果音'} {Math.round((audio[field] ?? 0) * 100)}%</Body>
           <ChoiceRow>{[0, 0.25, 0.5, 0.75, 1].map((volume) => <ActionButton key={volume}
@@ -106,7 +109,7 @@ export function SettingsScreen({
             onPress={() => set('audio', { ...audio, [field]: volume })} />)}</ChoiceRow>
         </Panel>)}
       </Panel>
-      <SectionTitle>{onLegacyMaze ? '色の展示と旧章の表示' : '色の展示'}</SectionTitle>
+      <SectionTitle>色の展示</SectionTitle>
       <Body muted>見え方を比べて選べます。奥行きの強さに決まった順序はありません。</Body>
       <ChoiceRow>
         {PALETTE_IDS.map((palette) => (
@@ -117,7 +120,7 @@ export function SettingsScreen({
           />
         ))}
       </ChoiceRow>
-      {onLegacyMaze ? <>
+      {showDeveloperTools && onLegacyMaze ? <>
         <SectionTitle>旧迷宮の色模様の強さ</SectionTitle>
         <ChoiceRow>
           {(['low', 'medium', 'high'] as const).map((strength) => (
@@ -139,7 +142,7 @@ export function SettingsScreen({
       <ActionButton
         label="保存データをリセット"
         onPress={() =>
-          Alert.alert('保存データをリセット', '第一章の本編進行、簡易・詳細調整、設定、旧スコア、各ステージの記録、音の設定、発見履歴を端末から削除します。', [
+          Alert.alert('保存データをリセット', '第一章の本編進行、簡易・詳細調整、設定、以前のスコア、各エリアの記録、音の設定、発見履歴を端末から削除します。', [
             { text: 'キャンセル', style: 'cancel' },
             { text: 'リセット', style: 'destructive', onPress: onReset },
           ])
@@ -162,15 +165,18 @@ export function SettingsScreen({
       </Panel> : null}
       <ActionButton label="サポート" onPress={() => toggleInformation('support')} />
       {information === 'support' ? <Panel>
-        <Body>3Dの表示に失敗したときは、章の画面から「表示を再試行」を選べます。保存に失敗したときは画面の案内に従って再試行してください。</Body>
-        <Body muted>問い合わせ先は公開前に確定して案内します。</Body>
+        <Body>画面を表示できないときは、探索画面から「表示を再試行」を選べます。記録を保存できないときは、画面の案内に従ってもう一度お試しください。</Body>
+        <SupportInformation />
+        {__DEV__ && (onDeveloperLab || onFirstPersonLab || onLegacyJourney || onLegacyStages || onLegacyMaze) ? <ActionButton label={developerToolsOpen ? '開発用の道具を閉じる' : '開発用の道具'} onPress={() => setDeveloperToolsOpen(value => !value)} /> : null}
+        {showDeveloperTools ? <>
+          {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
+          {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}
+          {onLegacyJourney ? <ActionButton label="旧2.5D迷宮（開発用）" onPress={onLegacyJourney} /> : null}
+          {onLegacyStages ? <ActionButton label="旧ステージ一覧（開発用）" onPress={onLegacyStages} /> : null}
+          {onLegacyMaze ? <ActionButton label="旧レール検証（開発用）" onPress={onLegacyMaze} /> : null}
+        </> : null}
       </Panel> : null}
       <ActionButton label={backLabel} onPress={onBack} />
-      {onDeveloperLab ? <ActionButton label="開発者ラボ" onPress={onDeveloperLab} /> : null}
-      {onFirstPersonLab ? <ActionButton label="一人称ランタイム検証" onPress={onFirstPersonLab} /> : null}
-      {onLegacyJourney ? <ActionButton label="旧2.5D迷宮（開発用）" onPress={onLegacyJourney} /> : null}
-      {onLegacyStages ? <ActionButton label="旧ステージ一覧（開発用）" onPress={onLegacyStages} /> : null}
-      {onLegacyMaze ? <ActionButton label="旧レール検証（開発用）" onPress={onLegacyMaze} /> : null}
     </Screen>
   );
 }

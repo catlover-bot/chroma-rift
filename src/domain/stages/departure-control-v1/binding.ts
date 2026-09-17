@@ -25,7 +25,7 @@ function message(command: StageCommand, reason: ReturnType<typeof commandStage>[
   if (!accepted) return reason === 'tooFar' ? '近づいてから操作する。' : reason === 'coolingDown' ? '呼び鈴の回路が戻るのを待つ。' :
     reason === 'actorOutside' ? '巡回体の全身が収容区画に入るのを待つ。' :
     reason === 'sweepOccupied' ? '扉の可動範囲を空ける。' :
-    reason === 'unsafeSide' ? '制御ベイの安全側へ戻る。' :
+    reason === 'unsafeSide' ? '制御盤のある安全な側へ戻る。' :
     command.type === 'stop-control' ? DEPARTURE_COPY.isolationFirst : '手順と隔離キーを確認する。';
   switch (command.type) {
     case 'install-key': return '隔離キーを制御盤に差した。鍵はここに残る。';
