@@ -15,7 +15,7 @@ import { getWorld } from './chapter';
 import { CHANGED_REGION, CHAPTER, KEY_PUZZLE, OBSERVATION_POSE } from './legacyDefinition';
 import { EYE_HEIGHT, PLAYER_RADIUS } from './constants';
 import { occlusionCertificate } from './occlusion';
-import { clamp, isSafePose, MAX_FRAME_DELTA, segmentOccluded, updatePlayer } from './geometry';
+import { canAdvancePlayerPose, clamp, isSafePose, MAX_FRAME_DELTA, segmentOccluded, updatePlayer } from './geometry';
 import { evaluateInteraction } from './interaction';
 import type { CameraMatrices, ChapterRuntime, CheckpointState, HintStage, InteractableDefinition, InteractableId, MovementInput, PlayerPose, PuzzleDefinition, PuzzleState, Vec3, WorldGeometry } from './types';
 
@@ -58,7 +58,8 @@ export function canApplyReturnVariant(runtime: ChapterRuntime): boolean {
 export function evaluateRuntime(runtime: ChapterRuntime, nextPose: PlayerPose, dt: number, matrices?: CameraMatrices): ChapterRuntime {
   if (runtime.paused || runtime.progress.cleared) return runtime;
   const world = getWorld(runtime);
-  const pose = (runtime.gallery && runtime.gallery.mode !== 'explore' || runtime.vault && runtime.vault.mode !== 'explore' || runtime.theatre && (runtime.theatre.mode !== 'explore' || runtime.theatre.projectorArmed)) ? runtime.pose : isSafePose(nextPose, world) ? nextPose : runtime.pose;
+  const pose = (runtime.gallery && runtime.gallery.mode !== 'explore' || runtime.vault && runtime.vault.mode !== 'explore' || runtime.theatre && (runtime.theatre.mode !== 'explore' || runtime.theatre.projectorArmed)) ? runtime.pose
+    : isSafePose(nextPose, world) || canAdvancePlayerPose(runtime.pose, nextPose, world) ? nextPose : runtime.pose;
   const progress = runtime.progress;
   const elapsed = Number.isFinite(dt) ? clamp(dt, 0, MAX_FRAME_DELTA) : 0;
   const remaining = runtime.switchFeedback ? Math.max(0, runtime.switchFeedback.remainingSeconds - elapsed) : 0;

@@ -1,0 +1,45 @@
+PASS src/domain/__tests__/goal014SafetyCompatibility.test.tsx
+FAIL src/domain/campaign/__tests__/session.test.ts
+  ● the five area boundaries stay indoor until a verified stopped and outdoor finale
+
+    expect(received).toMatchObject(expected)
+
+    Matcher error: received value must be a non-null object
+
+    Received has value: undefined
+
+      175 |     ratchets: 3, cleared: true, pose: EXIT } };
+      176 |   const controlEntry = createCampaignAreaEntry('chapter-1-area-05', session, clearedMirror);
+    > 177 |   expect(controlEntry?.stageData).toMatchObject({keyAvailable:true,keyInstalled:false});
+          |                                   ^
+      178 |   const fourth = completeCampaignArea(session, session.currentArea, clearedMirror, controlEntry);
+      179 |   expect(fourth.accepted).toBe(true);
+      180 |   if (!fourth.accepted) return;
+
+      at Object.toMatchObject (src/domain/campaign/__tests__/session.test.ts:177:35)
+
+PASS src/domain/stageKit/__tests__/validateDefinitions.test.ts
+FAIL src/domain/campaign/__tests__/areaEntry.test.ts
+  ● registered entries use their own codecs and only the carried key authorizes 05
+
+    expect(received).toMatchObject(expected)
+
+    Matcher error: received value must be a non-null object
+
+    Received has value: undefined
+
+      17 |   const leavingMirror = { ...fresh, currentArea: 'chapter-1-area-04' as const, checkpoint: mirrorEntry };
+      18 |   expect(createCampaignAreaEntry('chapter-1-area-05', leavingMirror, mirrorEntry)).toBeUndefined();
+    > 19 |   expect(createCampaignAreaEntry('chapter-1-area-05', leavingMirror, clearedMirror)?.stageData).toMatchObject({
+         |                                                                                                 ^
+      20 |     keyAvailable: true, keyInstalled: false, stopped: false, cleared: false,
+      21 |   });
+      22 | });
+
+      at Object.toMatchObject (src/domain/campaign/__tests__/areaEntry.test.ts:19:97)
+
+Test Suites: 2 failed, 2 passed, 4 total
+Tests:       2 failed, 33 passed, 35 total
+Snapshots:   0 total
+Time:        1.887 s
+Ran all test suites within paths "src/domain/stageKit/__tests__/validateDefinitions.test.ts", "src/domain/campaign/__tests__/session.test.ts", "src/domain/campaign/__tests__/areaEntry.test.ts", "src/domain/__tests__/goal014SafetyCompatibility.test.tsx".

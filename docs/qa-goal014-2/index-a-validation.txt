@@ -1,0 +1,16 @@
+Command: ['npm', 'run', 'typecheck']
+
+> chroma-rift@1.0.0 typecheck
+> tsc --noEmit
+
+Command: ['npx', 'jest', '--runInBand', 'src/domain/firstPerson/__tests__/dynamicBody.test.ts', 'src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts', 'src/domain/stages/mirror-corridor-v1/stage.test.ts', 'src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx']
+PASS src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts
+PASS src/domain/stages/mirror-corridor-v1/stage.test.ts
+PASS src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx (10.268 s)
+PASS src/domain/firstPerson/__tests__/dynamicBody.test.ts
+
+Test Suites: 4 passed, 4 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        14.14 s
+Ran all test suites matching /src\/domain\/firstPerson\/__tests__\/dynamicBody.test.ts|src\/domain\/stages\/mirror-corridor-v1\/fairEscapeP0.test.ts|src\/domain\/stages\/mirror-corridor-v1\/stage.test.ts|src\/rendering\/firstPerson\/__tests__\/mirrorHoldRelease.test.tsx/i.

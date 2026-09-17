@@ -1,0 +1,24 @@
+PASS src/domain/campaign/__tests__/session.test.ts
+PASS src/domain/campaign/__tests__/areaEntry.test.ts
+PASS src/domain/__tests__/goal014SafetyCompatibility.test.tsx
+PASS src/domain/stages/mirror-corridor-v1/stage.test.ts
+PASS src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts
+PASS src/storage/__tests__/firstPersonStorage.test.ts
+PASS src/storage/__tests__/stageJournalStorage.test.ts
+PASS src/domain/stages/departure-control-v1/doorVisibility.test.ts
+PASS src/storage/__tests__/applicationStorage.test.ts
+PASS src/domain/stageKit/__tests__/validateDefinitions.test.ts
+PASS src/storage/__tests__/chapterOneStorage.test.ts
+PASS src/domain/campaign/__tests__/migration.test.ts
+PASS src/domain/firstPerson/__tests__/dynamicBody.test.ts
+PASS src/domain/vault/__tests__/checkpoint.test.ts
+PASS src/storage/__tests__/moduleStageStorage.test.ts
+PASS src/domain/stages/departure-control-v1/stage.test.ts
+PASS src/domain/stages/stage-kit-probe/stage.test.ts
+PASS src/domain/stages/mirror-corridor-v1/gateMotion.test.ts
+
+Test Suites: 18 passed, 18 total
+Tests:       174 passed, 174 total
+Snapshots:   0 total
+Time:        2.376 s, estimated 4 s
+Ran all test suites within paths "src/storage/__tests__/firstPersonStorage.test.ts", "src/storage/__tests__/stageJournalStorage.test.ts", "src/storage/__tests__/chapterOneStorage.test.ts", "src/storage/__tests__/applicationStorage.test.ts", "src/storage/__tests__/moduleStageStorage.test.ts", "src/domain/stageKit/__tests__/validateDefinitions.test.ts", "src/domain/vault/__tests__/checkpoint.test.ts", "src/domain/__tests__/goal014SafetyCompatibility.test.tsx", "src/domain/stages/stage-kit-probe/stage.test.ts", "src/domain/stages/departure-control-v1/stage.test.ts", "src/domain/stages/departure-control-v1/doorVisibility.test.ts", "src/domain/stages/mirror-corridor-v1/stage.test.ts", "src/domain/stages/mirror-corridor-v1/gateMotion.test.ts", "src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts", "src/domain/campaign/__tests__/session.test.ts", "src/domain/campaign/__tests__/areaEntry.test.ts", "src/domain/campaign/__tests__/migration.test.ts", "src/domain/firstPerson/__tests__/dynamicBody.test.ts".

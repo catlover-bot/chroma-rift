@@ -1,0 +1,99 @@
+FAIL src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx
+  ✕ held left contact accepts fresh retreat intent after right end without replaying its old vector (42 ms)
+  ✕ held left contact accepts fresh retreat intent after right cancel without replaying its old vector (19 ms)
+  ✕ third tooth auto-releases through a label rerender and late touchEnd without a second activation (73 ms)
+  ✕ third tooth auto-releases through a label rerender and late touchCancel without a second activation (53 ms)
+
+  ● held left contact accepts fresh retreat intent after right end without replaying its old vector
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: null
+
+      43 |   await fireEvent(stick, 'touchMove', event(point(1, 40, 650)));
+      44 |   advanceController(controller, 1 / 60, camera);
+    > 45 |   expect(controller.input.stickPointer).toBe(1);
+         |                                         ^
+      46 |   expect(controller.runtime.pose.position.z).toBeLessThan(before.z);
+      47 |   await fireEvent(stick, phase === 'end' ? 'touchEnd' : 'touchCancel', event(point(1, 40, 650)));
+      48 |   expect(controller.input.stickPointer).toBeNull();
+
+      at toBe (src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx:45:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● held left contact accepts fresh retreat intent after right cancel without replaying its old vector
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: null
+
+      43 |   await fireEvent(stick, 'touchMove', event(point(1, 40, 650)));
+      44 |   advanceController(controller, 1 / 60, camera);
+    > 45 |   expect(controller.input.stickPointer).toBe(1);
+         |                                         ^
+      46 |   expect(controller.runtime.pose.position.z).toBeLessThan(before.z);
+      47 |   await fireEvent(stick, phase === 'end' ? 'touchEnd' : 'touchCancel', event(point(1, 40, 650)));
+      48 |   expect(controller.input.stickPointer).toBeNull();
+
+      at toBe (src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx:45:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● third tooth auto-releases through a label rerender and late touchEnd without a second activation
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "holding": null,
+    +   "holding": "winch",
+        "ratchets": 3,
+      }
+
+      60 |   await act(() => { for (let frame = 0; frame < 120; frame++) advanceController(controller, 1 / 60, camera); });
+      61 |   await view.rerender(button());
+    > 62 |   expect(controller.runtime.stageSession?.value).toMatchObject({ ratchets: 3, holding: null });
+         |                                                  ^
+      63 |   expect(controller.input.releaseBarrierMode).toBe('owners');
+      64 |   await fireEvent(view.getByTestId('hold'), ending, event(point(2, 320, 700)));
+      65 |   await fireEvent.press(view.getByTestId('hold'), event(point(2, 320, 700)));
+
+      at toMatchObject (src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx:62:50)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● third tooth auto-releases through a label rerender and late touchCancel without a second activation
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "holding": null,
+    +   "holding": "winch",
+        "ratchets": 3,
+      }
+
+      60 |   await act(() => { for (let frame = 0; frame < 120; frame++) advanceController(controller, 1 / 60, camera); });
+      61 |   await view.rerender(button());
+    > 62 |   expect(controller.runtime.stageSession?.value).toMatchObject({ ratchets: 3, holding: null });
+         |                                                  ^
+      63 |   expect(controller.input.releaseBarrierMode).toBe('owners');
+      64 |   await fireEvent(view.getByTestId('hold'), ending, event(point(2, 320, 700)));
+      65 |   await fireEvent.press(view.getByTestId('hold'), event(point(2, 320, 700)));
+
+      at toMatchObject (src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx:62:50)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 4 total
+Snapshots:   0 total
+Time:        1.63 s, estimated 2 s
+Ran all test suites matching /src\/rendering\/firstPerson\/__tests__\/mirrorHoldRelease.test.tsx/i.

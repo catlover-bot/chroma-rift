@@ -1,0 +1,15 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "check"
+  ],
+  "head": "5bd34f26b65558e8da1cffd9d22ee93c0db78258",
+  "startedAtUTC": "2026-09-17T15:17:00.523399+00:00",
+  "finishedAtUTC": "2026-09-17T15:23:15.852572+00:00",
+  "exitCode": 0,
+  "elapsedSeconds": 375.329,
+  "sourceFilesChecked": 532,
+  "changedSources": [],
+  "logSha256": "78e8b5a28032b7e2ccfb36d08eb78785654082f77ca883e8e7f607d81b0954ea"
+}

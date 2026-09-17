@@ -172,7 +172,7 @@ test('the five area boundaries stay indoor until a verified stopped and outdoor 
   }
   const mirrorEntry = session.checkpoint, mirror = parseMirrorCheckpoint(mirrorEntry.stageData)!;
   const clearedMirror = { ...mirrorEntry, stageData: { ...mirror, keyTaken: true, practiced: true,
-    ratchets: 3, cleared: true, pose: EXIT } };
+    ratchets: 3, gateCrossed: true, cleared: true, pose: EXIT } };
   const controlEntry = createCampaignAreaEntry('chapter-1-area-05', session, clearedMirror);
   expect(controlEntry?.stageData).toMatchObject({keyAvailable:true,keyInstalled:false});
   const fourth = completeCampaignArea(session, session.currentArea, clearedMirror, controlEntry);

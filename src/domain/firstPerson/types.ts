@@ -13,6 +13,9 @@ export type FloorRegion = { id: string; minX: number; maxX: number; minZ: number
 export type RoomVariant = 'entrance' | 'exit';
 export type CollisionVolume = {
   id: string; min: Vec3; max: Vec3; kind: 'wall' | 'door' | 'device'; opaque: boolean;
+  /** Opt-in moving circular footprint; the authored box remains its LOS bound.
+   * Only existing overlap with this body may be reduced by escape movement. */
+  dynamicBody?: { radius: number };
 };
 export type InteractableId = StageTargetId;
 export type RectangleInteractionTarget = {

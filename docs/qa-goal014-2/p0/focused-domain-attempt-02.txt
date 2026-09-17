@@ -1,0 +1,29 @@
+PASS src/domain/firstPerson/__tests__/dynamicBody.test.ts
+PASS src/domain/firstPerson/__tests__/firstPerson.test.ts
+PASS src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts
+PASS src/domain/firstPerson/__tests__/startupGeometry.test.ts
+FAIL src/domain/stages/mirror-corridor-v1/stage.test.ts
+  ● practice is safe; unfinished winch fraction resets while three settled teeth survive cold restore
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "winch"
+    Received: null
+
+      68 |   }
+      69 |   expect(cold.ratchets).toBe(RATCHET_COUNT);
+    > 70 |   expect(cold.holding).toBe('winch');
+         |                        ^
+      71 |   expect(stageWorld(cold.ratchets,cold.keyTaken).solids.find(solid => solid.id === 'isolation-grate')?.min.y).toBe(3.6);
+      72 |   expect(cold.cleared).toBe(false);
+      73 |   expect(commandStage({ ...cold, pose: EXIT }, { sessionId: 'cold', seq: 2, targetId: 'mirror-corridor-exit', type: 'exit' }).accepted).toBe(false);
+
+      at Object.toBe (src/domain/stages/mirror-corridor-v1/stage.test.ts:70:24)
+
+PASS src/domain/stages/mirror-corridor-v1/gateMotion.test.ts
+
+Test Suites: 1 failed, 5 passed, 6 total
+Tests:       1 failed, 66 passed, 67 total
+Snapshots:   0 total
+Time:        2.856 s, estimated 3 s
+Ran all test suites within paths "src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts", "src/domain/stages/mirror-corridor-v1/stage.test.ts", "src/domain/stages/mirror-corridor-v1/gateMotion.test.ts", "src/domain/firstPerson/__tests__/dynamicBody.test.ts", "src/domain/firstPerson/__tests__/firstPerson.test.ts", "src/domain/firstPerson/__tests__/startupGeometry.test.ts".

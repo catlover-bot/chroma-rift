@@ -28,7 +28,7 @@ export function syncCamera(controller: RuntimeController, camera: THREE.Perspect
 /** Presentation readiness comes from the existing native render/present gate. */
 export function controllerCanInteract(controller: RuntimeController): boolean {
   const d = controller.diagnostics;
-  return !controller.retired && !controller.runtime.paused && !controller.runtime.progress.cleared &&
+  return !controller.retired && !controller.captureRecovery && !controller.runtime.paused && !controller.runtime.progress.cleared &&
     d.stage === 'ready' && d.rendererOwnership === 'live' && d.appActive !== false && !d.paused && !d.open &&
     (d.sceneMode === 'chapter' || d.sceneMode === 'lab') && !!controller.matrices;
 }

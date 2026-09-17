@@ -1,13 +1,14 @@
-import { updatePlayer } from '../../firstPerson/geometry';
+import { isSafePose, updatePlayer } from '../../firstPerson/geometry';
 import type { MovementInput, PlayerPose } from '../../firstPerson/types';
-import { EXIT, KEY_SAFE, POST_GATE, RATCHET_COUNT, RATCHET_SECONDS, SPAWN, STAGE_ID, WINCH_CENTER, WINCH_SAFE, grateY, stageWorld, type TargetId } from './definition';
+import { MIRROR_LAYOUT, RATCHET_COUNT, RATCHET_SECONDS, SPAWN, STAGE_ID, WINCH_CENTER, gateCrossedBy, gatePassable, grateY, mirrorRecoveryPose, stageWorld, type TargetId } from './definition';
+import { PLAYER_RADIUS } from '../../firstPerson/constants';
 import { parseStageCheckpoint, type StageCheckpoint } from './checkpoint';
 import { createMirrorActor, isMirrorActor, type MirrorActor, type MirrorNoise } from './actor';
 import { selectMirrorAction } from './selectors';
 
 export type StageSession = { stageId: typeof STAGE_ID; sessionId: string; lastSeq: number; pose: PlayerPose;
   figureInspected: boolean; mirrorInspected: boolean; keyTaken: boolean; practiced: boolean; ratchets: number;
-  holding: 'practice' | 'winch' | null; holdSeconds: number; gateLift: number; cleared: boolean;
+  holding: 'practice' | 'winch' | null; holdSeconds: number; gateLift: number; gateCrossed: boolean; cleared: boolean;
   actor: MirrorActor; noiseSequence: number; noise?: MirrorNoise | undefined; footstepDistance: number };
 export type StageCommand = { sessionId: string; seq: number; targetId: TargetId; type: 'inspect' | 'take-key' | 'start-hold' | 'release-hold' | 'exit' };
 export type CommandResult = { session: StageSession; accepted: boolean; reason: 'ready' | 'stale' | 'tooFar' | 'prerequisiteMissing' | 'wrong-target' };
@@ -23,6 +24,7 @@ export function isStageSession(value: unknown): value is StageSession {
     !isMirrorActor(value.actor) || !Number.isSafeInteger(value.noiseSequence) || Number(value.noiseSequence) < 0 ||
     typeof value.footstepDistance !== 'number' || !Number.isFinite(value.footstepDistance) || value.footstepDistance < 0 || value.footstepDistance >= .65 ||
     typeof value.gateLift !== 'number' || !Number.isFinite(value.gateLift) || value.gateLift < 0 || value.gateLift > grateY(Number(value.ratchets)) ||
+    typeof value.gateCrossed !== 'boolean' || value.gateCrossed && value.ratchets !== RATCHET_COUNT ||
     typeof value.cleared !== 'boolean' || value.ratchets !== 0 && (!value.keyTaken || !value.practiced) ||
     value.cleared && value.ratchets !== RATCHET_COUNT) return false;
   const pose = value.pose as Record<string, unknown>, position = pose.position as Record<string, unknown>;
@@ -39,7 +41,8 @@ export function createStageSession(sessionId: string, raw?: unknown): StageSessi
     figureInspected: checkpoint?.figureInspected ?? false, mirrorInspected: checkpoint?.mirrorInspected ?? false,
     keyTaken: checkpoint?.keyTaken ?? false,
     practiced: checkpoint?.practiced ?? false, ratchets: checkpoint?.ratchets ?? 0,
-    holding: null, holdSeconds: 0, gateLift: grateY(checkpoint?.ratchets ?? 0), cleared: checkpoint?.cleared ?? false,
+    holding: null, holdSeconds: 0, gateLift: grateY(checkpoint?.ratchets ?? 0), gateCrossed: checkpoint?.gateCrossed === true,
+    cleared: checkpoint?.cleared ?? false,
     actor: createMirrorActor(), noiseSequence: 0, footstepDistance: 0 };
 }
 export function stepStage(session: StageSession, input: MovementInput, dt: number): StageSession {
@@ -57,6 +60,18 @@ export function advanceStage(session: StageSession, dt: number): StageSession {
   const speed = (target - grateY(Math.max(0, session.ratchets - 1))) / .9;
   const gateLift = Math.min(target, session.gateLift + speed * dt);
   if (gateLift !== session.gateLift) session = { ...session, gateLift };
+  // Crossing is earned only by a supported physical pose beyond the actual
+  // grate. Later retreat/capture cannot erase that side of the checkpoint.
+  if (session.ratchets === RATCHET_COUNT && !session.holding && !session.gateCrossed && gateCrossedBy(session.pose, gateLift) &&
+    isSafePose(session.pose, stageWorld(session.ratchets, session.keyTaken, session.practiced, session.holding, session.actor.motion.position, gateLift))) {
+    session = { ...session, gateCrossed: true };
+  }
+  if (session.gateCrossed && !session.holding && gatePassable(gateLift) &&
+    session.pose.position.z >= MIRROR_LAYOUT.doorway.thresholdZ &&
+    Math.abs(session.pose.position.x) <= MIRROR_LAYOUT.doorway.halfWidth - PLAYER_RADIUS &&
+    isSafePose(session.pose, stageWorld(session.ratchets, session.keyTaken, session.practiced, session.holding, session.actor.motion.position, gateLift))) {
+    return { ...session, cleared: true };
+  }
   if (!session.holding) return session;
   const seconds = session.holdSeconds + dt;
   if (session.holding === 'practice') return session.practiced ? session : seconds >= .55
@@ -66,7 +81,7 @@ export function advanceStage(session: StageSession, dt: number): StageSession {
   if (seconds + 1e-9 < RATCHET_SECONDS) return { ...session, holdSeconds: seconds };
   const ratchets = Math.min(RATCHET_COUNT, session.ratchets + 1);
   const noiseSequence = session.noiseSequence + 1;
-  return { ...session, ratchets, holdSeconds: 0, noiseSequence,
+  return { ...session, ratchets, holding: ratchets === RATCHET_COUNT ? null : session.holding, holdSeconds: 0, noiseSequence,
     noise: { sequence: noiseSequence, position: { ...WINCH_CENTER }, strength: 1.2, kind: 'mechanism' } };
 }
 export function cancelStageHold(session: StageSession): StageSession {
@@ -101,15 +116,13 @@ export function commandStage(session: StageSession, command: StageCommand): Comm
     session.keyTaken && session.practiced && session.ratchets < RATCHET_COUNT)
     return { session: { ...consumed, holding: 'winch', holdSeconds: 0, noiseSequence: session.noiseSequence + 1,
       noise: { sequence: session.noiseSequence + 1, position: { ...WINCH_CENTER }, strength: 1.2, kind: 'mechanism' } }, accepted: true, reason: 'ready' };
-  if (command.type === 'exit' && command.targetId === 'mirror-corridor-exit' && !session.holding && session.ratchets === RATCHET_COUNT &&
-    session.pose.position.z >= 21.2)
-    return { session: { ...consumed, cleared: true, holding: null, holdSeconds: 0 }, accepted: true, reason: 'ready' };
+  // The legacy packet type remains decodable, but completion belongs to
+  // actual walking through the visible doorway, never a remote exit action.
   return { session: consumed, accepted: false, reason: 'prerequisiteMissing' };
 }
 export function checkpointStage(session: StageSession): StageCheckpoint {
-  const pose = session.cleared ? EXIT : session.ratchets === RATCHET_COUNT && session.pose.position.z > 17.5
-    ? POST_GATE : session.practiced || session.ratchets > 0 ? WINCH_SAFE : session.keyTaken ? KEY_SAFE : SPAWN;
+  const pose = mirrorRecoveryPose(session);
   return { schemaVersion: 1, stageId: STAGE_ID, figureInspected: session.figureInspected, mirrorInspected: session.mirrorInspected,
     keyTaken: session.keyTaken, practiced: session.practiced, ratchets: session.ratchets,
-    cleared: session.cleared, pose: { ...pose, position: { ...pose.position } } };
+    gateCrossed: session.gateCrossed, cleared: session.cleared, pose: { ...pose, position: { ...pose.position } } };
 }

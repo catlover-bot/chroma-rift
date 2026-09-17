@@ -28,12 +28,32 @@ import { createTutorial, recordTutorialGuide, recordTutorialMotion } from '../..
 import { evaluateInteraction } from '../../domain/firstPerson/interaction';
 import { interactionCue } from '../../domain/firstPerson/interactionCue';
 import type { CheckpointState, HintStage, InteractableDefinition, InteractableId } from '../../domain/firstPerson/types';
-import { clearTouchInput, requireAllPointersReleased, finishHeldRelease, consumeLook, createTouchInput, endPointer, validPointer, type PointerId } from './touchInput';
+import { clearTouchInput, clearHeldTouchInput, suspendTouchForHold, requireAllPointersReleased, finishHeldRelease, consumeLook, createTouchInput, endPointer, validPointer, type PointerId } from './touchInput';
 import { createFirstPersonDiagnostics, recordDiagnosticEvent } from './diagnostics';
 
 export type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 export { controllerCanInteract, syncCamera, worldForController } from './controllerContext';
 export { soundForControllerTransition } from './controllerTransitionAudio';
+
+export const CAPTURE_RECOVERY_SECONDS = 1.2;
+/** Presentation time, not a wall-clock timer: failed frames, menus and the
+ * background cannot consume the transition or the actor's startup grace. */
+export function presentControllerRecovery(controller: RuntimeController, delta: number): void {
+  const recovery = stageModule(controller.runtime.chapterId)?.actor?.recovery;
+  const pending = controller.captureRecovery;
+  if (!pending) return;
+  if (!recovery?.pending(controller.runtime) || pending.session !== controller.runtime.session) {
+    delete controller.captureRecovery; return;
+  }
+  const d = controller.diagnostics;
+  if (controller.retired || controller.runtime.paused || d.appActive === false || d.stage !== 'ready' ||
+    d.rendererOwnership !== 'live' || d.paused || d.open || d.sceneMode !== 'chapter') return;
+  if (!pending.presented) { pending.presented = true; return; }
+  pending.remaining = Math.max(0, pending.remaining - (Number.isFinite(delta) ? Math.max(0, Math.min(delta, .05)) : 0));
+  if (pending.remaining > 1e-7 || controller.input.releaseBarrier.length) return;
+  controller.runtime = recovery.resume(controller.runtime);
+  delete controller.captureRecovery;
+}
 
 export function createController(checkpoint?: CheckpointState, lab = false, tutorialCompleted = false, chapterId?: string): RuntimeController {
   const runtime = createInitialRuntime(lab ? undefined : checkpoint, undefined, chapterId);
@@ -82,6 +102,7 @@ export type ControllerAction = { type: 'pause' | 'resume' | 'aim' } | { type: 't
 /** Explicit commands are the only UI mutation boundary of the simulation store.
  * React holds immutable event snapshots; this small store advances independently. */
 export function commandController(controller: RuntimeController, action: ControllerAction): void {
+  if (controller.captureRecovery && (action.type === 'step' || action.type === 'turn' || action.type === 'aim')) return;
   // A movement/turn packet cannot turn a held lever into a movement shortcut.
   const held = stageModule(controller.runtime.chapterId)?.hold?.activeTarget(controller.runtime);
   if (held && ((action.type === 'step' && !stageInputPolicy(controller.runtime).move) ||
@@ -129,6 +150,15 @@ export function commandController(controller: RuntimeController, action: Control
   }
 }
 export function advanceController(controller: RuntimeController, delta: number, camera: THREE.PerspectiveCamera): void {
+  const recovery = stageModule(controller.runtime.chapterId)?.actor?.recovery;
+  if (controller.captureRecovery && !recovery?.pending(controller.runtime)) delete controller.captureRecovery;
+  if (controller.captureRecovery) {
+    requireAllPointersReleased(controller.input);
+    controller.simpleStep = 0;
+    controller.pendingFootstepDistance = controller.pendingActorFootstepDistance = 0;
+    syncCamera(controller, camera);
+    return;
+  }
   const completionModule = stageModule(controller.runtime.chapterId);
   if (!controller.retired && !controller.runtime.paused && controller.runtime.progress.cleared && (completionModule?.completionTail?.(controller.runtime) ?? 0) > 0) {
     const dt = Number.isFinite(delta) ? Math.max(0, Math.min(delta, .05)) : 0;
@@ -170,13 +200,15 @@ export function advanceController(controller: RuntimeController, delta: number, 
     stopController(controller, !controller.retired && !controller.runtime.paused && controller.runtime.progress.cleared); return;
   }
   const inputPolicy=stageInputPolicy(controller.runtime);
+  const heldBefore = stageModule(controller.runtime.chapterId)?.hold?.activeTarget(controller.runtime);
   if (!inputPolicy.move && !inputPolicy.dangerAdvances) {
-    clearTouchInput(controller.input); controller.simpleStep = 0;
+    (heldBefore ? clearHeldTouchInput : clearTouchInput)(controller.input); controller.simpleStep = 0;
     const matrices = syncCamera(controller, camera);
     controller.runtime = evaluateRuntime(controller.runtime, controller.runtime.pose, delta, matrices);
+    if (heldBefore && !stageModule(controller.runtime.chapterId)?.hold?.activeTarget(controller.runtime)) finishHeldRelease(controller.input);
     return;
   }
-  if (!inputPolicy.move) { clearTouchInput(controller.input); controller.simpleStep = 0; }
+  if (!inputPolicy.move) { (heldBefore ? clearHeldTouchInput : clearTouchInput)(controller.input); controller.simpleStep = 0; }
   const before = controller.runtime.pose;
   const look = consumeLook(controller.input);
   const looked = adjustLook(controller.runtime.pose, -look.x * 0.003 * controller.sensitivity, -look.y * 0.003 * controller.sensitivity * controller.verticalSensitivity);
@@ -194,6 +226,7 @@ export function advanceController(controller: RuntimeController, delta: number, 
   controller.runtime = controller.lab
     ? { ...controller.runtime, doorAOpen: controller.runtime.progress.sealA ? Math.min(1, controller.runtime.doorAOpen + dt / 1.25) : 0 }
     : evaluateRuntime(controller.runtime, pose, dt, matrices);
+  if (heldBefore && !stageModule(controller.runtime.chapterId)?.hold?.activeTarget(controller.runtime)) finishHeldRelease(controller.input);
   if (controller.runtime.theatre && controllerCanInteract(controller)) {
     const moved = Math.hypot(controller.runtime.pose.position.x - before.position.x, controller.runtime.pose.position.z - before.position.z);
     advanceTheatreControllerActor(controller, dt, moved, moved / (stepped ? .25 : Math.max(dt, 1e-6)), camera);
@@ -244,6 +277,11 @@ export function advanceController(controller: RuntimeController, delta: number, 
     if (actor.caught) {
       requireAllPointersReleased(controller.input); clearTouchInput(controller.input);
       controller.simpleStep = 0; controller.pendingFootstepDistance = 0;
+      controller.pendingActorFootstepDistance = 0;
+      controller.pendingActorPlants = []; controller.pendingStageSounds = [];
+      if (moduleActor.recovery?.pending(controller.runtime)) controller.captureRecovery = {
+        session: controller.runtime.session, remaining: CAPTURE_RECOVERY_SECONDS, presented: false,
+      };
       syncCamera(controller, camera);
     }
   }
@@ -280,8 +318,9 @@ export function controllerSnapshot(controller: RuntimeController): RuntimeSnapsh
     module?.present(controller.runtime).feedbackRevision ?? JSON.stringify(controller.runtime.progress)].join('|');
   const actorNotice = module?.actor && !stageInputPolicy(controller.runtime).dangerAdvances ? undefined : controller.actorNotice;
   const simpleKey=controller.runtime.stageSession&&module?.renderKind==='simple'?JSON.stringify(module.checkpoint(controller.runtime).stageData):'';
-  const key = `${stageTarget?.state ?? ''}|${stageTarget?.label ?? ''}|${stageTarget?.message ?? ''}|${(module?.completionTail?.(controller.runtime) ?? 0) > 0}|${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${actorNotice?.sequence ?? 0}|${controller.equipmentInvestigationSequence ?? ''}|${galleryKey}|${vaultKey}|${theatreKey}|${simpleKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
-  return { feedbackScope, ...(stageTarget ? { stageTarget } : {}), ...(acquisition ? { acquisition } : {}), ...(actorNotice ? { actorNotice } : {}),
+  const recovering = !!controller.captureRecovery;
+  const key = `${recovering}|${stageTarget?.state ?? ''}|${stageTarget?.label ?? ''}|${stageTarget?.message ?? ''}|${(module?.completionTail?.(controller.runtime) ?? 0) > 0}|${acquisition?.kind ?? ''}|${acquisition?.message ?? ''}|${objective}|${actorNotice?.sequence ?? 0}|${controller.equipmentInvestigationSequence ?? ''}|${galleryKey}|${vaultKey}|${theatreKey}|${simpleKey}|${JSON.stringify(controller.runtime.progress)}|${controller.runtime.alignment}|${target?.id ?? ''}|${target?.label ?? ''}|${cue.kind}|${cue.reason ?? ''}|${JSON.stringify(tutorial)}|${cue.target?.id ?? ''}|${direction}|${controller.runtime.paused}|${controller.viewCommandRevision}|${controller.runtime.emblem.presentation}|${controller.runtime.switchFeedback?.sequence ?? 0}|${controller.screenReader}|${accessibleEmblemTargets(controller).map((item) => item.id).join(',')}`;
+  return { recovering, feedbackScope, ...(stageTarget ? { stageTarget } : {}), ...(acquisition ? { acquisition } : {}), ...(actorNotice ? { actorNotice } : {}),
     ...(controller.equipmentInvestigationSequence===undefined?{}:{equipmentInvestigationSequence:controller.equipmentInvestigationSequence}),
     runtime: controller.runtime, tutorial, target, cue, objective, direction, key };
 }
@@ -360,7 +399,7 @@ export function beginStageHoldController(controller: RuntimeController, expected
   const next = hold.start(controller.runtime, expectedId);
   if (next === controller.runtime || hold.activeTarget(next) !== expectedId) return false;
   controller.runtime = next;
-  requireAllPointersReleased(controller.input);
+  suspendTouchForHold(controller.input);
   if (pointerId !== undefined && validPointer(pointerId) && !controller.input.releaseBarrier.includes(pointerId)) controller.input.releaseBarrier.push(pointerId);
   controller.feedbackMessage = hold.message?.('start', expectedId) ?? 'レバーを保持する。';
   return true;
@@ -509,6 +548,9 @@ export function flushControllerAudioFrame(controller: RuntimeController): void {
     }
   }
   if (!controllerCanInteract(controller)) {
+    if (controller.captureRecovery?.presented && actorEvents.includes('caught') && !controller.runtime.paused &&
+      controller.diagnostics.appActive !== false && controller.diagnostics.stage === 'ready')
+      controller.actorNotice = { sequence: (controller.actorNotice?.sequence ?? 0) + 1, text: '安全な場所へ戻った。' };
     if (stageCompletionTailMovement(controller.runtime) && !controller.retired && !controller.runtime.paused &&
       controller.diagnostics.stage === 'ready' && controller.diagnostics.appActive !== false) {
       controller.audio?.setListenerPosition(controller.runtime.pose.position);

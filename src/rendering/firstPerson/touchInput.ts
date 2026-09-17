@@ -2,6 +2,7 @@ import { normalizedInput } from '../../domain/firstPerson/geometry';
 
 export type PointerId = number | string;
 export type InputRegion = { width: number; height: number };
+type HeldContact = { id: PointerId; x: number; y: number };
 export const STICK_TRAVEL_RADIUS = 50;
 export const STICK_DIAMETER = 116;
 
@@ -19,6 +20,10 @@ export type FirstPersonInput = {
   releaseBarrierMode: 'all' | 'owners';
   stickPointer: PointerId | null;
   lookPointer: PointerId | null;
+  /** Only a normal mechanism release can rearm these contacts on fresh motion. */
+  heldContacts: { stick?: HeldContact; look?: HeldContact };
+  lastStickX: number;
+  lastStickY: number;
   right: number;
   forward: number;
   lookX: number;
@@ -31,7 +36,7 @@ export type FirstPersonInput = {
   lastLookY: number;
 };
 export function createTouchInput(): FirstPersonInput {
-  return { releaseBarrier: [], releaseBarrierMode: 'all', stickPointer: null, lookPointer: null, right: 0, forward: 0, lookX: 0, lookY: 0, stickOriginX: 0, stickOriginY: 0, stickOffsetX: 0, stickOffsetY: 0, lastLookX: 0, lastLookY: 0 };
+  return { releaseBarrier: [], releaseBarrierMode: 'all', stickPointer: null, lookPointer: null, heldContacts: {}, lastStickX: 0, lastStickY: 0, right: 0, forward: 0, lookX: 0, lookY: 0, stickOriginX: 0, stickOriginY: 0, stickOffsetX: 0, stickOffsetY: 0, lastLookX: 0, lastLookY: 0 };
 }
 export function clearTouchInput(input: FirstPersonInput): void {
   const { releaseBarrier, releaseBarrierMode } = input;
@@ -45,12 +50,44 @@ export function requireAllPointersReleased(input: FirstPersonInput): void {
   input.releaseBarrierMode = 'all';
   clearTouchInput(input);
 }
+/** Save contact positions, never their old movement/look vector. Capture and
+ * lifecycle cancellation still use the strict all-fingers release boundary. */
+export function suspendTouchForHold(input: FirstPersonInput): void {
+  const heldContacts = { ...input.heldContacts };
+  if (input.stickPointer !== null) heldContacts.stick = { id: input.stickPointer, x: input.lastStickX, y: input.lastStickY };
+  if (input.lookPointer !== null) heldContacts.look = { id: input.lookPointer, x: input.lastLookX, y: input.lastLookY };
+  requireAllPointersReleased(input);
+  input.heldContacts = heldContacts;
+}
+export function clearHeldTouchInput(input: FirstPersonInput): void {
+  const heldContacts = input.heldContacts;
+  clearTouchInput(input);
+  input.heldContacts = heldContacts;
+}
+/** Called by the contact's original region only. During a hold track its last
+ * point; after release reanchor there and accept only a new displacement. */
+export function moveHeldContact(input: FirstPersonInput, mode: 'stick' | 'look', id: PointerId, x: number, y: number): void {
+  const contact = input.heldContacts[mode];
+  if (!contact || contact.id !== id) return;
+  if (!Number.isFinite(x) || !Number.isFinite(y)) { endPointer(input, id); return; }
+  if (input.releaseBarrierMode === 'all') { contact.x = x; contact.y = y; return; }
+  if (x === contact.x && y === contact.y) return;
+  if ((mode === 'stick' ? input.stickPointer : input.lookPointer) !== null) return;
+  input.releaseBarrier = input.releaseBarrier.filter(blocked => blocked !== id);
+  delete input.heldContacts[mode];
+  (mode === 'stick' ? beginStick : beginLook)(input, id, contact.x, contact.y);
+  (mode === 'stick' ? moveStick : moveLook)(input, id, x, y);
+}
 /** A normal lever release retires old contacts, but does not make a newly
  * placed retreat finger wait for an unrelated old look contact. */
 export function finishHeldRelease(input: FirstPersonInput): void {
   input.releaseBarrierMode = 'owners';
 }
 export function observeReleaseBarrier(input: FirstPersonInput, activeIds: readonly PointerId[]): void {
+  for (const mode of ['stick', 'look'] as const) {
+    const contact = input.heldContacts[mode];
+    if (contact && !activeIds.includes(contact.id)) delete input.heldContacts[mode];
+  }
   if (input.releaseBarrier.length) input.releaseBarrier = input.releaseBarrierMode === 'owners'
     ? input.releaseBarrier.filter(id => activeIds.includes(id)) : [...new Set(activeIds)];
 }
@@ -82,11 +119,15 @@ export function beginStick(input: FirstPersonInput, id: PointerId, x: number, y:
   input.stickPointer = id;
   input.stickOriginX = x;
   input.stickOriginY = y;
+  input.lastStickX = x;
+  input.lastStickY = y;
   input.right = input.forward = input.stickOffsetX = input.stickOffsetY = 0;
 }
 export function moveStick(input: FirstPersonInput, id: PointerId, x: number, y: number): void {
   if (input.stickPointer !== id) return;
   if (!Number.isFinite(x) || !Number.isFinite(y)) { endPointer(input, id); return; }
+  input.lastStickX = x;
+  input.lastStickY = y;
   const dx = x - input.stickOriginX;
   const dy = y - input.stickOriginY;
   const magnitude = Math.hypot(dx, dy);
@@ -114,6 +155,7 @@ export function moveLook(input: FirstPersonInput, id: PointerId, x: number, y: n
   input.lastLookY = y;
 }
 export function endPointer(input: FirstPersonInput, id: PointerId, discardLook = true): void {
+  for (const mode of ['stick', 'look'] as const) if (input.heldContacts[mode]?.id === id) delete input.heldContacts[mode];
   input.releaseBarrier = input.releaseBarrier.filter(blocked => blocked !== id);
   if (input.stickPointer === id) {
     input.stickPointer = null;

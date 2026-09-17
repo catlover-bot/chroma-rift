@@ -13,7 +13,7 @@ test('registered entries use their own codecs and only the carried key authorize
   const mirrorEntry = createCampaignAreaEntry('chapter-1-area-04')!;
   const mirrorData = parseMirrorCheckpoint(mirrorEntry.stageData)!;
   const clearedMirror = { ...mirrorEntry, stageData: { ...mirrorData, keyTaken: true,
-    practiced: true, ratchets: 3, cleared: true, pose: EXIT } };
+    practiced: true, ratchets: 3, gateCrossed: true, cleared: true, pose: EXIT } };
   const leavingMirror = { ...fresh, currentArea: 'chapter-1-area-04' as const, checkpoint: mirrorEntry };
   expect(createCampaignAreaEntry('chapter-1-area-05', leavingMirror, mirrorEntry)).toBeUndefined();
   expect(createCampaignAreaEntry('chapter-1-area-05', leavingMirror, clearedMirror)?.stageData).toMatchObject({

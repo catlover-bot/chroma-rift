@@ -33,7 +33,11 @@ function command(runtime:ChapterRuntime,packet:StageCommand,context:{rendererRea
 }
 export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
   id:STAGE_ID,create,
-  advance:(runtime,dt)=>{const live=session(runtime);return live?{...runtime,stageSession:{stageId:STAGE_ID,value:advanceStage({...live,pose:{...runtime.pose,position:{...runtime.pose.position}}},dt)}}:runtime;},
+  advance:(runtime,dt)=>{
+    const live=session(runtime);if(!live)return runtime;
+    const next=advanceStage({...live,pose:{...runtime.pose,position:{...runtime.pose.position}}},dt);
+    return {...runtime,progress:{...runtime.progress,cleared:next.cleared},stageSession:{stageId:STAGE_ID,value:next}};
+  },
   world:runtime=>stageWorld(session(runtime)?.ratchets??0,session(runtime)?.keyTaken??false,session(runtime)?.practiced??false,session(runtime)?.holding??null,
     session(runtime)?.actor.motion.position,session(runtime)?.gateLift),
   present:runtime=>{const live=session(runtime);return live?selectMirrorPresentation(live):{objective:'鏡の回廊を確かめる。',hint:{text:''}};},
@@ -97,7 +101,7 @@ export const stageBinding:StageModule<StageCommand,ReturnType<typeof command>>={
   canReplaceCheckpoint:(previous,next)=>{
     const old=parseStageCheckpoint(previous.stageData),fresh=parseStageCheckpoint(next.stageData);
     return !!old&&!!fresh&&(!old.figureInspected||fresh.figureInspected)&&(!old.mirrorInspected||fresh.mirrorInspected)&&(!old.keyTaken||fresh.keyTaken)&&
-      (!old.practiced||fresh.practiced)&&fresh.ratchets>=old.ratchets&&(!old.cleared||fresh.cleared);
+      (!old.practiced||fresh.practiced)&&fresh.ratchets>=old.ratchets&&(!old.gateCrossed||fresh.gateCrossed===true)&&(!old.cleared||fresh.cleared);
   },
   renderKind:'simple',inputPolicy:runtime=>session(runtime)?.holding==='winch'
     ? {move:false,look:false,pointer:'exclusive',dangerAdvances:true,end:'release'}

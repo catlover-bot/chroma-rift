@@ -64,6 +64,11 @@ export type StageModule<C, R> = Readonly<{
    * module's puzzle update, only when danger is advancing. */
   actor?: Readonly<{
     usesGalleryBody: boolean;
+    /** A capture reset waits for the host's presented, input-ready boundary. */
+    recovery?: Readonly<{
+      pending(runtime: ChapterRuntime): boolean;
+      resume(runtime: ChapterRuntime): ChapterRuntime;
+    }>;
     advance(runtime: ChapterRuntime, dt: number, context: { intensity: 'standard' | 'subdued'; matrices?: CameraMatrices; movedDistance: number }): {
       runtime: ChapterRuntime; caught: boolean; movedDistance: number; footPlants: ActorFootPlant[];
       events: ('noticed' | 'windup' | 'caught')[]; soundSources: Vec3[];

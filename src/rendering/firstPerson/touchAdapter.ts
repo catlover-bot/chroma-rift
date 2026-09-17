@@ -1,4 +1,4 @@
-import { beginLook, beginStick, observeReleaseBarrier, clearTouchInput, endPointer, moveLook, moveStick, targetChangedTouches, validPointer, type FirstPersonInput, type PointerId } from './touchInput';
+import { beginLook, beginStick, observeReleaseBarrier, clearTouchInput, endPointer, moveHeldContact, moveLook, moveStick, targetChangedTouches, validPointer, type FirstPersonInput, type PointerId } from './touchInput';
 
 export type TouchMode = 'stick' | 'look';
 export type TouchPhase = 'start' | 'move' | 'end' | 'cancel';
@@ -21,6 +21,11 @@ export function createTouchAdapter(input: FirstPersonInput, enabled = true, sess
       return (event: NativeTouchBatch): void => {
         if (!active || token !== generation) return;
         const changed = Array.isArray(event.changedTouches) ? event.changedTouches.filter((point) => point && validPointer(point.identifier)) : [];
+        if (phase === 'move') {
+          const contact = input.heldContacts[mode];
+          const point = contact && changed.find(candidate => candidate.identifier === contact.id);
+          if (point) moveHeldContact(input, mode, point.identifier, point.pageX, point.pageY);
+        }
         if (input.releaseBarrierMode === 'owners') {
           if (phase === 'end' || phase === 'cancel') for (const point of changed)
             if (input.releaseBarrier.includes(point.identifier)) endPointer(input, point.identifier);

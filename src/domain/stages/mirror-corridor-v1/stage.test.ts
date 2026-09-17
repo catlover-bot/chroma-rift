@@ -67,16 +67,20 @@ test('practice is safe; unfinished winch fraction resets while three settled tee
     for (let frame = 0; frame < 120; frame += 1) cold = advanceStage(cold, 1 / 60);
   }
   expect(cold.ratchets).toBe(RATCHET_COUNT);
-  expect(cold.holding).toBe('winch');
+  expect(cold.holding).toBeNull();
   expect(stageWorld(cold.ratchets,cold.keyTaken).solids.find(solid => solid.id === 'isolation-grate')?.min.y).toBe(3.6);
   expect(cold.cleared).toBe(false);
   expect(commandStage({ ...cold, pose: EXIT }, { sessionId: 'cold', seq: 2, targetId: 'mirror-corridor-exit', type: 'exit' }).accepted).toBe(false);
-  cold = commandStage(cold, { sessionId: 'cold', seq: 3, targetId: 'mirror-corridor-winch', type: 'release-hold' }).session;
+  // Completion already ended the hold. A delayed physical release is inert.
+  const delayedRelease = commandStage(cold, { sessionId: 'cold', seq: 3, targetId: 'mirror-corridor-winch', type: 'release-hold' });
+  expect(delayedRelease.accepted).toBe(false);
+  cold = delayedRelease.session;
   expect(stageWorld(cold.ratchets,cold.keyTaken,cold.practiced,cold.holding).interactables.some(target => target.id === 'mirror-corridor-winch')).toBe(false);
-  const atExit = { ...cold, pose: EXIT };
-  const complete = commandStage(atExit, { sessionId: 'cold', seq: 4, targetId: 'mirror-corridor-exit', type: 'exit' });
-  expect(complete.accepted).toBe(true);
-  expect(parseStageCheckpoint(checkpointStage(complete.session))?.cleared).toBe(true);
+  // Local checkpoint serialization fixture; the continuous physical route is
+  // separately tested in fairEscapeP0, without pose changes during traversal.
+  const complete = advanceStage({ ...cold, pose: EXIT, gateCrossed: true }, .05);
+  expect(complete.cleared).toBe(true);
+  expect(parseStageCheckpoint(checkpointStage(complete))?.cleared).toBe(true);
   expect(parseStageCheckpoint({ ...raw, schemaVersion: 99 })).toBeUndefined();
 });
 

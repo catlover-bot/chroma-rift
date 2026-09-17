@@ -173,7 +173,7 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
   const independentChapter = hasActorChapter || simpleStage;
   const manipulating = !!gallery && gallery.mode !== 'explore' || !!vault && vault.mode !== 'explore' || !!theatre && (theatre.mode === 'light' || theatre.projectorArmed);
   const controlSessionKey = [notesOpen, simple, controls.handedness, appActive, paused, showDiagnostics, renderMode, gallery?.mode, vault?.mode, theatre?.mode, theatre?.projectorArmed].join(':');
-  const blocked = showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
+  const blocked = !!snapshot.recovering || showDiagnostics || paused || !appActive || !ready || !!error || snapshot.runtime.progress.cleared || renderMode !== 'chapter';
   const movementBlocked = showDiagnostics || paused || !appActive || !ready || !!error ||
     snapshot.runtime.progress.cleared && !stageCompletionTailMovement(snapshot.runtime) || renderMode !== 'chapter';
   // Input stops at semantic completion, while the presented closing tail still
@@ -653,6 +653,10 @@ function FirstPersonSession({ settings, controls, chapterId = CHAPTER_ID, onboar
       </> : null}
       {manipulating ? <ScrollView style={[styles.bottom, { height: deviceControlsHeight, maxHeight: deviceControlsHeight }]} testID={theatre ? "theatre-device-scroll" : vault ? "vault-device-scroll" : "gallery-device-scroll"} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.deviceContent}>{deviceControls}</ScrollView> : null}
       {!ready ? <View style={styles.loading}><Text style={styles.loadingText}>{PLAYER_TEXT.preparing}</Text><ActionButton label={PLAYER_TEXT.details} onPress={() => setShowDiagnostics(true)} /></View> : null}
+      {snapshot.recovering ? <View testID="capture-recovery" pointerEvents="none" accessibilityLiveRegion="polite"
+        accessibilityLabel="安全な場所で息を整える" style={[StyleSheet.absoluteFill, { backgroundColor: '#101619A6', justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={styles.loadingText}>息を整える</Text>
+      </View> : null}
       {renderMode !== 'chapter' ? <View style={styles.bottom}>{ready ? <ActionButton label={PLAYER_TEXT.details} onPress={() => setShowDiagnostics(true)} /> : null}<ActionButton label="探索へ戻る（進行を維持）" onPress={() => changeSession('chapter')} /></View> : simple && !manipulating && !compact && !independentChapter ? <View pointerEvents="box-none" style={styles.bottom}>
         <Text style={styles.target} accessibilityLabel={`照準：${targetLabel}`}>{targetLabel}</Text>
         {manipulating ? deviceControls : <><Text style={styles.direction}>向き：{snapshot.direction}</Text>{simpleButtons}{actions}{accessibleObjects}{accessibleDevices}</>}

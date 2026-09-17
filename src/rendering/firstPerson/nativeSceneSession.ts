@@ -11,7 +11,7 @@ import type { CanvasLifecycle } from './canvasLifecycle';
 import { installShaderDiagnostics, recordContextDiagnostics, recordDiagnosticEvent, recordFailureFrameContext, sampleRendererDiagnostics } from './diagnostics';
 import { memoizeNativeRenderer, observeNativeContext } from './nativeRendererFactory';
 import { PROOF_CAMERA } from './ProofScene';
-import { advanceController, flushControllerAudioFrame, flushControllerPresentationFeedback, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
+import { advanceController, flushControllerAudioFrame, flushControllerPresentationFeedback, presentControllerRecovery, controllerSnapshot, recordFrameStats, stopController } from './runtimeController';
 import { syncCamera, worldForController } from './controllerContext';
 import type { RuntimeController, RuntimeSnapshot } from './controllerTypes';
 
@@ -255,6 +255,7 @@ export function createNativeSceneSession(controller: RuntimeController, lifecycl
             if (!lifecycle.ready && sampledFrame) diagnostics.readiness = { ...gates, valid };
             if (lifecycle.markReady(valid && sampledFrame)) onReady();
             if (lifecycle.ready && pendingPublish) {
+              presentControllerRecovery(controller, lastDelta);
               // Audio follows a successful presentation and cannot undo it.
               // Keep backend failures in diagnostics without rolling back an
               // already visible puzzle result or suppressing its checkpoint.

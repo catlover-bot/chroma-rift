@@ -23,6 +23,13 @@ export function normalizedInput(input: MovementInput): MovementInput {
 }
 export function circleIntersectsBox(position: Vec3, volume: CollisionVolume, radius = PLAYER_RADIUS): boolean {
   if (volume.min.y >= PLAYER_HEIGHT || volume.max.y <= 0.04) return false;
+  if (volume.dynamicBody) {
+    const bodyRadius = volume.dynamicBody.radius;
+    if (!Number.isFinite(bodyRadius) || bodyRadius <= 0 ||
+      ![volume.min.x, volume.max.x, volume.min.z, volume.max.z].every(Number.isFinite)) return true;
+    const x = (volume.min.x + volume.max.x) / 2, z = (volume.min.z + volume.max.z) / 2;
+    return (position.x - x) ** 2 + (position.z - z) ** 2 < (radius + bodyRadius) ** 2 - .0000001;
+  }
   const x = clamp(position.x, volume.min.x, volume.max.x);
   const z = clamp(position.z, volume.min.z, volume.max.z);
   return (position.x - x) ** 2 + (position.z - z) ** 2 < radius ** 2 - 0.0000001;
@@ -54,10 +61,36 @@ export function isSafePose(pose: PlayerPose, world: WorldGeometry<string>): bool
   if (![position.x, position.y, position.z, yaw, pitch].every(Number.isFinite) || Math.abs(position.y - EYE_HEIGHT) > 0.001 || Math.abs(pitch) > MAX_PITCH) return false;
   return floorSupports(position, world) && !world.solids.some((volume) => circleIntersectsBox(position, volume));
 }
+/** An external moving body can overlap a previously valid player between
+ * frames. Permit only authored input that reduces every remaining overlap.
+ * Static walls, gates and floor support retain their original strict guard. */
+export function canAdvancePlayerPose(from: PlayerPose, to: PlayerPose, world: WorldGeometry<string>): boolean {
+  for (const pose of [from, to]) {
+    if (![pose.position.x, pose.position.y, pose.position.z, pose.yaw, pose.pitch].every(Number.isFinite) ||
+      Math.abs(pose.position.y - EYE_HEIGHT) > .001 || Math.abs(pose.pitch) > MAX_PITCH || !floorSupports(pose.position, world)) return false;
+  }
+  for (const volume of world.solids) {
+    if (!volume.dynamicBody) {
+      if (circleIntersectsBox(from.position, volume) || circleIntersectsBox(to.position, volume)) return false;
+    } else if (circleIntersectsBox(to.position, volume)) {
+      if (!circleIntersectsBox(from.position, volume)) return false;
+      const x = (volume.min.x + volume.max.x) / 2, z = (volume.min.z + volume.max.z) / 2;
+      const before = (from.position.x - x) ** 2 + (from.position.z - z) ** 2;
+      const after = (to.position.x - x) ** 2 + (to.position.z - z) ** 2;
+      if (!Number.isFinite(volume.dynamicBody.radius) || volume.dynamicBody.radius <= 0 || !(after > before + 1e-9)) return false;
+    }
+  }
+  return true;
+}
 /** Already-shaped pad input skips a second dead zone; discrete/domain callers
  * retain the established raw-input curve. Both paths clamp diagonal speed. */
 export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number, world: WorldGeometry<string>, analogInput = false): PlayerPose {
-  if (!Number.isFinite(dt) || dt <= 0 || !isSafePose(pose, world)) return pose;
+  if (!Number.isFinite(dt) || dt <= 0) return pose;
+  // An unsafe static start is still immobile. A dynamic start is considered
+  // separately by each substep, so no correction or stale input is invented.
+  const staticWorld = world.solids.some(volume => volume.dynamicBody)
+    ? { ...world, solids: world.solids.filter(volume => !volume.dynamicBody) } : world;
+  if (!isSafePose(pose, staticWorld)) return pose;
   const finite = Number.isFinite(input.strafe) && Number.isFinite(input.forward);
   const length = Math.max(1, Math.hypot(input.strafe, input.forward));
   const motion = analogInput
@@ -71,9 +104,9 @@ export function updatePlayer(pose: PlayerPose, input: MovementInput, dt: number,
   let position = pose.position;
   for (let i = 0; i < steps; i += 1) {
     const xCandidate = { ...position, x: position.x + dx / steps };
-    if (isSafePose({ ...pose, position: xCandidate }, world)) position = xCandidate;
+    if (canAdvancePlayerPose({ ...pose, position }, { ...pose, position: xCandidate }, world)) position = xCandidate;
     const zCandidate = { ...position, z: position.z + dz / steps };
-    if (isSafePose({ ...pose, position: zCandidate }, world)) position = zCandidate;
+    if (canAdvancePlayerPose({ ...pose, position }, { ...pose, position: zCandidate }, world)) position = zCandidate;
   }
   return position === pose.position ? pose : { ...pose, position };
 }

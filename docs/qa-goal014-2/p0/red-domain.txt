@@ -1,0 +1,109 @@
+FAIL src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts
+  ✕ an open gate has supported walking floor through the visible doorway, including z24 (125 ms)
+  ✓ gate lift 0 still blocks a standing body (5 ms)
+  ✓ gate lift 0.9 still blocks a standing body (5 ms)
+  ✓ gate lift 1.8 still blocks a standing body (5 ms)
+  ✕ closed grate gaps pass sight while the same opening still blocks a body (1 ms)
+  ✕ the third tooth ends holding once while the committed physical lift continues (2 ms)
+  ✕ the actor square corner cannot trap a separated circular player body
+  ✕ an injected dynamic overlap can retreat through stepRuntime without weakening static walls (3 ms)
+
+  ● an open gate has supported walking floor through the visible doorway, including z24
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 31.5
+    Received:   23.739999999999867
+
+      19 |     expect(isSafePose(player, world)).toBe(true);
+      20 |   }
+    > 21 |   expect(player.position.z).toBeGreaterThan(31.5);
+         |                             ^
+      22 | });
+      23 |
+      24 | test.each([0, .9, 1.8])('gate lift %s still blocks a standing body', lift => {
+
+      at Object.toBeGreaterThan (src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts:21:29)
+
+  ● closed grate gaps pass sight while the same opening still blocks a body
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      32 |   const world = stageWorld(0, true, true);
+      33 |   const across = (x: number) => segmentOccluded({ x, y: 1.6, z: 16.5 }, { x, y: 1.6, z: 18 }, world);
+    > 34 |   expect(across(.13)).toBe(false);
+         |                       ^
+      35 |   expect(across(0)).toBe(true);
+      36 |   expect(isSafePose(pose(.13, GATE_Z + .09), world)).toBe(false);
+      37 | });
+
+      at Object.toBe (src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts:34:23)
+
+  ● the third tooth ends holding once while the committed physical lift continues
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "cleared": false,
+        "gateLift": 1.8,
+        "holdSeconds": 0,
+    -   "holding": null,
+    +   "holding": "winch",
+        "ratchets": 3,
+      }
+
+      41 |     ratchets: 2, gateLift: 1.8, holding: 'winch' as const, holdSeconds: 1.95 } as ReturnType<typeof createStageSession>;
+      42 |   live = advanceStage(live, .05);
+    > 43 |   expect(live).toMatchObject({ ratchets: 3, holding: null, holdSeconds: 0, gateLift: 1.8, cleared: false });
+         |                ^
+      44 |   for (let frame = 0; frame < 18; frame += 1) live = advanceStage(live, .05);
+      45 |   expect(live.gateLift).toBeCloseTo(3.6);
+      46 |   expect(live.cleared).toBe(false);
+
+      at Object.toMatchObject (src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts:43:16)
+
+  ● the actor square corner cannot trap a separated circular player body
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      50 |   const world = stageWorld(0, false, false, null, { x: 0, y: 0, z: 0 });
+      51 |   const player = pose(.53, .53);
+    > 52 |   expect(isSafePose(player, world)).toBe(true);
+         |                                     ^
+      53 |   expect(updatePlayer(player, forward, .05, world).position.z).toBeGreaterThan(player.position.z);
+      54 | });
+      55 |
+
+      at Object.toBe (src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts:52:37)
+
+  ● an injected dynamic overlap can retreat through stepRuntime without weakening static walls
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0.35
+    Received:   0.35
+
+      62 |   const before = runtime.pose;
+      63 |   runtime = stepRuntime(runtime, forward, 1 / 60);
+    > 64 |   expect(runtime.pose.position.z).toBeGreaterThan(before.position.z);
+         |                                   ^
+      65 |   // A single small sample remains overlapping: escape must be incremental.
+      66 |   expect(isSafePose(runtime.pose, stageBinding.world(runtime))).toBe(false);
+      67 |   const staticWorld = stageWorld(0, true, true);
+
+      at Object.toBeGreaterThan (src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts:64:35)
+
+Test Suites: 1 failed, 1 total
+Tests:       5 failed, 3 passed, 8 total
+Snapshots:   0 total
+Time:        1.062 s
+Ran all test suites within paths "src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts".

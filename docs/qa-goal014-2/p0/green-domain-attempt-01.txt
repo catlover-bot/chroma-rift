@@ -1,0 +1,15 @@
+PASS src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts
+  ✓ an open gate has supported walking floor through the visible doorway, including z24 (87 ms)
+  ✓ gate lift 0 still blocks a standing body (9 ms)
+  ✓ gate lift 0.9 still blocks a standing body (10 ms)
+  ✓ gate lift 1.8 still blocks a standing body (9 ms)
+  ✓ closed grate gaps pass sight while the same opening still blocks a body (1 ms)
+  ✓ the third tooth ends holding once while the committed physical lift continues (3 ms)
+  ✓ the actor square corner cannot trap a separated circular player body (1 ms)
+  ✓ an injected dynamic overlap can retreat through stepRuntime without weakening static walls (3 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        1.121 s
+Ran all test suites within paths "src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts".

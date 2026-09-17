@@ -1,0 +1,9 @@
+PASS src/rendering/firstPerson/__tests__/mirrorHoldRelease.test.tsx
+PASS src/rendering/firstPerson/__tests__/TouchControls.test.tsx
+PASS src/rendering/firstPerson/__tests__/StageHoldButton.test.tsx
+
+Test Suites: 3 passed, 3 total
+Tests:       23 passed, 23 total
+Snapshots:   0 total
+Time:        2.339 s, estimated 3 s
+Ran all test suites matching /src\/rendering\/firstPerson\/__tests__\/mirrorHoldRelease.test.tsx|src\/rendering\/firstPerson\/__tests__\/TouchControls.test.tsx|src\/rendering\/firstPerson\/__tests__\/StageHoldButton.test.tsx/i.

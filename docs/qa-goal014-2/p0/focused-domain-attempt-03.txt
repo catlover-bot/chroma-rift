@@ -1,0 +1,14 @@
+PASS src/domain/stages/mirror-corridor-v1/stage.test.ts
+PASS src/domain/firstPerson/__tests__/firstPerson.test.ts
+PASS src/domain/firstPerson/__tests__/dynamicBody.test.ts
+PASS src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts
+PASS src/domain/stages/departure-control-v1/doorVisibility.test.ts
+PASS src/domain/firstPerson/__tests__/interaction.test.ts
+PASS src/domain/firstPerson/__tests__/startupGeometry.test.ts
+PASS src/domain/stages/mirror-corridor-v1/gateMotion.test.ts
+
+Test Suites: 8 passed, 8 total
+Tests:       94 passed, 94 total
+Snapshots:   0 total
+Time:        3.102 s
+Ran all test suites within paths "src/domain/stages/mirror-corridor-v1/fairEscapeP0.test.ts", "src/domain/stages/mirror-corridor-v1/stage.test.ts", "src/domain/stages/mirror-corridor-v1/gateMotion.test.ts", "src/domain/firstPerson/__tests__/dynamicBody.test.ts", "src/domain/firstPerson/__tests__/firstPerson.test.ts", "src/domain/firstPerson/__tests__/startupGeometry.test.ts", "src/domain/firstPerson/__tests__/interaction.test.ts", "src/domain/stages/departure-control-v1/doorVisibility.test.ts".

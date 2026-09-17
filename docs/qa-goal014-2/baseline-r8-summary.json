@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "label": "GOAL_013_1_R8_REGRESSION_B",
+  "generatedAt": "2026-09-17T15:18:20.638Z",
+  "sourceCommit": "5bd34f26b65558e8da1cffd9d22ee93c0db78258",
+  "sourceCommitScope": "Repository HEAD at report time; exact executed candidate contents are identified by sourceHashes, including any uncommitted files below.",
+  "boundary": "Real Chromium WebGL2/ANGLE SwiftShader with a fixture-owned RGBA8+depth FBO replacing logical default framebuffer binds. Fresh authored area04 StageScene export, installed Three renderer and current planarMirror/adapter/nativeGlObserver source. Not an Expo binary, iPhone GPU, native Canvas scheduling or endFrameEXP presentation.",
+  "observerBoundary": "Actual createNativeGlObserver is the sole active-phase getError consumer. Adapter before/returned callbacks invoke its boundary method when tracing is enabled; both modes use its read method for QA phase samples. Only fixture setup/disposal use the separate drain outside its active lifetime. Read counts measure browser GL calls, not Expo queue cost, native timing, or iPhone performance.",
+  "observerTraceComparisons": [
+    {
+      "pose": "front",
+      "offReads": 6,
+      "onReads": 23,
+      "extraReads": 17,
+      "offBoundaries": 6,
+      "onBoundaries": 23,
+      "samePixels": true,
+      "offPixelHash": "a2b97303",
+      "onPixelHash": "a2b97303"
+    },
+    {
+      "pose": "supplied-r7",
+      "offReads": 6,
+      "onReads": 23,
+      "extraReads": 17,
+      "offBoundaries": 6,
+      "onBoundaries": 23,
+      "samePixels": true,
+      "offPixelHash": "9f642591",
+      "onPixelHash": "9f642591"
+    },
+    {
+      "pose": "back",
+      "offReads": 5,
+      "onReads": 6,
+      "extraReads": 1,
+      "offBoundaries": 5,
+      "onBoundaries": 6,
+      "samePixels": true,
+      "offPixelHash": "f8e7935d",
+      "onPixelHash": "f8e7935d"
+    }
+  ],
+  "presentation": "One explicit fixture blit to the real browser default framebuffer; pre-fix cases intentionally continue after the QA observer records the illegal call so later phases can be compared. The actual product fails closed before native presentation.",
+  "extraction": {
+    "meshes": 111,
+    "controllerStage": "mirror-corridor-v1",
+    "method": "Fresh StageScene React host mount and current controller world; browser reconstructs exported objects and invokes current planarMirror with equivalent StageScene frustum gating."
+  },
+  "sourceOnlyHostSubstitutions": [
+    "Expo Constants metadata unavailable (null); __DEV__ false",
+    "R3F useFrame captures callbacks in the existing React/Three host bridge"
+  ],
+  "installedThreeHashes": {
+    "node_modules/three/build/three.module.js": "bbf5ed13fe4373f5bd38b14ea8e62e9f157327da5638edc6d3863e08b167c9c7",
+    "node_modules/three/build/three.core.js": "3718df126d69c125362a03340913204470d8c50238605150e57f808840fb7759"
+  },
+  "toolSha256": "bc11e05d86a1a806e6516c2be735937d465371121b0c4fb8307be3aff1d361b2",
+  "helperSha256": "d33722b60d8f38eb4d888c38ef6494a125a37a52faac1d35e442b1650c4bc419",
+  "sceneSha256": "8f24c2ee82334cac751e9fc103c4f8a9b99f33bb9a5a8d065d201f35ebfc853d",
+  "checks": {
+    "realInvalidOperationOnRestore": true,
+    "beforeReflectionClean": true,
+    "fixedPhasesClean": true,
+    "fixedNativeBACKRemoved": true,
+    "traceIsOptionalAndBounded": true,
+    "fixedFrontReflection": true,
+    "fixedBackSkipped": true,
+    "oneMainAndFixturePresentation": true,
+    "traceDoesNotChangeOutput": true,
+    "actualObserverTraceCostRecorded": true,
+    "successfulObserverTraceReleased": true,
+    "allOwnersDisposed": true,
+    "tenFreshEntries": true,
+    "browserExceptionsAbsent": true
+  },
+  "browserErrors": [],
+  "rendererOwnedTextureCount": 1,
+  "rendererOwnedTextureNote": "Three PBR DFG_LUT: 16x16 RG half float, 1024 bytes; renderer-owned until renderer disposal, not scene textures.",
+  "nativeAcceptance": "PENDING",
+  "RELEASE_READY": false,
+  "runDirectory": ".expo/goal014-2/baseline-native-framebuffer",
+  "caseCount": 19,
+  "caseSummary": [
+    {
+      "name": "before-front",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "fixed-front",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "fixed-front-trace",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "before-supplied-r7",
+      "pose": "supplied-r7",
+      "pixelHash": "9f642591"
+    },
+    {
+      "name": "fixed-supplied-r7",
+      "pose": "supplied-r7",
+      "pixelHash": "9f642591"
+    },
+    {
+      "name": "fixed-supplied-r7-trace",
+      "pose": "supplied-r7",
+      "pixelHash": "9f642591"
+    },
+    {
+      "name": "before-back",
+      "pose": "back",
+      "pixelHash": "f8e7935d"
+    },
+    {
+      "name": "fixed-back",
+      "pose": "back",
+      "pixelHash": "f8e7935d"
+    },
+    {
+      "name": "fixed-back-trace",
+      "pose": "back",
+      "pixelHash": "f8e7935d"
+    },
+    {
+      "name": "entry-1",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-2",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-3",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-4",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-5",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-6",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-7",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-8",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-9",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    },
+    {
+      "name": "entry-10",
+      "pose": "front",
+      "pixelHash": "a2b97303"
+    }
+  ],
+  "fullReport": ".expo/goal014-2/baseline-native-framebuffer/report.json"
+}
