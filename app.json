@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "CHROMA RIFT",
+    "name": "錯視館",
     "slug": "chroma-rift",
     "scheme": "chromarift",
     "version": "1.0.0",
@@ -11,7 +11,11 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.hirotakam.chromarift",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleDevelopmentRegion": "ja",
+        "CFBundleLocalizations": [
+          "ja"
+        ]
       }
     },
     "android": {

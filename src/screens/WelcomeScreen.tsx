@@ -1,3 +1,4 @@
+import { APP_NAME, APP_NAME_READING } from '../app/brand';
 import { Text, StyleSheet, View } from 'react-native';
 
 import { ActionButton, Body, Panel, Screen, SectionTitle } from '../components/Layout';
@@ -10,7 +11,7 @@ export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyCo
 }) {
   return (
     <Screen>
-      <Text style={styles.brand}>CHROMA RIFT</Text>
+      <Text style={styles.brand} accessibilityLabel={APP_NAME_READING} accessibilityLanguage="ja-JP">{APP_NAME}</Text>
       <Text accessibilityRole="header" style={styles.title}>閉館後の展示室</Text>
       <Text style={styles.subtitle}>灯りをつける。電源を探す。ここを出る。</Text>
       <View accessibilityLabel="非常口、影の見本、描かれていない形" style={styles.exhibits}>
@@ -38,7 +39,7 @@ export function WelcomeScreen({ onPlay, onSkip, onSettings, hasSetup, onLegacyCo
 }
 
 const styles = StyleSheet.create({
-  brand: { color: UI_COLORS.textMuted, fontSize: 14, fontWeight: '700', letterSpacing: 3, marginTop: 16 },
+  brand: { color: UI_COLORS.textMuted, fontSize: 14, fontWeight: '700', letterSpacing: 0, marginTop: 16 },
   title: { color: UI_COLORS.text, fontSize: 34, fontWeight: '900', letterSpacing: 1 },
   subtitle: { color: UI_COLORS.text, fontSize: 20, fontWeight: '600', lineHeight: 29 },
   exhibits: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginVertical: 8 },

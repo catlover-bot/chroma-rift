@@ -1,3 +1,4 @@
+import { APP_NAME, APP_NAME_READING } from '../app/brand';
 import { useEffect, useRef, useState } from 'react';
 import { AppState, Pressable, StyleSheet, Text, View } from 'react-native';
 import { ActionButton, Screen } from '../components/Layout';
@@ -40,7 +41,7 @@ export function ChapterOneEndingScreen({ onHome, onAreas, onDiscoveries, onShown
       style={styles.skip}><Text style={styles.credit}>クレジットを表示</Text></Pressable>
   </Screen>;
   return <Screen>
-    <Text style={styles.brand}>CHROMA RIFT</Text>
+    <Text style={styles.brand} accessibilityLabel={APP_NAME_READING} accessibilityLanguage="ja-JP">{APP_NAME}</Text>
     <View style={styles.rule}/>
     {procedureAtMount ? <View><Text style={styles.credit}>点検手順</Text>
       <Text style={styles.note}>{CHAPTER_ONE_COPY.containmentInstruction}</Text></View> : null}
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   horizon: { height: 2, backgroundColor: '#bdc9bb', marginVertical: 34 },
   breath: { color: '#e0e7dc', fontSize: 26, lineHeight: 38, marginBottom: 16 },
   skip: { minHeight: 52, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#53655d', borderRadius: 8 },
-  brand: { color: UI_COLORS.textMuted, fontSize: 15, letterSpacing: 3, fontWeight: '700' },
+  brand: { color: UI_COLORS.textMuted, fontSize: 15, letterSpacing: 0, fontWeight: '700' },
   rule: { height: 1, backgroundColor: '#50645D', marginVertical: 16 },
   attendance: { color: '#A9C6B1', fontSize: 16, letterSpacing: 2 },
   answer: { color: UI_COLORS.text, fontSize: 21, lineHeight: 31, marginTop: 20 },

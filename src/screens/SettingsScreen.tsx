@@ -1,3 +1,4 @@
+import { APP_NAME, APP_NAME_READING } from '../app/brand';
 import { useState } from 'react';
 import { MaterialCredits } from './DiscoveryNotebook';
 import { Alert } from 'react-native';
@@ -152,7 +153,7 @@ export function SettingsScreen({
       <SectionTitle>アプリ情報</SectionTitle>
       <ActionButton label="このアプリについて" onPress={() => toggleInformation('about')} />
       {information === 'about' ? <Panel>
-        <Body>CHROMA RIFT　バージョン {APP_VERSION}</Body>
+        <Body>{APP_NAME}（{APP_NAME_READING}）　バージョン {APP_VERSION}</Body>
         <Body>第一章「最後の退館者」は、閉館後の館内を5つのエリアで進み、巡回体を隔離して屋外へ出る物語です。</Body>
         <Body muted>第二章は今後のアップデートで追加予定です。</Body>
       </Panel> : null}

@@ -1,3 +1,4 @@
+import { APP_NAME } from '../app/brand';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -47,7 +48,7 @@ export function TheatreNotebook({ progress, completed, onClose }: { progress: Th
         </>}
         <Body muted>構造の確認と、錯覚を知覚したことは別です。補助図への切替を、自然な見え方の実績にはしません。</Body>
         <Body>現象の資料</Body><Text selectable style={styles.source}>{note.source}</Text>
-        <Body>素材クレジット</Body><Body muted>CHROMA RIFT projectの独自形状・説明図。外部の写真・型紙・図は使用していません。</Body>
+        <Body>素材クレジット</Body><Body muted>{APP_NAME}の独自形状・説明図。外部の写真・型紙・図は使用していません。</Body>
       </>}
     </ScrollView>
   </SafeAreaView>;

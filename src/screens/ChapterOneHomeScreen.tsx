@@ -1,3 +1,4 @@
+import { APP_NAME, APP_NAME_READING } from '../app/brand';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionButton } from '../components/Layout';
@@ -36,7 +37,7 @@ export function ChapterOneHomeScreen(props: Props) {
   const current = CHAPTER_ONE.areas.find(area => area.id === props.session?.currentArea);
   return <SafeAreaView style={styles.safe} edges={['top','right','bottom','left']}>
     <ScrollView contentContainerStyle={styles.content}>
-      <Text style={styles.brand}>CHROMA RIFT</Text>
+      <Text style={styles.brand} accessibilityLabel={APP_NAME_READING} accessibilityLanguage="ja-JP">{APP_NAME}</Text>
       <View style={styles.rule}/>
       <Text style={styles.eyebrow}>第一章</Text>
       <Text style={styles.title} accessibilityRole="header">最後の退館者</Text>
@@ -110,7 +111,7 @@ export function ChapterOneHomeScreen(props: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: UI_COLORS.background },
   content: { paddingHorizontal: 24, paddingTop: 28, paddingBottom: 46, gap: 14 },
-  brand: { color: UI_COLORS.text, fontSize: 24, fontWeight: '800', letterSpacing: 3 },
+  brand: { color: UI_COLORS.text, fontSize: 24, fontWeight: '800', letterSpacing: 0 },
   rule: { height: 1, backgroundColor: '#50645D', marginVertical: 8 },
   eyebrow: { color: '#9EB6A8', fontSize: 14, fontWeight: '700', letterSpacing: 2 },
   title: { color: UI_COLORS.text, fontSize: 31, fontWeight: '700' },

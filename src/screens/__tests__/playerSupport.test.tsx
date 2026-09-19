@@ -20,7 +20,7 @@ it.each(['preview', 'production'])('keeps %s support closed and retains a failur
   const devAction = jest.fn();
   const view = await render(<SettingsScreen {...settingsProps} onDeveloperLab={devAction} onLegacyMaze={devAction} />);
   expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
-  expect(view.queryByText(/goal-014/)).toBeNull();
+  expect(view.queryByText(/goal-\d+/)).toBeNull();
   expect(view.queryByText('開発者ラボ')).toBeNull();
   await fireEvent.press(view.getByRole('button', { name: 'サポート' }));
   expect(view.queryByTestId('render-diagnostic-record')).toBeNull();
@@ -28,7 +28,7 @@ it.each(['preview', 'production'])('keeps %s support closed and retains a failur
   expect(view.getByTestId('render-diagnostic-record').props.children).toContain('MAIN_RENDER');
   await fireEvent.press(view.getByRole('button', { name: '情報をコピー' }));
   const copied = jest.mocked(Clipboard.setStringAsync).mock.calls.at(-1)![0];
-  expect(copied).toContain('goal-014-2-fair-escape-r1'); expect(copied).toContain('MAIN_RENDER');
+  expect(copied).toContain('goal-015-sakushikan-r1'); expect(copied).toContain('MAIN_RENDER');
   expect(copied).not.toContain('/home/private'); expect(copied).not.toContain('token=secret');
   if (profile === 'production') expect(copied).not.toContain('PRIVATE_EVENT');
   else expect(copied).toContain('PRIVATE_EVENT');

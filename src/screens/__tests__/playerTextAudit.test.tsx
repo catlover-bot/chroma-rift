@@ -20,7 +20,7 @@ function playerText(tree: unknown): string {
   }
   return '';
 }
-const deny = /goal-014|release-js|\b(?:native|GL|renderer|framebuffer|checkpoint|schema|Runtime|Stage Kit|BGM|SE|RED_FRONT|BLUE_FRONT|VARIABLE|SOFT_DEPTH)\b|ランタイム|スキーマ|ハプティクス|原文|Development Build/;
+const deny = /goal-\d+|release-js|\b(?:native|GL|renderer|framebuffer|checkpoint|schema|Runtime|Stage Kit|BGM|SE|RED_FRONT|BLUE_FRONT|VARIABLE|SOFT_DEPTH)\b|ランタイム|スキーマ|ハプティクス|原文|Development Build/;
 const noop = jest.fn();
 const settingsProps = { settings: DEFAULT_SETTINGS, onChange: noop, onRecalibrate: noop, onQuickSetup: noop, onReset: noop, onResetChapter: noop, currentChapterName: '第一章', onBack: noop };
 const originalDev = __DEV__, originalProfile = process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE;
@@ -40,7 +40,9 @@ it.each(['preview', 'production'])('audits %s home, all settings panels, reset a
   Dimensions.set({ window: { width: 320, height: 568, scale: 2, fontScale: 2 }, screen: { width: 320, height: 568, scale: 2, fontScale: 2 } });
   try {
     const home = await render(<ChapterOneHomeScreen loading={false} replayable={[]} showAreas={false} showDiscoveries={false} discoveries={{}} onContinue={noop} onNew={noop} onImport={noop} onAreas={noop} onDiscoveries={noop} onHome={noop} onReplay={noop} onEnding={noop} onSettings={noop} />);
-    expect(playerText(home.toJSON())).not.toMatch(deny); expect(home.getByText('CHROMA RIFT')).toBeTruthy();
+    expect(playerText(home.toJSON())).not.toMatch(deny); expect(home.getByText('錯視館')).toBeTruthy();
+    expect(home.getByLabelText('さくしかん').props.accessibilityLanguage).toBe('ja-JP');
+    expect(playerText(home.toJSON())).not.toMatch(/CHROMA RIFT/);
     await home.unmount();
     const alert = jest.spyOn(Alert, 'alert');
     const settings = await render(<SettingsScreen {...settingsProps} />);
@@ -48,6 +50,8 @@ it.each(['preview', 'production'])('audits %s home, all settings panels, reset a
     for (const name of ['このアプリについて', '出典と素材クレジット', 'プライバシー', 'サポート']) {
       await fireEvent.press(settings.getByRole('button', { name }));
       expect(playerText(settings.toJSON())).not.toMatch(deny);
+      expect(playerText(settings.toJSON())).not.toMatch(/CHROMA RIFT/);
+      if (name === 'このアプリについて') expect(settings.getByText(/錯視館（さくしかん）/)).toBeTruthy();
       expect(settings.queryByTestId('render-diagnostic-record')).toBeNull();
     }
     await fireEvent.press(settings.getByRole('button', { name: '第一章だけを最初から' }));
@@ -58,6 +62,9 @@ it.each(['preview', 'production'])('audits %s home, all settings panels, reset a
     expect(playerText(ending.toJSON())).not.toMatch(deny);
     await fireEvent(ending.getByRole('button', { name: 'クレジットを表示' }), 'accessibilityTap');
     expect(playerText(ending.toJSON())).not.toMatch(deny);
+    expect(ending.getByText('錯視館')).toBeTruthy();
+    expect(ending.getByLabelText('さくしかん').props.accessibilityLanguage).toBe('ja-JP');
+    expect(playerText(ending.toJSON())).not.toMatch(/CHROMA RIFT/);
     expect(ending.getByText(/Wael Tsar \/ cmglee/)).toBeTruthy();
     await ending.unmount();
   } finally { Dimensions.set({ window: dimensions, screen: dimensions }); }

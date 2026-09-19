@@ -1,0 +1,152 @@
+#!/usr/bin/env node
+'use strict';
+/* global __dirname, Buffer */
+// Actual component hosts and callbacks, translated to browser CSS. These images
+// are local layout evidence, never App Store or native iPhone screenshots.
+const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process');
+const { PNG } = require('pngjs');
+require('./lib/qa-native-metadata.cjs');
+const { installSourceBridge, openBrowser, delay, sha256 } = require('./lib/three-scene-qa.cjs');
+const { installNativeHudBridge, browserStyles, browserHelpers } = require('./lib/native-hud-qa.cjs');
+if (process.argv.length !== 2) throw Error('usage: node scripts/qa-goal015-brand-layout.cjs');
+const root = path.resolve(__dirname, '..'), out = path.join(root, '.expo/goal015/brand-layout');
+fs.mkdirSync(out, { recursive: true });
+const bridge = installSourceBridge(root), context = { width: 320, height: 568, fontScale: 1 };
+const native = installNativeHudBridge(context), R = require('react-test-renderer');
+const { ChapterOneHomeScreen } = require('../src/screens/ChapterOneHomeScreen.tsx');
+const { ChapterOneEndingScreen } = require('../src/screens/ChapterOneEndingScreen.tsx');
+const { SettingsScreen } = require('../src/screens/SettingsScreen.tsx');
+const { DEFAULT_SETTINGS, DEFAULT_FIRST_PERSON_CONTROLS } = require('../src/types/application.ts');
+const { APP_NAME, APP_NAME_READING } = require('../src/app/brand.ts');
+const noop = () => {};
+const guarded = ['scripts/qa-goal015-brand-layout.cjs', 'scripts/lib/native-hud-qa.cjs', 'scripts/lib/three-scene-qa.cjs',
+  'scripts/lib/qa-native-metadata.cjs', 'scripts/generate-brand-assets.cjs', 'app.json', 'package.json', 'package-lock.json',
+  'assets/branding/icon.png', 'assets/branding/splash-icon.png',
+  'node_modules/@expo/prebuild-config/build/plugins/icons/withIosIcons.js', 'node_modules/@expo/image-utils/build/Image.js'];
+const inputHashes = Object.fromEntries(guarded.map(file => [file, sha256(fs.readFileSync(path.join(root, file)))]));
+function verify() {
+  bridge.verify();
+  for (const [file, expected] of Object.entries(inputHashes)) if (sha256(fs.readFileSync(path.join(root, file))) !== expected) throw Error('Input changed: ' + file);
+}
+function literals(node) {
+  if (Array.isArray(node)) return node.map(literals).join('');
+  if (typeof node === 'string') return node;
+  return node ? node.children.map(literals).join('') : '';
+}
+function switchFootprints(node) {
+  if (Array.isArray(node)) return node.map(switchFootprints);
+  if (!node || typeof node === 'string') return node;
+  return { ...node, ...(node.type === 'Switch' ? { style: { ...node.style, width: 51, height: 31, flexShrink: 0, borderRadius: 16, backgroundColor: '#59665e' } } : {}), children: node.children.map(switchFootprints) };
+}
+function accessibleHosts(hud) {
+  return hud.tree.root.findAll(node => typeof node.type === 'string' && (node.props.accessibilityLabel || node.props.accessibilityRole))
+    .map(node => ({ type: node.type, label: node.props.accessibilityLabel ?? null,
+      role: node.props.accessibilityRole ?? null, language: node.props.accessibilityLanguage ?? null,
+      hint: node.props.accessibilityHint ?? null, disabled: !!node.props.disabled }));
+}
+async function extract() {
+  if (APP_NAME !== '錯視館' || APP_NAME_READING !== 'さくしかん') throw Error('Unexpected candidate name/reading');
+  process.env.EXPO_PUBLIC_CHROMA_BUILD_PROFILE = 'production';
+  native.audio.getGalleryAudioAvailability = () => 'available';
+  const records = [];
+  for (const [width, height] of [[320, 568], [390, 844], [430, 932]]) for (const fontScale of [1, 2]) {
+    Object.assign(context, { width, height, fontScale });
+    const take = (hud, state, anchor = 'top') => {
+      const tree = switchFootprints(hud.serialize()), text = literals(tree), accessibility = accessibleHosts(hud);
+      if (/CHROMA[ _-]?RIFT|goal-015|FIRST_FAILURE|開発者ラボ/.test(text)) throw Error('Public/internal text regression in ' + state);
+      if (['home', 'ending-credits'].includes(state)) {
+        if (!text.includes(APP_NAME) || !text.includes('最後の退館者')) throw Error('Missing public name/chapter');
+        const brand = hud.tree.root.findAll(n => n.type === 'Text' && n.children.join('') === APP_NAME);
+        if (brand.length !== 1 || brand[0].props.accessibilityLabel !== APP_NAME_READING || brand[0].props.accessibilityLanguage !== 'ja-JP') throw Error('Brand reading/language missing');
+      }
+      if (state === 'settings-about' && !text.includes('錯視館（さくしかん）')) throw Error('About name/reading missing');
+      if (state === 'support-closed' && (text.includes('詳しい情報を閉じる') || hud.tree.root.findAll(n => n.props.testID === 'render-diagnostic-record').length)) throw Error('Support details opened without request');
+      if (accessibility.some(a => (a.type === 'Pressable' || a.type === 'Switch') && !a.label)) throw Error('Unlabelled action');
+      records.push({ id: `${state}-${width}-font${fontScale}`, state, width, height, fontScale, anchor, tree, accessibility });
+    };
+    const home = await native.mount(ChapterOneHomeScreen, { loading: false, replayable: [], showAreas: false, showDiscoveries: false, discoveries: {},
+      onContinue: noop, onNew: noop, onImport: noop, onAreas: noop, onDiscoveries: noop, onHome: noop, onReplay: noop, onEnding: noop, onSettings: noop });
+    try { take(home, 'home'); } finally { await home.unmount(); }
+    const settings = await native.mount(SettingsScreen, { settings: DEFAULT_SETTINGS, controls: DEFAULT_FIRST_PERSON_CONTROLS,
+      onChange: noop, onControlsChange: noop, onRecalibrate: noop, onQuickSetup: noop, onReset: noop, onBack: noop, onResetChapter: noop, currentChapterName: '第一章' });
+    try {
+      take(settings, 'settings');
+      await settings.press('このアプリについて'); take(settings, 'settings-about', 'このアプリについて');
+      await settings.press('サポート'); take(settings, 'support-closed', 'サポート');
+    } finally { await settings.unmount(); }
+    let shown = 0;
+    const ending = await native.mount(ChapterOneEndingScreen, { onHome: noop, onAreas: noop, onDiscoveries: noop, onShown: () => shown++ });
+    try {
+      take(ending, 'ending-afterglow');
+      const skip = ending.tree.root.findAll(n => n.type === 'Pressable' && n.props.accessibilityLabel === 'クレジットを表示')[0];
+      await R.act(async () => skip.props.onAccessibilityTap());
+      if (shown !== 1) throw Error('Actual ending credit transition was not acknowledged once');
+      take(ending, 'ending-credits');
+    } finally { await ending.unmount(); }
+  }
+  verify(); return records;
+}
+function pngAudit(file, bytes) {
+  const png = PNG.sync.read(bytes); let min = 255, max = 0, nonOpaquePixels = 0;
+  for (let i = 3; i < png.data.length; i += 4) { const a = png.data[i]; min = Math.min(min, a); max = Math.max(max, a); if (a !== 255) nonOpaquePixels++; }
+  return { file, bytes: bytes.length, sha256: sha256(bytes), width: png.width, height: png.height, bitDepth: bytes[24], colorType: bytes[25],
+    alpha: { min, max, nonOpaquePixels }, corners: [[0,0],[png.width-1,0],[0,png.height-1],[png.width-1,png.height-1]].map(([x,y]) => Array.from(png.data.subarray((y*png.width+x)*4, (y*png.width+x)*4+4))) };
+}
+async function iconAudit() {
+  const icon = fs.readFileSync(path.join(root, 'assets/branding/icon.png')), splash = fs.readFileSync(path.join(root, 'assets/branding/splash-icon.png'));
+  const masters = [pngAudit('assets/branding/icon.png', icon), pngAudit('assets/branding/splash-icon.png', splash)];
+  if (masters.some(a => a.width !== 1024 || a.height !== 1024) || masters[0].alpha.nonOpaquePixels) throw Error('Invalid master size/opacity');
+  // Same image options as installed withIosIcons.generateUniversalIconAsync for
+  // normal appearance. Only cache/output location differs; no native project.
+  const options = { src: path.join(root, 'assets/branding/icon.png'), name: 'App-Icon-1024x1024@1x.png',
+    width: 1024, height: 1024, removeTransparency: true, resizeMode: 'cover', backgroundColor: '#ffffff' };
+  const { source } = await require('@expo/image-utils').generateImageAsync({ projectRoot: root, cacheType: 'goal015-icon-audit' }, options);
+  const file = 'ios-icon-1024.png'; fs.writeFileSync(path.join(out, file), source);
+  const derivative = pngAudit(file, source), samePixels = PNG.sync.read(icon).data.equals(PNG.sync.read(source).data);
+  if (derivative.colorType !== 2 || derivative.alpha.nonOpaquePixels || derivative.width !== 1024 || derivative.height !== 1024 || !samePixels) throw Error('iOS derivative opacity/size/pixel identity failed');
+  return { masters, derivative, decodedPixelsIdentical: samePixels,
+    expoImageUtilsVersion: require('@expo/image-utils/package.json').version, options: { ...options, src: 'assets/branding/icon.png' },
+    limit: 'Isolated installed Expo image-utils output; not a signed IPA, archive, native homescreen or simulator screenshot.' };
+}
+async function capture(records) {
+  fs.writeFileSync(path.join(out, 'index.html'), `<!doctype html><meta charset="utf-8"><style>${browserStyles}
+#root{position:absolute;inset:0;display:flex;flex-direction:column}.rn-text{line-height:normal}.rn-scroll{scrollbar-width:none}</style><div id="root"></div><script>${browserHelpers}
+const root=document.getElementById('root');
+window.draw=async record=>{root.replaceChildren(hudDOM(record.tree,record.fontScale,document.createElement('div')));await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+const scroll=root.querySelector('.rn-scroll');if(!scroll)throw Error('Missing actual ScrollView');
+const textFailures=[];let measuredText=0;for(const e of root.querySelectorAll('.rn-text')){const own=hudRect(e),pieces=[],walk=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let n;while((n=walk.nextNode()))for(const match of n.textContent.matchAll(/\\S+/gu)){const range=document.createRange();range.setStart(n,match.index);range.setEnd(n,match.index+match[0].length);pieces.push(...range.getClientRects());}const button=e.closest('[role=button]'),box=button?hudRect(button):own;measuredText++;if(pieces.some(p=>p.left<box.left-1||p.right>box.right+1||(button&&(p.top<box.top-1||p.bottom>box.bottom+1))))textFailures.push({text:e.textContent,own,pieces:pieces.map(p=>({left:p.left,right:p.right,top:p.top,bottom:p.bottom}))});}
+const buttons=[];for(const button of root.querySelectorAll('[role=button]')){button.scrollIntoView({block:'center'});await new Promise(r=>requestAnimationFrame(r));const b=hudRect(button),clip=hudRect(scroll),text=button.querySelector('.rn-text'),t=text?hudRect(text):null;buttons.push({label:button.dataset.label,width:b.width,height:b.height,visibleHeight:Math.max(0,Math.min(b.bottom,clip.bottom)-Math.max(b.top,clip.top)),textWithin:!t||(t.left>=b.left-1&&t.right<=b.right+1&&t.top>=b.top-1&&t.bottom<=b.bottom+1)});}
+scroll.scrollTop=0;return{measuredText,textFailures,buttons,scroll:{scrollHeight:scroll.scrollHeight,clientHeight:scroll.clientHeight,scrollWidth:scroll.scrollWidth,clientWidth:scroll.clientWidth}};};
+window.move=async label=>{const scroll=root.querySelector('.rn-scroll');if(label==='top')scroll.scrollTop=0;else if(label==='bottom')scroll.scrollTop=scroll.scrollHeight;else{const b=[...root.querySelectorAll('[role=button]')].find(e=>e.dataset.label===label);if(!b)throw Error('Missing scroll anchor '+label);b.scrollIntoView({block:'start'});}await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return scroll.scrollTop;};window.ready=true;</script>`);
+  const browser = await openBrowser(out), results = [];
+  try {
+    for (let i = 0; i < 100 && !await browser.evaluate('window.ready===true'); i++) { if (browser.errors.length) throw Error(JSON.stringify(browser.errors)); await delay(100); }
+    if (!await browser.evaluate('window.ready===true')) throw Error('Browser failed to initialize');
+    for (const record of records) {
+      await browser.send('Emulation.setDeviceMetricsOverride', { width: record.width, height: record.height, deviceScaleFactor: 1, mobile: false });
+      const metrics = await browser.evaluate(`window.draw(${JSON.stringify(record)})`);
+      if (metrics.scroll.scrollWidth > metrics.scroll.clientWidth + 1 || metrics.textFailures.length || metrics.buttons.some(b => b.width < 44 || b.height < 44 || b.visibleHeight < 44 || !b.textWithin)) throw Error(`${record.id}: ${JSON.stringify(metrics)}`);
+      const files = [];
+      for (const anchor of [record.anchor, ...(['home','ending-credits'].includes(record.state) ? ['bottom'] : [])]) {
+        const scrollTop = await browser.evaluate(`window.move(${JSON.stringify(anchor)})`);
+        const bytes = Buffer.from((await browser.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false })).data, 'base64');
+        const file = `${record.id}-${anchor === 'bottom' ? 'bottom' : 'main'}.png`;
+        fs.writeFileSync(path.join(out, file), bytes); files.push({ file, bytes: bytes.length, sha256: sha256(bytes), scrollTop });
+      }
+      const { tree: _tree, anchor: _anchor, ...rest } = record;
+      results.push({ ...rest, metrics, files });
+    }
+    if (browser.errors.length) throw Error(JSON.stringify(browser.errors));
+    return { results, browserErrors: browser.errors };
+  } finally { await browser.close(); }
+}
+async function main() {
+  const assets = await iconAudit(), records = await extract(), rendered = await capture(records); verify();
+  const report = { schemaVersion: 1, recordedAt: new Date().toISOString(), headAtCapture: cp.execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
+    finalScreenshots: 'PENDING', deviceVoiceOver: 'PENDING', platform: process.platform, appName: APP_NAME, appReading: APP_NAME_READING,
+    method: 'Actual Home, Settings and Ending React hosts, actual Settings button callbacks and actual ending onAccessibilityTap callback. Production profile, __DEV__ false. Host styles translated to browser CSS using Noto Sans CJK JP; system iOS font/metrics, Yoga, safe-area insets, VoiceOver speech/focus, hardware touch and audio are not emulated. Switch track is a 51x31 CSS placeholder; native audio availability is an available fixture. Desktop scrollbar width is suppressed because iOS scroll indicators overlay content. No gameplay completion/save claimed. Numeric font size and authored line height scaled; default line height CSS normal. Non-whitespace text ink bounds, horizontal overflow and individually scrolled 44px button bounds checked. Ending screenshots contain spoilers and are QA only.',
+    inputHashes, sourceHashes: Object.fromEntries(bridge.hashes), assets, ...rendered };
+  fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
+  console.log(JSON.stringify({ out, cases: records.length, images: rendered.results.flatMap(r => r.files).length, measuredText: rendered.results.reduce((n,r) => n+r.metrics.measuredText, 0), sourceGuardCount: bridge.hashes.size, inputGuardCount: guarded.length, finalScreenshots: report.finalScreenshots, derivative: assets.derivative }));
+}
+main().catch(error => { console.error(error); process.exitCode = 1; });

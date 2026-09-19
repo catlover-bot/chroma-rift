@@ -50,7 +50,7 @@ async function extract() {
     const take = (hud, state, details = false) => {
       const tree = switches(hud.serialize()), text = literals(tree);
       if (!details && deny.test(text)) throw Error(`${profile}/${state}: technical text outside explicit support`);
-      if (details && (!text.includes('goal-014-2-fair-escape-r1') || !text.includes('FIRST_FAILURE'))) throw Error('Explicit detail identity/failure missing');
+      if (details && (!text.includes('goal-015-sakushikan-r1') || !text.includes('FIRST_FAILURE'))) throw Error('Explicit detail identity/failure missing');
       records.push({ id: `${profile}-${state}-${width}`, profile, state, width, height, fontScale, details, tree });
     };
     for (const blocked of [false, true]) {

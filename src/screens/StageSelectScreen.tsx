@@ -1,3 +1,4 @@
+import { APP_NAME, APP_NAME_READING } from '../app/brand';
 import { StyleSheet, Text, View } from 'react-native';
 import { ActionButton, Body, Panel, Screen } from '../components/Layout';
 import { StageArtwork } from '../components/StageArtwork';
@@ -8,7 +9,7 @@ export function StageSelectScreen({ cards, lastResume, onSelect, onSettings }: {
 }) {
   const last = STAGES.find(stage => stage.id === lastResume);
   return <Screen>
-    <Text style={styles.brand}>CHROMA RIFT</Text>
+    <Text style={styles.brand} accessibilityLabel={APP_NAME_READING} accessibilityLanguage="ja-JP">{APP_NAME}</Text>
     <Text style={styles.title} accessibilityRole="header">ステージを選ぶ</Text>
     <Body muted>それぞれの物語を、好きなところから。</Body>
     {last ? <Panel><Body>前回の続き：{last.title}</Body><ActionButton label="続きから" testID="resume-last-stage" variant="primary" onPress={() => onSelect(last.id, false)} /></Panel> : null}
@@ -32,6 +33,6 @@ export function StageSelectScreen({ cards, lastResume, onSelect, onSettings }: {
     <ActionButton label="設定" onPress={onSettings} />
   </Screen>;
 }
-const styles = StyleSheet.create({ brand: { color: UI_COLORS.textMuted, fontSize: 15, fontWeight: '700', letterSpacing: 3 },
+const styles = StyleSheet.create({ brand: { color: UI_COLORS.textMuted, fontSize: 15, fontWeight: '700', letterSpacing: 0 },
   title: { color: UI_COLORS.text, fontSize: 28, fontWeight: '800' }, cardTitle: { color: UI_COLORS.text, fontSize: 22, fontWeight: '700', flexShrink: 1 },
   earlier: { color: UI_COLORS.textMuted, fontSize: 18, marginTop: 12 }, group: { gap: 10 } });
