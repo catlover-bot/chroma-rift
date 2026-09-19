@@ -1,7 +1,7 @@
 import { APP_NAME, APP_NAME_READING } from '../app/brand';
 import { useState } from 'react';
 import { MaterialCredits } from './DiscoveryNotebook';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { getGalleryAudioAvailability, normalizeAudioPreferences } from '../audio';
 
 import { ActionButton, Body, ChoiceRow, Heading, Panel, Screen, SectionTitle, SettingSwitch } from '../components/Layout';
@@ -9,7 +9,13 @@ import type { AppSettings, EffectStrength, FirstPersonControls } from '../types/
 import { PALETTE_IDS, PALETTE_LABELS } from '../domain/emblem/color';
 import { APP_VERSION } from '../app/version';
 import { PLAYER_TEXT } from '../app/playerText';
+import { PUBLIC_PAGES } from '../app/publicPages';
 import { SupportInformation } from './SupportInformation';
+
+async function openPublicPage(url: string) {
+  try { await Linking.openURL(url); }
+  catch { Alert.alert('ページを開けませんでした', '通信状況を確認して、もう一度お試しください。'); }
+}
 
 export function SettingsScreen({
   settings,
@@ -164,6 +170,7 @@ export function SettingsScreen({
         <Body>プレイの進行、観察履歴、設定、表示の調整結果を端末内に保存します。この画面の「保存データをリセット」から削除できます。</Body>
         <Body>本編の操作にアカウント登録、位置情報、カメラ、マイクは使いません。</Body>
       </Panel> : null}
+      {PUBLIC_PAGES.privacy ? <ActionButton label="プライバシーポリシー" accessibilityHint="ブラウザで開きます。" onPress={() => { void openPublicPage(PUBLIC_PAGES.privacy!); }} /> : null}
       <ActionButton label="サポート" onPress={() => toggleInformation('support')} />
       {information === 'support' ? <Panel>
         <Body>画面を表示できないときは、探索画面から「表示を再試行」を選べます。記録を保存できないときは、画面の案内に従ってもう一度お試しください。</Body>
@@ -177,6 +184,7 @@ export function SettingsScreen({
           {onLegacyMaze ? <ActionButton label="旧レール検証（開発用）" onPress={onLegacyMaze} /> : null}
         </> : null}
       </Panel> : null}
+      {PUBLIC_PAGES.support ? <ActionButton label="お問い合わせ" accessibilityHint="ブラウザで開きます。" onPress={() => { void openPublicPage(PUBLIC_PAGES.support!); }} /> : null}
       <ActionButton label={backLabel} onPress={onBack} />
     </Screen>
   );

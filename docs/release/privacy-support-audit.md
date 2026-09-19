@@ -2,6 +2,8 @@
 
 確認日：2026-09-19。開始基準：`0563e2d4bb76280fba2643078aa619e166bf8009`。作業場所：`/home/mhirotaka/workspace/chroma-rift-goal012`。現行ソースとインストール済みSDKを読んだローカル監査であり、署名済みproduction IPA、実通信、App Store Connectの申告は未確認です。機械可読のファイルハッシュ・SDK宣言は [privacy-support.json](../qa-goal015/privacy-support.json) に記録します。
 
+2026-09-20の公開準備・承認・公開・アプリ内リンク有効化の差分は [追加レビュー](pages-privacy-review.md) を参照してください。現行 `eas.json` には数値 `ascAppId` が設定済みです。以下の表は前回監査時点の記録を保持しており、公開窓口欄の `ascAppId` 不在を現在の状態として扱いません。両ページは公開済みで、匿名HTTPS 200と承認済み本文のバイト一致を確認しました。アプリ内リンクの実設定を含む関連30テスト・型・LintもPASSです。[実URLと公開記録](github-pages.md)を参照してください。production監査・実機受入は未完了です。
+
 公開本文は [プライバシー原稿](privacy-policy-ja.md)、[サポート原稿](support-ja.md)。正式情報の不足は [所有者の一括確認票](owner-confirmation.md)へ集約しました。Goal013の [旧文案](../CHAPTER-1-PRIVACY-SUPPORT-DRAFT.md)は過去記録として保持し、現行の事実として転載しません。
 
 ## 現行コードで確認した取り扱い
@@ -61,4 +63,6 @@ Appleの[SDK要件一覧](https://developer.apple.com/support/third-party-SDK-re
 
 最終IPAとXcode privacy reportの取得、Hermes等の統合宣言・必要署名、Info.plist/entitlements、同梱音源・画像、初回起動と5エリア・診断操作の通信、公開ページと窓口の受信・保持条件、同じproduction版からの外部リンクを確認します。アプリ独自の送信処理が見つからなかったという事実と、最終バイナリ/OS/委託先まで確認したという主張を分けます。
 
-`PUBLIC_POLICY_AND_SUPPORT=PENDING`、`PRODUCTION_BUILD=NOT_RUN`、`PRODUCTION_DEVICE_ACCEPTANCE=PENDING`、`APP_REVIEW_READY=false`、`RELEASE_READY=false`。
+2026-09-19時点の状態：`PUBLIC_POLICY_AND_SUPPORT=PENDING`、`PRODUCTION_BUILD=NOT_RUN`、`PRODUCTION_DEVICE_ACCEPTANCE=PENDING`、`APP_REVIEW_READY=false`、`RELEASE_READY=false`。
+
+2026-09-20更新：`PUBLIC_POLICY_AND_SUPPORT=PUBLISHED`。`productionPrivacyReviewConfirmed=false`、`PRODUCTION_BUILD=NOT_RUN`、`PRODUCTION_DEVICE_ACCEPTANCE=PENDING`、`APP_REVIEW_READY=false`、`RELEASE_READY=false`を維持。メール実受信も未確認です。

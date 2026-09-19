@@ -11,7 +11,7 @@ import re
 from urllib.parse import urlsplit
 
 HERE = Path(__file__).resolve().parent
-FIELDS = ('operatorName', 'copyrightHolder', 'effectiveDate', 'contactLabel', 'contactUrl',
+FIELDS = ('operatorName', 'effectiveDate', 'contactLabel', 'contactUrl',
           'privacyUrl', 'supportUrl', 'externalDataHandling', 'hostingDataHandling', 'supportDataHandling')
 
 def public_host(hostname):
@@ -56,12 +56,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, default=HERE / 'public-fields.json')
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--manifest', type=Path, help='Private build record outside --output; defaults to <output>.local-build.json')
     parser.add_argument('--draft', action='store_true', help='Marked local preview only; no publication approval implied')
     args = parser.parse_args()
     values = json.loads(args.config.read_text())
     if not args.draft:
         missing = [key for key in FIELDS if not isinstance(values.get(key), str) or not values[key].strip()]
-        missing += [key for key in ('publicInformationApproved', 'productionPrivacyReviewConfirmed') if values.get(key) is not True]
+        # Page publication approval is separate from the application's release
+        # privacy review, whose actual state is retained in the private record.
+        if values.get('publicInformationApproved') is not True: missing.append('publicInformationApproved')
         if missing: parser.error('Publication is pending; missing approved fields: ' + ', '.join(missing))
         for key in ('privacyUrl', 'supportUrl', 'contactUrl'):
             if not valid_url(values[key], contact=key == 'contactUrl'): parser.error('Invalid public endpoint: ' + key)
@@ -69,6 +72,8 @@ def main():
         except ValueError: parser.error('effectiveDate must be an approved YYYY-MM-DD date')
         if any(re.search(r'\{\{|要確定|未確定|example\.(com|org|net)', values[key]) for key in FIELDS): parser.error('Unresolved placeholder in publication input')
     safe = {key: html.escape(str(values.get(key) or '未確定（公開不可）')) for key in FIELDS}
+    copyright_holder = values.get('copyrightHolder')
+    copyright_footer = '<br>著作権者：' + html.escape(copyright_holder.strip()) if isinstance(copyright_holder, str) and copyright_holder.strip() else ''
     endpoint = values.get('contactUrl')
     safe['contactLink'] = '<a href="' + html.escape(endpoint, quote=True) + '">問い合わせる</a>' if endpoint and valid_url(endpoint, contact=True) else '問い合わせ先は未確定です。この下書きからは送信できません。'
     pages = {}
@@ -86,15 +91,28 @@ def main():
         pages[stem + '.html'] = f'''<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">{robots}<meta name="referrer" content="no-referrer"><title>錯視館 — {title}</title><link rel="stylesheet" href="site.css"></head>
 <body><header><div class="brand">錯視館 <small>さくしかん</small></div><nav aria-label="公開情報"><a href="{html.escape(nav_support, quote=True)}">サポート</a><a href="{html.escape(nav_privacy, quote=True)}">プライバシー</a></nav></header>
-<main>{status}<h1>{title}</h1>{body}</main><footer>運営者：{safe['operatorName']}<br>著作権者：{safe['copyrightHolder']}</footer></body></html>
+<main>{status}<h1>{title}</h1>{body}</main><footer>運営者：{safe['operatorName']}{copyright_footer}</footer></body></html>
 '''
+    # Never mix a newly reviewed site with old pages, scripts or private records.
+    # A caller must choose a fresh directory; this builder does not delete files.
+    if args.output.is_symlink() or (args.output.exists() and
+            (not args.output.is_dir() or any(args.output.iterdir()))):
+        parser.error('Output must be a new or empty non-symlink directory')
+    manifest_path = args.manifest or args.output.with_name(args.output.name + '.local-build.json')
+    if manifest_path.resolve().is_relative_to(args.output.resolve()):
+        parser.error('Build manifest must be outside the public output directory')
+    if manifest_path.exists() or manifest_path.is_symlink():
+        parser.error('Build manifest already exists; choose a fresh path')
     args.output.mkdir(parents=True, exist_ok=True)
     pages['site.css'] = (HERE / 'site.css').read_text()
     for name, contents in pages.items(): (args.output / name).write_text(contents)
     manifest = {'schemaVersion': 1, 'draft': args.draft, 'deployed': False, 'publicReachabilityVerified': False,
                 'approvalFlagsAreOwnerAssertionsNotTechnicalProof': True,
+                'publicInformationApproved': values.get('publicInformationApproved') is True,
+                'productionPrivacyReviewConfirmed': values.get('productionPrivacyReviewConfirmed') is True,
                 'files': {name: hashlib.sha256(contents.encode()).hexdigest() for name, contents in pages.items()}}
-    (args.output / 'local-build.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
 
 if __name__ == '__main__': main()

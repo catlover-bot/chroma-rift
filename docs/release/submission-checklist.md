@@ -1,14 +1,15 @@
 # 錯視館 — 初回提出の引き渡し
 
-2026-09-19。今回の範囲はローカル改名・検証・原稿準備。以下の外部操作は**実行していない**。この文書のコマンドは、未完了項目を確定した後に所有者が実行する手順であり、自動実行の許可ではない。
+2026-09-19に作成、2026-09-20に公開ページの完了を反映。所有者の承認を受け、GitHub Pages公開とアプリ内リンクの接続を実施しました。EAS productionビルド、ASCアップロード、実機受入、審査申請は未実施です。この文書にある今後のビルド・提出コマンドは手順であり、今回のページ公開承認には含まれません。
 
 ## 現在の状態
 
 | 状態 | 値／根拠 |
 | --- | --- |
-| LOCAL_RENAME_AND_CHECKS | PASS。最終`npm run check` exit0、142 suites／1,472 tests、541ファイルの実行前後hash一致。Metro dev／production、Three・ソース、循環、r8 framebuffer、全章音声、名称・表示検査も成功。[検証記録](../qa-goal015/README.md)。Doctor／auditの未合格は下記へ別記し、審査準備PASSとは扱わない。 |
+| LOCAL_RENAME_AND_CHECKS | PASS（2026-09-19の改名検証記録）。当時の最終`npm run check` exit0、142 suites／1,472 tests、541ファイルの実行前後hash一致。Metro dev／production、Three・ソース、循環、r8 framebuffer、全章音声、名称・表示検査も成功。[検証記録](../qa-goal015/README.md)。Doctor／auditの未合格は下記へ別記し、審査準備PASSとは扱わない。 |
 | NAME_AND_METADATA_APPROVAL | PENDING |
-| PUBLIC_POLICY_AND_SUPPORT | PENDING |
+| PUBLIC_POLICY_AND_SUPPORT | PUBLISHED。両ページの匿名HTTPS 200・配信バイト一致。[公開記録](github-pages.md)。メール実受信とproduction端末の遷移は未確認。 |
+| PUBLIC_APP_LINKS | 実URL設定済み。実設定・実画面の配線を含む６スイート30テスト、型検査、対象LintはPASS。production端末は未確認。 |
 | FINAL_SCREENSHOTS | PENDING |
 | PRODUCTION_BUILD | NOT_RUN |
 | ASC_UPLOAD | NOT_RUN |
@@ -23,12 +24,12 @@
 
 ネイティブのプライバシー確認にIPAが必要な場合、所有者は下記のビルド手順で**未提出の仮production候補**を先に作り、検査できる。この仮候補を作るために公開ページの完成やsubmit用`ascAppId`を要求しない。未確定の連絡先やURLを架空の値で埋めず、公開情報未完成の候補として記録する。仮候補はASCへアップロードせず、審査・実機受入が完了したとも扱わない。
 
-順序は、**必要なら仮候補でIPA・SDKを監査 → 実態に合う本文と正式な連絡先・URLを承認 → ページを公開してアプリへ接続 → 必要な再ビルド・再検査を終えた最終候補を選ぶ**。ページ生成のプライバシー確認フラグを、監査前に形式だけtrueにしない。以下は最終候補・アップロードに向けて満たす項目であり、最初の監査用ビルドの前に全項目を済ませる必要はない。
+2026-09-20に、所有者は公開情報とページ公開をproduction監査と分けて承認しました。本文・連絡先・URLの公開とアプリ接続は済んだため、次はリンクを含むproduction候補を作成し、IPA・SDK・実通信と同じ候補の実機受入を確認します。実態との差が判明した場合は本文も見直します。`publicInformationApproved=true`、`productionPrivacyReviewConfirmed=false` を維持し、後者を形式だけtrueにしません。以下は最終候補・アップロードに向けて満たす項目であり、最初の監査用ビルドの前に全項目を済ませる必要はない。
 
 1. [日本語原稿](store-metadata-ja.md)と名前の採用・権利を承認する。ASCで名前を利用できることと商標等の確認を別に行う。主言語は日本語、価格・地域・カテゴリは所有者が選ぶ。
-2. [プライバシー監査](privacy-support-audit.md)と公開ページ本文を承認し、実在するHTTPSの[プライバシー](privacy-policy-ja.md)／[サポート](support-ja.md)を公開する。所有者の公開連絡先とURLをアプリ・ASCへ反映し、普通のブラウザーで開くことを確認する。仮文言が残る版は提出しない。
+2. 公開本文・連絡先は承認済み。実在するHTTPSの[プライバシー](https://catlover-bot.github.io/chroma-rift/privacy.html)／[サポート](https://catlover-bot.github.io/chroma-rift/support.html)は公開・匿名到達を確認し、アプリへ接続した。残りはASCへのURL反映、最終productionの[プライバシー監査](privacy-support-audit.md)、同じビルドからのリンク動作・復帰、メール実受信の確認。仮文言が残る版は提出しない。
 3. ASCで`com.hirotakam.chromarift`の既存レコードを確認する。なければ所有者がiOS、日本語、採用名、同じBundle IDで登録する。[Appleの登録手順](https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app/)を参照。別Bundle IDや別EASプロジェクトを作らない。
-4. ASCのGeneral → App Information → General Informationにある**数値Apple ID**を確認した時だけ、既存`eas.json`に`submit.production.ios.ascAppId`を文字列として最小追加する。実値未確認のため、このGoalではダミーを設定しない。[Expoの項目説明](https://docs.expo.dev/submit/ios/)参照。
+4. ASCのGeneral → App Information → General Informationにある**数値Apple ID**を確認した時だけ、既存`eas.json`に`submit.production.ios.ascAppId`を文字列として最小追加する。現行の設定値は `"6813876632"`。今回この値は変更していない。提出時に正しい登録先であることを照合し、ダミーや別の識別子へ置き換えない。[Expoの項目説明](https://docs.expo.dev/submit/ios/)参照。
 5. `version=1.0.0`、remote version、productionの`autoIncrement:true`、`developmentClient:false`とproduction markerを維持。simulator／internal／ad hoc用の成果物は提出しない。既存のASCバージョンが異なる場合は先に突き合わせる。設定や依存を変えたら必要なローカル検証を更新して候補ソースを確定する。
 
 既知の依存残件（2026-09-19の新しい検査）：Doctorは20/21で、Expo互換パッチ推奨が`expo 57.0.22 → ~57.0.24`、`expo-asset 57.0.17 → ~57.0.18`、`expo-constants 57.0.18 → ~57.0.19`の3件。auditは11 moderate、high／criticalは0で、`uuid <11.1.1`の`GHSA-w5hq-g745-h8pq`が`xcode`等のExpoビルド用依存へ波及する。既存であることを安全の証明にしない。完全な結果・依存経路・残余リスクは[Goal015](../GOAL-015.md)の保存ログと評価を参照。一括更新や`audit fix --force`はしない。更新する場合は改名と分離し、検証と最終バイナリ確認をやり直す。
@@ -46,7 +47,7 @@ npx eas-cli@latest build --platform ios --profile production
 
 IPAでは署名、Bundle ID、日本語`CFBundleDisplayName`、version/build、ローカライズ、アイコン・起動画面、Info.plistの権限、各SDKのprivacy manifest／required-reason宣言、同梱画像・音源を検査する。ローカルのJS exportはIPAや署名済みnativeビルドの検査を代替しない。
 
-監査後にページ・連絡先・実在URLを確定して公開し、アプリ内リンクを完成させる。URL接続などでアプリのコードや設定を変えた場合は、ローカル検証を更新してproductionを再ビルドする。公開ページだけを更新しバイナリが変わらない場合も、承認本文と実態の一致・リンク到達を再確認する。最終候補のIPA検査と、後述する同じversion/buildのTestFlight受入が必要で、仮候補の確認だけでは代替しない。
+ページ公開と実在URLのアプリ接続は完了した。今回のURL接続を含むソースから、新しいproductionビルドを作成する。監査後にアプリのコードや設定をさらに変えた場合も、ローカル検証を更新してproductionを再ビルドする。公開ページだけを更新しバイナリが変わらない場合も、承認本文と実態の一致・リンク到達を再確認する。最終候補のIPA検査と、後述する同じversion/buildのTestFlight受入が必要で、仮候補の確認だけでは代替しない。
 
 ## 今回のビルドだけをASCへアップロード（所有者が実行）
 

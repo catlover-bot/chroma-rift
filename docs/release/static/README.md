@@ -1,24 +1,40 @@
 # 公開ページのローカルソース
 
-本文の原本は上位の [privacy-policy-ja.md](../privacy-policy-ja.md) と [support-ja.md](../support-ja.md) の `PUBLIC START/END` 区間です。二重のHTML原稿は管理しません。静的HTML/CSSのみを出力し、JavaScript、広告、解析タグ、外部フォント、送信フォームを含めません。サーバーのアクセスログや問い合わせサービスの扱いは、採用する公開先で別途確認します。
+本文の原本は上位の [privacy-policy-ja.md](../privacy-policy-ja.md) と [support-ja.md](../support-ja.md) の `PUBLIC START/END` 区間です。差込値は [public-fields.json](public-fields.json) で管理します。静的HTML/CSSのみを出力し、JavaScript、広告、解析タグ、外部フォント、送信フォームを含めません。
 
-ローカル下書きを確認するには、リポジトリのルートから次を実行します。
+公開先は専用 `gh-pages` ブランチを使うGitHub Pagesです。[公開記録と更新手順](../github-pages.md)、[取り扱いの確認記録](../pages-privacy-review.md)を参照してください。2026-09-20に所有者が第２版の本文、公開運営者名 `Hirotaka Monya`、問い合わせ先 `better122@icloud.com`、GitHub Pagesでの公開を承認しました。著作権者の表記は指定されていないため省略しています。
 
-```bash
-python3 docs/release/static/build-pages.py --draft --output .expo/goal015/public-pages-draft
+## 生成
+
+Python標準ライブラリだけを使用します。この生成器自身はネットワーク接続やデプロイを行いません。ローカル下書きは次のように生成します。
+
+```sh
+python3 docs/release/static/build-pages.py --draft --output output/public-pages-draft-next
 ```
 
-生成物は公開前表示と `noindex,nofollow` を付けた未公開の資料です。`privacy.html` と `support.html` はローカルファイルとして読めます。`noindex` はアクセス制限ではないため、下書きを公開サーバーへ置かないでください。
+下書きには公開前表示と `noindex,nofollow` が付きます。`noindex` はアクセス制限ではないため、下書きを公開サーバーへ置かないでください。
 
-公開準備は次の順序です。
+公開版は承認済みJSONと未使用の出力先・記録パスを指定します。
 
-SDK・Info.plist等の確認用production候補を先に作る必要がある場合は、審査提出しない候補として監査します。その結果で公開本文を確定し、ページの公開・アプリへのURL接続後に最終提出候補を作り直して確認します。先行候補の確認を、URL接続後の最終IPAや同一ビルドの実機受入の代わりにしません。全体の順序は[提出手順](../submission-checklist.md)に従います。
+```sh
+python3 docs/release/static/build-pages.py \
+  --config docs/release/static/public-fields.json \
+  --output output/public-pages-ready-next \
+  --manifest output/public-pages-ready-next.local-build.json
+```
 
-1. [一括確認票](../owner-confirmation.md)の公開情報を承認し、`public-fields.json` のコピーへ入力する。審査連絡先・認証情報は入力しない。`contactUrl` は承認済みの `mailto:` またはHTTPS問い合わせ先。名前からメールアドレスを作らない。
-2. `externalDataHandling` には最終production版のSDK・外部データの監査結果、`hostingDataHandling` にはホスティングのアクセスログ・保存期間・委託先・保護、`supportDataHandling` には問い合わせの利用目的・保持期間・削除依頼・委託先・保護を、承認済みの日本語文章で記入する。これらは自動監査で埋められる値ではない。
-3. 公開情報と公開内容に対応するproduction候補のプライバシー確認が済んだときだけ、対応する二つの確認フラグをtrueにする。このフラグは確認者の表明で、技術検証を代行しない。
-4. `--draft` を付けず、承認済みJSONを `--config` に指定して別のローカル出力先へ生成する。欠落・仮値のある入力は失敗し、公開用ファイルを新規生成しない。既存出力先は再利用せず、以前の生成物との取り違えを避ける。
-5. 所有者が承認したHTTPSホスティングへHTML2枚とCSSを公開する。このGoalではデプロイしない。認証なしの到達、証明書、本文・連絡先、スマートフォン表示、実際の問い合わせ受信を確認する。リンク切れ、リダイレクト先、ホスティング側の追加タグも確認する。
-6. 同じ承認済みHTTPS URLをアプリの設定とApp Store Connectへ接続し、同じproduction候補で開けることを確認する。HTML生成だけで公開URLやアプリ内リンクの完成とは扱わない。
+出力先には `privacy.html`、`support.html`、`site.css` だけを置きます。内部記録は既定で `<output>.local-build.json` という外側のファイルへ保存し、`--manifest` で外側の別パスも指定できます。既存の非空出力先・シンボリックリンク・既存の記録は上書きしません。確認画像、入力JSON、ログ、録画を出力先へ追加しないでください。
 
-必要な公開情報が未提供なので、現状のJSONで公開モードは失敗するのが正しい動作です。ダミーURLや仮運営者は作りません。Python標準ライブラリだけを使い、ネットワーク接続・アップロードは行いません。
+## 承認と監査を分ける
+
+公開モードは必須の公開情報、HTTPS URL、連絡先、日付と `publicInformationApproved=true` を要求します。未入力・仮値は拒否します。著作権者は任意で、未指定ならフッターを出しません。
+
+`productionPrivacyReviewConfirmed` は最終production候補の監査記録です。今回の所有者の承認はページ公開に限られるため、**falseのまま**です。ページ生成の条件にはせず、生成記録へ実値を残します。公開版の生成、ホスティングへの公開、アプリのリンクテストを理由にtrueへ変更しません。
+
+外部ページ・問い合わせの文章には確認できた取扱いだけを記入します。固定の保存日数、完全匿名化、外部サービスのログ削除保証は推測で追加しません。最終IPA・SDK・Info.plist・実通信の監査は[提出チェックリスト](../submission-checklist.md)の残件であり、後から実態の差が判明した場合は本文も見直します。
+
+## 公開・検証
+
+生成後は本文・名前・メール・相互リンクとスマートフォン表示を確認し、３ファイルのハッシュを記録します。[専用ブランチの手順](../github-pages.md)で、その３ファイルだけを公開します。HTML生成だけで公開完了とせず、認証なしのHTTPS 200、配信バイトの一致、CSS、相互リンクを確認します。
+
+実在URLを確認してからアプリ設定へ接続します。アプリ内ボタンは押した時だけURLを開き、診断や保存情報を付加しません。公開ページはアプリ再ビルドなしで更新できますが、設定画面の変更を配布版へ届けるには新しいproductionビルドが必要です。同じ最終production版の端末で遷移・復帰を確認し、問い合わせ先への実際の受信確認も別に行います。
