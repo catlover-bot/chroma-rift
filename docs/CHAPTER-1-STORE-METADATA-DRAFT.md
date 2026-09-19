@@ -1,5 +1,7 @@
 # 第一章 App Store 掲載・審査情報の下書き（未提出）
 
+> 2026-09-19：以下は旧名称での歴史的な下書きです。現在の公開候補は[「錯視館」の日本語原稿](release/store-metadata-ja.md)、[日英審査メモ](release/review-notes.md)、[撮影計画](release/screenshot-plan.md)を参照してください。過去の文面は改変せず保持しています。
+
 対象は現行の iPhone 向け CHROMA RIFT 1.0.0、第一章「最後の退館者」。この文案は実コード・物語台帳に照らしたローカルの候補であり、署名済みpreview/TestFlight、実機の画面・音・オフライン起動、正式な公開URL、オーナーの掲載判断が未確認のため、そのまま App Store Connect へ入力しない。第二章の遊べる内容や配信日を約束しない。
 
 ## 日本語の掲載候補

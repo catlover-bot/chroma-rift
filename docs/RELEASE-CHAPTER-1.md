@@ -1,5 +1,7 @@
 # 第一章の公開準備と未完了ゲート
 
+> 2026-09-19：以下はGoal013以降の当時の検証記録として保存しています。現在の「錯視館」の提出手順・状態は[Goal015の提出チェックリスト](release/submission-checklist.md)を参照してください。以下の古い名称・件数・原稿を現行提出情報として転記しないでください。
+
 01→05を一つのApp hostで進めた740状態を実sceneへ順に再描画し、148秒の[ローカルQA動画](qa-goal013/chapter-one-app-scene-replay.mp4)と圧縮runtime/計測/hashを保存した。04の鍵・巻上げ、05の隔離・停止・屋外完了までの順序を同じhost経路で検査できる。04の鏡も実 `planarMirror.ts` の反射passを47 frameで描き、同じsceneの巡回体と鍵を確認した。これは5本を別実行してつないだ映像ではないが、native Canvas/HUD/音を連続収録した動画でもない。鏡への明示観察は別の04動画、native表示はiPhone previewで判定する。製品ソース・依存は変更せず、QA抽出ツールと記録のみ更新した。iPhone実行、正式privacy/support URL、ストア申告の未完了ゲートと `contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持する。
 
 第一章ホームを最大文字・最小幅で描くと5エリア一覧の番号が2行に割れたため、番号列の固定幅を最小幅へ変更した。新規/旧記録案内、進行中、完了、振り返り、発見記録の15条件では番号が1行、各ボタンのスクロール到達は最低48px、横はみ出し0。[QA画像と測定](qa-goal013/README.md)はbrowser CSSであり、native Yoga、VoiceOver、safe areaや実端末の操作確認ではない。製品ソース変更後の全check（110スイート/1,134テスト、lint、型検査、通常iOS export）と[両OS公開用source-map検査](qa-goal013/home-layout-release-checks.json)は通過した。`automatedChecksPassed=true`、`contentComplete=false`、`nativePreviewVerified=false`、`releaseReady=false` を維持し、preview端末と正式privacy/support URL、ストア申告の公開ゲートは残る。

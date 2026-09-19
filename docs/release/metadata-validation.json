@@ -1,0 +1,74 @@
+{
+  "verifiedOn": "2026-09-19",
+  "encoding": "UTF-8",
+  "characterCounting": "Unicode code points; LF newlines included; no emoji or combining sequences in authored fields",
+  "sourceFiles": [
+    {
+      "path": "store-ja.json",
+      "sha256": "4b96e132973dc8da140053d7e23b6baae026637a7f7f7bfd10c19eb8ae99277f"
+    },
+    {
+      "path": "review-notes-ja-en.txt",
+      "sha256": "b76a0ff9c134c65df223c17b692ebef2b1adf94c6675abf604635ed39f0ce83a"
+    }
+  ],
+  "fields": [
+    {
+      "field": "name",
+      "characters": 3,
+      "utf8Bytes": 9,
+      "limitUnit": "characters",
+      "limit": 30,
+      "pass": true
+    },
+    {
+      "field": "subtitle",
+      "characters": 14,
+      "utf8Bytes": 42,
+      "limitUnit": "characters",
+      "limit": 30,
+      "pass": true
+    },
+    {
+      "field": "promotionalText",
+      "characters": 57,
+      "utf8Bytes": 169,
+      "limitUnit": "characters",
+      "limit": 170,
+      "pass": true
+    },
+    {
+      "field": "description",
+      "characters": 349,
+      "utf8Bytes": 1025,
+      "limitUnit": "characters",
+      "limit": 4000,
+      "pass": true
+    },
+    {
+      "field": "keywords",
+      "characters": 26,
+      "utf8Bytes": 70,
+      "limitUnit": "utf8Bytes",
+      "limit": 100,
+      "pass": true
+    },
+    {
+      "field": "review-notes-ja-en.txt",
+      "characters": 2260,
+      "utf8Bytes": 3478,
+      "limitUnit": "utf8Bytes",
+      "limit": 4000,
+      "pass": true
+    }
+  ],
+  "keywordTokenCharacters": {
+    "錯視体験": 4,
+    "一人称探索": 5,
+    "知覚展示": 4,
+    "観察パズル": 5,
+    "館内脱出": 4
+  },
+  "ownerApproval": "PENDING",
+  "submission": "NOT_RUN"
+}

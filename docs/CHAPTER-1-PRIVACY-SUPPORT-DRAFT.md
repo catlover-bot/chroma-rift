@@ -1,5 +1,7 @@
 # 第一章のプライバシー・サポート文案（未承認）
 
+> 過去記録（Goal013時点）。Goal015の現行原稿は [プライバシー](release/privacy-policy-ja.md)・[サポート](release/support-ja.md)、根拠は [最新監査](release/privacy-support-audit.md)を参照してください。以下の旧名称・診断範囲・当時の検査結果は履歴として保持しており、現在の提出用本文ではありません。
+
 この文書は `feat/goal-013-chapter-one-product` のコード監査に基づく**公開前の下書き**。運営者、正式な連絡先、公開URL、SDKを含む実バイナリのデータ取扱いが未確定なので、そのまま公開しない。アプリ内や App Store Connect に仮URLを入れない。
 
 ## プライバシーポリシー候補本文

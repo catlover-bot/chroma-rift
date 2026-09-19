@@ -1,0 +1,19 @@
+日本語
+ログイン不要。UIは日本語です。「第一章をはじめる」→操作説明→「展示室へ入る」で開始します。
+01 展示室：非常灯を点け、影と輪郭の装置で電源を集め、配線を直す。巡回を避けて職員通路の先で出口を閉じる。
+02 収蔵庫：棒の長さと傾きを合わせて固定。仕切りを操作し、奥の搬出口へ進む。
+03 映写室：灯りを動かして受光窓へ届ける。巡回を避け、防火幕を下ろして先へ歩く。
+04 鏡廊：横顔の余白からキーを取り、短い練習レバーを保持。本レバーを保持して歯止めを3段固定する。鏡で背後を確かめ、危険なら離して棚の陰へ。確定した段は残る。3段目で保持は自動終了し、格子が上がる。開いた格子を通り、その先の扉を歩いて越える。接触時は進行に合う安全な場所へ戻り、短い復帰表示後に再開。キー・練習・確定段は失わない。
+05 制御室：キーを差し、手順を読む。呼び鈴で巡回体を区画内へ誘導し、全身が入り敷居が空いてから隔離扉を閉じる。停止盤を操作し、職員出口を開けて屋外へ歩くと第一章完了。
+設定で音、各音量、怖さ、操作補助を変更可能。「控えめな怖さ」は追尾と接触によるやり直しをなくし、謎と出口条件は同じです。端末の消音設定を尊重します。
+設定→サポート→詳しい情報は任意。情報をコピーしても自動送信しません。第二章は将来の案内のみで、この版では遊べません。審査用アカウントや隠し解除操作はありません。
+
+English
+No login is required. The game UI is Japanese. Select 「第一章をはじめる」, read the controls, then 「展示室へ入る」.
+1 Gallery: switch on emergency lighting, collect power from the shadow and contour devices, repair the wiring, avoid the patrol and close the exit from the staff passage.
+2 Vault: match and lock the rod length and tilt, operate the partition, then use the loading exit.
+3 Theatre: move the light onto the receiving window, avoid the patrol, lower the fire curtain and walk beyond it.
+4 Mirror corridor: take the key between the face silhouettes, hold the practice lever, then hold the main winch to lock three ratchets. Watch the mirror; release and retreat behind the shelf when threatened. Locked ratchets remain. The third ratchet ends the hold automatically. Once raised, walk through the grate and across the doorway beyond it. Contact returns the player to a safe location appropriate to progress; play resumes after a brief recovery display. The key, practice completion and locked ratchets remain.
+5 Control room: insert the key, read the procedure, ring the bell to lure the patrol fully inside, wait for a clear threshold and close the isolation door. Stop the control system, open the staff exit and walk outdoors to finish Chapter 1.
+Settings offer sound, separate volume levels, horror intensity and control assistance. 「控えめな怖さ」 removes pursuit and contact restarts without changing puzzles or exits. Device silent mode is respected.
+Settings > 「サポート」 > 「詳しい情報」 opens optional diagnostics. Copying does not send them automatically. Chapter 2 is an announcement only, not playable in this version. There is no test account or hidden unlock.

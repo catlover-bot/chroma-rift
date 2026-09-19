@@ -1,47 +1,62 @@
-# CHROMA RIFT
+# 錯視館（さくしかん）
 
-迷宮の中を一人称で歩き、見え方を比べ、帰路の変化を発見するiPhone向け探索ゲームです。通常本編は1章「帰り道のない入口」。
+閉館後の知覚展示館を進む、iPhone向け一人称ホラー脱出ゲームです。色と輪郭、長さと傾き、光と影、鏡に映る背後を確かめ、仕掛けを操作しながら退館を目指します。
 
-## 遊び方
+現在の本編は **第一章「最後の退館者」／全5エリア** です。
 
-ホームの「遊ぶ」→ 初回だけ3問 → 操作案内 → 入口 → 触れない紋章 → 重なる鍵 → 帰路 → 出口 → 結果。
+1. 閉館後の展示室
+2. 測れない収蔵庫
+3. 影の映写室
+4. 鏡越しの回廊
+5. 退館制御室
 
-- 左下の広い領域をドラッグして歩き、右側をドラッグして見回します。指を離すと止まり、左右を同時に操作できます。壁の紋章や印に近づき、中央の照準と対象名を見て右下のボタンで調べます。
-- 紋章を調べ、「切れずにつながる輪郭」と同じ形の印を押すと、奥の扉が開きます。「色をほどく」は任意の無彩色比較です。色の見え方は正解条件に使いません。
-- 最初の一時停止メニューでドラッグ操作／ボタン操作（短いステップ・旋回）を切り替えられます。3段階ヒント、輪郭ガイド、表示A／控えめ／表示B、視点・上下の感度、左右配置、描画品質も選べます。
-- Reduce Motionや文字拡大でもドラッグ操作を保ちます。VoiceOver中は読み上げ用ボタンを表示し、保存したタッチ操作は変えません。
-- 初回は3回答だけ。スキップでき、保存済みなら省略。詳細12問は「設定 → 詳しく調整する」に残しています。
+第一章はこの5エリアで完結します。第二章は将来の案内だけで、開始・購入・ダウンロード機能はありません。「錯視館」はローカル表示へ採用した名称案です。App Storeでの名称確保や権利確認、正式公開承認を済ませたという意味ではありません。
 
-初回調整は以前の最大24タップから3タップを維持。開始まで5タップ、スキップ／設定済みなら2タップです。章の初見5〜8分は設計目標で、実測していません。時間制限・減点はありません。
+## 操作と保存
 
-## 技術
+- 左右のドラッグで移動と見回しを同時に操作し、近くの装置を調べます。左右配置・感度・簡単なボタン操作を設定できます。
+- 鏡廊の巻き上げ機は保持で進み、確定した歯止めは手を放しても残ります。危険に気づいたら棚陰へ退き、戻って作業を再開できます。開いた格子と奥の扉は自分で歩いて通ります。
+- 音楽・環境音・効果音、怖さ、振動、補助表示、動きを減らす設定があります。錯覚の感じ方には個人差があり、視覚の検査・診断をするアプリではありません。
+- 進行と設定は端末内に保存します。旧セーブを消す改名ではありません。読み取り不能・未知版の保存は保護し、リセットは利用者が選択・確認した場合に行います。
+- 設定 → サポート → 詳しい情報から診断を開き、任意でコピーできます。コピーは自動送信ではありません。
 
-Expo 57、React Native 0.86.3、React 19.2.3を継続。3DはThree 0.185.1＋React Three Fiber 9.7.0 native Canvas。調整・ラボ・旧2.5D迷宮はSkia 2.6.2です。ThreeオブジェクトをReanimatedへ渡しません。
+## 開発場所と検証
 
-Expo依存はexpo-gl 57.0.2、expo-asset 57.0.16、expo-file-system 57.0.6。@types/three 0.185.4は開発依存です。解決版はpackage-lock.jsonに固定しています。
+今回の作業場所は `/home/mhirotaka/workspace/chroma-rift-goal012`、ブランチは `release/goal-015-japanese-app-store` です。古い `/home/mhirotaka/workspace/chroma-rift` やmainへ戻す手順ではありません。
 
-色模様の見かけの奥行き、通常の3D投影、鍵の投影整列、遮蔽中の部屋差し替えは別の仕組みです。色の感じ方で正解条件を変えません。
+Expo SDK57 / React Native0.86.3 / React19.2.3 / Three0.185.1 / React Three Fiber9.7.0を使用します。実際の解決版は `package-lock.json` を参照してください。新規チェックアウトでは `npm ci`、通常のローカル検証は次のとおりです。
 
-## iPhoneで起動
+```sh
+cd /home/mhirotaka/workspace/chroma-rift-goal012
+npm run check
+npm run doctor
+npx expo install --check
+node scripts/check-runtime-cycles.cjs
+```
 
-**expo-gl入りのGoal 003系Development Buildはそのまま使い、Metroを再読み込みします。Goal 005のためのnative再ビルドは不要です。** 実機上の再利用確認は[実機チェックリスト](docs/IPHONE_VALIDATION.md)に従います。
+`check` はlint・型検査・Jest・iOS JS exportです。署名済みiOSバイナリの作成、端末の描画・音・操作・VoiceOver・FPSや発熱の検証を代替しません。現在の結果と失敗履歴は [Goal015](docs/GOAL-015.md) に記録します。
 
-~~~sh
-# 起動中のMetroをCtrl+Cで停止してから
-cd /home/mhirotaka/workspace/chroma-rift
-npx expo start --dev-client --tunnel --clear
-~~~
+## 新しいiOSビルド
 
-expo-glのないGoal 002の古いbuildは起動案内が表示されます。その場合の既存手順は[Development Build案内](docs/EAS_IOS_DEVELOPMENT_BUILD.md)を参照してください。
+今回の改名は `app.json` の表示名と日本語言語指定を変更します。端末アイコン下の名前を反映するには新しいネイティブビルドが必要です。既存の同梱previewをMetroへ接続して更新する方式ではありません。
 
-新しいCHROMA RIFTからMetroへ接続します。LANでは `npm run start:dev-client` も利用可能。署名やBundle IDを作り直す手順ではありません。[実機チェックリスト](docs/IPHONE_VALIDATION.md)
+- `development`：開発client。対応するインストール済み開発ビルドでのみ `npm run start:dev-client` を利用します。
+- `preview`：internal配布の同梱ビルド。App Store提出用ではありません。
+- `production`：App Store用候補。同じ候補をTestFlight等で実機確認してから、ユーザーが審査へ提出します。
 
-## 開発と保存
+Bundle ID `com.hirotakam.chromarift`、EAS projectId、slug `chroma-rift`、scheme `chromarift`、保存キーは維持します。versionは `1.0.0`、build番号は既存のremote管理とautoIncrementを使います。
 
-WSL内でNode.js 24とnpmを使用。nvmは必須ではありません。新規チェックアウトは `npm ci`。検証は `npm run check`、`npm run doctor`、`npx expo install --check`、`git diff --check`。checkはlint、型検査、Jest、iOS JS exportを実行します。
+公開先・必要な設定・素材がそろってからユーザーが実行するbuild/submitの正確な手順は [提出チェックリスト](docs/release/submission-checklist.md) にあります。EAS Submitはバイナリのアップロードであり、審査送信や一般公開ではありません。認証情報をリポジトリへ保存しません。
 
-既存v1/v2設定・詳細生回答・プロフィール・旧スコアを保持。一人称の章・操作設定・導入の完了/操作案内確認は別のversion付きキーです。「章を最初から」は章だけ、「全データを削除」は旧新の保存を削除します。不正JSONや未知の版は自動削除しません。旧2.5D、旧レール、最小一人称検証室は開発ビルドの設定画面に残しています。
+## 提出準備と現在の範囲
 
-新しいiPhoneビルドでのGL描画、VoiceOver、触覚、酔い、色の奥行き、性能は未確認です。テストやJS exportは60fpsや快適性を実証しません。広告・課金・共有API・バックエンド・カメラ／センサー権限は追加していません。
+- [日本語ストア原稿](docs/release/store-metadata-ja.md)
+- [審査用説明](docs/release/review-notes-ja-en.txt)
+- [公開前の確認票](docs/release/owner-confirmation.md)
+- [プライバシー原稿](docs/release/privacy-policy-ja.md) / [サポート原稿](docs/release/support-ja.md)
+- [スクリーンショット計画](docs/release/screenshot-plan.md)
+- [実機確認手順](docs/IPHONE_VALIDATION.md)
 
-[Goal 005検証記録](docs/GOAL-005.md) · [錯視と検証の区別](docs/ILLUSION-EVIDENCE.md) · [Goal 004](docs/GOAL-004.md) · [ドラッグ操作設計](docs/CONTROLS-DESIGN.md) · [設計判断](docs/ADR-003-FIRST-PERSON.md) · [完全な攻略](docs/FIRST_PERSON_CHAPTER.md) · [Goal 002](docs/GOAL-002.md)
+公開ページ・価格・地域・名称や権利の承認は、指定された値だけを確定します。ローカルのページ原稿を公開済みURLとして扱いません。正式なproductionビルド、最終スクリーンショット、同じビルドの端末評価が未確認の間は **APP_REVIEW_READY=false / RELEASE_READY=false** です。
+
+過去の実装・検証記録は [Goal014.2](docs/GOAL-014-2.md)、[Goal014.1](docs/GOAL-014-1.md)、[Stage Kit](docs/GOAL-012.md)、[錯視と検証の区別](docs/ILLUSION-EVIDENCE.md) から参照できます。古い記録の製品名・ビルド手順・端末結果は、その時点の記録として残します。
