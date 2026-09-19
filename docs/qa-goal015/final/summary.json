@@ -1,0 +1,92 @@
+{
+  "command": "npm run check",
+  "exitCode": 0,
+  "elapsedSeconds": 557.3472757579875,
+  "sourceFileCount": 541,
+  "sourcesUnchanged": true,
+  "changedFiles": [],
+  "testSuites": 142,
+  "tests": 1472,
+  "jestElapsedSeconds": 481.697,
+  "testFailures": 0,
+  "checkAttempts": 1,
+  "fairness": {
+    "0.75": {
+      "cases": 27,
+      "cleared": 27,
+      "captures": 0
+    },
+    "1.25": {
+      "cases": 27,
+      "cleared": 27,
+      "captures": 0
+    },
+    "1.75": {
+      "cases": 27,
+      "cleared": 26,
+      "captures": 1
+    }
+  },
+  "screenRoutes": [
+    {
+      "intensity": "standard",
+      "scenario": "straight",
+      "hz": 60,
+      "passed": true
+    },
+    {
+      "intensity": "subdued",
+      "scenario": "straight",
+      "hz": 30,
+      "passed": true
+    },
+    {
+      "intensity": "standard",
+      "scenario": "one-tooth-retreat",
+      "hz": 60,
+      "passed": true
+    },
+    {
+      "intensity": "standard",
+      "scenario": "left-held-retreat",
+      "hz": 30,
+      "passed": true
+    },
+    {
+      "intensity": "standard",
+      "scenario": "capture",
+      "hz": 60,
+      "passed": true
+    },
+    {
+      "intensity": "standard",
+      "scenario": "post-gate-capture",
+      "hz": 30,
+      "passed": true
+    },
+    {
+      "intensity": "standard",
+      "scenario": "lifecycle",
+      "hz": 60,
+      "passed": true
+    }
+  ],
+  "postImplementationCommit": {
+    "head": "83d846ee2b4a783a1b8554a588211b1fd047f94e",
+    "sourceCount": 541,
+    "matched": true,
+    "note": "Application/code commit0720141 followed by documentation commit83d846e. Source content identical to full-check input; QA/final docs remain to be committed."
+  },
+  "states": {
+    "LOCAL_RENAME_AND_CHECKS": "PASS",
+    "NAME_AND_METADATA_APPROVAL": "PENDING",
+    "PUBLIC_POLICY_AND_SUPPORT": "PENDING",
+    "FINAL_SCREENSHOTS": "PENDING",
+    "PRODUCTION_BUILD": "NOT_RUN",
+    "ASC_UPLOAD": "NOT_RUN",
+    "PRODUCTION_DEVICE_ACCEPTANCE": "PENDING",
+    "APP_REVIEW_READY": false,
+    "APP_REVIEW_SUBMITTED": false,
+    "RELEASE_READY": false
+  }
+}

@@ -1,0 +1,66 @@
+Bytecode makes the app startup faster, disabling bytecode is highly discouraged and should only be used for debugging purposes.
+Using src/app as the root directory for Expo Router.
+Starting Metro Bundler
+
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:965721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+iOS Bundled 1659ms index.tsx (1769 modules)
+
+› Assets (36):
+assets/audio/ambience.wav (192KB)
+assets/audio/cloth.wav (20KB)
+assets/audio/door-impact.wav (24KB)
+assets/audio/footstep.wav (8.7KB)
+assets/audio/interaction.wav (6.8KB)
+assets/audio/mechanism.wav (33KB)
+assets/audio/music/chapter_end.m4a (736KB)
+assets/audio/music/exploration.m4a (911KB)
+assets/audio/music/pursuit.m4a (454KB)
+assets/audio/music/release.m4a (101KB)
+assets/audio/music/suspicion.m4a (500KB)
+assets/audio/music/title_theme.m4a (664KB)
+assets/audio/physical/bell.wav (101KB)
+assets/audio/physical/cloth-metal.wav (35KB)
+assets/audio/physical/grip.wav (31KB)
+assets/audio/physical/isolation.wav (91KB)
+assets/audio/physical/key.wav (38KB)
+assets/audio/physical/outdoor.wav (768KB)
+assets/audio/physical/power.wav (62KB)
+assets/audio/physical/ratchet.wav (60KB)
+assets/audio/physical/room-control.wav (768KB)
+assets/audio/physical/room-gallery.wav (768KB)
+assets/audio/physical/room-mirror.wav (768KB)
+assets/audio/physical/room-theatre.wav (768KB)
+assets/audio/physical/room-vault.wav (768KB)
+assets/audio/physical/step-a.wav (17KB)
+assets/audio/physical/step-b.wav (20KB)
+assets/audio/shepard.wav (576KB)
+assets/perceptual/hybrid-composite.png (59KB)
+assets/perceptual/hybrid-high-pass.png (24KB)
+assets/perceptual/hybrid-low-pass.png (22KB)
+node_modules/react-native/Libraries/LogBox/UI/LogBoxImages/alert-triangle.png (609B)
+node_modules/react-native/Libraries/LogBox/UI/LogBoxImages/chevron-left.png (126B)
+node_modules/react-native/Libraries/LogBox/UI/LogBoxImages/chevron-right.png (123B)
+node_modules/react-native/Libraries/LogBox/UI/LogBoxImages/close.png (187B)
+node_modules/react-native/Libraries/LogBox/UI/LogBoxImages/loader.png (282B)
+
+› ios bundles (2):
+_expo/static/js/ios/index-d41d8cd98f00b204e9800998ecf8427e.js (7.1MB)
+_expo/static/js/ios/index-d41d8cd98f00b204e9800998ecf8427e.js.map (20MB)
+
+› Files (1):
+metadata.json (2.4KB)
+
+Exported: .expo/goal015/final/metro/development

@@ -1,0 +1,1 @@
+{"ok":true,"appDiff":["expo.name","expo.ios.infoPlist.CFBundleDevelopmentRegion","expo.ios.infoPlist.CFBundleLocalizations"],"unchangedRuntimeFiles":48,"retainedTechnicalFiles":11,"out":"/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal015/identity.json"}

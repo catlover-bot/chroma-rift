@@ -1,0 +1,19 @@
+{
+  "bundleSha256": "3816edc57660f17b09983a7f1f819819e5ac812736b6fbec8e780128a214d1f3",
+  "mapSha256": "5ebb19129c36f6b8cde46e31476b183cf261a42157eb4216ae04828025d4f0a6",
+  "sourceCount": 1626,
+  "toolchainUuidXcodeSources": [],
+  "brandPresent": true,
+  "markerPresent": true,
+  "scope": "Actual Metro release export using production env; not signed IPA or all transitive native code audit.",
+  "readingPresent": true,
+  "literalMatches": [
+    "錯視館",
+    "goal-015-sakushikan-r1",
+    "さくしかん"
+  ],
+  "sourceMapAppName": "錯視館",
+  "brandCheckMethod": "Parse actual Metro JavaScript AST StringLiteral values; Unicode escapes decode to the product name. Map app.json independently parsed.",
+  "markerModuleExcerpt": "goal-015-sakushikan-r1'},1467,[564,1157]);\n__d(function(g,r,i,a,m,e,d){\"use strict\";Object.defineProperty(e,'__esModule',{value:!0}),e.hasNative3D=function(){try{return null!==(0,t.requireOptionalNativeModule)('ExpoGL')}catch{return!1}};var t=r(d[0])},1468,[1]);\n__d(function(g,r,i,a,m,e,d){\"use strict\";Object.defineProperty(e,'__esModule',{value:!0}),Object.defineProperty(e,\"default\",{enumerable:!0,get:function(){return ne}}),e.FirstPersonScreen=te;var t=r(d[0]),n=r(d[1]),o=r(d[2]),s=r(d[3]),l=r(d[4]),c=r(d[5]),u=r(d[6]),p=r(d[7]),h=r(d[8]),b=r(d[9]),y=r(d[10]),x=r(d[11]),v=r(d[12]),C=r(d[13]),f=r(d[14]),j=r(d[15]),S=r(d[16]),w=r(d[17]),A=r(d[18]),E=r(d[19]),k=r(d[20]),T=r(d[21]),P=r(d[22]),R=r(d[23]),B=r(d[24]),I=r(d[25]),D=r(d[26]),F=r(d[27]),V=r(d[28]),M=r(d[29]),L=r(d[30]),H=r(d[31]),N",
+  "exitCode": 0
+}

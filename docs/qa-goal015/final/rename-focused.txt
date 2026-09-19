@@ -1,0 +1,8 @@
+PASS src/screens/__tests__/playerTextAudit.test.tsx
+PASS src/screens/__tests__/playerSupport.test.tsx
+
+Test Suites: 2 passed, 2 total
+Tests:       12 passed, 12 total
+Snapshots:   0 total
+Time:        2.101 s
+Ran all test suites matching /src\/screens\/__tests__\/playerTextAudit.test.tsx|src\/screens\/__tests__\/playerSupport.test.tsx/i.

@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "invalidEndpointsRejected": [
+    "https://example.com/privacy",
+    "https://support.EXAMPLE.COM/privacy",
+    "mailto:owner@EXAMPLE.COM",
+    "https://127.0.0.1/privacy",
+    "https://192.168.1.1/privacy",
+    "https://10.0.0.1/privacy",
+    "https://[::1]/privacy",
+    "https://127.1/privacy",
+    "http://localhost/privacy",
+    "javascript:alert(1)",
+    "mailto:",
+    "https://private.test/privacy",
+    "https://public.invalid/privacy",
+    "https://example.com./privacy",
+    "https://server.local/privacy"
+  ],
+  "officialHttpsSyntaxAccepted": "https://developer.apple.com/app-store/app-privacy-details/",
+  "note": "Syntax checks only; no public owner/contact approval inferred and no endpoint connection made.",
+  "htmlEscapingPass": true,
+  "missingApprovedConfigExitCode": 2,
+  "unapprovedOutputDirectoryCreated": false
+}

@@ -1,0 +1,2 @@
+usage: build-pages.py [-h] [--config CONFIG] --output OUTPUT [--draft]
+build-pages.py: error: Publication is pending; missing approved fields: operatorName, copyrightHolder, effectiveDate, contactLabel, contactUrl, privacyUrl, supportUrl, externalDataHandling, hostingDataHandling, supportDataHandling, publicInformationApproved, productionPrivacyReviewConfirmed

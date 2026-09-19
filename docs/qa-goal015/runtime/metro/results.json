@@ -1,0 +1,102 @@
+[
+  {
+    "name": "development-export",
+    "command": [
+      "npx",
+      "expo",
+      "export",
+      "--platform",
+      "ios",
+      "--no-bytecode",
+      "--source-maps",
+      "--output-dir",
+      ".expo/goal015/final/metro/development",
+      "--dev"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 4.705422308994457
+  },
+  {
+    "name": "development-three",
+    "command": [
+      "node",
+      "scripts/inspect-three-bundle.cjs",
+      ".expo/goal015/final/metro/development",
+      "--expect-single"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.1047333289752714
+  },
+  {
+    "name": "development-sources",
+    "command": [
+      "node",
+      "scripts/inspect-bundle-sources.cjs",
+      ".expo/goal015/final/metro/development",
+      "."
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.15003465802874416
+  },
+  {
+    "name": "development-entry",
+    "command": [
+      "node",
+      "scripts/inspect-metro-stage-entry.cjs",
+      ".expo/goal015/final/metro/development",
+      ".",
+      "--expect-acyclic"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.2860246669733897
+  },
+  {
+    "name": "production-export",
+    "command": [
+      "npx",
+      "expo",
+      "export",
+      "--platform",
+      "ios",
+      "--no-bytecode",
+      "--source-maps",
+      "--output-dir",
+      ".expo/goal015/final/metro/production"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 2.9422683739685453
+  },
+  {
+    "name": "production-three",
+    "command": [
+      "node",
+      "scripts/inspect-three-bundle.cjs",
+      ".expo/goal015/final/metro/production",
+      "--expect-single"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.9056625600205734
+  },
+  {
+    "name": "production-sources",
+    "command": [
+      "node",
+      "scripts/inspect-bundle-sources.cjs",
+      ".expo/goal015/final/metro/production",
+      "."
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.13930693798465654
+  },
+  {
+    "name": "production-release",
+    "command": [
+      "node",
+      "scripts/check-release-export.cjs",
+      ".expo/goal015/final/metro/production",
+      "ios"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.13314873800845817
+  }
+]

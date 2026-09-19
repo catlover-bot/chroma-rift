@@ -1,0 +1,159 @@
+{
+  "ok": true,
+  "baseline": "0563e2d4bb76280fba2643078aa619e166bf8009",
+  "appDiff": [
+    "expo.name",
+    "expo.ios.infoPlist.CFBundleDevelopmentRegion",
+    "expo.ios.infoPlist.CFBundleLocalizations"
+  ],
+  "allowedAppPaths": [
+    "expo.name",
+    "expo.ios.infoPlist.CFBundleDevelopmentRegion",
+    "expo.ios.infoPlist.CFBundleLocalizations"
+  ],
+  "protectedHashes": {
+    "package.json": {
+      "before": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942",
+      "after": "ecfbe11a602b53dafe61e212c3c75184cba4842377642489d37cefed47b07942"
+    },
+    "package-lock.json": {
+      "before": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037",
+      "after": "2cc2cc846243759382d534875d5df63bf7941f3f3d2726316fad97c542aee037"
+    },
+    "eas.json": {
+      "before": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd",
+      "after": "470d33935e97af7c335433348ff1df239ea2591fe747eb73900d6aab232d1bfd"
+    },
+    "metro.config.js": {
+      "before": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55",
+      "after": "a453ad3483b913c3fe8fc960be49ca2eb39764b884453929042042cddb6dda55"
+    },
+    "metro/withNativeThree.js": {
+      "before": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee",
+      "after": "8271006e52212447643256b750de9baa859e403c4f185220691a75a564db52ee"
+    }
+  },
+  "runtimeHashes": {
+    "src/domain/campaign/areaEntry.ts": "63dcdf7f0a6515ecf3390bbb2c98ebd5d6683a71796508e31001b535e19f4c13",
+    "src/domain/campaign/checkpoint.ts": "e9dabb31bfe804a3377666ec4815c87a257274c0ad25315eb42016164338f365",
+    "src/domain/campaign/definition.ts": "2355ed8700ad91f5013c61c9981b6ee404fc5b9167fa6432a6e28b65a2bc66bd",
+    "src/domain/campaign/discoveries.ts": "3f7e6eb88ce9e5eda5242cd1e668d67e40aef4cdc18e13b5aa56cf04d9a6e3a4",
+    "src/domain/campaign/migration.ts": "7668fc402eb329aaecca8d39f8108c643f8de94fb36d1e19ef13b89d56d0db72",
+    "src/domain/campaign/session.ts": "72cb704801eaa6abd6d01977a13492929566b1f00bf3404070217dd3f0b364ba",
+    "src/domain/campaign/story.ts": "892905b39d9bd979372c8c6a70d65f436c149ad10e7c141deca484d3bffd9f94",
+    "src/domain/stageKit/actionInstance.ts": "02befc67fc4552f2081a32d0b12d680303acd5dc31f860315cd2e2e7df8b72a4",
+    "src/domain/stageKit/checkpointProgression.ts": "104adb05e5d016320f9f21b07841a036844040727c129271adfff4c3353f3583",
+    "src/domain/stageKit/definitions.ts": "b978c4a6251ada9036a21f81bb67b22e565f7b1e43cf6ba68381e289bac89495",
+    "src/domain/stageKit/linearDrag.ts": "177854393d6a154ec64543e589a99eb4718152101526fb4c0bd542c7ec8ace3c",
+    "src/domain/stageKit/modules.ts": "5ce3d9749d6046f847e4c96753aca514185c2a89716970f51e59da088f3efcfd",
+    "src/domain/stageKit/presentation.ts": "e2795d2d59b7fcf58a3a36bc2ea7abc3fcf6ca03feae8532306f563102178340",
+    "src/domain/stageKit/validateDefinitions.ts": "dc43026a084c0f73b8256aa19ec3c091222f3f1de6624903bd0b192202cb7dc8",
+    "src/domain/stages/departure-control-v1/actor.ts": "97a55e1746b8d573a603209a5fe2b1a41935751e46e8c904d94b5af72ea83cf0",
+    "src/domain/stages/departure-control-v1/binding.ts": "32bb48d4a0f6c8feefde472b0c2d1b6e1f7794146f6af10906cbb44782d20945",
+    "src/domain/stages/departure-control-v1/checkpoint.ts": "6175ccfd83e5b1e005c5bec979b7724511768318ad4ef93c4162e90d4e78ad73",
+    "src/domain/stages/departure-control-v1/containmentDoor.ts": "4ccf1f954a1e16b6ccbf620c500091544fae21c914f8f0948aab0a96a1f87bb5",
+    "src/domain/stages/departure-control-v1/copy.ts": "b32ea0c80d4d0659ab86f3fcb89a6006472922c814d348a82849a3ac65348ef4",
+    "src/domain/stages/departure-control-v1/definition.ts": "9f88d963d83c8c4b29db19c547e2e735471e8fc0bf1ee1b511fd9a8a36b7ca2c",
+    "src/domain/stages/departure-control-v1/scene.tsx": "03ce21de130c78b0c0141db051d74bea8e5c33b3a7db33cf7597626444235810",
+    "src/domain/stages/departure-control-v1/selectors.ts": "f004c5ca00930aa85e61262c451313de067977dcab3dbcd5c55b9afbd07990cf",
+    "src/domain/stages/departure-control-v1/session.ts": "ff118cfab5e570521b685eed545dee52017628f5c39cd0614d6684b397fbe8ad",
+    "src/domain/stages/isolationKeyGeometry.ts": "c110b5466ca6dfad377275a75d8c430dbb60b6340dee7850b6bae366b250e374",
+    "src/domain/stages/mirror-corridor-v1/README.md": "5b1206cac7be903c021b2c3ce82a25fafd6f839feaff5890febabc3b8e34523c",
+    "src/domain/stages/mirror-corridor-v1/actor.ts": "e5b8970f386a3d36664bc41a82c3dfa41c95c60db5aabc192863b8f6f301a39a",
+    "src/domain/stages/mirror-corridor-v1/binding.ts": "cfded286143107d34035ec93ecd08b65d815bcb230e44fb5f0a03dd7f40fb0eb",
+    "src/domain/stages/mirror-corridor-v1/checkpoint.ts": "a6d6aa91bced040a1cea114f794a25373ee955e16878e763864943d80f9976a9",
+    "src/domain/stages/mirror-corridor-v1/definition.ts": "35ab749b76f1891ac8da6c1c71f72cebdf4b1fea653c5581e7aaf51ea0d7ce51",
+    "src/domain/stages/mirror-corridor-v1/scene.tsx": "ba57ae661ef3bcd888525c200fa4b14ad90aa2df46b7ea40f648fe536d80de37",
+    "src/domain/stages/mirror-corridor-v1/selectors.ts": "bfbfae53334435c8f6a98a41dd7f474cd0a08ba0c9c12d9869e74d62dc03d800",
+    "src/domain/stages/mirror-corridor-v1/session.ts": "018c0575a81cd6597449bad447ce4d61896f760e2dbb8698ebc702c03e20715f",
+    "src/domain/stages/stage-kit-probe/README.md": "11deed7894f393045ec010994e1a58ec3fa70de6bcac7d214f148beffc25298e",
+    "src/domain/stages/stage-kit-probe/binding.ts": "55604d78388632272df8a9d8fd5840c4541392642c90bae592dd70dcbeffb7a5",
+    "src/domain/stages/stage-kit-probe/checkpoint.ts": "a0dbf3a6e7efde277d7da6c4e47ed7c8a9e5aa2855387651adfe6f65ccd8fb6c",
+    "src/domain/stages/stage-kit-probe/definition.ts": "315f7533aad3dcd33fec0eeb260a02f7aaa79e743ca055d57423c6fa1f934978",
+    "src/domain/stages/stage-kit-probe/scene.tsx": "3b3d24dfec7d4d2fb695aa881a670378cfee0854cb384a39f00ba787bc8b9555",
+    "src/domain/stages/stage-kit-probe/session.ts": "aefd31f88d2207cb95ba1ad60283a8e611bc6ee96d388b4797e46b3bd419621c",
+    "src/storage/applicationStorage.ts": "7052d00cdf61fbad917969fc36aae8831e9171f4fafac50a9d17a3028f3d7685",
+    "src/storage/chapterOneLegacy.ts": "7807879fd04cc89961cb6618cc5810f7d7e08ac992b220eb2f381ff1e2736a5a",
+    "src/storage/chapterOneStorage.ts": "ea7713e7f990011a83738868cca832a0a73163597abbf069e2398108fa643653",
+    "src/storage/firstPersonStorage.ts": "a3a269a18524df6d6596ae22ecda5854889797f0db69b202fbf1310bda6e8caf",
+    "src/storage/moduleStageStorage.ts": "be9812f9076d8ba537d3806f092bfb8f9335b84c4fd32feb3438ab010a0ef0dd",
+    "src/storage/stageJournalStorage.ts": "68d83100a6d10c4c4d6e19636b94fac68080e3eb57b559b74f38b8eb90cd4aab",
+    "src/storage/testFixtures/galleryV1.ts": "62b9388bfffbc3f86431940416ed4da96d6155494254be211746244a13a8a477",
+    "src/storage/testFixtures/galleryV2.ts": "8b813d4cb3ee48f9ac9568a1b5f1a8ef6180fb5d526bdc6adf5924a9a1bdc30d",
+    "src/storage/testFixtures/theatre.ts": "04e411ef41c6b7691bda9191e7cb376f00b307f49eef5cb8c220b21a28faa879",
+    "src/storage/testFixtures/vault.ts": "857538df502f36d5ebb77743f4e33210bd80692f2538d143930714279a1f4054"
+  },
+  "retainedOldNames": [
+    {
+      "file": "src/domain/stageKit/definitions.ts",
+      "reason": "Registered stage save keys"
+    },
+    {
+      "file": "src/rendering/firstPerson/canvasLifecycle.ts",
+      "reason": "__DEV__ console diagnostic prefix"
+    },
+    {
+      "file": "src/rendering/firstPerson/planarMirror.ts",
+      "reason": "Internal Three material names"
+    },
+    {
+      "file": "src/screens/__tests__/chapterOneAppFlow.test.tsx",
+      "reason": "Technical identifier fixtures and explicit rename assertions"
+    },
+    {
+      "file": "src/screens/__tests__/playerTextAudit.test.tsx",
+      "reason": "Technical identifier fixtures and explicit rename assertions"
+    },
+    {
+      "file": "src/storage/__tests__/chapterOneStorage.test.ts",
+      "reason": "Existing persistence keys"
+    },
+    {
+      "file": "src/storage/__tests__/moduleStageStorage.test.ts",
+      "reason": "Existing persistence keys"
+    },
+    {
+      "file": "src/storage/applicationStorage.ts",
+      "reason": "Existing persistence keys"
+    },
+    {
+      "file": "src/storage/chapterOneStorage.ts",
+      "reason": "Existing persistence keys"
+    },
+    {
+      "file": "src/storage/firstPersonStorage.ts",
+      "reason": "Existing persistence keys"
+    },
+    {
+      "file": "src/storage/stageJournalStorage.ts",
+      "reason": "Existing persistence keys"
+    }
+  ],
+  "historicalAndLicenseExclusions": [
+    "docs/qa-* and prior Goal reports preserve their original evidence",
+    "assets/perceptual/manifest.json retains its original author credit",
+    "package/slug/scheme/bundle/project IDs are technical identity"
+  ],
+  "identity": {
+    "name": "錯視館",
+    "version": "1.0.0",
+    "slug": "chroma-rift",
+    "scheme": "chromarift",
+    "bundleIdentifier": "com.hirotakam.chromarift",
+    "easProjectId": "43063855-e1de-4072-b1e6-1c8621e3cb10"
+  },
+  "introspection": {
+    "sha256": "42d3da63745f8ff1c8a025510e8930844bf7dfa57f39fc6e118c4105e9e8d86f",
+    "CFBundleDisplayName": "錯視館",
+    "CFBundleDevelopmentRegion": "ja",
+    "CFBundleLocalizations": [
+      "ja"
+    ]
+  },
+  "sourceHashes": {
+    "app.json": "0c1141293a6b4b3cea2004353c5879775b288354db9aff99e401774a3215a38e",
+    "src/app/brand.ts": "14cd5a3c07e93af8af535b99034e2c26b2ac9a63be2caa1e12dea86d44462bf9",
+    "scripts/validate-release-identity.cjs": "941d073824953344b706e1d47fa649e59bc725a83a672a0c692ef65fe633cb27"
+  },
+  "boundary": "CNG introspection only. Not a signed IPA; generic dev-launcher/ATS entries, native language/name, remote build number, production permissions and manifests require the actual production artifact."
+}

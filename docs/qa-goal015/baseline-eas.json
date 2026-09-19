@@ -1,0 +1,23 @@
+{
+  "cli": {
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "development" }
+    },
+    "preview": {
+      "developmentClient": false,
+      "distribution": "internal",
+      "autoIncrement": true,
+      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "preview" }
+    },
+    "production": {
+      "developmentClient": false,
+      "autoIncrement": true,
+      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "production" }
+    }
+  }
+}

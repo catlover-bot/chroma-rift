@@ -1,0 +1,56 @@
+{
+  "env": {
+    "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "production"
+  },
+  "commands": [
+    {
+      "name": "export",
+      "command": [
+        "npx",
+        "expo",
+        "export",
+        "--platform",
+        "ios",
+        "--no-bytecode",
+        "--source-maps",
+        "--output-dir",
+        ".expo/goal015/final/production-profile/export"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 3.224160485959146
+    },
+    {
+      "name": "three",
+      "command": [
+        "node",
+        "scripts/inspect-three-bundle.cjs",
+        ".expo/goal015/final/production-profile/export",
+        "--expect-single"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.9736616899608634
+    },
+    {
+      "name": "sources",
+      "command": [
+        "node",
+        "scripts/inspect-bundle-sources.cjs",
+        ".expo/goal015/final/production-profile/export",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.14966874499805272
+    },
+    {
+      "name": "release",
+      "command": [
+        "node",
+        "scripts/check-release-export.cjs",
+        ".expo/goal015/final/production-profile/export",
+        "ios"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.1275768459890969
+    }
+  ]
+}

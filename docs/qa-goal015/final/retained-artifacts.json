@@ -1,0 +1,155 @@
+[
+  {
+    "source": ".expo/goal015/final/check.txt",
+    "file": "final/check.txt.gz",
+    "sourceBytes": 336994,
+    "sourceSha256": "d3e128842f9af70d675b4253963cdc243eb14792385505b89aad651a1d335d2f",
+    "artifactBytes": 6582,
+    "artifactSha256": "b25e4af97bf628bd689bde19a00189de15e2f47a077eaa846ef2d40ae3553b00",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/final/check-source-before.json",
+    "file": "final/check-source-before.json.gz",
+    "sourceBytes": 61189,
+    "sourceSha256": "eccc844fc982edacd261b2e3062762a3b21ed5f5da8865ae835624f0730e51d0",
+    "artifactBytes": 26507,
+    "artifactSha256": "42b7b4c112381ea0d6b1d9da635a10e4bbb0b24e4630c3c91823be59db84a50c",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/final/check-source-after.json",
+    "file": "final/check-source-after.json.gz",
+    "sourceBytes": 61189,
+    "sourceSha256": "eccc844fc982edacd261b2e3062762a3b21ed5f5da8865ae835624f0730e51d0",
+    "artifactBytes": 26507,
+    "artifactSha256": "42b7b4c112381ea0d6b1d9da635a10e4bbb0b24e4630c3c91823be59db84a50c",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/final/fairness.json",
+    "file": "final/fairness.json.gz",
+    "sourceBytes": 1642623,
+    "sourceSha256": "8f42ad7767ab1199b9bda772157240ee49e9ec9bc8ace08b1b11cb8876635540",
+    "artifactBytes": 111539,
+    "artifactSha256": "1cc03e780c5fb4512fb5967b31d88b894e3f351f02942486117ab7b2721ec0e7",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/final/screen-routes.json",
+    "file": "final/screen-routes.json.gz",
+    "sourceBytes": 54860,
+    "sourceSha256": "df91fa0ff48238bcb12526eb8d2bd3c3bd9fd1bcb5f541eed2c38428fcb9971e",
+    "artifactBytes": 2748,
+    "artifactSha256": "301e6cb59851f04ec404dd43052244ab2294defd0698654d6d1b7b4f5e16f0a8",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/final/check-result.json",
+    "file": "final/check-result.json",
+    "sourceBytes": 165,
+    "sourceSha256": "e0839ed21e1b0f9097694b76a62758cfdae9071768909594fe34e500e0fb2182",
+    "artifactBytes": 165,
+    "artifactSha256": "e0839ed21e1b0f9097694b76a62758cfdae9071768909594fe34e500e0fb2182",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/typecheck-initial.txt",
+    "file": "final/typecheck-initial.txt.gz",
+    "sourceBytes": 47,
+    "sourceSha256": "a13e098ee30ba8fa3bf4d250cab64a72da8fd4ebd9bda4466baee4d3d4ecee32",
+    "artifactBytes": 67,
+    "artifactSha256": "449b37b2d84fc619ba6db9e99515dd0750ee458c581fb4353221da9166c9a877",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/rename-focused.txt",
+    "file": "final/rename-focused.txt",
+    "sourceBytes": 340,
+    "sourceSha256": "c7bfc14b90191594e9499edde382b788956377a5409879a41b773bf74dff13c7",
+    "artifactBytes": 340,
+    "artifactSha256": "c7bfc14b90191594e9499edde382b788956377a5409879a41b773bf74dff13c7",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/rename-lint.txt",
+    "file": "final/rename-lint.txt",
+    "sourceBytes": 0,
+    "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifactBytes": 0,
+    "artifactSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/identity.txt",
+    "file": "final/identity.txt",
+    "sourceBytes": 263,
+    "sourceSha256": "af2edeba5966520e18515aa4bc1e72d7d74b7d37f72688f24ad8b615105d11ba",
+    "artifactBytes": 263,
+    "artifactSha256": "af2edeba5966520e18515aa4bc1e72d7d74b7d37f72688f24ad8b615105d11ba",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/bundle-audit.json",
+    "file": "final/production-profile/bundle-audit.json",
+    "sourceBytes": 1566,
+    "sourceSha256": "4e8f9d45856e19eab8f2fd58bc1ce71ebd821b10ddb97423bd8de6431aff482b",
+    "artifactBytes": 1566,
+    "artifactSha256": "4e8f9d45856e19eab8f2fd58bc1ce71ebd821b10ddb97423bd8de6431aff482b",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/export.txt",
+    "file": "final/production-profile/export.txt",
+    "sourceBytes": 1786,
+    "sourceSha256": "fbd72a387a468fb348f39a184ec9ef83f2603e2688b83862e84e78a3f790c4da",
+    "artifactBytes": 1786,
+    "artifactSha256": "fbd72a387a468fb348f39a184ec9ef83f2603e2688b83862e84e78a3f790c4da",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/initial-bundle-audit.json",
+    "file": "final/production-profile/initial-bundle-audit.json",
+    "sourceBytes": 540,
+    "sourceSha256": "7b012e930c6bc0d2a4b1d517abaf97fb875125551113ab8f7d840d921014d339",
+    "artifactBytes": 540,
+    "artifactSha256": "7b012e930c6bc0d2a4b1d517abaf97fb875125551113ab8f7d840d921014d339",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/release.txt",
+    "file": "final/production-profile/release.txt",
+    "sourceBytes": 131,
+    "sourceSha256": "40e1f0a63f20a602f4241ff925c60ba71aa66e89c6f2732bd4127c626298f771",
+    "artifactBytes": 131,
+    "artifactSha256": "40e1f0a63f20a602f4241ff925c60ba71aa66e89c6f2732bd4127c626298f771",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/results.json",
+    "file": "final/production-profile/results.json",
+    "sourceBytes": 1230,
+    "sourceSha256": "bc356c4d8db2be7b95bca981ce817f89d9da3cc1db93d2652bb1533bf0703f2f",
+    "artifactBytes": 1230,
+    "artifactSha256": "bc356c4d8db2be7b95bca981ce817f89d9da3cc1db93d2652bb1533bf0703f2f",
+    "encoding": "identity"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/sources.txt",
+    "file": "final/production-profile/sources.txt.gz",
+    "sourceBytes": 61759,
+    "sourceSha256": "88b5bc98ba716535aa785508c9ae896248e5758fbc1fb26d53660ac69d15a7b3",
+    "artifactBytes": 12714,
+    "artifactSha256": "cc0a55c94e10e2548607f7f3a2c321c81665d0a68f1f3ffd28a6e9c1bdbd67be",
+    "encoding": "gzip mtime=0"
+  },
+  {
+    "source": ".expo/goal015/final/production-profile/three.txt",
+    "file": "final/production-profile/three.txt",
+    "sourceBytes": 4563,
+    "sourceSha256": "373fbe3c90b142b1b2cec01689bf8bf5ea3baf4d195494f7d75f4ff6fa3a05e4",
+    "artifactBytes": 4563,
+    "artifactSha256": "373fbe3c90b142b1b2cec01689bf8bf5ea3baf4d195494f7d75f4ff6fa3a05e4",
+    "encoding": "identity"
+  }
+]

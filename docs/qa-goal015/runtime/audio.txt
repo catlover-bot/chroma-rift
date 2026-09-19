@@ -1,0 +1,1 @@
+{"out":"/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal015/final/audio","routeSeconds":155.1174626496715,"routeMaxPlayers":12,"routeStates":["exploration","suspicion","silent","pursuit","release"],"areas":5,"auditionSeconds":110.99999999999498,"sourceFiles":116}

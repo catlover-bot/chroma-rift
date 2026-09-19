@@ -1,4 +1,24 @@
-# 現在の候補：Goal 014.2 — 退避と格子通過
+# 現在の候補：Goal 015 — 錯視館のproduction確認
+
+**PRODUCTION_DEVICE_ACCEPTANCE=PENDING / APP_REVIEW_READY=false / RELEASE_READY=false。** worktreeは `/home/mhirotaka/workspace/chroma-rift-goal012`、branchは `release/goal-015-japanese-app-store`。製品名と日本語のネイティブ設定を変更したため、新しいproductionビルドが必要。既存previewの合格を今回のproduction受入へ流用しない。
+
+正式な公開情報・実URL・ascAppId等を [一括確認票](release/owner-confirmation.md) で確認し、[提出手順](release/submission-checklist.md) に従う。最終IPAのプライバシー監査に先行production候補が必要なら、提出しない確認用候補として扱う。本文・公開ページ・実リンクを完成させ、変更後の最終候補を作り直して確認する。このGoalではbuild/upload/提出は実行していない。
+
+1. EAS Build ID、Git HEAD、profile=production、version、remote build番号、Xcode/SDK実版、IPA hashを記録する。署名・Bundle ID `com.hirotakam.chromarift` を確認し、preview/internal/simulatorではないことを確認する。
+2. 最終IPAの `CFBundleDisplayName=錯視館`、開発言語ja、localizations=[ja]、icon/splash、マイク／背景音／local-network等の不要権限、ATS、privacy manifests／required-reason API／必要なSDK署名を検査する。generic CNG出力を実IPAの代用にしない。
+3. その候補だけを明示EAS Build IDでアップロードし、処理完了後に内部TestFlight等からインストールする。設定→サポート→詳しい情報の **`goal-015-sakushikan-r1` / production / release-js** と同じnative version/buildを照合する。ホームのアイコン下・アプリ内ホーム・アプリ情報・終幕が「錯視館」になり、通常UIにraw IDが出ないことを確認する。
+4. 文字拡大、横幅の小さい端末、VoiceOverで名称「さくしかん」と各操作を確認する。実際の発声・focus順・スクロール・ボタン到達を記録する。公開プライバシー／サポートのリンクが通常ブラウザーで開き、実窓口に連絡できることも確認する。
+5. 既存セーブを無断で削除せず、更新後の旧セーブ再開・進行・設定・音量・発見を確認する。新規経路は隔離した環境か利用者が選んだ新規プレイで作る。アプリ削除や全リセットを試験の必須条件にしない。
+6. 同梱コードをオフラインで起動し、01展示室→02収蔵庫→03映写室→04鏡廊→05退館制御室→屋外→終幕を通す。各エリアの音楽・環境音・効果音を実聴する。pause、背景復帰、音量／怖さ変更、cold resume、再入場でも正常で、音が重複・漏出しないことを確認する。
+7. 04では保持を離して直ちに退避し、棚陰から戻り、三段の確定と格子通過を確認する。捕捉後の位置・向き・入力復帰、格子通過済み側への再開、鏡の表示とGL再試行、旧セーブのキー・確定段を確認する。下のGoal014.2の詳細な操作項目も適用する。
+8. 05では巡回体の全身収容→扉→停止→職員扉→屋外の通常経路を確認する。完了の保存、終幕、再起動後の完了状態、第二章が案内のみであることを確認する。旧ステージ、probe、開発ラボが製品の通常UIへ出ないことも確認する。
+9. [スクリーンショット計画](release/screenshot-plan.md) に従い、最終候補の実画面を採取する。端末・OS・build・日時・設定・個人情報除外を記録する。ブラウザーQAの画像をiPhone画像として提出しない。
+
+端末名、OS、EAS Build ID、version/build、実施項目、失敗、長いframe／発熱、音切れを実測した範囲で残す。初回失敗は既存FIRST_FAILUREを保持する。同じproduction buildのTestFlight確認は本プロジェクトの品質工程であり、Appleの全アプリ共通の必須条件と説明しない。TestFlight受入、審査送信、承認、一般公開は別々に記録する。
+
+---
+
+# 過去の記録：Goal 014.2 — 退避と格子通過
 
 **DEVICE_ACCEPTANCE=PENDING / RELEASE_READY=false。** 作業場所は `/home/mhirotaka/workspace/chroma-rift-goal012`、branch は `fix/goal-014-2-readable-fair-escape`。新しい同梱previewを更新インストールし、ホームアイコンから起動する。`設定 → サポート → 詳しい情報` で **`goal-014-2-fair-escape-r1`** と実際のnative build番号を確認する。通常ホームにはmarkerを表示しない。Metro接続をpreview更新と扱わない。
 

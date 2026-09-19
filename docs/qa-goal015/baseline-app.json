@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "CHROMA RIFT",
+    "slug": "chroma-rift",
+    "scheme": "chromarift",
+    "version": "1.0.0",
+    "icon": "./assets/branding/icon.png",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.hirotakam.chromarift",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "43063855-e1de-4072-b1e6-1c8621e3cb10"
+      }
+    },
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#09090C",
+          "image": "./assets/branding/splash-icon.png",
+          "imageWidth": 200
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "bundleSha256": "3816edc57660f17b09983a7f1f819819e5ac812736b6fbec8e780128a214d1f3",
+  "mapSha256": "5ebb19129c36f6b8cde46e31476b183cf261a42157eb4216ae04828025d4f0a6",
+  "sourceCount": 1626,
+  "toolchainUuidXcodeSources": [],
+  "brandPresent": false,
+  "markerPresent": true,
+  "scope": "Actual Metro release export using production env; not signed IPA or all transitive native code audit.",
+  "exitCode": 1,
+  "failure": "Naive UTF-8 literal substring assertion did not decode the Metro escaped string. No export or product failure."
+}

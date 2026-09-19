@@ -1,0 +1,3546 @@
+[
+  {
+    "name": "uuid",
+    "version": "7.0.3",
+    "location": "node_modules/uuid",
+    "isWorkspace": false,
+    "dependents": [
+      {
+        "type": "prod",
+        "name": "uuid",
+        "spec": "^7.0.3",
+        "from": {
+          "name": "xcode",
+          "version": "3.0.1",
+          "location": "node_modules/xcode",
+          "isWorkspace": false,
+          "dependents": [
+            {
+              "type": "prod",
+              "name": "xcode",
+              "spec": "^3.0.1",
+              "from": {
+                "name": "@expo/config-plugins",
+                "version": "57.0.9",
+                "location": "node_modules/@expo/config-plugins",
+                "isWorkspace": false,
+                "dependents": [
+                  {
+                    "type": "prod",
+                    "name": "@expo/config-plugins",
+                    "spec": "~57.0.9",
+                    "from": {
+                      "name": "@expo/config",
+                      "version": "57.0.9",
+                      "location": "node_modules/@expo/config",
+                      "isWorkspace": false,
+                      "dependents": [
+                        {
+                          "type": "prod",
+                          "name": "@expo/config",
+                          "spec": "~57.0.9",
+                          "from": {
+                            "name": "@expo/local-build-cache-provider",
+                            "version": "57.0.8",
+                            "location": "node_modules/@expo/local-build-cache-provider",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/local-build-cache-provider",
+                                "spec": "^57.0.8",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22",
+                                  "location": "node_modules/expo",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo",
+                                      "spec": "~57.0.22",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo",
+                                      "spec": ">=43.0",
+                                      "from": {
+                                        "name": "@react-three/fiber",
+                                        "version": "9.7.0",
+                                        "location": "node_modules/@react-three/fiber",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@react-three/fiber",
+                                            "spec": "9.7.0",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-asset",
+                                        "version": "57.0.17",
+                                        "location": "node_modules/expo-asset",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-asset",
+                                            "spec": "~57.0.17",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          },
+                                          {
+                                            "type": "peerOptional",
+                                            "name": "expo-asset",
+                                            "spec": ">=8.4",
+                                            "from": {
+                                              "name": "@react-three/fiber",
+                                              "version": "9.7.0",
+                                              "location": "node_modules/@react-three/fiber",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@react-three/fiber",
+                                                  "spec": "9.7.0",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-asset",
+                                            "spec": "~57.0.17",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "peer",
+                                            "name": "expo-asset",
+                                            "spec": "*",
+                                            "from": {
+                                              "name": "expo-audio",
+                                              "version": "57.0.5",
+                                              "location": "node_modules/expo-audio",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-audio",
+                                                  "spec": "~57.0.5",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-audio",
+                                        "version": "57.0.5",
+                                        "location": "node_modules/expo-audio",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-audio",
+                                            "spec": "~57.0.5",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-clipboard",
+                                        "version": "57.0.2",
+                                        "location": "node_modules/expo-clipboard",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-clipboard",
+                                            "spec": "~57.0.2",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-constants",
+                                        "version": "57.0.18",
+                                        "location": "node_modules/expo-constants",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-constants",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-constants",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-constants",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "name": "expo-asset",
+                                              "version": "57.0.17",
+                                              "location": "node_modules/expo-asset",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-asset",
+                                                  "spec": "~57.0.17",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "peerOptional",
+                                                  "name": "expo-asset",
+                                                  "spec": ">=8.4",
+                                                  "from": {
+                                                    "name": "@react-three/fiber",
+                                                    "version": "9.7.0",
+                                                    "location": "node_modules/@react-three/fiber",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "@react-three/fiber",
+                                                        "spec": "9.7.0",
+                                                        "from": {
+                                                          "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-asset",
+                                                  "spec": "~57.0.17",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "peer",
+                                                  "name": "expo-asset",
+                                                  "spec": "*",
+                                                  "from": {
+                                                    "name": "expo-audio",
+                                                    "version": "57.0.5",
+                                                    "location": "node_modules/expo-audio",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "expo-audio",
+                                                        "spec": "~57.0.5",
+                                                        "from": {
+                                                          "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "peer",
+                                            "name": "expo-constants",
+                                            "spec": "^57.0.17",
+                                            "from": {
+                                              "name": "@expo/router-server",
+                                              "version": "57.0.9",
+                                              "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/router-server",
+                                                  "spec": "^57.0.9",
+                                                  "from": {
+                                                    "name": "@expo/cli",
+                                                    "version": "57.0.24",
+                                                    "location": "node_modules/expo/node_modules/@expo/cli",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "@expo/cli",
+                                                        "spec": "^57.0.24",
+                                                        "from": {
+                                                          "name": "expo",
+                                                          "version": "57.0.22"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-dev-launcher",
+                                        "version": "57.0.20",
+                                        "location": "node_modules/expo-dev-launcher",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-launcher",
+                                            "spec": "~57.0.20",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-dev-menu",
+                                        "version": "57.0.18",
+                                        "location": "node_modules/expo-dev-menu",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-menu",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-menu",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "name": "expo-dev-launcher",
+                                              "version": "57.0.20",
+                                              "location": "node_modules/expo-dev-launcher",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-launcher",
+                                                  "spec": "~57.0.20",
+                                                  "from": {
+                                                    "name": "expo-dev-client",
+                                                    "version": "57.0.19",
+                                                    "location": "node_modules/expo-dev-client",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "expo-dev-client",
+                                                        "spec": "~57.0.19",
+                                                        "from": {
+                                                          "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-dev-menu-interface",
+                                        "version": "57.0.0",
+                                        "location": "node_modules/expo-dev-menu-interface",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-menu-interface",
+                                            "spec": "~57.0.0",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-menu-interface",
+                                            "spec": "~57.0.0",
+                                            "from": {
+                                              "name": "expo-dev-menu",
+                                              "version": "57.0.18",
+                                              "location": "node_modules/expo-dev-menu",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-menu",
+                                                  "spec": "~57.0.18",
+                                                  "from": {
+                                                    "name": "expo-dev-client",
+                                                    "version": "57.0.19",
+                                                    "location": "node_modules/expo-dev-client",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "expo-dev-client",
+                                                        "spec": "~57.0.19",
+                                                        "from": {
+                                                          "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-menu",
+                                                  "spec": "~57.0.18",
+                                                  "from": {
+                                                    "name": "expo-dev-launcher",
+                                                    "version": "57.0.20",
+                                                    "location": "node_modules/expo-dev-launcher",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "expo-dev-launcher",
+                                                        "spec": "~57.0.20",
+                                                        "from": {
+                                                          "name": "expo-dev-client",
+                                                          "version": "57.0.19",
+                                                          "location": "node_modules/expo-dev-client",
+                                                          "isWorkspace": false,
+                                                          "dependents": [
+                                                            {
+                                                              "type": "prod",
+                                                              "name": "expo-dev-client",
+                                                              "spec": "~57.0.19",
+                                                              "from": {
+                                                                "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-file-system",
+                                        "version": "57.0.7",
+                                        "location": "node_modules/expo-file-system",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-file-system",
+                                            "spec": "~57.0.7",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          },
+                                          {
+                                            "type": "peerOptional",
+                                            "name": "expo-file-system",
+                                            "spec": ">=11.0",
+                                            "from": {
+                                              "name": "@react-three/fiber",
+                                              "version": "9.7.0",
+                                              "location": "node_modules/@react-three/fiber",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@react-three/fiber",
+                                                  "spec": "9.7.0",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-file-system",
+                                            "spec": "~57.0.7",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-gl",
+                                        "version": "57.0.2",
+                                        "location": "node_modules/expo-gl",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-gl",
+                                            "spec": "~57.0.2",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          },
+                                          {
+                                            "type": "peerOptional",
+                                            "name": "expo-gl",
+                                            "spec": ">=11.0",
+                                            "from": {
+                                              "name": "@react-three/fiber",
+                                              "version": "9.7.0",
+                                              "location": "node_modules/@react-three/fiber",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@react-three/fiber",
+                                                  "spec": "9.7.0",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-haptics",
+                                        "version": "57.0.3",
+                                        "location": "node_modules/expo-haptics",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-haptics",
+                                            "spec": "~57.0.3",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-manifests",
+                                        "version": "57.0.2",
+                                        "location": "node_modules/expo-manifests",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-manifests",
+                                            "spec": "~57.0.2",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-manifests",
+                                            "spec": "~57.0.2",
+                                            "from": {
+                                              "name": "expo-dev-launcher",
+                                              "version": "57.0.20",
+                                              "location": "node_modules/expo-dev-launcher",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-launcher",
+                                                  "spec": "~57.0.20",
+                                                  "from": {
+                                                    "name": "expo-dev-client",
+                                                    "version": "57.0.19",
+                                                    "location": "node_modules/expo-dev-client",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "expo-dev-client",
+                                                        "spec": "~57.0.19",
+                                                        "from": {
+                                                          "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-splash-screen",
+                                        "version": "57.0.9",
+                                        "location": "node_modules/expo-splash-screen",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-splash-screen",
+                                            "spec": "~57.0.9",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-updates-interface",
+                                        "version": "57.0.2",
+                                        "location": "node_modules/expo-updates-interface",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-updates-interface",
+                                            "spec": "~57.0.2",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "@expo/router-server",
+                                        "version": "57.0.9",
+                                        "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/router-server",
+                                            "spec": "^57.0.9",
+                                            "from": {
+                                              "name": "@expo/cli",
+                                              "version": "57.0.24",
+                                              "location": "node_modules/expo/node_modules/@expo/cli",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/cli",
+                                                  "spec": "^57.0.24",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "@expo/dom-webview",
+                                        "version": "57.0.1",
+                                        "location": "node_modules/expo/node_modules/@expo/dom-webview",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/dom-webview",
+                                            "spec": "~57.0.1",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/dom-webview",
+                                            "spec": "^57.0.1",
+                                            "from": {
+                                              "name": "@expo/log-box",
+                                              "version": "57.0.4",
+                                              "location": "node_modules/expo/node_modules/@expo/log-box",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/log-box",
+                                                  "spec": "^57.0.4",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/log-box",
+                                                  "spec": "^57.0.4",
+                                                  "from": {
+                                                    "name": "@expo/cli",
+                                                    "version": "57.0.24",
+                                                    "location": "node_modules/expo/node_modules/@expo/cli",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "@expo/cli",
+                                                        "spec": "^57.0.24",
+                                                        "from": {
+                                                          "name": "expo",
+                                                          "version": "57.0.22"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "@expo/log-box",
+                                        "version": "57.0.4",
+                                        "location": "node_modules/expo/node_modules/@expo/log-box",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/log-box",
+                                            "spec": "^57.0.4",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/log-box",
+                                            "spec": "^57.0.4",
+                                            "from": {
+                                              "name": "@expo/cli",
+                                              "version": "57.0.24",
+                                              "location": "node_modules/expo/node_modules/@expo/cli",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/cli",
+                                                  "spec": "^57.0.24",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "@expo/metro-config",
+                                        "version": "57.0.12",
+                                        "location": "node_modules/expo/node_modules/@expo/metro-config",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/metro-config",
+                                            "spec": "~57.0.12",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/metro-config",
+                                            "spec": "~57.0.12",
+                                            "from": {
+                                              "name": "@expo/cli",
+                                              "version": "57.0.24",
+                                              "location": "node_modules/expo/node_modules/@expo/cli",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/cli",
+                                                  "spec": "^57.0.24",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "babel-preset-expo",
+                                        "version": "57.0.11",
+                                        "location": "node_modules/expo/node_modules/babel-preset-expo",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "babel-preset-expo",
+                                            "spec": "~57.0.11",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-font",
+                                        "version": "57.0.4",
+                                        "location": "node_modules/expo/node_modules/expo-font",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-font",
+                                            "spec": "~57.0.4",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "peer",
+                                            "name": "expo-font",
+                                            "spec": "^57.0.3",
+                                            "from": {
+                                              "name": "@expo/router-server",
+                                              "version": "57.0.9",
+                                              "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/router-server",
+                                                  "spec": "^57.0.9",
+                                                  "from": {
+                                                    "name": "@expo/cli",
+                                                    "version": "57.0.24",
+                                                    "location": "node_modules/expo/node_modules/@expo/cli",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "@expo/cli",
+                                                        "spec": "^57.0.24",
+                                                        "from": {
+                                                          "name": "expo",
+                                                          "version": "57.0.22"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-keep-awake",
+                                        "version": "57.0.2",
+                                        "location": "node_modules/expo/node_modules/expo-keep-awake",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-keep-awake",
+                                            "spec": "~57.0.2",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "jest-expo",
+                                        "version": "57.0.5",
+                                        "location": "node_modules/jest-expo",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "dev",
+                                            "name": "jest-expo",
+                                            "spec": "~57.0.5",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "prod",
+                          "name": "@expo/config",
+                          "spec": "~57.0.9",
+                          "from": {
+                            "name": "@expo/prebuild-config",
+                            "version": "57.0.16",
+                            "location": "node_modules/@expo/prebuild-config",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/prebuild-config",
+                                "spec": "^57.0.16",
+                                "from": {
+                                  "name": "@expo/cli",
+                                  "version": "57.0.24",
+                                  "location": "node_modules/expo/node_modules/@expo/cli",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/cli",
+                                      "spec": "^57.0.24",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "prod",
+                          "name": "@expo/config",
+                          "spec": "~57.0.9",
+                          "from": {
+                            "name": "expo",
+                            "version": "57.0.22",
+                            "location": "node_modules/expo",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo",
+                                "spec": "~57.0.22",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo",
+                                "spec": ">=43.0",
+                                "from": {
+                                  "name": "@react-three/fiber",
+                                  "version": "9.7.0",
+                                  "location": "node_modules/@react-three/fiber",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@react-three/fiber",
+                                      "spec": "9.7.0",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-asset",
+                                  "version": "57.0.17",
+                                  "location": "node_modules/expo-asset",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-asset",
+                                      "spec": "~57.0.17",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo-asset",
+                                      "spec": ">=8.4",
+                                      "from": {
+                                        "name": "@react-three/fiber",
+                                        "version": "9.7.0",
+                                        "location": "node_modules/@react-three/fiber",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@react-three/fiber",
+                                            "spec": "9.7.0",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-asset",
+                                      "spec": "~57.0.17",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo-asset",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-audio",
+                                        "version": "57.0.5",
+                                        "location": "node_modules/expo-audio",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-audio",
+                                            "spec": "~57.0.5",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-audio",
+                                  "version": "57.0.5",
+                                  "location": "node_modules/expo-audio",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-audio",
+                                      "spec": "~57.0.5",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-clipboard",
+                                  "version": "57.0.2",
+                                  "location": "node_modules/expo-clipboard",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-clipboard",
+                                      "spec": "~57.0.2",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-constants",
+                                  "version": "57.0.18",
+                                  "location": "node_modules/expo-constants",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-constants",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-constants",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-constants",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "name": "expo-asset",
+                                        "version": "57.0.17",
+                                        "location": "node_modules/expo-asset",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-asset",
+                                            "spec": "~57.0.17",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          },
+                                          {
+                                            "type": "peerOptional",
+                                            "name": "expo-asset",
+                                            "spec": ">=8.4",
+                                            "from": {
+                                              "name": "@react-three/fiber",
+                                              "version": "9.7.0",
+                                              "location": "node_modules/@react-three/fiber",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@react-three/fiber",
+                                                  "spec": "9.7.0",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-asset",
+                                            "spec": "~57.0.17",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "peer",
+                                            "name": "expo-asset",
+                                            "spec": "*",
+                                            "from": {
+                                              "name": "expo-audio",
+                                              "version": "57.0.5",
+                                              "location": "node_modules/expo-audio",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-audio",
+                                                  "spec": "~57.0.5",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo-constants",
+                                      "spec": "^57.0.17",
+                                      "from": {
+                                        "name": "@expo/router-server",
+                                        "version": "57.0.9",
+                                        "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/router-server",
+                                            "spec": "^57.0.9",
+                                            "from": {
+                                              "name": "@expo/cli",
+                                              "version": "57.0.24",
+                                              "location": "node_modules/expo/node_modules/@expo/cli",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/cli",
+                                                  "spec": "^57.0.24",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-dev-client",
+                                  "version": "57.0.19",
+                                  "location": "node_modules/expo-dev-client",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-client",
+                                      "spec": "~57.0.19",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-dev-launcher",
+                                  "version": "57.0.20",
+                                  "location": "node_modules/expo-dev-launcher",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-launcher",
+                                      "spec": "~57.0.20",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-dev-menu",
+                                  "version": "57.0.18",
+                                  "location": "node_modules/expo-dev-menu",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-menu",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-menu",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "name": "expo-dev-launcher",
+                                        "version": "57.0.20",
+                                        "location": "node_modules/expo-dev-launcher",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-launcher",
+                                            "spec": "~57.0.20",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-dev-menu-interface",
+                                  "version": "57.0.0",
+                                  "location": "node_modules/expo-dev-menu-interface",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-menu-interface",
+                                      "spec": "~57.0.0",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-menu-interface",
+                                      "spec": "~57.0.0",
+                                      "from": {
+                                        "name": "expo-dev-menu",
+                                        "version": "57.0.18",
+                                        "location": "node_modules/expo-dev-menu",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-menu",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-menu",
+                                            "spec": "~57.0.18",
+                                            "from": {
+                                              "name": "expo-dev-launcher",
+                                              "version": "57.0.20",
+                                              "location": "node_modules/expo-dev-launcher",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-launcher",
+                                                  "spec": "~57.0.20",
+                                                  "from": {
+                                                    "name": "expo-dev-client",
+                                                    "version": "57.0.19",
+                                                    "location": "node_modules/expo-dev-client",
+                                                    "isWorkspace": false,
+                                                    "dependents": [
+                                                      {
+                                                        "type": "prod",
+                                                        "name": "expo-dev-client",
+                                                        "spec": "~57.0.19",
+                                                        "from": {
+                                                          "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-file-system",
+                                  "version": "57.0.7",
+                                  "location": "node_modules/expo-file-system",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-file-system",
+                                      "spec": "~57.0.7",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo-file-system",
+                                      "spec": ">=11.0",
+                                      "from": {
+                                        "name": "@react-three/fiber",
+                                        "version": "9.7.0",
+                                        "location": "node_modules/@react-three/fiber",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@react-three/fiber",
+                                            "spec": "9.7.0",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-file-system",
+                                      "spec": "~57.0.7",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-gl",
+                                  "version": "57.0.2",
+                                  "location": "node_modules/expo-gl",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-gl",
+                                      "spec": "~57.0.2",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo-gl",
+                                      "spec": ">=11.0",
+                                      "from": {
+                                        "name": "@react-three/fiber",
+                                        "version": "9.7.0",
+                                        "location": "node_modules/@react-three/fiber",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@react-three/fiber",
+                                            "spec": "9.7.0",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-haptics",
+                                  "version": "57.0.3",
+                                  "location": "node_modules/expo-haptics",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-haptics",
+                                      "spec": "~57.0.3",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-manifests",
+                                  "version": "57.0.2",
+                                  "location": "node_modules/expo-manifests",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-manifests",
+                                      "spec": "~57.0.2",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-manifests",
+                                      "spec": "~57.0.2",
+                                      "from": {
+                                        "name": "expo-dev-launcher",
+                                        "version": "57.0.20",
+                                        "location": "node_modules/expo-dev-launcher",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-launcher",
+                                            "spec": "~57.0.20",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-splash-screen",
+                                  "version": "57.0.9",
+                                  "location": "node_modules/expo-splash-screen",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-splash-screen",
+                                      "spec": "~57.0.9",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-updates-interface",
+                                  "version": "57.0.2",
+                                  "location": "node_modules/expo-updates-interface",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-updates-interface",
+                                      "spec": "~57.0.2",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "@expo/cli",
+                                  "version": "57.0.24",
+                                  "location": "node_modules/expo/node_modules/@expo/cli",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/cli",
+                                      "spec": "^57.0.24",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "@expo/router-server",
+                                  "version": "57.0.9",
+                                  "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/router-server",
+                                      "spec": "^57.0.9",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "@expo/dom-webview",
+                                  "version": "57.0.1",
+                                  "location": "node_modules/expo/node_modules/@expo/dom-webview",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/dom-webview",
+                                      "spec": "~57.0.1",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/dom-webview",
+                                      "spec": "^57.0.1",
+                                      "from": {
+                                        "name": "@expo/log-box",
+                                        "version": "57.0.4",
+                                        "location": "node_modules/expo/node_modules/@expo/log-box",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/log-box",
+                                            "spec": "^57.0.4",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          },
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/log-box",
+                                            "spec": "^57.0.4",
+                                            "from": {
+                                              "name": "@expo/cli",
+                                              "version": "57.0.24",
+                                              "location": "node_modules/expo/node_modules/@expo/cli",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/cli",
+                                                  "spec": "^57.0.24",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "@expo/log-box",
+                                  "version": "57.0.4",
+                                  "location": "node_modules/expo/node_modules/@expo/log-box",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/log-box",
+                                      "spec": "^57.0.4",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/log-box",
+                                      "spec": "^57.0.4",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "@expo/metro-config",
+                                  "version": "57.0.12",
+                                  "location": "node_modules/expo/node_modules/@expo/metro-config",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/metro-config",
+                                      "spec": "~57.0.12",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/metro-config",
+                                      "spec": "~57.0.12",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "babel-preset-expo",
+                                  "version": "57.0.11",
+                                  "location": "node_modules/expo/node_modules/babel-preset-expo",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "babel-preset-expo",
+                                      "spec": "~57.0.11",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-font",
+                                  "version": "57.0.4",
+                                  "location": "node_modules/expo/node_modules/expo-font",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-font",
+                                      "spec": "~57.0.4",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo-font",
+                                      "spec": "^57.0.3",
+                                      "from": {
+                                        "name": "@expo/router-server",
+                                        "version": "57.0.9",
+                                        "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/router-server",
+                                            "spec": "^57.0.9",
+                                            "from": {
+                                              "name": "@expo/cli",
+                                              "version": "57.0.24",
+                                              "location": "node_modules/expo/node_modules/@expo/cli",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "@expo/cli",
+                                                  "spec": "^57.0.24",
+                                                  "from": {
+                                                    "name": "expo",
+                                                    "version": "57.0.22"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-keep-awake",
+                                  "version": "57.0.2",
+                                  "location": "node_modules/expo/node_modules/expo-keep-awake",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-keep-awake",
+                                      "spec": "~57.0.2",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo",
+                                "spec": "*",
+                                "from": {
+                                  "name": "jest-expo",
+                                  "version": "57.0.5",
+                                  "location": "node_modules/jest-expo",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "dev",
+                                      "name": "jest-expo",
+                                      "spec": "~57.0.5",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "prod",
+                          "name": "@expo/config",
+                          "spec": "~57.0.9",
+                          "from": {
+                            "name": "@expo/cli",
+                            "version": "57.0.24",
+                            "location": "node_modules/expo/node_modules/@expo/cli",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/cli",
+                                "spec": "^57.0.24",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "prod",
+                          "name": "@expo/config",
+                          "spec": "~57.0.9",
+                          "from": {
+                            "name": "@expo/metro-config",
+                            "version": "57.0.12",
+                            "location": "node_modules/expo/node_modules/@expo/metro-config",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/metro-config",
+                                "spec": "~57.0.12",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "@expo/metro-config",
+                                "spec": "~57.0.12",
+                                "from": {
+                                  "name": "@expo/cli",
+                                  "version": "57.0.24",
+                                  "location": "node_modules/expo/node_modules/@expo/cli",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/cli",
+                                      "spec": "^57.0.24",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "prod",
+                    "name": "@expo/config-plugins",
+                    "spec": "~57.0.9",
+                    "from": {
+                      "name": "@expo/inline-modules",
+                      "version": "0.1.7",
+                      "location": "node_modules/@expo/inline-modules",
+                      "isWorkspace": false,
+                      "dependents": [
+                        {
+                          "type": "prod",
+                          "name": "@expo/inline-modules",
+                          "spec": "^0.1.7",
+                          "from": {
+                            "name": "@expo/cli",
+                            "version": "57.0.24",
+                            "location": "node_modules/expo/node_modules/@expo/cli",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/cli",
+                                "spec": "^57.0.24",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "prod",
+                    "name": "@expo/config-plugins",
+                    "spec": "~57.0.9",
+                    "from": {
+                      "name": "@expo/prebuild-config",
+                      "version": "57.0.16",
+                      "location": "node_modules/@expo/prebuild-config",
+                      "isWorkspace": false,
+                      "dependents": [
+                        {
+                          "type": "prod",
+                          "name": "@expo/prebuild-config",
+                          "spec": "^57.0.16",
+                          "from": {
+                            "name": "@expo/cli",
+                            "version": "57.0.24",
+                            "location": "node_modules/expo/node_modules/@expo/cli",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/cli",
+                                "spec": "^57.0.24",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "prod",
+                    "name": "@expo/config-plugins",
+                    "spec": "~57.0.9",
+                    "from": {
+                      "name": "expo",
+                      "version": "57.0.22",
+                      "location": "node_modules/expo",
+                      "isWorkspace": false,
+                      "dependents": [
+                        {
+                          "type": "prod",
+                          "name": "expo",
+                          "spec": "~57.0.22",
+                          "from": {
+                            "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                          }
+                        },
+                        {
+                          "type": "peerOptional",
+                          "name": "expo",
+                          "spec": ">=43.0",
+                          "from": {
+                            "name": "@react-three/fiber",
+                            "version": "9.7.0",
+                            "location": "node_modules/@react-three/fiber",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@react-three/fiber",
+                                "spec": "9.7.0",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-asset",
+                            "version": "57.0.17",
+                            "location": "node_modules/expo-asset",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-asset",
+                                "spec": "~57.0.17",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo-asset",
+                                "spec": ">=8.4",
+                                "from": {
+                                  "name": "@react-three/fiber",
+                                  "version": "9.7.0",
+                                  "location": "node_modules/@react-three/fiber",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@react-three/fiber",
+                                      "spec": "9.7.0",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-asset",
+                                "spec": "~57.0.17",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo-asset",
+                                "spec": "*",
+                                "from": {
+                                  "name": "expo-audio",
+                                  "version": "57.0.5",
+                                  "location": "node_modules/expo-audio",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-audio",
+                                      "spec": "~57.0.5",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-audio",
+                            "version": "57.0.5",
+                            "location": "node_modules/expo-audio",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-audio",
+                                "spec": "~57.0.5",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-clipboard",
+                            "version": "57.0.2",
+                            "location": "node_modules/expo-clipboard",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-clipboard",
+                                "spec": "~57.0.2",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-constants",
+                            "version": "57.0.18",
+                            "location": "node_modules/expo-constants",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-constants",
+                                "spec": "~57.0.18",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-constants",
+                                "spec": "~57.0.18",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-constants",
+                                "spec": "~57.0.18",
+                                "from": {
+                                  "name": "expo-asset",
+                                  "version": "57.0.17",
+                                  "location": "node_modules/expo-asset",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-asset",
+                                      "spec": "~57.0.17",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    },
+                                    {
+                                      "type": "peerOptional",
+                                      "name": "expo-asset",
+                                      "spec": ">=8.4",
+                                      "from": {
+                                        "name": "@react-three/fiber",
+                                        "version": "9.7.0",
+                                        "location": "node_modules/@react-three/fiber",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@react-three/fiber",
+                                            "spec": "9.7.0",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-asset",
+                                      "spec": "~57.0.17",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "peer",
+                                      "name": "expo-asset",
+                                      "spec": "*",
+                                      "from": {
+                                        "name": "expo-audio",
+                                        "version": "57.0.5",
+                                        "location": "node_modules/expo-audio",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-audio",
+                                            "spec": "~57.0.5",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo-constants",
+                                "spec": "^57.0.17",
+                                "from": {
+                                  "name": "@expo/router-server",
+                                  "version": "57.0.9",
+                                  "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/router-server",
+                                      "spec": "^57.0.9",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-dev-client",
+                            "version": "57.0.19",
+                            "location": "node_modules/expo-dev-client",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-dev-client",
+                                "spec": "~57.0.19",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-dev-launcher",
+                            "version": "57.0.20",
+                            "location": "node_modules/expo-dev-launcher",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-dev-launcher",
+                                "spec": "~57.0.20",
+                                "from": {
+                                  "name": "expo-dev-client",
+                                  "version": "57.0.19",
+                                  "location": "node_modules/expo-dev-client",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-client",
+                                      "spec": "~57.0.19",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-dev-menu",
+                            "version": "57.0.18",
+                            "location": "node_modules/expo-dev-menu",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-dev-menu",
+                                "spec": "~57.0.18",
+                                "from": {
+                                  "name": "expo-dev-client",
+                                  "version": "57.0.19",
+                                  "location": "node_modules/expo-dev-client",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-client",
+                                      "spec": "~57.0.19",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-dev-menu",
+                                "spec": "~57.0.18",
+                                "from": {
+                                  "name": "expo-dev-launcher",
+                                  "version": "57.0.20",
+                                  "location": "node_modules/expo-dev-launcher",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-launcher",
+                                      "spec": "~57.0.20",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-dev-menu-interface",
+                            "version": "57.0.0",
+                            "location": "node_modules/expo-dev-menu-interface",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-dev-menu-interface",
+                                "spec": "~57.0.0",
+                                "from": {
+                                  "name": "expo-dev-client",
+                                  "version": "57.0.19",
+                                  "location": "node_modules/expo-dev-client",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-client",
+                                      "spec": "~57.0.19",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-dev-menu-interface",
+                                "spec": "~57.0.0",
+                                "from": {
+                                  "name": "expo-dev-menu",
+                                  "version": "57.0.18",
+                                  "location": "node_modules/expo-dev-menu",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-menu",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-menu",
+                                      "spec": "~57.0.18",
+                                      "from": {
+                                        "name": "expo-dev-launcher",
+                                        "version": "57.0.20",
+                                        "location": "node_modules/expo-dev-launcher",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-launcher",
+                                            "spec": "~57.0.20",
+                                            "from": {
+                                              "name": "expo-dev-client",
+                                              "version": "57.0.19",
+                                              "location": "node_modules/expo-dev-client",
+                                              "isWorkspace": false,
+                                              "dependents": [
+                                                {
+                                                  "type": "prod",
+                                                  "name": "expo-dev-client",
+                                                  "spec": "~57.0.19",
+                                                  "from": {
+                                                    "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-file-system",
+                            "version": "57.0.7",
+                            "location": "node_modules/expo-file-system",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-file-system",
+                                "spec": "~57.0.7",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo-file-system",
+                                "spec": ">=11.0",
+                                "from": {
+                                  "name": "@react-three/fiber",
+                                  "version": "9.7.0",
+                                  "location": "node_modules/@react-three/fiber",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@react-three/fiber",
+                                      "spec": "9.7.0",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-file-system",
+                                "spec": "~57.0.7",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-gl",
+                            "version": "57.0.2",
+                            "location": "node_modules/expo-gl",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-gl",
+                                "spec": "~57.0.2",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              },
+                              {
+                                "type": "peerOptional",
+                                "name": "expo-gl",
+                                "spec": ">=11.0",
+                                "from": {
+                                  "name": "@react-three/fiber",
+                                  "version": "9.7.0",
+                                  "location": "node_modules/@react-three/fiber",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@react-three/fiber",
+                                      "spec": "9.7.0",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-haptics",
+                            "version": "57.0.3",
+                            "location": "node_modules/expo-haptics",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-haptics",
+                                "spec": "~57.0.3",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-manifests",
+                            "version": "57.0.2",
+                            "location": "node_modules/expo-manifests",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-manifests",
+                                "spec": "~57.0.2",
+                                "from": {
+                                  "name": "expo-dev-client",
+                                  "version": "57.0.19",
+                                  "location": "node_modules/expo-dev-client",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-client",
+                                      "spec": "~57.0.19",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "expo-manifests",
+                                "spec": "~57.0.2",
+                                "from": {
+                                  "name": "expo-dev-launcher",
+                                  "version": "57.0.20",
+                                  "location": "node_modules/expo-dev-launcher",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-launcher",
+                                      "spec": "~57.0.20",
+                                      "from": {
+                                        "name": "expo-dev-client",
+                                        "version": "57.0.19",
+                                        "location": "node_modules/expo-dev-client",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "expo-dev-client",
+                                            "spec": "~57.0.19",
+                                            "from": {
+                                              "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-splash-screen",
+                            "version": "57.0.9",
+                            "location": "node_modules/expo-splash-screen",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-splash-screen",
+                                "spec": "~57.0.9",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-updates-interface",
+                            "version": "57.0.2",
+                            "location": "node_modules/expo-updates-interface",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-updates-interface",
+                                "spec": "~57.0.2",
+                                "from": {
+                                  "name": "expo-dev-client",
+                                  "version": "57.0.19",
+                                  "location": "node_modules/expo-dev-client",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "expo-dev-client",
+                                      "spec": "~57.0.19",
+                                      "from": {
+                                        "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "@expo/cli",
+                            "version": "57.0.24",
+                            "location": "node_modules/expo/node_modules/@expo/cli",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/cli",
+                                "spec": "^57.0.24",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "@expo/router-server",
+                            "version": "57.0.9",
+                            "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/router-server",
+                                "spec": "^57.0.9",
+                                "from": {
+                                  "name": "@expo/cli",
+                                  "version": "57.0.24",
+                                  "location": "node_modules/expo/node_modules/@expo/cli",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/cli",
+                                      "spec": "^57.0.24",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "@expo/dom-webview",
+                            "version": "57.0.1",
+                            "location": "node_modules/expo/node_modules/@expo/dom-webview",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/dom-webview",
+                                "spec": "~57.0.1",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "@expo/dom-webview",
+                                "spec": "^57.0.1",
+                                "from": {
+                                  "name": "@expo/log-box",
+                                  "version": "57.0.4",
+                                  "location": "node_modules/expo/node_modules/@expo/log-box",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/log-box",
+                                      "spec": "^57.0.4",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    },
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/log-box",
+                                      "spec": "^57.0.4",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "@expo/log-box",
+                            "version": "57.0.4",
+                            "location": "node_modules/expo/node_modules/@expo/log-box",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/log-box",
+                                "spec": "^57.0.4",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "@expo/log-box",
+                                "spec": "^57.0.4",
+                                "from": {
+                                  "name": "@expo/cli",
+                                  "version": "57.0.24",
+                                  "location": "node_modules/expo/node_modules/@expo/cli",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/cli",
+                                      "spec": "^57.0.24",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peerOptional",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "@expo/metro-config",
+                            "version": "57.0.12",
+                            "location": "node_modules/expo/node_modules/@expo/metro-config",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "@expo/metro-config",
+                                "spec": "~57.0.12",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "prod",
+                                "name": "@expo/metro-config",
+                                "spec": "~57.0.12",
+                                "from": {
+                                  "name": "@expo/cli",
+                                  "version": "57.0.24",
+                                  "location": "node_modules/expo/node_modules/@expo/cli",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/cli",
+                                      "spec": "^57.0.24",
+                                      "from": {
+                                        "name": "expo",
+                                        "version": "57.0.22"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peerOptional",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "babel-preset-expo",
+                            "version": "57.0.11",
+                            "location": "node_modules/expo/node_modules/babel-preset-expo",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "babel-preset-expo",
+                                "spec": "~57.0.11",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-font",
+                            "version": "57.0.4",
+                            "location": "node_modules/expo/node_modules/expo-font",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-font",
+                                "spec": "~57.0.4",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              },
+                              {
+                                "type": "peer",
+                                "name": "expo-font",
+                                "spec": "^57.0.3",
+                                "from": {
+                                  "name": "@expo/router-server",
+                                  "version": "57.0.9",
+                                  "location": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+                                  "isWorkspace": false,
+                                  "dependents": [
+                                    {
+                                      "type": "prod",
+                                      "name": "@expo/router-server",
+                                      "spec": "^57.0.9",
+                                      "from": {
+                                        "name": "@expo/cli",
+                                        "version": "57.0.24",
+                                        "location": "node_modules/expo/node_modules/@expo/cli",
+                                        "isWorkspace": false,
+                                        "dependents": [
+                                          {
+                                            "type": "prod",
+                                            "name": "@expo/cli",
+                                            "spec": "^57.0.24",
+                                            "from": {
+                                              "name": "expo",
+                                              "version": "57.0.22"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peer",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "expo-keep-awake",
+                            "version": "57.0.2",
+                            "location": "node_modules/expo/node_modules/expo-keep-awake",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "prod",
+                                "name": "expo-keep-awake",
+                                "spec": "~57.0.2",
+                                "from": {
+                                  "name": "expo",
+                                  "version": "57.0.22"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "peerOptional",
+                          "name": "expo",
+                          "spec": "*",
+                          "from": {
+                            "name": "jest-expo",
+                            "version": "57.0.5",
+                            "location": "node_modules/jest-expo",
+                            "isWorkspace": false,
+                            "dependents": [
+                              {
+                                "type": "dev",
+                                "name": "jest-expo",
+                                "spec": "~57.0.5",
+                                "from": {
+                                  "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "prod",
+                    "name": "@expo/config-plugins",
+                    "spec": "~57.0.9",
+                    "from": {
+                      "name": "expo-splash-screen",
+                      "version": "57.0.9",
+                      "location": "node_modules/expo-splash-screen",
+                      "isWorkspace": false,
+                      "dependents": [
+                        {
+                          "type": "prod",
+                          "name": "expo-splash-screen",
+                          "spec": "~57.0.9",
+                          "from": {
+                            "location": "/home/mhirotaka/workspace/chroma-rift-goal012"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "prod",
+                    "name": "@expo/config-plugins",
+                    "spec": "~57.0.9",
+                    "from": {
+                      "name": "@expo/cli",
+                      "version": "57.0.24",
+                      "location": "node_modules/expo/node_modules/@expo/cli",
+                      "isWorkspace": false,
+                      "dependents": [
+                        {
+                          "type": "prod",
+                          "name": "@expo/cli",
+                          "spec": "^57.0.24",
+                          "from": {
+                            "name": "expo",
+                            "version": "57.0.22"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "dev": false,
+    "optional": false,
+    "devOptional": false,
+    "peer": false,
+    "bundled": false,
+    "overridden": false
+  }
+]

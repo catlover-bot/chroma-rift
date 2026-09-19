@@ -1,0 +1,154 @@
+{
+  "bundle": "/home/mhirotaka/workspace/chroma-rift-goal012/.expo/goal015/final/metro/development/_expo/static/js/ios/index-d41d8cd98f00b204e9800998ecf8427e.js",
+  "threeSources": [
+    "node_modules/three/build/three.cjs"
+  ],
+  "edges": [
+    {
+      "origin": "src/rendering/firstPerson/chromaticExhibit.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/manipulationProjection.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.prod.js",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "node_modules/@react-three/fiber/dist/events-4c71f21f.cjs.prod.js",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "node_modules/@react-three/fiber/native/dist/react-three-fiber-native.cjs.dev.js",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "node_modules/@react-three/fiber/dist/events-b1bdeb1a.cjs.dev.js",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/diagnostics.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/FacilityDetails.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/PanelFixture.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/TheatreScene.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/MechanicalDevices.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/segmentTransform.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/actorArtRig.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/VaultScene.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/VaultDevices.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/GalleryScene.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/PerceptualGalleryExhibits.tsx",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/planarMirror.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/nativeSceneSession.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/resources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/facilitySigns.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/environmentArtResources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/theatreResources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/vaultResources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/galleryResources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/actorArtResources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/perceptualResources.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/destinationSigns.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    },
+    {
+      "origin": "src/rendering/firstPerson/emblemSurface.ts",
+      "target": "node_modules/three/build/three.cjs",
+      "moduleId": 1626
+    }
+  ],
+  "sameClassIdentity": true
+}

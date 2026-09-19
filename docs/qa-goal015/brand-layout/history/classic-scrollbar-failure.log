@@ -1,0 +1,21 @@
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+Error: ending-credits-320-font2: {"measuredText":10,"textFailures":[{"text":"凹面仮面の元データ：Wael Tsar / cmglee（CC BY 4.0）","own":{"left":20,"top":1324,"right":285,"bottom":1456,"width":265,"height":132},"pieces":[{"left":20,"right":244.015625,"top":1326,"bottom":1366},{"left":20,"right":48.015625,"top":1370,"bottom":1410},{"left":48.015625,"right":139.328125,"top":1370,"bottom":1410},{"left":145.59375,"right":200.265625,"top":1370,"bottom":1410},{"left":206.515625,"right":217.515625,"top":1370,"bottom":1410},{"left":20,"right":177.8125,"top":1414,"bottom":1454},{"left":184.078125,"right":216.9375,"top":1414,"bottom":1454},{"left":223.1875,"right":290.0625,"top":1414,"bottom":1454}]}],"buttons":[{"label":"エリアを振り返る","width":265,"height":118,"visibleHeight":118,"textWithin":true},{"label":"発見の記録","width":265,"height":72,"visibleHeight":72,"textWithin":true},{"label":"ホームへ戻る","width":265,"height":72,"visibleHeight":72,"textWithin":true}],"scroll":{"scrollHeight":1784,"clientHeight":568,"scrollWidth":305,"clientWidth":305}}
+    at capture (/home/mhirotaka/workspace/chroma-rift-goal012/scripts/qa-goal015-brand-layout.cjs:128:210)
+    at async main (/home/mhirotaka/workspace/chroma-rift-goal012/scripts/qa-goal015-brand-layout.cjs:144:75)

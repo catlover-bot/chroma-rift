@@ -1,0 +1,167 @@
+{
+  "status": "pass",
+  "records": [
+    {
+      "page": "privacy",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "scope": "Actual generated static HTML/CSS in local Chromium; fontScale2 sets browser root text to32px. Not iPhone/Safari/VoiceOver or a published HTTPS page.",
+      "metrics": {
+        "title": "錯視館 — プライバシーポリシー",
+        "language": "ja",
+        "width": 320,
+        "scrollWidth": 305,
+        "bodyFont": "32px",
+        "background": "rgba(0, 0, 0, 0)",
+        "rootBackground": "rgb(244, 243, 237)",
+        "styleSheetCount": 1,
+        "scriptCount": 0,
+        "forms": 0,
+        "unresolved": false,
+        "draft": "公開前の下書き。正式情報・最終バイナリ未確認。公開・審査提出には使用できません。",
+        "links": [
+          {
+            "text": "サポート",
+            "href": "support.html"
+          },
+          {
+            "text": "プライバシー",
+            "href": "privacy.html"
+          }
+        ],
+        "height": 17272
+      },
+      "screenshot": {
+        "file": "docs/qa-goal015/public-pages/privacy-320-font2.png",
+        "sha256": "4e23773ef042314a7733230084ca60591e697a85b94619e205d582420b7dfce5"
+      },
+      "htmlSha256": "2d724eb6a8bdeda34e13b9fa0d37741a1210822d36f06e9dd14cbc84449bf1c7",
+      "cssSha256": "497903285cd667fbf92828c751b1af90519000a0699fb87579861a93044d09a6"
+    },
+    {
+      "page": "support",
+      "width": 320,
+      "height": 568,
+      "fontScale": 2,
+      "scope": "Actual generated static HTML/CSS in local Chromium; fontScale2 sets browser root text to32px. Not iPhone/Safari/VoiceOver or a published HTTPS page.",
+      "metrics": {
+        "title": "錯視館 — サポート",
+        "language": "ja",
+        "width": 320,
+        "scrollWidth": 305,
+        "bodyFont": "32px",
+        "background": "rgba(0, 0, 0, 0)",
+        "rootBackground": "rgb(244, 243, 237)",
+        "styleSheetCount": 1,
+        "scriptCount": 0,
+        "forms": 0,
+        "unresolved": false,
+        "draft": "公開前の下書き。正式情報・最終バイナリ未確認。公開・審査提出には使用できません。",
+        "links": [
+          {
+            "text": "サポート",
+            "href": "support.html"
+          },
+          {
+            "text": "プライバシー",
+            "href": "privacy.html"
+          },
+          {
+            "text": "プライバシーポリシー",
+            "href": "privacy.html"
+          }
+        ],
+        "height": 13842
+      },
+      "screenshot": {
+        "file": "docs/qa-goal015/public-pages/support-320-font2.png",
+        "sha256": "c8f0996cb4be3946879100a15bf95ae3f027d9c29db27f670eea26a061fa7d0a"
+      },
+      "htmlSha256": "c90c1e937b8387f0122ad23a13330dbe24762886fe1768b7085ca21eee7cd9fd",
+      "cssSha256": "497903285cd667fbf92828c751b1af90519000a0699fb87579861a93044d09a6"
+    },
+    {
+      "page": "privacy",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "scope": "Actual generated static HTML/CSS in local Chromium; fontScale2 sets browser root text to32px. Not iPhone/Safari/VoiceOver or a published HTTPS page.",
+      "metrics": {
+        "title": "錯視館 — プライバシーポリシー",
+        "language": "ja",
+        "width": 390,
+        "scrollWidth": 375,
+        "bodyFont": "16px",
+        "background": "rgba(0, 0, 0, 0)",
+        "rootBackground": "rgb(244, 243, 237)",
+        "styleSheetCount": 1,
+        "scriptCount": 0,
+        "forms": 0,
+        "unresolved": false,
+        "draft": "公開前の下書き。正式情報・最終バイナリ未確認。公開・審査提出には使用できません。",
+        "links": [
+          {
+            "text": "サポート",
+            "href": "support.html"
+          },
+          {
+            "text": "プライバシー",
+            "href": "privacy.html"
+          }
+        ],
+        "height": 3350
+      },
+      "screenshot": {
+        "file": "docs/qa-goal015/public-pages/privacy-390-font1.png",
+        "sha256": "15330d44b1551e681187f3d3599b0e72bf6cccc5a56c50c1a4c7fe6fed74045f"
+      },
+      "htmlSha256": "2d724eb6a8bdeda34e13b9fa0d37741a1210822d36f06e9dd14cbc84449bf1c7",
+      "cssSha256": "497903285cd667fbf92828c751b1af90519000a0699fb87579861a93044d09a6"
+    },
+    {
+      "page": "support",
+      "width": 390,
+      "height": 844,
+      "fontScale": 1,
+      "scope": "Actual generated static HTML/CSS in local Chromium; fontScale2 sets browser root text to32px. Not iPhone/Safari/VoiceOver or a published HTTPS page.",
+      "metrics": {
+        "title": "錯視館 — サポート",
+        "language": "ja",
+        "width": 390,
+        "scrollWidth": 375,
+        "bodyFont": "16px",
+        "background": "rgba(0, 0, 0, 0)",
+        "rootBackground": "rgb(244, 243, 237)",
+        "styleSheetCount": 1,
+        "scriptCount": 0,
+        "forms": 0,
+        "unresolved": false,
+        "draft": "公開前の下書き。正式情報・最終バイナリ未確認。公開・審査提出には使用できません。",
+        "links": [
+          {
+            "text": "サポート",
+            "href": "support.html"
+          },
+          {
+            "text": "プライバシー",
+            "href": "privacy.html"
+          },
+          {
+            "text": "プライバシーポリシー",
+            "href": "privacy.html"
+          }
+        ],
+        "height": 2797
+      },
+      "screenshot": {
+        "file": "docs/qa-goal015/public-pages/support-390-font1.png",
+        "sha256": "f5713ff5ef743dc950002520ea9abd2c6ff29718acf5308ea592f04bba5789ac"
+      },
+      "htmlSha256": "c90c1e937b8387f0122ad23a13330dbe24762886fe1768b7085ca21eee7cd9fd",
+      "cssSha256": "497903285cd667fbf92828c751b1af90519000a0699fb87579861a93044d09a6"
+    }
+  ],
+  "externalPublication": false,
+  "nativeDevice": false
+}

@@ -1,0 +1,9 @@
+{
+  "atUTC": "2026-09-19T08:52:00.391515+00:00",
+  "sourceCount": 541,
+  "sourcesMatchFullCheck": true,
+  "reviewedLocalMarkdownFiles": 16,
+  "codeCommit": "0720141661f721fb55c1add921a2a36dd8efb24f",
+  "metadataCommit": "83d846ee2b4a783a1b8554a588211b1fd047f94e",
+  "notes": "Final commit adds only documents and retained evidence. Source full regression need not repeat for these changes."
+}

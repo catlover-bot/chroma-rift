@@ -1,0 +1,510 @@
+{
+  "schemaVersion": 1,
+  "candidateBaselineHead": "0563e2d4bb76280fba2643078aa619e166bf8009",
+  "candidateIdentity": "Exact source hashes below/report hashes identify the uncommitted Goal015 candidate; baseline HEAD alone does not.",
+  "scope": "Completed non-Jest reports only. No running npm check, fairness/screen-route output, giant bundle, source map, node_modules tree, GL scene payload or screenshot copied.",
+  "status": "PASS_WITH_EXPLICIT_LIMITS",
+  "cycles": {
+    "ok": true,
+    "scope": "All eligible first-party production sources, plus reachable local sources; app/direct-entry reachability is reported separately. External packages and assets are boundaries. Static potential runtime graph, not executed native startup.",
+    "platforms": [
+      {
+        "platform": "ios",
+        "counts": {
+          "production": 254,
+          "runtimeEdges": 776,
+          "assets": 36,
+          "externalEdges": 154,
+          "erasedEdges": 465
+        },
+        "stronglyConnectedComponents": 0,
+        "appReachableSccs": 0,
+        "directReachableSccs": 0,
+        "errors": 0
+      },
+      {
+        "platform": "android",
+        "counts": {
+          "production": 254,
+          "runtimeEdges": 776,
+          "assets": 36,
+          "externalEdges": 154,
+          "erasedEdges": 465
+        },
+        "stronglyConnectedComponents": 0,
+        "appReachableSccs": 0,
+        "directReachableSccs": 0,
+        "errors": 0
+      },
+      {
+        "platform": "neutral",
+        "counts": {
+          "production": 254,
+          "runtimeEdges": 776,
+          "assets": 36,
+          "externalEdges": 154,
+          "erasedEdges": 465
+        },
+        "stronglyConnectedComponents": 0,
+        "appReachableSccs": 0,
+        "directReachableSccs": 0,
+        "errors": 0
+      }
+    ]
+  },
+  "framebuffer": {
+    "cases": 19,
+    "passedChecks": 14,
+    "checks": {
+      "realInvalidOperationOnRestore": true,
+      "beforeReflectionClean": true,
+      "fixedPhasesClean": true,
+      "fixedNativeBACKRemoved": true,
+      "traceIsOptionalAndBounded": true,
+      "fixedFrontReflection": true,
+      "fixedBackSkipped": true,
+      "oneMainAndFixturePresentation": true,
+      "traceDoesNotChangeOutput": true,
+      "actualObserverTraceCostRecorded": true,
+      "successfulObserverTraceReleased": true,
+      "allOwnersDisposed": true,
+      "tenFreshEntries": true,
+      "browserExceptionsAbsent": true
+    },
+    "freshEntries": 10,
+    "browserErrors": [],
+    "boundary": "Real Chromium WebGL2/ANGLE SwiftShader with a fixture-owned RGBA8+depth FBO replacing logical default framebuffer binds. Fresh authored area04 StageScene export, installed Three renderer and current planarMirror/adapter/nativeGlObserver source. Not an Expo binary, iPhone GPU, native Canvas scheduling or endFrameEXP presentation.",
+    "rendererOwnedTextureCount": 1,
+    "rendererOwnedTextureNote": "Three PBR DFG_LUT: 16x16 RG half float, 1024 bytes; renderer-owned until renderer disposal, not scene textures.",
+    "nativeAcceptance": "PENDING",
+    "scenePayloadSha256": "49b1b46a0f6b92546b15fafd0d8ad9fccce3895a0e6d6a536baff7e37ead7a5c",
+    "scenePayloadRetainedLocallyButNotPackaged": true
+  },
+  "audio": {
+    "boundary": "Real standard-intensity controllers, campaign handoffs, audio owner and post-presentation audio hooks. Presentation success is simulated by the QA fixture; all players are loaded with zero-latency seek completion. No native device audio, GL presentation, human continuous play or listening verification.",
+    "sourceHashGuardPassed": true,
+    "assetCount": 28,
+    "routeAreas": [
+      {
+        "area": "chapter-1-area-01",
+        "cleared": true
+      },
+      {
+        "area": "chapter-1-area-02",
+        "cleared": true
+      },
+      {
+        "area": "chapter-1-area-03",
+        "cleared": true
+      },
+      {
+        "area": "chapter-1-area-04",
+        "cleared": true
+      },
+      {
+        "area": "chapter-1-area-05",
+        "cleared": true
+      }
+    ],
+    "campaignCompleted": true,
+    "finale": {
+      "contained": true,
+      "isolated": true,
+      "stopped": true,
+      "outdoorExited": true
+    },
+    "traces": {
+      "route": {
+        "durationSeconds": 155.1174626496715,
+        "eventCount": 5997,
+        "stateCount": 19,
+        "maxPlayers": 12,
+        "activePlayersAtEnd": 0
+      },
+      "audition": {
+        "durationSeconds": 110.99999999999498,
+        "eventCount": 636,
+        "stateCount": 7,
+        "maxPlayers": 12,
+        "activePlayersAtEnd": 0,
+        "boundary": "Explicit audition state requests through the real owner, then the separate musicOnly owner equivalent to ChapterMusic chapter_end. This sequence is not a played route or React/native lifecycle recording."
+      },
+      "ending": {
+        "durationSeconds": 16.000000000000373,
+        "eventCount": 8,
+        "stateCount": 1,
+        "maxPlayers": 1,
+        "activePlayersAtEnd": 0,
+        "boundary": "Sixteen-second ending/credits listening excerpt (12 seconds intro plus 4 seconds credits) using the real owner and the same musicOnly configuration/session/state calls as ChapterMusic.tsx. No React mount, native audio, or actual UI clock is claimed."
+      }
+    },
+    "artisticListeningVerified": false,
+    "deviceAcceptance": "PENDING"
+  },
+  "metro": {
+    "commands": [
+      {
+        "name": "development-export",
+        "command": [
+          "npx",
+          "expo",
+          "export",
+          "--platform",
+          "ios",
+          "--no-bytecode",
+          "--source-maps",
+          "--output-dir",
+          ".expo/goal015/final/metro/development",
+          "--dev"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 4.705422308994457
+      },
+      {
+        "name": "development-three",
+        "command": [
+          "node",
+          "scripts/inspect-three-bundle.cjs",
+          ".expo/goal015/final/metro/development",
+          "--expect-single"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 1.1047333289752714
+      },
+      {
+        "name": "development-sources",
+        "command": [
+          "node",
+          "scripts/inspect-bundle-sources.cjs",
+          ".expo/goal015/final/metro/development",
+          "."
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.15003465802874416
+      },
+      {
+        "name": "development-entry",
+        "command": [
+          "node",
+          "scripts/inspect-metro-stage-entry.cjs",
+          ".expo/goal015/final/metro/development",
+          ".",
+          "--expect-acyclic"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 1.2860246669733897
+      },
+      {
+        "name": "production-export",
+        "command": [
+          "npx",
+          "expo",
+          "export",
+          "--platform",
+          "ios",
+          "--no-bytecode",
+          "--source-maps",
+          "--output-dir",
+          ".expo/goal015/final/metro/production"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 2.9422683739685453
+      },
+      {
+        "name": "production-three",
+        "command": [
+          "node",
+          "scripts/inspect-three-bundle.cjs",
+          ".expo/goal015/final/metro/production",
+          "--expect-single"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.9056625600205734
+      },
+      {
+        "name": "production-sources",
+        "command": [
+          "node",
+          "scripts/inspect-bundle-sources.cjs",
+          ".expo/goal015/final/metro/production",
+          "."
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.13930693798465654
+      },
+      {
+        "name": "production-release",
+        "command": [
+          "node",
+          "scripts/check-release-export.cjs",
+          ".expo/goal015/final/metro/production",
+          "ios"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.13314873800845817
+      }
+    ],
+    "allExitCodesZero": true,
+    "exports": {
+      "development": {
+        "firstPartyCount": 246,
+        "sourceCorrespondencePassed": true,
+        "bundleSha256": "47b5514d57523f107e97011950d1cf52ef43af1125f8bb43bad8fedc06612542",
+        "bundlePresentAndHashVerifiedAtPackaging": true,
+        "threeSources": [
+          "node_modules/three/build/three.cjs"
+        ],
+        "threeEdgeCount": 29,
+        "sameClassIdentity": true,
+        "exportAssetCount": 36
+      },
+      "production": {
+        "firstPartyCount": 226,
+        "sourceCorrespondencePassed": true,
+        "bundleSha256": "3816edc57660f17b09983a7f1f819819e5ac812736b6fbec8e780128a214d1f3",
+        "bundlePresentAndHashVerifiedAtPackaging": true,
+        "threeSources": [
+          "/node_modules/three/build/three.cjs"
+        ],
+        "threeEdgeCount": 27,
+        "sameClassIdentity": true,
+        "exportAssetCount": 31
+      }
+    },
+    "developmentEntry": {
+      "observations": 6,
+      "passed": 6,
+      "registeredModules": 1769,
+      "sourceCorrespondenceCount": 246,
+      "missingRoots": [],
+      "firstPartyCycles": [],
+      "preludeUnmodified": true,
+      "loaderUnmodified": true,
+      "firstPartyFactoriesUnmodified": true,
+      "factorySubstitutions": [
+        {
+          "source": "node_modules/expo-constants/build/Constants.js",
+          "moduleId": 681,
+          "fixture": "TEST/FIXTURE: empty CommonJS exports seeded into the Metro module cache; native build metadata unavailable",
+          "emittedFactoryExecuted": false,
+          "nativeRegistryFixtures": false
+        }
+      ],
+      "scope": "Actual emitted iOS development Metro loader and domain/controller/Three factories executed in isolated Node VM registries, with an explicit external expo-constants API fixture. No RN App mount, native GL, audio bridge, or physical iPhone startup."
+    },
+    "productionReleaseCheck": "ios release export checked: 1626 sources, 31 assets; 5 campaign areas present; development screens, probe and dev-client JS absent",
+    "profileLimit": "The directory label production denotes Metro release-mode export. These retained commands do not record an explicit EXPO_PUBLIC_CHROMA_BUILD_PROFILE=production environment; the separately run explicit-profile export is outside this package. No signed IPA or native startup claimed."
+  },
+  "sourceVerification": {
+    "checks": {
+      "cycles-ios": {
+        "files": 254,
+        "allMatchCurrentBytes": true
+      },
+      "cycles-android": {
+        "files": 254,
+        "allMatchCurrentBytes": true
+      },
+      "cycles-neutral": {
+        "files": 254,
+        "allMatchCurrentBytes": true
+      },
+      "framebuffer-sources": {
+        "files": 127,
+        "allMatchCurrentBytes": true
+      },
+      "framebuffer-installed-three": {
+        "files": 2,
+        "allMatchCurrentBytes": true
+      },
+      "framebuffer-tools": {
+        "files": 2,
+        "allMatchCurrentBytes": true
+      },
+      "audio-sources": {
+        "files": 116,
+        "allMatchCurrentBytes": true
+      },
+      "audio-assets": {
+        "files": 28,
+        "allMatchCurrentBytes": true
+      },
+      "audio-tool": {
+        "files": 1,
+        "allMatchCurrentBytes": true
+      },
+      "metro-development": {
+        "files": 246,
+        "allMatchCurrentBytes": true
+      },
+      "metro-production": {
+        "files": 226,
+        "allMatchCurrentBytes": true
+      }
+    },
+    "uniqueFiles": 289,
+    "file": "verified-source-hashes.json.gz",
+    "bytes": 14154,
+    "sha256": "b20bab51bd0f140e9dbf73a1c4af0dd95cce307e0d51a34fbe4edc04886e1f93",
+    "decodedSha256": "b597bbd53627a99ee2be386f664998d00fd9efdc566fac65220c18be9985dcf0",
+    "allCurrentBytesMatchAtPackaging": true
+  },
+  "artifacts": [
+    {
+      "source": ".expo/goal015/final/cycles.json",
+      "file": "cycles.json.gz",
+      "bytes": 192179,
+      "sha256": "7bde5b7458946a5848276bca71b42565a288204a78a874568c6c56c0a40dee8f",
+      "decodedBytes": 2523389,
+      "decodedSha256": "53bfb508dcee137af546cb34cba4ca0b9f0e02aac43a73f61133b316c4a8c9f8",
+      "encoding": "gzip, mtime=0, level=9"
+    },
+    {
+      "source": ".expo/goal015/final/cycles.txt",
+      "file": "cycles.txt",
+      "bytes": 203,
+      "sha256": "48726b8d8ed35b49f044ccfe95fec1f4796b35650426fea9554ec72e17ff707f",
+      "decodedBytes": 203,
+      "decodedSha256": "48726b8d8ed35b49f044ccfe95fec1f4796b35650426fea9554ec72e17ff707f",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/native-framebuffer.json",
+      "file": "native-framebuffer.json.gz",
+      "bytes": 12252,
+      "sha256": "70b0898d9c17c5d321e0e5071b9a4172ed39aef8674922c7122c0e61bfc7837c",
+      "decodedBytes": 185185,
+      "decodedSha256": "49b442d0bb79301ff9c80fdeaab097687f4b02b3e8c329fb183455ddbe961d85",
+      "encoding": "gzip, mtime=0, level=9"
+    },
+    {
+      "source": ".expo/goal015/final/native-framebuffer.txt",
+      "file": "native-framebuffer.txt",
+      "bytes": 1580,
+      "sha256": "181ffd3373ab63d6c9ce569e16c4b8f6593e937e0821c15ae446d0d0a5a5d67c",
+      "decodedBytes": 1580,
+      "decodedSha256": "181ffd3373ab63d6c9ce569e16c4b8f6593e937e0821c15ae446d0d0a5a5d67c",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/audio/recording.json",
+      "file": "audio/recording.json.gz",
+      "bytes": 82960,
+      "sha256": "621c2f38f759a718bb114251fe9c9a289ec1b6086fc58a7704e194fecc9a0fef",
+      "decodedBytes": 1138971,
+      "decodedSha256": "82e9434cd3e58478e2a81c5b767ab1e96130183239ea1e484da0e5ec4a1d1031",
+      "encoding": "gzip, mtime=0, level=9"
+    },
+    {
+      "source": ".expo/goal015/final/audio.txt",
+      "file": "audio.txt",
+      "bytes": 272,
+      "sha256": "cbca9ce6fbc2230000461ede1ef78619adc12026612d755f1c08aaf6f857880f",
+      "decodedBytes": 272,
+      "decodedSha256": "cbca9ce6fbc2230000461ede1ef78619adc12026612d755f1c08aaf6f857880f",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/results.json",
+      "file": "metro/results.json",
+      "bytes": 2151,
+      "sha256": "538b29f0fbcc222a46497c3a5ecc71226702e5e5acd40ca7f578c6f8c37523a9",
+      "decodedBytes": 2151,
+      "decodedSha256": "538b29f0fbcc222a46497c3a5ecc71226702e5e5acd40ca7f578c6f8c37523a9",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/development-export.txt",
+      "file": "metro/development-export.txt",
+      "bytes": 3366,
+      "sha256": "53602f35b707bbf609754ff234f50e82af9b33f0ed70204775a6694ad68e443b",
+      "decodedBytes": 3366,
+      "decodedSha256": "53602f35b707bbf609754ff234f50e82af9b33f0ed70204775a6694ad68e443b",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/development-three.txt",
+      "file": "metro/development-three.txt",
+      "bytes": 4862,
+      "sha256": "d5b4ffb197708df2be11d1c9f718b845234f78baac0c59f15bc365a5afd91883",
+      "decodedBytes": 4862,
+      "decodedSha256": "d5b4ffb197708df2be11d1c9f718b845234f78baac0c59f15bc365a5afd91883",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/development-sources.txt",
+      "file": "metro/development-sources.txt.gz",
+      "bytes": 13776,
+      "sha256": "7e6f92b4e11e635872cbf6f89843d5b897112385cb434c69400a9a3542810bcd",
+      "decodedBytes": 67177,
+      "decodedSha256": "a615bd3c7d0287dc9e1c8626dda2d30d77883850d83f7480347b0e05d64b8e7b",
+      "encoding": "gzip, mtime=0, level=9"
+    },
+    {
+      "source": ".expo/goal015/final/metro/development-entry.txt",
+      "file": "metro/development-entry.txt.gz",
+      "bytes": 14192,
+      "sha256": "052d9c9cadcc84f51156bf2cf9319ccb3ba89b8c2d0b22eb2701cf4a296e66cf",
+      "decodedBytes": 79015,
+      "decodedSha256": "e48032962806eab95d39667ea780ee5276ffee5d9192732f1c33db502e1b4dfc",
+      "encoding": "gzip, mtime=0, level=9"
+    },
+    {
+      "source": ".expo/goal015/final/metro/development/metadata.json",
+      "file": "metro/development/metadata.json",
+      "bytes": 2408,
+      "sha256": "2f6ec2a604dd38babfad3f9e2e044bd5d94781835ae903bea43bbe9644a88ce3",
+      "decodedBytes": 2408,
+      "decodedSha256": "2f6ec2a604dd38babfad3f9e2e044bd5d94781835ae903bea43bbe9644a88ce3",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/production-export.txt",
+      "file": "metro/production-export.txt",
+      "bytes": 2791,
+      "sha256": "e018ff214fab309c3346201663f8afd7d66f73d71bf0c3decf4a8a378e41b1c4",
+      "decodedBytes": 2791,
+      "decodedSha256": "e018ff214fab309c3346201663f8afd7d66f73d71bf0c3decf4a8a378e41b1c4",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/production-three.txt",
+      "file": "metro/production-three.txt",
+      "bytes": 4554,
+      "sha256": "f8a52b8c747855cddc3101f3a11733abf1f6a1e7cda8e8594183ed49f44d27ff",
+      "decodedBytes": 4554,
+      "decodedSha256": "f8a52b8c747855cddc3101f3a11733abf1f6a1e7cda8e8594183ed49f44d27ff",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/production-sources.txt",
+      "file": "metro/production-sources.txt.gz",
+      "bytes": 12714,
+      "sha256": "cc0a55c94e10e2548607f7f3a2c321c81665d0a68f1f3ffd28a6e9c1bdbd67be",
+      "decodedBytes": 61759,
+      "decodedSha256": "88b5bc98ba716535aa785508c9ae896248e5758fbc1fb26d53660ac69d15a7b3",
+      "encoding": "gzip, mtime=0, level=9"
+    },
+    {
+      "source": ".expo/goal015/final/metro/production-release.txt",
+      "file": "metro/production-release.txt",
+      "bytes": 131,
+      "sha256": "40e1f0a63f20a602f4241ff925c60ba71aa66e89c6f2732bd4127c626298f771",
+      "decodedBytes": 131,
+      "decodedSha256": "40e1f0a63f20a602f4241ff925c60ba71aa66e89c6f2732bd4127c626298f771",
+      "encoding": "identity"
+    },
+    {
+      "source": ".expo/goal015/final/metro/production/metadata.json",
+      "file": "metro/production/metadata.json",
+      "bytes": 2093,
+      "sha256": "b76310ac2aeb0190238e11e4832b7ad78165f050fd7e34736d9baacdfabead3c",
+      "decodedBytes": 2093,
+      "decodedSha256": "b76310ac2aeb0190238e11e4832b7ad78165f050fd7e34736d9baacdfabead3c",
+      "encoding": "identity"
+    }
+  ],
+  "gzipPolicy": "gzip level9, mtime0; decompressed bytes exactly equal the original report/log. Recompression checked byte-identical.",
+  "productionDeviceAcceptance": "PENDING",
+  "releaseReady": false
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "draft": true,
+  "deployed": false,
+  "publicReachabilityVerified": false,
+  "approvalFlagsAreOwnerAssertionsNotTechnicalProof": true,
+  "files": {
+    "privacy.html": "2d724eb6a8bdeda34e13b9fa0d37741a1210822d36f06e9dd14cbc84449bf1c7",
+    "support.html": "c90c1e937b8387f0122ad23a13330dbe24762886fe1768b7085ca21eee7cd9fd",
+    "site.css": "497903285cd667fbf92828c751b1af90519000a0699fb87579861a93044d09a6"
+  }
+}
