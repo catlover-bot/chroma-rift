@@ -6,18 +6,31 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "development" }
+      "env": {
+        "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "development"
+      }
     },
     "preview": {
       "developmentClient": false,
       "distribution": "internal",
       "autoIncrement": true,
-      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "preview" }
+      "env": {
+        "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "preview"
+      }
     },
     "production": {
       "developmentClient": false,
       "autoIncrement": true,
-      "env": { "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "production" }
+      "env": {
+        "EXPO_PUBLIC_CHROMA_BUILD_PROFILE": "production"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascAppId": "6813876632"
+      }
     }
   }
 }
