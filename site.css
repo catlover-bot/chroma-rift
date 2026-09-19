@@ -1,0 +1,18 @@
+:root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; color: #172c30; background: #f4f3ed; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 1rem; line-height: 1.85; overflow-wrap: anywhere; }
+header, main, footer { max-width: 48rem; margin: auto; padding: 1.4rem; }
+header { border-bottom: 1px solid #ccd2cb; }
+.brand { font-size: 1.35rem; font-weight: 700; letter-spacing: .08em; }
+.brand small { display: block; font-size: .72em; letter-spacing: .04em; }
+nav { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; margin-top: .7rem; }
+a { color: #175b61; text-underline-offset: .2em; }
+a:focus-visible { outline: 3px solid #175b61; outline-offset: 4px; }
+h1 { font-size: clamp(1.7rem, 6vw, 2.4rem); line-height: 1.4; }
+h2 { font-size: 1.25rem; line-height: 1.5; margin-top: 2rem; }
+p { margin: .85rem 0; }
+ul { padding-left: 1.5rem; }
+li + li { margin-top: .5rem; }
+.draft { border: 2px solid #775229; padding: .8rem; background: #fff0d7; }
+footer { border-top: 1px solid #ccd2cb; font-size: .9rem; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
